@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="runUnitTests">
+	<description>Buildfile for this project</description>
+	
+	<!-- Timestamp format definition -->
+	<tstamp><format property="ISO-TODAY" pattern="yyyy-MM-dd"/></tstamp>
+	
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="test-src.dir" value="${basedir}/tests"/>
+	
+	<property name="lib.dir" value="${basedir}/lib"/>
+
+	<property name="ant-build.dir" value="${basedir}/ant-build"/>
+	<property name="ant-output.dir" value="${ant-build.dir}/output"/>
+	<property name="dist.dir" value="${ant-output.dir}/dist"/>
+	<property name="dist.jar" value="${dist.dir}/dotify.jar"/>
+	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
+	<property name="test-build.dir" value="${ant-output.dir}/test-build.temp"/>
+
+	<property name="tests-jar.name" value="tests-temp.jar"/>
+
+	<property name="test.report.dir" value="${ant-output.dir}/test-report"/>
+	<property name="test.report-temp.dir" value="${ant-output.dir}/test-report.temp"/>
+
+	<path id="test.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${dist.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${ant-output.dir}">
+			<include name="${tests-jar.name}"/>
+		</fileset>
+	</path>
+	
+	<patternset id="test.patternset">
+		<include name="**/*.*"/>
+		<exclude name="**/doc-files/**/*.*"/>
+		<exclude name="**/package.html"/>
+	</patternset>
+	
+    <target name="compileTests">
+    	<subant>
+    		<fileset dir="${basedir}">
+    			<include name="build.xml"/>
+    		</fileset>
+    	</subant>
+    	
+    	<delete dir="${test-build.dir}"/>
+    	<mkdir dir="${test-build.dir}"/>
+
+    	<!-- Compile test files -->
+	    <javac srcdir="${test-src.dir}" destdir="${test-build.dir}" includeantruntime="false">
+			<classpath>
+				<fileset dir="${dist.dir}">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+	    </javac>
+    </target>
+	
+	<target name="runUnitTests" description="Run unit tests">
+		<antcall target="compileTests"/>
+		<jar destfile="${ant-output.dir}/${tests-jar.name}">
+    		<fileset dir="${test-build.dir}">
+    			<patternset refid="test.patternset"/>
+    		</fileset>
+			<fileset dir="${test-src.dir}">
+				<patternset refid="test.patternset"/>
+			</fileset>
+    	</jar>
+
+    	<delete dir="${test.report.dir}"/>
+    	<mkdir dir="${test.report.dir}"/>
+
+		<mkdir dir="${test.report-temp.dir}"/>
+
+		<junit fork="yes" printsummary="no" haltonfailure="no" errorproperty="testerror" failureproperty="testfail">
+			<batchtest fork="yes" todir="${test.report-temp.dir}">
+		      <fileset dir="${test-build.dir}">
+		        <include name="**/*Test.class" />
+		      </fileset>
+		    </batchtest>
+		    <formatter type="xml" />
+		    <classpath refid="test.classpath" />
+		</junit>
+		
+		<junitreport todir="${test.report.dir}">
+			<fileset dir="${test.report-temp.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report todir="${test.report.dir}" />
+		</junitreport>
+		
+		<delete dir="${test.report-temp.dir}"/>
+		<delete dir="${test-build.dir}"/>
+		<delete file="${ant-output.dir}/${tests-jar.name}"/>
+
+		<fail if="testerror" message="Error in tests"/>
+	</target>
+	
+</project>

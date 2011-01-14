@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>Package.html</title>
+</head>
+
+<body>
+<!--
+##### THIS IS THE TEMPLATE FOR THE PACKAGE DOC COMMENTS. #####
+##### TYPE YOUR PACKAGE COMMENTS HERE.  BEGIN WITH A     #####
+##### ONE-SENTENCE SUMMARY STARTING WITH A VERB LIKE:    #####
+Provides for....
+-->
+
+<p>Provides a transformer for converting XML to text. The transformer can
+convert structural XML documents into text-oriented display formats, i.e.
+formats that have a fixed width in characters per row. Focus has been on
+braille, specifically braille books, therefore pages, sections and volumes have
+been considered for the programming interfaces.</p>
+
+<h3>Adding a new locale</h3>
+
+<p>Adding a new locale requires some work, depending on your requirements. At
+least the following items need to be considered:</p>
+<ul>
+  <li>Add a new package in "org_pef_dtbook2pef.setups", for example "de_DE".
+    All locale specific code should be stored here except text filters, see
+    Adding a language below.</li>
+  <li>Add your setup name to the "Setup" enum in TaskSystemFactory.</li>
+  <li>Create a class that implements TaskSystem, and add to it the tasks that
+    your locale needs, see below.</li>
+  <li>Add your TaskSystem to TaskSystemFactory. Add the lines needed to the
+    method called "newTaskSystem".</li>
+  <li>Add a language, see below.</li>
+</ul>
+
+<h3>Implementing TaskSystem</h3>
+
+<p>A TaskSystem implementation should contain at least these steps:</p>
+<ul>
+  <li>An input format to FLOW format conversion (comparable to XSL-FO), for
+    example: 
+    <p><code>setup.add(new XsltTask("DTBook to FLOW converter",
+    dtbook2flowXsltUrl, null, xsltProps));</code></p>
+  </li>
+  <li>A FLOW format to a PagedMedia conversion, for example: 
+    <p><code>setup.add(new LayoutEngineTask("FLOW to PEF converter", flow,
+    paginator, paged));</code></p>
+  </li>
+</ul>
+
+<p>Refer to the sv_SE implementation for more information.</p>
+
+<h3>Adding a language</h3>
+
+<p>Braille tables are not kept in the "org_pef_dtbook2pef.setups" package, but
+are a part of the "org_pef_dtbook2pef.system" package. The purpose of this is
+to allow all locales to access each others rules, and optionally output braille
+using that locale, even when using a setup in another language.</p>
+<ul>
+  <li>Create a table that follows the rules of UCharReplacer (for more
+    information, see the <a
+    href="int_daisy_unicodeTranscoder.html">int_daisy_unicodeTranscoder</a>
+    documentation), and place it in a new package in the
+    "org_pef_dtbook2pef.system.tasks.layout.text.brailleFilters" package, e.g
+    "de_DE/de_DE.xml".<br />
+    <em>If your locale has special requirements (such as contractions), this
+    method cannot be used. In this case, another implementation must be
+    created. If your class implements the StringFilter interface, the next step
+    can still be applied.</em></li>
+  <li>Add your locale to BrailleFilterFactory, by adding code to the
+    newStringFilter method. Use existing code as an example of how to do this.
+  </li>
+</ul>
+
+<h3>Customizing layout</h3>
+
+<p>Page layout, such as headers and footers, as well as the interpretation of
+elements in the input document are customized by writing a stylesheet for the
+input format, so that the input document's contents is expressed using the FLOW
+grammar. See "flow.dtd" in the "org_pef_dtbook2pef.system.tasks.layout.flow"
+package for a description of this format.</p>
+
+<p>If there exist an XSLT for the input format, it could be extended as defined
+by XSLT. As a general guideline, it is ok to extend a stylesheet in
+"setups.common". It is however, not recommended to extend another locale's
+stylesheets. In this case, it is better to copy the stylesheet into your
+locale's directory, and modify it.</p>
+
+<h3>Running a new setup</h3>
+
+<p>Before running a new setup, it must be added to the Pipeline framework
+files, that is to say:</p>
+<ul>
+  <li>transformer.tdf<br />
+    add the new enum entry from the "Setup" enum to the parameter "setup".</li>
+  <li>task scripts<br />
+    add the same enum entry to the script parameter "setup" in the appropriate
+    script</li>
+</ul>
+
+<h3>Adding input formats</h3>
+
+<p>Similarly to customizing layout, a new input format requires a translation
+between the grammar in the input document and the grammar that the
+LayoutEngineTask reads. This can typically be acheived by applying an XSLT
+tailored for the task.</p>
+
+<p>Detecting the input format can require some work. However, the
+InputDetectorTaskSystem is specifically designed to aid the process of
+selecting and executing the correct validation rules and stylesheet for a given
+input document and locale. It can be inserted at the appropriate place in
+another TaskSystem.</p>
+
+<p>Add to InputDetectorTaskSystem the lines needed to support the new format,
+e.g:</p>
+
+<p><code>if (rootNS.equals("http://www.daisy.org/z3986/2005/dtbook/")
+&amp;&amp; rootElement.equals("dtbook")) {</code><code>inputformat =
+"dtbook.properties";</code><code>}</code></p>
+
+<p>Choose a suitable name for the properties file, typically using the name of
+the format, e.g. "html.properties".</p>
+
+<p>Refer to the Javadoc for more information on how to customize the
+InputDetectorTaskSystem for your locale.</p>
+
+<h3>Adding output formats</h3>
+
+<p>First, consider if your needs could be met by converting the PEF file to
+your desired format using (or extending) the org_pef_text.pef2text transformer.
+If not, add an output format by implementing "PagedMediaWriter". Put your
+creation in the "org_pef_dtbook2pef.system.tasks.layout.writers" package. If
+your output format requirements cannot be met by implementing
+"PagedMediaWriter", please consider submitting a <a
+href="http://sourceforge.net/tracker/?group_id=134191&amp;atid=729302">feature
+request</a>.</p>
+<!--
+<h2>Package Specification</h2>
+
+##### FILL IN ANY SPECS NEEDED BY JAVA COMPATIBILITY KIT #####
+
+<ul>
+  <li><a href="">##### REFER TO ANY FRAMEMAKER SPECIFICATION HERE #####</a></li>
+</ul>
+-->
+<!-- 
+<h2>Related Documentation</h2>
+For overviews, tutorials, examples, guides, and tool documentation, please see: 
+<ul>
+  <li><a href="">##### REFER TO NON-SPEC DOCUMENTATION HERE #####</a></li>
+</ul>
+-->
+<!-- Put @see and @since tags down here. -->
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Setup configuration: FA44 (compatibility)</comment>
+
+	<!-- Layout performer -->
+	<entry key="rows">29</entry>
+	<entry key="cols">36</entry>
+	<entry key="inner-margin">3</entry>
+	<entry key="outer-margin">3</entry>
+	<entry key="rowgap">0</entry>
+
+	<!-- Splitter -->
+	<entry key="splitterMax">49</entry>
+
+</properties>

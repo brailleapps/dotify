@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Document root
+-->
+<!ELEMENT root (layout-master+, sequence+)>
+
+<!--
+	Layout master
+-->
+<!ELEMENT layout-master (template*, default-template)>
+<!ATTLIST layout-master
+	name ID #REQUIRED
+	page-width CDATA #REQUIRED
+	page-height CDATA #REQUIRED
+	inner-margin CDATA #IMPLIED
+	outer-margin CDATA #IMPLIED
+	row-spacing CDATA #IMPLIED
+	duplex (true|false) #IMPLIED
+>
+<!ELEMENT template (header, footer)>
+<!ATTLIST template
+	use-when CDATA #REQUIRED
+>
+<!ELEMENT default-template (header, footer)>
+
+<!ELEMENT header (field)*>
+<!ELEMENT footer (field)*>
+<!ELEMENT field (marker-reference|string|current-page|evaluate)+>
+<!ELEMENT current-page EMPTY>
+<!ATTLIST current-page
+	style (default|roman) #REQUIRED
+>
+<!ELEMENT marker-reference EMPTY>
+<!ATTLIST marker-reference
+	marker NMTOKEN #REQUIRED
+	direction (forward|backward) #REQUIRED
+	scope (page_content|page|sequence) #REQUIRED
+>
+<!ELEMENT string EMPTY>
+<!ATTLIST string
+	value CDATA #REQUIRED
+>
+<!ELEMENT evaluate EMPTY>
+<!ATTLIST evaluate
+	expression CDATA #REQUIRED
+>
+<!-- 
+	A sequence of blocks
+-->
+<!ELEMENT sequence (block+, float-item*)>
+<!-- 
+	master, name of master to use for this sequence
+	initial-page-number, number of first page in the sequence
+	hypenate not implemented
+-->
+<!ATTLIST sequence
+	master IDREF #REQUIRED
+	initial-page-number CDATA #IMPLIED
+	xml:lang NMTOKEN #IMPLIED
+	hyphenate (true|false) #IMPLIED
+>
+
+<!ELEMENT float-item (block+)>
+<!ATTLIST float-item
+	name ID #REQUIRED
+	xml:lang NMTOKEN #IMPLIED
+>
+
+<!--
+	A block of text
+-->
+<!ELEMENT block (#PCDATA | block | leader | marker | anchor | br)*>
+<!--
+	break-before, if present, break before block begins
+	first-line-indent, indent (in chars) of first line block
+	keep, keep rows in this block
+	keep-with-next, keep the following block's first line(s) together with this block
+	list-type, the list type of this block
+	margin-bottom, bottom margin for this block (in rows)
+	margin-left, left margin for this block (in chars)
+	margin-top, top margin for this block (in rows)
+	margin-right, right margin for this block (in chars)
+	text-indent, indent (in chars) of every line in the block except the first one
+	block-indent, indent (in chars) of this block's block children
+-->
+<!ATTLIST block
+	break-before (auto|page) #IMPLIED 
+	first-line-indent CDATA #IMPLIED
+	keep (auto|all) #IMPLIED
+	keep-with-next (0|1|2|3|4|5|6|7|8|9) #IMPLIED
+	list-type (none|ol|ul|pl) #IMPLIED
+	margin-bottom CDATA #IMPLIED
+	margin-left CDATA #IMPLIED
+	margin-top CDATA #IMPLIED
+	margin-right CDATA #IMPLIED
+	text-indent CDATA #IMPLIED
+	block-indent CDATA #IMPLIED
+	xml:lang NMTOKEN #IMPLIED
+>
+
+<!--
+	A marker, use with headers/footers
+-->
+<!ELEMENT marker EMPTY>
+<!--
+	class, class name for this marker
+	value, value for this marker
+-->
+<!ATTLIST marker
+	class CDATA #REQUIRED
+	value CDATA #REQUIRED
+>
+
+<!--
+	A leader, move to a specific location within the current row
+-->
+<!ELEMENT leader EMPTY>
+<!--
+	align, 	alignment of the text following the leader.
+				The leader can be aligned to the left, center or
+				right of the following text segment. Left is
+				default.
+	pattern, 	fill pattern to use up to the leader position, " "
+				is default.
+	position, position of the leader within the row. Can be
+				relative (percent) or absolute (column).
+ -->
+<!ATTLIST leader
+	align (left|center|right) #IMPLIED
+	pattern CDATA #IMPLIED
+	position CDATA #REQUIRED
+>
+
+<!ELEMENT anchor EMPTY>
+<!ATTLIST anchor
+	float-item IDREF #REQUIRED
+>
+<!--
+	Break line
+-->
+<!ELEMENT br EMPTY>

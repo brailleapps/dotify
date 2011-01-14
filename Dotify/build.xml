@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="buildJar">
+	<description>Buildfile for this project</description>
+	
+	<!-- Timestamp format definition -->
+	<tstamp><format property="ISO-TODAY" pattern="yyyy-MM-dd"/></tstamp>
+	
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+
+	<property name="ant-build.dir" value="${basedir}/ant-build"/>
+	<property name="ant-output.dir" value="${ant-build.dir}/output"/>
+	<property name="dist.dir" value="${ant-output.dir}/dist"/>
+	<property name="dist.jar" value="${dist.dir}/dotify.jar"/>
+	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
+	
+	<property name="distribution.zip" value="${dist.dir}/dotify-${ISO-TODAY}.zip"/>
+
+	<patternset id="dist-jar.patternset">
+		<include name="**/*.*"/>
+		<exclude name="**/package.html"/>
+	</patternset>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: emptyBuildDir                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="emptyBuildDir">
+    	<delete dir="${build.dir}"/>
+    	<mkdir dir="${build.dir}"/>
+    </target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: createDistDir                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="createDistDir">
+		<mkdir dir="${dist.dir}"/>
+    </target>
+
+	<!-- - - - - - - - - - - - - - - - - -
+          target: compile              
+         - - - - - - - - - - - - - - - - - -->
+    <target name="compile" depends="emptyBuildDir, createDistDir">
+    	<!-- Compile core files -->
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+        </javac>
+
+    </target>
+
+    <target name="buildJar" description="Builds distribution jar">
+    	<antcall target="compile"></antcall>
+    	<jar destfile="${dist.jar}">
+    		<fileset dir="${build.dir}">
+    			<patternset refid="dist-jar.patternset"/>
+    		</fileset>
+    		<fileset dir="${src.dir}">
+    			<patternset refid="dist-jar.patternset"/>  			
+    		</fileset>
+    		<manifest>
+    			<attribute name="Class-Path" value="lib/icu4j-3_8.jar lib/onvdl.jar lib/org.daisy.util.jar lib/saxon.jar lib/saxon8-dom.jar lib/saxon8.jar lib/xercesImpl.jar"/>
+    			<attribute name="Main-Class" value="org.daisy.dotify.Main"/>
+    			<attribute name="Built-By" value="${user.name}"/>
+    			<attribute name="Built-On" value="${ISO-TODAY}"/>
+    		</manifest>
+    	</jar>
+    	<delete dir="${build.dir}"/>
+    </target>
+
+	<target name="buildZip" depends="buildJar" description="Builds distribution zip including all required jars">
+    	<zip destfile="${distribution.zip}">
+    		<zipfileset file="${dist.jar}" prefix="Dotify/"/>
+    		<zipfileset dir="${lib.dir}" prefix="Dotify/lib">
+    			<include name="*.jar"/>
+    		</zipfileset>
+    	</zip>
+	</target>
+
+</project>
