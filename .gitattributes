@@ -2,11 +2,56 @@
 Dotify/.classpath -text svneol=unset#text/plain
 Dotify/.project -text svneol=unset#text/plain
 Dotify/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic-table.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-form.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/index.html -text svneol=unset#text/plain
+Dotify/ant-build/resources/dtd/xhtml10/modules/applet.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/attribs.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/base.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/basic-form.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/basic-table.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/bdo.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/csismap.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/datatypes-xhtml.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/edit.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/events.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/form.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/frames.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/hypertext.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/iframe.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/image.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/inlstyle.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/legacy.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/link.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/list.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/meta.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/nameident.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/object.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/param.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/pres.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/ruby.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/script.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/ssismap.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/struct.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/style.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/table.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/target.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/modules/text.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/xhtml-basic.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/xhtml-lat1.ent -text svneol=unset#text/plain
+Dotify/ant-build/resources/dtd/xhtml10/xhtml-special.ent -text svneol=unset#text/plain
+Dotify/ant-build/resources/dtd/xhtml10/xhtml-strict.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/xhtml-symbol.ent -text svneol=unset#text/plain
+Dotify/ant-build/resources/dtd/xhtml10/xhtml.rng -text
+Dotify/ant-build/resources/dtd/xhtml10/xhtml1-strict.dtd -text svneol=unset#text/plain
+Dotify/ant-build/resources/dtd/xhtml10/xhtml1-transitional-bodyref.dtd -text svneol=unset#text/plain
+Dotify/ant-build/resources/dtd/xhtml10/xhtml1-transitional.dtd -text svneol=unset#text/plain
+Dotify/ant-build/resources/javase-6/package-list -text
 Dotify/build-doc.xml -text svneol=unset#text/plain
 Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
 Dotify/build.xml -text svneol=unset#text/plain
 Dotify/lib/icu4j-3_8.jar -text
-Dotify/lib/junit-4.4.jar -text
 Dotify/lib/junit-4.7.jar -text
 Dotify/lib/onvdl.jar -text
 Dotify/lib/org.daisy.util.jar -text
@@ -55,6 +100,8 @@ Dotify/src/org/daisy/dotify/setups/sv_SE/config/text_A4.xml -text svneol=unset#t
 Dotify/src/org/daisy/dotify/setups/sv_SE/definers/dtbook2flow_sv_SE.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/definers/dtbook2flow_sv_SE_braille.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/definers/dtbook2flow_sv_SE_text.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishTextSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/SwedishVolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/validation/basic.sch -text

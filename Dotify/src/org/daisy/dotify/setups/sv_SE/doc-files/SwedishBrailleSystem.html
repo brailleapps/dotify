@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type"
+  content="application/xhtml+xml; charset=UTF-8" />
+  <title>Setups for SwedishBrailleSystem</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../doc/pipeline.css"
+  />
+</head>
+
+<body>
+<h1 class="title"><em>Setups for SwedishBrailleSystem</em></h1>
+<!-- script documentation contains primarily end-user-centric information -->
+
+<div id="toc" class="toc">
+<ul>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#inputReqs">Input Requirements</a></li>
+  <li><a href="#output">Output</a></li>
+  <li><a href="#config">Configuration</a></li>
+  <li><a href="#transformers">Appendix: List of Transformers used</a></li>
+</ul>
+</div>
+
+<h2 id="overview">Overview</h2>
+
+<p>This document applies to the following Conversion Setups:</p>
+<ul>
+  <li>Swedish - A4</li>
+  <li>Swedish - FA44</li>
+</ul>
+
+<p>All of them produce uncontracted Swedish braille.</p>
+
+<h4>Swedish - A4</h4>
+
+<p>This setup will create documents intended for A4 while maintaining
+compatibility with existing software. This means that the paper size in the
+output will be narrower than A4, i.e. 32 braille cells wide. Other properties
+of this setup are:</p>
+<ul>
+  <li>Page height: 29 characters</li>
+  <li>Inner margin: 2 characters</li>
+  <li>Outer margin: 2 characters</li>
+  <li>Row gap: 0 </li>
+  <li>Volume size: about 50 sheets</li>
+</ul>
+
+<h4>Swedish - FA44</h4>
+
+<p>This setup will create documents intended for FA44 while maintaining
+compatibility with existing software. This means that the paper size in the
+output will be narrower than FA44, i.e. 42 braille cells wide. Other properties
+of this setup are:</p>
+<ul>
+  <li>Page height: 29 characters</li>
+  <li>Inner margin: 3 characters</li>
+  <li>Outer margin: 3 characters</li>
+  <li>Row gap: 0 </li>
+  <li>Volume size: about 50 sheets</li>
+</ul>
+
+<h2 id="inputReqs">Input Requirements</h2>
+
+<p>A DTBook document. Notes and tables are not allowed.</p>
+<!-- detailed requirements on input nature -->
+
+<h2 id="output">Output</h2>
+
+<p>A PEF-document containing one or serveral volumes.</p>
+
+<h2 id="config">Configuration</h2>
+
+<p>A number of properties can be overridden by supplying a Java xml properties
+file to the conversion via the optional parameter "Settings file". The file
+should contain one or more of the following entries:</p>
+<!-- description on params exposed in script -->
+<!-- Although not recommended, possiblity to reference one or several 
+	transformer docs here instead of duplicating. Remember though that the 
+	transformer doc is developer centric and this doc is end user centric.
+	Here, use the nicenames for parameters! Explain consequence of default values.
+-->
+<dl id="paramslist">
+  <dt>rows</dt>
+    <dd>Set the number of rows, i.e. the height, of the page (integer &gt;
+    0)</dd>
+  <dt>cols</dt>
+    <dd>Set the number of columns, i.e. the width, of the page (integer &gt;
+    0)</dd>
+  <dt>inner-margin</dt>
+    <dd>Set the inner margin, in characters (integer &gt;= 0)</dd>
+  <dt>outer-margin</dt>
+    <dd>Set the outer margin, in characters (integer &gt;= 0)</dd>
+  <dt>rowgap</dt>
+    <dd>Set the row gap (integer &gt;= 0)</dd>
+  <dt>max</dt>
+    <dd>Set the volume splitter max parameter, see below</dd>
+  <dt>l10nrearjacketcopy</dt>
+    <dd>Set the text string to be used when announcing this particular block of
+      text</dd>
+  <dt>l10nimagedescription</dt>
+    <dd>Set the text string to be used when announcing this particular block of
+      text</dd>
+  <dt>l10ncolophon</dt>
+    <dd>Set the text string to be used when announcing this particular block of
+      text</dd>
+  <dt>l10ncaption</dt>
+    <dd>Set the text string to be used when announcing this particular block of
+      text</dd>
+  <dt>finalizer-input</dt>
+    <dd>Set the braille finalizer finalizer-input parameter, see below</dd>
+  <dt>finalizer-output</dt>
+    <dd>Set the braille finalizer finalizer-output parameter, see below</dd>
+</dl>
+
+<h4>Volume Splitter</h4>
+
+<p>The volume splitter used in this setup is very simple. It will distribute
+pages into volumes equally with a maximum of "max" pages per volume.</p>
+
+<h4>Braille Finalizer</h4>
+
+<p>The Braille finalizer performs post rendering character replacing. The
+purpose is to replace remaining non braille characters that are needed in the
+layout process, such as space, no-break space, hyphen and soft hyphen. It takes
+two parameters: finalizer-input and finalizer-output.</p>
+
+<p>For each row, the braille-finalizer replaces occurrences of characters in
+the finalizer-input string with the character at the corresponding position in
+the finalizer-output string.</p>
+
+<h2 id="transformers">Appendix: List of Internal Tasks used</h2>
+
+<p>The documents linked below are parts of the <em>TaskSystem technical
+documentation</em>. These are developer and systems-administrator centric
+documents.</p>
+<ol>
+  <li>InputDetectorTaskSystem</li>
+  <li>FLOW whitespace normalizer</li>
+  <li>FLOW validator</li>
+  <li>FLOW to PEF converter</li>
+  <li>Volume splitter</li>
+  <li>Cover page adder</li>
+  <li>Braille finalizer</li>
+  <li>Meta data finalizer</li>
+</ol>
+</body>
+</html>
