@@ -28,7 +28,8 @@
 	<entry key="č">&#x2808;&#x2809;</entry>						<!-- LATIN SMALL LETTER C WITH CARON, 010d -->
 	<entry key="0107">&#x2808;&#x2809;</entry>					<!-- LATIN SMALL LETTER C WITH ACUTE, 0107 -->
 	<entry key="d">&#x2819;</entry>
-	<entry key="ð">&#x2808;&#x2819;</entry>
+	<entry key="đ">&#x2808;&#x2819;</entry>						<!-- LATIN SMALL LETTER D WITH STROKE, 0111 -->
+	<entry key="ð">&#x2808;&#x2819;</entry>						<!-- LATIN SMALL LETTER ETH, 00F0 -->
 	<entry key="e">&#x2811;</entry>
 	<entry key="è">&#x282E;</entry>
 	<entry key="é">&#x283F;</entry>
