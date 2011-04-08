@@ -91,6 +91,7 @@
 	<entry key="z">&#x2835;</entry>
 	<entry key="ż">&#x2808;&#x2835;</entry>						<!-- LATIN SMALL LETTER Z WITH DOT ABOVE, 017c -->
 	<entry key="ž">&#x2808;&#x2835;</entry>						<!-- LATIN SMALL LETTER Z WITH CARON, 017E -->
+	<entry key="ź">&#x2808;&#x2835;</entry>						<!-- LATIN SMALL LETTER Z WITH ACUTE, 017A -->
 	<entry key="å">&#x2821;</entry>
 	<entry key="ä">&#x281C;</entry>
 	<entry key="æ">&#x2808;&#x281C;</entry>
