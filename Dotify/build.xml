@@ -8,13 +8,16 @@
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
 
+	<property name="release-name" value="Dotify"/>
+	<property name="release-version" value="1.0b"/>
+
 	<property name="ant-build.dir" value="${basedir}/ant-build"/>
 	<property name="ant-output.dir" value="${ant-build.dir}/output"/>
 	<property name="dist.dir" value="${ant-output.dir}/dist"/>
-	<property name="dist.jar" value="${dist.dir}/dotify.jar"/>
+	<property name="dist.jar" value="${dist.dir}/dotify-${release-version}.jar"/>
 	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
 	
-	<property name="distribution.zip" value="${dist.dir}/dotify-${ISO-TODAY}.zip"/>
+	<property name="distribution.zip" value="${dist.dir}/dotify-${release-version}.zip"/>
 
 	<patternset id="dist-jar.patternset">
 		<include name="**/*.*"/>
@@ -41,7 +44,7 @@
          - - - - - - - - - - - - - - - - - -->
     <target name="compile" depends="emptyBuildDir, createDistDir">
     	<!-- Compile core files -->
-        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" encoding="UTF-8">
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="*.jar"/>
@@ -65,6 +68,9 @@
     			<attribute name="Main-Class" value="org.daisy.dotify.Main"/>
     			<attribute name="Built-By" value="${user.name}"/>
     			<attribute name="Built-On" value="${ISO-TODAY}"/>
+    			<attribute name="Implementation-Title" value="${release-name}"/>
+    			<attribute name="Implementation-Version" value="${release-version}"/>
+    			<attribute name="Implementation-URL" value="http://code.google.com/p/dotify/"/>
     		</manifest>
     	</jar>
     	<delete dir="${build.dir}"/>
