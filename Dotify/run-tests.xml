@@ -51,7 +51,7 @@
     	<mkdir dir="${test-build.dir}"/>
 
     	<!-- Compile test files -->
-	    <javac srcdir="${test-src.dir}" destdir="${test-build.dir}" includeantruntime="false">
+	    <javac srcdir="${test-src.dir}" destdir="${test-build.dir}" includeantruntime="false" encoding="UTF-8">
 			<classpath>
 				<fileset dir="${dist.dir}">
 					<include name="*.jar"/>
