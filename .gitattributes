@@ -1,7 +1,6 @@
 * text=auto !eol
 Dotify/.classpath -text svneol=unset#text/plain
 Dotify/.project -text svneol=unset#text/plain
-Dotify/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic-table.rng -text
 Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic.rng -text
 Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-form.rng -text
@@ -58,6 +57,8 @@ Dotify/lib/org.daisy.util.jar -text
 Dotify/lib/saxon.jar -text
 Dotify/lib/saxon8-dom.jar -text
 Dotify/lib/saxon8.jar -text
+Dotify/lib/stax-api-1.0.1.jar -text
+Dotify/lib/wstx-lgpl-3.2.8.jar -text
 Dotify/lib/xercesImpl.jar -text
 Dotify/run-tests.xml -text svneol=unset#text/plain
 Dotify/src/META-INF/services/javax.xml.transform.TransformerFactory -text

@@ -5,9 +5,8 @@ package org.daisy.dotify.system.tasks.layout.text;
  * 
  * Implements StringFilter to return upper or lower case characters only.
  * 
- * @author  Joel Hakansson, TPB
+ * @author  Joel Håkansson
  * @version 4 maj 2009
- * @since 1.0
  */
 public class CaseFilter implements StringFilter {
 
