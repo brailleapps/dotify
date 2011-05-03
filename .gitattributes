@@ -78,6 +78,7 @@ Dotify/src/org/daisy/dotify/setups/common/renderers/meta-finalizer.xsl -text svn
 Dotify/src/org/daisy/dotify/setups/common/splitters/simple-splitter.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/validation/flow.xsd -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/en_US/DefaultTextSystem.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/en_US/config/text.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/en_US/doc-files/DefaultTextSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/en_US/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/package.html -text svneol=unset#text/plain
@@ -108,7 +109,6 @@ Dotify/src/org/daisy/dotify/system/input/common/config/text/xml.properties -text
 Dotify/src/org/daisy/dotify/system/input/common/definers/dtbook2flow.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/input/common/definers/xml2flow.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/input/common/validation/flow.xsd -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/system/input/en_US/config/text.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/input/en_US/config/text/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/input/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/input/sv_SE/config/pef/dtbook.properties -text svneol=unset#text/plain
