@@ -1,6 +1,7 @@
-package org.daisy.dotify.setups;
+package org.daisy.dotify.system;
 
 import java.net.URL;
+
 
 /**
  * Provides a method for locating resources 

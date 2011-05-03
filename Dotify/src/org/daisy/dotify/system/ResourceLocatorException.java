@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups;
+package org.daisy.dotify.system;
 
 import java.io.IOException;
 

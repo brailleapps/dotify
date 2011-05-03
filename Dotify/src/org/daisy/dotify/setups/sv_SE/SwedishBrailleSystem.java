@@ -1,25 +1,22 @@
 package org.daisy.dotify.setups.sv_SE;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.daisy.dotify.setups.ResourceLocator;
-import org.daisy.dotify.setups.ResourceLocatorException;
+import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
-import org.daisy.dotify.setups.common.InputDetectorTaskSystem;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.system.InternalTask;
+import org.daisy.dotify.system.ResourceLocator;
+import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.tasks.LayoutEngineTask;
@@ -66,19 +63,11 @@ import org.xml.sax.SAXException;
  * @author Joel Håkansson, TPB
  */
 public class SwedishBrailleSystem implements TaskSystem {
-	//private URL resourceBase;
 	private final ResourceLocator commonResourceLocator;
-	//private String config;
-	private final URL configURL;
-	private final InputDetectorTaskSystem inputDetector;
 	private final String name;
 	
-	public SwedishBrailleSystem(ResourceLocator resourceBase, URL configURL, String name) {
-		//this.resourceBase = resourceBase;
+	public SwedishBrailleSystem(String name) {
 		this.commonResourceLocator = new CommonResourceLocator();
-		//this.config = config;
-		this.configURL = configURL;
-		this.inputDetector = new InputDetectorTaskSystem(resourceBase, "sv_SE/config/", "common/config/");
 		this.name = name;
 	}
 	
@@ -86,7 +75,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		return name;
 	}
 
-	public ArrayList<InternalTask> compile(Map<String, String> parameters) throws TaskSystemException {
+	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
 		URL flowValidationURL;
 		URL flowWsNormalizer;
 		URL volumeSplitter;
@@ -103,41 +92,11 @@ public class SwedishBrailleSystem implements TaskSystem {
 			throw new TaskSystemException("Could not locate resource.", e);
 		}
 		//configURL = new URL(resourceBase, config);
-
-		Properties p = new Properties();
-		p.put("l10nrearjacketcopy", "Baksidestext");
-		p.put("l10imagedescription", "Bildbeskrivning");
-		p.put("l10ncolophon", "Tryckuppgifter");
-		p.put("l10ncaption", "Bildtext");
-
-		try {
-			p.loadFromXML(configURL.openStream());
-		} catch (FileNotFoundException e) {
-			throw new TaskSystemException("Configuration file not found: " + configURL, e);
-		} catch (InvalidPropertiesFormatException e) {
-			throw new TaskSystemException("Configuration file could not be parsed: " + configURL, e);
-		} catch (IOException e) {
-			throw new TaskSystemException("IOException while reading configuration file: " + configURL, e);
-		}
-		// GUI parameters should take precedence
-		p.putAll(parameters);
-
-		int flowWidth = Integer.parseInt(p.getProperty("cols", "28"));
-		int pageHeight = Integer.parseInt(p.getProperty("rows", "29"));
-		int innerMargin = Integer.parseInt(p.getProperty("inner-margin", "5"));
-		int outerMargin = Integer.parseInt(p.getProperty("outer-margin", "2"));
-		float rowgap = Float.parseFloat(p.getProperty("rowgap", "0"));
-
-		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-
-		p.put("page-height", pageHeight);
-		p.put("page-width", flowWidth+innerMargin+outerMargin);
-		p.put("row-spacing", (rowgap/4)+1);
-
+		
 		HashMap h = new HashMap();
-		h.putAll(p);
-
-		setup.addAll(inputDetector.compile(h));
+		h.putAll(p.getProperties());
+		
+		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 
 		// Whitespace normalizer TransformerFactoryConstants.SAXON8
 		setup.add(new XsltTask("FLOW whitespace normalizer", flowWsNormalizer, null, h));
@@ -151,15 +110,15 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		// Customize which parameters are sent to the PEFMediaWriter, as it outputs all parameters for future reference
 		Properties p2 = new Properties();
-		p2.putAll(p);
+		p2.putAll(p.getProperties());
 		// Localization parameters are not that interesting in retrospect
 		p2.remove("l10nrearjacketcopy");
 		p2.remove("l10imagedescription");
 		p2.remove("l10ncolophon");
 		p2.remove("l10ncaption");
 		// System file paths should be concealed for security reasons 
-		p2.remove("input");
-		p2.remove("input-uri");
+		p2.remove(SystemKeys.INPUT);
+		p2.remove(SystemKeys.INPUT_URI);
 		p2.remove("output");
 		p2.remove("tempFilesDirectory");
 
@@ -173,20 +132,20 @@ public class SwedishBrailleSystem implements TaskSystem {
 		setup.add(new XsltTask("Volume splitter", volumeSplitter, null, h));
 
 		// Add a title page first in each volume
-    	TextBorder tb = new TextBorder.Builder(flowWidth+innerMargin).
-    						topLeftCorner(LayoutTools.fill(' ', innerMargin) + "\u280F").
+    	TextBorder tb = new TextBorder.Builder(p.getFlowWidth()+p.getInnerMargin()).
+    						topLeftCorner(LayoutTools.fill(' ', p.getInnerMargin()) + "\u280F").
     						topBorder("\u2809").
     						topRightCorner("\u2839").
-    						leftBorder(LayoutTools.fill(' ', innerMargin) + "\u2807  ").
+    						leftBorder(LayoutTools.fill(' ', p.getInnerMargin()) + "\u2807  ").
     						rightBorder("  \u2838").
-    						bottomLeftCorner(LayoutTools.fill(' ', innerMargin) + "\u2827").
+    						bottomLeftCorner(LayoutTools.fill(' ', p.getInnerMargin()) + "\u2827").
     						bottomBorder("\u2824").
     						bottomRightCorner("\u283c").
     						alignment(TextBorder.Align.CENTER).
     						build();
     	SwedishVolumeCoverPage cover;
 		try {
-			cover = new SwedishVolumeCoverPage(new File(parameters.get("input")), tb, factory.getDefault(), pageHeight);
+			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, factory.getDefault(), p.getPageHeight());
 		} catch (XPathExpressionException e) {
 			throw new TaskSystemException(e);
 		} catch (ParserConfigurationException e) {

@@ -3,6 +3,7 @@ package org.daisy.dotify;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,14 +14,19 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.setups.ConfigUrlLocator;
 import org.daisy.dotify.setups.TaskSystemFactory;
-import org.daisy.dotify.setups.TaskSystemFactoryException;
 import org.daisy.dotify.setups.TaskSystemFactory.OutputFormat;
 import org.daisy.dotify.setups.TaskSystemFactory.Setup;
+import org.daisy.dotify.setups.TaskSystemFactoryException;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
+import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
+import org.daisy.dotify.system.input.InputManagerTaskSystem;
+import org.daisy.dotify.system.input.InputManagerTaskSystemFactory;
+import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
 import org.daisy.dotify.system.tools.Progress;
 import org.daisy.util.file.FileJuggler;
 import org.daisy.util.file.FileUtils;
@@ -51,27 +57,14 @@ public class Main {
 		}
 		File output = new File(args[1]);
 		HashMap<String, String> props = new HashMap<String, String>();
-		props.put("debug", "C:\\Temp");
+		//props.put("debug", "true");
+		props.put("tempFilesDirectory", "C:\\Temp");
+		props.put("writeTempFiles", "true");
 		Main m = new Main();
-		m.run(input, output, OutputFormat.PEF, Setup.sv_SE, new HashMap<String, String>());
+		m.run(input, output, OutputFormat.PEF, Setup.sv_SE, props);
 	}
 
 	public void run(File input, File output, OutputFormat outputformat, Setup setup, HashMap<String, String> params) throws IOException, InternalTaskException {
-		/*{
-			Progress p = new Progress();
-		
-			for (int i = 0; i<14; i++) {
-				try {
-					Thread.sleep(3210);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				p.setProgress((i+1)/14d);
-				System.out.println("Progress " + p.getProgress() + " ETA " + p.getETA());
-			}
-			System.out.println(new Date());
-		}*/
 		Progress progress = new Progress();
 		
 		// get parameters
@@ -86,15 +79,15 @@ public class Main {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.putAll(params);
 
-		map.put("input", input.getAbsolutePath());
-		map.put("outputFormat", outputformat.toString().toLowerCase());
+		map.put(SystemKeys.INPUT, input.getAbsolutePath());
+		map.put(SystemKeys.OUTPUT_FORMAT, outputformat.toString().toLowerCase());
 		
-		map.put("systemName", "Dotify");
-		map.put("systemBuild", "20110112");
-		map.put("systemRelease", "N/A");
+		map.put(SystemKeys.SYSTEM_NAME, SystemProperties.SYSTEM_NAME);
+		map.put(SystemKeys.SYSTEM_BUILD, SystemProperties.SYSTEM_BUILD);
+		map.put(SystemKeys.SYSTEM_RELEASE, SystemProperties.SYSTEM_RELEASE);
 		map.put("conversionDate", new Date().toString());
 
-		map.put("input-uri", input.toURI().toString());
+		map.put(SystemKeys.INPUT_URI, input.toURI().toString());
 		
 		// Add default values for optional parameters
 		String dateFormat = params.get("dateFormat");
@@ -136,21 +129,31 @@ public class Main {
 		}
 		
 		// Load setup
-		ArrayList<InternalTask> tasks = null;
+		ArrayList<InternalTask> tasks = new ArrayList<InternalTask>();
 		TaskSystem ts = null;
+		
+		//InputDetector
+		InputManagerTaskSystem idts = 
+			InputManagerTaskSystemFactory.newInstance()
+				.newInputDetectorTaskSystem(
+					FilterLocale.parse(setup.toString().replace('_', '-'))
+				);
+
+		RunParameters rp = null;
 		try {
-			ts = new TaskSystemFactory().newTaskSystem(outputformat, setup, map);
-			tasks = ts.compile(map);
+			URL configURL = new ConfigUrlLocator().getResourceURL(outputformat, setup);
+			rp = RunParameters.load(configURL, map);
+			
+			tasks.addAll(idts.compile(rp));
+			ts = new TaskSystemFactory().newTaskSystem(outputformat, setup);
+			tasks.addAll(ts.compile(rp));
 		} catch (TaskSystemException e) {
-			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + map.toString(), e);
+			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + rp.getProperties().toString(), e);
 		} catch (TaskSystemFactoryException e) {
 			throw new RuntimeException("Unable to retrieve a TaskSystem", e);
 		}
-		if (tasks==null) {
-			// Should never happen
-			throw new RuntimeException("Unable to load \"" + (ts!=null?ts.getName():"") + "\"");
-		}
-		sendMessage("About to run TaskSystem \"" + (ts!=null?ts.getName():"") + "\"");
+
+		sendMessage("About to run TaskSystem \"" + (ts!=null?ts.getName():"") + "\" with parameters " + rp.getProperties().toString());
 
 		// Run tasks
 		double i = 0;

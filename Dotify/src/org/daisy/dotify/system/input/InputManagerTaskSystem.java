@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups.common;
+package org.daisy.dotify.system.input;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,15 +8,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.setups.ResourceLocator;
-import org.daisy.dotify.setups.ResourceLocatorException;
+import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.setups.TaskSystemFactory.OutputFormat;
 import org.daisy.dotify.system.InternalTask;
+import org.daisy.dotify.system.ResourceLocator;
+import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.tasks.ValidatorTask;
@@ -32,7 +33,7 @@ import org.xml.sax.SAXException;
  * 
  * <p>The InputDetectorTaskSystem is specifically designed to aid 
  * the process of selecting and executing the correct validation rules 
- * and stylesheet for a given input document and locale.</p>
+ * and transformation for a given input document and locale.</p>
  * 
  * <p>It can be used as a first step in a TaskSystem, if input format detection
  * is desired.</p>
@@ -57,7 +58,7 @@ import org.xml.sax.SAXException;
  * @author Joel Håkansson, TPB
  *
  */
-public class InputDetectorTaskSystem implements TaskSystem {
+public class InputManagerTaskSystem implements TaskSystem {
 	//private final URL resourceBase;
 	private final ResourceLocator locator;
 	private final String localBase;
@@ -71,29 +72,29 @@ public class InputDetectorTaskSystem implements TaskSystem {
 	 * @param localBase a path relative the resource root to the local resources
 	 * @param commonBase a path relative the resource root to the common resources
 	 */
-	public InputDetectorTaskSystem(ResourceLocator locator, String localBase, String commonBase) {
+	public InputManagerTaskSystem(ResourceLocator locator, String localBase, String commonBase) {
 		this(locator, localBase, commonBase, "InputDetectorTaskSystem");
 	}
 	
-	public InputDetectorTaskSystem(ResourceLocator locator, String localBase, String commonBase, String name) {
+	public InputManagerTaskSystem(ResourceLocator locator, String localBase, String commonBase, String name) {
 		//this.resourceBase = resourceBase;
 		this.locator = locator;
 		this.localBase = localBase;
 		this.commonBase = commonBase;
 		this.name = name;
-		this.logger = Logger.getLogger(InputDetectorTaskSystem.class.getCanonicalName());
+		this.logger = Logger.getLogger(InputManagerTaskSystem.class.getCanonicalName());
 	}
 	
 	public String getName() {
 		return name;
 	}
 
-	public ArrayList<InternalTask> compile(Map<String, String> parameters)
+	public ArrayList<InternalTask> compile(RunParameters parameters)
 			throws TaskSystemException {
 		
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 		
-		String input = parameters.get("input");
+		String input = parameters.getProperty(SystemKeys.INPUT);
 		String inputformat = null;
 		Peeker peeker = null;
 		try {
@@ -126,7 +127,7 @@ public class InputDetectorTaskSystem implements TaskSystem {
 			}
 		}
 		String xmlformat = "xml.properties";
-		String outputformat = OutputFormat.valueOf(parameters.get("outputFormat").toUpperCase()).toString().toLowerCase();
+		String outputformat = OutputFormat.valueOf(parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toUpperCase()).toString().toLowerCase();
 
 		String localBasePath = localBase + outputformat + "/";
 		String commonBasePath = commonBase + outputformat + "/";
@@ -184,7 +185,7 @@ public class InputDetectorTaskSystem implements TaskSystem {
 				HashMap h = new HashMap();
 				h.putAll(p);
 				HashMap xsltProps = new HashMap();
-				xsltProps.putAll(parameters);
+				xsltProps.putAll(parameters.getProperties());
 				for (Object key : p.keySet()) {
 					String[] schemas = p.get(key).toString().split("\\s*,\\s*");
 					if ("validation".equals(key.toString())) {

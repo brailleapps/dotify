@@ -1,6 +1,7 @@
-package org.daisy.dotify.setups;
+package org.daisy.dotify.system;
 
 import java.net.URL;
+
 
 public abstract class AbstractResourceLocator implements ResourceLocator {
 

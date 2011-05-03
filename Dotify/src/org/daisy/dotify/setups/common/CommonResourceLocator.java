@@ -1,6 +1,6 @@
 package org.daisy.dotify.setups.common;
 
-import org.daisy.dotify.setups.AbstractResourceLocator;
+import org.daisy.dotify.system.AbstractResourceLocator;
 
 /**
  * Provides a method to find resources relative to this class 

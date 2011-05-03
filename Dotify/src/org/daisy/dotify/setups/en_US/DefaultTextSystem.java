@@ -1,19 +1,14 @@
 package org.daisy.dotify.setups.en_US;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Map;
-import java.util.Properties;
 
-import org.daisy.dotify.setups.ResourceLocator;
-import org.daisy.dotify.setups.ResourceLocatorException;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
-import org.daisy.dotify.setups.common.InputDetectorTaskSystem;
 import org.daisy.dotify.system.InternalTask;
+import org.daisy.dotify.system.ResourceLocator;
+import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.tasks.LayoutEngineTask;
@@ -34,18 +29,11 @@ import org.daisy.dotify.system.tasks.layout.writers.TextMediaWriter;
  *
  */
 public class DefaultTextSystem implements TaskSystem {
-	//private URL resourceBase;
 	private final ResourceLocator commonResourceLocator; 
-	private final URL configURL;
-	private final InputDetectorTaskSystem inputDetector;
 	private final String name;
 	
-	public DefaultTextSystem(ResourceLocator resourceBase, URL configURL, String name) {
-		//this.resourceBase = resourceBase;
+	public DefaultTextSystem(String name) {
 		this.commonResourceLocator = new CommonResourceLocator();
-		//this.config = config;
-		this.configURL = configURL;
-		this.inputDetector = new InputDetectorTaskSystem(resourceBase, "en_US/config/", "common/config/");
 		this.name = name;
 	}
 	
@@ -53,7 +41,7 @@ public class DefaultTextSystem implements TaskSystem {
 		return name;
 	}
 
-	public ArrayList<InternalTask> compile(Map<String, String> parameters) throws TaskSystemException {
+	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
 		URL flowValidationURL;
 		URL flowWsNormalizer;
 
@@ -63,36 +51,11 @@ public class DefaultTextSystem implements TaskSystem {
 		} catch (ResourceLocatorException e) {
 			throw new TaskSystemException("Failed to locate resource.", e);
 		}
-		Properties p = new Properties();
-
-		try {
-			p.loadFromXML(configURL.openStream());
-		} catch (FileNotFoundException e) {
-			throw new TaskSystemException("Configuration file not found: " + configURL, e);
-		} catch (InvalidPropertiesFormatException e) {
-			throw new TaskSystemException("Configuration file could not be parsed: " + configURL, e);
-		} catch (IOException e) {
-			throw new TaskSystemException("IOException while reading configuration file: " + configURL, e);
-		}
-		// GUI parameters should take precedence
-		p.putAll(parameters);
-
-		int flowWidth = Integer.parseInt(p.getProperty("cols", "28"));
-		int pageHeight = Integer.parseInt(p.getProperty("rows", "29"));
-		int innerMargin = Integer.parseInt(p.getProperty("inner-margin", "5"));
-		int outerMargin = Integer.parseInt(p.getProperty("outer-margin", "2"));
-		float rowgap = Float.parseFloat(p.getProperty("rowgap", "0"));
-
-		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-
-		p.put("page-height", pageHeight);
-		p.put("page-width", flowWidth+innerMargin+outerMargin);
-		p.put("row-spacing", (rowgap/4)+1);
 
 		HashMap h = new HashMap();
-		h.putAll(p);
+		h.putAll(p.getProperties());
 		
-		setup.addAll(inputDetector.compile(h));
+		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 
 		// Whitespace normalizer TransformerFactoryConstants.SAXON8
 		setup.add(new XsltTask("FLOW whitespace normalizer", flowWsNormalizer, null, h));
@@ -103,7 +66,7 @@ public class DefaultTextSystem implements TaskSystem {
 		// Layout FLOW as text
 		BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
 		factory.setDefault(new RegexFilter("\\u200B", ""));
-		TextMediaWriter paged = new TextMediaWriter(p, "UTF-8");
+		TextMediaWriter paged = new TextMediaWriter(p.getProperties(), "UTF-8");
 		PaginatorImpl paginator = new PaginatorImpl(factory.getDefault());
 		DefaultLayoutPerformer flow = new DefaultLayoutPerformer(factory);
 		setup.add(new LayoutEngineTask("FLOW to Text converter", flow, paginator, paged));

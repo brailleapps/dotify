@@ -1,7 +1,7 @@
 package org.daisy.dotify.system;
 
 import java.util.ArrayList;
-import java.util.Map;
+
 
 
 /**
@@ -27,6 +27,6 @@ public interface TaskSystem {
 	 * @return returns a list of InternalTasks
 	 * @throws TaskSystemException throws TaskSystemException if something goes wrong when compiling the TaskSystem
 	 */
-	public ArrayList<InternalTask> compile(Map<String, String> parameters) throws TaskSystemException;
+	public ArrayList<InternalTask> compile(RunParameters parameters) throws TaskSystemException;
 
 }
