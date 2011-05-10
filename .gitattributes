@@ -197,6 +197,7 @@ Dotify/src/org/daisy/dotify/system/tools/StaxFilter2.java -text svneol=unset#tex
 Dotify/src/org/daisy/dotify/system/tools/StringSplitter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/tools/package.html -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/system/tasks/layout/flow/PositionTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/system/tasks/layout/text/FilterLocaleTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/system/tasks/layout/text/brailleFilters/BrailleFilterFactoryTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/system/tasks/layout/utils/ExpressionTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/system/tools/StateObjectTest.java -text svneol=unset#text/plain

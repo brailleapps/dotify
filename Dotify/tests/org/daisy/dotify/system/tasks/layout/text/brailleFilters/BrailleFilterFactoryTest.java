@@ -2,14 +2,13 @@ package org.daisy.dotify.system.tasks.layout.text.brailleFilters;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 
 import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;
 import org.junit.Test;
 
+//TODO: move implementation and tests to separate class files
 public class BrailleFilterFactoryTest {
 
 	@Test
