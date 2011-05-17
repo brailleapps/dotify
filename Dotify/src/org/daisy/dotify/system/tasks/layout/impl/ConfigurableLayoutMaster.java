@@ -146,7 +146,9 @@ public class ConfigurableLayoutMaster implements LayoutMaster {
 		for (Template t : templates) {
 			if (t.appliesTo(pagenum)) { return t; }
 		}
-		return null;
+		// if no template applies, an empty template should be returned
+		// since adding templates is optional in Builder
+		return new SimpleTemplate();
 	}
 
 }

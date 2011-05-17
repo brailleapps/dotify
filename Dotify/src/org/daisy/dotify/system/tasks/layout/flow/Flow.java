@@ -21,8 +21,8 @@ import org.daisy.dotify.system.tasks.layout.page.Paginator;
 public interface Flow extends Closeable {
 	
 	/**
-	 * Open the Flow with the supplied LayoutPerformer
-	 * @param performer the LayoutPerformer that the result should
+	 * Open the Flow with the supplied Paginator
+	 * @param performer the Paginator that the result should
 	 * be passed to
 	 */
 	public void open(Paginator performer);

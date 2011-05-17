@@ -2,7 +2,6 @@ package org.daisy.dotify.system.tasks.layout.impl;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
 import org.daisy.dotify.system.tasks.layout.flow.Flow;
 import org.daisy.dotify.system.tasks.layout.flow.Leader;

@@ -59,8 +59,7 @@ public abstract class StaxFilter2 {
     private XMLOutputFactory outputFactory = null;
     private OutputStream outputStream = null;
     private XMLEventWriter writer;
-    
-    @SuppressWarnings("unused")
+
 	public StaxFilter2(XMLEventReader xer, XMLEventFactory xef, XMLOutputFactory xof, OutputStream outStream) throws XMLStreamException {
         reader = xer;
         eventFactory = xef;
@@ -240,7 +239,6 @@ public abstract class StaxFilter2 {
         return event;
     }
     
-    @SuppressWarnings("unused")
     protected void startDocument(StartDocument event) {
         // Nothing to see here. Move along.
     }

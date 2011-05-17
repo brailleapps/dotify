@@ -1,6 +1,5 @@
 package org.daisy.dotify.system.tasks.layout.impl.field;
 
-import org.daisy.dotify.system.tasks.layout.impl.field.NumeralField.NumeralStyle;
 
 /**
  * CurrentPageField is a reference to the current page in
