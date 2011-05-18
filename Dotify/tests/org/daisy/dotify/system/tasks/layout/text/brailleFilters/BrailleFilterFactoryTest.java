@@ -135,8 +135,8 @@ public class BrailleFilterFactoryTest {
 		StringFilter filter = BrailleFilterFactory.newInstance().newStringFilter(sv_se);
 
 		assertEquals("⠘⠦⠎⠞⠚⠜⠗⠝⠁⠘⠴ ⠘⠦⠃⠇⠊⠭⠞⠘⠴ ⠘⠦⠒⠦⠘⠴ ⠘⠦⠒⠴⠘⠴ ⠬⠕", filter.filter("\u066d \u2607 \u2639 \u263a \u00ba"));
-		assertEquals("", filter.filter("Negativa tal: -45645"));
-		assertEquals("⠘⠦⠓⠚⠜⠗⠞⠁⠘⠴", filter.filter("\u2665"));
+		assertEquals("⠠⠝⠑⠛⠁⠞⠊⠧⠁ ⠞⠁⠇⠒ -⠼⠙⠑⠋⠙⠑", filter.filter("Negativa tal: -45645"));
+		assertEquals("⠘⠦⠓⠚⠜⠗⠞⠑⠗⠘⠴", filter.filter("\u2665")); // hjärter
 	}
 
 }
