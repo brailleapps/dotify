@@ -1,30 +1,25 @@
-package org.daisy.dotify.system.tasks.layout.impl;
+package org.daisy.dotify.formatter;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.formatter.BlockProperties;
-import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormattingTypes;
-import org.daisy.dotify.formatter.Leader;
-import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.Position;
-import org.daisy.dotify.formatter.SequenceProperties;
-import org.daisy.dotify.system.tasks.layout.impl.field.CompoundField;
-import org.daisy.dotify.system.tasks.layout.impl.field.CurrentPageField;
-import org.daisy.dotify.system.tasks.layout.impl.field.MarkerReferenceField;
-import org.daisy.dotify.system.tasks.layout.impl.field.MarkerReferenceField.MarkerSearchDirection;
-import org.daisy.dotify.system.tasks.layout.impl.field.MarkerReferenceField.MarkerSearchScope;
-import org.daisy.dotify.system.tasks.layout.impl.field.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.field.CompoundField;
+import org.daisy.dotify.formatter.field.CurrentPageField;
+import org.daisy.dotify.formatter.field.MarkerReferenceField;
+import org.daisy.dotify.formatter.field.MarkerReferenceField.MarkerSearchDirection;
+import org.daisy.dotify.formatter.field.MarkerReferenceField.MarkerSearchScope;
+import org.daisy.dotify.formatter.field.NumeralField.NumeralStyle;
+import org.daisy.dotify.system.tasks.layout.page.ConfigurableLayoutMaster;
+import org.daisy.dotify.system.tasks.layout.page.SimpleTemplate;
 import org.daisy.dotify.system.tasks.layout.utils.Expression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * FlowHandler reads a nested "flow" file containing blocks or text within
+ * FlowHandler reads an OBFL-file containing blocks or text within
  * other blocks to an arbitrary depth. The input semantics resembles that of xsl-fo, 
  * but is greatly simplified. The FlowHandler reads the input flow and 
- * breaks it down into rows using the Flow interface.
+ * breaks it down into rows using the Formatter interface.
  * @author Joel Håkansson, TPB
  *
  */

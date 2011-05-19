@@ -7,6 +7,8 @@ import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.system.tasks.layout.page.CurrentPageInfo;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
+import org.daisy.dotify.system.tasks.layout.page.Page;
+import org.daisy.dotify.system.tasks.layout.page.PageSequence;
 import org.daisy.dotify.system.tasks.layout.page.PageStruct;
 import org.daisy.dotify.system.tasks.layout.page.Paginator;
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;

@@ -1,9 +1,7 @@
-package org.daisy.dotify.system.tasks.layout.impl;
+package org.daisy.dotify.system.tasks.layout.page;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
-import org.daisy.dotify.system.tasks.layout.page.Template;
 
 
 

@@ -1,11 +1,10 @@
-package org.daisy.dotify.system.tasks.layout.impl;
+package org.daisy.dotify.system.tasks.layout.page;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.system.tasks.layout.page.Template;
 
 
 /**

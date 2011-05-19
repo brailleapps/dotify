@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.impl.field;
+package org.daisy.dotify.formatter.field;
 
 //http://leepoint.net/notes-java/examples/components/romanNumerals/romanNumeral.html
 // File   : gui/componenents/calculators/Roman.java

@@ -1,6 +1,5 @@
-package org.daisy.dotify.system.tasks.layout.impl;
+package org.daisy.dotify.system.tasks.layout.page;
 
-import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
 
 public interface PageSequence extends Iterable<Page> {
 	public LayoutMaster getLayoutMaster();

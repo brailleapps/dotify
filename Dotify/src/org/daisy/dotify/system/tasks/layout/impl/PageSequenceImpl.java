@@ -5,6 +5,8 @@ import java.util.Stack;
 
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
+import org.daisy.dotify.system.tasks.layout.page.Page;
+import org.daisy.dotify.system.tasks.layout.page.PageSequence;
 
 public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private Stack<Page> pages;
