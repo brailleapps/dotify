@@ -14,7 +14,7 @@ import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.tasks.LayoutEngineTask;
 import org.daisy.dotify.system.tasks.ValidatorTask;
 import org.daisy.dotify.system.tasks.XsltTask;
-import org.daisy.dotify.system.tasks.layout.impl.DefaultLayoutPerformer;
+import org.daisy.dotify.system.tasks.layout.impl.FormatterImpl;
 import org.daisy.dotify.system.tasks.layout.impl.PaginatorImpl;
 import org.daisy.dotify.system.tasks.layout.text.RegexFilter;
 import org.daisy.dotify.system.tasks.layout.text.brailleFilters.BrailleFilterFactory;
@@ -68,7 +68,7 @@ public class DefaultTextSystem implements TaskSystem {
 		factory.setDefault(new RegexFilter("\\u200B", ""));
 		TextMediaWriter paged = new TextMediaWriter(p.getProperties(), "UTF-8");
 		PaginatorImpl paginator = new PaginatorImpl(factory.getDefault());
-		DefaultLayoutPerformer flow = new DefaultLayoutPerformer(factory);
+		FormatterImpl flow = new FormatterImpl(factory);
 		setup.add(new LayoutEngineTask("FLOW to Text converter", flow, paginator, paged));
 
 		return setup;

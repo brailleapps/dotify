@@ -3,45 +3,46 @@ package org.daisy.dotify.system.tasks.layout.impl;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import org.daisy.dotify.system.tasks.layout.flow.Block;
 import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
 import org.daisy.dotify.system.tasks.layout.flow.Marker;
 import org.daisy.dotify.system.tasks.layout.flow.Row;
+import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes;
 
-
-public class FlowGroup {
-	private Stack<Row> rows;
+public class BlockImpl extends Stack<Row> implements Block {
 	private int spaceBefore;
 	private int spaceAfter;
 	private ArrayList<Marker> groupMarkers;
 	private ArrayList<String> groupAnchors;
-	private BlockProperties.BreakBeforeType breakBefore;
-	private BlockProperties.KeepType keep;
+	private FormattingTypes.BreakBefore breakBefore;
+	private FormattingTypes.Keep keep;
 	private int keepWithNext;
+	private String id;
 	
-	public FlowGroup() {
-		this.rows = new Stack<Row>();
+	public BlockImpl() {
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		this.groupMarkers = new ArrayList<Marker>();
 		this.groupAnchors = new ArrayList<String>();
-		this.breakBefore = BlockProperties.BreakBeforeType.AUTO;
-		this.keep = BlockProperties.KeepType.AUTO;
+		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
+		this.keep = FormattingTypes.Keep.AUTO;
 		this.keepWithNext = 0;
+		this.id = "";
 	}
-	
+	/*
 	public void pushRow(Row row) {
-		rows.push(row);
+		this.push(row);
 	}
 	
 	public Row popRow() {
-		return rows.pop();
-	}
+		return this.pop();
+	}*/
 	
 	public void addMarker(Marker m) {
 		if (isEmpty()) {
 			groupMarkers.add(m);
 		} else {
-			rows.peek().addMarker(m);
+			this.peek().addMarker(m);
 		}
 	}
 	
@@ -49,7 +50,7 @@ public class FlowGroup {
 		if (isEmpty()) {
 			groupAnchors.add(ref);
 		} else {
-			rows.peek().addAnchor(ref);
+			this.peek().addAnchor(ref);
 		}
 	}
 	
@@ -66,8 +67,8 @@ public class FlowGroup {
 	}
 	
 	public Row[] toArray() {
-		Row[] ret = new Row[rows.size()];
-		return rows.toArray(ret);
+		Row[] ret = new Row[this.size()];
+		return super.toArray(ret);
 	}
 	
 	public int getSpaceBefore() {
@@ -78,16 +79,20 @@ public class FlowGroup {
 		return spaceAfter;
 	}
 	
-	public BlockProperties.BreakBeforeType getBreakBeforeType() {
+	public FormattingTypes.BreakBefore getBreakBeforeType() {
 		return breakBefore;
 	}
 	
-	public BlockProperties.KeepType getKeepType() {
+	public FormattingTypes.Keep getKeepType() {
 		return keep;
 	}
 	
 	public int getKeepWithNext() {
 		return keepWithNext;
+	}
+	
+	public String getIdentifier() {
+		return id;
 	}
 	
 	public void addSpaceBefore(int spaceBefore) {
@@ -98,11 +103,11 @@ public class FlowGroup {
 		this.spaceAfter += spaceAfter;
 	}
 	
-	public void setBreakBeforeType(BlockProperties.BreakBeforeType breakBefore) {
+	public void setBreakBeforeType(FormattingTypes.BreakBefore breakBefore) {
 		this.breakBefore = breakBefore;
 	}
 	
-	public void setKeepType(BlockProperties.KeepType keep) {
+	public void setKeepType(FormattingTypes.Keep keep) {
 		this.keep = keep;
 	}
 	
@@ -110,8 +115,10 @@ public class FlowGroup {
 		this.keepWithNext = keepWithNext;
 	}
 	
-	public boolean isEmpty() {
-		return rows.size()==0;
+	public void setIdentifier(String id) {
+		this.id = id;
 	}
+	
+	private static final long serialVersionUID = -3120988813614814721L;
 
 }

@@ -1,66 +1,27 @@
 package org.daisy.dotify.system.tasks.layout.flow;
 
+import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.BreakBefore;
+import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.Keep;
+import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.ListStyle;
+
 /**
  * BlockProperties defines properties specific for a block of text
  * @author Joel Håkansson, TPB
  */
 public class BlockProperties {
-	/**
-	 * Defines list types for BlockProperties.
-	 */ 
-	public static enum ListType {
-		/**
-		 * Not a list
-		 */
-		NONE,
-		/**
-		 * Ordered list
-		 */
-		OL,
-		/**
-		 * Unordered list
-		 */
-		UL,
-		/**
-		 * Preformatted list
-		 */
-		PL};
-	/**
-	 * Defines break before types for BlockProperties.
-	 */
-	public static enum BreakBeforeType {
-		/**
-		 * No break
-		 */
-		AUTO,
-		/**
-		 * Start block on a new page
-		 */
-		PAGE}; // TODO: Implement ODD_PAGE, EVEN_PAGE 
-	/**
-	 * Defines keep types for BlockProperties.
-	 */
-	public static enum KeepType {
-		/**
-		 * Do not keep
-		 */
-		AUTO,
-		/**
-		 * Keep all rows in a block
-		 */
-		ALL}
-	private int leftMargin;
-	private int rightMargin;
-	private int topMargin;
-	private int bottomMargin;
-	private int textIndent;
-	private int firstLineIndent;
-	private ListType listType;
+	private final int leftMargin;
+	private final int rightMargin;
+	private final int topMargin;
+	private final int bottomMargin;
+	private final int textIndent;
+	private final int firstLineIndent;
+	private final ListStyle listType;
 	private int listIterator;
-	private BreakBeforeType breakBefore;
-	private KeepType keep;
-	private int keepWithNext;
-	private int blockIndent;
+	private final BreakBefore breakBefore;
+	private final Keep keep;
+	private final int keepWithNext;
+	private final int blockIndent;
+	private final String identifier;
 
 	/**
 	 * The Builder is used when creating a BlockProperties instance.
@@ -74,17 +35,36 @@ public class BlockProperties {
 		int bottomMargin = 0;
 		int textIndent = 0;
 		int firstLineIndent = 0;
-		ListType listType = ListType.NONE;
-		BreakBeforeType breakBefore = BreakBeforeType.AUTO;
-		KeepType keep = KeepType.AUTO;
+		ListStyle listType = ListStyle.NONE;
+		BreakBefore breakBefore = BreakBefore.AUTO;
+		Keep keep = Keep.AUTO;
 		int keepWithNext = 0;
 		int blockIndent = 0;
+		String identifier = "";
 		
 		/**
 		 * Create a new Builder
 		 */
 		public Builder() { }
 		
+		/**
+		 * Creates a new Builder based on existing properties
+		 * @param b
+		 */
+		public Builder(BlockProperties b) {
+			leftMargin = b.getLeftMargin();
+			rightMargin = b.getRightMargin();
+			topMargin = b.getTopMargin();
+			bottomMargin = b.getBottomMargin();
+			textIndent = b.getTextIndent();
+			firstLineIndent = b.getFirstLineIndent();
+			listType = b.getListType();
+			breakBefore = b.getBreakBeforeType();
+			keep = b.getKeepType();
+			keepWithNext = b.getKeepWithNext();
+			blockIndent = b.getBlockIndent();
+			identifier = b.getIdentifier();
+		}
 		/**
 		 * Set the left margin for the block, in characters.
 		 * @param leftMargin left margin, in characters
@@ -159,7 +139,7 @@ public class BlockProperties {
 		 * @param listType the type of list
 		 * @return returns "this" object
 		 */
-		public Builder listType(ListType listType) {
+		public Builder listType(FormattingTypes.ListStyle listType) {
 			this.listType = listType;
 			return this;
 		}
@@ -169,7 +149,7 @@ public class BlockProperties {
 		 * @param breakBefore the break before type
 		 * @return returns "this" object
 		 */
-		public Builder breakBefore(BreakBeforeType breakBefore) {
+		public Builder breakBefore(FormattingTypes.BreakBefore breakBefore) {
 			this.breakBefore = breakBefore;
 			return this;
 		}
@@ -179,7 +159,7 @@ public class BlockProperties {
 		 * @param keep the keep type
 		 * @return returns "this" object
 		 */
-		public Builder keep(KeepType keep) {
+		public Builder keep(FormattingTypes.Keep keep) {
 			this.keep = keep;
 			return this;
 		}
@@ -207,6 +187,11 @@ public class BlockProperties {
 			return this;
 		}
 		
+		public Builder identifier(String identifier) {
+			this.identifier = identifier;
+			return this;
+		}
+		
 		/**
 		 * Build BlockProperties using the current state of the Builder.
 		 * @return returns a new BlockProperties instance
@@ -229,6 +214,7 @@ public class BlockProperties {
 		keep = builder.keep;
 		keepWithNext = builder.keepWithNext;
 		blockIndent = builder.blockIndent;
+		identifier = builder.identifier;
 	}
 	
 	/**
@@ -291,7 +277,7 @@ public class BlockProperties {
 	 * Get list type
 	 * @return returns the list type
 	 */
-	public ListType getListType() {
+	public FormattingTypes.ListStyle getListType() {
 		return listType;
 	}
 	
@@ -316,7 +302,7 @@ public class BlockProperties {
 	 * Get break before type
 	 * @return returns the break before type
 	 */
-	public BreakBeforeType getBreakBeforeType() {
+	public FormattingTypes.BreakBefore getBreakBeforeType() {
 		return breakBefore;
 	}
 
@@ -324,7 +310,7 @@ public class BlockProperties {
 	 * Get keep type
 	 * @return returns the keep type
 	 */
-	public KeepType getKeepType() {
+	public FormattingTypes.Keep getKeepType() {
 		return keep;
 	}
 
@@ -334,6 +320,10 @@ public class BlockProperties {
 	 */
 	public int getKeepWithNext() {
 		return keepWithNext;
+	}
+	
+	public String getIdentifier() {
+		return identifier;
 	}
 
 }

@@ -8,6 +8,7 @@ import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
 import org.daisy.dotify.system.tasks.layout.flow.Leader;
 import org.daisy.dotify.system.tasks.layout.flow.Marker;
 import org.daisy.dotify.system.tasks.layout.flow.Row;
+import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;
 
@@ -35,9 +36,9 @@ public class BlockHandler {
 	
 	public class ListItem {
 		private String label;
-		private BlockProperties.ListType type;
+		private FormattingTypes.ListStyle type;
 		
-		public ListItem(String label, BlockProperties.ListType type) {
+		public ListItem(String label, FormattingTypes.ListStyle type) {
 			this.label = label;
 			this.type = type;
 		}
@@ -46,7 +47,7 @@ public class BlockHandler {
 			return label;
 		}
 		
-		public BlockProperties.ListType getType() {
+		public FormattingTypes.ListStyle getType() {
 			return type;
 		}
 	}
@@ -91,7 +92,7 @@ public class BlockHandler {
 	 * @param label the resolved list item label, typically a number or a bullet 
 	 * @param type type of list item
 	 */
-	public void setListItem(String label, BlockProperties.ListType type) {
+	public void setListItem(String label, FormattingTypes.ListStyle type) {
 		item = new ListItem(label, type);
 	}
 	
@@ -174,7 +175,7 @@ public class BlockHandler {
 			// add to left margin
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel = filters.filter(item.getLabel());
-				if (item.getType()==BlockProperties.ListType.PL) {
+				if (item.getType()==FormattingTypes.ListStyle.PL) {
 					int bypassBlockIndent = blockIndent;
 					blockIndent = blockIndentParent.peek();
 					chars = newRow(listLabel, chars, available, leftMargin, 0, master, p);

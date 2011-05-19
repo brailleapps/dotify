@@ -3,11 +3,12 @@ package org.daisy.dotify.system.tasks.layout.impl;
 import java.util.ArrayList;
 
 import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
-import org.daisy.dotify.system.tasks.layout.flow.Flow;
+import org.daisy.dotify.system.tasks.layout.flow.Formatter;
 import org.daisy.dotify.system.tasks.layout.flow.Leader;
 import org.daisy.dotify.system.tasks.layout.flow.Marker;
 import org.daisy.dotify.system.tasks.layout.flow.Position;
 import org.daisy.dotify.system.tasks.layout.flow.SequenceProperties;
+import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes;
 import org.daisy.dotify.system.tasks.layout.impl.field.CompoundField;
 import org.daisy.dotify.system.tasks.layout.impl.field.CurrentPageField;
 import org.daisy.dotify.system.tasks.layout.impl.field.MarkerReferenceField;
@@ -28,7 +29,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  */
 public class FlowHandler extends DefaultHandler {
-	private Flow flow;
+	private Formatter flow;
 	private StringBuffer sb;
 	private ConfigurableLayoutMaster.Builder masterConfig;
 	private String masterName;
@@ -41,7 +42,7 @@ public class FlowHandler extends DefaultHandler {
 	 * Create a new FlowReader
 	 * @param flow
 	 */
-	public FlowHandler(Flow flow) {
+	public FlowHandler(Formatter flow) {
 		this.flow = flow;
 		sb = new StringBuffer();
 		content = false;
@@ -120,11 +121,11 @@ public class FlowHandler extends DefaultHandler {
 				} else if (name.equals("first-line-indent")) {
 					builder.firstLineIndent(Integer.parseInt(atts.getValue(i)));
 				} else if (name.equals("list-type")) {
-					builder.listType(BlockProperties.ListType.valueOf(atts.getValue(i).toUpperCase()));
+					builder.listType(FormattingTypes.ListStyle.valueOf(atts.getValue(i).toUpperCase()));
 				} else if (name.equals("break-before")) {
-					builder.breakBefore(BlockProperties.BreakBeforeType.valueOf(atts.getValue(i).toUpperCase()));
+					builder.breakBefore(FormattingTypes.BreakBefore.valueOf(atts.getValue(i).toUpperCase()));
 				} else if (name.equals("keep")) {
-					builder.keep(BlockProperties.KeepType.valueOf(atts.getValue(i).toUpperCase()));
+					builder.keep(FormattingTypes.Keep.valueOf(atts.getValue(i).toUpperCase()));
 				} else if (name.equals("keep-with-next")) {
 					builder.keepWithNext(Integer.parseInt(atts.getValue(i)));
 				} else if (name.equals("block-indent")) {

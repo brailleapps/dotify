@@ -3,29 +3,21 @@ package org.daisy.dotify.system.tasks.layout.flow;
 import java.io.Closeable;
 
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
-import org.daisy.dotify.system.tasks.layout.page.Paginator;
-
 
 /**
- * <p>Flow is the entry point when converting a hierarchical 
- * layout structure into pages.</p>
+ * <p>Provides an entry point for formatting text.</p>
  * 
- * <p>An implementation of Flow interprets layout properties
- * and break blocks of characters into rows.</p>
- * 
- * <p>The rows are then passed on to the {@link Paginator}.</p>
+ * <p>The result can be passed on to a Paginator or used for displaying
+ * on a refreshable braille display.</p>
  *  
  * @author Joel Håkansson, TPB
- *
  */
-public interface Flow extends Closeable {
+public interface Formatter extends Closeable {
 	
 	/**
-	 * Open the Flow with the supplied Paginator
-	 * @param performer the Paginator that the result should
-	 * be passed to
+	 * Opens the Formatter for writing.
 	 */
-	public void open(Paginator performer);
+	public void open();
 
 	/**
 	 * Start a new Sequence at the current position in the flow.
@@ -100,4 +92,5 @@ public interface Flow extends Closeable {
 	 */
 	public void addLayoutMaster(String name, LayoutMaster master);
 
+	public BlockStruct getFlowStruct();
 }

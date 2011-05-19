@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.daisy.dotify.system.tasks.layout.flow.Marker;
 import org.daisy.dotify.system.tasks.layout.flow.Row;
+import org.daisy.dotify.system.tasks.layout.impl.PageStruct;
 
 
 /**
@@ -13,7 +14,8 @@ import org.daisy.dotify.system.tasks.layout.flow.Row;
  * <p>The Paginator implementation is responsible for breaking
  * pages when required by the properties of the {@link LayoutMaster}. It
  * is also responsible for placing page dependent items such
- * as headers, footers and footnotes.</p>
+ * as footnotes, but not headers and footers, as these might need
+ * to search the entire page structure.</p>
  * 
  * <p>The final result is passed on to the {@link PagedMediaWriter}.</p>
  * 
@@ -26,7 +28,7 @@ public interface Paginator extends Closeable {
 	 * Opens for writing to the supplied writer 
 	 * @param writer the PagedMediaWriter to use
 	 */
-	public void open(PagedMediaWriter writer);
+	public void open();
 
 	/**
 	 * Adds a new sequence of pages
@@ -62,5 +64,6 @@ public interface Paginator extends Closeable {
 	 * Gets information about the current page
 	 */
 	public CurrentPageInfo getPageInfo();
-
+	
+	public PageStruct getPageStruct();
 }

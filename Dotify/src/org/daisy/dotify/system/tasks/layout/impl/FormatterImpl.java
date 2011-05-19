@@ -2,19 +2,18 @@ package org.daisy.dotify.system.tasks.layout.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Stack;
 
 import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
-import org.daisy.dotify.system.tasks.layout.flow.Flow;
-import org.daisy.dotify.system.tasks.layout.flow.LayoutException;
+import org.daisy.dotify.system.tasks.layout.flow.BlockStruct;
+import org.daisy.dotify.system.tasks.layout.flow.Formatter;
 import org.daisy.dotify.system.tasks.layout.flow.Leader;
 import org.daisy.dotify.system.tasks.layout.flow.Marker;
 import org.daisy.dotify.system.tasks.layout.flow.Row;
 import org.daisy.dotify.system.tasks.layout.flow.SequenceProperties;
 import org.daisy.dotify.system.tasks.layout.flow.SpanProperties;
+import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
-import org.daisy.dotify.system.tasks.layout.page.Paginator;
 import org.daisy.dotify.system.tasks.layout.text.FilterFactory;
 import org.daisy.dotify.system.tasks.layout.utils.BlockHandler;
 import org.daisy.dotify.system.tools.StateObject;
@@ -24,18 +23,15 @@ import org.daisy.dotify.system.tools.StateObject;
  * Breaks flow into rows, page related block properties are left to next step
  * @author Joel Håkansson, TPB
  */
-public class DefaultLayoutPerformer implements Flow {
+public class FormatterImpl implements Formatter {
 	private int leftMargin;
 	private int rightMargin;
-	private FlowStruct flowStruct;
-	private Stack<BlockProperties> context;
+	private final BlockStructImpl flowStruct;
+	private final Stack<BlockProperties> context;
 	private boolean firstRow;
-	private HashMap<String, LayoutMaster> masters;
-	//private final StringFilter filters;
-	private Paginator paginator;
-	private StateObject state;
+	private final StateObject state;
 
-	private BlockHandler bh;
+	private final BlockHandler bh;
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement SpanProperites
@@ -44,25 +40,23 @@ public class DefaultLayoutPerformer implements Flow {
 	 * Create a new flow
 	 * @param filtersFactory the filters factory to use
 	 */
-	public DefaultLayoutPerformer(FilterFactory filtersFactory) {
-		this.masters = new HashMap<String, LayoutMaster>();
+	public FormatterImpl(FilterFactory filtersFactory) {
 		//this.filters = builder.filtersFactory.getDefault();
 		this.context = new Stack<BlockProperties>();
 		this.leftMargin = 0;
 		this.rightMargin = 0;
-		this.flowStruct = new FlowStruct(); //masters
+		this.flowStruct = new BlockStructImpl(); //masters
 		this.bh = new BlockHandler(filtersFactory.getDefault());
 		this.state = new StateObject();
 	}
 
-	public void open(Paginator paginator) {
+	public void open() {
 		state.assertUnopened();
 		state.open();
-		this.paginator = paginator;
 	}
 
 	public void addLayoutMaster(String name, LayoutMaster master) {
-		masters.put(name, master);
+		flowStruct.addLayoutMaster(name, master);
 	}
 
 	//TODO Handle SpanProperites
@@ -75,18 +69,19 @@ public class DefaultLayoutPerformer implements Flow {
 	public void addChars(CharSequence c) {
 		state.assertOpen();
 		assert context.size()!=0;
+		if (context.size()==0) return;
 		bh.setBlockProperties(context.peek());
-		bh.setWidth(masters.get(flowStruct.getCurrentSequence().getSequenceProperties().getMasterName()).getFlowWidth() - rightMargin);
+		bh.setWidth(flowStruct.getLayoutMaster(flowStruct.getCurrentSequence().getSequenceProperties().getMasterName()).getFlowWidth() - rightMargin);
 		ArrayList<Row> ret;
 		if (firstRow) {
-			ret = bh.layoutBlock(c, leftMargin, masters.get(flowStruct.getCurrentSequence().getSequenceProperties().getMasterName()));
+			ret = bh.layoutBlock(c, leftMargin, flowStruct.getLayoutMaster(flowStruct.getCurrentSequence().getSequenceProperties().getMasterName()));
 			firstRow = false;
 		} else {
-			Row r = flowStruct.getCurrentSequence().getCurrentGroup().popRow();
-			ret = bh.appendBlock(c, leftMargin, r, masters.get(flowStruct.getCurrentSequence().getSequenceProperties().getMasterName()));
+			Row r = flowStruct.getCurrentSequence().getCurrentGroup().pop();
+			ret = bh.appendBlock(c, leftMargin, r, flowStruct.getLayoutMaster(flowStruct.getCurrentSequence().getSequenceProperties().getMasterName()));
 		}
 		for (Row r : ret) {
-			flowStruct.getCurrentSequence().getCurrentGroup().pushRow(r);
+			flowStruct.getCurrentSequence().getCurrentGroup().push(r);
 		}
 	}
 	// END Using BlockHandler
@@ -101,7 +96,7 @@ public class DefaultLayoutPerformer implements Flow {
 		assert bh.getCurrentLeader() == null;
 		if (context.size()>0) {
 			bh.addToBlockIndent(context.peek().getBlockIndent());
-			if (context.peek().getListType()!=BlockProperties.ListType.NONE) {
+			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
 				switch (context.peek().getListType()) {
 				case OL:
@@ -115,11 +110,12 @@ public class DefaultLayoutPerformer implements Flow {
 				bh.setListItem(listLabel, context.peek().getListType());
 			}
 		}
-		FlowGroup c = flowStruct.getCurrentSequence().newFlowGroup();
+		BlockImpl c = flowStruct.getCurrentSequence().newFlowGroup();
 		c.addSpaceBefore(p.getTopMargin());
 		c.setBreakBeforeType(p.getBreakBeforeType());
 		c.setKeepType(p.getKeepType());
-		c.setKeepWithNext(p.getKeepWithNext());		
+		c.setKeepWithNext(p.getKeepWithNext());
+		c.setIdentifier(p.getIdentifier());
 		context.push(p);
 		leftMargin += p.getLeftMargin();
 		rightMargin += p.getRightMargin();
@@ -139,7 +135,7 @@ public class DefaultLayoutPerformer implements Flow {
 		BlockProperties p = context.pop();
 		flowStruct.getCurrentSequence().getCurrentGroup().addSpaceAfter(p.getBottomMargin());
 		if (context.size()>0) {
-			FlowGroup c = flowStruct.getCurrentSequence().newFlowGroup();
+			BlockImpl c = flowStruct.getCurrentSequence().newFlowGroup();
 			c.setKeepType(context.peek().getKeepType());
 			c.setKeepWithNext(context.peek().getKeepWithNext());
 			bh.subtractFromBlockIndent(context.peek().getBlockIndent());
@@ -167,79 +163,24 @@ public class DefaultLayoutPerformer implements Flow {
 		state.assertOpen();
 		Row r = new Row("");
 		r.setLeftMargin(leftMargin + context.peek().getTextIndent());
-		flowStruct.getCurrentSequence().getCurrentGroup().pushRow(r);
+		flowStruct.getCurrentSequence().getCurrentGroup().push(r);
 	}
 
-	private int getKeepHeight(FlowGroup[] groupA, int gi) {
-		int keepHeight = groupA[gi].getSpaceBefore()+groupA[gi].toArray().length;
-		if (groupA[gi].getKeepWithNext()>0 && gi+1<groupA.length) {
-			keepHeight += groupA[gi].getSpaceAfter()+groupA[gi+1].getSpaceBefore()+groupA[gi].getKeepWithNext();
-			switch (groupA[gi+1].getKeepType()) {
-				case ALL:
-					keepHeight += getKeepHeight(groupA, gi+1);
-					break;
-				case AUTO: break;
-				default:;
-			}
-		}
-		return keepHeight;
+	/**
+	 * Gets the resulting data structure
+	 * @return returns the data structure
+	 * @throws IllegalStateException if not closed 
+	 */
+	public BlockStruct getFlowStruct() {
+		state.assertClosed();
+		return flowStruct;
 	}
 	
 	public void close() throws IOException {
-		state.assertOpen();
-		for (FlowSequence seq : flowStruct.toArray()) {
-			if (seq.getSequenceProperties().getInitialPageNumber()==null) {
-				paginator.newSequence(masters.get(seq.getSequenceProperties().getMasterName()));
-			} else {
-				paginator.newSequence(masters.get(seq.getSequenceProperties().getMasterName()), seq.getSequenceProperties().getInitialPageNumber()-1);
-			}
-			paginator.newPage();
-			FlowGroup[] groupA = seq.toArray();
-			for (int gi = 0; gi<groupA.length; gi++) {
-				//int height = ps.getCurrentLayoutMaster().getFlowHeight();
-				switch (groupA[gi].getBreakBeforeType()) {
-					case PAGE:
-						if (paginator.getPageInfo().countRows()>0) {
-							paginator.newPage();
-						}
-						break;
-					case AUTO:default:;
-				}
-				//FIXME: se över recursiv hämtning
-				switch (groupA[gi].getKeepType()) {
-					case ALL:
-						int keepHeight = getKeepHeight(groupA, gi);
-						if (paginator.getPageInfo().countRows()>0 && keepHeight>paginator.getPageInfo().getFlowHeight()-paginator.getPageInfo().countRows() && keepHeight<=paginator.getPageInfo().getFlowHeight()) {
-							paginator.newPage();
-						}
-						break;
-					case AUTO:
-						break;
-					default:;
-				}
-				if (groupA[gi].getSpaceBefore()+groupA[gi].getSpaceAfter()>=paginator.getPageInfo().getFlowHeight()) {
-					IOException ex = new IOException("Layout exception");
-					ex.initCause(new LayoutException("Group margins too large to fit on an empty page."));
-					throw ex;
-				} else if (groupA[gi].getSpaceBefore()+1>paginator.getPageInfo().getFlowHeight()-paginator.getPageInfo().countRows()) {
-					paginator.newPage();
-				}
-				for (int i=0; i<groupA[gi].getSpaceBefore();i++) {
-					paginator.newRow(new Row(""));
-				}
-				paginator.insertMarkers(groupA[gi].getGroupMarkers());
-				for (Row row : groupA[gi].toArray()) {
-					paginator.newRow(row);
-				}
-				if (groupA[gi].getSpaceAfter()>=paginator.getPageInfo().getFlowHeight()-paginator.getPageInfo().countRows()) {
-					paginator.newPage();
-				} else {
-					for (int i=0; i<groupA[gi].getSpaceAfter();i++) {
-						paginator.newRow(new Row(""));
-					}
-				}
-			}
+		if (state.isClosed()) {
+			return;
 		}
+		state.assertOpen();
 		state.close();
 	}
 

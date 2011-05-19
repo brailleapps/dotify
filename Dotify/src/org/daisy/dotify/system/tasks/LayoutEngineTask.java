@@ -12,7 +12,9 @@ import javax.xml.validation.Schema;
 
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.tasks.layout.flow.Flow;
+import org.daisy.dotify.system.tasks.layout.PaginatorHandler;
+import org.daisy.dotify.system.tasks.layout.WriterHandler;
+import org.daisy.dotify.system.tasks.layout.flow.Formatter;
 import org.daisy.dotify.system.tasks.layout.impl.FlowHandler;
 import org.daisy.dotify.system.tasks.layout.page.PagedMediaWriter;
 import org.daisy.dotify.system.tasks.layout.page.PagedMediaWriterException;
@@ -36,7 +38,7 @@ import org.xml.sax.SAXException;
  *
  */
 public class LayoutEngineTask extends InternalTask  {
-	private final Flow performer;
+	private final Formatter performer;
 	private Paginator paginator;
 	private PagedMediaWriter writer;
 	private Schema schema;
@@ -48,7 +50,7 @@ public class LayoutEngineTask extends InternalTask  {
 	 * @param paginator
 	 * @param writer
 	 */
-	public LayoutEngineTask(String name, Flow flow, Paginator paginator, PagedMediaWriter writer) {
+	public LayoutEngineTask(String name, Formatter flow, Paginator paginator, PagedMediaWriter writer) {
 		super(name);
 		this.performer = flow;
 		this.paginator = paginator;
@@ -63,20 +65,26 @@ public class LayoutEngineTask extends InternalTask  {
 	@Override
 	public void execute(File input, File output) throws InternalTaskException {
 		try {
-			FileOutputStream os = new FileOutputStream(output);
-			writer.open(os);
-			paginator.open(writer);
-			performer.open(paginator);
+
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setNamespaceAware(true);
 			if (schema != null) {
 				spf.setSchema(schema);
 			}
 			SAXParser sp = spf.newSAXParser();
+
+			performer.open();
 			sp.parse(input, new FlowHandler(performer));
 			performer.close();
+			
+			paginator.open();
+			PaginatorHandler.paginate(performer.getFlowStruct(), paginator);
 			paginator.close();
+
+			writer.open(new FileOutputStream(output));
+			WriterHandler.write(paginator.getPageStruct(), writer);
 			writer.close();
+
 		} catch (SAXException e) {
 			throw new InternalTaskException("SAXException while runing task.", e);
 		} catch (FileNotFoundException e) {

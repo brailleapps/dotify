@@ -23,7 +23,7 @@ import org.daisy.dotify.system.tasks.LayoutEngineTask;
 import org.daisy.dotify.system.tasks.ValidatorTask;
 import org.daisy.dotify.system.tasks.VolumeCoverPageTask;
 import org.daisy.dotify.system.tasks.XsltTask;
-import org.daisy.dotify.system.tasks.layout.impl.DefaultLayoutPerformer;
+import org.daisy.dotify.system.tasks.layout.impl.FormatterImpl;
 import org.daisy.dotify.system.tasks.layout.impl.PaginatorImpl;
 import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
 import org.daisy.dotify.system.tasks.layout.text.brailleFilters.BrailleFilterFactory;
@@ -125,7 +125,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		PEFMediaWriter paged = new PEFMediaWriter(p2);
 		factory.setDefault(sv_SE);
 		PaginatorImpl paginator = new PaginatorImpl(factory.getDefault());
-		DefaultLayoutPerformer flow = new DefaultLayoutPerformer(factory);
+		FormatterImpl flow = new FormatterImpl(factory);
 		setup.add(new LayoutEngineTask("FLOW to PEF converter", flow, paginator, paged));
 
 		// Split result into volumes
