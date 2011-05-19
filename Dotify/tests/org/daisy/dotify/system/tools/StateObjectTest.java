@@ -1,6 +1,7 @@
 package org.daisy.dotify.system.tools;
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.tools.StateObject;
 import org.junit.Test;
 
 public class StateObjectTest {

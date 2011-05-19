@@ -2,7 +2,6 @@ package org.daisy.dotify.formatter;
 
 import java.io.Closeable;
 
-import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
 
 /**
  * <p>Provides an entry point for formatting text.</p>

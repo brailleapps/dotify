@@ -11,6 +11,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.formatter.impl.FormatterImpl;
+import org.daisy.dotify.formatter.impl.PaginatorImpl;
+import org.daisy.dotify.formatter.utils.LayoutTools;
+import org.daisy.dotify.formatter.utils.TextBorder;
+import org.daisy.dotify.formatter.writers.PEFMediaWriter;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.system.InternalTask;
@@ -23,12 +28,7 @@ import org.daisy.dotify.system.tasks.LayoutEngineTask;
 import org.daisy.dotify.system.tasks.ValidatorTask;
 import org.daisy.dotify.system.tasks.VolumeCoverPageTask;
 import org.daisy.dotify.system.tasks.XsltTask;
-import org.daisy.dotify.system.tasks.layout.impl.FormatterImpl;
-import org.daisy.dotify.system.tasks.layout.impl.PaginatorImpl;
-import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
-import org.daisy.dotify.system.tasks.layout.utils.LayoutTools;
-import org.daisy.dotify.system.tasks.layout.utils.TextBorder;
-import org.daisy.dotify.system.tasks.layout.writers.PEFMediaWriter;
+import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleFilterFactory;
 import org.xml.sax.SAXException;
 

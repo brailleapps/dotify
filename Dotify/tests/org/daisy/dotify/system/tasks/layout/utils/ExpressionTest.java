@@ -1,6 +1,7 @@
 package org.daisy.dotify.system.tasks.layout.utils;
 import static org.junit.Assert.assertEquals;
 
+import org.daisy.dotify.formatter.utils.Expression;
 import org.junit.Test;
 
 

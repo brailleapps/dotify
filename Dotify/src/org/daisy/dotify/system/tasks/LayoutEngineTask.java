@@ -12,13 +12,13 @@ import javax.xml.validation.Schema;
 
 import org.daisy.dotify.formatter.FlowHandler;
 import org.daisy.dotify.formatter.Formatter;
+import org.daisy.dotify.formatter.PagedMediaWriter;
+import org.daisy.dotify.formatter.PagedMediaWriterException;
+import org.daisy.dotify.formatter.Paginator;
+import org.daisy.dotify.formatter.PaginatorHandler;
+import org.daisy.dotify.formatter.WriterHandler;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.tasks.layout.PaginatorHandler;
-import org.daisy.dotify.system.tasks.layout.WriterHandler;
-import org.daisy.dotify.system.tasks.layout.page.PagedMediaWriter;
-import org.daisy.dotify.system.tasks.layout.page.PagedMediaWriterException;
-import org.daisy.dotify.system.tasks.layout.page.Paginator;
 import org.xml.sax.SAXException;
 
 //TODO: Validate against schema

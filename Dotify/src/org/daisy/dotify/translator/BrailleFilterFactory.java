@@ -3,13 +3,13 @@ package org.daisy.dotify.translator;
 import java.net.URL;
 import java.util.HashMap;
 
-import org.daisy.dotify.system.tasks.layout.text.CaseFilter;
-import org.daisy.dotify.system.tasks.layout.text.CharFilter;
-import org.daisy.dotify.system.tasks.layout.text.CombinationFilter;
-import org.daisy.dotify.system.tasks.layout.text.FilterFactory;
-import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
-import org.daisy.dotify.system.tasks.layout.text.RegexFilter;
-import org.daisy.dotify.system.tasks.layout.text.StringFilter;
+import org.daisy.dotify.text.CaseFilter;
+import org.daisy.dotify.text.CharFilter;
+import org.daisy.dotify.text.CombinationFilter;
+import org.daisy.dotify.text.FilterFactory;
+import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.RegexFilter;
+import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.translator.sv_SE.CapitalizationMarkers;
 
 

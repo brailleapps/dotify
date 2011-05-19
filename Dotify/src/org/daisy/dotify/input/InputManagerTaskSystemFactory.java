@@ -2,7 +2,7 @@ package org.daisy.dotify.input;
 
 import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocator;
-import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
+import org.daisy.dotify.text.FilterLocale;
 
 public class InputManagerTaskSystemFactory {
 	private final FilterLocale sv;

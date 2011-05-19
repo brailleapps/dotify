@@ -4,6 +4,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.daisy.dotify.formatter.impl.FormatterImpl;
+import org.daisy.dotify.formatter.impl.PaginatorImpl;
+import org.daisy.dotify.formatter.writers.TextMediaWriter;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.ResourceLocator;
@@ -14,10 +17,7 @@ import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.tasks.LayoutEngineTask;
 import org.daisy.dotify.system.tasks.ValidatorTask;
 import org.daisy.dotify.system.tasks.XsltTask;
-import org.daisy.dotify.system.tasks.layout.impl.FormatterImpl;
-import org.daisy.dotify.system.tasks.layout.impl.PaginatorImpl;
-import org.daisy.dotify.system.tasks.layout.text.RegexFilter;
-import org.daisy.dotify.system.tasks.layout.writers.TextMediaWriter;
+import org.daisy.dotify.text.RegexFilter;
 import org.daisy.dotify.translator.BrailleFilterFactory;
 
 

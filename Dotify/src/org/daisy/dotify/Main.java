@@ -26,8 +26,8 @@ import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
-import org.daisy.dotify.system.tools.Progress;
+import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.tools.Progress;
 import org.daisy.util.file.FileJuggler;
 import org.daisy.util.file.FileUtils;
 

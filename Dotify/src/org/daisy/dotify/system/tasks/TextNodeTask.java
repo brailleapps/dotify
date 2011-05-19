@@ -11,8 +11,8 @@ import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.tasks.layout.text.StringFilter;
-import org.daisy.dotify.system.tools.TextNodeFilter;
+import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.tools.TextNodeFilter;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;
 import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
 import org.daisy.util.xml.stax.StaxEntityResolver;

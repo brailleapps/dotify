@@ -1,6 +1,7 @@
 package org.daisy.dotify.system.tasks.layout.text;
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
 public class FilterLocaleTest {

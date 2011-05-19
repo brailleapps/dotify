@@ -1,8 +1,8 @@
 package org.daisy.dotify.translator.sv_SE;
 
-import org.daisy.dotify.system.tasks.layout.text.StringFilter;
-import org.daisy.dotify.system.tools.SplitResult;
-import org.daisy.dotify.system.tools.StringSplitter;
+import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.tools.SplitResult;
+import org.daisy.dotify.tools.StringSplitter;
 
 
 /**

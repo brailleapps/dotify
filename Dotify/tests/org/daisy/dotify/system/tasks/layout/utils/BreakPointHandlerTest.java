@@ -2,6 +2,8 @@ package org.daisy.dotify.system.tasks.layout.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.formatter.utils.BreakPoint;
+import org.daisy.dotify.formatter.utils.BreakPointHandler;
 import org.junit.Test;
 
 public class BreakPointHandlerTest {

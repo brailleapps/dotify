@@ -10,7 +10,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.system.tools.StaxFilter2;
+import org.daisy.dotify.tools.StaxFilter2;
 
 
 public class VolumeCoverPageFilter extends StaxFilter2 {

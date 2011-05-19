@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
 
-import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
-import org.daisy.dotify.system.tasks.layout.text.StringFilter;
+import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.translator.BrailleFilterFactory;
 import org.junit.Test;
 
