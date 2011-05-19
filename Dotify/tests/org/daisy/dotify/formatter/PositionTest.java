@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.flow;
+package org.daisy.dotify.formatter;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.formatter.Position;

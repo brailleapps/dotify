@@ -1,7 +1,5 @@
 package org.daisy.dotify.setups;
 
-import java.util.Map;
-
 import org.daisy.dotify.setups.en_US.DefaultTextSystem;
 import org.daisy.dotify.setups.sv_SE.SwedishBrailleSystem;
 import org.daisy.dotify.setups.sv_SE.SwedishTextSystem;

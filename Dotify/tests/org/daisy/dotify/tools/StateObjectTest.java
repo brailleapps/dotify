@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tools;
+package org.daisy.dotify.tools;
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.tools.StateObject;

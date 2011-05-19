@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.text;
+package org.daisy.dotify.text;
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.text.FilterLocale;

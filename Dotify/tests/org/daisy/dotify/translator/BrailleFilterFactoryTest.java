@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.text.brailleFilters;
+package org.daisy.dotify.translator;
 
 import static org.junit.Assert.assertEquals;
 

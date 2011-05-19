@@ -205,9 +205,9 @@ Dotify/src/org/daisy/dotify/translator/sv_SE/CapitalizationMarkers.java -text sv
 Dotify/src/org/daisy/dotify/translator/sv_SE/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/translator/sv_SE/sv_SE-pas1.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/translator/sv_SE/sv_SE-pas2.xml -text svneol=unset#text/plain
-Dotify/tests/org/daisy/dotify/system/tasks/layout/flow/PositionTest.java -text svneol=unset#text/plain
-Dotify/tests/org/daisy/dotify/system/tasks/layout/text/FilterLocaleTest.java -text svneol=unset#text/plain
-Dotify/tests/org/daisy/dotify/system/tasks/layout/text/brailleFilters/BrailleFilterFactoryTest.java -text svneol=unset#text/plain
-Dotify/tests/org/daisy/dotify/system/tasks/layout/utils/BreakPointHandlerTest.java -text svneol=unset#text/plain
-Dotify/tests/org/daisy/dotify/system/tasks/layout/utils/ExpressionTest.java -text svneol=unset#text/plain
-Dotify/tests/org/daisy/dotify/system/tools/StateObjectTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/formatter/utils/BreakPointHandlerTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/formatter/utils/ExpressionTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/translator/BrailleFilterFactoryTest.java -text svneol=unset#text/plain
