@@ -3,10 +3,11 @@ package org.daisy.dotify.system.tasks.layout.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.daisy.dotify.system.tasks.layout.flow.Marker;
-import org.daisy.dotify.system.tasks.layout.flow.Row;
+import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.system.tasks.layout.page.CurrentPageInfo;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
+import org.daisy.dotify.system.tasks.layout.page.PageStruct;
 import org.daisy.dotify.system.tasks.layout.page.Paginator;
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;
 import org.daisy.dotify.system.tools.StateObject;

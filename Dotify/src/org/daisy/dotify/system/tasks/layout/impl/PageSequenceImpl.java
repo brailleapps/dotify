@@ -3,7 +3,7 @@ package org.daisy.dotify.system.tasks.layout.impl;
 import java.util.Iterator;
 import java.util.Stack;
 
-import org.daisy.dotify.system.tasks.layout.flow.Row;
+import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
 
 public class PageSequenceImpl implements Iterable<Page>, PageSequence {

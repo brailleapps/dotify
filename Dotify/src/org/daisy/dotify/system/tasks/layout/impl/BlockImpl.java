@@ -3,11 +3,11 @@ package org.daisy.dotify.system.tasks.layout.impl;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import org.daisy.dotify.system.tasks.layout.flow.Block;
-import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
-import org.daisy.dotify.system.tasks.layout.flow.Marker;
-import org.daisy.dotify.system.tasks.layout.flow.Row;
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes;
+import org.daisy.dotify.formatter.Block;
+import org.daisy.dotify.formatter.BlockProperties;
+import org.daisy.dotify.formatter.FormattingTypes;
+import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Row;
 
 public class BlockImpl extends Stack<Row> implements Block {
 	private int spaceBefore;

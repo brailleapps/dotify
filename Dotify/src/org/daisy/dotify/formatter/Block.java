@@ -1,9 +1,9 @@
-package org.daisy.dotify.system.tasks.layout.flow;
+package org.daisy.dotify.formatter;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.BreakBefore;
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.Keep;
+import org.daisy.dotify.formatter.FormattingTypes.BreakBefore;
+import org.daisy.dotify.formatter.FormattingTypes.Keep;
 /**
  * Provides a block of rows and the properties
  * associated with it.

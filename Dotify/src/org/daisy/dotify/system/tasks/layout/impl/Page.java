@@ -3,8 +3,8 @@ package org.daisy.dotify.system.tasks.layout.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.system.tasks.layout.flow.Marker;
-import org.daisy.dotify.system.tasks.layout.flow.Row;
+import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.system.tasks.layout.page.Template;
 
 

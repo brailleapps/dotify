@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.flow;
+package org.daisy.dotify.formatter;
 
 /**
  * <p>SequenceProperties stores properties that are specific for a sequence

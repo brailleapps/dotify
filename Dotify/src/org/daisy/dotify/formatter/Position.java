@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.flow;
+package org.daisy.dotify.formatter;
 
 /**
  * Position is a data object for an integer position.

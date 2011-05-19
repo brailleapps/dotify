@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 
 import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;
+import org.daisy.dotify.translator.BrailleFilterFactory;
 import org.junit.Test;
 
 //TODO: move implementation and tests to separate class files

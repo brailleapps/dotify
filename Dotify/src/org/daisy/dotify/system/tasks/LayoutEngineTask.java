@@ -10,11 +10,11 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 
+import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.tasks.layout.PaginatorHandler;
 import org.daisy.dotify.system.tasks.layout.WriterHandler;
-import org.daisy.dotify.system.tasks.layout.flow.Formatter;
 import org.daisy.dotify.system.tasks.layout.impl.FlowHandler;
 import org.daisy.dotify.system.tasks.layout.page.PagedMediaWriter;
 import org.daisy.dotify.system.tasks.layout.page.PagedMediaWriterException;

@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.input;
+package org.daisy.dotify.input;
 
 import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocator;

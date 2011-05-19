@@ -1,8 +1,8 @@
-package org.daisy.dotify.system.tasks.layout.flow;
+package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.BreakBefore;
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.Keep;
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes.ListStyle;
+import org.daisy.dotify.formatter.FormattingTypes.BreakBefore;
+import org.daisy.dotify.formatter.FormattingTypes.Keep;
+import org.daisy.dotify.formatter.FormattingTypes.ListStyle;
 
 /**
  * BlockProperties defines properties specific for a block of text

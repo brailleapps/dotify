@@ -2,9 +2,9 @@ package org.daisy.dotify.system.tasks.layout.impl;
 
 import java.util.Stack;
 
-import org.daisy.dotify.system.tasks.layout.flow.Block;
-import org.daisy.dotify.system.tasks.layout.flow.BlockSequence;
-import org.daisy.dotify.system.tasks.layout.flow.SequenceProperties;
+import org.daisy.dotify.formatter.Block;
+import org.daisy.dotify.formatter.BlockSequence;
+import org.daisy.dotify.formatter.SequenceProperties;
 
 public class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 	private SequenceProperties p;

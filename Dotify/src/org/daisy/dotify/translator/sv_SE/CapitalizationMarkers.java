@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.text.brailleFilters.sv_SE;
+package org.daisy.dotify.translator.sv_SE;
 
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;
 import org.daisy.dotify.system.tools.SplitResult;

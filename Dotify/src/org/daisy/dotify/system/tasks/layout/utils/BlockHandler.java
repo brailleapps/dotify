@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
-import org.daisy.dotify.system.tasks.layout.flow.Leader;
-import org.daisy.dotify.system.tasks.layout.flow.Marker;
-import org.daisy.dotify.system.tasks.layout.flow.Row;
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes;
+import org.daisy.dotify.formatter.BlockProperties;
+import org.daisy.dotify.formatter.FormattingTypes;
+import org.daisy.dotify.formatter.Leader;
+import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;
 

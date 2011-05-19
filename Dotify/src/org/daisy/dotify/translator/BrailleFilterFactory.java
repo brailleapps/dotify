@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.text.brailleFilters;
+package org.daisy.dotify.translator;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import org.daisy.dotify.system.tasks.layout.text.FilterFactory;
 import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
 import org.daisy.dotify.system.tasks.layout.text.RegexFilter;
 import org.daisy.dotify.system.tasks.layout.text.StringFilter;
-import org.daisy.dotify.system.tasks.layout.text.brailleFilters.sv_SE.CapitalizationMarkers;
+import org.daisy.dotify.translator.sv_SE.CapitalizationMarkers;
 
 
 /**

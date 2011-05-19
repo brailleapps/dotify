@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.layout.flow;
+package org.daisy.dotify.formatter;
 /**
  * <p>Positions a block of text at a specified row.</p>
  * @author Joel Håkansson, TPB

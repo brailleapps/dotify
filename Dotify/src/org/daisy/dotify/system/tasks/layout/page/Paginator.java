@@ -3,9 +3,8 @@ package org.daisy.dotify.system.tasks.layout.page;
 import java.io.Closeable;
 import java.util.ArrayList;
 
-import org.daisy.dotify.system.tasks.layout.flow.Marker;
-import org.daisy.dotify.system.tasks.layout.flow.Row;
-import org.daisy.dotify.system.tasks.layout.impl.PageStruct;
+import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Row;
 
 
 /**

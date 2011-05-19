@@ -1,6 +1,7 @@
 package org.daisy.dotify.system.tasks.layout.flow;
 import static org.junit.Assert.assertEquals;
 
+import org.daisy.dotify.formatter.Position;
 import org.junit.Test;
 
 public class PositionTest {

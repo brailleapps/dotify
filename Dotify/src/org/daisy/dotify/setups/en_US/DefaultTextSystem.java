@@ -17,8 +17,8 @@ import org.daisy.dotify.system.tasks.XsltTask;
 import org.daisy.dotify.system.tasks.layout.impl.FormatterImpl;
 import org.daisy.dotify.system.tasks.layout.impl.PaginatorImpl;
 import org.daisy.dotify.system.tasks.layout.text.RegexFilter;
-import org.daisy.dotify.system.tasks.layout.text.brailleFilters.BrailleFilterFactory;
 import org.daisy.dotify.system.tasks.layout.writers.TextMediaWriter;
+import org.daisy.dotify.translator.BrailleFilterFactory;
 
 
 /**

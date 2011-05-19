@@ -2,13 +2,13 @@ package org.daisy.dotify.system.tasks.layout.impl;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.system.tasks.layout.flow.BlockProperties;
-import org.daisy.dotify.system.tasks.layout.flow.Formatter;
-import org.daisy.dotify.system.tasks.layout.flow.Leader;
-import org.daisy.dotify.system.tasks.layout.flow.Marker;
-import org.daisy.dotify.system.tasks.layout.flow.Position;
-import org.daisy.dotify.system.tasks.layout.flow.SequenceProperties;
-import org.daisy.dotify.system.tasks.layout.flow.FormattingTypes;
+import org.daisy.dotify.formatter.BlockProperties;
+import org.daisy.dotify.formatter.Formatter;
+import org.daisy.dotify.formatter.FormattingTypes;
+import org.daisy.dotify.formatter.Leader;
+import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Position;
+import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.system.tasks.layout.impl.field.CompoundField;
 import org.daisy.dotify.system.tasks.layout.impl.field.CurrentPageField;
 import org.daisy.dotify.system.tasks.layout.impl.field.MarkerReferenceField;

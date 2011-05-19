@@ -14,6 +14,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.input.InputManagerTaskSystem;
+import org.daisy.dotify.input.InputManagerTaskSystemFactory;
 import org.daisy.dotify.setups.ConfigUrlLocator;
 import org.daisy.dotify.setups.TaskSystemFactory;
 import org.daisy.dotify.setups.TaskSystemFactory.OutputFormat;
@@ -24,8 +26,6 @@ import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.system.input.InputManagerTaskSystem;
-import org.daisy.dotify.system.input.InputManagerTaskSystemFactory;
 import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
 import org.daisy.dotify.system.tools.Progress;
 import org.daisy.util.file.FileJuggler;

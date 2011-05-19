@@ -3,9 +3,9 @@ package org.daisy.dotify.system.tasks.layout.impl;
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.daisy.dotify.system.tasks.layout.flow.BlockSequence;
-import org.daisy.dotify.system.tasks.layout.flow.BlockStruct;
-import org.daisy.dotify.system.tasks.layout.flow.SequenceProperties;
+import org.daisy.dotify.formatter.BlockSequence;
+import org.daisy.dotify.formatter.BlockStruct;
+import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.system.tasks.layout.page.LayoutMaster;
 
 public class BlockStructImpl extends Stack<BlockSequence> implements BlockStruct {

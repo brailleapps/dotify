@@ -26,10 +26,10 @@ import org.daisy.dotify.system.tasks.XsltTask;
 import org.daisy.dotify.system.tasks.layout.impl.FormatterImpl;
 import org.daisy.dotify.system.tasks.layout.impl.PaginatorImpl;
 import org.daisy.dotify.system.tasks.layout.text.FilterLocale;
-import org.daisy.dotify.system.tasks.layout.text.brailleFilters.BrailleFilterFactory;
 import org.daisy.dotify.system.tasks.layout.utils.LayoutTools;
 import org.daisy.dotify.system.tasks.layout.utils.TextBorder;
 import org.daisy.dotify.system.tasks.layout.writers.PEFMediaWriter;
+import org.daisy.dotify.translator.BrailleFilterFactory;
 import org.xml.sax.SAXException;
 
 
