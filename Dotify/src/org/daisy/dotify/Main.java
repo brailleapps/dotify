@@ -176,6 +176,7 @@ public class Main {
 			//progress(i/tasks.size());
 		}
 		fj.close();
+		sendMessage("Completed task in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
 	}
 
 	private void sendMessage(String msg) {

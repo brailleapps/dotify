@@ -6,12 +6,14 @@ public class Progress {
 	private double progress = 0;
 	private Date eta; 
 	private long tstamp;
+	private long start;
 	double step;
 	
 	public Progress() {
 		progress = 0;
 		eta = new Date();
 		tstamp = System.currentTimeMillis();
+		start = tstamp;
 		step = -1;
 	}
 	
@@ -37,6 +39,10 @@ public class Progress {
 	
 	public double getProgress() {
 		return progress;
+	}
+	
+	public long timeSinceStart() {
+		return System.currentTimeMillis()-start;
 	}
 
 }

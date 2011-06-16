@@ -28,6 +28,7 @@ import org.xml.sax.SAXParseException;
  */
 public class ValidatorTask extends InternalTask implements ErrorHandler {
 	final static String SCHEMATRON_PROPERTY_KEY = "javax.xml.validation.SchemaFactory:http://www.ascc.net/xml/schematron";
+	final static String SCHEMATRON_PROPERTY_VALUE = "org.daisy.util.xml.validation.jaxp.SchematronSchemaFactory";
 	private URL schema;
 	private boolean error = false;
 	private final Logger logger;
@@ -43,7 +44,8 @@ public class ValidatorTask extends InternalTask implements ErrorHandler {
 		try {
 			if (System.getProperty(SCHEMATRON_PROPERTY_KEY)==null) {
 				logger.info("System property \"" + SCHEMATRON_PROPERTY_KEY + "\" not set");
-				System.setProperty(SCHEMATRON_PROPERTY_KEY, "org.daisy.util.xml.validation.jaxp.SchematronSchemaFactory");
+				logger.info("Setting property \"" + SCHEMATRON_PROPERTY_KEY + "\" to " + SCHEMATRON_PROPERTY_VALUE);
+				System.setProperty(SCHEMATRON_PROPERTY_KEY, SCHEMATRON_PROPERTY_VALUE);
 			}
 			SimpleValidator sv = new SimpleValidator(schema, this);
 			boolean ret = sv.validate(input.toURI().toURL());

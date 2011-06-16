@@ -107,6 +107,8 @@ public class InputManagerTaskSystem implements TaskSystem {
 			if (rootNS!=null) {
 				if (rootNS.equals("http://www.daisy.org/z3986/2005/dtbook/") && rootElement.equals("dtbook")) {
 					inputformat = "dtbook.properties";
+				} else if (rootNS.equals("http://www.daisy.org/ns/2011/obfl") && rootElement.equals("root")) {
+					inputformat = "flow.properties";
 				}
 				// else if {
 					// Add more input formats here...
