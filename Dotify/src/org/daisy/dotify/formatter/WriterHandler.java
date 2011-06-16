@@ -9,6 +9,9 @@ import org.daisy.dotify.formatter.field.CurrentPageField;
 import org.daisy.dotify.formatter.field.MarkerReferenceField;
 import org.daisy.dotify.formatter.utils.LayoutTools;
 import org.daisy.dotify.formatter.utils.LayoutToolsException;
+import org.daisy.dotify.formatter.utils.PageTools;
+import org.daisy.dotify.text.FilterFactory;
+import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;
 
 /**
@@ -18,57 +21,93 @@ import org.daisy.dotify.text.StringFilter;
  */
 public class WriterHandler {
 	private static final Character SPACE_CHAR = ' '; //'\u2800'
-	
 	/**
 	 * Writes this structure to the suppled PagedMediaWriter adding headers and footers,
 	 * where needed.
 	 * @param writer the PagedMediaWriter to write to
 	 * @throws IOException if IO fails
 	 */
-	public static void write(PageStruct ps, PagedMediaWriter writer) throws IOException {
+	public static void write(BookStruct bookStruct, FilterFactory filterFactory, FilterLocale locale, VolumeSplitterFactory splitterFactory, PagedMediaWriter writer) throws IOException {
+		StringFilter filter = filterFactory.newStringFilter(locale);
 		try {
-			int rowNo = 1;
-			for (PageSequence s : ps) {
+			int volNo = 0;
+			SplitterData sd = splitterFactory.newSplitter().calculate(bookStruct);
+			int sheetIndex = 0;
+			int postContentSheets = 0;
+			Integer breakpoint=null;
+			for (PageSequence s : bookStruct.getPageStruct().getContents()) {
 				LayoutMaster lm = s.getLayoutMaster();
-				writer.newSection(lm);
+				boolean firstSection = true;
+				int page=0;
 				for (Page p : s) {
-					writer.newPage();
-					int pagenum = p.getPageIndex()+1;
-					Template t = lm.getTemplate(pagenum);
-					//p.setHeader(renderFields(lm, p, t.getHeader()));
-					//p.setFooter(renderFields(lm, p, t.getFooter()));
-					ArrayList<Row> rows = new ArrayList<Row>();
-					rows.addAll(renderFields(lm, p, t.getHeader(), ps.getFilter()));
-					rows.addAll(p.getRows());
-					if (t.getFooterHeight()>0) {
-						while (rows.size()<lm.getPageHeight()-t.getFooterHeight()) {
-							rows.add(new Row());
-						}
-						rows.addAll(renderFields(lm, p, t.getFooter(), ps.getFilter()));
+					if (!lm.duplex() || page%2==0) {
+						sheetIndex++;
 					}
-					for (Row row : rows) {
-						if (row.getChars().length()>0) {
-							int margin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin()) + row.getLeftMargin();
-							// remove trailing whitespace
-							String chars = row.getChars().replaceAll("\\s*\\z", "");
-							// add left margin
-							int rowWidth = LayoutTools.length(chars)+row.getLeftMargin();
-							String r = 	LayoutTools.fill(SPACE_CHAR, margin) + chars;
-							if (rowWidth>lm.getFlowWidth()) {
-								throw new LayoutException("Row no " + rowNo + " is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
-							}
-							writer.newRow(r);
-						} else {
-							writer.newRow();
+					if (breakpoint!=null && breakpoint<sheetIndex) {
+						System.out.println("WriterHandler: "+sheetIndex + " " + postContentSheets);
+						//p.setVolumeBreak(true);
+						breakpoint=null;
+						sheetIndex += insertVolumeContents(bookStruct.getPostVolumeContents(volNo, sd.volumeCount()), writer, filter);
+						writer.newVolume(lm);
+						volNo++;
+						sheetIndex += insertVolumeContents(bookStruct.getPreVolumeContents(volNo, sd.volumeCount()), writer, filter);
+						postContentSheets = PageTools.countSheets(bookStruct.getPostVolumeContents(volNo, sd.volumeCount()));
+						writer.newSection(lm);
+						firstSection = false;
+					} else if (firstSection) {
+						firstSection=false;
+						if (volNo==0) {
+							volNo++;
+							sheetIndex += insertVolumeContents(bookStruct.getPreVolumeContents(volNo, sd.volumeCount()), writer, filter);
+							postContentSheets = PageTools.countSheets(bookStruct.getPostVolumeContents(volNo, sd.volumeCount()));
 						}
-						rowNo++;
+						writer.newSection(lm);
 					}
+					if (sd.isBreakpoint(sheetIndex+postContentSheets)) {
+						breakpoint=sheetIndex;
+					}
+					writePage(writer, p, lm, filter);
+					page++;
 				}
 			}
+			sheetIndex += insertVolumeContents(bookStruct.getPostVolumeContents(volNo, sd.volumeCount()), writer, filter);
 		} catch (LayoutException e) {
 			IOException ex = new IOException("Layout exception");
 			ex.initCause(e);
 			throw ex;
+		}
+	}
+	
+	private static void writePage(PagedMediaWriter writer, Page p, LayoutMaster lm, StringFilter filter) throws LayoutException {
+		writer.newPage();
+		int pagenum = p.getPageIndex()+1;
+		PageTemplate t = lm.getTemplate(pagenum);
+		//p.setHeader(renderFields(lm, p, t.getHeader()));
+		//p.setFooter(renderFields(lm, p, t.getFooter()));
+		ArrayList<Row> rows = new ArrayList<Row>();
+		rows.addAll(renderFields(lm, p, t.getHeader(), filter));
+		rows.addAll(p.getRows());
+		if (t.getFooterHeight()>0) {
+			while (rows.size()<lm.getPageHeight()-t.getFooterHeight()) {
+				rows.add(new Row());
+			}
+			rows.addAll(renderFields(lm, p, t.getFooter(), filter));
+		}
+		for (Row row : rows) {
+			if (row.getChars().length()>0) {
+				int margin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin()) + row.getLeftMargin();
+				// remove trailing whitespace
+				String chars = row.getChars().replaceAll("\\s*\\z", "");
+				// add left margin
+				int rowWidth = LayoutTools.length(chars)+row.getLeftMargin();
+				String r = 	LayoutTools.fill(SPACE_CHAR, margin) + chars;
+				if (rowWidth>lm.getFlowWidth()) {
+					throw new LayoutException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
+				}
+				writer.newRow(r);
+			} else {
+				writer.newRow();
+			}
 		}
 	}
 	
@@ -136,9 +175,9 @@ public class WriterHandler {
 			count++;
 		}
 		if (markerRef.getSearchScope() == MarkerReferenceField.MarkerSearchScope.SEQUENCE) {
-			int nextPage = page.getPageIndex() - page.getParent().getOffset() + dir;
+			int nextPage = page.getPageIndex() - page.getParent().getPageNumberOffset() + dir;
 			//System.out.println("Next page: "+page.getPageIndex() + " | " + nextPage);
-			if (nextPage < page.getParent().getSize() && nextPage >= 0) {
+			if (nextPage < page.getParent().getPageCount() && nextPage >= 0) {
 				Page next = page.getParent().getPage(nextPage);
 				return findMarker(next, markerRef);
 			}
@@ -150,4 +189,24 @@ public class WriterHandler {
 		int pagenum = p.getPageIndex() + 1;
 		return f.style(pagenum);
 	}
+	
+	private static int insertVolumeContents(Iterable<PageSequence> content, PagedMediaWriter writer, StringFilter filter) throws LayoutException {
+		boolean first = true;
+		int sheetIndex = 0;
+		for (PageSequence s : content) {
+			LayoutMaster lm = s.getLayoutMaster();
+			writer.newSection(lm);
+			int page=0;
+			for (Page p : s) {
+				if (!lm.duplex() || page%2==0) {
+					sheetIndex++;
+				}
+				writePage(writer, p, lm, filter);
+				page++;
+			}
+			first = false;
+		}
+		return sheetIndex;
+	}
+
 }

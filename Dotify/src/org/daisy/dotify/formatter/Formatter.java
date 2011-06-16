@@ -2,6 +2,9 @@ package org.daisy.dotify.formatter;
 
 import java.io.Closeable;
 
+import org.daisy.dotify.text.FilterFactory;
+import org.daisy.dotify.text.FilterLocale;
+
 
 /**
  * <p>Provides an entry point for formatting text.</p>
@@ -12,6 +15,10 @@ import java.io.Closeable;
  * @author Joel Håkansson, TPB
  */
 public interface Formatter extends Closeable {
+	
+	public void setFilterFactory(FilterFactory filterFactory);
+	
+	public void setLocale(FilterLocale locale);
 	
 	/**
 	 * Opens the Formatter for writing.
@@ -90,6 +97,6 @@ public interface Formatter extends Closeable {
 	 * @param master the LayoutMaster
 	 */
 	public void addLayoutMaster(String name, LayoutMaster master);
-
+	
 	public BlockStruct getFlowStruct();
 }

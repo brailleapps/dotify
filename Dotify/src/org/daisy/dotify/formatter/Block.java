@@ -23,5 +23,6 @@ public interface Block extends Iterable<Row> {
 	public Keep getKeepType();
 	public ArrayList<Marker> getGroupMarkers();
 	public BreakBefore getBreakBeforeType();
+	public int getRowCount();
 	
 }

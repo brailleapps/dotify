@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!ENTITY % blockContents "#PCDATA | leader | marker | anchor | br | evaluate">
+
+<!ENTITY % blockAtts
+"	break-before (auto|page) #IMPLIED 
+	first-line-indent CDATA #IMPLIED
+	keep (auto|all) #IMPLIED
+	keep-with-next (0|1|2|3|4|5|6|7|8|9) #IMPLIED
+	list-type (none|ol|ul|pl) #IMPLIED
+	margin-bottom CDATA #IMPLIED
+	margin-left CDATA #IMPLIED
+	margin-top CDATA #IMPLIED
+	margin-right CDATA #IMPLIED
+	text-indent CDATA #IMPLIED
+	block-indent CDATA #IMPLIED
+	id ID #IMPLIED
+	xml:lang NMTOKEN #IMPLIED">
+	
+<!ENTITY % sequenceAtts
+"	master IDREF #REQUIRED
+	initial-page-number CDATA #IMPLIED
+	xml:lang NMTOKEN #IMPLIED
+	hyphenate (true|false) #IMPLIED">
 
 <!--
 	Document root
 -->
-<!ELEMENT root (layout-master+, sequence+)>
-
+<!ELEMENT root (layout-master+, table-of-contents*, volume-template*, sequence+)>
+<!ATTLIST root
+		xmlns CDATA #FIXED 'http://www.daisy.org/ns/2011/obfl'
+		version (2011-1) #REQUIRED
+		xml:lang CDATA #REQUIRED
+>
 <!--
 	Layout master
 -->
@@ -17,6 +43,7 @@
 	outer-margin CDATA #IMPLIED
 	row-spacing CDATA #IMPLIED
 	duplex (true|false) #IMPLIED
+	page-number-variable CDATA #IMPLIED
 >
 <!ELEMENT template (header, footer)>
 <!ATTLIST template
@@ -45,6 +72,46 @@
 <!ATTLIST evaluate
 	expression CDATA #REQUIRED
 >
+<!ELEMENT table-of-contents (toc-entry+)>
+<!ATTLIST table-of-contents
+	name ID #REQUIRED
+>
+<!ELEMENT toc-entry (%blockContents;|toc-entry|page-number)*>
+<!ATTLIST toc-entry
+	ref-id IDREF #REQUIRED
+	%blockAtts;
+>
+<!ELEMENT volume-template (pre-content, post-content)>
+<!ATTLIST volume-template
+	use-when CDATA #IMPLIED
+	volume-number-variable CDATA #IMPLIED
+	volume-count-variable CDATA #IMPLIED
+>
+<!ELEMENT pre-content (sequence | toc-sequence)*>
+<!ELEMENT post-content (sequence)*>
+<!ELEMENT toc-sequence (on-toc-start*, on-volume-start*, on-volume-end*, on-toc-end*)>
+<!ATTLIST toc-sequence
+	toc IDREF #REQUIRED
+	range (document|volume) #REQUIRED
+	use-when CDATA #REQUIRED
+	%sequenceAtts;
+>
+<!ELEMENT on-toc-start (block+)>
+<!ATTLIST on-toc-start
+	use-when CDATA #IMPLIED
+>
+<!ELEMENT on-volume-start (block+)>
+<!ATTLIST on-volume-start
+	use-when CDATA #IMPLIED
+>
+<!ELEMENT on-volume-end (block+)>
+<!ATTLIST on-volume-end
+	use-when CDATA #IMPLIED
+>
+<!ELEMENT on-toc-end (block+)>
+<!ATTLIST on-toc-end
+	use-when CDATA #IMPLIED
+>
 <!-- 
 	A sequence of blocks
 -->
@@ -55,10 +122,7 @@
 	hypenate not implemented
 -->
 <!ATTLIST sequence
-	master IDREF #REQUIRED
-	initial-page-number CDATA #IMPLIED
-	xml:lang NMTOKEN #IMPLIED
-	hyphenate (true|false) #IMPLIED
+	%sequenceAtts;
 >
 
 <!ELEMENT float-item (block+)>
@@ -70,7 +134,7 @@
 <!--
 	A block of text
 -->
-<!ELEMENT block (#PCDATA | block | leader | marker | anchor | br)*>
+<!ELEMENT block (%blockContents; | block)*>
 <!--
 	break-before, if present, break before block begins
 	first-line-indent, indent (in chars) of first line block
@@ -85,18 +149,7 @@
 	block-indent, indent (in chars) of this block's block children
 -->
 <!ATTLIST block
-	break-before (auto|page) #IMPLIED 
-	first-line-indent CDATA #IMPLIED
-	keep (auto|all) #IMPLIED
-	keep-with-next (0|1|2|3|4|5|6|7|8|9) #IMPLIED
-	list-type (none|ol|ul|pl) #IMPLIED
-	margin-bottom CDATA #IMPLIED
-	margin-left CDATA #IMPLIED
-	margin-top CDATA #IMPLIED
-	margin-right CDATA #IMPLIED
-	text-indent CDATA #IMPLIED
-	block-indent CDATA #IMPLIED
-	xml:lang NMTOKEN #IMPLIED
+	%blockAtts;
 >
 
 <!--
@@ -140,3 +193,7 @@
 	Break line
 -->
 <!ELEMENT br EMPTY>
+<!ELEMENT page-number EMPTY>
+<!ATTLIST page-number
+	ref-id IDREF #REQUIRED
+>

@@ -6,7 +6,7 @@ package org.daisy.dotify.formatter;
  * @author Joel Håkansson, TPB
  *
  */
-public class Marker {
+public class Marker implements BlockContents {
 	private String name;
 	private String value;
 	
@@ -37,5 +37,9 @@ public class Marker {
 	 */
 	public String getValue() {
 		return value;
+	}
+
+	public ContentType getContentType() {
+		return ContentType.MARKER;
 	}
 }

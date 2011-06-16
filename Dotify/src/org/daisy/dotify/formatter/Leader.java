@@ -9,7 +9,7 @@ package org.daisy.dotify.formatter;
  * 
  * @author Joel Håkansson, TPB
  */
-public class Leader {
+public class Leader implements BlockContents {
 	/**
 	 * Alignment values for leaders
 	 */
@@ -126,6 +126,10 @@ public class Leader {
 	 */
 	public Alignment getAlignment() {
 		return align;
+	}
+
+	public ContentType getContentType() {
+		return ContentType.LEADER;
 	}
 
 }

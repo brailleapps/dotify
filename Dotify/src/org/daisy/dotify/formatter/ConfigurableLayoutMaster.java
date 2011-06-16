@@ -21,7 +21,7 @@ public class ConfigurableLayoutMaster implements LayoutMaster {
 	protected final int outerMargin;
 	protected final float rowSpacing;
 	protected final boolean duplex;
-	protected final ArrayList<Template> templates;
+	protected final ArrayList<PageTemplate> templates;
 	
 	/**
 	 * Configuration class for a ConfigurableLayoutMaster
@@ -38,12 +38,12 @@ public class ConfigurableLayoutMaster implements LayoutMaster {
 		int outerMargin = 0;
 		float rowSpacing = 1;
 		boolean duplex = true;
-		ArrayList<Template> templates;
+		ArrayList<PageTemplate> templates;
 
 		public Builder(int pageWidth, int pageHeight) {
 			this.pageWidth = pageWidth;
 			this.pageHeight = pageHeight;
-			this.templates = new ArrayList<Template>();
+			this.templates = new ArrayList<PageTemplate>();
 		}
 		
 		public Builder headerHeight(int value) {
@@ -76,7 +76,7 @@ public class ConfigurableLayoutMaster implements LayoutMaster {
 			return this;
 		}
 		
-		public Builder addTemplate(Template value) {
+		public Builder addTemplate(PageTemplate value) {
 			this.templates.add(value);
 			return this;
 		}
@@ -141,13 +141,13 @@ public class ConfigurableLayoutMaster implements LayoutMaster {
 		return duplex;
 	}
 	
-	public Template getTemplate(int pagenum) {
-		for (Template t : templates) {
+	public PageTemplate getTemplate(int pagenum) {
+		for (PageTemplate t : templates) {
 			if (t.appliesTo(pagenum)) { return t; }
 		}
 		// if no template applies, an empty template should be returned
 		// since adding templates is optional in Builder
-		return new SimpleTemplate();
+		return new DefaultPageTemplate();
 	}
 
 }

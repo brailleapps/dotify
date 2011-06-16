@@ -23,7 +23,6 @@ public interface Paginator extends Closeable {
 	
 	/**
 	 * Opens for writing to the supplied writer 
-	 * @param writer the PagedMediaWriter to use
 	 */
 	public void open();
 
@@ -50,6 +49,8 @@ public interface Paginator extends Closeable {
 	 * @param row the row to add
 	 */
 	public void newRow(Row row);
+	
+	public void newRow(Row row, String id);
 	
 	/**
 	 * Inserts markers that cannot be assigned to a row at the current position

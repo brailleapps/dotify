@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>Expression is a small expressions language interpreter. The language 
@@ -38,6 +39,25 @@ public class Expression {
 			doEvaluate(exprs[i]);
 		}
 		return doEvaluate(exprs[exprs.length-1]);
+	}
+	
+	/**
+	 * Evaluates this expression by first replacing any occurrences of the supplied variable
+	 * names (prefixed by $) with the corresponding values in the map. The variable names must only
+	 * contain word characters.
+	 * 
+	 * @param expr
+	 * @param variables
+	 * @return returns the evaluation result
+	 */
+	public Object evaluate(String expr, Map<String, String> variables) {
+		if (variables==null) {
+			return evaluate(expr);
+		}
+		for (String varName : variables.keySet()) {
+			expr = expr.replaceAll("\\$"+varName+"(?=\\W)", variables.get(varName));
+		}
+		return evaluate(expr);
 	}
 
 	private Object doEvaluate(String expr) {

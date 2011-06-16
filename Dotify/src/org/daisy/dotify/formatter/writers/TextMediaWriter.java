@@ -76,16 +76,23 @@ public class TextMediaWriter implements PagedMediaWriter {
 		state.assertOpen();
 		pst.println();
 	}
+	
+
+	public void newVolume(SectionProperties master) {
+		state.assertOpen();
+		closeOpenVolume();
+		/*
+		cCols = master.getPageWidth();
+		cRows = master.getPageHeight();
+		cRowgap = Math.round((master.getRowSpacing()-1)*4);
+		cDuplex = master.duplex();*/
+		hasOpenVolume = true;
+	}
 
 	public void newSection(SectionProperties master) {
 		state.assertOpen();
 		if (!hasOpenVolume) {
-			/*
-			cCols = master.getPageWidth();
-			cRows = master.getPageHeight();
-			cRowgap = Math.round((master.getRowSpacing()-1)*4);
-			cDuplex = master.duplex();*/
-			hasOpenVolume = true;
+			newVolume(master);
 		}
 		closeOpenSection();
 		hasOpenSection = true;
@@ -120,5 +127,6 @@ public class TextMediaWriter implements PagedMediaWriter {
 		pst.close();
 		state.close();
 	}
+
 
 }

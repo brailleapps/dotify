@@ -28,14 +28,6 @@ public class BlockImpl extends Stack<Row> implements Block {
 		this.keepWithNext = 0;
 		this.id = "";
 	}
-	/*
-	public void pushRow(Row row) {
-		this.push(row);
-	}
-	
-	public Row popRow() {
-		return this.pop();
-	}*/
 	
 	public void addMarker(Marker m) {
 		if (isEmpty()) {
@@ -64,12 +56,7 @@ public class BlockImpl extends Stack<Row> implements Block {
 	public ArrayList<String> getGroupAnchors() {
 		return groupAnchors;
 	}
-	
-	public Row[] toArray() {
-		Row[] ret = new Row[this.size()];
-		return super.toArray(ret);
-	}
-	
+
 	public int getSpaceBefore() {
 		return spaceBefore;
 	}
@@ -119,5 +106,9 @@ public class BlockImpl extends Stack<Row> implements Block {
 	}
 	
 	private static final long serialVersionUID = -3120988813614814721L;
+
+	public int getRowCount() {
+		return this.size();
+	}
 
 }

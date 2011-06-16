@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.daisy.dotify.formatter.impl.FormatterImpl;
-import org.daisy.dotify.formatter.impl.PaginatorImpl;
 import org.daisy.dotify.formatter.writers.TextMediaWriter;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.system.InternalTask;
@@ -17,8 +15,10 @@ import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.tasks.LayoutEngineTask;
 import org.daisy.dotify.system.tasks.ValidatorTask;
 import org.daisy.dotify.system.tasks.XsltTask;
+import org.daisy.dotify.text.FilterFactory;
+import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.RegexFilter;
-import org.daisy.dotify.translator.BrailleFilterFactory;
+import org.daisy.dotify.text.StringFilter;
 
 
 /**
@@ -64,14 +64,18 @@ public class SwedishTextSystem implements TaskSystem {
 		setup.add(new ValidatorTask("FLOW validator", flowValidationURL));
 
 		// Layout FLOW as text
-		BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
-		factory.setDefault(new RegexFilter("\\u200B", ""));
+		MyFilterFactory factory = new MyFilterFactory();
 		TextMediaWriter paged = new TextMediaWriter(p.getProperties(), "UTF-8");
-		PaginatorImpl paginator = new PaginatorImpl(factory.getDefault());
-		FormatterImpl flow = new FormatterImpl(factory);
-		setup.add(new LayoutEngineTask("FLOW to Text converter", flow, paginator, paged));
+		setup.add(new LayoutEngineTask("FLOW to Text converter", factory, FilterLocale.parse("sv-SE"), paged));
 
 		return setup;
+	}
+	
+	private static class MyFilterFactory implements FilterFactory {
+		public StringFilter newStringFilter(FilterLocale target) {
+			// remove zero width space
+			return new RegexFilter("\\u200B", "");
+		}
 	}
 
 }

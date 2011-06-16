@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * for the pages to which it applies.
  * @author Joel Håkansson, TPB
  */
-public interface Template {
+public interface PageTemplate {
 	
 	/**
 	 * Get the header height.

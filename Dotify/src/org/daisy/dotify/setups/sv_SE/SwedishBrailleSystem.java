@@ -29,6 +29,7 @@ import org.daisy.dotify.system.tasks.ValidatorTask;
 import org.daisy.dotify.system.tasks.VolumeCoverPageTask;
 import org.daisy.dotify.system.tasks.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.translator.BrailleFilterFactory;
 import org.xml.sax.SAXException;
 
@@ -123,13 +124,11 @@ public class SwedishBrailleSystem implements TaskSystem {
 		p2.remove("tempFilesDirectory");
 
 		PEFMediaWriter paged = new PEFMediaWriter(p2);
-		factory.setDefault(sv_SE);
-		PaginatorImpl paginator = new PaginatorImpl(factory.getDefault());
-		FormatterImpl flow = new FormatterImpl(factory);
-		setup.add(new LayoutEngineTask("FLOW to PEF converter", flow, paginator, paged));
+		StringFilter swedishFilter = factory.newStringFilter(sv_SE);
+		setup.add(new LayoutEngineTask("FLOW to PEF converter", factory, sv_SE, paged));
 
 		// Split result into volumes
-		setup.add(new XsltTask("Volume splitter", volumeSplitter, null, h));
+		//setup.add(new XsltTask("Volume splitter", volumeSplitter, null, h));
 
 		// Add a title page first in each volume
     	TextBorder tb = new TextBorder.Builder(p.getFlowWidth()+p.getInnerMargin()).
@@ -145,7 +144,7 @@ public class SwedishBrailleSystem implements TaskSystem {
     						build();
     	SwedishVolumeCoverPage cover;
 		try {
-			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, factory.getDefault(), p.getPageHeight());
+			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, swedishFilter, p.getPageHeight());
 		} catch (XPathExpressionException e) {
 			throw new TaskSystemException(e);
 		} catch (ParserConfigurationException e) {

@@ -11,30 +11,30 @@ import org.daisy.dotify.formatter.PageSequence;
 import org.daisy.dotify.formatter.PageStruct;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.tools.StateObject;
 
 
 public class PaginatorImpl implements Paginator, CurrentPageInfo {
-	private final PageStructImpl pageStruct;
+	private PageStructImpl pageStruct;
 	private StateObject state;
 	//private HashMap<String, LayoutMaster> templates;
 
-	public PaginatorImpl(StringFilter filters) { //HashMap<String, LayoutMaster> templates
-		this.pageStruct = new PageStructImpl(filters);
+	public PaginatorImpl() { //HashMap<String, LayoutMaster> templates
+		
 		this.state = new StateObject();
 		//this.templates = templates;
 	}
 	
 	public void open() {
 		state.assertUnopened();
+		this.pageStruct = new PageStructImpl();
 		state.open();
 	}
 
 	public void newSequence(LayoutMaster master, int pagesOffset) {
 		state.assertOpen();
 		//sequence.push(new PageSequence(templates.get(masterName)));
-		pageStruct.push(new PageSequenceImpl(master, pagesOffset));
+		pageStruct.push(new PageSequenceImpl(master, pagesOffset, pageStruct.pageReferences));
 	}
 	
 	public void newSequence(LayoutMaster master) {
@@ -66,10 +66,15 @@ public class PaginatorImpl implements Paginator, CurrentPageInfo {
 		state.assertOpen();
 		((PageSequenceImpl)currentSequence()).newRow(row);
 	}
+	
+	public void newRow(Row row, String id) {
+		state.assertOpen();
+		((PageSequenceImpl)currentSequence()).newRow(row, id);
+	}
 
 	public void insertMarkers(ArrayList<Marker> m) {
 		state.assertOpen();
-		((PageSequenceImpl)currentSequence()).currentPage().addMarkers(m);
+		((PageImpl)((PageSequenceImpl)currentSequence()).currentPage()).addMarkers(m);
 	}
 /*
 	public LayoutMaster getCurrentLayoutMaster() {
@@ -84,12 +89,12 @@ public class PaginatorImpl implements Paginator, CurrentPageInfo {
 	public int countRows() {
 		state.assertOpen();
 		//return currentSequence().rowsOnCurrentPage();
-		return currentPage().rowsOnPage();
+		return ((PageImpl)currentPage()).rowsOnPage();
 	}
 	
 	public int getFlowHeight() {
 		state.assertOpen();
-		return currentPage().getFlowHeight();
+		return ((PageImpl)currentPage()).getFlowHeight();
 	}
 	// End CurrentPageInfo
 

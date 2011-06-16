@@ -1,8 +1,18 @@
 package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.text.StringFilter;
 
 
-public interface PageStruct extends Iterable<PageSequence> {
-	public StringFilter getFilter();
+
+/**
+ * Provides a page oriented structure
+ * @author Joel Håkansson
+ */
+public interface PageStruct extends CrossReferences {
+	
+	/**
+	 * Gets the contents
+	 * @return returns the content
+	 */
+	public Iterable<PageSequence> getContents();
+
 }

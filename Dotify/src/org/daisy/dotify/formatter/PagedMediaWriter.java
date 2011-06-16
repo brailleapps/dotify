@@ -20,6 +20,12 @@ import java.io.OutputStream;
  * @author Joel Håkansson, TPB
  */
 public interface PagedMediaWriter extends Closeable {
+	
+	/**
+	 * Inserts a new volume in the output format,
+	 * if applicable
+	 */
+	public void newVolume(SectionProperties props);
 
 	/**
 	 * Insert a new section in the output format, 

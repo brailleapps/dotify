@@ -77,6 +77,9 @@ public class PEFMediaWriter implements PagedMediaWriter {
 	public void newPage() {
 		state.assertOpen();
 		closeOpenPage();
+		if (!hasOpenSection) {
+			throw new IllegalStateException("No open section.");
+		}
 		pst.println("<page>");
 		hasOpenPage = true;
 	}
@@ -93,20 +96,26 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		state.assertOpen();
 		pst.println("<row/>");
 	}
+	
+	public void newVolume(SectionProperties master) {
+		state.assertOpen();
+		closeOpenVolume();
+		cCols = master.getPageWidth();
+		cRows = master.getPageHeight();
+		cRowgap = Math.round((master.getRowSpacing()-1)*4);
+		cDuplex = master.duplex();
+		pst.println("<volume cols=\"" + cCols + 
+				"\" rows=\"" + cRows +
+				"\" rowgap=\"" + cRowgap +
+				"\" duplex=\"" + cDuplex +
+				"\">");
+		hasOpenVolume = true;
+	}
 
 	public void newSection(SectionProperties master) {
 		state.assertOpen();
 		if (!hasOpenVolume) {
-			cCols = master.getPageWidth();
-			cRows = master.getPageHeight();
-			cRowgap = Math.round((master.getRowSpacing()-1)*4);
-			cDuplex = master.duplex();
-			pst.println("<volume cols=\"" + cCols + 
-					"\" rows=\"" + cRows +
-					"\" rowgap=\"" + cRowgap +
-					"\" duplex=\"" + cDuplex +
-					"\">");
-			hasOpenVolume = true;
+			newVolume(master);
 		}
 		closeOpenSection();
 		pst.print("<section");

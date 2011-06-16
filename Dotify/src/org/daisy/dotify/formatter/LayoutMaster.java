@@ -13,6 +13,6 @@ public interface LayoutMaster extends SectionProperties {
 	 * @param pagenum the page number to get the template for
 	 * @return returns the template
 	 */
-	public Template getTemplate(int pagenum);
+	public PageTemplate getTemplate(int pagenum);
 
 }

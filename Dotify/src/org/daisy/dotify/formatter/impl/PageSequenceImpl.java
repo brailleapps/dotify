@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -12,26 +13,28 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private Stack<Page> pages;
 		private LayoutMaster master;
 		private int pagesOffset;
+		private final HashMap<String, Integer> pageReferences;
 		
-		public PageSequenceImpl(LayoutMaster master, int pagesOffset) {
+		public PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Integer> pageReferences) {
 			this.pages = new Stack<Page>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
+			this.pageReferences = pageReferences;
 		}
 
 		public int rowsOnCurrentPage() {
-			return currentPage().rowsOnPage();
+			return ((PageImpl)currentPage()).rowsOnPage();
 		}
 		
 		public void newPage() {
-			pages.push(new Page(this, pages.size()+pagesOffset));
+			pages.push(new PageImpl(this, pages.size()+pagesOffset));
 		}
 		
-		public int getOffset() {
+		public int getPageNumberOffset() {
 			return pagesOffset;
 		}
 		
-		public int getSize() {
+		public int getPageCount() {
 			return pages.size();
 		}
 		
@@ -44,10 +47,17 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		}
 		
 		public void newRow(Row row) {
-			if (currentPage().rowsOnPage()>=currentPage().getFlowHeight()) {
+			if (((PageImpl)currentPage()).rowsOnPage()>=((PageImpl)currentPage()).getFlowHeight()) {
 				newPage();
 			}
-			currentPage().newRow(row);
+			((PageImpl)currentPage()).newRow(row);
+		}
+		
+		public void newRow(Row row, String id) {
+			newRow(row);
+			if (pageReferences.put(id, (currentPage().getPageIndex()+1))!=null) {
+				throw new IllegalArgumentException("Identifier not unique: " + id);
+			}
 		}
 		
 		public LayoutMaster getLayoutMaster() {
