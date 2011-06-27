@@ -665,8 +665,66 @@
 				<footer></footer>
 			</default-template>
 		</layout-master>
+		<xsl:if test="//dtb:level1[@class='toc']">
+			<table-of-contents name="full-toc">
+				<xsl:apply-templates select="//dtb:level1" mode="toc"/>
+			</table-of-contents>
+		</xsl:if>
+	<volume-template volume-number-variable="volume" volume-count-variable="volumes">
+		<pre-content>
+			<xsl:if test="//dtb:level1[@class='toc']">
+			<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
+				<on-toc-start>
+					<block margin-bottom="1">Innehåll</block>
+					<block margin-bottom="1">Sidhänvisningar till svartskriftsboken står inom parentes.</block>
+				</on-toc-start>
+				<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
+					<block keep="all" keep-with-next="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+				</on-volume-start>
+				<on-volume-start use-when="(&amp; (> $volumes 1) (> $started-volume-number 1))">
+					<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+				</on-volume-start>
+			</toc-sequence>
+			<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
+				<on-toc-start>
+					<block margin-bottom="1">Innehåll volym <evaluate expression="(round $volume)"/></block>
+				</on-toc-start>
+			</toc-sequence>
+			</xsl:if>
+		</pre-content>
+		<post-content/>
+	</volume-template>
 	</xsl:template>
+	
+	<xsl:template match="dtb:level1[@class='toc']"></xsl:template>
 
+	<xsl:template match="dtb:level1[@class='toc']" mode="toc"></xsl:template>	
+		
+	<xsl:template match="dtb:level1|dtb:level2" mode="toc">
+		<xsl:if test="dtb:h1|dtb:h2">
+			<xsl:choose>
+				<xsl:when test="self::dtb:level1 and @class='part'"><toc-entry ref-id="{generate-id(.)}" margin-top="1" margin-bottom="1"><xsl:apply-templates select="dtb:h1" mode="toc-hd"/></toc-entry><xsl:apply-templates mode="toc"/></xsl:when>
+				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="2"><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="dtb:level3|dtb:level4|dtb:level5|dtb:level6" mode="toc">
+		<xsl:if test="dtb:h3|dtb:h4|dtb:h5|dtb:h6">
+			<toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="1"><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
+			<xsl:if test="dtb:level3 and ancestor::dtb:level1[@class='part']"><xsl:apply-templates mode="toc"/></xsl:if>
+			</toc-entry>
+			<xsl:if test="not(dtb:level3 and ancestor::dtb:level1[@class='part'])"><xsl:apply-templates mode="toc"/></xsl:if>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="dtb:h1|dtb:h2|dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd">
+		<xsl:value-of select="descendant::text()"/>
+		<xsl:if test="not(self::dtb:h1 and ancestor::dtb:level1[@class='part'])"><xsl:text> (</xsl:text><xsl:value-of select="preceding::dtb:pagenum[1]/text()"/><xsl:text>) </xsl:text><leader position="100%" align="right" pattern="."/><page-number ref-id="{generate-id(.)}"/></xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="node()" mode="toc"/>
+	
 	<!-- Svenska skrivregler för punktskrift 2009, page 34 -->
 	<xsl:template match="dtb:em[not(ancestor::dtb:list[@class='toc'])]" mode="inline-mode">
 		<xsl:call-template name="addMarkers">

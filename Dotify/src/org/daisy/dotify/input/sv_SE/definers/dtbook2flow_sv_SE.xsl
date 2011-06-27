@@ -23,7 +23,7 @@
 		- komplexa sub, sup
 		- länkar, e-postadresser
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" exclude-result-prefixes="dtb">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" exclude-result-prefixes="dtb xs">
 
 	<xsl:import href="../../common/definers/dtbook2flow.xsl"/>
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
@@ -60,6 +60,7 @@
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 		<!--
 		<xsl:if test="parent::dtb:level1/preceding-sibling::dtb:level1">
 			<xsl:attribute name="break-before">page</xsl:attribute>
@@ -72,6 +73,7 @@
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:h3" mode="apply-block-attributes">
 		<xsl:attribute name="margin-top">1</xsl:attribute>
@@ -80,6 +82,7 @@
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:h4" mode="apply-block-attributes">
 		<xsl:attribute name="margin-top">1</xsl:attribute>
@@ -88,6 +91,7 @@
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:h5" mode="apply-block-attributes">
 		<xsl:attribute name="margin-top">1</xsl:attribute>
@@ -96,43 +100,51 @@
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:h6" mode="apply-block-attributes">
 		<xsl:attribute name="margin-top">1</xsl:attribute>
 		<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level1" mode="apply-block-attributes">
 		<xsl:attribute name="break-before">page</xsl:attribute>
 		<xsl:if test="not(dtb:h1)">
 			<xsl:attribute name="margin-top">3</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level2" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h2)">
 			<xsl:attribute name="margin-top">2</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level3" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h3)">
 			<xsl:attribute name="margin-top">1</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level4" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h4)">
 			<xsl:attribute name="margin-top">1</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level5" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h5)">
 			<xsl:attribute name="margin-top">1</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level6" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h6)">
 			<xsl:attribute name="margin-top">1</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:blockquote" mode="apply-block-attributes">
 		<xsl:attribute name="margin-left">2</xsl:attribute>
