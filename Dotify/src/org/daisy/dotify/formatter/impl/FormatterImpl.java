@@ -17,6 +17,7 @@ import org.daisy.dotify.formatter.SpanProperties;
 import org.daisy.dotify.formatter.utils.BlockHandler;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.tools.StateObject;
 
 
@@ -31,6 +32,7 @@ public class FormatterImpl implements Formatter {
 	private final Stack<BlockProperties> context;
 	private boolean firstRow;
 	private final StateObject state;
+	private StringFilter filter;
 
 	private FilterFactory filtersFactory;
 	private FilterLocale locale;
@@ -50,6 +52,7 @@ public class FormatterImpl implements Formatter {
 		this.rightMargin = 0;
 		this.flowStruct = new BlockStructImpl(); //masters
 		this.state = new StateObject();
+		this.filter = null;
 	}
 
 
@@ -61,11 +64,12 @@ public class FormatterImpl implements Formatter {
 	public void setLocale(FilterLocale locale) {
 		state.assertUnopened();
 		this.locale = locale;
+		filter = null;
 	}
 	
 	public void open() {
 		state.assertUnopened();
-		bh = new BlockHandler(filtersFactory.newStringFilter(locale));
+		bh = new BlockHandler(getDefaultFilter());
 		state.open();
 	}
 
@@ -108,8 +112,12 @@ public class FormatterImpl implements Formatter {
 		state.assertOpen();
 		flowStruct.getCurrentSequence().getCurrentBlock().addMarker(m);
 	}
-
+	
 	public void startBlock(BlockProperties p) {
+		startBlock(p, null);
+	}
+
+	public void startBlock(BlockProperties p, String blockId) {
 		state.assertOpen();
 		assert bh.getCurrentLeader() == null;
 		if (context.size()>0) {
@@ -128,7 +136,7 @@ public class FormatterImpl implements Formatter {
 				bh.setListItem(listLabel, context.peek().getListType());
 			}
 		}
-		BlockImpl c = flowStruct.getCurrentSequence().newBlock();
+		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId);
 		c.addSpaceBefore(p.getTopMargin());
 		c.setBreakBeforeType(p.getBreakBeforeType());
 		c.setKeepType(p.getKeepType());
@@ -153,7 +161,7 @@ public class FormatterImpl implements Formatter {
 		BlockProperties p = context.pop();
 		flowStruct.getCurrentSequence().getCurrentBlock().addSpaceAfter(p.getBottomMargin());
 		if (context.size()>0) {
-			BlockImpl c = flowStruct.getCurrentSequence().newBlock();
+			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null);
 			c.setKeepType(context.peek().getKeepType());
 			c.setKeepWithNext(context.peek().getKeepWithNext());
 			bh.subtractFromBlockIndent(context.peek().getBlockIndent());
@@ -204,19 +212,37 @@ public class FormatterImpl implements Formatter {
 
 	public void endFloat() {
 		state.assertOpen();
-		// TODO Auto-generated method stub
-		
+		// TODO implement float
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	public void insertAnchor(String ref) {
 		state.assertOpen();
-		// TODO Auto-generated method stub
-		
+		// TODO implement anchor
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	public void startFloat(String id) {
 		state.assertOpen();
-		// TODO Auto-generated method stub
-		
+		// TODO implement float
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+
+	public FilterFactory getFilterFactory() {
+		return filtersFactory;
+	}
+
+
+	public FilterLocale getFilterLocale() {
+		return locale;
+	}
+
+
+	public StringFilter getDefaultFilter() {
+		if (filter == null) {
+			filter = filtersFactory.newStringFilter(locale);
+		}
+		return filter;
 	}
 }

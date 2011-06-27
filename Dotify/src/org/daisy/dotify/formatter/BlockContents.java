@@ -1,6 +1,8 @@
 package org.daisy.dotify.formatter;
 
-public interface BlockContents {
-	public enum ContentType {PCDATA, LEADER, MARKER, ANCHOR, BR, EVALUATE, BLOCK, PAGE_NUMBER};  
-	public ContentType getContentType();
+import java.util.Map;
+
+public interface BlockContents extends EventContents {
+
+	public void setEvaluateContext(Map<String, String> vars);
 }

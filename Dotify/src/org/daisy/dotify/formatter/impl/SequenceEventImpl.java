@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.Map;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.SequenceEvent;
@@ -24,5 +25,11 @@ public class SequenceEventImpl extends Stack<BlockEvent> implements SequenceEven
 
 	public Type getType() {
 		return Type.STATIC;
+	}
+
+	public void setEvaluateContext(Map<String, String> vars) {
+		for (BlockEvent e : this) {
+			e.setEvaluateContext(vars);
+		}
 	}
 }

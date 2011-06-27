@@ -12,4 +12,7 @@ public interface VolumeTemplate {
 	public Iterable<VolumeSequence> getPreVolumeContent();
 	
 	public Iterable<VolumeSequence> getPostVolumeContent();
+	
+	public String getVolumeNumberVariableName();
+	public String getVolumeCountVariableName();
 }

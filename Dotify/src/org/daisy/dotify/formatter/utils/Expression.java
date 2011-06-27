@@ -59,6 +59,14 @@ public class Expression {
 		}
 		return evaluate(expr);
 	}
+	
+	public Object evaluate(String expr, String ... vars) {
+		for (String var : vars) {
+			String[] v = var.split("=", 2);
+			expr = expr.replaceAll("\\$"+v[0]+"(?=\\W)", v[1]);
+		}
+		return evaluate(expr);
+	}
 
 	private Object doEvaluate(String expr) {
 		

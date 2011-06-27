@@ -24,7 +24,7 @@ public interface Paginator extends Closeable {
 	/**
 	 * Opens for writing to the supplied writer 
 	 */
-	public void open();
+	public void open(FormatterFactory formatterFactory);
 
 	/**
 	 * Adds a new sequence of pages
@@ -57,6 +57,12 @@ public interface Paginator extends Closeable {
 	 * @param m ArrayList of Markers to insert at the current position
 	 */
 	public void insertMarkers(ArrayList<Marker> m);
+	
+	/**
+	 * Inserts an id that cannot be assigned to a row at the current position
+	 * @param id the identifier
+	 */
+	public void insertIdentifier(String id);
 	
 	/**
 	 * Gets information about the current page

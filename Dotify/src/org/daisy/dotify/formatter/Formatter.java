@@ -4,6 +4,7 @@ import java.io.Closeable;
 
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.StringFilter;
 
 
 /**
@@ -16,7 +17,13 @@ import org.daisy.dotify.text.FilterLocale;
  */
 public interface Formatter extends Closeable {
 	
+	public FilterFactory getFilterFactory();
+	
 	public void setFilterFactory(FilterFactory filterFactory);
+	
+	public StringFilter getDefaultFilter();
+	
+	public FilterLocale getFilterLocale();
 	
 	public void setLocale(FilterLocale locale);
 	
@@ -36,6 +43,8 @@ public interface Formatter extends Closeable {
 	 * @param props the BlockProperties of the new block
 	 */
 	public void startBlock(BlockProperties props);
+	
+	public void startBlock(BlockProperties props, String blockId);
 
 	/**
 	 * End the current block

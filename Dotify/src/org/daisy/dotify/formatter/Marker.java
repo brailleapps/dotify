@@ -6,7 +6,7 @@ package org.daisy.dotify.formatter;
  * @author Joel Håkansson, TPB
  *
  */
-public class Marker implements BlockContents {
+public class Marker implements EventContents {
 	private String name;
 	private String value;
 	
@@ -41,5 +41,9 @@ public class Marker implements BlockContents {
 
 	public ContentType getContentType() {
 		return ContentType.MARKER;
+	}
+
+	public boolean canContainEventObjects() {
+		return false;
 	}
 }

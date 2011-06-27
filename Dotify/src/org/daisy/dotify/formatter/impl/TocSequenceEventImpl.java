@@ -9,10 +9,12 @@ import org.daisy.dotify.formatter.ConditionalEvents;
 import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.TocEvents;
 import org.daisy.dotify.formatter.TocSequenceEvent;
+import org.daisy.dotify.formatter.VolumeTemplate;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.tools.CompoundIterable;
 
 public class TocSequenceEventImpl implements TocSequenceEvent {
+	public final static String DEFAULT_EVENT_VOLUME_NUMBER = "started-volume-number";
 	private final SequenceProperties props;
 	private final String tocName;
 	private final TocRange range;
@@ -21,9 +23,10 @@ public class TocSequenceEventImpl implements TocSequenceEvent {
 	private final ArrayList<ConditionalEvents> volumeStartEvents;
 	private final ArrayList<ConditionalEvents> volumeEndEvents;
 	private final ArrayList<ConditionalEvents> tocEndEvents;
+	private final VolumeTemplate template;
+	private final String volEventVariable;
 	
-	
-	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocRange range, String condition) {
+	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocRange range, String condition, String volEventVar, VolumeTemplate template) {
 		this.props = props;
 		this.tocName = tocName;
 		this.range = range;
@@ -32,6 +35,8 @@ public class TocSequenceEventImpl implements TocSequenceEvent {
 		this.volumeStartEvents = new ArrayList<ConditionalEvents>();
 		this.volumeEndEvents = new ArrayList<ConditionalEvents>();
 		this.tocEndEvents = new ArrayList<ConditionalEvents>();
+		this.template = template;
+		this.volEventVariable = (volEventVar!=null?volEventVar:DEFAULT_EVENT_VOLUME_NUMBER);
 	}
 	
 	public void addTocStartEvents(Iterable<BlockEvent> events, String condition) {
@@ -66,10 +71,10 @@ public class TocSequenceEventImpl implements TocSequenceEvent {
 		if (condition==null) {
 			return true;
 		}
-		HashMap<String, String> vars = new HashMap<String, String>();
-		//FIXME: add in some other way
-		vars.put("volume", volume+"");
-		vars.put("volumes", volumeCount+"");
+		String[] vars = new String[] {
+				template.getVolumeNumberVariableName()+"="+volume,
+				template.getVolumeCountVariableName()+"="+volumeCount
+			};
 		return new Expression().evaluate(condition, vars).equals(true);
 	}
 
@@ -77,23 +82,27 @@ public class TocSequenceEventImpl implements TocSequenceEvent {
 		return new TocEventsImpl(volume, volumeCount);
 	}
 	
+	private static Iterable<BlockEvent> getCompoundIterable(Iterable<ConditionalEvents> events, Map<String, String> vars) {
+		ArrayList<Iterable<BlockEvent>> it = new ArrayList<Iterable<BlockEvent>>();
+		for (ConditionalEvents ev : events) {
+			if (ev.appliesTo(vars)) {
+				Iterable<BlockEvent> tmp = ev.getEvents();
+				for (BlockEvent e : tmp) {
+					e.setEvaluateContext(vars);
+				}
+				it.add(tmp);
+			}
+		}
+		return new CompoundIterable<BlockEvent>(it);
+	}
+
 	private class TocEventsImpl implements TocEvents {
 		private final HashMap<String, String> vars;
 		
 		public TocEventsImpl(int volume, int volumeCount) {
 			vars = new HashMap<String, String>();
-			//FIXME:
-			vars.put("volume", volume+"");
-		}
-		
-		private Iterable<BlockEvent> getCompoundIterable(Iterable<ConditionalEvents> events, Map<String, String> vars) {
-			ArrayList<Iterable<BlockEvent>> it = new ArrayList<Iterable<BlockEvent>>();
-			for (ConditionalEvents ev : events) {
-				if (ev.appliesTo(vars)) {
-					it.add(ev.getEvents());
-				}
-			}
-			return new CompoundIterable<BlockEvent>(it);
+			vars.put(template.getVolumeNumberVariableName(), volume+"");
+			vars.put(template.getVolumeCountVariableName(), volumeCount+"");
 		}
 
 		public Iterable<BlockEvent> getTocStartEvents() {
@@ -101,21 +110,22 @@ public class TocSequenceEventImpl implements TocSequenceEvent {
 		}
 
 		public Iterable<BlockEvent> getVolumeStartEvents(int forVolume) {
-			//FIXME:
-			vars.put("started-volume-number", forVolume+"");
-			return getCompoundIterable(volumeStartEvents, vars);
+			HashMap<String, String> v2 = new HashMap<String, String>();
+			v2.putAll(vars);
+			v2.put(volEventVariable, forVolume+"");
+			return getCompoundIterable(volumeStartEvents, v2);
 		}
 
 		public Iterable<BlockEvent> getVolumeEndEvents(int forVolume) {
-			//FIXME:
-			vars.put("started-volume-number", forVolume+"");
-			return getCompoundIterable(volumeEndEvents, vars);
+			HashMap<String, String> v2 = new HashMap<String, String>();
+			v2.putAll(vars);
+			v2.put(volEventVariable, forVolume+"");
+			return getCompoundIterable(volumeEndEvents, v2);
 		}
 
 		public Iterable<BlockEvent> getTocEndEvents() {
 			return getCompoundIterable(tocEndEvents, vars);
 		}
-		
 	}
 
 	public SequenceProperties getSequenceProperties() {

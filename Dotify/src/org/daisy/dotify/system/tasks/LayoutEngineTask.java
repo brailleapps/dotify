@@ -14,7 +14,6 @@ import javax.xml.validation.Schema;
 
 import org.daisy.dotify.formatter.BookStruct;
 import org.daisy.dotify.formatter.DefaultBookStruct;
-import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.PageStruct;
 import org.daisy.dotify.formatter.PagedMediaWriter;
@@ -83,49 +82,51 @@ public class LayoutEngineTask extends InternalTask  {
 				spf.setSchema(schema);
 			}
 			SAXParser sp = spf.newSAXParser();*/
+
+			logger.info("Reading input...");
 	        XMLInputFactory inFactory = XMLInputFactory.newInstance();
 			inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
 	        inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
 	        inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
 	        inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
 	        XMLEventReader reader = inFactory.createXMLEventReader(new FileInputStream(input));
-	        
-			FormatterFactory formatterFactory = FormatterFactory.newInstance();
-			formatterFactory.setFilterFactory(filterFactory);
-			formatterFactory.setLocale(locale);
 			
-			Formatter performer = formatterFactory.newFormatter();
-			
-			logger.info("Reading input...");
 /* SAX impl
 			performer.open();
 			FlowHandler flow = new FlowHandler(performer);
 			sp.parse(input, flow);*/
-			
-	        StaxFlowHandler flow = new StaxFlowHandler(performer);
+
+			FormatterFactory formatterFactory = FormatterFactory.newInstance();
+			formatterFactory.setFilterFactory(filterFactory);
+			formatterFactory.setLocale(locale);
+
+	        StaxFlowHandler flow = new StaxFlowHandler(formatterFactory);
 	        flow.parse(reader);
 
-			performer.close();
-			
 			logger.info("Paginating...");
 			Paginator paginator = PaginatorFactory.newInstance().newPaginator();
-			paginator.open();
+			paginator.open(formatterFactory);
 
-			PaginatorHandler.paginate(performer.getFlowStruct(), paginator);
+			PaginatorHandler.paginate(flow.getBlockStruct().getBlockSequenceIterable(), paginator);
 			paginator.close();
 
 			PageStruct pageStruct = paginator.getPageStruct();
-
-			//FIXME: remove factory here:
-			BookStruct bookStruct = new DefaultBookStruct(pageStruct, flow.getMasters(), flow.getVolumeTemplates(), flow.getTocs(), formatterFactory);
-			VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
 			
 			//FIXME: add target size variable (use splitterMax?)
 			//splitterFactory.setTargetVolumeSize(targetVolumeSize);
+			VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
+
+			BookStruct bookStruct = new DefaultBookStruct(
+					pageStruct,
+					flow.getMasters(),
+					flow.getVolumeTemplates(),
+					flow.getTocs(),
+					formatterFactory
+				);
 
 			logger.info("Writing file...");
 			writer.open(new FileOutputStream(output));
-			WriterHandler.write(bookStruct, filterFactory, locale, splitterFactory, writer);
+			WriterHandler.write(splitterFactory.newSplitter().calculate(bookStruct), writer);
 			writer.close();
 
 		/*} catch (SAXException e) {

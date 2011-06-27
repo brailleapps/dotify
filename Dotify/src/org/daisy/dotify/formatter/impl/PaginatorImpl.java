@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.daisy.dotify.formatter.CurrentPageInfo;
+import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Page;
@@ -17,6 +18,7 @@ import org.daisy.dotify.tools.StateObject;
 public class PaginatorImpl implements Paginator, CurrentPageInfo {
 	private PageStructImpl pageStruct;
 	private StateObject state;
+	private FormatterFactory formatterFactory;
 	//private HashMap<String, LayoutMaster> templates;
 
 	public PaginatorImpl() { //HashMap<String, LayoutMaster> templates
@@ -25,16 +27,17 @@ public class PaginatorImpl implements Paginator, CurrentPageInfo {
 		//this.templates = templates;
 	}
 	
-	public void open() {
+	public void open(FormatterFactory formatterFactory) {
 		state.assertUnopened();
 		this.pageStruct = new PageStructImpl();
+		this.formatterFactory = formatterFactory;
 		state.open();
 	}
 
 	public void newSequence(LayoutMaster master, int pagesOffset) {
 		state.assertOpen();
 		//sequence.push(new PageSequence(templates.get(masterName)));
-		pageStruct.push(new PageSequenceImpl(master, pagesOffset, pageStruct.pageReferences));
+		pageStruct.push(new PageSequenceImpl(master, pagesOffset, pageStruct.pageReferences, formatterFactory));
 	}
 	
 	public void newSequence(LayoutMaster master) {
@@ -109,6 +112,10 @@ public class PaginatorImpl implements Paginator, CurrentPageInfo {
 		}
 		state.assertOpen();
 		state.close();
+	}
+
+	public void insertIdentifier(String id) {
+		((PageSequenceImpl)currentSequence()).insertIdentifier(id);
 	}
 
 }

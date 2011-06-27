@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter;
 
-public class PageNumberReference implements BlockContents {
+public class PageNumberReference implements EventContents {
 	private final String refid;
 	
 	public PageNumberReference(String refid) {
@@ -13,6 +13,10 @@ public class PageNumberReference implements BlockContents {
 	
 	public String getRefId() {
 		return refid;
+	}
+
+	public boolean canContainEventObjects() {
+		return false;
 	}
 
 }

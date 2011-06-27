@@ -20,8 +20,8 @@ public class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 		return p;
 	}*/
 
-	public BlockImpl newBlock() {
-		return (BlockImpl)this.push((Block)new BlockImpl());
+	public BlockImpl newBlock(String blockId) {
+		return (BlockImpl)this.push((Block)new BlockImpl(blockId));
 	}
 	
 	public BlockImpl getCurrentBlock() {
@@ -49,6 +49,10 @@ public class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 
 	public Integer getInitialPageNumber() {
 		return p.getInitialPageNumber();
+	}
+
+	public SequenceProperties getSequenceProperties() {
+		return p;
 	}
 
 }

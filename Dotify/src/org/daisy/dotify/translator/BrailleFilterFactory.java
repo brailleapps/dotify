@@ -1,6 +1,7 @@
 package org.daisy.dotify.translator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -18,7 +19,8 @@ import org.daisy.dotify.text.StringFilter;
  */
 public class BrailleFilterFactory implements FilterFactory {
 	private final ArrayList<BrailleFilter> filters;
-	private Logger logger;
+	private final HashMap<FilterLocale, BrailleFilter> cache;
+	private final Logger logger;
 
 	protected BrailleFilterFactory() {
 		logger = Logger.getLogger(BrailleFilterFactory.class.getCanonicalName());
@@ -29,6 +31,7 @@ public class BrailleFilterFactory implements FilterFactory {
 			f = i.next();
 			filters.add(f);
 		}
+		this.cache = new HashMap<FilterLocale, BrailleFilter>();
 	}
 
 	/**
@@ -50,10 +53,14 @@ public class BrailleFilterFactory implements FilterFactory {
 	 * @return returns a StringFilter for the given locale, or the default StringFilter if no match is found
 	 */
 	public StringFilter newStringFilter(FilterLocale target) {
+		if (cache.containsKey(target)) {
+			return cache.get(target);
+		}
 		for (BrailleFilter ret : filters) {
 			if (ret.supportsLocale(target)) {
-				logger.info("Found a StringFilter for " + target + " (" + ret.getClass() + ")");
+				logger.fine("Found a StringFilter for " + target + " (" + ret.getClass() + ")");
 				ret.setLocale(target);
+				cache.put(target, ret);
 				return ret;
 			}
 		}

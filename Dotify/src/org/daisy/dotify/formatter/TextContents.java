@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter;
 
-public class TextContents implements BlockContents {
+public class TextContents implements EventContents {
 	private final String text;
 	
 	public TextContents(String text) {
@@ -13,5 +13,9 @@ public class TextContents implements BlockContents {
 
 	public String getText() {
 		return text;
+	}
+
+	public boolean canContainEventObjects() {
+		return false;
 	}
 }

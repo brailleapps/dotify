@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,6 +23,7 @@ import org.daisy.dotify.formatter.field.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.field.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.impl.BlockEventImpl;
 import org.daisy.dotify.formatter.impl.SequenceEventImpl;
+import org.daisy.dotify.formatter.impl.TocEventImpl;
 import org.daisy.dotify.formatter.impl.TocSequenceEventImpl;
 import org.daisy.dotify.formatter.utils.Expression;
 
@@ -40,6 +42,7 @@ public class StaxFlowHandler {
 	private final static QName TOC_ENTRY = new QName("toc-entry");
 	private final static QName LEADER = new QName("leader");
 	private final static QName MARKER = new QName("marker");
+	private final static QName ANCHOR = new QName("anchor");
 	private final static QName BR = new QName("br");
 	private final static QName PAGE_NUMBER = new QName("page-number");
 	
@@ -64,15 +67,15 @@ public class StaxFlowHandler {
 	private final HashMap<String, LayoutMaster> masters;
 	private final Stack<VolumeTemplate> volumeTemplates;
 	
-	public StaxFlowHandler(Formatter flow) {
-		this.flow = flow;
+	public StaxFlowHandler(FormatterFactory flow) {
+		this.flow = flow.newFormatter();
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
 	}
 	
 	public void parse(XMLEventReader input) throws XMLStreamException {
-		this.flow.open();
+		flow.open();
 		XMLEvent event;
 		while (input.hasNext()) {
 			event = input.nextEvent();
@@ -86,9 +89,17 @@ public class StaxFlowHandler {
 				parseVolumeTemplate(event, input);
 			}
 		}
+		try {
+			flow.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	//TODO: parse page-number-variable
 	private void parseLayoutMaster(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		@SuppressWarnings("unchecked")
 		Iterator<Attribute> i = event.asStartElement().getAttributes();
 		int width = Integer.parseInt(getAttr(event, ATTR_PAGE_WIDTH));
 		int height = Integer.parseInt(getAttr(event, ATTR_PAGE_HEIGHT));
@@ -307,7 +318,7 @@ public class StaxFlowHandler {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, TOC_ENTRY)) {
-				toc.add(parseTocEntry(event, input));
+				toc.add(parseTocEntry(event, input, toc));
 			} else if (equalsEnd(event, TABLE_OF_CONTENTS)) {
 				break;
 			}
@@ -315,16 +326,20 @@ public class StaxFlowHandler {
 		tocs.put(tocName, toc);
 	}
 
-	//FIXME: not all elements are processed (e.g. Evaluate)
 	@SuppressWarnings("unchecked")
-	private BlockEvent parseTocEntry(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		BlockEventImpl ret = new BlockEventImpl(blockBuilder(event.asStartElement().getAttributes()));
+	private BlockEvent parseTocEntry(XMLEvent event, XMLEventReader input, TableOfContents toc) throws XMLStreamException {
+		String refId = getAttr(event, "ref-id");
+		String tocId;
+		do {
+			tocId = ""+((int)Math.round((99999999*Math.random())));
+		} while (toc.containsTocID(tocId));
+		TocEventImpl ret = new TocEventImpl(refId, tocId, blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
 				ret.add(new TextContents(event.asCharacters().getData()));
 			} else if (equalsStart(event, TOC_ENTRY)) {
-				ret.add(parseTocEntry(event, input));
+				ret.add(parseTocEntry(event, input, toc));
 			} else if (equalsStart(event, LEADER)) {
 				ret.add(parseLeader(event, input));
 			} else if (equalsStart(event, MARKER)) {
@@ -334,6 +349,11 @@ public class StaxFlowHandler {
 				scanEmptyElement(input, BR);
 			} else if (equalsStart(event, PAGE_NUMBER)) {
 				ret.add(parsePageNumber(event, input));
+			} else if (equalsStart(event, ANCHOR)) {
+				//TODO: implement
+				throw new UnsupportedOperationException("Not implemented");
+			} else if (equalsStart(event, EVALUATE)) {
+				ret.add(parseEvaluate(event, input));
 			}
 			else if (equalsEnd(event, TOC_ENTRY)) {
 				break;
@@ -362,7 +382,7 @@ public class StaxFlowHandler {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, PRE_CONTENT)) {
-				template.setPreVolumeContent(parsePreVolumeContent(event, input));
+				template.setPreVolumeContent(parsePreVolumeContent(event, input, template));
 			} else if (equalsStart(event, POST_CONTENT)) {
 				template.setPostVolumeContent(parsePostVolumeContent(event, input));
 			} else if (equalsEnd(event, VOLUME_TEMPLATE)) {
@@ -372,19 +392,18 @@ public class StaxFlowHandler {
 		volumeTemplates.push(template);
 	}
 	
-	private Iterable<VolumeSequence> parsePreVolumeContent(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private Iterable<VolumeSequence> parsePreVolumeContent(XMLEvent event, XMLEventReader input, VolumeTemplate template) throws XMLStreamException {
 		ArrayList<VolumeSequence> ret = new ArrayList<VolumeSequence>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, SEQUENCE)) {
 				ret.add(parseVolumeSequence(event, input));
 			} else if (equalsStart(event, TOC_SEQUENCE)) {
-				ret.add(parseTocSequence(event, input));
+				ret.add(parseTocSequence(event, input, template));
 			} else if (equalsEnd(event, PRE_CONTENT)) {
 				break;
 			}
 		}
-		System.out.println("RET SIZE# " + ret.size());
 		return ret;
 	}
 	
@@ -420,7 +439,7 @@ public class StaxFlowHandler {
 		return volSeq;
 	}
 
-	private VolumeSequence parseTocSequence(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private VolumeSequence parseTocSequence(XMLEvent event, XMLEventReader input, VolumeTemplate template) throws XMLStreamException {
 		String masterName = getAttr(event, "master");
 		String tocName = getAttr(event, "toc");
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
@@ -430,7 +449,8 @@ public class StaxFlowHandler {
 		}
 		TocRange range = TocRange.valueOf(getAttr(event, "range").toUpperCase());
 		String condition = getAttr(event, "use-when");
-		TocSequenceEventImpl tocSequence = new TocSequenceEventImpl(builder.build(), tocName, range, condition);
+		String volEventVar = getAttr(event, "toc-event-volume-number-variable");
+		TocSequenceEventImpl tocSequence = new TocSequenceEventImpl(builder.build(), tocName, range, condition, volEventVar, template);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ON_TOC_START)) {
@@ -509,9 +529,7 @@ public class StaxFlowHandler {
 	}
 	
 	private String getAttr(XMLEvent event, QName attr) {
-		Attribute ret = event.
-		asStartElement().
-		getAttributeByName(attr);
+		Attribute ret = event.asStartElement().getAttributeByName(attr);
 		if (ret==null) {
 			return null;
 		} else {
@@ -539,6 +557,10 @@ public class StaxFlowHandler {
 	
 	public Map<String, LayoutMaster> getMasters() {
 		return masters;
+	}
+	
+	public BlockStruct getBlockStruct() {
+		return flow.getFlowStruct();
 	}
 
 }

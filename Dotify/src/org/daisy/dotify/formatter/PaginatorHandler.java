@@ -15,8 +15,8 @@ public class PaginatorHandler {
 	 * @param paginator the paginator to use
 	 * @throws IOException if IO fails
 	 */
-	public static void paginate(BlockStruct fs, Paginator paginator) throws IOException {
-		for (BlockSequence seq : fs.getBlockSequenceIterable()) {
+	public static void paginate(Iterable<BlockSequence> fs, Paginator paginator) throws IOException {
+		for (BlockSequence seq : fs) {
 			if (seq.getInitialPageNumber()==null) {
 				paginator.newSequence(seq.getLayoutMaster());
 			} else {
@@ -61,6 +61,9 @@ public class PaginatorHandler {
 				}
 				paginator.insertMarkers(g.getGroupMarkers());
 				boolean first = true;
+				if (g.getRowCount()==0 && !"".equals(g.getIdentifier())) {
+					paginator.insertIdentifier(g.getIdentifier());
+				}
 				for (Row row : g) {
 					if (first) {
 						first = false;

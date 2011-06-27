@@ -24,5 +24,6 @@ public interface Block extends Iterable<Row> {
 	public ArrayList<Marker> getGroupMarkers();
 	public BreakBefore getBreakBeforeType();
 	public int getRowCount();
+	public String getBlockIdentifier();
 	
 }

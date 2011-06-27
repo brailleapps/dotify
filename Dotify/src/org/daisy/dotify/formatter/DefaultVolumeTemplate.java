@@ -3,9 +3,9 @@ package org.daisy.dotify.formatter;
 import org.daisy.dotify.formatter.utils.Expression;
 
 public class DefaultVolumeTemplate implements VolumeTemplate {
-	public final static String DEFAULT_VOLUME_VAR_NAME = "volume";
+	public final static String DEFAULT_VOLUME_NUMBER_VARIABLE_NAME = "volume";
 	public final static String DEFAULT_VOLUME_COUNT_VARIABLE_NAME = "volumes";
-	private final String volumeVar, volumeCountVar, condition;
+	private final String volumeNumberVar, volumeCountVar, condition;
 	private Iterable<VolumeSequence> preVolumeContent;
 	private Iterable<VolumeSequence> postVolumeContent;
 	
@@ -14,7 +14,7 @@ public class DefaultVolumeTemplate implements VolumeTemplate {
 	}
 
 	public DefaultVolumeTemplate(String volumeVar, String volumeCountVar, String condition) {
-		this.volumeVar = (volumeVar!=null?volumeVar:DEFAULT_VOLUME_VAR_NAME);
+		this.volumeNumberVar = (volumeVar!=null?volumeVar:DEFAULT_VOLUME_NUMBER_VARIABLE_NAME);
 		this.volumeCountVar = (volumeCountVar!=null?volumeCountVar:DEFAULT_VOLUME_COUNT_VARIABLE_NAME);
 		this.condition = condition;
 	}
@@ -24,7 +24,7 @@ public class DefaultVolumeTemplate implements VolumeTemplate {
 			return true;
 		}
 		return new Expression().evaluate(
-				condition.replaceAll("\\$"+volumeVar+"(?=\\W)", ""+volume).replaceAll("\\$"+volumeCountVar+"(?=\\W)", ""+volumeCount)
+				condition.replaceAll("\\$"+volumeNumberVar+"(?=\\W)", ""+volume).replaceAll("\\$"+volumeCountVar+"(?=\\W)", ""+volumeCount)
 			).equals(true);
 	}
 	
@@ -42,6 +42,14 @@ public class DefaultVolumeTemplate implements VolumeTemplate {
 
 	public Iterable<VolumeSequence> getPostVolumeContent() {
 		return postVolumeContent;
+	}
+
+	public String getVolumeNumberVariableName() {
+		return volumeNumberVar;
+	}
+
+	public String getVolumeCountVariableName() {
+		return volumeCountVar;
 	}
 
 }

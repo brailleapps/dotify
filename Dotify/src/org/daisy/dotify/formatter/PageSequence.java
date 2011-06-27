@@ -18,4 +18,8 @@ public interface PageSequence extends Iterable<Page>, Sequence {
 	 * @return returns the page number offset
 	 */
 	public int getPageNumberOffset();
+	
+	public FormatterFactory getFormatterFactory();
+	
+	public Formatter getFormatter();
 }

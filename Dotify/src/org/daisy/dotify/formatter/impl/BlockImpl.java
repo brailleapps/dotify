@@ -9,6 +9,7 @@ import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
 
 public class BlockImpl extends Stack<Row> implements Block {
+	private String blockId;
 	private int spaceBefore;
 	private int spaceAfter;
 	private ArrayList<Marker> groupMarkers;
@@ -18,7 +19,7 @@ public class BlockImpl extends Stack<Row> implements Block {
 	private int keepWithNext;
 	private String id;
 	
-	public BlockImpl() {
+	public BlockImpl(String blockId) {
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		this.groupMarkers = new ArrayList<Marker>();
@@ -27,6 +28,7 @@ public class BlockImpl extends Stack<Row> implements Block {
 		this.keep = FormattingTypes.Keep.AUTO;
 		this.keepWithNext = 0;
 		this.id = "";
+		this.blockId = blockId;
 	}
 	
 	public void addMarker(Marker m) {
@@ -109,6 +111,10 @@ public class BlockImpl extends Stack<Row> implements Block {
 
 	public int getRowCount() {
 		return this.size();
+	}
+
+	public String getBlockIdentifier() {
+		return blockId;
 	}
 
 }

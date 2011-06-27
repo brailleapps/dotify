@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.Formatter;
+import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Page;
 import org.daisy.dotify.formatter.PageSequence;
@@ -14,12 +16,16 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private LayoutMaster master;
 		private int pagesOffset;
 		private final HashMap<String, Integer> pageReferences;
+		private final FormatterFactory formatterFactory;
+		private Formatter formatter;
 		
-		public PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Integer> pageReferences) {
+		public PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Integer> pageReferences, FormatterFactory formatterFactory) {
 			this.pages = new Stack<Page>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
 			this.pageReferences = pageReferences;
+			this.formatterFactory = formatterFactory;
+			this.formatter = null;
 		}
 
 		public int rowsOnCurrentPage() {
@@ -55,9 +61,7 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		
 		public void newRow(Row row, String id) {
 			newRow(row);
-			if (pageReferences.put(id, (currentPage().getPageIndex()+1))!=null) {
-				throw new IllegalArgumentException("Identifier not unique: " + id);
-			}
+			insertIdentifier(id);
 		}
 		
 		public LayoutMaster getLayoutMaster() {
@@ -66,6 +70,23 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 
 		public Iterator<Page> iterator() {
 			return pages.iterator();
+		}
+		
+		public void insertIdentifier(String id) {
+			if (pageReferences.put(id, (currentPage().getPageIndex()+1))!=null) {
+				throw new IllegalArgumentException("Identifier not unique: " + id);
+			}
+		}
+		
+		public FormatterFactory getFormatterFactory() {
+			return formatterFactory;
+		}
+
+		public Formatter getFormatter() {
+			if (formatter == null) {
+				formatter = formatterFactory.newFormatter();
+			}
+			return formatter;
 		}
 
 }

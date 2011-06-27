@@ -60,6 +60,7 @@ Dotify/lib/saxon8.jar -text
 Dotify/lib/stax-api-1.0.1.jar -text
 Dotify/lib/wstx-lgpl-3.2.8.jar -text
 Dotify/lib/xercesImpl.jar -text
+Dotify/logging.properties -text svneol=unset#text/plain
 Dotify/run-tests.xml -text svneol=unset#text/plain
 Dotify/src/META-INF/services/javax.xml.transform.TransformerFactory -text
 Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
@@ -87,6 +88,8 @@ Dotify/src/org/daisy/dotify/formatter/DefaultBookStruct.java -text svneol=unset#
 Dotify/src/org/daisy/dotify/formatter/DefaultPageTemplate.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/DefaultVolumeTemplate.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Evaluate.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/EventContents.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/FlowSequenceManipulator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Formatter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/FormatterFactory.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/FormattingTypes.java -text svneol=unset#text/plain
@@ -118,9 +121,11 @@ Dotify/src/org/daisy/dotify/formatter/TableOfContents.java -text svneol=unset#te
 Dotify/src/org/daisy/dotify/formatter/TextContents.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/TocEvents.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/TocSequenceEvent.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/Volume.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/VolumeSequence.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/VolumeSplitter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/VolumeSplitterFactory.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/VolumeStruct.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/VolumeTemplate.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/WriterHandler.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/field/CompoundField.java -text svneol=unset#text/plain
@@ -135,14 +140,20 @@ Dotify/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#tex
 Dotify/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/BlockStructImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/PageCloneImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/PageSequenceCloneImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/PageStructCloneImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/SequenceEventImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/SimpleSplitterData.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/SimpleVolumeSplitter.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/TocEventImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/VolumeStructImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/utils/BlockHandler.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/utils/BreakPoint.java -text svneol=unset#text/plain

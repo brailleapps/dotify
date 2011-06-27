@@ -18,5 +18,7 @@ public interface BlockSequence extends Iterable<Block>, Sequence {
 	 * @throws IndexOutOfBoundsException if index < 0 || index >= getBlockCount()
 	 */
 	public Block getBlock(int index);
+	
+	public SequenceProperties getSequenceProperties();
 
 }
