@@ -6,12 +6,12 @@ import java.util.Stack;
 
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageSequence;
-import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.Page;
+import org.daisy.dotify.formatter.dom.PageSequence;
+import org.daisy.dotify.formatter.dom.Row;
 
-public class PageSequenceImpl implements Iterable<Page>, PageSequence {
+class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private Stack<Page> pages;
 		private LayoutMaster master;
 		private int pagesOffset;
@@ -19,7 +19,7 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private final FormatterFactory formatterFactory;
 		private Formatter formatter;
 		
-		public PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Integer> pageReferences, FormatterFactory formatterFactory) {
+		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Integer> pageReferences, FormatterFactory formatterFactory) {
 			this.pages = new Stack<Page>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
@@ -28,11 +28,11 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 			this.formatter = null;
 		}
 
-		public int rowsOnCurrentPage() {
+		int rowsOnCurrentPage() {
 			return ((PageImpl)currentPage()).rowsOnPage();
 		}
 		
-		public void newPage() {
+		void newPage() {
 			pages.push(new PageImpl(this, pages.size()+pagesOffset));
 		}
 		
@@ -48,18 +48,18 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 			return pages.get(index);
 		}
 		
-		public Page currentPage() {
+		Page currentPage() {
 			return pages.peek();
 		}
 		
-		public void newRow(Row row) {
+		void newRow(Row row) {
 			if (((PageImpl)currentPage()).rowsOnPage()>=((PageImpl)currentPage()).getFlowHeight()) {
 				newPage();
 			}
 			((PageImpl)currentPage()).newRow(row);
 		}
 		
-		public void newRow(Row row, String id) {
+		void newRow(Row row, String id) {
 			newRow(row);
 			insertIdentifier(id);
 		}
@@ -72,7 +72,7 @@ public class PageSequenceImpl implements Iterable<Page>, PageSequence {
 			return pages.iterator();
 		}
 		
-		public void insertIdentifier(String id) {
+		void insertIdentifier(String id) {
 			if (pageReferences.put(id, (currentPage().getPageIndex()+1))!=null) {
 				throw new IllegalArgumentException("Identifier not unique: " + id);
 			}

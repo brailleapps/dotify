@@ -2,6 +2,13 @@ package org.daisy.dotify.formatter;
 
 import java.io.Closeable;
 
+import org.daisy.dotify.formatter.dom.BlockProperties;
+import org.daisy.dotify.formatter.dom.BlockStruct;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.Leader;
+import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.dom.SequenceProperties;
+import org.daisy.dotify.formatter.dom.SpanProperties;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;

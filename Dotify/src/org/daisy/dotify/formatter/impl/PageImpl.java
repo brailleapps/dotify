@@ -3,25 +3,26 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.formatter.LayoutException;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageSequence;
-import org.daisy.dotify.formatter.PageTemplate;
-import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.formatter.field.CompoundField;
-import org.daisy.dotify.formatter.field.CurrentPageField;
-import org.daisy.dotify.formatter.field.MarkerReferenceField;
-import org.daisy.dotify.formatter.utils.LayoutTools;
-import org.daisy.dotify.formatter.utils.LayoutToolsException;
+import org.daisy.dotify.formatter.FormatterException;
+import org.daisy.dotify.formatter.LayoutTools;
+import org.daisy.dotify.formatter.LayoutToolsException;
+import org.daisy.dotify.formatter.dom.CompoundField;
+import org.daisy.dotify.formatter.dom.CurrentPageField;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.dom.MarkerReferenceField;
+import org.daisy.dotify.formatter.dom.Page;
+import org.daisy.dotify.formatter.dom.PageSequence;
+import org.daisy.dotify.formatter.dom.PageTemplate;
+import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.text.StringFilter;
 
 
 
 /**
- * A page object
- * @author Joel Håkansson, TPB
+ * Provides a page object.
+ * 
+ * @author Joel Håkansson
  */
 public class PageImpl implements Page {
 	private PageSequenceImpl parent;
@@ -96,7 +97,7 @@ public class PageImpl implements Page {
 				ret.addAll(renderFields(lm, this, t.getFooter(), filter));
 			}
 			return ret;
-		} catch (LayoutException e) {
+		} catch (FormatterException e) {
 			throw new RuntimeException("Cannot render header/footer", e);
 		}
 	}
@@ -130,13 +131,13 @@ public class PageImpl implements Page {
 	}
 	
 	
-	private static ArrayList<Row> renderFields(LayoutMaster lm, Page p, ArrayList<ArrayList<Object>> fields, StringFilter filters) throws LayoutException {
+	private static ArrayList<Row> renderFields(LayoutMaster lm, Page p, ArrayList<ArrayList<Object>> fields, StringFilter filters) throws FormatterException {
 		ArrayList<Row> ret = new ArrayList<Row>();
 		for (ArrayList<Object> row : fields) {
 			try {
 				ret.add(new Row(distribute(row, lm.getFlowWidth(), " ", p, filters)));
 			} catch (LayoutToolsException e) {
-				throw new LayoutException("Error while rendering header", e);
+				throw new FormatterException("Error while rendering header", e);
 			}
 		}
 		return ret;

@@ -2,7 +2,7 @@ package org.daisy.dotify.system.tasks.cover;
 
 import java.util.List;
 
-import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.dom.Row;
 
 
 public interface VolumeCoverPage {

@@ -12,8 +12,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.formatter.utils.TextBorder;
+import org.daisy.dotify.formatter.TextBorder;
+import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.system.tasks.cover.VolumeCoverPage;
 import org.daisy.dotify.text.StringFilter;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;

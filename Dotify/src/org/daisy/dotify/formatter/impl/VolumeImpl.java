@@ -1,9 +1,9 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.formatter.PageSequence;
-import org.daisy.dotify.formatter.Volume;
+import org.daisy.dotify.formatter.dom.PageSequence;
+import org.daisy.dotify.formatter.dom.Volume;
 
-public class VolumeImpl implements Volume {
+class VolumeImpl implements Volume {
 	private final Iterable<PageSequence> preVolume;
 	private final Iterable<PageSequence> body;
 	private final Iterable<PageSequence> postVolume;

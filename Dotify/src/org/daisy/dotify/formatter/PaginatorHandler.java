@@ -2,6 +2,10 @@ package org.daisy.dotify.formatter;
 
 import java.io.IOException;
 
+import org.daisy.dotify.formatter.dom.Block;
+import org.daisy.dotify.formatter.dom.BlockSequence;
+import org.daisy.dotify.formatter.dom.Row;
+
 
 /**
  * Provides breaking the block structure into pages, given the rules in
@@ -51,7 +55,7 @@ public class PaginatorHandler {
 				}
 				if (g.getSpaceBefore()+g.getSpaceAfter()>=paginator.getPageInfo().getFlowHeight()) {
 					IOException ex = new IOException("Layout exception");
-					ex.initCause(new LayoutException("Group margins too large to fit on an empty page."));
+					ex.initCause(new FormatterException("Group margins too large to fit on an empty page."));
 					throw ex;
 				} else if (g.getSpaceBefore()+1>paginator.getPageInfo().getFlowHeight()-paginator.getPageInfo().countRows()) {
 					paginator.newPage();

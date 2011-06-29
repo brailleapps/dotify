@@ -1,1 +1,1 @@
-org.daisy.dotify.formatter.impl.SimpleVolumeSplitter
+org.daisy.dotify.formatter.impl.EvenSizeVolumeSplitter

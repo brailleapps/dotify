@@ -3,12 +3,12 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.Block;
-import org.daisy.dotify.formatter.FormattingTypes;
-import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.dom.Block;
+import org.daisy.dotify.formatter.dom.FormattingTypes;
+import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.dom.Row;
 
-public class BlockImpl extends Stack<Row> implements Block {
+class BlockImpl extends Stack<Row> implements Block {
 	private String blockId;
 	private int spaceBefore;
 	private int spaceAfter;
@@ -19,7 +19,7 @@ public class BlockImpl extends Stack<Row> implements Block {
 	private int keepWithNext;
 	private String id;
 	
-	public BlockImpl(String blockId) {
+	BlockImpl(String blockId) {
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		this.groupMarkers = new ArrayList<Marker>();

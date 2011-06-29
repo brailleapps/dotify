@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 import org.daisy.dotify.formatter.CurrentPageInfo;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageSequence;
-import org.daisy.dotify.formatter.PageStruct;
 import org.daisy.dotify.formatter.Paginator;
-import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.dom.Page;
+import org.daisy.dotify.formatter.dom.PageSequence;
+import org.daisy.dotify.formatter.dom.PageStruct;
+import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.tools.StateObject;
 
 

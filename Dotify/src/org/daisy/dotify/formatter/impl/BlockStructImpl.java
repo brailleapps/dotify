@@ -3,10 +3,10 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.BlockSequence;
-import org.daisy.dotify.formatter.BlockStruct;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.SequenceProperties;
+import org.daisy.dotify.formatter.dom.BlockSequence;
+import org.daisy.dotify.formatter.dom.BlockStruct;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 public class BlockStructImpl implements BlockStruct {
 	private final HashMap<String, LayoutMaster> masters;
@@ -22,11 +22,11 @@ public class BlockStructImpl implements BlockStruct {
 	}
 	
 	public void newSequence(SequenceProperties p) {
-		blocks.push((BlockSequence)new BlockSequenceImpl(p, masters.get(p.getMasterName())));
+		blocks.push((BlockSequence)new DefaultBlockSequence(p, masters.get(p.getMasterName())));
 	}
 	
-	public BlockSequenceImpl getCurrentSequence() {
-		return (BlockSequenceImpl)blocks.peek();
+	public DefaultBlockSequence getCurrentSequence() {
+		return (DefaultBlockSequence)blocks.peek();
 	}
 	
 	public void addLayoutMaster(String name, LayoutMaster master) {

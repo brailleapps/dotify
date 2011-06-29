@@ -3,7 +3,12 @@ package org.daisy.dotify.formatter;
 import java.io.IOException;
 import java.util.List;
 
-import org.daisy.dotify.formatter.utils.LayoutTools;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.Page;
+import org.daisy.dotify.formatter.dom.PageSequence;
+import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.formatter.dom.Volume;
+import org.daisy.dotify.formatter.dom.VolumeStruct;
 
 /**
  * Provides a method for writing pages to a PagedMediaWriter,
@@ -54,14 +59,14 @@ public class WriterHandler {
 					}
 				}
 			}
-		} catch (LayoutException e) {
+		} catch (FormatterException e) {
 			IOException ex = new IOException("Layout exception");
 			ex.initCause(e);
 			throw ex;
 		}
 	}
 	
-	private static void writePage(PagedMediaWriter writer, Page p, LayoutMaster lm) throws LayoutException {
+	private static void writePage(PagedMediaWriter writer, Page p, LayoutMaster lm) throws FormatterException {
 		writer.newPage();
 		int pagenum = p.getPageIndex()+1;
 		List<Row> rows = p.getRows();
@@ -74,7 +79,7 @@ public class WriterHandler {
 				int rowWidth = LayoutTools.length(chars)+row.getLeftMargin();
 				String r = 	LayoutTools.fill(SPACE_CHAR, margin) + chars;
 				if (rowWidth>lm.getFlowWidth()) {
-					throw new LayoutException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
+					throw new FormatterException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
 				}
 				writer.newRow(r);
 			} else {
