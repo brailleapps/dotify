@@ -271,7 +271,7 @@ public class Expression {
 		if (input.length>2) {
 			throw new IllegalArgumentException("Wrong number of arguments: (set key value)");
 		}
-		vars.put(input[0].toString(), input[1]);
+		vars.put("$"+input[0].toString(), input[1]);
 		return input[1];
 	}
 
