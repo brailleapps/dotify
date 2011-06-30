@@ -7,11 +7,11 @@ import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 
-public class DefaultBlockSequence extends Stack<Block> implements BlockSequence {
+class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 	private final SequenceProperties p;
 	private final LayoutMaster master;
 	
-	public DefaultBlockSequence(SequenceProperties p, LayoutMaster master) {
+	public BlockSequenceImpl(SequenceProperties p, LayoutMaster master) {
 		this.p = p;
 		this.master = master;
 	}

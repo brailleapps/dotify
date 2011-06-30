@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.impl.DefaultBlockSequence;
-
 /**
  * Provides methods for manipulating a flow sequence.
  * @author Joel Håkansson
@@ -35,7 +33,7 @@ public class FlowSequenceManipulator {
 	}
 
 	private BlockSequence newSequence(List<Block> c) {
-		DefaultBlockSequence ret = new DefaultBlockSequence(props, master);
+		BlockSeqImpl ret = new BlockSeqImpl(props, master);
 		ret.addAll(c);
 		return ret;
 	}
@@ -127,6 +125,36 @@ public class FlowSequenceManipulator {
 	
 	public List<Block> getBlocks() {
 		return sequence;
+	}
+	
+	private static class BlockSeqImpl extends Stack<Block> implements BlockSequence {
+		private final SequenceProperties p;
+		private final LayoutMaster master;
+		
+		private BlockSeqImpl(SequenceProperties p, LayoutMaster master) {
+			this.p = p;
+			this.master = master;
+		}
+
+		public LayoutMaster getLayoutMaster() {
+			return master;
+		}
+
+		public Integer getInitialPageNumber() {
+			return p.getInitialPageNumber();
+		}
+
+		public int getBlockCount() {
+			return this.size();
+		}
+
+		public Block getBlock(int index) {
+			return this.elementAt(index);
+		}
+
+		public SequenceProperties getSequenceProperties() {
+			return p;
+		}
 	}
 
 }

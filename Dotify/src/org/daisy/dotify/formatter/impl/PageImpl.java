@@ -24,7 +24,7 @@ import org.daisy.dotify.text.StringFilter;
  * 
  * @author Joel Håkansson
  */
-public class PageImpl implements Page {
+class PageImpl implements Page {
 	private PageSequenceImpl parent;
 	private ArrayList<Row> rows;
 	private ArrayList<Marker> markers;

@@ -72,7 +72,7 @@ public interface Paginator extends Closeable {
 	/**
 	 * Gets information about the current page
 	 */
-	public CurrentPageInfo getPageInfo();
+	public PageInfo getPageInfo();
 	
 	public PageStruct getPageStruct();
 }

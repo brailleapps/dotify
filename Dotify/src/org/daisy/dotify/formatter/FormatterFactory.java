@@ -7,6 +7,12 @@ import javax.imageio.spi.ServiceRegistry;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
 
+/**
+ * Provides a factory for formatters. The factory will instantiate 
+ * the first Formatter it encounters when querying the services API. 
+ * 
+ * @author Joel Håkansson
+ */
 public class FormatterFactory {
 	private FilterFactory factory;
 	private FilterLocale locale;

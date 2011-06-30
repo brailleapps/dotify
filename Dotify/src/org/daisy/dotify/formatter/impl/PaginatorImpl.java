@@ -3,7 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.daisy.dotify.formatter.CurrentPageInfo;
+import org.daisy.dotify.formatter.PageInfo;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
@@ -15,7 +15,7 @@ import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.tools.StateObject;
 
 
-public class PaginatorImpl implements Paginator, CurrentPageInfo {
+public class PaginatorImpl implements Paginator, PageInfo {
 	private PageStructImpl pageStruct;
 	private StateObject state;
 	private FormatterFactory formatterFactory;
@@ -84,7 +84,7 @@ public class PaginatorImpl implements Paginator, CurrentPageInfo {
 		return currentSequence().getLayoutMaster();
 	}*/
 	
-	public CurrentPageInfo getPageInfo() {
+	public PageInfo getPageInfo() {
 		return this;
 	}
 	

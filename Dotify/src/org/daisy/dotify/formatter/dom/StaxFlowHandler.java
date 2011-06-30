@@ -22,7 +22,6 @@ import org.daisy.dotify.formatter.dom.MarkerReferenceField.MarkerSearchDirection
 import org.daisy.dotify.formatter.dom.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.dom.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
-import org.daisy.dotify.formatter.impl.DefaultSequenceEvent;
 
 public class StaxFlowHandler {
 	private final static QName LAYOUT_MASTER = new QName("layout-master");
@@ -424,7 +423,7 @@ public class StaxFlowHandler {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
-		DefaultSequenceEvent volSeq = new DefaultSequenceEvent(builder.build());
+		SequenceEventImpl volSeq = new SequenceEventImpl(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, BLOCK)) {

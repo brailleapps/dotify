@@ -8,7 +8,7 @@ import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 
-public class BlockStructImpl implements BlockStruct {
+class BlockStructImpl implements BlockStruct {
 	private final HashMap<String, LayoutMaster> masters;
 	private final Stack<BlockSequence> blocks;
 
@@ -22,11 +22,11 @@ public class BlockStructImpl implements BlockStruct {
 	}
 	
 	public void newSequence(SequenceProperties p) {
-		blocks.push((BlockSequence)new DefaultBlockSequence(p, masters.get(p.getMasterName())));
+		blocks.push((BlockSequence)new BlockSequenceImpl(p, masters.get(p.getMasterName())));
 	}
 	
-	public DefaultBlockSequence getCurrentSequence() {
-		return (DefaultBlockSequence)blocks.peek();
+	public BlockSequenceImpl getCurrentSequence() {
+		return (BlockSequenceImpl)blocks.peek();
 	}
 	
 	public void addLayoutMaster(String name, LayoutMaster master) {

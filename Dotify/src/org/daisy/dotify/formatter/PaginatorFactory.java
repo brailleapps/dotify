@@ -4,6 +4,12 @@ import java.util.Iterator;
 
 import javax.imageio.spi.ServiceRegistry;
 
+/**
+ * Provides a factory for paginators. The factory will instantiate 
+ * the first Paginator it encounters when querying the services API.
+ *  
+ * @author Joel Håkansson
+ */
 public class PaginatorFactory {
 	
 	protected PaginatorFactory() {

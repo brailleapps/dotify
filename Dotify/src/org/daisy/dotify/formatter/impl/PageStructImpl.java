@@ -6,7 +6,7 @@ import java.util.Stack;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
 
-public class PageStructImpl extends Stack<PageSequence> implements PageStruct {
+class PageStructImpl extends Stack<PageSequence> implements PageStruct {
 	//private final StringFilter filters;
 	HashMap<String, Integer> pageReferences;
 

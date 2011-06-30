@@ -1,17 +1,14 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.dom;
 
 import java.util.Map;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.dom.BlockEvent;
-import org.daisy.dotify.formatter.dom.SequenceEvent;
-import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 
-public class DefaultSequenceEvent extends Stack<BlockEvent> implements SequenceEvent {
+class SequenceEventImpl extends Stack<BlockEvent> implements SequenceEvent {
 	private final SequenceProperties props;
 	
-	public DefaultSequenceEvent(SequenceProperties props) {
+	public SequenceEventImpl(SequenceProperties props) {
 		this.props = props;
 	}
 

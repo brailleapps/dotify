@@ -74,13 +74,13 @@ Dotify/src/org/daisy/dotify/SystemProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/BlockHandler.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/BreakPoint.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/BreakPointHandler.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/CurrentPageInfo.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Expression.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Formatter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/FormatterException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/FormatterFactory.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/LayoutTools.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/LayoutToolsException.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/PageInfo.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/PageTools.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/PagedMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/PagedMediaWriterException.java -text svneol=unset#text/plain
@@ -132,6 +132,7 @@ Dotify/src/org/daisy/dotify/formatter/dom/RomanNumeral.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/formatter/dom/Row.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Sequence.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/SequenceEvent.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/SequenceEventImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/dom/SequenceProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/SpanProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/StaxFlowHandler.java -text
@@ -148,9 +149,8 @@ Dotify/src/org/daisy/dotify/formatter/dom/VolumeStruct.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/VolumeTemplate.java -text
 Dotify/src/org/daisy/dotify/formatter/flow.dtd -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/BlockStructImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/impl/DefaultBlockSequence.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/impl/DefaultSequenceEvent.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeStructImpl.java -text svneol=unset#text/plain

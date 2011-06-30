@@ -8,7 +8,8 @@ import java.util.TreeSet;
 /**
  * LayoutTools is a utility class for simple static operations related
  * to text layout.
- * @author Joel Håkansson, TPB
+ * 
+ * @author Joel Håkansson
  */
 public class LayoutTools {
 

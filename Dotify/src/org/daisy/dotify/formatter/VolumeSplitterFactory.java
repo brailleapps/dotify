@@ -4,6 +4,15 @@ import java.util.Iterator;
 
 import javax.imageio.spi.ServiceRegistry;
 
+/**
+ * Provides a factory for volume splitters. The factory will instantiate 
+ * the first VolumeSplitter it encounters when querying the services API.
+ * 
+ * This behavior is temporary, since a volume splitter might be selected 
+ * through a UI based on a set of properties or from a list.
+ * 
+ * @author Joel Håkansson
+ */
 public class VolumeSplitterFactory {
 	private Integer targetVolumeSize;
 	

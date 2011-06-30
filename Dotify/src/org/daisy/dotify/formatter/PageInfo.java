@@ -5,7 +5,7 @@ package org.daisy.dotify.formatter;
  * @author Joel Håkansson, TPB
  *
  */
-public interface CurrentPageInfo {
+public interface PageInfo {
 
 	/**
 	 * Gets the flow height for the current page

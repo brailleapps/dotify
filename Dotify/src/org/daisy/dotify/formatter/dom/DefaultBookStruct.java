@@ -12,7 +12,6 @@ import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.PaginatorHandler;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
-import org.daisy.dotify.formatter.impl.DefaultSequenceEvent;
 import org.daisy.dotify.tools.CompoundIterable;
 
 /**
@@ -72,7 +71,7 @@ public class DefaultBookStruct implements BookStruct {
 										}
 										TableOfContents data = tocs.get(toc.getTocName());
 										TocEvents events = toc.getTocEvents(volumeNumber, volumeData.getVolumeCount());
-										DefaultSequenceEvent evs = new DefaultSequenceEvent(toc.getSequenceProperties());
+										SequenceEventImpl evs = new SequenceEventImpl(toc.getSequenceProperties());
 										for (BlockEvent e : events.getTocStartEvents()) {
 											evs.push(e);
 										}
@@ -134,7 +133,7 @@ public class DefaultBookStruct implements BookStruct {
 														int vol = volumeData.getVolumeForContentSheet(i);
 														if (nv!=vol) {
 															BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters, this);
-															DefaultSequenceEvent evs2 = new DefaultSequenceEvent(toc.getSequenceProperties());
+															SequenceEventImpl evs2 = new SequenceEventImpl(toc.getSequenceProperties());
 															if (nv>0) {
 																for (BlockEvent e : events.getVolumeEndEvents(nv)) {
 																	evs2.add(e);
