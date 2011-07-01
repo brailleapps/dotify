@@ -58,15 +58,15 @@ public class SwedishTextSystem implements TaskSystem {
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 
 		// Whitespace normalizer TransformerFactoryConstants.SAXON8
-		setup.add(new XsltTask("FLOW whitespace normalizer", flowWsNormalizer, null, h));
+		setup.add(new XsltTask("OBFL whitespace normalizer", flowWsNormalizer, null, h));
 
 		// Check that the result from the previous step is OK
-		setup.add(new ValidatorTask("FLOW validator", flowValidationURL));
+		setup.add(new ValidatorTask("OBFL validator", flowValidationURL));
 
 		// Layout FLOW as text
 		MyFilterFactory factory = new MyFilterFactory();
 		TextMediaWriter paged = new TextMediaWriter(p.getProperties(), "UTF-8");
-		setup.add(new LayoutEngineTask("FLOW to Text converter", factory, FilterLocale.parse("sv-SE"), paged));
+		setup.add(new LayoutEngineTask("OBFL to Text converter", factory, FilterLocale.parse("sv-SE"), paged));
 
 		return setup;
 	}

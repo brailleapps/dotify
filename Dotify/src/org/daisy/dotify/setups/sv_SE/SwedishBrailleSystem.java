@@ -98,10 +98,10 @@ public class SwedishBrailleSystem implements TaskSystem {
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 
 		// Whitespace normalizer TransformerFactoryConstants.SAXON8
-		setup.add(new XsltTask("FLOW whitespace normalizer", flowWsNormalizer, null, h));
+		setup.add(new XsltTask("OBFL whitespace normalizer", flowWsNormalizer, null, h));
 
 		// Check that the result from the previous step is OK
-		setup.add(new ValidatorTask("FLOW validator", flowValidationURL));
+		setup.add(new ValidatorTask("OBFL validator", flowValidationURL));
 
 		// Layout FLOW as PEF
 		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
@@ -123,7 +123,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		PEFMediaWriter paged = new PEFMediaWriter(p2);
 		StringFilter swedishFilter = factory.newStringFilter(sv_SE);
-		setup.add(new LayoutEngineTask("FLOW to PEF converter", factory, sv_SE, paged));
+		setup.add(new LayoutEngineTask("OBFL to PEF converter", factory, sv_SE, paged));
 
 		// Split result into volumes
 		//setup.add(new XsltTask("Volume splitter", volumeSplitter, null, h));
