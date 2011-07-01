@@ -1,4 +1,4 @@
-package org.daisy.dotify.system.tasks.cover;
+package org.daisy.dotify.system;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -12,7 +12,11 @@ import javax.xml.stream.events.StartElement;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.tools.StaxFilter2;
 
-
+/**
+ * 
+ * @author Joel Håkansson
+ * @deprecated replaced by the volume-template feature in OBFL
+ */
 public class VolumeCoverPageFilter extends StaxFilter2 {
 	private final static String PEF_NS = "http://www.daisy.org/ns/2008/pef";
 	private final QName volume;
