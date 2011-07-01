@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.dom;
 
 import java.util.List;
 
+
 /**
  * A page object
  * @author Joel Håkansson, TPB

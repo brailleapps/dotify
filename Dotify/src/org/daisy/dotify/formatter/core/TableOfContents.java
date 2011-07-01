@@ -1,10 +1,13 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.dom.BlockEvent;
+import org.daisy.dotify.formatter.dom.EventContents;
+import org.daisy.dotify.formatter.dom.TocEvent;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 
 

@@ -1,10 +1,18 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 import java.io.IOException;
 import java.util.Map;
 
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.formatter.dom.BlockEvent;
+import org.daisy.dotify.formatter.dom.BlockStruct;
+import org.daisy.dotify.formatter.dom.CrossReferences;
+import org.daisy.dotify.formatter.dom.EventContents;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.Leader;
+import org.daisy.dotify.formatter.dom.SequenceEvent;
+import org.daisy.dotify.formatter.dom.TocEvent;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 import org.daisy.dotify.formatter.utils.Expression;
 

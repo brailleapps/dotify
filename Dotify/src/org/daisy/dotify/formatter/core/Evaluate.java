@@ -1,7 +1,10 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.daisy.dotify.formatter.dom.EventContents;
+import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 
 
 public class Evaluate implements EventContents {

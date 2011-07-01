@@ -1,7 +1,11 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 import java.util.Map;
 import java.util.Stack;
+
+import org.daisy.dotify.formatter.dom.BlockEvent;
+import org.daisy.dotify.formatter.dom.SequenceEvent;
+import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 
 

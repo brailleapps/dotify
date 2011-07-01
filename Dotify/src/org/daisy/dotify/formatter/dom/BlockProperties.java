@@ -4,6 +4,7 @@ import org.daisy.dotify.formatter.dom.FormattingTypes.BreakBefore;
 import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.dom.FormattingTypes.ListStyle;
 
+
 /**
  * BlockProperties defines properties specific for a block of text
  * @author Joel Håkansson, TPB

@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.dom;
 
 
+
 /**
  * A Marker is a reference data inserted at some point in the flow. It can be used to create 
  * running headers/footers.

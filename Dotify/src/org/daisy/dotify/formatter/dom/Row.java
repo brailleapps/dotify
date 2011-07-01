@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.dom;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Row represents a single row of text
  * @author Joel Håkansson, TPB

@@ -1,10 +1,16 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
+
+import org.daisy.dotify.formatter.dom.Block;
+import org.daisy.dotify.formatter.dom.BlockSequence;
+import org.daisy.dotify.formatter.dom.BlockStruct;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 /**
  * Provides methods for manipulating a flow sequence.

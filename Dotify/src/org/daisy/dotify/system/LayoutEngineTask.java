@@ -19,7 +19,7 @@ import org.daisy.dotify.formatter.PagedMediaWriterException;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.VolumeSplitterFactory;
 import org.daisy.dotify.formatter.WriterHandler;
-import org.daisy.dotify.formatter.dom.ObflParser;
+import org.daisy.dotify.formatter.core.ObflParser;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;

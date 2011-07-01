@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 //http://leepoint.net/notes-java/examples/components/romanNumerals/romanNumeral.html
 // File   : gui/componenents/calculators/Roman.java

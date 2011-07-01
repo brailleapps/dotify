@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +11,21 @@ import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.PaginatorHandler;
+import org.daisy.dotify.formatter.dom.Block;
+import org.daisy.dotify.formatter.dom.BlockEvent;
+import org.daisy.dotify.formatter.dom.BlockSequence;
+import org.daisy.dotify.formatter.dom.BookStruct;
+import org.daisy.dotify.formatter.dom.CrossReferences;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.dom.Page;
+import org.daisy.dotify.formatter.dom.PageSequence;
+import org.daisy.dotify.formatter.dom.PageStruct;
+import org.daisy.dotify.formatter.dom.SequenceEvent;
+import org.daisy.dotify.formatter.dom.TocEvents;
+import org.daisy.dotify.formatter.dom.TocSequenceEvent;
+import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
+import org.daisy.dotify.formatter.dom.VolumeStruct;
+import org.daisy.dotify.formatter.dom.VolumeTemplate;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.tools.CompoundIterable;
 
