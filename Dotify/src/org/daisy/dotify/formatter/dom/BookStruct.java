@@ -1,7 +1,11 @@
 package org.daisy.dotify.formatter.dom;
 
-
-public interface BookStruct extends CrossReferences {
+/**
+ * Provides a complete braille book.
+ *  
+ * @author Joel Håkansson
+ */
+public interface BookStruct {
 
 	/**
 	 * Gets static or generated content to be placed first in a new volume
@@ -16,13 +20,11 @@ public interface BookStruct extends CrossReferences {
 	 * @return returns the content
 	 */
 	public Iterable<PageSequence> getPostVolumeContents(int volumeNumber, VolumeStruct volumeData);
-	
-	public PageStruct getPageStruct();
-	/*
+
 	/**
-	 * Gets the breakpoints for volume breaks
-	public SplitterData getBreakpoints();
-	*/
-	
+	 * Gets the contents of the book
+	 * @return
+	 */
+	public PageStruct getPageStruct();
 
 }

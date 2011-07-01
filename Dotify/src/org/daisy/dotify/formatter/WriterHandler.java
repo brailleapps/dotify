@@ -9,6 +9,7 @@ import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
+import org.daisy.dotify.formatter.utils.LayoutTools;
 
 /**
  * Provides a method for writing pages to a PagedMediaWriter,

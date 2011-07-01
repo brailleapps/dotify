@@ -1,19 +1,19 @@
 package org.daisy.dotify.formatter.dom;
 
-import org.daisy.dotify.formatter.Expression;
+import org.daisy.dotify.formatter.utils.Expression;
 
-public class DefaultVolumeTemplate implements VolumeTemplate {
+class VolumeTemplateImpl implements VolumeTemplate {
 	public final static String DEFAULT_VOLUME_NUMBER_VARIABLE_NAME = "volume";
 	public final static String DEFAULT_VOLUME_COUNT_VARIABLE_NAME = "volumes";
 	private final String volumeNumberVar, volumeCountVar, condition;
-	private Iterable<VolumeSequence> preVolumeContent;
-	private Iterable<VolumeSequence> postVolumeContent;
+	private Iterable<VolumeSequenceEvent> preVolumeContent;
+	private Iterable<VolumeSequenceEvent> postVolumeContent;
 	
-	public DefaultVolumeTemplate() {
+	public VolumeTemplateImpl() {
 		this(null, null, null);
 	}
 
-	public DefaultVolumeTemplate(String volumeVar, String volumeCountVar, String condition) {
+	public VolumeTemplateImpl(String volumeVar, String volumeCountVar, String condition) {
 		this.volumeNumberVar = (volumeVar!=null?volumeVar:DEFAULT_VOLUME_NUMBER_VARIABLE_NAME);
 		this.volumeCountVar = (volumeCountVar!=null?volumeCountVar:DEFAULT_VOLUME_COUNT_VARIABLE_NAME);
 		this.condition = condition;
@@ -28,19 +28,19 @@ public class DefaultVolumeTemplate implements VolumeTemplate {
 			).equals(true);
 	}
 	
-	public void setPreVolumeContent(Iterable<VolumeSequence> preVolumeContent) {
+	public void setPreVolumeContent(Iterable<VolumeSequenceEvent> preVolumeContent) {
 		this.preVolumeContent = preVolumeContent;
 	}
 	
-	public void setPostVolumeContent(Iterable<VolumeSequence> postVolumeContent) {
+	public void setPostVolumeContent(Iterable<VolumeSequenceEvent> postVolumeContent) {
 		this.postVolumeContent = postVolumeContent;
 	}
 
-	public Iterable<VolumeSequence> getPreVolumeContent() {
+	public Iterable<VolumeSequenceEvent> getPreVolumeContent() {
 		return preVolumeContent;
 	}
 
-	public Iterable<VolumeSequence> getPostVolumeContent() {
+	public Iterable<VolumeSequenceEvent> getPostVolumeContent() {
 		return postVolumeContent;
 	}
 

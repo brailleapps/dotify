@@ -11,8 +11,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.formatter.LayoutTools;
-import org.daisy.dotify.formatter.TextBorder;
+import org.daisy.dotify.formatter.utils.LayoutTools;
+import org.daisy.dotify.formatter.utils.TextBorder;
 import org.daisy.dotify.formatter.writers.PEFMediaWriter;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;

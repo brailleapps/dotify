@@ -2,9 +2,9 @@ package org.daisy.dotify.formatter.dom;
 
 import java.util.Map;
 
-import org.daisy.dotify.formatter.Expression;
+import org.daisy.dotify.formatter.utils.Expression;
 
-public class ConditionalEvents {
+class ConditionalEvents {
 	private final String condition;
 	private final Iterable<BlockEvent> events;
 	

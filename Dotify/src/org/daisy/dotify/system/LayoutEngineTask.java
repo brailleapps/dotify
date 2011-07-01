@@ -12,18 +12,15 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.validation.Schema;
 
+import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.PagedMediaWriter;
 import org.daisy.dotify.formatter.PagedMediaWriterException;
-import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
-import org.daisy.dotify.formatter.PaginatorHandler;
 import org.daisy.dotify.formatter.VolumeSplitterFactory;
 import org.daisy.dotify.formatter.WriterHandler;
-import org.daisy.dotify.formatter.dom.BookStruct;
-import org.daisy.dotify.formatter.dom.DefaultBookStruct;
-import org.daisy.dotify.formatter.dom.PageStruct;
-import org.daisy.dotify.formatter.dom.StaxFlowHandler;
+import org.daisy.dotify.formatter.dom.ObflParser;
+import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
 
@@ -81,13 +78,8 @@ public class LayoutEngineTask extends InternalTask  {
 			}
 			SAXParser sp = spf.newSAXParser();*/
 
-			logger.info("Reading input...");
-	        XMLInputFactory inFactory = XMLInputFactory.newInstance();
-			inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
-	        inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-	        inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-	        inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-	        XMLEventReader reader = inFactory.createXMLEventReader(new FileInputStream(input));
+			logger.info("Parsing input...");
+
 			
 /* SAX impl
 			performer.open();
@@ -98,9 +90,14 @@ public class LayoutEngineTask extends InternalTask  {
 			formatterFactory.setFilterFactory(filterFactory);
 			formatterFactory.setLocale(locale);
 
-	        StaxFlowHandler flow = new StaxFlowHandler(formatterFactory);
-	        flow.parse(reader);
-
+	        ObflParser obflParser = new ObflParser(formatterFactory);
+	        obflParser.setPaginatorFactory(PaginatorFactory.newInstance());
+			//FIXME: add target size variable (use splitterMax?)
+			//splitterFactory.setTargetVolumeSize(targetVolumeSize);
+			VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
+			obflParser.setVolumeSplitterFactory(splitterFactory);
+	        VolumeStruct volumes = obflParser.parse(new FileInputStream(input));
+/*
 			logger.info("Paginating...");
 			Paginator paginator = PaginatorFactory.newInstance().newPaginator();
 			paginator.open(formatterFactory);
@@ -110,9 +107,7 @@ public class LayoutEngineTask extends InternalTask  {
 
 			PageStruct pageStruct = paginator.getPageStruct();
 			
-			//FIXME: add target size variable (use splitterMax?)
-			//splitterFactory.setTargetVolumeSize(targetVolumeSize);
-			VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
+
 
 			BookStruct bookStruct = new DefaultBookStruct(
 					pageStruct,
@@ -121,10 +116,11 @@ public class LayoutEngineTask extends InternalTask  {
 					flow.getTocs(),
 					formatterFactory
 				);
-
-			logger.info("Writing file...");
+*/
+			logger.info("Rendering output...");
 			writer.open(new FileOutputStream(output));
-			WriterHandler.write(splitterFactory.newSplitter().split(bookStruct), writer);
+			//splitterFactory.newSplitter().split(bookStruct)
+			WriterHandler.write(volumes, writer);
 			writer.close();
 
 		/*} catch (SAXException e) {
@@ -139,6 +135,8 @@ public class LayoutEngineTask extends InternalTask  {
 			throw new InternalTaskException("Could not open media writer.", e);
 		} catch (XMLStreamException e) {
 			throw new InternalTaskException("XMLStreamException while running task.", e);
+		} catch (FormatterException e) {
+			throw new InternalTaskException("FormatterException while running task.", e);
 		}
 	}
 

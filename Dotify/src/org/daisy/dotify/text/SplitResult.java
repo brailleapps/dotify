@@ -1,4 +1,4 @@
-package org.daisy.dotify.tools;
+package org.daisy.dotify.text;
 
 /**
  * Data object returned by StringSplitter containing a sub sequence along with 

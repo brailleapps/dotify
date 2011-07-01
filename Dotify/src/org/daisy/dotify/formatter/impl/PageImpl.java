@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.dotify.formatter.FormatterException;
-import org.daisy.dotify.formatter.LayoutTools;
-import org.daisy.dotify.formatter.LayoutToolsException;
 import org.daisy.dotify.formatter.dom.CompoundField;
 import org.daisy.dotify.formatter.dom.CurrentPageField;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
@@ -15,6 +13,8 @@ import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.formatter.utils.LayoutTools;
+import org.daisy.dotify.formatter.utils.LayoutToolsException;
 import org.daisy.dotify.text.StringFilter;
 
 

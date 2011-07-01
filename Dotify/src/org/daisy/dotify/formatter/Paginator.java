@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.dom.PageInfo;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.Row;
 

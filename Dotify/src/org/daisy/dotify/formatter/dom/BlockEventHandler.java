@@ -3,10 +3,10 @@ package org.daisy.dotify.formatter.dom;
 import java.io.IOException;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.Expression;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
+import org.daisy.dotify.formatter.utils.Expression;
 
 /**
  * Provides a method to send events to a formatter.

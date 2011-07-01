@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package org.daisy.dotify.tools;
+package org.daisy.dotify.text;
 
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
@@ -24,7 +24,6 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 
-import org.daisy.dotify.text.StringFilter;
 import org.daisy.util.xml.stax.StaxFilter;
 
 /**

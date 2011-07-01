@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter;
+package org.daisy.dotify.formatter.utils;
 
 /**
  * A LayoutToolsException is an exception that indicates 

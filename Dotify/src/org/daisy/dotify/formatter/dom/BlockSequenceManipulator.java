@@ -10,13 +10,13 @@ import java.util.Stack;
  * Provides methods for manipulating a flow sequence.
  * @author Joel Håkansson
  */
-public class FlowSequenceManipulator {
+class BlockSequenceManipulator {
 	private HashMap<String, Integer> taggedEntries;
 	private final Stack<Block> sequence;
 	private final SequenceProperties props;
 	private final LayoutMaster master;
 	
-	public FlowSequenceManipulator(BlockStruct struct) {
+	public BlockSequenceManipulator(BlockStruct struct) {
 		this.sequence = new Stack<Block>();
 		SequenceProperties tmp = null;
 		LayoutMaster tMaster = null;

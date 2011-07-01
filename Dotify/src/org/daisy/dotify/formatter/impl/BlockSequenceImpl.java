@@ -7,6 +7,7 @@ import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 
+
 class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 	private final SequenceProperties p;
 	private final LayoutMaster master;

@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter;
+package org.daisy.dotify.formatter.utils;
 
 /**
  * <p>A BreakPoint is a data object to keep the information about a break point result.

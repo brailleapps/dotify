@@ -8,6 +8,7 @@ import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 
+
 class BlockStructImpl implements BlockStruct {
 	private final HashMap<String, LayoutMaster> masters;
 	private final Stack<BlockSequence> blocks;

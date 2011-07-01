@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import org.daisy.dotify.formatter.PagedMediaWriter;
 import org.daisy.dotify.formatter.PagedMediaWriterException;
-import org.daisy.dotify.formatter.SectionProperties;
+import org.daisy.dotify.formatter.dom.SectionProperties;
 import org.daisy.dotify.tools.StateObject;
 
 

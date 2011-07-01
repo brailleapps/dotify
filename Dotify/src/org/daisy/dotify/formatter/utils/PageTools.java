@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter;
+package org.daisy.dotify.formatter.utils;
 
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.PageSequence;

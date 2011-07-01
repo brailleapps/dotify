@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter;
+package org.daisy.dotify.formatter.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

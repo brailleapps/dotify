@@ -3,6 +3,8 @@ package org.daisy.dotify.formatter;
 import java.io.Closeable;
 import java.io.OutputStream;
 
+import org.daisy.dotify.formatter.dom.SectionProperties;
+
 
 
 

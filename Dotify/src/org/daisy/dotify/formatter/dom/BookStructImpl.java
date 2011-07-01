@@ -19,7 +19,7 @@ import org.daisy.dotify.tools.CompoundIterable;
  * 
  * @author Joel Håkansson
  */
-public class DefaultBookStruct implements BookStruct {
+class BookStructImpl implements BookStruct, CrossReferences {
 	private final Logger logger;
 	private final PageStruct ps;
 	private final Map<String, LayoutMaster> masters;
@@ -27,14 +27,14 @@ public class DefaultBookStruct implements BookStruct {
 	private final Map<String, TableOfContents> tocs;
 	private final FormatterFactory formatterFactory;
 	
-	public DefaultBookStruct(PageStruct ps, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
+	public BookStructImpl(PageStruct ps, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
 			FormatterFactory factory) {
 		this.ps = ps;
 		this.masters = masters;
 		this.volumeTemplates = volumeTemplates;
 		this.tocs = tocs;
 		this.formatterFactory = factory;
-		this.logger = Logger.getLogger(DefaultBookStruct.class.getCanonicalName());
+		this.logger = Logger.getLogger(BookStructImpl.class.getCanonicalName());
 	}
 
 	public Iterable<PageSequence> getPreVolumeContents(int volumeNumber, VolumeStruct volumeData) {
@@ -50,7 +50,7 @@ public class DefaultBookStruct implements BookStruct {
 				ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
 				for (VolumeTemplate t : volumeTemplates) {
 					if (t.appliesTo(volumeNumber, volumeData.getVolumeCount())) {
-						for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
+						for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 							switch (seq.getType()) {
 								case TABLE_OF_CONTENTS: {
 									TocSequenceEvent toc = (TocSequenceEvent)seq;
@@ -88,7 +88,7 @@ public class DefaultBookStruct implements BookStruct {
 										}
 										if (toc.getRange()==TocRange.VOLUME) {
 											beh.formatSequence(evs);
-											FlowSequenceManipulator fsm = new FlowSequenceManipulator(beh.close());
+											BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
 											String start = null;
 											String stop = null;
 											//assumes toc is in sequential order
@@ -121,7 +121,7 @@ public class DefaultBookStruct implements BookStruct {
 											}
 										} else if (toc.getRange()==TocRange.DOCUMENT) {
 											beh.formatSequence(evs);
-											FlowSequenceManipulator fsm = new FlowSequenceManipulator(beh.close());
+											BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
 											int nv=0;
 											HashMap<String, BlockSequence> statics = new HashMap<String, BlockSequence>();
 											for (Block b : fsm.getBlocks()) {

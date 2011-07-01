@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.dom;
 
-import org.daisy.dotify.formatter.SectionProperties;
 
 
 

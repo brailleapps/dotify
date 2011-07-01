@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter;
+package org.daisy.dotify.formatter.utils;
 
 /**
  * Breaks a paragraph of text into rows. It is assumed that all 

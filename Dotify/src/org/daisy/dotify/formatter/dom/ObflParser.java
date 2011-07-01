@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.dom;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,21 +10,34 @@ import java.util.Stack;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
-import org.daisy.dotify.formatter.Expression;
 import org.daisy.dotify.formatter.Formatter;
+import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.Position;
+import org.daisy.dotify.formatter.Paginator;
+import org.daisy.dotify.formatter.PaginatorFactory;
+import org.daisy.dotify.formatter.PaginatorHandler;
+import org.daisy.dotify.formatter.VolumeSplitterFactory;
 import org.daisy.dotify.formatter.dom.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.formatter.dom.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.dom.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
+import org.daisy.dotify.formatter.utils.Expression;
+import org.daisy.dotify.formatter.utils.Position;
 
-public class StaxFlowHandler {
+/**
+ * Provides a parser for OBFL. The parser accepts OBFL input
+ * and returns a VolumeStruct.
+ *
+ * @author Joel Håkansson
+ *
+ */
+public class ObflParser {
 	private final static QName LAYOUT_MASTER = new QName("layout-master");
 	private final static QName TEMPLATE = new QName("template");
 	private final static QName DEFAULT_TEMPLATE = new QName("default-template");
@@ -57,21 +71,50 @@ public class StaxFlowHandler {
 	private final static QName ATTR_PAGE_WIDTH = new QName("page-width");
 	private final static QName ATTR_PAGE_HEIGHT = new QName("page-height");
 	private final static QName ATTR_NAME = new QName("name");
+
+	private HashMap<String, TableOfContents> tocs;
+	private HashMap<String, LayoutMaster> masters;
+	private Stack<VolumeTemplate> volumeTemplates;
+
+	private FormatterFactory formatterFactory;
+	private PaginatorFactory paginatorFactory;
+	private VolumeSplitterFactory splitterFactory;
+	private Formatter formatter;
 	
-	private final Formatter flow;
-	private final HashMap<String, TableOfContents> tocs;
-	private final HashMap<String, LayoutMaster> masters;
-	private final Stack<VolumeTemplate> volumeTemplates;
+	public ObflParser() {
+		this(FormatterFactory.newInstance());
+	}
 	
-	public StaxFlowHandler(FormatterFactory flow) {
-		this.flow = flow.newFormatter();
+	public ObflParser(FormatterFactory formatterFactory) {
+		this.formatterFactory = formatterFactory;
+		this.paginatorFactory = PaginatorFactory.newInstance();
+		this.splitterFactory = VolumeSplitterFactory.newInstance();
+	}
+	
+	public void setFormatterFactory(FormatterFactory formatterFactory) {
+		this.formatterFactory = formatterFactory;
+	}
+	
+	public void setPaginatorFactory(PaginatorFactory paginatorFactory) {
+		this.paginatorFactory = paginatorFactory;
+	}
+	
+	public void setVolumeSplitterFactory(VolumeSplitterFactory splitterFactory) {
+		this.splitterFactory = splitterFactory;
+	}
+	
+	public VolumeStruct parse(InputStream stream) throws XMLStreamException, FormatterException {
+        XMLInputFactory inFactory = XMLInputFactory.newInstance();
+		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
+        inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
+        inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+        XMLEventReader input = inFactory.createXMLEventReader(stream);
+		this.formatter = formatterFactory.newFormatter();
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
-	}
-	
-	public void parse(XMLEventReader input) throws XMLStreamException {
-		flow.open();
+		formatter.open();
 		XMLEvent event;
 		while (input.hasNext()) {
 			event = input.nextEvent();
@@ -86,10 +129,24 @@ public class StaxFlowHandler {
 			}
 		}
 		try {
-			flow.close();
+			input.close();
+			formatter.close();
+			Paginator paginator = paginatorFactory.newPaginator();
+			paginator.open(formatterFactory);
+
+			PaginatorHandler.paginate(getBlockStruct().getBlockSequenceIterable(), paginator);
+			paginator.close();
+
+			BookStruct bookStruct = new BookStructImpl(
+					paginator.getPageStruct(),
+					getMasters(),
+					getVolumeTemplates(),
+					getTocs(),
+					formatterFactory
+				);
+			return splitterFactory.newSplitter().split(bookStruct);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new FormatterException(e);
 		}
 	}
 
@@ -100,7 +157,7 @@ public class StaxFlowHandler {
 		int width = Integer.parseInt(getAttr(event, ATTR_PAGE_WIDTH));
 		int height = Integer.parseInt(getAttr(event, ATTR_PAGE_HEIGHT));
 		String masterName = getAttr(event, ATTR_NAME);
-		ConfigurableLayoutMaster.Builder masterConfig = new ConfigurableLayoutMaster.Builder(width, height);
+		LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height);
 		while (i.hasNext()) {
 			Attribute atts = i.next();
 			String name = atts.getName().getLocalPart();
@@ -125,16 +182,16 @@ public class StaxFlowHandler {
 				break;
 			}
 		}
-		flow.addLayoutMaster(masterName, masterConfig.build());
+		formatter.addLayoutMaster(masterName, masterConfig.build());
 		masters.put(masterName, masterConfig.build());
 	}
 	
 	private PageTemplate parseTemplate(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		DefaultPageTemplate template;
+		PageTemplateImpl template;
 		if (equalsStart(event, TEMPLATE)) {
-			template = new DefaultPageTemplate(getAttr(event, "use-when"));
+			template = new PageTemplateImpl(getAttr(event, "use-when"));
 		} else {
-			template = new DefaultPageTemplate();
+			template = new PageTemplateImpl();
 		}
 		while (input.hasNext()) {
 			event=input.nextEvent();
@@ -208,7 +265,7 @@ public class StaxFlowHandler {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
-		flow.newSequence(builder.build());
+		formatter.newSequence(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, BLOCK)) {
@@ -224,26 +281,26 @@ public class StaxFlowHandler {
 	
 	@SuppressWarnings("unchecked")
 	private void parseBlock(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		flow.startBlock(blockBuilder(event.asStartElement().getAttributes()));
+		formatter.startBlock(blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				flow.addChars(event.asCharacters().getData());
+				formatter.addChars(event.asCharacters().getData());
 			} else if (equalsStart(event, BLOCK)) {
 				parseBlock(event, input);
 			} else if (equalsStart(event, LEADER)) {
-				flow.insertLeader(parseLeader(event, input));
+				formatter.insertLeader(parseLeader(event, input));
 			} else if (equalsStart(event, MARKER)) {
-				flow.insertMarker(parseMarker(event, input));
+				formatter.insertMarker(parseMarker(event, input));
 			} else if (equalsStart(event, BR)) {
-				flow.newLine();
+				formatter.newLine();
 				scanEmptyElement(input, BR);
 			}
 			else if (equalsEnd(event, BLOCK)) {
 				break;
 			}
 		}
-		flow.endBlock();
+		formatter.endBlock();
 	}
 	
 	private BlockProperties blockBuilder(Iterator<Attribute> atts) {
@@ -374,7 +431,7 @@ public class StaxFlowHandler {
 		String volumeVar = getAttr(event, "volume-number-variable");
 		String volumeCountVar = getAttr(event, "volume-count-variable");
 		String useWhen = getAttr(event, "use-when");
-		DefaultVolumeTemplate template = new DefaultVolumeTemplate(volumeVar, volumeCountVar, useWhen);
+		VolumeTemplateImpl template = new VolumeTemplateImpl(volumeVar, volumeCountVar, useWhen);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, PRE_CONTENT)) {
@@ -388,8 +445,8 @@ public class StaxFlowHandler {
 		volumeTemplates.push(template);
 	}
 	
-	private Iterable<VolumeSequence> parsePreVolumeContent(XMLEvent event, XMLEventReader input, VolumeTemplate template) throws XMLStreamException {
-		ArrayList<VolumeSequence> ret = new ArrayList<VolumeSequence>();
+	private Iterable<VolumeSequenceEvent> parsePreVolumeContent(XMLEvent event, XMLEventReader input, VolumeTemplate template) throws XMLStreamException {
+		ArrayList<VolumeSequenceEvent> ret = new ArrayList<VolumeSequenceEvent>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, SEQUENCE)) {
@@ -403,8 +460,8 @@ public class StaxFlowHandler {
 		return ret;
 	}
 	
-	private Iterable<VolumeSequence> parsePostVolumeContent(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		ArrayList<VolumeSequence> ret = new ArrayList<VolumeSequence>();
+	private Iterable<VolumeSequenceEvent> parsePostVolumeContent(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		ArrayList<VolumeSequenceEvent> ret = new ArrayList<VolumeSequenceEvent>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, SEQUENCE)) {
@@ -416,7 +473,7 @@ public class StaxFlowHandler {
 		return ret;
 	}
 
-	private VolumeSequence parseVolumeSequence(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private VolumeSequenceEvent parseVolumeSequence(XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		String masterName = getAttr(event, "master");
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
 		String initialPageNumber = getAttr(event, "initial-page-number");
@@ -435,7 +492,7 @@ public class StaxFlowHandler {
 		return volSeq;
 	}
 
-	private VolumeSequence parseTocSequence(XMLEvent event, XMLEventReader input, VolumeTemplate template) throws XMLStreamException {
+	private VolumeSequenceEvent parseTocSequence(XMLEvent event, XMLEventReader input, VolumeTemplate template) throws XMLStreamException {
 		String masterName = getAttr(event, "master");
 		String tocName = getAttr(event, "toc");
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
@@ -556,7 +613,7 @@ public class StaxFlowHandler {
 	}
 	
 	public BlockStruct getBlockStruct() {
-		return flow.getFlowStruct();
+		return formatter.getFlowStruct();
 	}
 
 }

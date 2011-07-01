@@ -3,12 +3,12 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.daisy.dotify.formatter.PageInfo;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Page;
+import org.daisy.dotify.formatter.dom.PageInfo;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.Row;

@@ -1,4 +1,4 @@
-package org.daisy.dotify.tools;
+package org.daisy.dotify.text;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

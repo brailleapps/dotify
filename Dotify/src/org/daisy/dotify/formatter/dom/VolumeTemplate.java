@@ -9,9 +9,9 @@ public interface VolumeTemplate {
 	 */
 	public boolean appliesTo(int volume, int volumeCount);
 	
-	public Iterable<VolumeSequence> getPreVolumeContent();
+	public Iterable<VolumeSequenceEvent> getPreVolumeContent();
 	
-	public Iterable<VolumeSequence> getPostVolumeContent();
+	public Iterable<VolumeSequenceEvent> getPostVolumeContent();
 	
 	public String getVolumeNumberVariableName();
 	public String getVolumeCountVariableName();

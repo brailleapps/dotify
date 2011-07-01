@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.formatter.PageTools;
 import org.daisy.dotify.formatter.dom.BookStruct;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
+import org.daisy.dotify.formatter.utils.PageTools;
 
 class EvenSizeVolumeStructImpl implements VolumeStruct {
 	private final Logger logger;

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.BlockHandler;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
@@ -15,6 +14,7 @@ import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.SpanProperties;
+import org.daisy.dotify.formatter.utils.BlockHandler;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;

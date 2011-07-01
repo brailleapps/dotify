@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter.dom;
 
 
-public interface TocSequenceEvent extends VolumeSequence {
+public interface TocSequenceEvent extends VolumeSequenceEvent {
 	enum TocRange {DOCUMENT, VOLUME};
 	
 	public String getTocName();

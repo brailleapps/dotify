@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.dom;
 
-import org.daisy.dotify.formatter.Position;
+import org.daisy.dotify.formatter.utils.Position;
 
 
 /**

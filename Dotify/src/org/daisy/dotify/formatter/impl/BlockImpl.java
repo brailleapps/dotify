@@ -8,6 +8,7 @@ import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Row;
 
+
 class BlockImpl extends Stack<Row> implements Block {
 	private String blockId;
 	private int spaceBefore;

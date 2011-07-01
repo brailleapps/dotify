@@ -1,12 +1,12 @@
 package org.daisy.dotify.formatter.dom;
 
-import org.daisy.dotify.formatter.Position;
+import org.daisy.dotify.formatter.utils.Position;
 
 /**
  * <p>Positions a block of text at a specified row.</p>
  * @author Joel Håkansson, TPB
  */
-public class BlockPosition {
+class BlockPosition {
 	/**
 	 * Block alignment
 	 */

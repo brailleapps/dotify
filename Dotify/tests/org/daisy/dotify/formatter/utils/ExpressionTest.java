@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter;
+package org.daisy.dotify.formatter.utils;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * ConfigurableLayoutMaster will ensure that the LayoutMaster measurements adds up.
  * @author Joel Håkansson, TPB
  */
-public class ConfigurableLayoutMaster implements LayoutMaster {
+class LayoutMasterImpl implements LayoutMaster {
 	protected final int headerHeight;
 	protected final int footerHeight;
 	protected final int flowWidth;
@@ -77,12 +77,12 @@ public class ConfigurableLayoutMaster implements LayoutMaster {
 			return this;
 		}
 		
-		public ConfigurableLayoutMaster build() {
-			return new ConfigurableLayoutMaster(this);
+		public LayoutMasterImpl build() {
+			return new LayoutMasterImpl(this);
 		}
 	}
 
-	private ConfigurableLayoutMaster(Builder config) {
+	private LayoutMasterImpl(Builder config) {
 		// int flowWidth, int flowHeight, int headerHeight, int footerHeight, int innerMargin, int outerMargin, float rowSpacing
 		this.headerHeight = config.headerHeight;
 		this.footerHeight = config.footerHeight;
@@ -143,7 +143,7 @@ public class ConfigurableLayoutMaster implements LayoutMaster {
 		}
 		// if no template applies, an empty template should be returned
 		// since adding templates is optional in Builder
-		return new DefaultPageTemplate();
+		return new PageTemplateImpl();
 	}
 
 }
