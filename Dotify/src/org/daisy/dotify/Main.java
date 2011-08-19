@@ -167,7 +167,7 @@ public class Main {
 				while (it.length()<3) {
 					it = "0" + it; 
 				}
-				FileUtils.copy(fj.getOutput(), new File(debug, "debug_dtbook2pef_" + it + "_" + task.getName().replaceAll("[\\s:]+", "_")));
+				FileUtils.copy(fj.getOutput(), new File(debug, "debug_dotify_" + it + "_" + task.getName().replaceAll("[\\s:]+", "_")));
 			}
 			fj.swap();
 			i++;

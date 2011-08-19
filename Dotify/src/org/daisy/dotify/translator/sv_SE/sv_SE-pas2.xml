@@ -39,6 +39,7 @@
 	<entry key="ę">&#x2808;&#x2811;</entry>						<!-- LATIN SMALL LETTER E WITH OGONEK, 0119 -->
 	<entry key="ȩ">&#x2808;&#x2811;</entry>						<!-- LATIN SMALL LETTER E WITH CEDILLA, 0229 -->
 	<entry key="ě">&#x2808;&#x2811;</entry>						<!-- LATIN SMALL LETTER E WITH CARON, U+011B-->
+	<entry key="ė">&#x2808;&#x2811;</entry>						<!-- LATIN SMALL LETTER E WITH DOT ABOVE, U+0117 -->
 	<entry key="f">&#x280B;</entry>
 	<entry key="g">&#x281B;</entry>
 	<entry key="ğ">&#x2808;&#x281B;</entry>						<!-- LATIN SMALL LETTER G WITH BREVE, U+011F -->
@@ -48,7 +49,8 @@
 	<entry key="ì">&#x2808;&#x280A;</entry>
 	<entry key="î">&#x2808;&#x280A;</entry>
 	<entry key="ï">&#x2808;&#x280A;</entry>
-	<entry key="ı">&#x2808;&#x280A;</entry>						<!-- LATIN SMALL LETTER DOTLESS I', U+0131 -->
+	<entry key="ı">&#x2808;&#x280A;</entry>						<!-- LATIN SMALL LETTER DOTLESS I, U+0131 -->
+	<entry key="ī">&#x2808;&#x280A;</entry>						<!-- LATIN SMALL LETTER I WITH MACRON, U+012B -->
 	<entry key="j">&#x281A;</entry>
 	<entry key="k">&#x2805;</entry>
 	<entry key="l">&#x2807;</entry>
