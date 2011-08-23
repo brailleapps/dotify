@@ -18,7 +18,13 @@
 	<!-- Rule 3: Document contains an unsupported language -->
 	<sch:pattern name="xml_lang" id="xml_lang">
 		<sch:rule context="*[@xml:lang]">
-			<sch:assert test="@xml:lang='sv' or @xml:lang='sv-SE' or @xml:lang='en' or @xml:lang='en-US' or @xml:lang='en-GB' or @xml:lang='no' or @xml:lang='de' or @xml:lang='fr' or @xml:lang='fi'">[Rule 3] Unsupported language./></sch:assert>
+			<sch:assert test="@xml:lang='sv' or @xml:lang='sv-SE' or @xml:lang='en' or @xml:lang='en-US' or @xml:lang='en-GB' or @xml:lang='no' or @xml:lang='de' or @xml:lang='fr' or @xml:lang='fi'">[Rule 3] Unsupported language.</sch:assert>
+		</sch:rule>
+	</sch:pattern>
+	<!-- Rule 4: Only allowed elements in level containing a TOC list -->
+	<sch:pattern name="check_toc" id="check_toc">
+		<sch:rule context="dtb:level1[dtb:list[@class='toc']]">
+			<sch:assert test="count(dtb:pagenum|dtb:h1|dtb:list)=count(*) and count(dtb:pagenum)&lt;=1 and count(dtb:h1)&lt;=1 and count(dtb:list)=1">[Rule 4] Disallowed elements in level containing a TOC.</sch:assert>
 		</sch:rule>
 	</sch:pattern>
 </sch:schema>

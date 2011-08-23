@@ -621,7 +621,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><current-page style="roman"/></field>
+					<field><!--<string value="&#x2800;&#x2800;"/>--><current-page style="roman"/></field>
 				</header>
 				<footer></footer>
 			</template>
@@ -638,7 +638,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><current-page style="default"/></field>
+					<field><!--<string value="&#x2800;&#x2800;"/>--><current-page style="default"/></field>
 					<field>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
@@ -648,7 +648,7 @@
 			</template>
 			<default-template>
 				<header>
-					<field>
+					<field><!--<string value="&#x2800;&#x2800;"/>-->
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
 					</field>
@@ -665,14 +665,14 @@
 				<footer></footer>
 			</default-template>
 		</layout-master>
-		<xsl:if test="//dtb:level1[@class='toc']">
+		<xsl:if test="//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']]">
 			<table-of-contents name="full-toc">
 				<xsl:apply-templates select="//dtb:level1" mode="toc"/>
 			</table-of-contents>
 		</xsl:if>
 	<volume-template volume-number-variable="volume" volume-count-variable="volumes">
 		<pre-content>
-			<xsl:if test="//dtb:level1[@class='toc']">
+			<xsl:if test="//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']]">
 			<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
 				<on-toc-start>
 					<block margin-bottom="1">Innehåll</block>
@@ -697,8 +697,9 @@
 	</xsl:template>
 	
 	<xsl:template match="dtb:level1[@class='toc']"></xsl:template>
-
-	<xsl:template match="dtb:level1[@class='toc']" mode="toc"></xsl:template>	
+	<xsl:template match="dtb:level1[dtb:list[@class='toc']]"></xsl:template>
+	<xsl:template match="dtb:level1[@class='toc']" mode="toc"></xsl:template>
+	<xsl:template match="dtb:level1[dtb:list[@class='toc']]" mode="toc"></xsl:template>
 		
 	<xsl:template match="dtb:level1|dtb:level2" mode="toc">
 		<xsl:if test="dtb:h1|dtb:h2">
