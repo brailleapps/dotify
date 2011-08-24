@@ -59,7 +59,13 @@ public class BlockEventHandler {
 						isDirty = true;
 						formatter.addChars("??");
 					} else {
-						formatter.addChars(""+page);
+						switch (((PageNumberReference)bc).getNumeralStyle()) {
+							case ROMAN:
+								formatter.addChars(""+RomanNumeral.int2roman(page));
+								break;
+							case DEFAULT:default:
+								formatter.addChars(""+page);
+						}
 					}
 					break; }
 				case BLOCK: {

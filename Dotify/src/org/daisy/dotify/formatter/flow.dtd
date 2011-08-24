@@ -196,4 +196,5 @@
 <!ELEMENT page-number EMPTY>
 <!ATTLIST page-number
 	ref-id IDREF #REQUIRED
+	style (default|roman) #IMPLIED
 >

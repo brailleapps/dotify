@@ -431,8 +431,15 @@ public class ObflParser {
 	
 	private PageNumberReference parsePageNumber(XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		String refId = getAttr(event, "ref-id");
+		NumeralStyle style = NumeralStyle.DEFAULT;
+		String styleStr = getAttr(event, "style");
+		if (styleStr!=null) {
+			try {
+				style = NumeralStyle.valueOf(styleStr.toUpperCase());
+			} catch (Exception e) { }
+		}
 		scanEmptyElement(input, PAGE_NUMBER);
-		return new PageNumberReference(refId);
+		return new PageNumberReference(refId, style);
 	}
 	
 	private Evaluate parseEvaluate(XMLEvent event, XMLEventReader input) throws XMLStreamException {
