@@ -676,7 +676,7 @@
 			<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
 				<on-toc-start>
 					<block margin-bottom="1">Innehåll</block>
-					<block margin-bottom="1">Sidhänvisningar till svartskriftsboken står inom parentes.</block>
+					<block margin-bottom="1">Sid­hän­vis­ning­ar till svart­skrifts­bo­ken står in­om pa­ren­tes.</block>
 				</on-toc-start>
 				<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
 					<block keep="all" keep-with-next="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
