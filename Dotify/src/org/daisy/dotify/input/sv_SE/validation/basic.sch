@@ -24,7 +24,7 @@
 	<!-- Rule 4: Only allowed elements in level containing a TOC list -->
 	<sch:pattern name="check_toc" id="check_toc">
 		<sch:rule context="dtb:level1[dtb:list[@class='toc']]">
-			<sch:assert test="count(dtb:pagenum|dtb:h1|dtb:list)=count(*) and count(dtb:pagenum)&lt;=1 and count(dtb:h1)&lt;=1 and count(dtb:list)=1">[Rule 4] Disallowed elements in level containing a TOC.</sch:assert>
+			<sch:assert test="count(dtb:pagenum|dtb:h1|dtb:list)=count(*) and count(dtb:list)=1">[Rule 4] Disallowed elements in level containing a TOC.</sch:assert>
 		</sch:rule>
 	</sch:pattern>
 </sch:schema>
