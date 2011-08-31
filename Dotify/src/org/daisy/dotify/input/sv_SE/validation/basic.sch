@@ -27,4 +27,10 @@
 			<sch:assert test="count(dtb:pagenum|dtb:h1|dtb:list)=count(*) and count(dtb:list)=1">[Rule 4] Disallowed elements in level containing a TOC.</sch:assert>
 		</sch:rule>
 	</sch:pattern>
+	<!-- Rule 5: level1 must have text content -->
+	<sch:pattern name="check_level1" id="check_level1">
+		<sch:rule context="dtb:level1">
+			<sch:assert test="descendant::text()">[Rule 5] level1 must have text content.</sch:assert>
+		</sch:rule>
+	</sch:pattern>
 </sch:schema>

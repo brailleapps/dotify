@@ -732,8 +732,19 @@
 	</xsl:template>
 	
 	<xsl:template match="dtb:h1|dtb:h2|dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd">
-		<xsl:value-of select="descendant::text()"/>
+<!--		<xsl:value-of select="descendant::text()"/>-->
+	<xsl:apply-templates mode="toc-text"/>
 		<xsl:if test="not(self::dtb:h1 and ancestor::dtb:level1[@class='part'])"><xsl:text> (</xsl:text><xsl:value-of select="preceding::dtb:pagenum[1]/text()"/><xsl:text>) </xsl:text><leader position="100%" align="right" pattern="."/><page-number ref-id="{generate-id(.)}"><xsl:if test="ancestor::dtb:frontmatter"><xsl:attribute name="style">roman</xsl:attribute></xsl:if></page-number></xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*" mode="toc-text">
+		<xsl:apply-templates/>
+	</xsl:template>
+	<xsl:template match="text()" mode="toc-text">
+		<xsl:value-of select="."/>
+	</xsl:template>
+	<xsl:template match="dtb:br" mode="toc-text">
+		<xsl:text> </xsl:text>
 	</xsl:template>
 	
 	<xsl:template match="node()" mode="toc"/>
