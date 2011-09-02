@@ -716,15 +716,15 @@
 	<xsl:template match="dtb:level1|dtb:level2" mode="toc">
 		<xsl:if test="dtb:h1|dtb:h2">
 			<xsl:choose>
-				<xsl:when test="self::dtb:level1 and @class='part'"><toc-entry ref-id="{generate-id(.)}" margin-top="1" margin-bottom="1"><xsl:apply-templates select="dtb:h1" mode="toc-hd"/></toc-entry><xsl:apply-templates mode="toc"/></xsl:when>
-				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="2"><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
+				<xsl:when test="self::dtb:level1 and @class='part'"><toc-entry ref-id="{generate-id(.)}" margin-top="1" margin-bottom="1" keep="all"><xsl:apply-templates select="dtb:h1" mode="toc-hd"/></toc-entry><xsl:apply-templates mode="toc"/></xsl:when>
+				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="2" keep="all"><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="dtb:level3|dtb:level4|dtb:level5|dtb:level6" mode="toc">
 		<xsl:if test="dtb:h3|dtb:h4|dtb:h5|dtb:h6">
-			<toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="1"><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
+			<toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="1" keep="all"><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
 			<xsl:if test="dtb:level3 and ancestor::dtb:level1[@class='part']"><xsl:apply-templates mode="toc"/></xsl:if>
 			</toc-entry>
 			<xsl:if test="not(dtb:level3 and ancestor::dtb:level1[@class='part'])"><xsl:apply-templates mode="toc"/></xsl:if>
