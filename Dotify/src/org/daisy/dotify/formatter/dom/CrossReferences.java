@@ -7,6 +7,6 @@ public interface CrossReferences {
 	 * @param refid
 	 * @return returns the page number, one-based
 	 */
-	public Integer getPageNumber(String refid);
+	public Page getPage(String refid);
 
 }

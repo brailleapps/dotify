@@ -9,11 +9,12 @@ import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.EventContents;
+import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
+import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.TocEvent;
-import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 import org.daisy.dotify.formatter.utils.Expression;
 
 /**
@@ -54,17 +55,18 @@ public class BlockEventHandler {
 						throw new RuntimeException("No cross references supplied.");
 					}
 					String refid = ((PageNumberReference)bc).getRefId();
-					Integer page = refs.getPageNumber(refid);
+					Page page = refs.getPage(refid);
 					if (page==null) {
 						isDirty = true;
 						formatter.addChars("??");
 					} else {
+						int p = page.getPageIndex()+1;
 						switch (((PageNumberReference)bc).getNumeralStyle()) {
 							case ROMAN:
-								formatter.addChars(""+RomanNumeral.int2roman(page));
+								formatter.addChars(""+RomanNumeral.int2roman(p));
 								break;
 							case DEFAULT:default:
-								formatter.addChars(""+page);
+								formatter.addChars(""+p);
 						}
 					}
 					break; }

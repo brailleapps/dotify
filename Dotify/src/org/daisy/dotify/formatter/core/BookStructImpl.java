@@ -41,6 +41,7 @@ class BookStructImpl implements BookStruct, CrossReferences {
 	private final Iterable<VolumeTemplate> volumeTemplates;
 	private final Map<String, TableOfContents> tocs;
 	private final FormatterFactory formatterFactory;
+	private final HashMap<Page, Integer> pageSheetMap;
 	
 	public BookStructImpl(PageStruct ps, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
 			FormatterFactory factory) {
@@ -50,6 +51,19 @@ class BookStructImpl implements BookStruct, CrossReferences {
 		this.tocs = tocs;
 		this.formatterFactory = factory;
 		this.logger = Logger.getLogger(BookStructImpl.class.getCanonicalName());
+		this.pageSheetMap = new HashMap<Page, Integer>();
+		int pageIndex=0;
+		int sheetIndex=0;
+		for (PageSequence s : this.ps.getContents()) {
+			LayoutMaster lm = s.getLayoutMaster();
+			for (Page p : s) {
+				if (!lm.duplex() || pageIndex%2==0) {
+					sheetIndex++;
+				}
+				pageSheetMap.put(p, sheetIndex);
+				pageIndex++;
+			}
+		}
 	}
 
 	public Iterable<PageSequence> getPreVolumeContents(int volumeNumber, VolumeStruct volumeData) {
@@ -71,19 +85,6 @@ class BookStructImpl implements BookStruct, CrossReferences {
 									TocSequenceEvent toc = (TocSequenceEvent)seq;
 									if (toc.appliesTo(volumeNumber, volumeData.getVolumeCount())) {
 										BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters, this);
-										HashMap<Integer, Integer> pageSheetMap = new HashMap<Integer, Integer>();
-										int page=0;
-										int sheetIndex=0;
-										for (PageSequence s : this.getPageStruct().getContents()) {
-											LayoutMaster lm = s.getLayoutMaster();
-											for (@SuppressWarnings("unused") Page p : s) {
-												if (!lm.duplex() || page%2==0) {
-													sheetIndex++;
-												}
-												pageSheetMap.put(page, sheetIndex);
-												page++;
-											}
-										}
 										TableOfContents data = tocs.get(toc.getTocName());
 										TocEvents events = toc.getTocEvents(volumeNumber, volumeData.getVolumeCount());
 										SequenceEventImpl evs = new SequenceEventImpl(toc.getSequenceProperties());
@@ -109,8 +110,7 @@ class BookStructImpl implements BookStruct, CrossReferences {
 											//assumes toc is in sequential order
 											for (String id : data.getTocIdList()) {
 												String ref = data.getRefForID(id);
-												Integer p = getPageNumber(ref);
-												int vol = volumeData.getVolumeForContentSheet(pageSheetMap.get(p));
+												int vol = volumeData.getVolumeForContentSheet(pageSheetMap.get(getPage(ref)));
 												if (vol<volumeNumber) {
 													
 												} else if (vol==volumeNumber) {
@@ -142,8 +142,7 @@ class BookStructImpl implements BookStruct, CrossReferences {
 											for (Block b : fsm.getBlocks()) {
 												if (b.getBlockIdentifier()!=null) {
 													String ref = data.getRefForID(b.getBlockIdentifier());
-													Integer p = getPageNumber(ref);
-													Integer i = pageSheetMap.get(p);
+													Integer i = pageSheetMap.get(getPage(ref));
 													if (i!=null) {
 														int vol = volumeData.getVolumeForContentSheet(i);
 														if (nv!=vol) {
@@ -211,8 +210,8 @@ class BookStructImpl implements BookStruct, CrossReferences {
 		return ps;
 	}
 
-	public Integer getPageNumber(String refid) {
-		return ps.getPageNumber(refid);
+	public Page getPage(String refid) {
+		return ps.getPage(refid);
 	}
 
 }

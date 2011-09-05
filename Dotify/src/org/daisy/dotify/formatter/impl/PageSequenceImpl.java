@@ -15,11 +15,11 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private Stack<Page> pages;
 		private LayoutMaster master;
 		private int pagesOffset;
-		private final HashMap<String, Integer> pageReferences;
+		private final HashMap<String, Page> pageReferences;
 		private final FormatterFactory formatterFactory;
 		private Formatter formatter;
 		
-		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Integer> pageReferences, FormatterFactory formatterFactory) {
+		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterFactory formatterFactory) {
 			this.pages = new Stack<Page>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
@@ -73,7 +73,7 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		}
 		
 		void insertIdentifier(String id) {
-			if (pageReferences.put(id, (currentPage().getPageIndex()+1))!=null) {
+			if (pageReferences.put(id, currentPage())!=null) {
 				throw new IllegalArgumentException("Identifier not unique: " + id);
 			}
 		}

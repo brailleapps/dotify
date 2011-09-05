@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -21,6 +22,8 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 	
 	private final int splitterMax;
 	private EvenSizeVolumeSplitterCalculator sdc;
+	private boolean volumeForContentSheetChanged = false;
+	private HashMap<Integer, Integer> volSheet;
 
 	/**
 	 * @param sheets, total number of sheets
@@ -31,12 +34,10 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		this.splitterMax = splitterMax;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 		this.volumeOverhead = new Integer[0];
+		this.volSheet = new HashMap<Integer, Integer>();
+		this.volumeForContentSheetChanged = false;
 	}
 	
-	private void calc(int sheets) {
-		this.sdc = new EvenSizeVolumeSplitterCalculator(sheets, splitterMax);
-		this.volumeOverhead = new Integer[sdc.getVolumeCount()];
-	}
 	/*
 	public boolean isBreakpoint(int sheetIndex) {
 		return sdc.isBreakpoint(sheetIndex);
@@ -57,16 +58,21 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		if (sheetIndex>sdc.getSheetCount()) {
 			throw new IndexOutOfBoundsException("Sheet index must not exceed agreed value.");
 		}
-		int i=0;
-		int j=0;
-		while (i<sheetIndex) {
-			if (j<volumeOverhead.length && volumeOverhead[j]!=null) {
-				i -= volumeOverhead[j];
+		int lastSheetInCurrentVolume=0;
+		int retVolume=0;
+		while (lastSheetInCurrentVolume<sheetIndex) {
+			if (retVolume<volumeOverhead.length && volumeOverhead[retVolume]!=null) {
+				lastSheetInCurrentVolume -= volumeOverhead[retVolume];
 			}
-			i += sheetsInVolume(j);
-			j++;
+			retVolume++;
+			lastSheetInCurrentVolume += sheetsInVolume(retVolume);
 		}
-		return j;
+		Integer cv = volSheet.get(sheetIndex);
+		if (cv==null || cv!=retVolume) {
+			volumeForContentSheetChanged = true;
+			volSheet.put(sheetIndex, retVolume);
+		}
+		return retVolume;
 	}
 	
 	public Iterator<Volume> iterator() {
@@ -82,9 +88,15 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		boolean ok = false;
 		int totalPreCount = 0;
 		int totalPostCount = 0;
+		int prvVolCount = 0;
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
-			calc(contents+totalPreCount+totalPostCount);
+			volumeForContentSheetChanged = false;
+			sdc = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax);
+			if (sdc.getVolumeCount()!=prvVolCount) {
+				volumeOverhead = new Integer[sdc.getVolumeCount()];
+				prvVolCount = sdc.getVolumeCount();
+			}
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
 			totalPreCount = 0;
@@ -130,7 +142,7 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 				}
 				ret.add(new VolumeImpl(pre, body, post));
 			}
-			if (pageIndex==pages.size() && ok2) {
+			if (pageIndex==pages.size() && ok2 && (!volumeForContentSheetChanged)) {
 				//everything fits
 				ok = true;
 			} else if (j>9) {
@@ -143,6 +155,11 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		return ret.iterator();
 	}
 
+	/**
+	 * 
+	 * @param volIndex, volume index, one-based
+	 * @return
+	 */
 	public int sheetsInVolume(int volIndex) {
 		return sdc.sheetsInVolume(volIndex);
 	}

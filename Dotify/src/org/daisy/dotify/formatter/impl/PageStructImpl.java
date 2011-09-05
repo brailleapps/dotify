@@ -3,17 +3,18 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
 
 class PageStructImpl extends Stack<PageSequence> implements PageStruct {
 	//private final StringFilter filters;
-	HashMap<String, Integer> pageReferences;
+	HashMap<String, Page> pageReferences;
 
 	
 	public PageStructImpl() {
 		//this.filters = filters;
-		this.pageReferences = new HashMap<String, Integer>();
+		this.pageReferences = new HashMap<String, Page>();
 	}
 	
 	/*public StringFilter getFilter() {
@@ -27,7 +28,7 @@ class PageStructImpl extends Stack<PageSequence> implements PageStruct {
 		return this;
 	}
 
-	public Integer getPageNumber(String refid) {
+	public Page getPage(String refid) {
 		return pageReferences.get(refid);
 	}
 
