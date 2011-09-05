@@ -52,6 +52,11 @@ public class EvenSizeVolumeSplitterCalculator {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param volIndex, volume index, one-based
+	 * @return
+	 */
 	public int sheetsInVolume(int volIndex) {
 		if (volIndex<=volsWithBpSheets) {
 			return breakpoint;
