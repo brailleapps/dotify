@@ -614,6 +614,7 @@
 
 	<xsl:import href="dtbook2flow_sv_SE.xsl" />
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	<xsl:param name="toc-indent-multiplier" select="1"/>
 
 	<xsl:template name="insertLayoutMaster">
 		<layout-master name="front" page-width="{$page-width}" 
@@ -621,7 +622,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><!--<string value="&#x2800;&#x2800;"/>--><current-page style="roman"/></field>
+					<field><string value="&#x2800;&#x2800;"/><current-page style="roman"/></field>
 				</header>
 				<footer></footer>
 			</template>
@@ -638,7 +639,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><!--<string value="&#x2800;&#x2800;"/>--><current-page style="default"/></field>
+					<field><string value="&#x2800;&#x2800;"/><current-page style="default"/></field>
 					<field>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
@@ -648,7 +649,7 @@
 			</template>
 			<default-template>
 				<header>
-					<field><!--<string value="&#x2800;&#x2800;"/>-->
+					<field><string value="&#x2800;&#x2800;"/>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
 					</field>
@@ -717,14 +718,14 @@
 		<xsl:if test="dtb:h1|dtb:h2">
 			<xsl:choose>
 				<xsl:when test="self::dtb:level1 and @class='part'"><toc-entry ref-id="{generate-id(.)}" margin-top="1" margin-bottom="1" keep="all"><xsl:apply-templates select="dtb:h1" mode="toc-hd"/></toc-entry><xsl:apply-templates mode="toc"/></xsl:when>
-				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="2" keep="all"><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
+				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{2*$toc-indent-multiplier}" keep="all"><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="dtb:level3|dtb:level4|dtb:level5|dtb:level6" mode="toc">
 		<xsl:if test="dtb:h3|dtb:h4|dtb:h5|dtb:h6">
-			<toc-entry ref-id="{generate-id(.)}" block-indent="1" text-indent="1" keep="all"><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
+			<toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{$toc-indent-multiplier}" keep="all"><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
 			<xsl:if test="dtb:level3 and ancestor::dtb:level1[@class='part']"><xsl:apply-templates mode="toc"/></xsl:if>
 			</toc-entry>
 			<xsl:if test="not(dtb:level3 and ancestor::dtb:level1[@class='part'])"><xsl:apply-templates mode="toc"/></xsl:if>

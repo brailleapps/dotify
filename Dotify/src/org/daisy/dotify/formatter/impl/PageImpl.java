@@ -29,7 +29,6 @@ class PageImpl implements Page {
 	private ArrayList<Row> rows;
 	private ArrayList<Marker> markers;
 	private final int pageIndex;
-	private final PageTemplate template;
 	private final int flowHeight;
 	private int contentMarkersBegin;
 	private boolean isVolBreak;
@@ -40,7 +39,7 @@ class PageImpl implements Page {
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
 		this.parent = parent;
-		this.template = parent.getLayoutMaster().getTemplate(pageIndex+1);
+		PageTemplate template = parent.getLayoutMaster().getTemplate(pageIndex+1);
 		this.flowHeight = parent.getLayoutMaster().getPageHeight()-template.getHeaderHeight()-template.getFooterHeight();
 		this.isVolBreak = false;
 	}
@@ -88,13 +87,13 @@ class PageImpl implements Page {
 			int pagenum = getPageIndex()+1;
 			PageTemplate t = lm.getTemplate(pagenum);
 			StringFilter filter = getParent().getFormatter().getDefaultFilter();
-			ret.addAll(renderFields(lm, this, t.getHeader(), filter));
+			ret.addAll(renderFields(lm, t.getHeader(), filter));
 			ret.addAll(rows);
 			if (t.getFooterHeight()>0) {
 				while (ret.size()<lm.getPageHeight()-t.getFooterHeight()) {
 					ret.add(new Row());
 				}
-				ret.addAll(renderFields(lm, this, t.getFooter(), filter));
+				ret.addAll(renderFields(lm, t.getFooter(), filter));
 			}
 			return ret;
 		} catch (FormatterException e) {
@@ -131,11 +130,11 @@ class PageImpl implements Page {
 	}
 	
 	
-	private static ArrayList<Row> renderFields(LayoutMaster lm, Page p, ArrayList<ArrayList<Object>> fields, StringFilter filters) throws FormatterException {
+	private ArrayList<Row> renderFields(LayoutMaster lm, ArrayList<ArrayList<Object>> fields, StringFilter filters) throws FormatterException {
 		ArrayList<Row> ret = new ArrayList<Row>();
 		for (ArrayList<Object> row : fields) {
 			try {
-				ret.add(new Row(distribute(row, lm.getFlowWidth(), " ", p, filters)));
+				ret.add(new Row(distribute(row, lm.getFlowWidth(), " ", filters)));
 			} catch (LayoutToolsException e) {
 				throw new FormatterException("Error while rendering header", e);
 			}
@@ -143,10 +142,10 @@ class PageImpl implements Page {
 		return ret;
 	}
 	
-	private static String distribute(ArrayList<Object> chunks, int width, String padding, Page p, StringFilter filters) throws LayoutToolsException {
+	private String distribute(ArrayList<Object> chunks, int width, String padding, StringFilter filters) throws LayoutToolsException {
 		ArrayList<String> chunkF = new ArrayList<String>();
 		for (Object f : chunks) {
-			chunkF.add(filters.filter(resolveField(f, p).replaceAll("\u00ad", "")));
+			chunkF.add(filters.filter(resolveField(f, this).replaceAll("\u00ad", "")));
 		}
 		return LayoutTools.distribute(chunkF, width, padding, LayoutTools.DistributeMode.EQUAL_SPACING);
 	}

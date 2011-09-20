@@ -33,4 +33,10 @@
 			<sch:assert test="descendant::text()">[Rule 5] level1 must have text content.</sch:assert>
 		</sch:rule>
 	</sch:pattern>
+	<!-- Rule 6: Disallow level1@class='part' -->
+	<sch:pattern name="no_part" id="no_part">
+		<sch:rule context="dtb:level1[@class]">
+			<sch:assert test="@class!='part'">[Rule 6] @class='part' is not supported.</sch:assert>
+		</sch:rule>
+	</sch:pattern>
 </sch:schema>
