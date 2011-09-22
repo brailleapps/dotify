@@ -39,4 +39,10 @@
 			<sch:assert test="@class!='part'">[Rule 6] @class='part' is not supported.</sch:assert>
 		</sch:rule>
 	</sch:pattern>
+	<!-- Rule 7: Disallow frontmatter contents -->
+	<sch:pattern name="no_frontmatter_contents" id="no_frontmatter_contents">
+		<sch:rule context="dtb:frontmatter">
+			<sch:report test="*[not(self::dtb:doctitle or self::dtb:docauthor or self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])]">[Rule 7] Contents in frontmatter (aside from doctitle, docauthor, rearjacketcopy, colophon and toc) is not supported.</sch:report>
+		</sch:rule>
+	</sch:pattern>
 </sch:schema>

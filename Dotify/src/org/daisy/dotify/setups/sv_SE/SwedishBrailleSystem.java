@@ -119,7 +119,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		p2.remove(SystemKeys.INPUT);
 		p2.remove(SystemKeys.INPUT_URI);
 		p2.remove("output");
-		p2.remove("tempFilesDirectory");
+		p2.remove(SystemKeys.TEMP_FILES_DIRECTORY);
 
 		PEFMediaWriter paged = new PEFMediaWriter(p2);
 		StringFilter swedishFilter = factory.newStringFilter(sv_SE);
