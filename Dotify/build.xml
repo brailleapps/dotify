@@ -64,7 +64,7 @@
     			<patternset refid="dist-jar.patternset"/>  			
     		</fileset>
     		<manifest>
-    			<attribute name="Class-Path" value="lib/icu4j-3_8.jar lib/onvdl.jar lib/org.daisy.util.jar lib/saxon.jar lib/saxon8-dom.jar lib/saxon8.jar lib/xercesImpl.jar lib/brailleUtils-ui-1.2b.jar"/>
+    			<attribute name="Class-Path" value="lib/icu4j-3_8.jar lib/onvdl.jar lib/org.daisy.util.jar lib/saxon.jar lib/saxon8-dom.jar lib/saxon8.jar lib/xercesImpl.jar"/>
     			<attribute name="Main-Class" value="org.daisy.dotify.Main"/>
     			<attribute name="Built-By" value="${user.name}"/>
     			<attribute name="Built-On" value="${ISO-TODAY}"/>

@@ -10,13 +10,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.braille.ui.AbstractUI;
 import org.daisy.dotify.input.InputManagerTaskSystem;
 import org.daisy.dotify.input.InputManagerTaskSystemFactory;
 import org.daisy.dotify.setups.ConfigUrlLocator;
@@ -38,14 +35,16 @@ import org.daisy.util.file.FileUtils;
  * Provides a command line entry point to Dotify.
  * @author Joel Håkansson
  */
-public class Main extends AbstractUI {
+public class Main { //extends AbstractUI {
 	private final static String TEMP_DIR = System.getProperty("java.io.tmpdir");
 	private final Logger logger;
+/*
 	private final List<Argument> reqArgs;
 	private final List<OptionalArgument> optionalArgs;
-
+*/
 	public Main() {
 		this.logger = Logger.getLogger(Main.class.getCanonicalName());
+/*
 		this.reqArgs = new ArrayList<Argument>();
 		reqArgs.add(new Argument("path_to_input", "Path to the input file"));
 		reqArgs.add(new Argument("path_to_output", "Path to the output file"));
@@ -57,6 +56,7 @@ public class Main extends AbstractUI {
 			optionalArgs.add(new OptionalArgument(SystemKeys.WRITE_TEMP_FILES, "Writes temp files", vals, "true"));
 		}
 		optionalArgs.add(new OptionalArgument(SystemKeys.TEMP_FILES_DIRECTORY, "Path to temp files directory", TEMP_DIR));
+		*/
 	}
 
 	/**
@@ -66,26 +66,41 @@ public class Main extends AbstractUI {
 	 * @throws InternalTaskException 
 	 */
 	public static void main(String[] args) throws InternalTaskException, IOException {
+		// TODO: Use framework from Braille Utils here!
 		Main m = new Main();
-		if (args.length<2) {
-			System.out.println("Expected at least two arguments.");
+		if (args.length!=2) {
+			System.out.println("Expected two arguments path_to_input path_to_output");
+			/*
 			System.out.println();
 			m.displayHelp(System.out);
 			System.exit(-ExitCode.MISSING_ARGUMENT.ordinal());
+			 */
+			System.exit(-1);
 		}
+		/*
 		Map<String, String> p = m.toMap(args);
 		// remove required arguments
 		File input = new File(""+p.remove(ARG_PREFIX+0));
+		*/
+		File input = new File(args[0]);
 		if (!input.exists()) {
 			System.out.println("Cannot find input file: " + input);
+			/*
 			System.exit(-ExitCode.MISSING_RESOURCE.ordinal());
+			*/
+			System.exit(-2);
 		}
+		/*
 		File output = new File(""+p.remove(ARG_PREFIX+1));
+		*/
+		File output = new File(args[1]);
 		HashMap<String, String> props = new HashMap<String, String>();
 		//props.put("debug", "true");
 		props.put(SystemKeys.TEMP_FILES_DIRECTORY, TEMP_DIR);
 		props.put(SystemKeys.WRITE_TEMP_FILES, "true");
+		/*
 		props.putAll(p);
+		*/
 		m.run(input, output, OutputFormat.PEF, Setup.sv_SE, props);
 	}
 
@@ -217,7 +232,7 @@ public class Main extends AbstractUI {
 	private void sendMessage(String msg) {
 		logger.log(Level.INFO, msg);
 	}
-
+/*
 	@Override
 	public String getName() {
 		return SystemProperties.SYSTEM_NAME;
@@ -232,5 +247,5 @@ public class Main extends AbstractUI {
 	public List<OptionalArgument> getOptionalArguments() {
 		return optionalArgs;
 	}
-
+*/
 }

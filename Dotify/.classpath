@@ -12,6 +12,5 @@
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.7.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/brailleUtils-ui-1.2b.jar"/>
 	<classpathentry kind="output" path="bin/src"/>
 </classpath>

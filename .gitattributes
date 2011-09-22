@@ -50,7 +50,6 @@ Dotify/ant-build/resources/javase-6/package-list -text
 Dotify/build-doc.xml -text svneol=unset#text/plain
 Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
 Dotify/build.xml -text svneol=unset#text/plain
-Dotify/lib/brailleUtils-ui-1.2b.jar -text
 Dotify/lib/icu4j-3_8.jar -text
 Dotify/lib/junit-4.7.jar -text
 Dotify/lib/onvdl.jar -text
