@@ -29,7 +29,7 @@ public class ExpressionTest {
 		assertEquals(false, e.evaluate("(| (= 1 0) (= 2 1))"));
 		assertEquals(17d, e.evaluate("(+ (if (= 1 0) 18 17) 0)"));
 		assertEquals(18d, e.evaluate("(if (< 1 3) 18 17)"));
-		assertEquals("2011", e.evaluate("(now \"yyyy\")"));// stupid test
+		//assertEquals("2011", e.evaluate("(now \"yyyy\")"));// stupid test
 		assertEquals(36, e.evaluate("(set var 3) (set var1 12) (round (* $var $var1))"));
 		assertEquals(144, e.evaluate("(set var 3) (set var 12) (round (* $var $var))"));
 	}
