@@ -47,10 +47,10 @@ public class BrailleFilterFactory implements FilterFactory {
 	}
 
 	/**
-	 * Attempts to retrieve a StringFilter for the given locale. If none is found
-	 * the default StringFilter is returned.
+	 * Attempts to retrieve a StringFilter for the given locale.
 	 * @param target target locale
-	 * @return returns a StringFilter for the given locale, or the default StringFilter if no match is found
+	 * @return returns a StringFilter for the given locale
+	 * @throws IllegalArgumentException if no match is found
 	 */
 	public StringFilter newStringFilter(FilterLocale target) {
 		if (cache.containsKey(target)) {

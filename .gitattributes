@@ -58,6 +58,7 @@ Dotify/lib/saxon.jar -text
 Dotify/lib/saxon8-dom.jar -text
 Dotify/lib/saxon8.jar -text
 Dotify/lib/stax-api-1.0.1.jar -text
+Dotify/lib/texhyphj.jar -text
 Dotify/lib/wstx-lgpl-3.2.8.jar -text
 Dotify/lib/xercesImpl.jar -text
 Dotify/logging.properties -text svneol=unset#text/plain
@@ -67,6 +68,7 @@ Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Formatter -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Paginator -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.VolumeSplitter -text
+Dotify/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorInterface -text
 Dotify/src/META-INF/services/org.daisy.dotify.translator.BrailleFilter -text
 Dotify/src/org/daisy/dotify/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
@@ -169,6 +171,20 @@ Dotify/src/org/daisy/dotify/formatter/utils/TextBorder.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/formatter/writers/PEFMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/writers/TextMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/writers/package.html -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
+Dotify/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
+Dotify/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/HyphenatorErrorHandler.java -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenator.java -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/hyphenation_tables.xml -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/dehyph_x.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/fihyph.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/frhyph_x.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/nohyphbx.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/sehyph.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/ukhyph.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/ushyph.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/ushyphmax.tex -text
 Dotify/src/org/daisy/dotify/input/InputManagerTaskSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/InputManagerTaskSystemFactory.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/common/config/pef/flow.properties -text svneol=unset#text/plain
@@ -260,6 +276,8 @@ Dotify/tests/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTes
 Dotify/tests/org/daisy/dotify/formatter/utils/BreakPointHandlerTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/formatter/utils/ExpressionTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/formatter/utils/PositionTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/hyphenator/HyphenatorFactoryTest.java -text
+Dotify/tests/org/daisy/dotify/hyphenator/latex/LatexHyphenatorTest.java -text
 Dotify/tests/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/translator/BrailleFilterFactoryTest.java -text svneol=unset#text/plain
