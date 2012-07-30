@@ -4,6 +4,11 @@ import org.daisy.dotify.text.FilterLocale;
 
 public interface HyphenatorInterface {
 	
+	/**
+	 * Returns true if this instance can create instances for the specified locale.
+	 * @param locale
+	 * @return
+	 */
 	public boolean supportsLocale(FilterLocale locale);
 	/**
 	 * Hyphenates the phrase, inserting soft hyphens at all possible breakpoints.
@@ -28,5 +33,5 @@ public interface HyphenatorInterface {
 	 * @return returns a new hyphenator
 	 * @throws UnsupportedLocaleException
 	 */
-	public HyphenatorInterface newHyphenator(FilterLocale locale) throws UnsupportedLocaleException;
+	public HyphenatorInterface newInstance(FilterLocale locale) throws UnsupportedLocaleException;
 }

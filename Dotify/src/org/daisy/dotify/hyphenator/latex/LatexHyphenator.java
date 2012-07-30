@@ -7,34 +7,28 @@ import org.daisy.dotify.text.FilterLocale;
 
 public class LatexHyphenator extends AbstractHyphenator {
 	private final net.davidashen.text.Hyphenator hyphenator;
-	private final FilterLocale locale;
 	
 	/**
 	 * Constructs a new LatexHypenator to be used by a hyphenator factory.
 	 */
 	public LatexHyphenator() {
-		this(null, null);
+		this(null);
 	}
 	
-	private LatexHyphenator(net.davidashen.text.Hyphenator hyphenator, FilterLocale locale) {
+	private LatexHyphenator(net.davidashen.text.Hyphenator hyphenator) {
 		this.hyphenator = hyphenator;
-		this.locale = locale;
 	}
 
 	public boolean supportsLocale(FilterLocale locale) {
-		if (this.locale==null) {
-			return LatexHyphenatorCore.getInstance().supportsLocale(locale);
-		} else {
-			return locale.isA(this.locale);
-		}
+		return LatexHyphenatorCore.getInstance().supportsLocale(locale);
 	}
 
 	public String hyphenate(String phrase) {
 		return hyphenator.hyphenate(phrase, beginLimit, endLimit);
 	}
 
-	public HyphenatorInterface newHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
-		return new LatexHyphenator(LatexHyphenatorCore.getInstance().getHyphenator(locale), locale);
+	public HyphenatorInterface newInstance(FilterLocale locale) throws UnsupportedLocaleException {
+		return new LatexHyphenator(LatexHyphenatorCore.getInstance().getHyphenator(locale));
 	}
 
 }

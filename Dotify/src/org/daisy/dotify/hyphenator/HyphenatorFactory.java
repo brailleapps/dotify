@@ -72,7 +72,7 @@ public class HyphenatorFactory {
 		if (template==null) {
 			throw new IllegalArgumentException("Cannot find hyphenator for " + target);
 		} else {
-			HyphenatorInterface ret = template.newHyphenator(target);
+			HyphenatorInterface ret = template.newInstance(target);
 			//ret.setBeginLimit(beginLimit);
 			//ret.setEndLimit(endLimit);
 			return ret;
