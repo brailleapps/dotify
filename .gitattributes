@@ -171,11 +171,13 @@ Dotify/src/org/daisy/dotify/formatter/utils/TextBorder.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/formatter/writers/PEFMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/writers/TextMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/writers/package.html -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
 Dotify/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
 Dotify/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
 Dotify/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/HyphenatorErrorHandler.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenator.java -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenatorCore.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/hyphenation_tables.xml -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/dehyph_x.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/fihyph.tex -text

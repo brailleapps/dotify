@@ -1,46 +1,47 @@
 package org.daisy.dotify.hyphenator.latex;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
-import org.junit.*;
+import org.junit.Test;
 
 public class LatexHyphenatorTest {
 
 	@Test
 	public void testEnglishHyphenator() throws UnsupportedLocaleException {
 		FilterLocale locale = FilterLocale.parse("en");
-		LatexHyphenator h = new LatexHyphenator();
+		HyphenatorInterface h = new LatexHyphenator().newHyphenator(locale);
 		
 		//Test
-		assertEquals("test­ing", h.hyphenate("testing", locale, 0, 0));
+		assertEquals("test­ing", h.hyphenate("testing"));
 	}
 
 	@Test
 	public void testSupportedLocales(){
-		LatexHyphenator h = new LatexHyphenator();
 		
 		//Test
 		try {
-			h.hyphenate("testing", FilterLocale.parse("en"), 0, 0);
-			h.hyphenate("testing", FilterLocale.parse("en-US"), 0, 0);
-			h.hyphenate("testing", FilterLocale.parse("en-GB"), 0, 0);
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("en"));
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("en-US"));
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("en-GB"));
 			
-			h.hyphenate("testing", FilterLocale.parse("sv"), 0, 0);
-			h.hyphenate("testing", FilterLocale.parse("sv-SE"), 0, 0);
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("sv"));
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("sv-SE"));
 			
-			h.hyphenate("testing", FilterLocale.parse("no"), 0, 0);
-			h.hyphenate("testing", FilterLocale.parse("no-NO"), 0, 0);
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("no"));
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("no-NO"));
 			
-			h.hyphenate("testing", FilterLocale.parse("de"), 0, 0);
-			h.hyphenate("testing", FilterLocale.parse("de-DE"), 0, 0);
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("de"));
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("de-DE"));
 			
-			h.hyphenate("testing", FilterLocale.parse("fr"), 0, 0);
-			h.hyphenate("testing", FilterLocale.parse("fr-FR"), 0, 0);
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("fr"));
+			new LatexHyphenator().newHyphenator( FilterLocale.parse("fr-FR"));
 			
-			h.hyphenate("testing", FilterLocale.parse("fi"), 0, 0);
-			h.hyphenate("testing", FilterLocale.parse("fi-FI"), 0, 0);
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("fi"));
+			new LatexHyphenator().newHyphenator(FilterLocale.parse("fi-FI"));
 		} catch (UnsupportedLocaleException e) {
 			//if locale is not supported, assertation failed
 			assertTrue(false);
@@ -49,10 +50,8 @@ public class LatexHyphenatorTest {
 	
 	@Test (expected=UnsupportedLocaleException.class)
 	public void testUnsupportedLocale() throws UnsupportedLocaleException {
-		LatexHyphenator h = new LatexHyphenator();
-		FilterLocale locale = FilterLocale.parse("sv-SE-dummy");
 		//Test
-		h.hyphenate("testing", locale, 0, 0);
+		new LatexHyphenator().newHyphenator(FilterLocale.parse("sv-SE-dummy"));
 	}
 	
 }

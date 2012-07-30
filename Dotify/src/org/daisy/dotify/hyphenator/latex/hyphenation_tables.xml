@@ -9,8 +9,14 @@
 	<entry key="en-US">rules/ushyph.tex</entry>
 	<entry key="en-GB">rules/ukhyph.tex</entry>
 
+<!-- 
+	<entry key="sv">rules/hyph_sv_SE_oo.dic</entry>
+	<entry key="sv-SE">rules/hyph_sv_SE_oo.dic</entry>
+-->
+	
 	<entry key="sv">rules/sehyph.tex</entry>
-	<entry key="sv-SE">rules/sehyph.tex</entry> <!--  rules/hyph_sv_SE_oo.dic -->
+	<entry key="sv-SE">rules/sehyph.tex</entry>
+	 
 
 	<entry key="no">rules/nohyphbx.tex</entry>
 	<entry key="no-NO">rules/nohyphbx.tex</entry>

@@ -17,12 +17,12 @@ public class HyphenatorFactoryTest {
 	}
 	
 	@Test
-	public void testImplementationForEnglishExists() {
+	public void testImplementationForEnglishExists() throws UnsupportedLocaleException {
 		//Setup
 		HyphenatorFactory factory = HyphenatorFactory.newInstance();
 		FilterLocale filter = FilterLocale.parse("en");
 		
 		//Test
-		assertTrue(factory.getHyphenator(filter)!=null);
+		assertTrue(factory.newHyphenator(filter)!=null);
 	}
 }
