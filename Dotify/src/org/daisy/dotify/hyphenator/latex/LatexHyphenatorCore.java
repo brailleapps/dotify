@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
@@ -25,10 +26,10 @@ public class LatexHyphenatorCore {
 	        if(tablesURL!=null){
 	        	tables.loadFromXML(tablesURL.openStream());
 	        } else {
-	        	throw new IOException("Cannot locate hyphenation tables");
+	        	logger.warning("Cannot locate hyphenation tables");
 	        }
 		} catch (IOException e) {
-			logger.warning("Failed to load table list.");
+			logger.log(Level.WARNING, "Failed to load table list.", e);
 		}
 	}
 	
@@ -50,7 +51,7 @@ public class LatexHyphenatorCore {
         try {
 			hyphenator.loadTable(language);
 		} catch (IOException e) {
-			new RuntimeException("Failed to load resource: " + languageFileRelativePath);
+			throw new RuntimeException("Failed to load resource: " + languageFileRelativePath);
 		}
         return hyphenator;
 	}
