@@ -265,6 +265,7 @@ Dotify/src/org/daisy/dotify/tools/Progress.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/SchematronRulesGenerator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/tools/TextFileReader.java -text
 Dotify/src/org/daisy/dotify/tools/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/translator/BrailleFilter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/translator/BrailleFilterFactory.java -text svneol=unset#text/plain

@@ -36,11 +36,10 @@ import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent;
+import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.formatter.utils.Position;
 
@@ -351,12 +350,9 @@ public class ObflParser {
 		return builder.build();
 	}
 	
-	private void parseFloat(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		
-	}
-	
 	private Leader parseLeader(XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		Leader.Builder builder = new Leader.Builder();
+		@SuppressWarnings("unchecked")
 		Iterator<Attribute> atts = event.asStartElement().getAttributes();
 		while (atts.hasNext()) {
 			Attribute att = atts.next();

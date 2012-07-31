@@ -134,6 +134,10 @@ class BlockSequenceManipulator {
 	}
 	
 	private static class BlockSeqImpl extends Stack<Block> implements BlockSequence {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -7098716884005865317L;
 		private final SequenceProperties p;
 		private final LayoutMaster master;
 		

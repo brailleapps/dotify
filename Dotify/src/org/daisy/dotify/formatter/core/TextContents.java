@@ -1,7 +1,6 @@
 package org.daisy.dotify.formatter.core;
 
 import org.daisy.dotify.formatter.dom.EventContents;
-import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 
 
 public class TextContents implements EventContents {

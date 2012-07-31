@@ -41,8 +41,6 @@ class BlockStructImpl implements BlockStruct {
 	public HashMap<String, LayoutMaster> getMasters() {
 		return masters;
 	}*/
-	
-	private static final long serialVersionUID = 1767991496272494564L;
 
 	public Iterable<BlockSequence> getBlockSequenceIterable() {
 		return blocks;

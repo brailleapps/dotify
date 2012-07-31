@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.validation.Schema;
 
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
@@ -43,7 +42,7 @@ public class LayoutEngineTask extends InternalTask  {
 	private final FilterLocale locale;
 	private final PagedMediaWriter writer;
 	private final Logger logger;
-	private Schema schema;
+	//private Schema schema;
 	
 	/**
 	 * Create a new instance of LayoutEngineTask.
@@ -57,13 +56,13 @@ public class LayoutEngineTask extends InternalTask  {
 		this.filterFactory = filterFactory;
 		this.locale = locale;
 		this.writer = writer;
-		this.schema = null;
+		//this.schema = null;
 		this.logger = Logger.getLogger(LayoutEngineTask.class.getCanonicalName());
 	}
-	
+	/*
 	public void setSchema(Schema schema) {
 		this.schema = schema;
-	}
+	}*/
 
 	@Override
 	public void execute(File input, File output) throws InternalTaskException {

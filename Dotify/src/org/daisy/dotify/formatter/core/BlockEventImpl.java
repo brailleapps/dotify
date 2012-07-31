@@ -7,7 +7,6 @@ import org.daisy.dotify.formatter.dom.BlockContents;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.EventContents;
-import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 
 
 

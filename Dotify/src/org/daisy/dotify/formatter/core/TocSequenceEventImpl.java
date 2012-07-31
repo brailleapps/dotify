@@ -8,10 +8,7 @@ import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TocEvents;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent;
-import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
-import org.daisy.dotify.formatter.dom.VolumeSequenceEvent.Type;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.tools.CompoundIterable;
 

@@ -67,11 +67,6 @@ public class TableOfContents implements Iterable<BlockEvent> {
 		return refs;
 	}*/
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4646831324973203983L;
-
 	public Iterator<BlockEvent> iterator() {
 		return data.iterator();
 	}
