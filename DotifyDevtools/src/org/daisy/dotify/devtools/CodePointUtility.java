@@ -13,6 +13,11 @@ import org.daisy.dotify.devtools.views.TextConvertPanel;
 public class CodePointUtility extends javax.swing.JFrame {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3237476094594239863L;
+
 	public CodePointUtility() {
 		initComponents();
 	}

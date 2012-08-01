@@ -13,6 +13,10 @@ import org.daisy.dotify.devtools.converters.BrailleNotationConverter;
 
 
 public class BrailleConvertPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2446355314544241740L;
 	JLabel label;
 	JTextField input;
 	final StringFormatterResult tr;

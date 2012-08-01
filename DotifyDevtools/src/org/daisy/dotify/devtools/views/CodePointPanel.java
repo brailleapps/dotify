@@ -15,6 +15,10 @@ import org.daisy.dotify.devtools.converters.CodePointHelper.Mode;
 import org.daisy.dotify.devtools.converters.CodePointHelper.Style;
 
 public class CodePointPanel extends JPanel implements StringFormatterResult {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2155201906265896180L;
 	private final static String xmlStr = "XML entity";
 	private final static String commaStr = "Comma separated";
 	private final static String hexStr = "Hex";

@@ -12,6 +12,10 @@ import javax.swing.GroupLayout.Alignment;
 
 
 public class TextConvertPanel extends JPanel implements StringFormatterResult {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7332544266221207823L;
 	CodePointPanel cPanel;
 	JLabel codeLabel;
 	JLabel textLabel;
