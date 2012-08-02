@@ -177,6 +177,7 @@ public abstract class StaxFilter2 {
             }
         }
         writer.close();
+        reader.close();
     }
     
     protected XMLEventFactory getEventFactory() {

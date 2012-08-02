@@ -87,6 +87,9 @@ public class TextFileReader implements Closeable {
 	 * @param limit
 	 */
 	public TextFileReader(InputStream is, Charset cs, String regex, int limit) {
+		if (is==null) {
+			throw new NullPointerException();
+		}
 		this.lnr = new LineNumberReader(new InputStreamReader(is, cs));
 		this.pattern = Pattern.compile(regex);
 		this.limit = limit;

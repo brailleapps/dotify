@@ -2,32 +2,30 @@
 <project default="runUnitTests">
 	<description>Buildfile for this project</description>
 	
-	<!-- Timestamp format definition -->
-	<tstamp><format property="ISO-TODAY" pattern="yyyy-MM-dd"/></tstamp>
-	
-	<property name="src.dir" value="${basedir}/src"/>
+	<import file="build-properties.xml"/>
+
 	<property name="test-src.dir" value="${basedir}/tests"/>
-	
-	<property name="lib.dir" value="${basedir}/lib"/>
 
-	<property name="ant-build.dir" value="${basedir}/ant-build"/>
-	<property name="ant-output.dir" value="${ant-build.dir}/output"/>
-	<property name="dist.dir" value="${ant-output.dir}/dist"/>
-	<property name="dist.jar" value="${dist.dir}/dotify.jar"/>
-	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
 	<property name="test-build.dir" value="${ant-output.dir}/test-build.temp"/>
-
 	<property name="tests-jar.name" value="tests-temp.jar"/>
 
+	<property name="dist-unzip.dir" value="${ant-output.dir}/test-unzip"/>
+	<property name="dist-root.dir" value="${ant-output.dir}/test-unzip/${zip-foler-prefix}"/>
+	<property name="dist-lib.dir" value="${dist-unzip.dir}/${zip-foler-prefix}/lib"/>
+	
 	<property name="test.report.dir" value="${ant-output.dir}/test-report"/>
 	<property name="test.report-temp.dir" value="${ant-output.dir}/test-report.temp"/>
 
 	<path id="test.classpath">
-		<fileset dir="${lib.dir}">
+		<!--
+		<fileset dir="${dist-lib.dir}">
+			<include name="*.jar"/>
+		</fileset>--> 
+		<fileset dir="${dist-root.dir}">
 			<include name="*.jar"/>
 		</fileset>
-		<fileset dir="${dist.dir}">
-			<include name="*.jar"/>
+		<fileset dir="${lib.dir}">
+			<include name="junit*.jar"/>
 		</fileset>
 		<fileset dir="${ant-output.dir}">
 			<include name="${tests-jar.name}"/>
@@ -41,11 +39,15 @@
 	</patternset>
 	
     <target name="compileTests">
-    	<subant>
+    	<subant target="buildZip">
     		<fileset dir="${basedir}">
     			<include name="build.xml"/>
     		</fileset>
     	</subant>
+    	
+    	<!-- Unzip dotify -->
+    	<delete dir="${dist-unzip.dir}"/>
+    	<unzip src="${distribution.zip}" dest="${dist-unzip.dir}"/>
     	
     	<delete dir="${test-build.dir}"/>
     	<mkdir dir="${test-build.dir}"/>
@@ -53,18 +55,18 @@
     	<!-- Compile test files -->
 	    <javac srcdir="${test-src.dir}" destdir="${test-build.dir}" includeantruntime="false" encoding="UTF-8">
 			<classpath>
-				<fileset dir="${dist.dir}">
+				<fileset dir="${dist-root.dir}">
 					<include name="*.jar"/>
 				</fileset>
 				<fileset dir="${lib.dir}">
-					<include name="*.jar"/>
+					<include name="junit*.jar"/>
 				</fileset>
 			</classpath>
 	    </javac>
     </target>
 	
-	<target name="runUnitTests" description="Run unit tests">
-		<antcall target="compileTests"/>
+	<target name="runUnitTests" description="Run unit tests" depends="compileTests">
+		<!-- <antcall target="compileTests"/> -->
 		<jar destfile="${ant-output.dir}/${tests-jar.name}">
     		<fileset dir="${test-build.dir}">
     			<patternset refid="test.patternset"/>
@@ -99,6 +101,7 @@
 		<delete dir="${test.report-temp.dir}"/>
 		<delete dir="${test-build.dir}"/>
 		<delete file="${ant-output.dir}/${tests-jar.name}"/>
+		<delete dir="${dist-unzip.dir}"/>
 
 		<fail if="testerror" message="Error in tests"/>
 	</target>

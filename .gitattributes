@@ -48,6 +48,7 @@ Dotify/ant-build/resources/dtd/xhtml10/xhtml1-transitional-bodyref.dtd -text svn
 Dotify/ant-build/resources/dtd/xhtml10/xhtml1-transitional.dtd -text svneol=unset#text/plain
 Dotify/ant-build/resources/javase-6/package-list -text
 Dotify/build-doc.xml -text svneol=unset#text/plain
+Dotify/build-properties.xml -text
 Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
 Dotify/build.xml -text svneol=unset#text/plain
 Dotify/lib/icu4j-3_8.jar -text

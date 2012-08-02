@@ -2,22 +2,10 @@
 <project default="buildJar">
 	<description>Buildfile for this project</description>
 	
-	<!-- Timestamp format definition -->
-	<tstamp><format property="ISO-TODAY" pattern="yyyy-MM-dd"/></tstamp>
+	<import file="build-properties.xml"/>
 	
-	<property name="src.dir" value="${basedir}/src"/>
-	<property name="lib.dir" value="${basedir}/lib"/>
-
-	<property name="release-name" value="Dotify"/>
-	<property name="release-version" value="1.0"/>
-
-	<property name="ant-build.dir" value="${basedir}/ant-build"/>
-	<property name="ant-output.dir" value="${ant-build.dir}/output"/>
-	<property name="dist.dir" value="${ant-output.dir}/dist"/>
 	<property name="dist.jar" value="${dist.dir}/dotify-${release-version}.jar"/>
 	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
-	
-	<property name="distribution.zip" value="${dist.dir}/dotify-${release-version}.zip"/>
 
 	<patternset id="dist-jar.patternset">
 		<include name="**/*.*"/>
@@ -64,7 +52,7 @@
     			<patternset refid="dist-jar.patternset"/>  			
     		</fileset>
     		<manifest>
-    			<attribute name="Class-Path" value="lib/icu4j-3_8.jar lib/onvdl.jar lib/org.daisy.util.jar lib/saxon.jar lib/saxon8-dom.jar lib/saxon8.jar lib/xercesImpl.jar"/>
+    			<attribute name="Class-Path" value="lib/icu4j-3_8.jar lib/onvdl.jar lib/org.daisy.util.jar lib/saxon.jar lib/saxon8-dom.jar lib/saxon8.jar lib/xercesImpl.jar lib/texhyphj.jar"/>
     			<attribute name="Main-Class" value="org.daisy.dotify.Main"/>
     			<attribute name="Built-By" value="${user.name}"/>
     			<attribute name="Built-On" value="${ISO-TODAY}"/>
@@ -78,9 +66,10 @@
 
 	<target name="buildZip" depends="buildJar" description="Builds distribution zip including all required jars">
     	<zip destfile="${distribution.zip}">
-    		<zipfileset file="${dist.jar}" prefix="Dotify/"/>
-    		<zipfileset dir="${lib.dir}" prefix="Dotify/lib">
+    		<zipfileset file="${dist.jar}" prefix="${zip-foler-prefix}/"/>
+    		<zipfileset dir="${lib.dir}" prefix="${zip-foler-prefix}/lib">
     			<include name="*.jar"/>
+    			<exclude name="junit*.jar"/>
     		</zipfileset>
     	</zip>
 	</target>
