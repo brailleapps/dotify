@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.hyphenator.latex.rules.LatexRulesLocator;
 import org.daisy.dotify.text.FilterLocale;
 
 class LatexHyphenatorCore {
@@ -22,7 +23,7 @@ class LatexHyphenatorCore {
 		logger = Logger.getLogger(this.getClass().getCanonicalName());
 		map = new HashMap<String, net.davidashen.text.Hyphenator>();
 		try {
-	        URL tablesURL = this.getClass().getResource("hyphenation_tables.xml");
+	        URL tablesURL = new LatexRulesLocator().getCatalogResourceURL();
 	        if(tablesURL!=null){
 	        	tables.loadFromXML(tablesURL.openStream());
 	        } else {
@@ -46,9 +47,9 @@ class LatexHyphenatorCore {
 	
 	private net.davidashen.text.Hyphenator loadHyphenator(String languageFileRelativePath) {
 		net.davidashen.text.Hyphenator hyphenator = new net.davidashen.text.Hyphenator();
-        InputStream language = this.getClass().getResourceAsStream(languageFileRelativePath);
-        hyphenator.setErrorHandler(new HyphenatorErrorHandler(languageFileRelativePath));
-        try {
+		try {
+	        InputStream language = new LatexRulesLocator().getResource(languageFileRelativePath).openStream();
+	        hyphenator.setErrorHandler(new HyphenatorErrorHandler(languageFileRelativePath));        
 			hyphenator.loadTable(language);
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to load resource: " + languageFileRelativePath);

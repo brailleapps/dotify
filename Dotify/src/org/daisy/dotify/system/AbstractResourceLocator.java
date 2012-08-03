@@ -2,18 +2,34 @@ package org.daisy.dotify.system;
 
 import java.net.URL;
 
-
+/**
+ * Provides esay access to package resources. Simply extend AbstractResourceLocator in the package where
+ * the resources are located. Your implementation can then be used to locate the resources by
+ * specifying a location relative to the implementation.
+ * @author Joel Håkansson
+ *
+ */
 public abstract class AbstractResourceLocator implements ResourceLocator {
+	private final String basePath;
 
+	public AbstractResourceLocator() {
+		this.basePath = "";
+	}
+	
+	public AbstractResourceLocator(String basePath) {
+		this.basePath = basePath+"/";
+	}
+	
 	public URL getResource(String subpath) throws ResourceLocatorException {
+		String path = basePath + subpath;
 		//TODO check the viability of this method
 		URL url;
-	    url = this.getClass().getResource(subpath);
+	    url = this.getClass().getResource(path);
 	    if(null==url) {
 	    	String qualifiedPath = this.getClass().getPackage().getName().replace('.','/') + "/";	    	
-	    	url = this.getClass().getClassLoader().getResource(qualifiedPath+subpath);
+	    	url = this.getClass().getClassLoader().getResource(qualifiedPath+path);
 	    }
-	    if(url==null) throw new ResourceLocatorException("Cannot find resource path '" + subpath + "' relative to " + this.getClass().getCanonicalName());
+	    if(url==null) throw new ResourceLocatorException("Cannot find resource path '" + path + "' relative to " + this.getClass().getCanonicalName());
 	    return url;
 	}
 

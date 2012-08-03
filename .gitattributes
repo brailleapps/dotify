@@ -70,6 +70,7 @@ Dotify/src/META-INF/services/org.daisy.dotify.formatter.Formatter -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Paginator -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.VolumeSplitter -text
 Dotify/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
+Dotify/src/META-INF/services/org.daisy.dotify.input.InputManagerFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.translator.BrailleFilter -text
 Dotify/src/org/daisy/dotify/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
@@ -181,17 +182,23 @@ Dotify/src/org/daisy/dotify/hyphenator/latex/HyphenatorErrorHandler.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenator.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenatorCore.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactory.java -text
-Dotify/src/org/daisy/dotify/hyphenator/latex/hyphenation_tables.xml -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/LatexRulesLocator.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/dehyph_x.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/fihyph.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/frhyph_x.tex -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/rules/hyphenation_tables.xml -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/nohyphbx.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/sehyph.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/ukhyph.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/ushyph.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/ushyphmax.tex -text
-Dotify/src/org/daisy/dotify/input/InputManagerTaskSystem.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/input/InputManagerTaskSystemFactory.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/input/DefaultInputManagerFactory.java -text
+Dotify/src/org/daisy/dotify/input/DefaultInputManagerFactoryResourceLocator.java -text
+Dotify/src/org/daisy/dotify/input/InputManager.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/input/InputManagerFactory.java -text
+Dotify/src/org/daisy/dotify/input/InputManagerFactoryMaker.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/input/catalog.xml -text
+Dotify/src/org/daisy/dotify/input/common/CommonResourcesLocator.java -text
 Dotify/src/org/daisy/dotify/input/common/config/pef/flow.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/common/config/pef/xml.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/common/config/text/xml.properties -text svneol=unset#text/plain
@@ -199,6 +206,9 @@ Dotify/src/org/daisy/dotify/input/common/definers/dtbook2flow.xsl -text svneol=u
 Dotify/src/org/daisy/dotify/input/common/definers/xml2flow.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/common/validation/flow.xsd -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/en_US/config/text/dtbook.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/input/en_US/definers/dtbook2flow_sv_SE.xsl -text
+Dotify/src/org/daisy/dotify/input/en_US/definers/dtbook2flow_sv_SE_text.xsl -text
+Dotify/src/org/daisy/dotify/input/en_US/validation/basic.sch -text
 Dotify/src/org/daisy/dotify/input/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/sv_SE/config/pef/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/sv_SE/config/text/dtbook.properties -text svneol=unset#text/plain
@@ -284,6 +294,8 @@ Dotify/tests/org/daisy/dotify/formatter/utils/ExpressionTest.java -text svneol=u
 Dotify/tests/org/daisy/dotify/formatter/utils/PositionTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
 Dotify/tests/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
+Dotify/tests/org/daisy/dotify/input/DefaultInputManagerFactoryTest.java -text
+Dotify/tests/org/daisy/dotify/input/InputFactoryMakerTest.java -text
 Dotify/tests/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/translator/BrailleFilterFactoryTest.java -text svneol=unset#text/plain

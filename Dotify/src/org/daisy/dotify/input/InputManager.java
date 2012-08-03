@@ -58,11 +58,10 @@ import org.xml.sax.SAXException;
  * @author Joel Håkansson, TPB
  *
  */
-public class InputManagerTaskSystem implements TaskSystem {
+public class InputManager implements TaskSystem {
 	//private final URL resourceBase;
-	private final ResourceLocator locator;
-	private final String localBase;
-	private final String commonBase;
+	private final ResourceLocator localLocator;
+	private final ResourceLocator commonLocator;
 	private final String name;
 	private final Logger logger;
 
@@ -72,17 +71,16 @@ public class InputManagerTaskSystem implements TaskSystem {
 	 * @param localBase a path relative the resource root to the local resources
 	 * @param commonBase a path relative the resource root to the common resources
 	 */
-	public InputManagerTaskSystem(ResourceLocator locator, String localBase, String commonBase) {
-		this(locator, localBase, commonBase, "InputDetectorTaskSystem");
+	public InputManager(ResourceLocator localLocator, ResourceLocator commonLocator) {
+		this(localLocator, commonLocator, "InputDetectorTaskSystem");
 	}
 	
-	public InputManagerTaskSystem(ResourceLocator locator, String localBase, String commonBase, String name) {
+	public InputManager(ResourceLocator localLocator, ResourceLocator commonLocator, String name) {
 		//this.resourceBase = resourceBase;
-		this.locator = locator;
-		this.localBase = localBase;
-		this.commonBase = commonBase;
+		this.localLocator = localLocator;
+		this.commonLocator = commonLocator;
 		this.name = name;
-		this.logger = Logger.getLogger(InputManagerTaskSystem.class.getCanonicalName());
+		this.logger = Logger.getLogger(InputManager.class.getCanonicalName());
 	}
 	
 	public String getName() {
@@ -91,9 +89,7 @@ public class InputManagerTaskSystem implements TaskSystem {
 
 	public ArrayList<InternalTask> compile(RunParameters parameters)
 			throws TaskSystemException {
-		
-		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-		
+
 		String input = parameters.getProperty(SystemKeys.INPUT);
 		String inputformat = null;
 		Peeker peeker = null;
@@ -131,53 +127,45 @@ public class InputManagerTaskSystem implements TaskSystem {
 		String xmlformat = "xml.properties";
 		String outputformat = OutputFormat.valueOf(parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toUpperCase()).toString().toLowerCase();
 
-		String localBasePath = localBase + outputformat + "/";
-		String commonBasePath = commonBase + outputformat + "/";
-		//System.out.println(localBasePath);
-		//System.out.println(commonBasePath);
-		ArrayList<URL> urls = new ArrayList<URL>();
+		String basePath = "config/" + outputformat + "/";
+
 		if (inputformat!=null) {
 			try {
-				urls.add(locator.getResource(localBasePath + inputformat));
+				return readConfiguration(localLocator, localLocator.getResource(basePath + inputformat), parameters);
 			} catch (ResourceLocatorException e) {
-				logger.fine("Cannot find URL " + localBasePath + inputformat);
+				logger.fine("Cannot find URL " + basePath + inputformat);
 			}
 		}
 		try {
-			urls.add(locator.getResource(localBasePath + xmlformat));
+			return readConfiguration(localLocator, localLocator.getResource(basePath + xmlformat), parameters);
 		} catch (ResourceLocatorException e) {
-			logger.fine("Cannot find URL " + localBasePath + xmlformat);
+			logger.fine("Cannot find URL " + basePath + xmlformat);
 		}
 		if (inputformat!=null) {
 			try {
-				urls.add(locator.getResource(commonBasePath + inputformat));
+				return readConfiguration(commonLocator, commonLocator.getResource(basePath + inputformat), parameters);
 			} catch (ResourceLocatorException e) {
-				logger.fine("Cannot find URL " + commonBasePath + inputformat);
+				logger.fine("Cannot find URL " + basePath + inputformat);
 			}
 		}
 		try {
-			urls.add(locator.getResource(commonBasePath + xmlformat));
+			return readConfiguration(commonLocator, commonLocator.getResource(basePath + xmlformat), parameters);
 		} catch (ResourceLocatorException e) {
-			logger.fine("Cannot find URL " + commonBasePath + xmlformat);
+			logger.fine("Cannot find URL " + basePath + xmlformat);
 		}
+		throw new TaskSystemException("Unable to open a configuration stream for the format.");
+	}
+	
+	private ArrayList<InternalTask> readConfiguration(ResourceLocator locator, URL t, RunParameters parameters) throws TaskSystemException {
+		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 		try {
 			InputStream propsStream = null;
-			for (URL t : urls) {
-				try {
-					propsStream = t.openStream();
-					/*
-					EventBus.getInstance().publish(
-							new MessageEvent(this, "Opening stream: " + t.getFile(), MessageEvent.Type.DEBUG, MessageEvent.Cause.SYSTEM, null)
-						);*/
-					logger.fine("Opening stream: " + t.getFile());
-					break;
-				} catch (IOException e) {
-					/*
-					EventBus.getInstance().publish(
-							new MessageEvent(this, "Cannot open stream: " + t.getFile(), MessageEvent.Type.DEBUG, MessageEvent.Cause.SYSTEM, null)
-						);*/
-					logger.log(Level.FINE, "Cannot open stream: " + t.getFile(), e);
-				}
+			try {
+				propsStream = t.openStream();
+				logger.fine("Opening stream: " + t.getFile());
+			} catch (IOException e) {
+				logger.log(Level.FINE, "Cannot open stream: " + t.getFile(), e);
+				throw new ResourceLocatorException("Cannot open stream");
 			}
 			if (propsStream != null) {
 				Properties p = new Properties();
@@ -203,10 +191,6 @@ public class InputManagerTaskSystem implements TaskSystem {
 							}
 						}
 					} else {
-						/*
-						EventBus.getInstance().publish(
-							new MessageEvent(this, "Unrecognized key: " + key, MessageEvent.Type.INFO, MessageEvent.Cause.SYSTEM, null)
-						);*/
 						logger.info("Unrecognized key: " + key);
 					}
 				}
@@ -219,7 +203,6 @@ public class InputManagerTaskSystem implements TaskSystem {
 		} catch (IOException e) {
 			throw new TaskSystemException("Unable to open settings file.", e);
 		}
-
 		return setup;
 	}
 

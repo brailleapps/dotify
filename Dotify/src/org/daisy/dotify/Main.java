@@ -14,8 +14,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.input.InputManagerTaskSystem;
-import org.daisy.dotify.input.InputManagerTaskSystemFactory;
+import org.daisy.dotify.input.InputManager;
+import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.setups.ConfigUrlLocator;
 import org.daisy.dotify.setups.TaskSystemFactory;
 import org.daisy.dotify.setups.TaskSystemFactory.OutputFormat;
@@ -183,9 +183,9 @@ public class Main { //extends AbstractUI {
 		TaskSystem ts = null;
 		
 		//InputDetector
-		InputManagerTaskSystem idts = 
-			InputManagerTaskSystemFactory.newInstance()
-				.newInputDetectorTaskSystem(
+		InputManager idts = 
+			InputManagerFactoryMaker.newInstance()
+				.newInputManager(
 					FilterLocale.parse(setup.toString().replace('_', '-'))
 				);
 

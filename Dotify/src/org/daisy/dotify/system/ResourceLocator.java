@@ -4,7 +4,7 @@ import java.net.URL;
 
 
 /**
- * Provides a method for locating resources 
+ * Provides a method for locating resources.
  * @author Joel Håkansson
  *
  */
