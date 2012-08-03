@@ -69,7 +69,7 @@ Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Formatter -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Paginator -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.VolumeSplitter -text
-Dotify/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorInterface -text
+Dotify/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.translator.BrailleFilter -text
 Dotify/src/org/daisy/dotify/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
@@ -174,11 +174,13 @@ Dotify/src/org/daisy/dotify/formatter/writers/TextMediaWriter.java -text svneol=
 Dotify/src/org/daisy/dotify/formatter/writers/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
 Dotify/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
+Dotify/src/org/daisy/dotify/hyphenator/HyphenatorFactoryMaker.java -text
 Dotify/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
 Dotify/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/HyphenatorErrorHandler.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenator.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenatorCore.java -text
+Dotify/src/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactory.java -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/hyphenation_tables.xml -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/dehyph_x.tex -text
 Dotify/src/org/daisy/dotify/hyphenator/latex/rules/fihyph.tex -text
@@ -280,8 +282,8 @@ Dotify/tests/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTes
 Dotify/tests/org/daisy/dotify/formatter/utils/BreakPointHandlerTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/formatter/utils/ExpressionTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/formatter/utils/PositionTest.java -text svneol=unset#text/plain
-Dotify/tests/org/daisy/dotify/hyphenator/HyphenatorFactoryTest.java -text
-Dotify/tests/org/daisy/dotify/hyphenator/latex/LatexHyphenatorTest.java -text
+Dotify/tests/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
+Dotify/tests/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 Dotify/tests/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/translator/BrailleFilterFactoryTest.java -text svneol=unset#text/plain

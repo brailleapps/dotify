@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
 
-public class LatexHyphenatorCore {
+class LatexHyphenatorCore {
 	private static LatexHyphenatorCore instance;
 	private final Properties tables = new Properties();
 	private final Map<String, net.davidashen.text.Hyphenator> map;
@@ -33,14 +33,14 @@ public class LatexHyphenatorCore {
 		}
 	}
 	
-	public synchronized static LatexHyphenatorCore getInstance() {
+	synchronized static LatexHyphenatorCore getInstance() {
 		if (instance == null) {
 			instance = new LatexHyphenatorCore();
 		}
 		return instance;
 	}
 	
-	public boolean supportsLocale(FilterLocale locale) {
+	boolean supportsLocale(FilterLocale locale) {
 		return tables.getProperty(locale.toString())!=null;
 	}
 	
@@ -56,7 +56,7 @@ public class LatexHyphenatorCore {
         return hyphenator;
 	}
 	
-	public net.davidashen.text.Hyphenator getHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
+	net.davidashen.text.Hyphenator getHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
         String languageFileRelativePath = tables.getProperty(locale.toString());
         if(languageFileRelativePath==null) {
         	throw new UnsupportedLocaleException("Locale not supported: " + locale.toString());

@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.*;
 
-public class HyphenatorFactoryTest {
+public class HyphenatorFactoryMakerTest {
 
 	@Test
 	public void testFactoryExists() {
 		//Setup
-		HyphenatorFactory factory = HyphenatorFactory.newInstance();
+		HyphenatorFactoryMaker factory = HyphenatorFactoryMaker.newInstance();
 		
 		//Test
 		assertTrue(factory != null);
@@ -19,7 +19,7 @@ public class HyphenatorFactoryTest {
 	@Test
 	public void testImplementationForEnglishExists() throws UnsupportedLocaleException {
 		//Setup
-		HyphenatorFactory factory = HyphenatorFactory.newInstance();
+		HyphenatorFactoryMaker factory = HyphenatorFactoryMaker.newInstance();
 		FilterLocale filter = FilterLocale.parse("en");
 		
 		//Test
