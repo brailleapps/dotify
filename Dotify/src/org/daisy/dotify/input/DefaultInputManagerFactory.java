@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.setups.DefaultInputManagerFactoryResourceLocator;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.text.FilterLocale;
 
