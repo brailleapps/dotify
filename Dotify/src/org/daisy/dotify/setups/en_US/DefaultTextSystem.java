@@ -47,7 +47,7 @@ public class DefaultTextSystem implements TaskSystem {
 
 		try {
 			flowValidationURL = commonResourceLocator.getResource("validation/flow.xsd");
-			flowWsNormalizer = commonResourceLocator.getResource("preprocessing/flow-whitespace-normalizer.xsl");
+			flowWsNormalizer = commonResourceLocator.getResource("xslt/flow-whitespace-normalizer.xsl");
 		} catch (ResourceLocatorException e) {
 			throw new TaskSystemException("Failed to locate resource.", e);
 		}

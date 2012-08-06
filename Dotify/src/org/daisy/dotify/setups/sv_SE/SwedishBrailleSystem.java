@@ -77,16 +77,14 @@ public class SwedishBrailleSystem implements TaskSystem {
 	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
 		URL flowValidationURL;
 		URL flowWsNormalizer;
-		URL volumeSplitter;
 		URL brailleFinalizer;
 		URL metaFinalizer;
 
 		try {
 			flowValidationURL = commonResourceLocator.getResource("validation/flow.xsd");
-			flowWsNormalizer = commonResourceLocator.getResource("preprocessing/flow-whitespace-normalizer.xsl");
-			volumeSplitter = commonResourceLocator.getResource("splitters/simple-splitter.xsl");
-			brailleFinalizer = commonResourceLocator.getResource("renderers/braille-finalizer.xsl");
-			metaFinalizer = commonResourceLocator.getResource("renderers/meta-finalizer.xsl");
+			flowWsNormalizer = commonResourceLocator.getResource("xslt/flow-whitespace-normalizer.xsl");
+			brailleFinalizer = commonResourceLocator.getResource("xslt/braille-finalizer.xsl");
+			metaFinalizer = commonResourceLocator.getResource("xslt/meta-finalizer.xsl");
 		} catch (ResourceLocatorException e) {
 			throw new TaskSystemException("Could not locate resource.", e);
 		}
