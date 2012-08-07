@@ -38,7 +38,7 @@ public class DefaultInputManagerFactoryTest {
 		//Test
 		assertTrue(factory.newInputManager(filter)!=null);
 	}
-	
+	/*
 	@Test
 	public void testLocateInputManagerForSwedishFA44() throws UnsupportedLocaleException {
 		//Setup
@@ -48,7 +48,7 @@ public class DefaultInputManagerFactoryTest {
 		//Test
 		assertTrue(factory.newInputManager(filter)!=null);
 	}
-	
+	*/
 	@Test (expected=IllegalArgumentException.class)
 	public void testLocateInputManagerForUnknownLocale() throws UnsupportedLocaleException {
 		//Setup
