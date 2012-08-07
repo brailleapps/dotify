@@ -10,22 +10,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.braille.ui.AbstractUI;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.setups.ConfigUrlLocator;
-import org.daisy.dotify.setups.TaskSystemFactory;
-import org.daisy.dotify.setups.TaskSystemFactory.OutputFormat;
-import org.daisy.dotify.setups.TaskSystemFactory.Setup;
-import org.daisy.dotify.setups.TaskSystemFactoryException;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
+import org.daisy.dotify.system.TaskSystemFactoryException;
+import org.daisy.dotify.system.TaskSystemFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.Progress;
 import org.daisy.util.file.FileJuggler;
@@ -35,20 +36,59 @@ import org.daisy.util.file.FileUtils;
  * Provides a command line entry point to Dotify.
  * @author Joel Håkansson
  */
-public class Main { //extends AbstractUI {
-	private final static String TEMP_DIR = System.getProperty("java.io.tmpdir");
+public class Main extends AbstractUI {
+	private final static String TEMP_DIR;// = System.getProperty("java.io.tmpdir");
+	private final static HashMap<String, String> extensionBindings;
+	static {
+		extensionBindings = new HashMap<String, String>();
+		extensionBindings.put(".pef", SystemKeys.PEF_FORMAT);
+		extensionBindings.put(".txt", SystemKeys.TEXT_FORMAT);
+		String path = System.getProperty("java.io.tmpdir");
+		if (path!=null && !"".equals(path) && new File(path).isDirectory()) {
+			TEMP_DIR = path;
+		} else {
+			// user.home is guaranteed to be defined
+			TEMP_DIR = System.getProperty("user.home");
+		}
+	}
 	private final Logger logger;
-/*
+
 	private final List<Argument> reqArgs;
 	private final List<OptionalArgument> optionalArgs;
-*/
+
 	public Main() {
 		this.logger = Logger.getLogger(Main.class.getCanonicalName());
-/*
+
 		this.reqArgs = new ArrayList<Argument>();
 		reqArgs.add(new Argument("path_to_input", "Path to the input file"));
 		reqArgs.add(new Argument("path_to_output", "Path to the output file"));
+		{
+			ArrayList<Definition> vals = new ArrayList<Definition>();
+			ConfigUrlLocator c =  new ConfigUrlLocator();
+			for (Object o : c.getKeys()) {
+				vals.add(new Definition(o.toString(), "A setup"));
+			}
+			vals.add(new Definition("[other]", "Path to setup file"));
+			reqArgs.add(new Argument("setup", "The formatting setup to use", vals));
+		}
+		
+		{
+			ArrayList<Definition> vals = new ArrayList<Definition>();
+			InputManagerFactoryMaker m = InputManagerFactoryMaker.newInstance();
+			for (String o : m.listSupportedLocales()) {
+				vals.add(new Definition(o, "A context locale"));
+			}
+			reqArgs.add(new Argument("locale", "The target locale for the result", vals));
+		}
+		
 		this.optionalArgs = new ArrayList<OptionalArgument>();
+		{
+			ArrayList<Definition> vals = new ArrayList<Definition>();
+			vals.add(new Definition(SystemKeys.PEF_FORMAT, "write result in PEF-format"));
+			vals.add(new Definition(SystemKeys.TEXT_FORMAT, "write result as text"));
+			optionalArgs.add(new OptionalArgument(SystemKeys.OUTPUT_FORMAT, "Specifies output format", vals, "[detect]"));
+		}
+		optionalArgs.add(new OptionalArgument(SystemKeys.IDENTIFIER, "Sets identifier in meta data (if available)", "[generated value]"));
 		{
 			ArrayList<Definition> vals = new ArrayList<Definition>();
 			vals.add(new Definition("true", "outputs temp files"));
@@ -56,7 +96,15 @@ public class Main { //extends AbstractUI {
 			optionalArgs.add(new OptionalArgument(SystemKeys.WRITE_TEMP_FILES, "Writes temp files", vals, "true"));
 		}
 		optionalArgs.add(new OptionalArgument(SystemKeys.TEMP_FILES_DIRECTORY, "Path to temp files directory", TEMP_DIR));
-		*/
+		optionalArgs.add(new OptionalArgument(SystemKeys.DATE, "Sets date in meta data (if available)", getDefaultDate(SystemProperties.DEFAULT_DATE_FORMAT)));
+		optionalArgs.add(new OptionalArgument(SystemKeys.DATE_FORMAT, "Date format in meta data (if available and date is not specified)", SystemProperties.DEFAULT_DATE_FORMAT));
+	}
+	
+	private String getDefaultDate(String dateFormat) {
+	    Calendar c = Calendar.getInstance();
+	    c.setTime(new Date());
+	    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		return sdf.format(c.getTime());
 	}
 
 	/**
@@ -64,44 +112,44 @@ public class Main { //extends AbstractUI {
 	 * @param args command line arguments
 	 * @throws IOException 
 	 * @throws InternalTaskException 
+	 * @throws TaskSystemFactoryException 
 	 */
-	public static void main(String[] args) throws InternalTaskException, IOException {
-		// TODO: Use framework from Braille Utils here!
+	public static void main(String[] args) throws InternalTaskException, IOException, TaskSystemFactoryException {
 		Main m = new Main();
-		if (args.length!=2) {
-			System.out.println("Expected two arguments path_to_input path_to_output");
-			/*
+		if (args.length<4) {
+			System.out.println("Expected at least four arguments");
+			
 			System.out.println();
 			m.displayHelp(System.out);
 			System.exit(-ExitCode.MISSING_ARGUMENT.ordinal());
-			 */
-			System.exit(-1);
+			
+			//System.exit(-1);
 		}
-		/*
+
 		Map<String, String> p = m.toMap(args);
 		// remove required arguments
 		File input = new File(""+p.remove(ARG_PREFIX+0));
-		*/
-		File input = new File(args[0]);
+		//File input = new File(args[0]);
 		if (!input.exists()) {
 			System.out.println("Cannot find input file: " + input);
-			/*
 			System.exit(-ExitCode.MISSING_RESOURCE.ordinal());
-			*/
-			System.exit(-2);
+
+			//System.exit(-2);
 		}
-		/*
+		
 		File output = new File(""+p.remove(ARG_PREFIX+1));
-		*/
-		File output = new File(args[1]);
+		String setup = p.remove(ARG_PREFIX+2);
+		String context = p.remove(ARG_PREFIX+3);
+		
+		//File output = new File(args[1]);
 		HashMap<String, String> props = new HashMap<String, String>();
 		//props.put("debug", "true");
-		props.put(SystemKeys.TEMP_FILES_DIRECTORY, TEMP_DIR);
+		//props.put(SystemKeys.TEMP_FILES_DIRECTORY, TEMP_DIR);
 		props.put(SystemKeys.WRITE_TEMP_FILES, "true");
-		/*
+
 		props.putAll(p);
-		*/
-		m.run(input, output, OutputFormat.PEF, Setup.sv_SE, props);
+		
+		m.run(input, output, new ConfigUrlLocator().getResourceURL(setup), FilterLocale.parse(context), props);
 	}
 
 	/**
@@ -114,13 +162,13 @@ public class Main { //extends AbstractUI {
 	 * @throws IOException
 	 * @throws InternalTaskException
 	 */
-	public void run(File input, File output, OutputFormat outputformat, Setup setup, HashMap<String, String> params) throws IOException, InternalTaskException {
+	public void run(File input, File output, URL configURL, FilterLocale context, HashMap<String, String> params) throws IOException, InternalTaskException {
 		Progress progress = new Progress();
 		
 		// get parameters
 		boolean writeTempFiles = "true".equals(params.get(SystemKeys.WRITE_TEMP_FILES));
-		// user.home is guaranteed to be defined
-		File debug = new File(System.getProperty("user.home"));
+
+		File debug = new File(TEMP_DIR);
 		String cols = params.get("cols");
 		if (cols==null || "".equals(cols)) {
 			params.remove("cols");
@@ -130,7 +178,17 @@ public class Main { //extends AbstractUI {
 		map.putAll(params);
 
 		map.put(SystemKeys.INPUT, input.getAbsolutePath());
-		map.put(SystemKeys.OUTPUT_FORMAT, outputformat.toString().toLowerCase());
+		String outputformat = params.get(SystemKeys.OUTPUT_FORMAT);
+		if (outputformat==null || "".equals(outputformat)) {
+			int indx = output.getName().lastIndexOf('.');
+			if (indx>-1) {
+				outputformat = extensionBindings.get(output.getName().substring(indx).toLowerCase());
+			}
+			if (outputformat==null) {
+				throw new IllegalArgumentException("Cannot detect file format for output file. Please specify output format.");
+			}
+		}
+		map.put(SystemKeys.OUTPUT_FORMAT, outputformat.toLowerCase());
 		
 		map.put(SystemKeys.SYSTEM_NAME, SystemProperties.SYSTEM_NAME);
 		map.put(SystemKeys.SYSTEM_BUILD, SystemProperties.SYSTEM_BUILD);
@@ -140,29 +198,26 @@ public class Main { //extends AbstractUI {
 		map.put(SystemKeys.INPUT_URI, input.toURI().toString());
 		
 		// Add default values for optional parameters
-		String dateFormat = params.get("dateFormat");
+		String dateFormat = params.get(SystemKeys.DATE_FORMAT);
 		if (dateFormat==null || "".equals(dateFormat)) {
-			dateFormat = "yyyy-MM-dd";
-			map.put("dateFormat", dateFormat);
+			dateFormat = SystemProperties.DEFAULT_DATE_FORMAT;
+			map.put(SystemKeys.DATE_FORMAT, dateFormat);
 		}
 		String tempFilesDirectory = params.get(SystemKeys.TEMP_FILES_DIRECTORY);
 		if (tempFilesDirectory!=null && !"".equals(tempFilesDirectory)) {
 			File f = new File(tempFilesDirectory);
-			if (f.exists() && f.isDirectory()) {
+			if (f.isDirectory()) {
 				debug = f;
 			}
 		}
-		if (map.get("date")==null || "".equals(map.get("date"))) {
-		    Calendar c = Calendar.getInstance();
-		    c.setTime(new Date());
-		    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-			map.put("date", sdf.format(c.getTime()));
+		if (map.get(SystemKeys.DATE)==null || "".equals(map.get(SystemKeys.DATE))) {
+			map.put(SystemKeys.DATE, getDefaultDate(dateFormat));
 		}
-		if (map.get("identifier")==null || "".equals(map.get("identifier"))) {
+		if (map.get(SystemKeys.IDENTIFIER)==null || "".equals(map.get(SystemKeys.IDENTIFIER))) {
 			String id = Double.toHexString(Math.random());
 			id = id.substring(id.indexOf('.')+1);
 			id = id.substring(0, id.indexOf('p'));
-			map.put("identifier", "dummy-id-"+ id);
+			map.put(SystemKeys.IDENTIFIER, "dummy-id-"+ id);
 		}
 		
 		// Load additional settings from file
@@ -183,19 +238,14 @@ public class Main { //extends AbstractUI {
 		TaskSystem ts = null;
 		
 		//InputDetector
-		InputManager idts = 
-			InputManagerFactoryMaker.newInstance()
-				.newInputManager(
-					FilterLocale.parse(setup.toString().replace('_', '-'))
-				);
+		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context);
 
 		RunParameters rp = null;
 		try {
-			URL configURL = new ConfigUrlLocator().getResourceURL(outputformat, setup);
 			rp = RunParameters.load(configURL, map);
 			
 			tasks.addAll(idts.compile(rp));
-			ts = new TaskSystemFactory().newTaskSystem(outputformat, setup);
+			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
 			tasks.addAll(ts.compile(rp));
 		} catch (TaskSystemException e) {
 			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + rp.getProperties().toString(), e);
@@ -217,7 +267,9 @@ public class Main { //extends AbstractUI {
 				while (it.length()<3) {
 					it = "0" + it; 
 				}
-				FileUtils.copy(fj.getOutput(), new File(debug, "debug_dotify_" + it + "_" + task.getName().replaceAll("[\\s:]+", "_")));
+				File f = new File(debug, "debug_dotify_" + it + "_" + task.getName().replaceAll("[\\s:]+", "_"));
+				logger.fine("Writing debug file: " + f);
+				FileUtils.copy(fj.getOutput(), f);
 			}
 			fj.swap();
 			i++;
@@ -232,7 +284,7 @@ public class Main { //extends AbstractUI {
 	private void sendMessage(String msg) {
 		logger.log(Level.INFO, msg);
 	}
-/*
+
 	@Override
 	public String getName() {
 		return SystemProperties.SYSTEM_NAME;
@@ -247,5 +299,5 @@ public class Main { //extends AbstractUI {
 	public List<OptionalArgument> getOptionalArguments() {
 		return optionalArgs;
 	}
-*/
+
 }

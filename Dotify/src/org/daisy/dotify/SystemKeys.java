@@ -29,6 +29,17 @@ public interface SystemKeys {
 	 * Defines a key for the output format 
 	 */
 	public final static String OUTPUT_FORMAT = "outputFormat";
+	
+	public final static String DATE_FORMAT = "dateFormat";
+	public final static String DATE = "date";
+	public final static String IDENTIFIER = "identifier";
+	
+	public final static String PEF_FORMAT = "pef";
+	public final static String TEXT_FORMAT = "text";
+	/**
+	 * Defines a key for the configuration
+	 */
+	public final static String CONFIGURATION = "configuration";
 	/**
 	 * Defines a key for the temp files.
 	 * Corresponding value should be the string "true" or "false" 

@@ -1,5 +1,7 @@
 package org.daisy.dotify.input;
 
+import java.util.Set;
+
 import org.daisy.dotify.text.FilterLocale;
 
 public interface InputManagerFactory {
@@ -17,5 +19,6 @@ public interface InputManagerFactory {
 	 * @return returns a new input manager
 	 */
 	public InputManager newInputManager(FilterLocale locale);
-
+	
+	public Set<String> listSupportedLocales();
 }

@@ -1,42 +1,54 @@
 package org.daisy.dotify.setups;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.daisy.dotify.setups.TaskSystemFactory.OutputFormat;
-import org.daisy.dotify.setups.TaskSystemFactory.Setup;
-import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.system.TaskSystemFactoryException;
 
-public class ConfigUrlLocator extends AbstractResourceLocator {
+public class ConfigUrlLocator {
+	private final Logger logger;
+	private final Properties tables = new Properties();
 	
-	public URL getResourceURL(OutputFormat outputFormat, Setup setup) throws TaskSystemFactoryException {
+	public ConfigUrlLocator() {
+		logger = Logger.getLogger(this.getClass().getCanonicalName());
 		try {
-			switch (outputFormat) {
-				case PEF:
-					switch (setup) {
-						// Braille setups for Swedish //
-						case sv_SE: 
-							return getResource("sv_SE/config/default_A4.xml");
-						case sv_SE_FA44:
-							return getResource("sv_SE/config/default_FA44.xml");
-						// Add more Braille systems here //
-					}
-					break;
-				case TEXT:
-					switch (setup) {
-						// Text setup for Swedish //
-						case sv_SE: 
-							return getResource("sv_SE/config/text_A4.xml");
-						case en_US:
-							return getResource("en_US/config/text.xml");
-						// Add more text systems here //
-					}
-					break;
-			}
-		} catch (ResourceLocatorException e) {
-			throw new TaskSystemFactoryException("Failed to locate resource.", e);
+	        URL tablesURL = new DefaultConfigUrlResourceLocator().getCatalogResourceURL();
+	        if(tablesURL!=null){
+	        	tables.loadFromXML(tablesURL.openStream());
+	        } else {
+	        	logger.warning("Cannot locate catalog file");
+	        }
+		} catch (IOException e) {
+			logger.log(Level.WARNING, "Failed to load catalog.", e);
 		}
-		throw new TaskSystemFactoryException("Cannot find configuration for " + outputFormat + "/" + setup);
 	}
+	
+	public Set<Object> getKeys() {
+		return tables.keySet();
+	}
+	
+	public URL getResourceURL(String identifier) throws TaskSystemFactoryException {
+        String path = tables.getProperty(identifier);
+        if(path==null) {
+        	// try identifier as path
+        	try {
+        		return new URL(identifier);
+        	} catch (MalformedURLException e) {
+        		throw new IllegalArgumentException("Cannot find configuration for " + identifier);
+        	}
+        } else {
+        	try {
+				return new DefaultConfigUrlResourceLocator().getResource(path);
+			} catch (ResourceLocatorException e) {
+				throw new TaskSystemFactoryException("Failed to locate resource.", e);
+			}
+        }
 
+	}
 }

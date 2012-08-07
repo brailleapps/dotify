@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.formatter.PagedMediaWriter;
 import org.daisy.dotify.formatter.PagedMediaWriterException;
 import org.daisy.dotify.formatter.dom.SectionProperties;
@@ -64,8 +65,8 @@ public class PEFMediaWriter implements PagedMediaWriter {
 				    "xmlns:generator=\"http://daisymfc.svn.sourceforge.net/viewvc/daisymfc/trunk/dmfc/transformers/org_pef_dtbook2pef/\"" +
 				">");
 		pst.println("<dc:format>application/x-pef+xml</dc:format>");
-		pst.println("<dc:identifier>" + p.getProperty("identifier", "identifier?") + "</dc:identifier>");
-		pst.println("<dc:date>" + p.getProperty("date", "date?") + "</dc:date>");
+		pst.println("<dc:identifier>" + p.getProperty(SystemKeys.IDENTIFIER, "identifier?") + "</dc:identifier>");
+		pst.println("<dc:date>" + p.getProperty(SystemKeys.DATE, "date?") + "</dc:date>");
 		for (Object key : p.keySet()) {
 			pst.println("<generator:entry key=\"" + key + "\">" + p.get(key) + "</generator:entry>" );
 		}

@@ -2,9 +2,11 @@ package org.daisy.dotify.input;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
@@ -50,6 +52,14 @@ public class InputManagerFactoryMaker {
 			throw new IllegalArgumentException("Cannot locate an InputManager for " + locale);
 		}
 		return template;
+	}
+	
+	public Set<String> listSupportedLocales() {
+		HashSet<String> ret = new HashSet<String>();
+		for (InputManagerFactory h : filters) {
+			ret.addAll(h.listSupportedLocales());
+		}
+		return ret;
 	}
 	
 	public InputManager newInputManager(FilterLocale locale) {

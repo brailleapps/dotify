@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.setups.TaskSystemFactory.OutputFormat;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
@@ -125,7 +124,7 @@ public class InputManager implements TaskSystem {
 			}
 		}
 		String xmlformat = "xml.properties";
-		String outputformat = OutputFormat.valueOf(parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toUpperCase()).toString().toLowerCase();
+		String outputformat = parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toLowerCase();
 
 		String basePath = "config/" + outputformat + "/";
 

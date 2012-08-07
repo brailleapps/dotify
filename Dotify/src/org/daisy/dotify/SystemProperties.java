@@ -18,5 +18,7 @@ public interface SystemProperties {
 	 * Defines the system release
 	 */
 	public static final String SYSTEM_RELEASE = "1.1";
+	
+	public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
 }
