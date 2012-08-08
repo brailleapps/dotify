@@ -305,6 +305,7 @@ Dotify/tests/org/daisy/dotify/system/InputManagerFactoryMakerTest.java -text
 Dotify/tests/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/tests/org/daisy/dotify/translator/BrailleFilterFactoryTest.java -text svneol=unset#text/plain
+Dotify/tests/org/daisy/dotify/translator/sv_SE/SwedishBrailleFilterTest.java -text
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text
 DotifyDevtools/.settings/org.eclipse.jdt.core.prefs -text

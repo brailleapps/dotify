@@ -10,7 +10,7 @@ import org.junit.Test;
 public class XMLInputManagerFactoryTest {
 
 	@Test
-	public void testSupportsLocale() {
+	public void testFactoryExists() {
 		//Setup
 		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		
@@ -50,7 +50,7 @@ public class XMLInputManagerFactoryTest {
 	}
 	*/
 	@Test (expected=IllegalArgumentException.class)
-	public void testLocateInputManagerForUnknownLocale() throws UnsupportedLocaleException {
+	public void testLocateInputManagerForUnknownLocale() {
 		//Setup
 		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		FilterLocale filter = FilterLocale.parse("fi");
