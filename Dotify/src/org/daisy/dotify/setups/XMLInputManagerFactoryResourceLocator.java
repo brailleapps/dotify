@@ -5,14 +5,14 @@ import java.net.URL;
 import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
 
-public class DefaultInputManagerFactoryResourceLocator extends
+public class XMLInputManagerFactoryResourceLocator extends
 		AbstractResourceLocator {
 
-	public DefaultInputManagerFactoryResourceLocator() {
+	public XMLInputManagerFactoryResourceLocator() {
 		super();
 	}
 
-	public DefaultInputManagerFactoryResourceLocator(String basePath) {
+	public XMLInputManagerFactoryResourceLocator(String basePath) {
 		super(basePath);
 	}
 

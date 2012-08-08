@@ -1,4 +1,4 @@
-package org.daisy.dotify.input;
+package org.daisy.dotify.setups;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,11 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.system.InputManager;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
-import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.ValidatorTask;
 import org.daisy.dotify.system.XsltTask;
@@ -57,7 +57,7 @@ import org.xml.sax.SAXException;
  * @author Joel Håkansson, TPB
  *
  */
-public class InputManager implements TaskSystem {
+class XMLInputManager implements InputManager {
 	//private final URL resourceBase;
 	private final ResourceLocator localLocator;
 	private final ResourceLocator commonLocator;
@@ -70,16 +70,16 @@ public class InputManager implements TaskSystem {
 	 * @param localBase a path relative the resource root to the local resources
 	 * @param commonBase a path relative the resource root to the common resources
 	 */
-	public InputManager(ResourceLocator localLocator, ResourceLocator commonLocator) {
+	XMLInputManager(ResourceLocator localLocator, ResourceLocator commonLocator) {
 		this(localLocator, commonLocator, "InputDetectorTaskSystem");
 	}
 	
-	public InputManager(ResourceLocator localLocator, ResourceLocator commonLocator, String name) {
+	XMLInputManager(ResourceLocator localLocator, ResourceLocator commonLocator, String name) {
 		//this.resourceBase = resourceBase;
 		this.localLocator = localLocator;
 		this.commonLocator = commonLocator;
 		this.name = name;
-		this.logger = Logger.getLogger(InputManager.class.getCanonicalName());
+		this.logger = Logger.getLogger(XMLInputManager.class.getCanonicalName());
 	}
 	
 	public String getName() {
@@ -102,15 +102,15 @@ public class InputManager implements TaskSystem {
 			if (rootNS!=null) {
 				if (rootNS.equals("http://www.daisy.org/z3986/2005/dtbook/") && rootElement.equals("dtbook")) {
 					inputformat = "dtbook.properties";
-				} else if (rootNS.equals("http://www.daisy.org/ns/2011/obfl") && rootElement.equals("root")) {
+				} else if (rootNS.equals("http://www.daisy.org/ns/2011/obfl") && rootElement.equals("obfl")) {
 					inputformat = "flow.properties";
 				}
 				// else if {
 					// Add more input formats here...
 				// }
 			}
-			// TODO: if this becomes a documented feature of the system, then a namespace should be added and the root element name changed... 
-			else if (rootElement.equals("root")) {
+			// TODO: if this becomes a documented feature of the system, then a namespace should be added... 
+			else if (rootElement.equals("obfl")) {
 				inputformat = "flow.properties";
 			}
 			is.close();

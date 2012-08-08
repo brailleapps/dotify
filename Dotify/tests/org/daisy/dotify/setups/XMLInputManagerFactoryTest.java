@@ -3,16 +3,16 @@ package org.daisy.dotify.setups;
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.setups.DefaultInputManagerFactory;
+import org.daisy.dotify.setups.XMLInputManagerFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
-public class DefaultInputManagerFactoryTest {
+public class XMLInputManagerFactoryTest {
 
 	@Test
 	public void testSupportsLocale() {
 		//Setup
-		DefaultInputManagerFactory factory = new DefaultInputManagerFactory();
+		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		
 		//Test
 		assertTrue(factory != null);
@@ -21,7 +21,7 @@ public class DefaultInputManagerFactoryTest {
 	@Test
 	public void testLocateInputManagerForEnglish() throws UnsupportedLocaleException {
 		//Setup
-		DefaultInputManagerFactory factory = new DefaultInputManagerFactory();
+		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		FilterLocale filter = FilterLocale.parse("en-US");
 		
 		//Test
@@ -32,7 +32,7 @@ public class DefaultInputManagerFactoryTest {
 	@Test
 	public void testLocateInputManagerForSwedish() throws UnsupportedLocaleException {
 		//Setup
-		DefaultInputManagerFactory factory = new DefaultInputManagerFactory();
+		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		FilterLocale filter = FilterLocale.parse("sv-SE");
 		
 		//Test
@@ -52,7 +52,7 @@ public class DefaultInputManagerFactoryTest {
 	@Test (expected=IllegalArgumentException.class)
 	public void testLocateInputManagerForUnknownLocale() throws UnsupportedLocaleException {
 		//Setup
-		DefaultInputManagerFactory factory = new DefaultInputManagerFactory();
+		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		FilterLocale filter = FilterLocale.parse("fi");
 		
 		//Test

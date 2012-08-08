@@ -8,19 +8,19 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.input.InputManager;
-import org.daisy.dotify.input.InputManagerFactory;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
+import org.daisy.dotify.system.InputManager;
+import org.daisy.dotify.system.InputManagerFactory;
 import org.daisy.dotify.text.FilterLocale;
 
-public class DefaultInputManagerFactory implements InputManagerFactory {
+public class XMLInputManagerFactory implements InputManagerFactory {
 	private final Logger logger;
 	private final Properties tables = new Properties();
 	
-	public DefaultInputManagerFactory() {
+	public XMLInputManagerFactory() {
 		logger = Logger.getLogger(this.getClass().getCanonicalName());
 		try {
-	        URL tablesURL = new DefaultInputManagerFactoryResourceLocator().getCatalogResourceURL();
+	        URL tablesURL = new XMLInputManagerFactoryResourceLocator().getCatalogResourceURL();
 	        if(tablesURL!=null){
 	        	tables.loadFromXML(tablesURL.openStream());
 	        } else {
@@ -48,8 +48,8 @@ public class DefaultInputManagerFactory implements InputManagerFactory {
         if(languageFileRelativePath==null) {
         	throw new IllegalArgumentException("Locale not supported: " + locale.toString());
         } else {
-        	return new InputManager(
-        			new DefaultInputManagerFactoryResourceLocator(languageFileRelativePath),
+        	return new XMLInputManager(
+        			new XMLInputManagerFactoryResourceLocator(languageFileRelativePath),
         			new CommonResourceLocator());
         }
 	}

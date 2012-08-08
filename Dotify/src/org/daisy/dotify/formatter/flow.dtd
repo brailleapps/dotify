@@ -25,8 +25,8 @@
 <!--
 	Document root
 -->
-<!ELEMENT root (layout-master+, table-of-contents*, volume-template*, sequence+)>
-<!ATTLIST root
+<!ELEMENT obfl (layout-master+, table-of-contents*, volume-template*, sequence+)>
+<!ATTLIST obfl
 		xmlns CDATA #FIXED 'http://www.daisy.org/ns/2011/obfl'
 		version (2011-1) #REQUIRED
 		xml:lang CDATA #REQUIRED

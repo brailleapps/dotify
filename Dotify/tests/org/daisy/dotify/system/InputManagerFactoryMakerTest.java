@@ -1,12 +1,13 @@
-package org.daisy.dotify.input;
+package org.daisy.dotify.system;
 
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
-public class InputFactoryMakerTest {
+public class InputManagerFactoryMakerTest {
 
 	@Test
 	public void testFactoryExists() {

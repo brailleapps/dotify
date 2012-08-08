@@ -16,6 +16,7 @@ import org.daisy.dotify.formatter.utils.TextBorder;
 import org.daisy.dotify.formatter.writers.PEFMediaWriter;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
+import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.ResourceLocator;
@@ -24,7 +25,6 @@ import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.ValidatorTask;
-import org.daisy.dotify.system.VolumeCoverPageTask;
 import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;
@@ -61,6 +61,7 @@ import org.xml.sax.SAXException;
  * <p>The result should be validated against the PEF Relax NG schema using int_daisy_validator.</p>
  * @author Joel Håkansson, TPB
  */
+@SuppressWarnings("deprecation")
 public class SwedishBrailleSystem implements TaskSystem {
 	private final ResourceLocator commonResourceLocator;
 	private final String name;

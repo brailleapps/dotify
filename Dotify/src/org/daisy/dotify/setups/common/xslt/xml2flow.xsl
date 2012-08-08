@@ -29,7 +29,7 @@
 	<xsl:param name="duplex" select="true()" as="xs:boolean"/>
 
 	<xsl:template match="/">
-		<root version="2011-1">
+		<obfl version="2011-1">
 			<layout-master name="plain" page-width="{$page-width}" 
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
@@ -39,7 +39,7 @@
 				</default-template>
 			</layout-master>
 			<sequence initial-page-number="1" master="plain"><xsl:apply-templates/></sequence>
-		</root>
+		</obfl>
 	</xsl:template>
 
 	<xsl:template match="*">

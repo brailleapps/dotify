@@ -21,6 +21,7 @@ import java.io.PrintStream;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * Provides an abstract base for command line UI's. NOTE:
@@ -259,6 +260,36 @@ public abstract class AbstractUI {
 			i++;
 		}
 		return p;
+	}
+	
+	public Map<String, String> getOptional(String[] args) {
+		Hashtable<String, String> p = new Hashtable<String, String>();
+		String[] t;
+		for (String s : args) {
+			s = s.trim();
+			t = s.split(delimiter, 2);
+			if (s.startsWith(optionalArgumentPrefix) && t.length==2) {
+				p.put(t[0].substring(1), t[1]);
+			}
+		}
+		return p;
+	}
+	
+	public List<String> getRequired(String[] args) {
+		Vector<String> p = new Vector<String>();
+		String[] t;
+		for (String s : args) {
+			s = s.trim();
+			t = s.split(delimiter, 2);
+			if (!(s.startsWith(optionalArgumentPrefix) && t.length==2)) {
+				p.add(s);
+			}
+		}
+		return p;
+	}
+	
+	public static void exitWithCode(ExitCode e) {
+		System.exit(-e.ordinal());
 	}
 	
 	/**

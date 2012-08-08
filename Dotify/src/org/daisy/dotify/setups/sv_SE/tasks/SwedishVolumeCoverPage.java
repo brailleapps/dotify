@@ -14,7 +14,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.utils.TextBorder;
-import org.daisy.dotify.system.VolumeCoverPage;
 import org.daisy.dotify.text.StringFilter;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;
 import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
@@ -22,6 +21,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 
+@SuppressWarnings("deprecation")
 public class SwedishVolumeCoverPage implements VolumeCoverPage {
 	private StringFilter filters;
 	private String title;
@@ -111,7 +111,7 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
     	return ret;
 
     }
-	
+	/*
     private String loc(int value) {
     	switch (value) {
     		case 0: return "noll"; 
@@ -137,7 +137,7 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
     		case 20: return "tjugo"; 
     	}
     	return ""+value;
-    }
+    }*/
 
     public static String intToText(int value) {
     	if (value<0) return "minus " + intToText(-value);

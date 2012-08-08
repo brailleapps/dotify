@@ -11,15 +11,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.braille.ui.AbstractUI;
-import org.daisy.dotify.input.InputManager;
-import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.setups.ConfigUrlLocator;
+import org.daisy.dotify.system.InputManager;
+import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.RunParameters;
@@ -121,25 +120,25 @@ public class Main extends AbstractUI {
 			
 			System.out.println();
 			m.displayHelp(System.out);
-			System.exit(-ExitCode.MISSING_ARGUMENT.ordinal());
+			Main.exitWithCode(ExitCode.MISSING_ARGUMENT);
 			
 			//System.exit(-1);
 		}
 
-		Map<String, String> p = m.toMap(args);
+		List<String> p = m.getRequired(args);
 		// remove required arguments
-		File input = new File(""+p.remove(ARG_PREFIX+0));
+		File input = new File(p.get(0));
 		//File input = new File(args[0]);
 		if (!input.exists()) {
 			System.out.println("Cannot find input file: " + input);
-			System.exit(-ExitCode.MISSING_RESOURCE.ordinal());
+			Main.exitWithCode(ExitCode.MISSING_RESOURCE);
 
 			//System.exit(-2);
 		}
 		
-		File output = new File(""+p.remove(ARG_PREFIX+1));
-		String setup = p.remove(ARG_PREFIX+2);
-		String context = p.remove(ARG_PREFIX+3);
+		File output = new File(p.get(1));
+		String setup = p.get(2);
+		String context = p.get(3);
 		
 		//File output = new File(args[1]);
 		HashMap<String, String> props = new HashMap<String, String>();
@@ -147,7 +146,7 @@ public class Main extends AbstractUI {
 		//props.put(SystemKeys.TEMP_FILES_DIRECTORY, TEMP_DIR);
 		props.put(SystemKeys.WRITE_TEMP_FILES, "true");
 
-		props.putAll(p);
+		props.putAll(m.getOptional(args));
 		
 		m.run(input, output, new ConfigUrlLocator().getResourceURL(setup), FilterLocale.parse(context), props);
 	}

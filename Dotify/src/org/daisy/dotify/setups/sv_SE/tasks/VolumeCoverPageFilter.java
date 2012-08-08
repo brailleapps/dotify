@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.setups.sv_SE.tasks;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.daisy.dotify.tools.StaxFilter2;
  * @author Joel Håkansson
  * @deprecated replaced by the volume-template feature in OBFL
  */
-public class VolumeCoverPageFilter extends StaxFilter2 {
+class VolumeCoverPageFilter extends StaxFilter2 {
 	private final static String PEF_NS = "http://www.daisy.org/ns/2008/pef";
 	private final QName volume;
 	private final QName section;
@@ -27,12 +27,12 @@ public class VolumeCoverPageFilter extends StaxFilter2 {
 	private boolean firstSection;
 	private int volumeNo;
 
-	public VolumeCoverPageFilter(XMLEventReader xer, OutputStream outStream, VolumeCoverPage cover, int vols)
+	VolumeCoverPageFilter(XMLEventReader xer, OutputStream outStream, VolumeCoverPage cover, int vols)
 	throws XMLStreamException {
 		this(xer, outStream, cover, null, vols);
 	}
 	
-	public VolumeCoverPageFilter(XMLEventReader xer, OutputStream outStream, VolumeCoverPage cover, VolumeCoverPage rearCover, int vols)
+	VolumeCoverPageFilter(XMLEventReader xer, OutputStream outStream, VolumeCoverPage cover, VolumeCoverPage rearCover, int vols)
 			throws XMLStreamException {
 		super(xer, outStream);
 		this.volume = new QName(PEF_NS, "volume");

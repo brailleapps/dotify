@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.setups.sv_SE.tasks;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +16,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.daisy.dotify.system.InternalTask;
+import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;
 import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
 import org.daisy.util.xml.stax.StaxEntityResolver;

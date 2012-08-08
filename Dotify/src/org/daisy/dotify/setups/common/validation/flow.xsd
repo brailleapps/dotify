@@ -17,7 +17,7 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
-	<xs:element name="root" type="root"/>
+	<xs:element name="obfl" type="root"/>
 	<xs:complexType name="layout-master">
 		<xs:sequence>
 			<xs:element ref="template" minOccurs="0" maxOccurs="unbounded"/>
