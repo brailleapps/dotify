@@ -70,7 +70,7 @@ Dotify/src/META-INF/services/org.daisy.dotify.formatter.Formatter -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Paginator -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.VolumeSplitter -text
 Dotify/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
-Dotify/src/META-INF/services/org.daisy.dotify.input.InputManagerFactory -text
+Dotify/src/META-INF/services/org.daisy.dotify.system.InputManagerFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.translator.BrailleFilter -text
 Dotify/src/org/daisy/braille/ui/AbstractUI.java -text
