@@ -15,6 +15,7 @@
 			<body>
 				<h1>Description for <xsl:value-of select="$filename"/></h1>
 				<xsl:choose>
+					<xsl:when test="processing-instruction('xslt-doc-file')"><xsl:copy-of select="document(processing-instruction('xslt-doc-file'))/*/node()"/></xsl:when>
 					<xsl:when test="processing-instruction('build-xslt-doc')[.='disable-output-escaping']">
 						<xsl:value-of select="comment()[1]" disable-output-escaping="yes"/>
 					</xsl:when>
