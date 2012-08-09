@@ -1,4 +1,4 @@
-package org.daisy.dotify.tools;
+package org.daisy.dotify.devtools;
 
 import java.io.Closeable;
 import java.io.OutputStream;

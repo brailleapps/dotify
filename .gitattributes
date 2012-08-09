@@ -281,7 +281,6 @@ Dotify/src/org/daisy/dotify/text/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/Progress.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/tools/SchematronRulesGenerator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/TextFileReader.java -text
@@ -313,6 +312,7 @@ DotifyDevtools/.settings/org.eclipse.jdt.core.prefs -text
 DotifyDevtools/lib/icu4j-3_8.jar -text
 DotifyDevtools/src/org/daisy/dotify/devtools/CodePointUtility.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/GenerateTableEntries.java -text
+DotifyDevtools/src/org/daisy/dotify/devtools/SchematronRulesGenerator.java -text svneol=unset#text/plain
 DotifyDevtools/src/org/daisy/dotify/devtools/converters/BrailleNotationConverter.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/converters/CodePointHelper.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/package.html -text
