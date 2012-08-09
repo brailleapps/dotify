@@ -66,9 +66,29 @@
 			<xsl:attribute name="break-before">page</xsl:attribute>
 		</xsl:if>-->
 	</xsl:template>
+	<!-- If level1 has part, format h2 as h1 -->
+	<xsl:template match="dtb:h2[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:attribute name="margin-top">3</xsl:attribute>
+		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
+			<xsl:attribute name="margin-bottom">1</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="keep">all</xsl:attribute>
+		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
 	<xsl:template match="dtb:h2" mode="apply-block-attributes">
 		<xsl:attribute name="margin-top">2</xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
+			<xsl:attribute name="margin-bottom">1</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="keep">all</xsl:attribute>
+		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
+	<!-- If level1 has part, format h3 as h2 -->
+	<xsl:template match="dtb:h3[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:attribute name="margin-top">2</xsl:attribute>
+		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level4)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
@@ -116,8 +136,23 @@
 		</xsl:if>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
+	<!-- If level1 has part, format level2 as level1 -->
+	<xsl:template match="dtb:level2[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:attribute name="break-before">page</xsl:attribute>
+		<xsl:if test="not(dtb:h2)">
+			<xsl:attribute name="margin-top">3</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
 	<xsl:template match="dtb:level2" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h2)">
+			<xsl:attribute name="margin-top">2</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
+	<!-- If level1 has part, format level3 as level2 -->
+	<xsl:template match="dtb:level3[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:if test="not(dtb:h3)">
 			<xsl:attribute name="margin-top">2</xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
@@ -314,6 +349,15 @@
 		<xsl:apply-templates select="." mode="block-mode"/>
 	</xsl:template>
 
+	<!-- Override default processing -->
+	<xsl:template match="dtb:h1[parent::dtb:level1/@class='part']">
+		<block><xsl:apply-templates select="." mode="apply-block-attributes"/>
+			<block><leader position="100%" align="right" pattern=":"/></block>
+			<block margin-left="2" margin-right="2" text-indent="2"><xsl:apply-templates/></block>
+			<block><leader position="100%" align="right" pattern=":"/></block>
+		</block>
+	</xsl:template>
+	
 	<xsl:template match="dtb:dd" mode="apply-block-attributes">
 		<xsl:attribute name="text-indent">3</xsl:attribute>
 	</xsl:template>
