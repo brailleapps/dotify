@@ -7,22 +7,28 @@ import org.junit.Test;
 public class BreakPointHandlerTest {
 
 	@Test
-	public void testHardBreak() {
+	public void testHardBreak_01() {
 		// case 1
 		BreakPointHandler bph = new BreakPointHandler("citat/blockcitat20");
 		BreakPoint bp = bph.nextRow(17);
 		assertEquals("citat/blockcitat2", bp.getHead());
 		assertEquals("0", bp.getTail());
 		assertTrue(bp.isHardBreak());
+	}
+	@Test
+	public void testHardBreak_02() {
 		// case 2
-		bph = new BreakPointHandler("citat/blockcitat20");
-		bp = bph.nextRow(1);
+		BreakPointHandler bph = new BreakPointHandler("citat/blockcitat20");
+		BreakPoint bp = bph.nextRow(1);
 		assertEquals("c", bp.getHead());
 		assertEquals("itat/blockcitat20", bp.getTail());
 		assertTrue(bp.isHardBreak());
+	}
+	@Test
+	public void testHardBreak_03() {
 		// case 3
-		bph = new BreakPointHandler("citat blockcitat20");
-		bp = bph.nextRow(4);
+		BreakPointHandler bph = new BreakPointHandler("citat blockcitat20");
+		BreakPoint bp = bph.nextRow(4);
 		assertEquals("cita", bp.getHead());
 		assertEquals("t blockcitat20", bp.getTail());
 		assertTrue(bp.isHardBreak());
@@ -56,27 +62,33 @@ public class BreakPointHandlerTest {
 	}
 	
 	@Test
-	public void testHyphen() {
+	public void testHyphen_01() {
 		BreakPointHandler bph = new BreakPointHandler("citat-blockcitat20");
 		BreakPoint bp = bph.nextRow(12);
 		assertEquals("citat-", bp.getHead());
 		assertEquals("blockcitat20", bp.getTail());
 		assertTrue(!bp.isHardBreak());
-		
-		bph = new BreakPointHandler("Negative number: -154");
-		bp = bph.nextRow(19);
+	}
+	@Test
+	public void testHyphen_02() {
+		BreakPointHandler bph = new BreakPointHandler("Negative number: -154");
+		BreakPoint bp = bph.nextRow(19);
 		assertEquals("Negative number: ", bp.getHead());
 		assertEquals("-154", bp.getTail());
 		assertTrue(!bp.isHardBreak());
-		
-		bph = new BreakPointHandler("Negative numbers - odd! (and even)");
-		bp = bph.nextRow(18);
+	}
+	@Test
+	public void testHyphen_03() {
+		BreakPointHandler bph = new BreakPointHandler("Negative numbers - odd! (and even)");
+		BreakPoint bp = bph.nextRow(18);
 		assertEquals("Negative numbers - ", bp.getHead());
 		assertEquals("odd! (and even)", bp.getTail());
 		assertTrue(!bp.isHardBreak());
-		
-		bph = new BreakPointHandler("Negative numbers - odd! (and even)");
-		bp = bph.nextRow(17);
+	}
+	@Test
+	public void testHyphen_04() {	
+		BreakPointHandler bph = new BreakPointHandler("Negative numbers - odd! (and even)");
+		BreakPoint bp = bph.nextRow(17);
 		assertEquals("Negative numbers ", bp.getHead());
 		assertEquals("- odd! (and even)", bp.getTail());
 		assertTrue(!bp.isHardBreak());

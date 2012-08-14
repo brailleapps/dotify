@@ -24,33 +24,43 @@ public class SwedishBrailleFilterTest {
 	public void testSwedishFilter_Punctuation_ex1() {
 		assertEquals("⠠⠓⠕⠝ ⠅⠪⠏⠞⠑ ⠎⠍⠪⠗⠂ ⠞⠑ ⠕⠉⠓ ⠕⠎⠞⠄", filter.filter("Hon köpte smör, te och ost."));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex2() {
 		assertEquals("⠠⠅⠕⠍⠍⠑⠗ ⠙⠥⠢", filter.filter("Kommer du?"));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex3() {
 		assertEquals("⠠⠓⠪⠗ ⠥⠏⠏⠖", filter.filter("Hör upp!"));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex4() {
 		assertEquals("⠠⠓⠕⠝ ⠎⠁⠒ ⠠⠠⠙⠝⠒⠎ ⠗⠑⠙⠁⠅⠞⠊⠕⠝ ⠜⠗ ⠎⠞⠕⠗⠄", filter.filter("Hon sa: DN:s redaktion är stor."));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex5() {
 		assertEquals("⠠⠎⠅⠊⠇⠇⠝⠁⠙⠑⠝ ⠍⠑⠇⠇⠁⠝ ⠁⠗⠃⠑⠞⠎- ⠕⠉⠓ ⠧⠊⠇⠕⠙⠁⠛⠁⠗ ⠃⠇⠑⠧ ⠍⠊⠝⠙⠗⠑ ⠎⠅⠁⠗⠏⠆ ⠓⠕⠝ ⠅⠥⠝⠙⠑ ⠞⠊⠇⠇⠡⠞⠁ ⠎⠊⠛ ⠧⠊⠇⠕⠙⠁⠛⠁⠗ ⠍⠊⠞⠞ ⠊ ⠧⠑⠉⠅⠁⠝⠄", filter.filter("Skillnaden mellan arbets- och vilodagar blev mindre skarp; hon kunde tillåta sig vilodagar mitt i veckan."));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex6() {
 		assertEquals("⠠⠍⠌⠠⠎ ⠠⠅⠗⠕⠝⠁⠝", filter.filter("M/S Kronan"));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex7() {
 		assertEquals("⠼⠚⠂⠑⠑ ⠇⠊⠞⠑⠗⠌⠍⠊⠇", filter.filter("0,55 liter/mil"));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex8() {
 		assertEquals("⠍⠡⠝⠁⠙⠎⠎⠅⠊⠋⠞⠑⠞ ⠁⠏⠗⠊⠇⠌⠍⠁⠚", filter.filter("månadsskiftet april/maj"));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex9() {
 		assertEquals("⠰⠠⠧⠊⠇⠇ ⠙⠥ ⠇⠑⠅⠁⠢⠰", filter.filter("\"Vill du leka?\""));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex10() {
 		assertEquals("⠠⠙⠑⠞ ⠧⠁⠗ ⠠⠊⠗⠊⠎⠐ ⠃⠇⠕⠍⠍⠕⠗⠄", filter.filter("Det var Iris' blommor."));
 	}
+	@Test
 	public void testSwedishFilter_Punctuation_ex11() {
 		assertEquals("⠰⠠⠧⠁⠙ ⠃⠑⠞⠽⠙⠑⠗ ⠐⠁⠃⠎⠞⠗⠥⠎⠐⠢⠰ ⠋⠗⠡⠛⠁⠙⠑ ⠓⠁⠝⠄", filter.filter("\"Vad betyder 'abstrus'?\" frågade han."));
 	}
@@ -59,12 +69,15 @@ public class SwedishBrailleFilterTest {
 	public void testSwedishFilter_Dashes_ex1() {
 		assertEquals("⠠⠁⠝⠝⠑-⠠⠍⠁⠗⠊⠑ ⠓⠁⠗ ⠛⠥⠇- ⠕⠉⠓ ⠧⠊⠞⠗⠁⠝⠙⠊⠛ ⠅⠚⠕⠇⠄", filter.filter("Anne-Marie har gul- och vitrandig kjol."));
 	}
+	@Test
 	public void testSwedishFilter_Dashes_ex2() {
 		assertEquals("⠠⠑⠞⠞ ⠋⠑⠃⠗⠊⠇⠞ ⠎⠽⠎⠎⠇⠁⠝⠙⠑ ⠍⠑⠙ ⠤⠤ ⠊⠝⠛⠑⠝⠞⠊⠝⠛ ⠁⠇⠇⠎⠄", filter.filter("Ett febrilt sysslande med \u2013 ingenting alls."));
 	}
+	@Test
 	public void testSwedishFilter_Dashes_ex3() {
 		assertEquals("⠤⠤ ⠠⠧⠁⠙ ⠓⠑⠞⠑⠗ ⠓⠥⠝⠙⠑⠝⠢", filter.filter("\u2013 Vad heter hunden?"));
 	}
+	@Test
 	public void testSwedishFilter_Dashes_ex4() {
 		assertEquals("⠠⠓⠁⠝ ⠞⠕⠛ ⠞⠡⠛⠑⠞ ⠠⠎⠞⠕⠉⠅⠓⠕⠇⠍⠤⠤⠠⠛⠪⠞⠑⠃⠕⠗⠛⠄", filter.filter("Han tog tåget Stockholm\u2013Göteborg."));
 	}
@@ -73,6 +86,7 @@ public class SwedishBrailleFilterTest {
 	public void testSwedishFilter_Parentheses_ex1() {
 		assertEquals("⠠⠎⠽⠝⠎⠅⠁⠙⠁⠙⠑⠎ ⠠⠗⠊⠅⠎⠋⠪⠗⠃⠥⠝⠙ ⠦⠠⠠⠎⠗⠋⠴", filter.filter("Synskadades Riksförbund (SRF)"));
 	}
+	@Test
 	public void testSwedishFilter_Parentheses_ex2() {
 		assertEquals("⠠⠗⠁⠏⠏⠕⠗⠞⠑⠗ ⠁⠴ ⠋⠗⠡⠝ ⠋⠪⠗⠃⠥⠝⠙⠎⠍⠪⠞⠑⠞ ⠃⠴ ⠅⠁⠎⠎⠁⠜⠗⠑⠝⠙⠑⠝", filter.filter("Rapporter a) från förbundsmötet b) kassaärenden"));
 	}
@@ -81,6 +95,7 @@ public class SwedishBrailleFilterTest {
 	public void testSwedishFilter_Brackets_ex1() {
 		assertEquals("⠠⠅⠗⠁⠧⠑⠞ ⠓⠁⠗ ⠎⠞⠜⠇⠇⠞⠎ ⠋⠗⠡⠝ ⠕⠇⠊⠅⠁ ⠛⠗⠥⠏⠏⠑⠗ ⠦⠃⠇⠄⠁⠄ ⠷⠓⠪⠛⠎⠅⠕⠇⠑⠾⠎⠞⠥⠙⠑⠗⠁⠝⠙⠑ ⠕⠉⠓ ⠙⠑⠇⠞⠊⠙⠎⠁⠗⠃⠑⠞⠁⠝⠙⠑⠴ ⠍⠑⠝ ⠙⠑⠞ ⠓⠁⠗ ⠁⠇⠇⠞⠊⠙ ⠁⠧⠧⠊⠎⠁⠞⠎⠄", filter.filter("Kravet har ställts från olika grupper (bl.a. [högskole]studerande och deltidsarbetande) men det har alltid avvisats."));
 	}
+	@Test
 	public void testSwedishFilter_Brackets_ex2() {
 		assertEquals("⠠⠗⠑⠙ ⠠⠏⠕⠗⠞ ⠷⠗⠜⠙ ⠏⠡⠗⠞⠾", filter.filter("Red Port [räd pårt]"));
 	}
@@ -181,9 +196,11 @@ public class SwedishBrailleFilterTest {
 	public void testSwedishFilter_additional_ex1() throws FileNotFoundException {
 		assertEquals("⠘⠦⠎⠞⠚⠜⠗⠝⠁⠘⠴ ⠘⠦⠃⠇⠊⠭⠞⠘⠴ ⠘⠦⠒⠦⠘⠴ ⠘⠦⠒⠴⠘⠴ ⠬⠕", filter.filter("\u066d \u2607 \u2639 \u263a \u00ba"));
 	}
+	@Test
 	public void testSwedishFilter_additional_ex2() throws FileNotFoundException {
 		assertEquals("⠠⠝⠑⠛⠁⠞⠊⠧⠁ ⠞⠁⠇⠒ -⠼⠙⠑⠋⠙⠑", filter.filter("Negativa tal: -45645"));
 	}
+	@Test
 	public void testSwedishFilter_additional_ex3() throws FileNotFoundException {
 		assertEquals("⠘⠦⠓⠚⠜⠗⠞⠑⠗⠘⠴", filter.filter("\u2665")); // hjärter
 	}
