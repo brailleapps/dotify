@@ -36,6 +36,8 @@ public interface SystemKeys {
 	
 	public final static String PEF_FORMAT = "pef";
 	public final static String TEXT_FORMAT = "text";
+	public final static String OBFL_FORMAT = "obfl";
+	
 	/**
 	 * Defines a key for the configuration
 	 */

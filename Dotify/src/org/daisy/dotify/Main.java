@@ -41,6 +41,7 @@ public class Main extends AbstractUI {
 		extensionBindings = new HashMap<String, String>();
 		extensionBindings.put(".pef", SystemKeys.PEF_FORMAT);
 		extensionBindings.put(".txt", SystemKeys.TEXT_FORMAT);
+		extensionBindings.put(".obfl", SystemKeys.OBFL_FORMAT);
 		String path = System.getProperty("java.io.tmpdir");
 		if (path!=null && !"".equals(path) && new File(path).isDirectory()) {
 			TEMP_DIR = path;
@@ -84,6 +85,7 @@ public class Main extends AbstractUI {
 			ArrayList<Definition> vals = new ArrayList<Definition>();
 			vals.add(new Definition(SystemKeys.PEF_FORMAT, "write result in PEF-format"));
 			vals.add(new Definition(SystemKeys.TEXT_FORMAT, "write result as text"));
+			//vals.add(new Definition(SystemKeys.OBFL_FORMAT, "write result in OBFL-format (bypass formatter)"));
 			optionalArgs.add(new OptionalArgument(SystemKeys.OUTPUT_FORMAT, "Specifies output format", vals, "[detect]"));
 		}
 		optionalArgs.add(new OptionalArgument(SystemKeys.IDENTIFIER, "Sets identifier in meta data (if available)", "[generated value]"));
@@ -243,8 +245,11 @@ public class Main extends AbstractUI {
 			rp = RunParameters.load(idts.getConfigurationURL(setup), map);
 			
 			tasks.addAll(idts.compile(rp));
-			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
-			tasks.addAll(ts.compile(rp));
+			//if OBFL output, bypass task system 
+			if (!SystemKeys.OBFL_FORMAT.equals(outputformat)) {
+				ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
+				tasks.addAll(ts.compile(rp));
+			}
 		} catch (TaskSystemException e) {
 			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + rp.getProperties().toString(), e);
 		} catch (TaskSystemFactoryException e) {

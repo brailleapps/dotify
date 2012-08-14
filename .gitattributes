@@ -202,6 +202,8 @@ Dotify/src/org/daisy/dotify/setups/XMLInputManager.java -text svneol=unset#text/
 Dotify/src/org/daisy/dotify/setups/XMLInputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/setups/XMLInputManagerFactoryResourceLocator.java -text
 Dotify/src/org/daisy/dotify/setups/common/CommonResourceLocator.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/common/config/obfl/dtbook.properties -text
+Dotify/src/org/daisy/dotify/setups/common/config/obfl/xml.properties -text
 Dotify/src/org/daisy/dotify/setups/common/config/pef/xml.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/config/text/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/config/text/xml.properties -text svneol=unset#text/plain
@@ -230,6 +232,7 @@ Dotify/src/org/daisy/dotify/setups/presets_catalog.xml -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishTaskSystemFactory.java -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishTextSystem.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/sv_SE/config/obfl/dtbook.properties -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/config/pef/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/config/text/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
