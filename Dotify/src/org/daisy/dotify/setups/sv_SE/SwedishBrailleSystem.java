@@ -19,12 +19,10 @@ import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
-import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.system.ValidatorTask;
 import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;
@@ -63,7 +61,7 @@ import org.xml.sax.SAXException;
  */
 @SuppressWarnings("deprecation")
 public class SwedishBrailleSystem implements TaskSystem {
-	private final ResourceLocator commonResourceLocator;
+	private final CommonResourceLocator commonResourceLocator;
 	private final String name;
 	
 	public SwedishBrailleSystem(String name) {
@@ -76,14 +74,10 @@ public class SwedishBrailleSystem implements TaskSystem {
 	}
 
 	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
-		URL flowValidationURL;
-		URL flowWsNormalizer;
 		URL brailleFinalizer;
 		URL metaFinalizer;
 
 		try {
-			flowValidationURL = commonResourceLocator.getResource("validation/flow.xsd");
-			flowWsNormalizer = commonResourceLocator.getResource("xslt/flow-whitespace-normalizer.xsl");
 			brailleFinalizer = commonResourceLocator.getResource("xslt/braille-finalizer.xsl");
 			metaFinalizer = commonResourceLocator.getResource("xslt/meta-finalizer.xsl");
 		} catch (ResourceLocatorException e) {
@@ -91,16 +85,9 @@ public class SwedishBrailleSystem implements TaskSystem {
 		}
 		//configURL = new URL(resourceBase, config);
 		
-		HashMap h = new HashMap();
-		h.putAll(p.getProperties());
+
 		
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-
-		// Whitespace normalizer TransformerFactoryConstants.SAXON8
-		setup.add(new XsltTask("OBFL whitespace normalizer", flowWsNormalizer, null, h));
-
-		// Check that the result from the previous step is OK
-		setup.add(new ValidatorTask("OBFL validator", flowValidationURL));
 
 		// Layout FLOW as PEF
 		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
@@ -159,6 +146,8 @@ public class SwedishBrailleSystem implements TaskSystem {
 		finalizerOptions.put("finalizer-output", "\u2800\u2800\u2824\u2824");
 		setup.add(new XsltTask("Braille finalizer", brailleFinalizer, null, finalizerOptions));
 
+		HashMap h = new HashMap();
+		h.putAll(p.getProperties());
 		// Finalize meta data from input file
 		setup.add(new XsltTask("Meta data finalizer", metaFinalizer, null, h));
 

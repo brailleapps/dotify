@@ -1,20 +1,13 @@
 package org.daisy.dotify.setups.en_US;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.daisy.dotify.formatter.writers.TextMediaWriter;
-import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
-import org.daisy.dotify.system.ResourceLocator;
-import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.system.ValidatorTask;
-import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.RegexFilter;
@@ -29,11 +22,9 @@ import org.daisy.dotify.text.StringFilter;
  *
  */
 public class DefaultTextSystem implements TaskSystem {
-	private final ResourceLocator commonResourceLocator; 
 	private final String name;
 	
 	public DefaultTextSystem(String name) {
-		this.commonResourceLocator = new CommonResourceLocator();
 		this.name = name;
 	}
 	
@@ -42,26 +33,8 @@ public class DefaultTextSystem implements TaskSystem {
 	}
 
 	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
-		URL flowValidationURL;
-		URL flowWsNormalizer;
-
-		try {
-			flowValidationURL = commonResourceLocator.getResource("validation/flow.xsd");
-			flowWsNormalizer = commonResourceLocator.getResource("xslt/flow-whitespace-normalizer.xsl");
-		} catch (ResourceLocatorException e) {
-			throw new TaskSystemException("Failed to locate resource.", e);
-		}
-
-		HashMap h = new HashMap();
-		h.putAll(p.getProperties());
 		
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-
-		// Whitespace normalizer TransformerFactoryConstants.SAXON8
-		setup.add(new XsltTask("OBFL whitespace normalizer", flowWsNormalizer, null, h));
-
-		// Check that the result from the previous step is OK
-		setup.add(new ValidatorTask("OBFL validator", flowValidationURL));
 
 		// Layout FLOW as text
 		MyFilterFactory factory = new MyFilterFactory();

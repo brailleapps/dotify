@@ -24,59 +24,79 @@ import org.xml.sax.SAXParseException;
  * @author Joel Håkansson, TPB
  *
  */
-public class ValidatorTask extends InternalTask implements ErrorHandler {
+public class ValidatorTask extends InternalTask {
 	final static String SCHEMATRON_PROPERTY_KEY = "javax.xml.validation.SchemaFactory:http://www.ascc.net/xml/schematron";
 	final static String SCHEMATRON_PROPERTY_VALUE = "org.daisy.util.xml.validation.jaxp.SchematronSchemaFactory";
 	private URL schema;
-	private boolean error = false;
-	private final Logger logger;
 
 	public ValidatorTask(String name, URL schema) {
 		super(name);
 		this.schema = schema;
-		this.logger = Logger.getLogger(ValidatorTask.class.getCanonicalName());
+	}
+	
+	public static boolean validate(File input, URL schema) throws ValidatorException {
+		if (System.getProperty(SCHEMATRON_PROPERTY_KEY)==null) {
+			Logger logger = Logger.getLogger(ValidatorTask.class.getCanonicalName());
+			logger.info("System property \"" + SCHEMATRON_PROPERTY_KEY + "\" not set");
+			logger.info("Setting property \"" + SCHEMATRON_PROPERTY_KEY + "\" to " + SCHEMATRON_PROPERTY_VALUE);
+			System.setProperty(SCHEMATRON_PROPERTY_KEY, SCHEMATRON_PROPERTY_VALUE);
+		}
+		ValidatorTaskErrorHandler errorHandler = new ValidatorTaskErrorHandler();
+		try {
+			SimpleValidator sv = new SimpleValidator(schema, errorHandler);
+			boolean ret = sv.validate(input.toURI().toURL());
+			return ret && !errorHandler.hasError();
+		} catch (MalformedURLException e) {
+			throw new ValidatorException("Validation failed.", e);
+		} catch (SAXException e) {
+			throw new ValidatorException("Validation failed.", e);
+		} catch (TransformerException e) {
+			throw new ValidatorException("Validation failed.", e);
+		} catch (ValidationException e) {
+			throw new ValidatorException("Validation failed.", e);
+		}
 	}
 
 	@Override
 	public void execute(File input, File output) throws InternalTaskException {
 		try {
-			if (System.getProperty(SCHEMATRON_PROPERTY_KEY)==null) {
-				logger.info("System property \"" + SCHEMATRON_PROPERTY_KEY + "\" not set");
-				logger.info("Setting property \"" + SCHEMATRON_PROPERTY_KEY + "\" to " + SCHEMATRON_PROPERTY_VALUE);
-				System.setProperty(SCHEMATRON_PROPERTY_KEY, SCHEMATRON_PROPERTY_VALUE);
-			}
-			SimpleValidator sv = new SimpleValidator(schema, this);
-			boolean ret = sv.validate(input.toURI().toURL());
+			boolean ret = validate(input, schema);
 			FileUtils.copy(input, output);
-			if (ret && !error) {
+			if (ret) {
 				return;
 			}
-		} catch (SAXException e) {
-			throw new InternalTaskException("Input validation failed: ", e);
-		} catch (TransformerException e) {
-			throw new InternalTaskException("Input validation failed: ", e);
-		} catch (ValidationException e) {
-			throw new InternalTaskException("Input validation failed: ", e);
-		} catch (MalformedURLException e) {
-			throw new InternalTaskException("Input validation failed: ", e);
 		} catch (IOException e) {
-			throw new InternalTaskException("Input validation failed: ", e);
+			throw new InternalTaskException("Failed to copy file.", e);
+		} catch (ValidatorException e) {
+			throw new InternalTaskException("Validation failed.", e);
 		}
-		throw new InternalTaskException("Input validation failed.");
+		throw new InternalTaskException("Validation failed.");
 	}
-
-	public void error(SAXParseException exception) throws SAXException {
-		/*EventBus.getInstance().publish(new MessageEvent(this, exception.getMessage().replaceAll("\\s+", " "), Type.ERROR));*/
-		logger.log(Level.WARNING, "SAXParseException in validator task", exception);
-		error = true;
-	}
-
-	public void fatalError(SAXParseException exception) throws SAXException {
-		throw new SAXException(exception);
-	}
-
-	public void warning(SAXParseException exception) throws SAXException {
-		System.err.println(exception.toString());
+	
+	private static class ValidatorTaskErrorHandler implements ErrorHandler {
+		private final Logger logger;
+		private boolean error = false;
+		
+		public ValidatorTaskErrorHandler() {
+			this.logger = Logger.getLogger(ValidatorTaskErrorHandler.class.getCanonicalName());
+		}
+		
+		public boolean hasError() {
+			return error;
+		}
+	
+		public void error(SAXParseException exception) throws SAXException {
+			logger.log(Level.WARNING, "SAXParseException in validator task", exception);
+			error = true;
+		}
+	
+		public void fatalError(SAXParseException exception) throws SAXException {
+			throw new SAXException(exception);
+		}
+	
+		public void warning(SAXParseException exception) throws SAXException {
+			logger.log(Level.INFO, "Parse warning.", exception);
+		}
 	}
 
 }

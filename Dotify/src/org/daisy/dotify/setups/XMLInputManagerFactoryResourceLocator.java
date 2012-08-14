@@ -17,6 +17,6 @@ public class XMLInputManagerFactoryResourceLocator extends
 	}
 
 	public URL getCatalogResourceURL() throws ResourceLocatorException {
-		return getResource("catalog.xml");
+		return getResource("localization_catalog.xml");
 	}
 }

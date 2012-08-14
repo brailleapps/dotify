@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups.common;
+package org.daisy.dotify.system;
 
 import java.net.URL;
 
@@ -10,9 +10,21 @@ import org.daisy.dotify.system.ResourceLocatorException;
  * @author Joel Håkansson
  *
  */
-public class CommonResourceLocator extends AbstractResourceLocator {
-	public enum CommonResourceIdentifier {
-		OBFL_WHITESPACE_NORMALIZER_XSLT;
+public class SystemResourceLocator extends AbstractResourceLocator {
+	public enum SystemResourceIdentifier {
+		OBFL_XML_SCHEMA;
+	}
+	private static SystemResourceLocator instance;
+	
+	private SystemResourceLocator() {
+		super();
+	}
+	
+	public static synchronized SystemResourceLocator getInstance() {
+		if (instance==null) {
+			instance = new SystemResourceLocator();
+		}
+		return instance;
 	}
 	
 	/**
@@ -22,10 +34,10 @@ public class CommonResourceLocator extends AbstractResourceLocator {
 	 * @param identifier the identifier of the resource to get.
 	 * @return returns the URL to the resource
 	 */
-	public URL getResourceByIdentifier(CommonResourceIdentifier identifier) {
+	public URL getResourceByIdentifier(SystemResourceIdentifier identifier) {
 		try {
 			switch (identifier) {
-				case OBFL_WHITESPACE_NORMALIZER_XSLT: return getResource("xslt/flow-whitespace-normalizer.xsl");
+				case OBFL_XML_SCHEMA: return getResource("resource-files/flow.xsd");
 				default: return null;
 			}
 		} catch (ResourceLocatorException e) {

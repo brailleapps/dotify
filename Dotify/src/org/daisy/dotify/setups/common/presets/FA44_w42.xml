@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<comment>Setup configuration: FA44 (compatibility)</comment>
+	<comment>
+		Preset for FA44: 42 character wide (29 rows)
+	</comment>
 
 	<!-- Layout performer -->
 	<entry key="rows">29</entry>

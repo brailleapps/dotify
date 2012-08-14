@@ -3,7 +3,6 @@ package org.daisy.dotify;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -148,7 +147,7 @@ public class Main extends AbstractUI {
 
 		props.putAll(m.getOptional(args));
 		
-		m.run(input, output, new ConfigUrlLocator().getResourceURL(setup), FilterLocale.parse(context), props);
+		m.run(input, output, setup, FilterLocale.parse(context), props);
 	}
 
 	/**
@@ -161,7 +160,7 @@ public class Main extends AbstractUI {
 	 * @throws IOException
 	 * @throws InternalTaskException
 	 */
-	public void run(File input, File output, URL configURL, FilterLocale context, HashMap<String, String> params) throws IOException, InternalTaskException {
+	public void run(File input, File output, String setup, FilterLocale context, HashMap<String, String> params) throws IOException, InternalTaskException {
 		Progress progress = new Progress();
 		
 		// get parameters
@@ -241,7 +240,7 @@ public class Main extends AbstractUI {
 
 		RunParameters rp = null;
 		try {
-			rp = RunParameters.load(configURL, map);
+			rp = RunParameters.load(idts.getConfigurationURL(setup), map);
 			
 			tasks.addAll(idts.compile(rp));
 			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);

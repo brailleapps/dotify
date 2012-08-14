@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.setups.common.CommonResourceLocator;
+import org.daisy.dotify.setups.common.CommonResourceLocator.CommonResourceIdentifier;
 import org.daisy.dotify.system.InputManager;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.ResourceLocator;
@@ -34,17 +37,14 @@ import org.xml.sax.SAXException;
  * the process of selecting and executing the correct validation rules 
  * and transformation for a given input document and locale.</p>
  * 
- * <p>It can be used as a first step in a TaskSystem, if input format detection
- * is desired.</p>
- * 
  * <p>Note that, input format must be well-formed XML.</p>
  * 
  * <p>Resources are located in the following order:</p>
  * <ul> 
- * <li>resourceBase/localBase/[output format]/[input format].properties</li>
- * <li>resourceBase/localBase/[output format]/xml.properties</li>
- * <li>resourceBase/commonBase/[output format]/[input format].properties</li>
- * <li>resourceBase/commonBase/[output format]/xml.properties</li>
+ * <li>localBase/[output format]/[input format].properties</li>
+ * <li>localBase/[output format]/xml.properties</li>
+ * <li>commonBase/[output format]/[input format].properties</li>
+ * <li>commonBase/[output format]/xml.properties</li>
  * </ul>
  * <p>The properties file for the format should contain two entries:</p>
  * <ul>
@@ -52,13 +52,15 @@ import org.xml.sax.SAXException;
  * <li>&lt;entry key="transformation"&gt;path/to/xslt/file&lt;/entry&gt;</li>
  * </ul>
  * <p>Paths in the properties file are relative to the resource base url.</p>
- * <p>Currently supported formats are: DTBook and xml (heuristic block detection, no layout).</p>
+ * <p>Whitespace normalization of the OBFL file is added last in the chain.</p>
  * 
  * @author Joel Håkansson, TPB
  *
  */
 class XMLInputManager implements InputManager {
 	//private final URL resourceBase;
+	private final static String PRESETS_PATH = "presets/";
+	private final static String CONFIG_PATH = "config/";
 	private final ResourceLocator localLocator;
 	private final ResourceLocator commonLocator;
 	private final String name;
@@ -99,20 +101,35 @@ class XMLInputManager implements InputManager {
 			peekResult = peeker.peek(is);
 			String rootNS = peekResult.getRootElementNsUri();
 			String rootElement = peekResult.getRootElementLocalName();
+			Properties p = new Properties();
+			p.loadFromXML(new DefaultConfigUrlResourceLocator().getInputFormatCatalogResourceURL().openStream());
 			if (rootNS!=null) {
+				inputformat = p.getProperty(rootElement+"@"+rootNS);
+				if (inputformat !=null && "".equals(inputformat)) {
+					return new ArrayList<InternalTask>();
+				}
+				/*
 				if (rootNS.equals("http://www.daisy.org/z3986/2005/dtbook/") && rootElement.equals("dtbook")) {
 					inputformat = "dtbook.properties";
 				} else if (rootNS.equals("http://www.daisy.org/ns/2011/obfl") && rootElement.equals("obfl")) {
-					inputformat = "flow.properties";
-				}
+					//no transformation or validation required, we're ready.
+					return new ArrayList<InternalTask>();
+				}*/
 				// else if {
 					// Add more input formats here...
 				// }
+			} else {
+				inputformat = p.getProperty(rootElement);
+				if (inputformat !=null && "".equals(inputformat)) {
+					return new ArrayList<InternalTask>();
+				}
 			}
 			// TODO: if this becomes a documented feature of the system, then a namespace should be added... 
+			/*
 			else if (rootElement.equals("obfl")) {
-				inputformat = "flow.properties";
-			}
+				//no transformation or validation required, we're ready.
+				return new ArrayList<InternalTask>();
+			}*/
 			is.close();
 		} catch (SAXException e) {
 			throw new TaskSystemException("SAXException while reading input", e);
@@ -126,7 +143,7 @@ class XMLInputManager implements InputManager {
 		String xmlformat = "xml.properties";
 		String outputformat = parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toLowerCase();
 
-		String basePath = "config/" + outputformat + "/";
+		String basePath = CONFIG_PATH + outputformat + "/";
 
 		if (inputformat!=null) {
 			try {
@@ -193,6 +210,12 @@ class XMLInputManager implements InputManager {
 						logger.info("Unrecognized key: " + key);
 					}
 				}
+				//TODO: make this optional using a parameter
+				// Whitespace normalizer TransformerFactoryConstants.SAXON8
+				setup.add(new XsltTask("OBFL whitespace normalizer",
+										new CommonResourceLocator().getResourceByIdentifier(CommonResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+										null,
+										h));
 			} else {
 				throw new TaskSystemException("Unable to open a configuration stream for the format.");
 			}
@@ -203,6 +226,27 @@ class XMLInputManager implements InputManager {
 			throw new TaskSystemException("Unable to open settings file.", e);
 		}
 		return setup;
+	}
+
+	public URL getConfigurationURL(String identifier) throws ResourceLocatorException {
+		ConfigUrlLocator c = new ConfigUrlLocator();
+		String subPath = c.getSubpath(identifier);
+		if (subPath==null) {
+        	// try identifier as path
+        	try {
+        		return new URL(identifier);
+        	} catch (MalformedURLException e) {
+        		throw new IllegalArgumentException("Cannot find configuration for " + identifier);
+        	}
+		} else {
+			try {
+				return localLocator.getResource(PRESETS_PATH + subPath);
+			} catch (ResourceLocatorException e) {
+				// try common locator
+				
+			}
+			return commonLocator.getResource(PRESETS_PATH + subPath);
+		}
 	}
 
 }

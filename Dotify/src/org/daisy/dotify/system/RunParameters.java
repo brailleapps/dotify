@@ -30,10 +30,6 @@ public class RunParameters {
 	
 	public static RunParameters load(URL configURL, Map<String, String> guiParams) {
 		Properties p = new Properties();
-		p.put("l10nrearjacketcopy", "Baksidestext");
-		p.put("l10imagedescription", "Bildbeskrivning");
-		p.put("l10ncolophon", "Tryckuppgifter");
-		p.put("l10ncaption", "Bildtext");
 
 		try {
 			p.loadFromXML(configURL.openStream());

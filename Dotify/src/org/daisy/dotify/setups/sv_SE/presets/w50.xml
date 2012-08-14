@@ -10,4 +10,9 @@
 	<entry key="outer-margin">0</entry>
 	<entry key="rowgap">0</entry>
 
+	<entry key="l10nrearjacketcopy">Baksidestext</entry>
+	<entry key="l10imagedescription">Bildbeskrivning</entry>
+	<entry key="l10ncolophon">Tryckuppgifter</entry>
+	<entry key="l10ncaption">Bildtext</entry>
+
 </properties>

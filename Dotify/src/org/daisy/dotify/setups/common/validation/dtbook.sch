@@ -33,16 +33,16 @@
 			<sch:assert test="descendant::text()">[Rule 5] level1 must have text content.</sch:assert>
 		</sch:rule>
 	</sch:pattern>
-	<!-- Rule 6: Disallow level1@class='part' -->
+	<!-- Rule 6: Disallow level1@class='part'
 	<sch:pattern name="no_part" id="no_part">
 		<sch:rule context="dtb:level1[@class]">
 			<sch:assert test="@class!='part'">[Rule 6] @class='part' is not supported.</sch:assert>
 		</sch:rule>
-	</sch:pattern>
-	<!-- Rule 7: Disallow frontmatter contents together with toc -->
+	</sch:pattern> -->
+	<!-- Rule 7: Disallow frontmatter contents together with toc 
 	<sch:pattern name="no_frontmatter_contents" id="no_frontmatter_contents">
 		<sch:rule context="dtb:frontmatter[dtb:level1[@class='toc' or dtb:list[@class='toc']]]">
 			<sch:report test="*[not(self::dtb:doctitle or self::dtb:docauthor or self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])]">[Rule 7] Contents in frontmatter (aside from doctitle, docauthor, rearjacketcopy, colophon and toc) is not supported together with toc.</sch:report>
 		</sch:rule>
-	</sch:pattern>
+	</sch:pattern>-->
 </sch:schema>

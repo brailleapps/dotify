@@ -15,8 +15,12 @@ class DefaultConfigUrlResourceLocator extends AbstractResourceLocator {
 		super(basePath);
 	}
 	
-	URL getCatalogResourceURL() throws ResourceLocatorException {
-		return getResource("configuration_catalog.xml");
+	URL getConfigurationCatalogResourceURL() throws ResourceLocatorException {
+		return getResource("presets_catalog.xml");
+	}
+	
+	URL getInputFormatCatalogResourceURL() throws ResourceLocatorException {
+		return getResource("input_format_catalog.xml");
 	}
 
 }

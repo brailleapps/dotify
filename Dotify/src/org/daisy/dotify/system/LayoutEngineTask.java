@@ -18,6 +18,7 @@ import org.daisy.dotify.formatter.VolumeSplitterFactory;
 import org.daisy.dotify.formatter.WriterHandler;
 import org.daisy.dotify.formatter.core.ObflParser;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
+import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
 
@@ -74,6 +75,14 @@ public class LayoutEngineTask extends InternalTask  {
 				spf.setSchema(schema);
 			}
 			SAXParser sp = spf.newSAXParser();*/
+			
+			logger.info("Validating input...");
+			
+			try {
+				ValidatorTask.validate(input, SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_XML_SCHEMA));
+			} catch (ValidatorException e) {
+				throw new InternalTaskException("Input validation failed.", e);
+			}
 
 			logger.info("Parsing input...");
 

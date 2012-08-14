@@ -18,7 +18,7 @@ public class ConfigUrlLocator {
 	public ConfigUrlLocator() {
 		logger = Logger.getLogger(this.getClass().getCanonicalName());
 		try {
-	        URL tablesURL = new DefaultConfigUrlResourceLocator().getCatalogResourceURL();
+	        URL tablesURL = new DefaultConfigUrlResourceLocator().getConfigurationCatalogResourceURL();
 	        if(tablesURL!=null){
 	        	tables.loadFromXML(tablesURL.openStream());
 	        } else {
@@ -31,6 +31,10 @@ public class ConfigUrlLocator {
 	
 	public Set<Object> getKeys() {
 		return tables.keySet();
+	}
+	
+	public String getSubpath(String identifier) {
+		return tables.getProperty(identifier);
 	}
 	
 	public URL getResourceURL(String identifier) throws TaskSystemFactoryException {
