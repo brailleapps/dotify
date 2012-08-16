@@ -2,8 +2,10 @@ package org.daisy.dotify.formatter;
 
 import java.io.Closeable;
 
+import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
+import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
@@ -23,7 +25,6 @@ import org.daisy.dotify.text.StringFilter;
  * @author Joel Håkansson, TPB
  */
 public interface Formatter extends Closeable {
-	
 	public FilterFactory getFilterFactory();
 	
 	public void setFilterFactory(FilterFactory filterFactory);
@@ -33,6 +34,8 @@ public interface Formatter extends Closeable {
 	public FilterLocale getFilterLocale();
 	
 	public void setLocale(FilterLocale locale);
+	
+	public void setCrossReferences(CrossReferences refs);
 	
 	/**
 	 * Opens the Formatter for writing.
@@ -113,6 +116,8 @@ public interface Formatter extends Closeable {
 	 * @param master the LayoutMaster
 	 */
 	public void addLayoutMaster(String name, LayoutMaster master);
+	
+	public void insertReference(String identifier, NumeralStyle numeralStyle);
 	
 	public BlockStruct getFlowStruct();
 }

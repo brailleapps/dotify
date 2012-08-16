@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.dom;
 
+import org.daisy.dotify.formatter.dom.Segment.SegmentType;
 import org.daisy.dotify.formatter.utils.Position;
 
 
@@ -12,7 +13,7 @@ import org.daisy.dotify.formatter.utils.Position;
  * 
  * @author Joel Håkansson, TPB
  */
-public class Leader implements EventContents {
+public class Leader implements EventContents, Segment {
 	/**
 	 * Alignment values for leaders
 	 */
@@ -133,6 +134,10 @@ public class Leader implements EventContents {
 
 	public ContentType getContentType() {
 		return ContentType.LEADER;
+	}
+	
+	public SegmentType getSegmentType() {
+		return SegmentType.Leader;
 	}
 
 	public boolean canContainEventObjects() {

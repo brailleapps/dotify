@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter;
 
 import java.io.Closeable;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Marker;
@@ -62,7 +62,7 @@ public interface Paginator extends Closeable {
 	 * Inserts markers that cannot be assigned to a row at the current position
 	 * @param m ArrayList of Markers to insert at the current position
 	 */
-	public void insertMarkers(ArrayList<Marker> m);
+	public void insertMarkers(List<Marker> m);
 	
 	/**
 	 * Inserts an id that cannot be assigned to a row at the current position

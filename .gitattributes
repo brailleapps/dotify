@@ -112,6 +112,7 @@ Dotify/src/org/daisy/dotify/formatter/core/TextContents.java -text
 Dotify/src/org/daisy/dotify/formatter/core/TocEventImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/core/TocSequenceEventImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/core/VolumeTemplateImpl.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/AnchorSegment.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Block.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/BlockContents.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/BlockEvent.java -text
@@ -125,17 +126,21 @@ Dotify/src/org/daisy/dotify/formatter/dom/FormattingTypes.java -text svneol=unse
 Dotify/src/org/daisy/dotify/formatter/dom/LayoutMaster.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Leader.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Marker.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/NewLineSegment.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Page.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/PageInfo.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/dom/PageSequence.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/PageStruct.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/PageTemplate.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Row.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/RowDataManager.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/SectionProperties.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/dom/Segment.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Sequence.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/SequenceEvent.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/SequenceProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/SpanProperties.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/TextSegment.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/TocEvent.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/TocEvents.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/TocSequenceEvent.java -text
@@ -159,6 +164,8 @@ Dotify/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java -text svneol=un
 Dotify/src/org/daisy/dotify/formatter/impl/PageStructCopy.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/RowDataManagerImpl.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/package.html -text svneol=unset#text/plain

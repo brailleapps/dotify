@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
@@ -75,7 +75,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 		((PageSequenceImpl)currentSequence()).newRow(row, id);
 	}
 
-	public void insertMarkers(ArrayList<Marker> m) {
+	public void insertMarkers(List<Marker> m) {
 		state.assertOpen();
 		((PageImpl)((PageSequenceImpl)currentSequence()).currentPage()).addMarkers(m);
 	}

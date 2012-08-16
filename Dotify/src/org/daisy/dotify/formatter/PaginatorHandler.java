@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.formatter.dom.RowDataManager;
 
 
 /**
@@ -63,12 +64,14 @@ public class PaginatorHandler {
 				for (int i=0; i<g.getSpaceBefore();i++) {
 					paginator.newRow(new Row(""));
 				}
-				paginator.insertMarkers(g.getGroupMarkers());
+				RowDataManager rdm = g.getRowDataManager();
+				paginator.insertMarkers(rdm.getGroupMarkers());
 				boolean first = true;
-				if (g.getRowCount()==0 && !"".equals(g.getIdentifier())) {
+				
+				if (rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
 					paginator.insertIdentifier(g.getIdentifier());
 				}
-				for (Row row : g) {
+				for (Row row : rdm) {
 					if (first) {
 						first = false;
 						if (!"".equals(g.getIdentifier())) {
@@ -93,7 +96,7 @@ public class PaginatorHandler {
 	}
 	
 	private static int getKeepHeight(BlockSequence seq, int gi) {
-		int keepHeight = seq.getBlock(gi).getSpaceBefore()+seq.getBlock(gi).getRowCount();
+		int keepHeight = seq.getBlock(gi).getSpaceBefore()+seq.getBlock(gi).getRowDataManager().getRowCount();
 		if (seq.getBlock(gi).getKeepWithNext()>0 && gi+1<seq.getBlockCount()) {
 			keepHeight += seq.getBlock(gi).getSpaceAfter()+seq.getBlock(gi+1).getSpaceBefore()+seq.getBlock(gi).getKeepWithNext();
 			switch (seq.getBlock(gi+1).getKeepType()) {

@@ -13,11 +13,11 @@ public interface SystemProperties {
 	/**
 	 * Defines the system build
 	 */
-	public static final String SYSTEM_BUILD = "20120801";
+	public static final String SYSTEM_BUILD = "20120816";
 	/**
 	 * Defines the system release
 	 */
-	public static final String SYSTEM_RELEASE = "1.1";
+	public static final String SYSTEM_RELEASE = "2.0 (Helium)";
 	
 	public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
