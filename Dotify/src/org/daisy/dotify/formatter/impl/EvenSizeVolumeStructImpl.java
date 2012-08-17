@@ -36,6 +36,7 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		this.volumeOverhead = new Integer[0];
 		this.volSheet = new HashMap<Integer, Integer>();
 		this.volumeForContentSheetChanged = false;
+		struct.setVolumeStruct(this);
 	}
 	
 	/*
@@ -77,9 +78,9 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 	
 	public Iterator<Volume> iterator() {
 		// make a preliminary calculation based on contents only
-		final int contents = PageTools.countSheets(struct.getPageStruct().getContents()); 
+		final int contents = PageTools.countSheets(struct.getContentsPageStruct().getContents()); 
 		ArrayList<Page> pages = new ArrayList<Page>();
-		for (PageSequence seq : struct.getPageStruct().getContents()) {
+		for (PageSequence seq : struct.getContentsPageStruct().getContents()) {
 			for (Page p : seq) {
 				pages.add(p);
 			}
@@ -104,8 +105,8 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 			ret = new ArrayList<Volume>();
 			int pageIndex = 0;
 			for (int i=1;i<=getVolumeCount();i++) {
-				Iterable<PageSequence> pre = struct.getPreVolumeContents(i, this);
-				Iterable<PageSequence> post = struct.getPostVolumeContents(i, this);
+				Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
+				Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
 				int preCount = PageTools.countSheets(pre);
 				int postCount = PageTools.countSheets(post);
 				if ((i-1)<volumeOverhead.length) {
@@ -115,8 +116,8 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 				}
 			}
 			for (int i=1;i<=getVolumeCount();i++) {
-				Iterable<PageSequence> pre = struct.getPreVolumeContents(i, this);
-				Iterable<PageSequence> post = struct.getPostVolumeContents(i, this);
+				Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
+				Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
 				int preCount = PageTools.countSheets(pre);
 				int postCount = PageTools.countSheets(post);
 				totalPreCount += preCount;
@@ -142,13 +143,14 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 				}
 				ret.add(new VolumeImpl(pre, body, post));
 			}
-			if (pageIndex==pages.size() && ok2 && (!volumeForContentSheetChanged)) {
+			if (!struct.isDirty() && pageIndex==pages.size() && ok2 && (!volumeForContentSheetChanged)) {
 				//everything fits
 				ok = true;
 			} else if (j>9) {
 				throw new RuntimeException("Error in code.");
 			} else {
 				j++;
+				struct.resetDirty();
 				logger.fine("Things didn't add up, running another iteration (" + j + ")");
 			}
 		}

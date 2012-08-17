@@ -8,5 +8,7 @@ public interface CrossReferences {
 	 * @return returns the page number, one-based
 	 */
 	public Page getPage(String refid);
+	
+	public Integer getVolumeNumber(String refid);
 
 }

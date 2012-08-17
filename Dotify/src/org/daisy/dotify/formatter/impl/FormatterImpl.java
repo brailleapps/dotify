@@ -70,11 +70,7 @@ public class FormatterImpl implements Formatter {
 		this.locale = locale;
 		filter = null;
 	}
-	
-	public void setCrossReferences(CrossReferences refs) {
-		this.refs = refs;
-	}
-	
+
 	public void open() {
 		state.assertUnopened();
 		//bh = new BlockHandler(getDefaultFilter());
@@ -118,9 +114,11 @@ public class FormatterImpl implements Formatter {
 		state.assertOpen();
 		leftMargin += p.getLeftMargin();
 		rightMargin += p.getRightMargin();
-		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(),  blockIndent, blockIndentParent.peek(), leftMargin, rightMargin, refs);
 		if (context.size()>0) {
 			addToBlockIndent(context.peek().getBlockIndent());
+		}
+		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(),  blockIndent, blockIndentParent.peek(), leftMargin, rightMargin);
+		if (context.size()>0) {
 			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
 				switch (context.peek().getListType()) {
@@ -151,7 +149,7 @@ public class FormatterImpl implements Formatter {
 		leftMargin -= p.getLeftMargin();
 		rightMargin -= p.getRightMargin();
 		if (context.size()>0) {
-			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(), blockIndent, blockIndentParent.peek(), leftMargin, rightMargin, refs);
+			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(), blockIndent, blockIndentParent.peek(), leftMargin, rightMargin);
 			c.setKeepType(context.peek().getKeepType());
 			c.setKeepWithNext(context.peek().getKeepWithNext());
 			subtractFromBlockIndent(context.peek().getBlockIndent());

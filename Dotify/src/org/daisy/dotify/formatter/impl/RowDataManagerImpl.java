@@ -7,6 +7,7 @@ import java.util.Stack;
 import org.daisy.dotify.formatter.core.PageNumberReference;
 import org.daisy.dotify.formatter.core.RomanNumeral;
 import org.daisy.dotify.formatter.dom.AnchorSegment;
+import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.NewLineSegment;
@@ -18,15 +19,16 @@ import org.daisy.dotify.formatter.dom.TextSegment;
 import org.daisy.dotify.formatter.utils.BlockHandler;
 
 public class RowDataManagerImpl implements RowDataManager {
-	private boolean isDirty;
+	private boolean isVolatile;
 	private final ArrayList<Marker> groupMarkers;
 	private final ArrayList<String> groupAnchors;
 	private final Stack<Row> rows;
+	private final CrossReferences refs;
 	
-	public RowDataManagerImpl(Stack<Segment> segments, RowDataProperties rdp) {
+	public RowDataManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
 		this.groupMarkers = new ArrayList<Marker>();
 		this.groupAnchors = new ArrayList<String>();
-		this.isDirty = false;
+		this.refs = refs;
 		this.rows = calculateRows(segments, rdp);
 	}
 	
@@ -43,7 +45,7 @@ public class RowDataManagerImpl implements RowDataManager {
 	}
 	
 	private Stack<Row> calculateRows(Stack<Segment> segments, RowDataProperties rdp) {
-		isDirty = false;
+		isVolatile = false;
 		Stack<Row> ret = new Stack<Row>();
 		
 		BlockHandler bh = new BlockHandler.Builder(rdp.getFilter(), rdp.getMaster()).build();
@@ -56,6 +58,7 @@ public class RowDataManagerImpl implements RowDataManager {
 				{
 					Row r = new Row("");
 					r.setLeftMargin(((NewLineSegment)s).getLeftIndent());
+					ret.add(r);
 					break;
 				}
 				case Text:
@@ -78,11 +81,11 @@ public class RowDataManagerImpl implements RowDataManager {
 				{
 					PageNumberReference rs = (PageNumberReference)s;
 					Page page = null;
-					if (rdp.getCrossReferences()!=null) {
-						page = rdp.getCrossReferences().getPage(rs.getRefId());
+					if (refs!=null) {
+						page = refs.getPage(rs.getRefId());
 					}
 					if (page==null) {
-						isDirty = true;
+						isVolatile = true;
 						layout("??", bh, ret, rdp.getLeftMargin(), rdp.getBlockIndent(), rdp.getBlockIndentParent());
 					} else {
 						int p = page.getPageIndex()+1;
@@ -141,9 +144,9 @@ public class RowDataManagerImpl implements RowDataManager {
 	public Iterator<Row> iterator() {
 		return rows.iterator();
 	}
-	
-	public boolean isDirty() {
-		return isDirty;
+
+	public boolean isVolatile() {
+		return isVolatile;
 	}
 
 }

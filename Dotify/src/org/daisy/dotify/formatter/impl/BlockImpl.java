@@ -32,7 +32,7 @@ class BlockImpl implements Block {
 	private RowDataManager rdm;
 
 	
-	BlockImpl(String blockId, StringFilter filter, LayoutMaster master, int blockIndent, int blockIndentParent, int leftMargin, int rightMargin, CrossReferences refs) {
+	BlockImpl(String blockId, StringFilter filter, LayoutMaster master, int blockIndent, int blockIndentParent, int leftMargin, int rightMargin) {
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
@@ -41,7 +41,7 @@ class BlockImpl implements Block {
 		this.id = "";
 		this.blockId = blockId;
 		this.segments = new Stack<Segment>();
-		this.rdp = new RowDataProperties(filter, master, blockIndent, blockIndentParent, leftMargin, rightMargin, refs);
+		this.rdp = new RowDataProperties(filter, master, blockIndent, blockIndentParent, leftMargin, rightMargin);
 		this.rdm = null;
 	}
 
@@ -125,9 +125,9 @@ class BlockImpl implements Block {
 		return blockId;
 	}
 	
-	public RowDataManager getRowDataManager() {
-		if (rdm==null || rdm.isDirty()) {
-			rdm = new RowDataManagerImpl(segments, rdp);
+	public RowDataManager getRowDataManager(CrossReferences refs) {
+		if (rdm==null || rdm.isVolatile()) {
+			rdm = new RowDataManagerImpl(segments, rdp, refs);
 		}
 		return rdm;
 	}

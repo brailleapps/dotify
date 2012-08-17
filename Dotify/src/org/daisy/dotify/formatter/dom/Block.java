@@ -20,7 +20,7 @@ public interface Block {
 	public String getIdentifier();
 	public Keep getKeepType();
 	public BreakBefore getBreakBeforeType();
-	public RowDataManager getRowDataManager();
+	public RowDataManager getRowDataManager(CrossReferences refs);
 	public String getBlockIdentifier();
 	
 }

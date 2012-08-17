@@ -35,8 +35,6 @@ public interface Formatter extends Closeable {
 	
 	public void setLocale(FilterLocale locale);
 	
-	public void setCrossReferences(CrossReferences refs);
-	
 	/**
 	 * Opens the Formatter for writing.
 	 */

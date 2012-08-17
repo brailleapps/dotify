@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockSequence;
+import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.RowDataManager;
 
@@ -20,7 +21,7 @@ public class PaginatorHandler {
 	 * @param paginator the paginator to use
 	 * @throws IOException if IO fails
 	 */
-	public static void paginate(Iterable<BlockSequence> fs, Paginator paginator) throws IOException {
+	public static void paginate(Iterable<BlockSequence> fs, Paginator paginator, CrossReferences refs) throws IOException {
 		for (BlockSequence seq : fs) {
 			if (seq.getInitialPageNumber()==null) {
 				paginator.newSequence(seq.getLayoutMaster());
@@ -45,7 +46,7 @@ public class PaginatorHandler {
 				//FIXME: se över recursiv hämtning
 				switch (g.getKeepType()) {
 					case ALL:
-						int keepHeight = getKeepHeight(seq, gi);
+						int keepHeight = getKeepHeight(seq, gi, refs);
 						if (paginator.getPageInfo().countRows()>0 && keepHeight>paginator.getPageInfo().getFlowHeight()-paginator.getPageInfo().countRows() && keepHeight<=paginator.getPageInfo().getFlowHeight()) {
 							paginator.newPage();
 						}
@@ -64,7 +65,7 @@ public class PaginatorHandler {
 				for (int i=0; i<g.getSpaceBefore();i++) {
 					paginator.newRow(new Row(""));
 				}
-				RowDataManager rdm = g.getRowDataManager();
+				RowDataManager rdm = g.getRowDataManager(refs);
 				paginator.insertMarkers(rdm.getGroupMarkers());
 				boolean first = true;
 				
@@ -95,13 +96,13 @@ public class PaginatorHandler {
 		}		
 	}
 	
-	private static int getKeepHeight(BlockSequence seq, int gi) {
-		int keepHeight = seq.getBlock(gi).getSpaceBefore()+seq.getBlock(gi).getRowDataManager().getRowCount();
+	private static int getKeepHeight(BlockSequence seq, int gi, CrossReferences refs) {
+		int keepHeight = seq.getBlock(gi).getSpaceBefore()+seq.getBlock(gi).getRowDataManager(refs).getRowCount();
 		if (seq.getBlock(gi).getKeepWithNext()>0 && gi+1<seq.getBlockCount()) {
 			keepHeight += seq.getBlock(gi).getSpaceAfter()+seq.getBlock(gi+1).getSpaceBefore()+seq.getBlock(gi).getKeepWithNext();
 			switch (seq.getBlock(gi+1).getKeepType()) {
 				case ALL:
-					keepHeight += getKeepHeight(seq, gi+1);
+					keepHeight += getKeepHeight(seq, gi+1, refs);
 					break;
 				case AUTO: break;
 				default:;

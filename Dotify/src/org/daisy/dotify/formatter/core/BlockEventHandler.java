@@ -7,7 +7,6 @@ import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockStruct;
-import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.EventContents;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
@@ -23,14 +22,9 @@ import org.daisy.dotify.formatter.utils.Expression;
  */
 public class BlockEventHandler {
 	private final Formatter formatter;
-	
-	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters) {
-		this(factory, masters, null);
-	}
 
-	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters, CrossReferences refs) {
+	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters) {
 		this.formatter = factory.newFormatter();
-		this.formatter.setCrossReferences(refs);
 		this.formatter.open();
 		for (String name : masters.keySet()) {
 			this.formatter.addLayoutMaster(name, masters.get(name));

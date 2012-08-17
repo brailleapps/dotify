@@ -10,11 +10,10 @@ public class RowDataProperties {
 	private final StringFilter filter;
 	private final LayoutMaster master;
 	private final int leftMargin, rightMargin;
-	private final CrossReferences crossReferences;
 	private LIDao listProps;
 	
 	
-	public RowDataProperties(StringFilter filter, LayoutMaster master, int blockIndent, int blockIndentParent, int leftMargin, int rightMargin, CrossReferences refs) {
+	public RowDataProperties(StringFilter filter, LayoutMaster master, int blockIndent, int blockIndentParent, int leftMargin, int rightMargin) {
 		this.blockIndent = blockIndent;
 		this.blockIndentParent = blockIndentParent;
 		this.filter = filter;
@@ -22,7 +21,6 @@ public class RowDataProperties {
 		this.leftMargin = leftMargin;
 		this.rightMargin = rightMargin;
 		this.listProps = null;
-		this.crossReferences = refs;
 	}
 
 	public int getBlockIndent() {
@@ -63,10 +61,6 @@ public class RowDataProperties {
 	
 	public FormattingTypes.ListStyle getListStyle() {
 		return listProps.listType;
-	}
-	
-	public CrossReferences getCrossReferences() {
-		return crossReferences;
 	}
 
 	private static class LIDao {

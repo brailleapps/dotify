@@ -19,17 +19,12 @@ import javax.xml.stream.events.XMLEvent;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.Paginator;
-import org.daisy.dotify.formatter.PaginatorFactory;
-import org.daisy.dotify.formatter.PaginatorHandler;
-import org.daisy.dotify.formatter.VolumeSplitterFactory;
 import org.daisy.dotify.formatter.core.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.formatter.core.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
-import org.daisy.dotify.formatter.dom.BookStruct;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
@@ -38,7 +33,6 @@ import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
-import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.formatter.utils.Position;
@@ -90,8 +84,8 @@ public class ObflParser {
 	private Stack<VolumeTemplate> volumeTemplates;
 
 	private FormatterFactory formatterFactory;
-	private PaginatorFactory paginatorFactory;
-	private VolumeSplitterFactory splitterFactory;
+	//private PaginatorFactory paginatorFactory;
+	//private VolumeSplitterFactory splitterFactory;
 	private Formatter formatter;
 	
 	public ObflParser() {
@@ -100,23 +94,24 @@ public class ObflParser {
 	
 	public ObflParser(FormatterFactory formatterFactory) {
 		this.formatterFactory = formatterFactory;
-		this.paginatorFactory = PaginatorFactory.newInstance();
-		this.splitterFactory = VolumeSplitterFactory.newInstance();
+		//this.paginatorFactory = PaginatorFactory.newInstance();
+		//this.splitterFactory = VolumeSplitterFactory.newInstance();
 	}
 	
 	public void setFormatterFactory(FormatterFactory formatterFactory) {
 		this.formatterFactory = formatterFactory;
 	}
 	
+	/*
 	public void setPaginatorFactory(PaginatorFactory paginatorFactory) {
 		this.paginatorFactory = paginatorFactory;
 	}
 	
 	public void setVolumeSplitterFactory(VolumeSplitterFactory splitterFactory) {
 		this.splitterFactory = splitterFactory;
-	}
+	}*/
 	
-	public VolumeStruct parse(InputStream stream) throws XMLStreamException, FormatterException {
+	public void parse(InputStream stream) throws XMLStreamException, FormatterException {
         XMLInputFactory inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
         inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
@@ -144,20 +139,7 @@ public class ObflParser {
 		try {
 			input.close();
 			formatter.close();
-			Paginator paginator = paginatorFactory.newPaginator();
-			paginator.open(formatterFactory);
-
-			PaginatorHandler.paginate(getBlockStruct().getBlockSequenceIterable(), paginator);
-			paginator.close();
-
-			BookStruct bookStruct = new BookStructImpl(
-					paginator.getPageStruct(),
-					getMasters(),
-					getVolumeTemplates(),
-					getTocs(),
-					formatterFactory
-				);
-			return splitterFactory.newSplitter().split(bookStruct);
+			
 		} catch (IOException e) {
 			throw new FormatterException(e);
 		}
