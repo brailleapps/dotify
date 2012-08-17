@@ -289,16 +289,18 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 	}
 
 	public Page getPage(String refid) {
-		Page ret = ps.getPage(refid);
-		if (ret!=null) {
+		Page ret;
+		if (ps!=null && (ret=ps.getPage(refid))!=null) {
 			return verifyPageLocation(refid, ret);
 		}
-		for (int i=1; i<=volumeData.getVolumeCount(); i++) {
-			if (volPreStructMap.get(i)!=null && (ret=volPreStructMap.get(i).getPage(refid))!=null) {
-				return verifyPageLocation(refid, ret);
-			}
-			if (volPostStructMap.get(i)!=null &&  (ret=volPostStructMap.get(i).getPage(refid))!=null) {
-				return verifyPageLocation(refid, ret);
+		if (volumeData!=null) {
+			for (int i=1; i<=volumeData.getVolumeCount(); i++) {
+				if (volPreStructMap.get(i)!=null && (ret=volPreStructMap.get(i).getPage(refid))!=null) {
+					return verifyPageLocation(refid, ret);
+				}
+				if (volPostStructMap.get(i)!=null &&  (ret=volPostStructMap.get(i).getPage(refid))!=null) {
+					return verifyPageLocation(refid, ret);
+				}
 			}
 		}
 		isDirty = true;

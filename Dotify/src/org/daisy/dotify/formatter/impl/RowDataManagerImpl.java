@@ -79,13 +79,13 @@ public class RowDataManagerImpl implements RowDataManager {
 				}
 				case Reference:
 				{
+					isVolatile = true;
 					PageNumberReference rs = (PageNumberReference)s;
 					Page page = null;
 					if (refs!=null) {
 						page = refs.getPage(rs.getRefId());
 					}
 					if (page==null) {
-						isVolatile = true;
 						layout("??", bh, ret, rdp.getLeftMargin(), rdp.getBlockIndent(), rdp.getBlockIndentParent());
 					} else {
 						int p = page.getPageIndex()+1;

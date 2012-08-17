@@ -77,14 +77,6 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 	}
 	
 	public Iterator<Volume> iterator() {
-		// make a preliminary calculation based on contents only
-		final int contents = PageTools.countSheets(struct.getContentsPageStruct().getContents()); 
-		ArrayList<Page> pages = new ArrayList<Page>();
-		for (PageSequence seq : struct.getContentsPageStruct().getContents()) {
-			for (Page p : seq) {
-				pages.add(p);
-			}
-		}
 		int j = 1;
 		boolean ok = false;
 		int totalPreCount = 0;
@@ -92,6 +84,14 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		int prvVolCount = 0;
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
+			// make a preliminary calculation based on contents only
+			final int contents = PageTools.countSheets(struct.getContentsPageStruct().getContents()); 
+			ArrayList<Page> pages = new ArrayList<Page>();
+			for (PageSequence seq : struct.getContentsPageStruct().getContents()) {
+				for (Page p : seq) {
+					pages.add(p);
+				}
+			}
 			volumeForContentSheetChanged = false;
 			sdc = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax);
 			if (sdc.getVolumeCount()!=prvVolCount) {
@@ -151,7 +151,7 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 			} else {
 				j++;
 				struct.resetDirty();
-				logger.fine("Things didn't add up, running another iteration (" + j + ")");
+				logger.info("Things didn't add up, running another iteration (" + j + ")");
 			}
 		}
 		return ret.iterator();
