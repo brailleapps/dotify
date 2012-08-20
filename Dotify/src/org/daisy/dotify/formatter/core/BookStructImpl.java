@@ -11,7 +11,6 @@ import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
-import org.daisy.dotify.formatter.PaginatorHandler;
 import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockSequence;
@@ -79,7 +78,7 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 		paginator.open(formatterFactory);
 
 		try {
-			PaginatorHandler.paginate(bs.getBlockSequenceIterable(), paginator, this);
+			paginator.paginate(bs.getBlockSequenceIterable(), this);
 			paginator.close();
 		} catch (IOException e) {
 			throw new FormatterException(e);
@@ -233,7 +232,7 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 			Paginator paginator2 = paginatorFactory.newPaginator();
 			paginator2.open(formatterFactory);
 			CompoundIterable<BlockSequence> ci = new CompoundIterable<BlockSequence>(ib);
-			PaginatorHandler.paginate(ci, paginator2, this);
+			paginator2.paginate(ci, this);
 			paginator2.close();
 			PageStruct ret = paginator2.getPageStruct();
 			if (pre) {

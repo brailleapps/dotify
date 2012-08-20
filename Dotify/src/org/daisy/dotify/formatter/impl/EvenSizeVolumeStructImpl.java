@@ -85,9 +85,10 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
-			final int contents = PageTools.countSheets(struct.getContentsPageStruct().getContents()); 
+			Iterable<PageSequence> ps = struct.getContentsPageStruct().getContents();
+			final int contents = PageTools.countSheets(ps); 
 			ArrayList<Page> pages = new ArrayList<Page>();
-			for (PageSequence seq : struct.getContentsPageStruct().getContents()) {
+			for (PageSequence seq :ps) {
 				for (Page p : seq) {
 					pages.add(p);
 				}
@@ -104,11 +105,17 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 			totalPostCount = 0;
 			ret = new ArrayList<Volume>();
 			int pageIndex = 0;
+			ArrayList<Iterable<PageSequence>> preV = new ArrayList<Iterable<PageSequence>>();
+			ArrayList<Iterable<PageSequence>> postV = new ArrayList<Iterable<PageSequence>>();
 			for (int i=1;i<=getVolumeCount();i++) {
-				Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
-				Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
-				int preCount = PageTools.countSheets(pre);
-				int postCount = PageTools.countSheets(post);
+				preV.add(struct.getPreVolumeContents(i).getContents());
+				postV.add(struct.getPostVolumeContents(i).getContents());
+			}
+			for (int i=1;i<=getVolumeCount();i++) {
+				//Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
+				//Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
+				int preCount = PageTools.countSheets(preV.get(i-1));
+				int postCount = PageTools.countSheets(postV.get(i-1));
 				if ((i-1)<volumeOverhead.length) {
 					volumeOverhead[i-1] = preCount + postCount;
 				} else {
@@ -116,10 +123,10 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 				}
 			}
 			for (int i=1;i<=getVolumeCount();i++) {
-				Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
-				Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
-				int preCount = PageTools.countSheets(pre);
-				int postCount = PageTools.countSheets(post);
+				//Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
+				//Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
+				int preCount = PageTools.countSheets(preV.get(i-1));
+				int postCount = PageTools.countSheets(postV.get(i-1));
 				totalPreCount += preCount;
 				totalPostCount += postCount;
 				int contentSheets = sheetsInVolume(i)-preCount-postCount;
@@ -141,7 +148,7 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 					ok2 = false;
 					//throw new RuntimeException("Error in code. Expected " + sheetsInVolume(i) + ", actual " + sheetsInVolume);
 				}
-				ret.add(new VolumeImpl(pre, body, post));
+				ret.add(new VolumeImpl(preV.get(i-1), body, postV.get(i-1)));
 			}
 			if (!struct.isDirty() && pageIndex==pages.size() && ok2 && (!volumeForContentSheetChanged)) {
 				//everything fits

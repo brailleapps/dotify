@@ -11,6 +11,7 @@ import org.daisy.dotify.formatter.dom.EventContents;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
+import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.TocEvent;
 import org.daisy.dotify.formatter.utils.Expression;
@@ -62,6 +63,11 @@ public class BlockEventHandler {
 					Evaluate e = ((Evaluate)bc);
 					formatter.addChars((new Expression().evaluate(e.getExpression(), e.getVariables())).toString());
 					break; }
+				case MARKER: {
+					Marker m = ((Marker)bc);
+					formatter.insertMarker(m);
+					break;
+				}
 				default:
 					throw new RuntimeException("Unknown contents: " + bc.getContentType());
 			}

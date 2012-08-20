@@ -6,7 +6,6 @@ import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.text.StringFilter;
 
 
 class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
@@ -22,8 +21,8 @@ class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 		return p;
 	}*/
 
-	public BlockImpl newBlock(String blockId, StringFilter filter, LayoutMaster master, int blockIndent, int blockIndentParent, int leftMargin, int rightMargin) {
-		return (BlockImpl)this.push((Block)new BlockImpl(blockId, filter, master, blockIndent, blockIndentParent, leftMargin, rightMargin));
+	public BlockImpl newBlock(String blockId, RowDataProperties rdp) {
+		return (BlockImpl)this.push((Block)new BlockImpl(blockId, rdp));
 	}
 	
 	public BlockImpl getCurrentBlock() {

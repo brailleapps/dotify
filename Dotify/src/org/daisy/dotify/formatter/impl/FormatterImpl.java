@@ -127,7 +127,14 @@ public class FormatterImpl implements Formatter {
 		if (context.size()>0) {
 			addToBlockIndent(context.peek().getBlockIndent());
 		}
-		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(),  blockIndent, blockIndentParent.peek(), leftMargin, rightMargin);
+		RowDataProperties rdp = new RowDataProperties.Builder(
+				getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster()).
+					blockIndent(blockIndent).
+					blockIndentParent(blockIndentParent.peek()).
+					leftMargin(leftMargin).
+					rightMargin(rightMargin).
+					build();
+		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId, rdp);
 		if (context.size()>0) {
 			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
@@ -165,7 +172,14 @@ public class FormatterImpl implements Formatter {
 			Keep keep = context.peek().getKeepType();
 			int next = context.peek().getKeepWithNext();
 			subtractFromBlockIndent(context.peek().getBlockIndent());
-			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(), blockIndent, blockIndentParent.peek(), leftMargin, rightMargin);
+			RowDataProperties rdp = new RowDataProperties.Builder(
+					getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster()).
+						blockIndent(blockIndent).
+						blockIndentParent(blockIndentParent.peek()).
+						leftMargin(leftMargin).
+						rightMargin(rightMargin).
+						build();
+			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, rdp);
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);
 		}

@@ -84,7 +84,6 @@ Dotify/src/org/daisy/dotify/formatter/PagedMediaWriter.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/formatter/PagedMediaWriterException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Paginator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/PaginatorFactory.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/PaginatorHandler.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/VolumeSplitter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/VolumeSplitterFactory.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/WriterHandler.java -text svneol=unset#text/plain

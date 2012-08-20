@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.core;
 import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.EventContents;
 import org.daisy.dotify.formatter.dom.Segment;
-import org.daisy.dotify.formatter.dom.Segment.SegmentType;
 
 
 public class PageNumberReference implements EventContents, Segment {

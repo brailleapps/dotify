@@ -32,7 +32,7 @@ class BlockImpl implements Block {
 	private RowDataManager rdm;
 
 	
-	BlockImpl(String blockId, StringFilter filter, LayoutMaster master, int blockIndent, int blockIndentParent, int leftMargin, int rightMargin) {
+	BlockImpl(String blockId, RowDataProperties rdp) {
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
@@ -41,7 +41,7 @@ class BlockImpl implements Block {
 		this.id = "";
 		this.blockId = blockId;
 		this.segments = new Stack<Segment>();
-		this.rdp = new RowDataProperties(filter, master, blockIndent, blockIndentParent, leftMargin, rightMargin);
+		this.rdp = rdp;
 		this.rdm = null;
 	}
 
