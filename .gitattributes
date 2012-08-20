@@ -254,8 +254,9 @@ Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/SwedishVolumeCoverPage.java -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/VolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/VolumeCoverPageFilter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/VolumeCoverPageTask.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/sv_SE/validation/basic.sch -text
+Dotify/src/org/daisy/dotify/setups/sv_SE/validation/dtbook.sch -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/doc-files/dtb2obfl.xml -text
+Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/doc-files/dtb2obfl_braille.xml -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/dtbook2flow.xsl -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/dtbook2flow_sv_SE.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/dtbook2flow_sv_SE_braille.xsl -text svneol=unset#text/plain
