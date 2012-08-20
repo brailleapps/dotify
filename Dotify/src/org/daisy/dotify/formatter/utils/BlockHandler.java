@@ -32,7 +32,7 @@ public class BlockHandler {
 	private ListItem item;
 	private final LayoutMaster master;
 	
-	public class ListItem {
+	public static class ListItem {
 		private String label;
 		private FormattingTypes.ListStyle type;
 		

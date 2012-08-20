@@ -9,11 +9,13 @@ import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
+import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.SpanProperties;
+import org.daisy.dotify.formatter.utils.BlockHandler.ListItem;
 import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;
@@ -40,6 +42,7 @@ public class FormatterImpl implements Formatter {
 	
 	private int blockIndent;
 	private Stack<Integer> blockIndentParent;
+	private ListItem listItem;
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement SpanProperites
@@ -57,6 +60,7 @@ public class FormatterImpl implements Formatter {
 		this.state = new StateObject();
 		this.filter = null;
 		this.refs = null;
+		this.listItem = null;
 	}
 
 
@@ -96,6 +100,12 @@ public class FormatterImpl implements Formatter {
 		assert context.size()!=0;
 		if (context.size()==0) return;
 		BlockImpl bl = flowStruct.getCurrentSequence().getCurrentBlock();
+		if (listItem!=null) {
+			//append to this block
+			bl.setListItem(listItem.getLabel(), listItem.getType());
+			//list item has been used now, discard
+			listItem = null;
+		}
 		bl.addChars(c, context.peek());		
 	}
 	// END Using BlockHandler
@@ -130,7 +140,7 @@ public class FormatterImpl implements Formatter {
 				case PL: default:
 					listLabel = "";
 				}
-				c.setListItem(listLabel, context.peek().getListType());
+				listItem = new ListItem(listLabel, context.peek().getListType());
 			}
 		}
 		c.addSpaceBefore(p.getTopMargin());
@@ -144,15 +154,20 @@ public class FormatterImpl implements Formatter {
 	
 	public void endBlock() {
 		state.assertOpen();
+		if (listItem!=null) {
+			addChars("");
+		}
 		BlockProperties p = context.pop();
 		flowStruct.getCurrentSequence().getCurrentBlock().addSpaceAfter(p.getBottomMargin());
 		leftMargin -= p.getLeftMargin();
 		rightMargin -= p.getRightMargin();
 		if (context.size()>0) {
-			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(), blockIndent, blockIndentParent.peek(), leftMargin, rightMargin);
-			c.setKeepType(context.peek().getKeepType());
-			c.setKeepWithNext(context.peek().getKeepWithNext());
+			Keep keep = context.peek().getKeepType();
+			int next = context.peek().getKeepWithNext();
 			subtractFromBlockIndent(context.peek().getBlockIndent());
+			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, getDefaultFilter(), flowStruct.getCurrentSequence().getLayoutMaster(), blockIndent, blockIndentParent.peek(), leftMargin, rightMargin);
+			c.setKeepType(keep);
+			c.setKeepWithNext(next);
 		}
 		firstRow = true;
 	}
