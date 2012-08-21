@@ -166,8 +166,15 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 											try {
 												ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 												fsm.removeRange(data.getTocIdList().iterator().next(), start);
-												//FIXME: does not keep toc-end events
-												r.add(fsm.newSequenceFromHead(stop));
+												fsm.removeTail(stop);
+												BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
+												SequenceEventImpl evs2 = new SequenceEventImpl(toc.getSequenceProperties());
+												for (BlockEvent e : events.getTocEndEvents()) {
+													evs2.add(e);
+												}
+												beh2.formatSequence(evs2);
+												fsm.appendGroup(beh2.close().getBlockSequenceIterable().iterator().next());
+												r.add(fsm.newSequence());
 												ib.add(r);
 											} catch (Exception e) {
 												logger.log(Level.SEVERE, "TOC failed for: volume " + volumeNumber + " of " + volumeData.getVolumeCount(), e);

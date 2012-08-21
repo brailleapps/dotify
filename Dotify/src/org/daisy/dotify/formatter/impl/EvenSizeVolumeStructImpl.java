@@ -154,7 +154,7 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 				//everything fits
 				ok = true;
 			} else if (j>9) {
-				throw new RuntimeException("Error in code.");
+				throw new RuntimeException("Failed to complete volume division.");
 			} else {
 				j++;
 				struct.resetDirty();
