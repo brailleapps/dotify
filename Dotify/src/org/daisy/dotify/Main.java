@@ -248,17 +248,17 @@ public class Main extends AbstractUI {
 			rp = RunParameters.load(idts.getConfigurationURL(setup), map);
 			
 			tasks.addAll(idts.compile(rp));
-			{
-				// Whitespace normalizer TransformerFactoryConstants.SAXON8
-				HashMap<String, Object> h = new HashMap<String, Object>();
-				h.putAll(map);
-				tasks.add(new XsltTask("OBFL whitespace normalizer",
-										SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
-										null,
-										h));
-			}
 			//if OBFL output, bypass task system 
 			if (!SystemKeys.OBFL_FORMAT.equals(outputformat)) {
+				{
+					// Whitespace normalizer TransformerFactoryConstants.SAXON8
+					HashMap<String, Object> h = new HashMap<String, Object>();
+					h.putAll(map);
+					tasks.add(new XsltTask("OBFL whitespace normalizer",
+											SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+											null,
+											h));
+				}
 				ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
 				tasks.addAll(ts.compile(rp));
 			}
