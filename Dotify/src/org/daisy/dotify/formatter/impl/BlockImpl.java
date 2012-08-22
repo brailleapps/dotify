@@ -9,14 +9,12 @@ import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.NewLineSegment;
 import org.daisy.dotify.formatter.dom.RowDataManager;
 import org.daisy.dotify.formatter.dom.Segment;
 import org.daisy.dotify.formatter.dom.TextSegment;
-import org.daisy.dotify.text.StringFilter;
 
 
 class BlockImpl implements Block {

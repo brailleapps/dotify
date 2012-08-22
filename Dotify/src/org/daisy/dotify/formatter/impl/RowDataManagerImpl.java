@@ -48,7 +48,11 @@ public class RowDataManagerImpl implements RowDataManager {
 		isVolatile = false;
 		Stack<Row> ret = new Stack<Row>();
 		
-		BlockHandler bh = new BlockHandler.Builder(rdp.getFilter(), rdp.getMaster()).build();
+		BlockHandler bh = new BlockHandler.Builder(
+				rdp.getFilter(),
+				rdp.getMaster(),
+				rdp.getMaster().getFlowWidth() - rdp.getRightMargin()).build();
+		
 		if (rdp.isList()) {
 			bh.setListItem(rdp.getListLabel(), rdp.getListStyle());
 		}
@@ -56,6 +60,8 @@ public class RowDataManagerImpl implements RowDataManager {
 			switch (s.getSegmentType()) {
 				case NewLine:
 				{
+					//flush
+					layout("", bh, ret, rdp.getLeftMargin(), rdp.getBlockIndent(), rdp.getBlockIndentParent());
 					Row r = new Row("");
 					r.setLeftMargin(((NewLineSegment)s).getLeftIndent());
 					ret.add(r);
@@ -65,7 +71,6 @@ public class RowDataManagerImpl implements RowDataManager {
 				{
 					TextSegment ts = (TextSegment)s;
 					bh.setBlockProperties(ts.getBlockProperties());
-					bh.setWidth(rdp.getMaster().getFlowWidth() - rdp.getRightMargin());
 					layout(ts.getChars(), bh, ret, rdp.getLeftMargin(), rdp.getBlockIndent(), rdp.getBlockIndentParent());
 					break;
 				}
@@ -123,7 +128,6 @@ public class RowDataManagerImpl implements RowDataManager {
 		}
 		
 		if (bh.getCurrentLeader()!=null || bh.getListItem()!=null) {
-			bh.setWidth(rdp.getMaster().getFlowWidth() - rdp.getRightMargin());
 			layout("", bh, ret, rdp.getLeftMargin(), rdp.getBlockIndent(), rdp.getBlockIndentParent());
 		}
 		return ret;

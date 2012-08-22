@@ -28,7 +28,7 @@ public class BlockHandler {
 	private Leader currentLeader;
 	private ArrayList<Row> ret;
 	private BlockProperties p;
-	private int available;
+	private final int available;
 	private ListItem item;
 	private final LayoutMaster master;
 	
@@ -53,27 +53,29 @@ public class BlockHandler {
 	public static class Builder {
 		private final StringFilter filters;
 		private final LayoutMaster master;
+		private final int available;
 		
-		public Builder(StringFilter filters, LayoutMaster master) {
+		public Builder(StringFilter filters, LayoutMaster master, int width) {
 			this.filters = filters;
 			this.master = master;
+			this.available = width;
 		}
 		
 		public BlockHandler build() {
-			return new BlockHandler(filters, master);
+			return new BlockHandler(this);
 		}
 	}
 	
-	private BlockHandler(StringFilter filters, LayoutMaster master) {
-		this.filters = filters;
+	private BlockHandler(Builder builder) {
+		this.filters = builder.filters;
 		this.currentLeader = null;
 		//this.currentListType = BlockProperties.ListType.NONE;
 		//this.currentListNumber = 0;
 		this.ret = new ArrayList<Row>();
 		this.p = new BlockProperties.Builder().build();
-		this.available = 0;
+		this.available = builder.available;
 		this.item = null;
-		this.master = master;
+		this.master = builder.master;
 	}
 	/*
 	public void setCurrentListType(BlockProperties.ListType type) {
@@ -121,10 +123,10 @@ public class BlockHandler {
 	public BlockProperties getBlockProperties() {
 		return p;
 	}
-	
+	/*
 	public void setWidth(int value) {
 		available = value;
-	}
+	}*/
 	
 	public int getWidth() {
 		return available;
