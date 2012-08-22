@@ -21,10 +21,13 @@ import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.RunParameters;
+import org.daisy.dotify.system.SystemResourceLocator;
+import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.system.TaskSystemFactoryMaker;
+import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.Progress;
 import org.daisy.util.file.FileJuggler;
@@ -245,6 +248,15 @@ public class Main extends AbstractUI {
 			rp = RunParameters.load(idts.getConfigurationURL(setup), map);
 			
 			tasks.addAll(idts.compile(rp));
+			{
+				// Whitespace normalizer TransformerFactoryConstants.SAXON8
+				HashMap<String, Object> h = new HashMap<String, Object>();
+				h.putAll(map);
+				tasks.add(new XsltTask("OBFL whitespace normalizer",
+										SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+										null,
+										h));
+			}
 			//if OBFL output, bypass task system 
 			if (!SystemKeys.OBFL_FORMAT.equals(outputformat)) {
 				ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
@@ -255,7 +267,7 @@ public class Main extends AbstractUI {
 		} catch (TaskSystemFactoryException e) {
 			throw new RuntimeException("Unable to retrieve a TaskSystem", e);
 		}
-
+		
 		sendMessage("About to run TaskSystem \"" + (ts!=null?ts.getName():"") + "\" with parameters " + rp.getProperties().toString());
 
 		// Run tasks

@@ -12,7 +12,8 @@ import org.daisy.dotify.system.ResourceLocatorException;
  */
 public class SystemResourceLocator extends AbstractResourceLocator {
 	public enum SystemResourceIdentifier {
-		OBFL_XML_SCHEMA;
+		OBFL_XML_SCHEMA,
+		OBFL_WHITESPACE_NORMALIZER_XSLT
 	}
 	private static SystemResourceLocator instance;
 	
@@ -37,7 +38,8 @@ public class SystemResourceLocator extends AbstractResourceLocator {
 	public URL getResourceByIdentifier(SystemResourceIdentifier identifier) {
 		try {
 			switch (identifier) {
-				case OBFL_XML_SCHEMA: return getResource("resource-files/flow.xsd");
+				case OBFL_XML_SCHEMA: return getResource("resource-files/obfl.xsd");
+				case OBFL_WHITESPACE_NORMALIZER_XSLT: return getResource("resource-files/obfl-ws-normalizer.xsl");
 				default: return null;
 			}
 		} catch (ResourceLocatorException e) {

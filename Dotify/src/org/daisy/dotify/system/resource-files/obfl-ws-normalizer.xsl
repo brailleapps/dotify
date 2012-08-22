@@ -8,14 +8,14 @@
 	input file, e.g. by "Pretty printing".
 
 	Notes
-		1.	This implementation does not support inline containers
-		2.	This implementation does not support xml:space="preserve"
+		1. This implementation does not support inline containers
+		2. xml:space="preserve" is supported as per http://www.xmlplease.com/xml/xmlspace/
 
 	Parameters
 		None
 
 	Format (input -> output)
-		Flow -> Flow
+		OBFL -> OBFL
 
 	Nodes
 		text()
