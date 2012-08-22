@@ -34,7 +34,7 @@ public interface Paginator extends Closeable {
 
 	/**
 	 * Paginates the block sequence
-	 * @param The BlockSequences to paginate
+	 * @param fs The BlockSequences to paginate
 	 * @param refs cross references
 	 * @throws IOException
 	 */

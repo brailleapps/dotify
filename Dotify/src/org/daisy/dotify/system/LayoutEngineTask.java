@@ -45,11 +45,11 @@ public class LayoutEngineTask extends InternalTask  {
 	private final Logger logger;
 	
 	/**
-	 * Create a new instance of LayoutEngineTask.
+	 * Creates a new instance of LayoutEngineTask.
 	 * @param name a descriptive name for the task
-	 * @param flow 
-	 * @param paginator
-	 * @param writer
+	 * @param filterFactory the filter factory to use
+	 * @param locale the context locale
+	 * @param writer the output writer
 	 */
 	public LayoutEngineTask(String name, FilterFactory filterFactory, FilterLocale locale, PagedMediaWriter writer) {
 		super(name);

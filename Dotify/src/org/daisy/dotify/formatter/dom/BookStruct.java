@@ -24,7 +24,7 @@ public interface BookStruct {
 
 	/**
 	 * Gets the contents of the book
-	 * @return
+	 * @return returns the contents of the book
 	 */
 	public PageStruct getContentsPageStruct();
 	

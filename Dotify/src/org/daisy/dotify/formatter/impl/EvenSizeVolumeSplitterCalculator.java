@@ -17,8 +17,9 @@ public class EvenSizeVolumeSplitterCalculator {
 	private final int volumes;
 
 	/**
-	 * @param sheets, total number of sheets
-	 * @param splitterMax, maximum number of sheets in a volume
+	 * 
+	 * @param sheets total number of sheets
+	 * @param splitterMax maximum number of sheets in a volume
 	 */
 	public EvenSizeVolumeSplitterCalculator(int sheets, int splitterMax) {
 		volumes = (int)Math.ceil(sheets/(double)splitterMax);
@@ -53,9 +54,9 @@ public class EvenSizeVolumeSplitterCalculator {
 	}
 	
 	/**
-	 * 
-	 * @param volIndex, volume index, one-based
-	 * @return
+	 * Gets the number of sheets in a volume
+	 * @param volIndex volume index, one-based
+	 * @return returns the number of sheets in the volume
 	 */
 	public int sheetsInVolume(int volIndex) {
 		if (volIndex<=volsWithBpSheets) {

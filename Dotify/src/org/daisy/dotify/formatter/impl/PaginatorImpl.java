@@ -122,8 +122,9 @@ public class PaginatorImpl implements Paginator, PageInfo {
 	}
 	
 	/**
-	 * Paginates the supplied FlowStruct using the supplied Paginator
-	 * @param paginator the paginator to use
+	 * Paginates the supplied block sequence
+	 * @param fs the block sequence interable
+	 * @param refs the cross references to use
 	 * @throws IOException if IO fails
 	 */
 	public void paginate(Iterable<BlockSequence> fs, CrossReferences refs) throws IOException {

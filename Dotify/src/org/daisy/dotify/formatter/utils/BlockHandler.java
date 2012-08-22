@@ -148,7 +148,8 @@ public class BlockHandler {
 	 * Break text into rows. 
 	 * @param text the text to break into rows
 	 * @param leftMargin left margin of the text
-	 * @param master the layout master to use
+	 * @param blockIndent the block indent
+	 * @param blockIndentParent the block indent parent
 	 * @return returns an ArrayList of Rows
 	 */
 	public ArrayList<Row> layoutBlock(CharSequence text, int leftMargin, int blockIndent, int blockIndentParent) {

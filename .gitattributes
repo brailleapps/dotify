@@ -74,6 +74,7 @@ Dotify/src/META-INF/services/org.daisy.dotify.system.InputManagerFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.translator.BrailleFilter -text
 Dotify/src/org/daisy/braille/ui/AbstractUI.java -text
+Dotify/src/org/daisy/dotify/Dotify.java -text
 Dotify/src/org/daisy/dotify/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemProperties.java -text svneol=unset#text/plain

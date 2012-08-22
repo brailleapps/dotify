@@ -7,7 +7,6 @@ import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
-import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
@@ -31,9 +30,9 @@ public class FormatterImpl implements Formatter {
 	private int rightMargin;
 	private final BlockStructImpl flowStruct;
 	private final Stack<BlockProperties> context;
-	private boolean firstRow;
+	//private boolean firstRow;
 	private final StateObject state;
-	private CrossReferences refs;
+	//private CrossReferences refs;
 	private StringFilter filter;
 
 	private FilterFactory filtersFactory;
@@ -48,8 +47,7 @@ public class FormatterImpl implements Formatter {
 	// TODO: Implement SpanProperites
 	// TODO: Implement floating elements
 	/**
-	 * Create a new flow
-	 * @param filtersFactory the filters factory to use
+	 * Creates a new formatter
 	 */
 	public FormatterImpl() {
 		//this.filters = builder.filtersFactory.getDefault();
@@ -59,7 +57,7 @@ public class FormatterImpl implements Formatter {
 		this.flowStruct = new BlockStructImpl(); //masters
 		this.state = new StateObject();
 		this.filter = null;
-		this.refs = null;
+		//this.refs = null;
 		this.listItem = null;
 	}
 
@@ -156,7 +154,7 @@ public class FormatterImpl implements Formatter {
 		c.setKeepWithNext(p.getKeepWithNext());
 		c.setIdentifier(p.getIdentifier());
 		context.push(p);
-		firstRow = true;
+		//firstRow = true;
 	}
 	
 	public void endBlock() {
@@ -183,7 +181,7 @@ public class FormatterImpl implements Formatter {
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);
 		}
-		firstRow = true;
+		//firstRow = true;
 	}
 
 	public void newSequence(SequenceProperties p) {

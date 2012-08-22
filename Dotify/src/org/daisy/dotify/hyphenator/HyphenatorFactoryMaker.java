@@ -30,6 +30,10 @@ public class HyphenatorFactoryMaker {
 		endLimit = null;
 	}
 	
+	/**
+	 * Creates a new hyphenator factory maker.
+	 * @return returns a new hyphenator factory maker
+	 */
 	public static HyphenatorFactoryMaker newInstance() {
 		Iterator<HyphenatorFactoryMaker> i = ServiceRegistry.lookupProviders(HyphenatorFactoryMaker.class);
 		while (i.hasNext()) {
@@ -57,7 +61,7 @@ public class HyphenatorFactoryMaker {
 	/**
 	 * Gets a HyphenatorFactory that supports the specified locale
 	 * @param target
-	 * @return
+	 * @return returns a hyphenator factory for the specified locale
 	 */
 	public HyphenatorFactory getFactory(FilterLocale target) {
 		HyphenatorFactory template = map.get(target);
