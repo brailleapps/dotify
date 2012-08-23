@@ -28,6 +28,18 @@ public class ExpressionTest {
 		assertEquals(10d, e.evaluate("(/ 50 5)"));
 	}
 	@Test
+	public void testExpression_divide_02() {
+		assertEquals(1d, e.evaluate("(/ 20 5 4)"));
+	}
+	@Test
+	public void testExpression_divide_03() {
+		assertEquals(0.125d, e.evaluate("(/ 1 8)"));
+	}
+	@Test
+	public void testExpression_modulo_01() {
+		assertEquals(2d, e.evaluate("(% 8 3)"));
+	}
+	@Test
 	public void testExpression_equals_01() {
 		assertEquals(false, e.evaluate("(= 50 5)"));
 	}
