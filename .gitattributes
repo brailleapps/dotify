@@ -382,6 +382,7 @@ DotifyTranslator/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#t
 DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringSplitter.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/text/package.html -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslator.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactoryMaker.java -text
