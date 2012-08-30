@@ -1,610 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?build-xslt-doc disable-output-escaping?>
-<!--
-<pre>
-	DTBook to Flow for braille (sv_SE)
-
-	Description
-	DTBook to Flow stylesheet for Swedish braille.
-
-	Parameters
-		page-width (inherited)
-		page-height (inherited)
-		inner-margin (inherited)
-		outer-margin (inherited)
-		row-spacing (inherited)
-		duplex (inherited)
-
-	Format (input -> output)
-		DTBook -> Flow
-
-	Author: Joel Håkansson, TPB
-</pre>
-<h2>Summary</h2>
-		<table border="1px">
-			<tr>
-				<th>Element</th>
-				<th>Category</th>
-				<th>Category description</th>
-				<th>Action summary</th>
-				<th>Default action</th>
-			</tr>
-			<tr>
-				<td>bodymatter</td>
-				<td>Sequence</td>
-				<td/>
-				<td>New sequence, restart pagination</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>frontmatter</td>
-				<td>Sequence</td>
-				<td/>
-				<td>New sequence, restart pagination</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>rearmatter</td>
-				<td>Sequence</td>
-				<td/>
-				<td>New sequence, continue pagination</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>level</td>
-				<td>Block (type 1)</td>
-				<td>no text</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>level1</td>
-				<td>Block (type 1)</td>
-				<td>no text</td>
-				<td>New block, break page before, margin top = 3 unless h1</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>level2</td>
-				<td>Block (type 1)</td>
-				<td>no text</td>
-				<td>New block, margin top = 2 unless h2</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>level3</td>
-				<td>Block (type 1)</td>
-				<td>no text</td>
-				<td>New block, margin top = 1 unless h3</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>level4</td>
-				<td>Block (type 1)</td>
-				<td>no text</td>
-				<td>New block, margin top = 1 unless h4</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>level5</td>
-				<td>Block (type 1)</td>
-				<td>no text</td>
-				<td>New block, margin top = 1 unless h5</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>level6</td>
-				<td>Block (type 1)</td>
-				<td>no text</td>
-				<td>New block, margin top = 1 unless h6</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>list</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td>[complex]</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>blockquote</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td>New block, margin left = 2, margin top = 1, margin bottom = 1</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>linegroup</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td>New block, if preceeded by linegroup margin top = 1</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>poem</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td>New block, margin top = 1, margin bottom = 1</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>div</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td>New block, margin bottom = 1</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>annotation</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>dl</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>imggroup</td>
-				<td>Block (type 2)</td>
-				<td>text sibling</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>bridgehead</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>caption</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>Surround block with delimiters</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>covertitle</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>docauthor</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>Ignore (generated on title page instead)</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>doctitle</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>Ignore (generated on title page instead)</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>li</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>Processing depends on type-attribute</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>h1</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>New block, margin top = 3 (margin bottom = 1 unless directly followed by level2)</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>h2</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>New block, margin top = 2 (margin bottom = 1 unless directly followed by level3)</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>h3</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>New block, margin top = 1 (margin bottom = 1 unless directly followed by level4)</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>h4</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>New block, margin top = 1 (margin bottom = 1 unless directly followed by level5)</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>h5</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>New block, margin top = 1 (margin bottom = 1 unless directly followed by level6)</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>h6</td>
-				<td>Block (type 3)</td>
-				<td>text child</td>
-				<td>New block, margin top = 1, margin bottom = 1</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>author</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>address</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>hd</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>line</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td>New block, text indent = 2</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>p</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td>New block, layout depends on class-attribute</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>sidebar</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>byline</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>dateline</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>epigraph</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td/>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>prodnote</td>
-				<td>Block (type 4)</td>
-				<td>text sibling and/or text child</td>
-				<td>Surround block with delimiters</td>
-				<td>New block</td>
-			</tr>
-			<tr>
-				<td>a</td>
-				<td>Inline/Block</td>
-				<td/>
-				<td/>
-				<td>New block, if block context</td>
-			</tr>
-			<tr>
-				<td>cite</td>
-				<td>Inline/Block</td>
-				<td/>
-				<td/>
-				<td>New block, if block context</td>
-			</tr>
-			<tr>
-				<td>kbd</td>
-				<td>Inline/Block</td>
-				<td/>
-				<td/>
-				<td>New block, if block context</td>
-			</tr>
-			<tr>
-				<td>samp</td>
-				<td>Inline/Block</td>
-				<td/>
-				<td/>
-				<td>New block, if block context</td>
-			</tr>
-			<tr>
-				<td>code</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>bdo</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>em</td>
-				<td>Inline</td>
-				<td/>
-				<td>Add braille markers for emphasis</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>strong</td>
-				<td>Inline</td>
-				<td/>
-				<td>Add braille markers for strong</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>span</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>sub</td>
-				<td>Inline</td>
-				<td/>
-				<td>Add braille markers for subscript</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>sup</td>
-				<td>Inline</td>
-				<td/>
-				<td>Add braille markers for superscript</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>abbr</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>acronym</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>dfn</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>q</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>noteref</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>annoref</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>sent</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>w</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>linenum</td>
-				<td>Inline</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>lic</td>
-				<td>Inline</td>
-				<td/>
-				<td>If inline and in toc, align right, fill space with ...</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>dd</td>
-				<td>Inline</td>
-				<td/>
-				<td>New block, text indent = 2, prefix with braille markers</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>dt</td>
-				<td>Inline</td>
-				<td/>
-				<td>New block</td>
-				<td/>
-			</tr>
-			<tr>
-				<td>br</td>
-				<td>Special</td>
-				<td/>
-				<td/>
-				<td>Break line</td>
-			</tr>
-			<tr>
-				<td>pagenum</td>
-				<td>Special</td>
-				<td/>
-				<td/>
-				<td>Add pagenum marker</td>
-			</tr>
-			<tr>
-				<td>book</td>
-				<td>No-op</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>dtbook</td>
-				<td>No-op</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>head</td>
-				<td>No-op</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>meta</td>
-				<td>No-op</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>link</td>
-				<td>No-op</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>img</td>
-				<td>No-op</td>
-				<td/>
-				<td/>
-				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>note</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>table</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>col</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>colgroup</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>tbody</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>td</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>tfoot</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>th</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>thead</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>title</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-			<tr>
-				<td>tr</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
-			</tr>
-		</table>
--->
+<?xslt-doc-file doc-files/dtb2obfl_braille.xml?>
 <!--
 	TODO:
 		- komplexa sub, sup
@@ -616,6 +11,20 @@
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:param name="toc-indent-multiplier" select="1"/>
 
+	<xsl:template match="/">
+		<!--Note! This works with Saxon (which is used in Dotify), but not with XMLSpy's engine -->
+		<xsl:variable name="text-processing"><xsl:apply-templates mode="dtbook"/></xsl:variable>
+		<xsl:apply-templates select="$text-processing" mode="obfl"/>
+	</xsl:template>
+	
+	<xsl:template match="/" mode="obfl">
+		<obfl version="2011-1">
+			<xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute>
+			<xsl:call-template name="insertLayoutMaster"/>
+			<xsl:apply-templates/>
+		</obfl>
+	</xsl:template>
+	
 	<xsl:template name="insertLayoutMaster">
 		<layout-master name="front" page-width="{$page-width}" 
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
@@ -667,44 +76,76 @@
 			</default-template>
 		</layout-master>
 		<xsl:if test="//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']]">
-			<table-of-contents name="full-toc">
-				<xsl:apply-templates select="//dtb:level1" mode="toc"/>
-			</table-of-contents>
+		<table-of-contents name="full-toc">
+			<xsl:apply-templates select="//dtb:level1" mode="toc"/>
+		</table-of-contents>
+		<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(= $volume 1)">
+			<pre-content>
+				<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
+					<on-toc-start>
+						<block margin-bottom="1">Innehåll</block>
+						<block margin-bottom="1">Sid­hän­vis­ning­ar till svart­skrifts­bo­ken står in­om pa­ren­tes.</block>
+					</on-toc-start>
+					<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
+						<block keep="all" keep-with-next="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+					</on-volume-start>
+					<on-volume-start use-when="(&amp; (> $volumes 1) (> $started-volume-number 1))">
+						<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+					</on-volume-start>
+				</toc-sequence>
+				<xsl:apply-templates select="//dtb:frontmatter" mode="pre-volume-mode"/>
+			</pre-content>
+			<post-content/>
+		</volume-template>
+		<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(> $volume 1)">
+			<pre-content>
+				<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
+					<on-toc-start>
+						<block margin-bottom="1">Innehåll volym <evaluate expression="(round $volume)"/></block>
+					</on-toc-start>
+				</toc-sequence>
+			</pre-content>
+			<post-content/>
+		</volume-template>
 		</xsl:if>
-	<volume-template volume-number-variable="volume" volume-count-variable="volumes">
-		<pre-content>
-			<xsl:if test="//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']]">
-			<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
-				<on-toc-start>
-					<block margin-bottom="1">Innehåll</block>
-					<block margin-bottom="1">Sid­hän­vis­ning­ar till svart­skrifts­bo­ken står in­om pa­ren­tes.</block>
-				</on-toc-start>
-				<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
-					<block keep="all" keep-with-next="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
-				</on-volume-start>
-				<on-volume-start use-when="(&amp; (> $volumes 1) (> $started-volume-number 1))">
-					<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
-				</on-volume-start>
-			</toc-sequence>
-			<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
-				<on-toc-start>
-					<block margin-bottom="1">Innehåll volym <evaluate expression="(round $volume)"/></block>
-				</on-toc-start>
-			</toc-sequence>
-			</xsl:if>
-		</pre-content>
-		<post-content/>
-	</volume-template>
 	</xsl:template>
 
 	<!-- Don't output a sequence if there is nothing left when doctitle, docauthor and level1@class='backCoverText', level1@class='rearjacketcopy' and level1@class='colophon' has been moved -->
 	<xsl:template match="dtb:frontmatter" mode="sequence-mode">
-		<xsl:if test="*[not(self::dtb:doctitle or self::dtb:docauthor or self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])]">
+		<xsl:if test="(*[not(self::dtb:doctitle or self::dtb:docauthor or self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])])
+						and not(//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']])"><!--  -->
 			<sequence>
 				<xsl:apply-templates select="." mode="apply-sequence-attributes"/>
 				<xsl:apply-templates/>
 			</sequence>
 		</xsl:if>
+	</xsl:template>
+	
+		<!-- Don't output a sequence if there is nothing left when doctitle, docauthor and level1@class='backCoverText', level1@class='rearjacketcopy' and level1@class='colophon' has been moved -->
+	<xsl:template match="dtb:frontmatter" mode="pre-volume-mode">
+		<xsl:if test="*[not(self::dtb:doctitle or self::dtb:docauthor or self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])]">
+			<sequence master="front">
+				<block break-before="page">
+					<xsl:apply-templates/>
+					<!-- 
+					<xsl:variable name="tree">
+						<xsl:apply-templates/>
+					</xsl:variable>
+					<xsl:apply-templates select="$tree" mode="strip-id"/> -->
+				</block>
+			</sequence>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*|comment()|processing-instruction()" mode="strip-id">
+		<xsl:call-template name="copy-without-id"/>
+	</xsl:template>
+	
+	<xsl:template name="copy-without-id">
+		<xsl:copy>
+			<xsl:copy-of select="@*[name()!='id']"/>
+			<xsl:apply-templates mode="strip-id"/>
+		</xsl:copy>
 	</xsl:template>
 	
 	<xsl:template match="dtb:level1[@class='toc']"></xsl:template>
@@ -717,25 +158,33 @@
 	<xsl:template match="dtb:level1|dtb:level2" mode="toc">
 		<xsl:if test="dtb:h1|dtb:h2">
 			<xsl:choose>
-				<xsl:when test="self::dtb:level1 and @class='part'"><toc-entry ref-id="{generate-id(.)}" margin-top="1" margin-bottom="1" keep="all"><xsl:apply-templates select="dtb:h1" mode="toc-hd"/></toc-entry><xsl:apply-templates mode="toc"/></xsl:when>
-				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{2*$toc-indent-multiplier}" keep="all"><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
+				<xsl:when test="self::dtb:level1 and @class='part'"><toc-entry ref-id="{generate-id(.)}" margin-bottom="1" keep="all"><xsl:apply-templates select="dtb:h1" mode="toc-hd"/></toc-entry><xsl:apply-templates mode="toc"/></xsl:when>
+				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{2*$toc-indent-multiplier}" keep="all"><xsl:call-template name="addBottomMarginIfPart"/><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="dtb:level3|dtb:level4|dtb:level5|dtb:level6" mode="toc">
 		<xsl:if test="dtb:h3|dtb:h4|dtb:h5|dtb:h6">
-			<toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{$toc-indent-multiplier}" keep="all"><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
+			<toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{$toc-indent-multiplier}" keep="all"><xsl:call-template name="addBottomMarginIfPart"/><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
 			<xsl:if test="dtb:level3 and ancestor::dtb:level1[@class='part']"><xsl:apply-templates mode="toc"/></xsl:if>
 			</toc-entry>
 			<xsl:if test="not(dtb:level3 and ancestor::dtb:level1[@class='part'])"><xsl:apply-templates mode="toc"/></xsl:if>
 		</xsl:if>
 	</xsl:template>
 	
+	<xsl:template name="addBottomMarginIfPart">
+		<xsl:if test="(following::*[self::dtb:level1|self::dtb:level2|self::dtb:level3|self::dtb:level4|self::dtb:level5|self::dtb:level6][1])[self::dtb:level1[@class='part']]">
+			<xsl:attribute name="margin-bottom">1</xsl:attribute>
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template match="dtb:h1|dtb:h2|dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd">
 <!--		<xsl:value-of select="descendant::text()"/>-->
 	<xsl:apply-templates mode="toc-text"/>
-		<xsl:if test="not(self::dtb:h1 and ancestor::dtb:level1[@class='part'])"><xsl:text> (</xsl:text><xsl:value-of select="preceding::dtb:pagenum[1]/text()"/><xsl:text>) </xsl:text><leader position="100%" align="right" pattern="."/><page-number ref-id="{generate-id(.)}"><xsl:if test="ancestor::dtb:frontmatter"><xsl:attribute name="style">roman</xsl:attribute></xsl:if></page-number></xsl:if>
+	<!-- <xsl:if test="not(self::dtb:h1 and ancestor::dtb:level1[@class='part'])"> -->
+		<xsl:text> (</xsl:text><xsl:value-of select="preceding::dtb:pagenum[1]/text()"/><xsl:text>) </xsl:text><leader position="100%" align="right" pattern="."/><page-number ref-id="{generate-id(.)}"><xsl:if test="ancestor::dtb:frontmatter"><xsl:attribute name="style">roman</xsl:attribute></xsl:if></page-number>
+		<!--  </xsl:if>  -->
 	</xsl:template>
 
 	<xsl:template match="*" mode="toc-text">
@@ -750,8 +199,16 @@
 	
 	<xsl:template match="node()" mode="toc"/>
 	
+	<!-- Redigering och avskrivning, page 148 -->
+	<xsl:template match="dtb:dd" mode="block-mode">
+		<block>
+			<xsl:apply-templates select="." mode="apply-block-attributes"/>
+			<xsl:text>&#x2820;&#x2804; </xsl:text><xsl:apply-templates/>
+		</block>
+	</xsl:template>
+	
 	<!-- Svenska skrivregler för punktskrift 2009, page 34 -->
-	<xsl:template match="dtb:em[not(ancestor::dtb:list[@class='toc'])]" mode="inline-mode">
+	<xsl:template match="dtb:em[not(ancestor::dtb:list[@class='toc'])]" mode="dtbook">
 		<xsl:call-template name="addMarkers">
 			<xsl:with-param name="prefix-single-word" select="'&#x2820;&#x2804;'"/>
 			<xsl:with-param name="prefix-multi-word" select="'&#x2820;&#x2824;'"/>
@@ -760,7 +217,7 @@
 	</xsl:template>
 
 	<!-- Svenska skrivregler för punktskrift 2009, page 34 -->
-	<xsl:template match="dtb:strong[not(ancestor::dtb:list[@class='toc'])]" mode="inline-mode">
+	<xsl:template match="dtb:strong[not(ancestor::dtb:list[@class='toc'])]" mode="dtbook">
 		<xsl:call-template name="addMarkers">
 			<xsl:with-param name="prefix-single-word" select="'&#x2828;'"/>
 			<xsl:with-param name="prefix-multi-word" select="'&#x2828;&#x2828;'"/>
@@ -769,7 +226,7 @@
 	</xsl:template>
 
 	<!-- Svenska skrivregler för punktskrift 2009, page 32 -->
-	<xsl:template match="dtb:sup" mode="inline-mode">
+	<xsl:template match="dtb:sup" mode="dtbook">
 		<xsl:call-template name="addMarkersAlfaNum">
 			<xsl:with-param name="prefix" select="'&#x282c;'"/>
 			<xsl:with-param name="postfix" select="''"/>
@@ -777,59 +234,68 @@
 	</xsl:template>
 
 	<!-- Svenska skrivregler för punktskrift 2009, page 32 -->
-	<xsl:template match="dtb:sub" mode="inline-mode">
+	<xsl:template match="dtb:sub" mode="dtbook">
 		<xsl:call-template name="addMarkersAlfaNum">
 			<xsl:with-param name="prefix" select="'&#x2823;'"/>
 			<xsl:with-param name="postfix" select="''"/>
 		</xsl:call-template>
 	</xsl:template>
 	
-	<!-- Redigering och avskrivning, page 148 -->
-	<xsl:template match="dtb:dd" mode="block-mode">
-		<block>
-			<xsl:apply-templates select="." mode="apply-block-attributes"/>
-			<xsl:text>&#x2820;&#x2804; </xsl:text><xsl:apply-templates/>
-		</block>
+	<xsl:template match="*|comment()|processing-instruction()" mode="dtbook">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates mode="dtbook"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="text()" mode="dtbook">
+		<xsl:value-of select="."/>
 	</xsl:template>
 
 	<xsl:template name="addMarkersAlfaNum">
 		<xsl:param name="prefix" select="''"/>
 		<xsl:param name="postfix" select="''"/>
-		<xsl:choose>
-			<!-- text contains a single alfa/numerical string -->
-			<xsl:when test="count(node())=1 and text() and matches(text(),'^[a-zA-Z0-9]*$')">
-				<xsl:value-of select="$prefix"/>
-				<xsl:apply-templates/>
-				<xsl:value-of select="$postfix"/>
-			</xsl:when>
-			<!-- Otherwise -->
-			<xsl:otherwise>
-				<xsl:message terminate="no">Error: sub/sub contains a complex expression for which there is no specified formatting.</xsl:message>
-				<xsl:apply-templates/>
-			</xsl:otherwise>		
-		</xsl:choose>
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:choose>
+				<!-- text contains a single alfa/numerical string -->
+				<xsl:when test="count(node())=1 and text() and matches(text(),'^[a-zA-Z0-9]*$')">
+					<xsl:value-of select="$prefix"/>
+					<xsl:apply-templates mode="dtbook"/>
+					<xsl:value-of select="$postfix"/>
+				</xsl:when>
+				<!-- Otherwise -->
+				<xsl:otherwise>
+					<xsl:message terminate="no">Error: sub/sub contains a complex expression for which there is no specified formatting.</xsl:message>
+					<xsl:apply-templates mode="dtbook"/>
+				</xsl:otherwise>		
+			</xsl:choose>
+		</xsl:copy>
 	</xsl:template>
-
+	
 	<xsl:template name="addMarkers">
 		<xsl:param name="prefix-single-word" select="''"/>
 		<xsl:param name="postfix-single-word" select="''"/>
 		<xsl:param name="prefix-multi-word" select="''"/>
 		<xsl:param name="postfix-multi-word" select="''"/>
-		<xsl:choose>
-			<xsl:when test="count(node())=0"><xsl:text> </xsl:text></xsl:when>
-			<!-- if text contains one word only -->
-			<xsl:when test="count(text())=1 and translate(text(), ' ', '')=text()">
-				<xsl:value-of select="$prefix-single-word"/>
-				<xsl:apply-templates/>
-				<xsl:value-of select="$postfix-single-word"/>
-			</xsl:when>
-			<!-- text contains several words -->
-			<xsl:otherwise>
-				<xsl:value-of select="$prefix-multi-word"/>
-				<xsl:apply-templates/>
-				<xsl:value-of select="$postfix-multi-word"/>
-			</xsl:otherwise>		
-		</xsl:choose>
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:choose>
+				<xsl:when test="count(node())=0"><xsl:text> </xsl:text></xsl:when>
+				<!-- if text contains one word only -->
+				<xsl:when test="count(text())=1 and translate(text(), ' ', '')=text()">
+					<xsl:value-of select="$prefix-single-word"/>
+					<xsl:apply-templates mode="dtbook"/>
+					<xsl:value-of select="$postfix-single-word"/>
+				</xsl:when>
+				<!-- text contains several words -->
+				<xsl:otherwise>
+					<xsl:value-of select="$prefix-multi-word"/>
+					<xsl:apply-templates mode="dtbook"/>
+					<xsl:value-of select="$postfix-multi-word"/>
+				</xsl:otherwise>		
+			</xsl:choose>
+		</xsl:copy>
 	</xsl:template>
 
 </xsl:stylesheet>

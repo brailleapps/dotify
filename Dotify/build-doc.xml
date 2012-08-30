@@ -26,10 +26,7 @@
         	nonavbar="false" 
         	notree="false" 
         	packagenames="
-        		org.daisy.dotify.*,
-        		org_pef_dtbook2pef,
-	        	org_pef_dtbook2pef.system.*,
-        		org_pef_dtbook2pef.setups.*"
+        		org.daisy.dotify.*"
         	source="1.5" 
         	sourcepath="${src.dir}" 
         	splitindex="true" 

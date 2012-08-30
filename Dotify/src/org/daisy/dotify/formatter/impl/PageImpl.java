@@ -15,7 +15,8 @@ import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.utils.LayoutTools;
 import org.daisy.dotify.formatter.utils.LayoutToolsException;
-import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 
 
@@ -86,7 +87,7 @@ class PageImpl implements Page {
 			LayoutMaster lm = getParent().getLayoutMaster();
 			int pagenum = getPageIndex()+1;
 			PageTemplate t = lm.getTemplate(pagenum);
-			StringFilter filter = getParent().getFormatter().getDefaultFilter();
+			BrailleTranslator filter = getParent().getFormatter().getTranslator();
 			ret.addAll(renderFields(lm, t.getHeader(), filter));
 			ret.addAll(rows);
 			if (t.getFooterHeight()>0) {
@@ -130,11 +131,11 @@ class PageImpl implements Page {
 	}
 	
 	
-	private ArrayList<Row> renderFields(LayoutMaster lm, ArrayList<ArrayList<Object>> fields, StringFilter filters) throws FormatterException {
+	private ArrayList<Row> renderFields(LayoutMaster lm, ArrayList<ArrayList<Object>> fields, BrailleTranslator translator) throws FormatterException {
 		ArrayList<Row> ret = new ArrayList<Row>();
 		for (ArrayList<Object> row : fields) {
 			try {
-				ret.add(new Row(distribute(row, lm.getFlowWidth(), " ", filters)));
+				ret.add(new Row(distribute(row, lm.getFlowWidth(), " ", translator)));
 			} catch (LayoutToolsException e) {
 				throw new FormatterException("Error while rendering header", e);
 			}
@@ -142,10 +143,11 @@ class PageImpl implements Page {
 		return ret;
 	}
 	
-	private String distribute(ArrayList<Object> chunks, int width, String padding, StringFilter filters) throws LayoutToolsException {
+	private String distribute(ArrayList<Object> chunks, int width, String padding, BrailleTranslator translator) throws LayoutToolsException {
 		ArrayList<String> chunkF = new ArrayList<String>();
 		for (Object f : chunks) {
-			chunkF.add(filters.filter(resolveField(f, this).replaceAll("\u00ad", "")));
+			BrailleTranslatorResult btr = translator.translate(resolveField(f, this).replaceAll("\u00ad", ""));
+			chunkF.add(btr.getTranslatedRemainder());
 		}
 		return LayoutTools.distribute(chunkF, width, padding, LayoutTools.DistributeMode.EQUAL_SPACING);
 	}
@@ -205,6 +207,7 @@ class PageImpl implements Page {
 	}
 	
 	private static String resolveCurrentPageField(CurrentPageField f, Page p) {
+		//TODO: include page number offset?
 		int pagenum = p.getPageIndex() + 1;
 		return f.style(pagenum);
 	}

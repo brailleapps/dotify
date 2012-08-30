@@ -9,6 +9,10 @@ package org.daisy.dotify.formatter.dom;
  */
 public interface BlockStruct {
 	
+	/**
+	 * Gets the block sequence interable
+	 * @return returns the block sequence interable
+	 */
 	public Iterable<BlockSequence> getBlockSequenceIterable();
 
 }

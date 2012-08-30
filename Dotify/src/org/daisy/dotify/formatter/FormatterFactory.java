@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import javax.imageio.spi.ServiceRegistry;
 
-import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
  * Provides a factory for formatters. The factory will instantiate 
@@ -14,7 +14,7 @@ import org.daisy.dotify.text.FilterLocale;
  * @author Joel Håkansson
  */
 public class FormatterFactory {
-	private FilterFactory factory;
+	private BrailleTranslator factory;
 	private FilterLocale locale;
 	
 	protected FormatterFactory() {
@@ -30,24 +30,25 @@ public class FormatterFactory {
 		return new FormatterFactory();
 	}
 	
-	public void setFilterFactory(FilterFactory factory) {
+	public void setTranslator(BrailleTranslator factory) {
 		this.factory = factory;
 	}
-	
+	/*
 	public void setLocale(FilterLocale locale) {
 		this.locale = locale;
-	}
+	}*/
 	
 	public Formatter newFormatter() {
 		Iterator<Formatter> i = ServiceRegistry.lookupProviders(Formatter.class);
 		while (i.hasNext()) {
 			Formatter f = i.next();
 			if (factory!=null) { 
-				f.setFilterFactory(factory);
+				f.setBrailleTranslator(factory);
 			}
+			/*
 			if (locale!=null) {
 				f.setLocale(locale);
-			}
+			}*/
 			return f;
 		}
 		throw new RuntimeException("Cannot find formatter.");

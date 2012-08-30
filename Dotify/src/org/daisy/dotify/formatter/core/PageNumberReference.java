@@ -2,9 +2,10 @@ package org.daisy.dotify.formatter.core;
 
 import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.EventContents;
+import org.daisy.dotify.formatter.dom.Segment;
 
 
-public class PageNumberReference implements EventContents {
+public class PageNumberReference implements EventContents, Segment {
 	private final String refid;
 	private final NumeralStyle style;
 	
@@ -15,6 +16,10 @@ public class PageNumberReference implements EventContents {
 
 	public ContentType getContentType() {
 		return ContentType.PAGE_NUMBER;
+	}
+	
+	public SegmentType getSegmentType() {
+		return SegmentType.Reference;
 	}
 	
 	public String getRefId() {

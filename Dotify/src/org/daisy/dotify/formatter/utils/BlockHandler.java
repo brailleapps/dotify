@@ -2,7 +2,6 @@ package org.daisy.dotify.formatter.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
@@ -10,7 +9,8 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Row;
-import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 
 /**
@@ -23,18 +23,17 @@ import org.daisy.dotify.text.StringFilter;
  */
 public class BlockHandler {
 	private static final Character SPACE_CHAR = ' ';
-	private final StringFilter filters;
+	private final BrailleTranslator translator;
 	//private int currentListNumber;
 	//private BlockProperties.ListType currentListType;
 	private Leader currentLeader;
 	private ArrayList<Row> ret;
 	private BlockProperties p;
-	private int available;
+	private final int available;
 	private ListItem item;
-	private int blockIndent;
-	private Stack<Integer> blockIndentParent;
+	private final LayoutMaster master;
 	
-	public class ListItem {
+	public static class ListItem {
 		private String label;
 		private FormattingTypes.ListStyle type;
 		
@@ -52,18 +51,32 @@ public class BlockHandler {
 		}
 	}
 	
-	public BlockHandler(StringFilter filters) {
-		this.filters = filters;
+	public static class Builder {
+		private final BrailleTranslator translator;
+		private final LayoutMaster master;
+		private final int available;
+		
+		public Builder(BrailleTranslator translator, LayoutMaster master, int width) {
+			this.translator = translator;
+			this.master = master;
+			this.available = width;
+		}
+		
+		public BlockHandler build() {
+			return new BlockHandler(this);
+		}
+	}
+	
+	private BlockHandler(Builder builder) {
+		this.translator = builder.translator;
 		this.currentLeader = null;
 		//this.currentListType = BlockProperties.ListType.NONE;
 		//this.currentListNumber = 0;
 		this.ret = new ArrayList<Row>();
 		this.p = new BlockProperties.Builder().build();
-		this.available = 0;
+		this.available = builder.available;
 		this.item = null;
-		this.blockIndent = 0;
-		this.blockIndentParent = new Stack<Integer>();
-		blockIndentParent.add(0);
+		this.master = builder.master;
 	}
 	/*
 	public void setCurrentListType(BlockProperties.ListType type) {
@@ -111,10 +124,10 @@ public class BlockHandler {
 	public BlockProperties getBlockProperties() {
 		return p;
 	}
-	
+	/*
 	public void setWidth(int value) {
 		available = value;
-	}
+	}*/
 	
 	public int getWidth() {
 		return available;
@@ -132,26 +145,16 @@ public class BlockHandler {
 		this.blockIndent = value;
 	}*/
 	
-	public void addToBlockIndent(int value) {
-		blockIndentParent.push(blockIndent);
-		blockIndent += value;
-	}
-	
-	public void subtractFromBlockIndent(int value) {
-		int test = blockIndentParent.pop();
-		blockIndent -= value;
-		assert blockIndent==test;
-	}
-	
 	/**
 	 * Break text into rows. 
 	 * @param text the text to break into rows
 	 * @param leftMargin left margin of the text
-	 * @param master the layout master to use
+	 * @param blockIndent the block indent
+	 * @param blockIndentParent the block indent parent
 	 * @return returns an ArrayList of Rows
 	 */
-	public ArrayList<Row> layoutBlock(CharSequence text, int leftMargin, LayoutMaster master) {
-		return layoutBlock(text, leftMargin, true, null, master);
+	public ArrayList<Row> layoutBlock(BrailleTranslatorResult btr, int leftMargin, int blockIndent, int blockIndentParent) {
+		return layoutBlock(btr, leftMargin, null, blockIndent, blockIndentParent);
 	}
 	
 	/**
@@ -163,61 +166,56 @@ public class BlockHandler {
 	 * @return returns an ArrayList of Rows. The first row being the supplied row, with zero or more characters
 	 * from <tt>text</tt>
 	 */
-	public ArrayList<Row> appendBlock(CharSequence text, int leftMargin, Row row, LayoutMaster master) {
-		return layoutBlock(text, leftMargin, false, row, master);
+	public ArrayList<Row> appendBlock(BrailleTranslatorResult btr, int leftMargin, Row row, int blockIndent, int blockIndentParent) {
+		return layoutBlock(btr, leftMargin, row, blockIndent, blockIndentParent);
 	}
 
-	private ArrayList<Row> layoutBlock(CharSequence c, int leftMargin, boolean firstRow, Row r, LayoutMaster master) {
+	private ArrayList<Row> layoutBlock(BrailleTranslatorResult btr, int leftMargin, Row r, int blockIndent, int blockIndentParent) {
 		ret = new ArrayList<Row>();
-		String chars = filters.filter(c.toString());
 		// process first row, is it a new block or should we continue the current row?
-		if (firstRow) {
+		if (r==null) {
 			// add to left margin
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
-				String listLabel = filters.filter(item.getLabel());
+				String listLabel = translator.translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
 					int bypassBlockIndent = blockIndent;
-					blockIndent = blockIndentParent.peek();
-					chars = newRow(listLabel, chars, available, leftMargin, 0, master, p);
+					blockIndent = blockIndentParent;
+					newRow(listLabel, btr, available, leftMargin, 0, p, blockIndent);
 					blockIndent = bypassBlockIndent;
 				} else {
-					chars = newRow(listLabel, chars, available, leftMargin, p.getFirstLineIndent(), master, p);
+					newRow(listLabel, btr, available, leftMargin, p.getFirstLineIndent(), p, blockIndent);
 				}
 				item = null;
 			} else {
-				chars = newRow("", chars, available, leftMargin, p.getFirstLineIndent(), master , p);
+				newRow("", btr, available, leftMargin, p.getFirstLineIndent(), p, blockIndent);
 			}
 		} else {
-			chars = newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), chars, available, master, p);
+			newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), btr, available, p, blockIndent);
 		}
-		while (LayoutTools.length(chars.toString())>0) {
-			String c2 = newRow("", chars, available, leftMargin, p.getTextIndent(), master, p);
-			//c2 = c2.replaceFirst("\\A\\s*", ""); // remove leading white space from input
-			if (c2.length()>=chars.length()) {
-				System.out.println(c2);
-			}
-			chars = c2;
+		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
+			newRow("", btr, available, leftMargin, p.getTextIndent(), p, blockIndent);
 		}
 		return ret;
 	}
 
-	private String newRow(String contentBefore, String chars, int available, int margin, int indent, LayoutMaster master, BlockProperties p) {
+	private void newRow(String contentBefore, BrailleTranslatorResult chars, int available, int margin, int indent, BlockProperties p, int blockIndent) {
 		int thisIndent = indent + blockIndent - LayoutTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		String preText = contentBefore + LayoutTools.fill(SPACE_CHAR, thisIndent).toString();
-		return newRow(null, margin, preText, "", chars, available, master, p);
+		newRow(null, margin, preText, "", chars, available, p, blockIndent);
 	}
 
 	//TODO: check leader functionality
-	private String newRow(List<Marker> r, int margin, String preContent, String preTabText, String postTabText, int available, LayoutMaster master, BlockProperties p) {
+	private void newRow(List<Marker> r, int margin, String preContent, String preTabText, BrailleTranslatorResult btr, int available, BlockProperties p, int blockIndent) {
 
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
 
 		int preTextIndent = LayoutTools.length(preContent);
-		int preContentPos = margin+preTextIndent;
-		int preTabPos = preContentPos+LayoutTools.length(preTabText.replaceAll("\u00ad", ""));
-		int postTabTextLen = LayoutTools.length(postTabText.replaceAll("\u00ad", ""));
+		final int preContentPos = margin+preTextIndent;
+		preTabText = preTabText.replaceAll("\u00ad", "");
+		int preTabPos = preContentPos+LayoutTools.length(preTabText);
+		int postTabTextLen = btr.countRemaining();
 		int maxLenText = available-(preContentPos);
 		if (maxLenText<1) {
 			throw new RuntimeException("Cannot continue layout: No space left for characters.");
@@ -252,32 +250,22 @@ public class BlockHandler {
 				preContent = LayoutTools.fill(SPACE_CHAR, p.getTextIndent()+blockIndent);
 				preTextIndent = LayoutTools.length(preContent);
 				preTabText = "";
-				preContentPos = margin+preTextIndent;
+				
 				preTabPos = preContentPos;
 				maxLenText = available-(preContentPos);
 				offset = leaderPos-preTabPos;
 			}
 			if (offset - align > 0) {
-				String leaderPattern = filters.filter(currentLeader.getPattern());
+				String leaderPattern = translator.translate(currentLeader.getPattern()).getTranslatedRemainder();
 				tabSpace = LayoutTools.fill(leaderPattern, offset - align);
 			} // else: leader position has been passed on an empty row or text does not fit on an empty row, ignore
 		}
 
 		maxLenText -= LayoutTools.length(tabSpace);
+		maxLenText -= LayoutTools.length(preTabText);
 
-		BreakPoint bp = null;
-		Row nr = null;
+		Row nr = new Row(preContent + preTabText + tabSpace + btr.nextTranslatedRow(maxLenText, maxLenText>=available-(preContentPos)));
 		
-		if (tabSpace.length()>0) { // there is a tab...
-			maxLenText -= preTabText.length();
-			BreakPointHandler bph = new BreakPointHandler(postTabText);
-			bp = bph.nextRow(maxLenText);
-			nr = new Row(preContent + preTabText + tabSpace + bp.getHead());
-		} else { // no tab
-			BreakPointHandler bph = new BreakPointHandler(preTabText + postTabText);
-			bp = bph.nextRow(maxLenText);
-			nr = new Row(preContent + bp.getHead());
-		}
 		// discard leader
 		currentLeader = null;
 
@@ -288,6 +276,5 @@ public class BlockHandler {
 		nr.setLeftMargin(margin);
 
 		ret.add(nr);
-		return bp.getTail();
 	}
 }

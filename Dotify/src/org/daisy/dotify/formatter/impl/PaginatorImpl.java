@@ -1,10 +1,14 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
+import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
+import org.daisy.dotify.formatter.dom.Block;
+import org.daisy.dotify.formatter.dom.BlockSequence;
+import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Page;
@@ -12,6 +16,7 @@ import org.daisy.dotify.formatter.dom.PageInfo;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.formatter.dom.RowDataManager;
 import org.daisy.dotify.tools.StateObject;
 
 
@@ -29,9 +34,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 	
 	public void open(FormatterFactory formatterFactory) {
 		state.assertUnopened();
-		this.pageStruct = new PageStructImpl();
 		this.formatterFactory = formatterFactory;
-		state.open();
 	}
 
 	public void newSequence(LayoutMaster master, int pagesOffset) {
@@ -75,7 +78,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 		((PageSequenceImpl)currentSequence()).newRow(row, id);
 	}
 
-	public void insertMarkers(ArrayList<Marker> m) {
+	public void insertMarkers(List<Marker> m) {
 		state.assertOpen();
 		((PageImpl)((PageSequenceImpl)currentSequence()).currentPage()).addMarkers(m);
 	}
@@ -116,6 +119,106 @@ public class PaginatorImpl implements Paginator, PageInfo {
 
 	public void insertIdentifier(String id) {
 		((PageSequenceImpl)currentSequence()).insertIdentifier(id);
+	}
+	
+	/**
+	 * Paginates the supplied block sequence
+	 * @param fs the block sequence interable
+	 * @param refs the cross references to use
+	 * @throws IOException if IO fails
+	 */
+	public void paginate(Iterable<BlockSequence> fs, CrossReferences refs) throws IOException {
+		state.assertNotOpen();
+		this.pageStruct = new PageStructImpl();
+		state.open();
+		for (BlockSequence seq : fs) {
+			if (seq.getInitialPageNumber()==null) {
+				newSequence(seq.getLayoutMaster());
+			} else {
+				newSequence(seq.getLayoutMaster(), seq.getInitialPageNumber()-1);
+			}
+			newPage();
+			//ArrayList<Block> tmp = new ArrayList<Block>();
+			//Block[] groupA = new Block[tmp.size()];
+			//groupA = tmp.toArray(groupA);
+			int gi = 0;
+			for (Block g : seq) {
+				//int height = ps.getCurrentLayoutMaster().getFlowHeight();
+				switch (g.getBreakBeforeType()) {
+					case PAGE:
+						if (getPageInfo().countRows()>0) {
+							newPage();
+						}
+						break;
+					case AUTO:default:;
+				}
+				//FIXME: se över recursiv hämtning
+				switch (g.getKeepType()) {
+					case ALL:
+						int keepHeight = getKeepHeight(seq, gi, refs);
+						if (getPageInfo().countRows()>0 && keepHeight>getPageInfo().getFlowHeight()-getPageInfo().countRows() && keepHeight<=getPageInfo().getFlowHeight()) {
+							newPage();
+						}
+						break;
+					case AUTO:
+						break;
+					default:;
+				}
+				if (g.getSpaceBefore()+g.getSpaceAfter()>=getPageInfo().getFlowHeight()) {
+					IOException ex = new IOException("Layout exception");
+					ex.initCause(new FormatterException("Group margins too large to fit on an empty page."));
+					throw ex;
+				} else if (g.getSpaceBefore()+1>getPageInfo().getFlowHeight()-getPageInfo().countRows()) {
+					newPage();
+				}
+				for (int i=0; i<g.getSpaceBefore();i++) {
+					newRow(new Row(""));
+				}
+				RowDataManager rdm = g.getRowDataManager(refs);
+				insertMarkers(rdm.getGroupMarkers());
+				boolean first = true;
+				
+				if (rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
+					insertIdentifier(g.getIdentifier());
+				}
+				for (Row row : rdm) {
+					if (first) {
+						first = false;
+						if (!"".equals(g.getIdentifier())) {
+							newRow(row, g.getIdentifier());
+						} else {
+							newRow(row);
+						}
+					} else {
+						newRow(row);
+					}
+				}
+				if (g.getSpaceAfter()>=getPageInfo().getFlowHeight()-getPageInfo().countRows()) {
+					newPage();
+				} else {
+					for (int i=0; i<g.getSpaceAfter();i++) {
+						newRow(new Row(""));
+					}
+				}
+				gi++;
+			}
+		}
+		state.close();
+	}
+	
+	private static int getKeepHeight(BlockSequence seq, int gi, CrossReferences refs) {
+		int keepHeight = seq.getBlock(gi).getSpaceBefore()+seq.getBlock(gi).getRowDataManager(refs).getRowCount();
+		if (seq.getBlock(gi).getKeepWithNext()>0 && gi+1<seq.getBlockCount()) {
+			keepHeight += seq.getBlock(gi).getSpaceAfter()+seq.getBlock(gi+1).getSpaceBefore()+seq.getBlock(gi).getKeepWithNext();
+			switch (seq.getBlock(gi+1).getKeepType()) {
+				case ALL:
+					keepHeight += getKeepHeight(seq, gi+1, refs);
+					break;
+				case AUTO: break;
+				default:;
+			}
+		}
+		return keepHeight;
 	}
 
 }

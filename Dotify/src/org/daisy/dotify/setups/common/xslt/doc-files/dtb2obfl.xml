@@ -6,7 +6,7 @@
 	Provides a base stylesheet for DTBook. The stylesheet must be extended. 
 	The minimum requirement is to implement a template with the name 
 	insertLayoutMaster. This template should add layout definition elements,
-	see flow.dtd. The extending stylesheet can also benefit from the 
+	see http://code.google.com/p/obfl/. The extending stylesheet can also benefit from the 
 	processing modes to refine layout. See below.
 	
 	Parameters

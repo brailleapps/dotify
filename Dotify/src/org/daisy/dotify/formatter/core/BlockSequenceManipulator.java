@@ -48,13 +48,14 @@ class BlockSequenceManipulator {
 		return newSequence(sequence);
 	}
 	
+	/*
 	public BlockSequence newSubSequence(String fromId) {
 		Integer fromIndex = taggedEntries.get(fromId);
 		if (fromIndex==null) {
 			throw new IllegalArgumentException("Cannot find identifier " + fromId);
 		}
 		return newSequence(sequence.subList(fromIndex, sequence.size()));
-	}
+	}*/
 	
 	public void insertGroup(Iterable<Block> blocks, String beforeId) {
 		ArrayList<Block> call = new ArrayList<Block>();
@@ -63,6 +64,15 @@ class BlockSequenceManipulator {
 		}
 		insertGroup(call, beforeId);
 	}
+	public void appendGroup(Iterable<Block> blocks) {
+		ArrayList<Block> call = new ArrayList<Block>();
+		for (Block b : blocks) {
+			call.add(b);
+		}
+		sequence.addAll(call);
+		taggedEntries = tagSequence(sequence);
+	}
+	
 	public void insertGroup(Collection<Block> seq, String beforeId) {
 		Integer beforeIndex = taggedEntries.get(beforeId);
 		if (beforeIndex==null) {
@@ -93,12 +103,17 @@ class BlockSequenceManipulator {
 		taggedEntries = tagSequence(sequence);
 	}
 	
-	public BlockSequence newSequenceFromHead(String toId) {
-		Integer toIndex = taggedEntries.get(toId);
-		toIndex++;
-		return newSequence(sequence.subList(0, toIndex));
+	public void removeTail(String fromId) {
+		Integer fromIndex = taggedEntries.get(fromId);
+		fromIndex++;
+		int count = sequence.size()-fromIndex;
+		for (int i=0; i<count; i++) {
+			sequence.remove((int)fromIndex);
+		}
+		taggedEntries = tagSequence(sequence);
 	}
 
+	/*
 	public BlockSequence newSubSequence(String fromId, String toId) {
 		Integer fromIndex = taggedEntries.get(fromId);
 		Integer toIndex = taggedEntries.get(toId);
@@ -108,12 +123,12 @@ class BlockSequenceManipulator {
 		toIndex++;
 		// subList handles checking of fromIndex>toIndex
 		return newSequence(sequence.subList(fromIndex, toIndex));
-	}
-	
+	}*/
+	/*
 	public BlockSequence newFromItem(String id) {
 		return newSubSequence(id, id);
 	}
-	
+	*/
 	private static HashMap<String, Integer> tagSequence(List<Block> seq) {
 		HashMap<String, Integer> entries = new HashMap<String, Integer>();
 		int i = 0;

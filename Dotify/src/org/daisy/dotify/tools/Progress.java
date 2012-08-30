@@ -21,6 +21,10 @@ public class Progress {
 		return eta;
 	}
 	
+	public Date getStart() {
+		return new Date(start);
+	}
+	
 	public void setProgress(double val) {
 		long now = System.currentTimeMillis();
 		double pD = val - progress;

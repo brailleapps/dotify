@@ -16,107 +16,16 @@ Provides for....
 -->
 
 <p>Provides a braille translation system. The system can
-convert structural XML documents into braille (or other text-oriented display formats, i.e.
-formats that have a fixed width in characters per row).</p>
+convert XML documents into braille or other text-oriented display formats.</p>
 
-<h3>Adding a new locale</h3>
-
-<p>Adding a new locale requires some work, depending on your requirements. At
-least the following items need to be considered:</p>
+<p>This package contains the application runnable (the command line ui), a component for UI embedding of Dotify and system keys and properties.</p>
+<p>The key packages for extending locale support in the application are:</p>
 <ul>
-  <li>Add a new package in "org.daisy.dotify.setups", for example "de_DE".
-    All locale specific code should be stored here except text filters, see
-    Adding a language below.</li>
-  <li>Add your setup name to the "Setup" enum in TaskSystemFactory.</li>
-  <li>Create a class that implements TaskSystem, and add to it the tasks that
-    your locale needs, see below.</li>
-  <li>Add your TaskSystem to TaskSystemFactory. Add the lines needed to the
-    method called "newTaskSystem".</li>
-  <li>Add a language, see below.</li>
+<li>org.daisy.dotify.setups</li>
+<li>org.daisy.dotify.translator</li>
+<li>org.daisy.dotify.hyphenator</li>
 </ul>
-
-<h3>Implementing TaskSystem</h3>
-
-<p>A TaskSystem implementation should contain at least these steps:</p>
-<ul>
-  <li>An input format to OBFL format conversion, for
-    example: 
-    <p><code>setup.add(new XsltTask("DTBook to OBFL converter",
-    dtbook2obflXsltUrl, null, xsltProps));</code></p>
-  </li>
-  <li>A OBFL format to a PagedMedia conversion, for example: 
-    <p><code>setup.add(new LayoutEngineTask("OBFL to PEF converter", flow,
-    paginator, paged));</code></p>
-  </li>
-</ul>
-
-<p>Refer to the sv_SE implementation for more information.</p>
-
-<h3>Adding a language</h3>
-
-<p>Braille tables are a part of the "org.daisy.dotify.translator" package. The purpose of this is
-to allow all locales to access each others rules, and optionally output braille
-using that locale, even when using a setup in another language.</p>
-<ul>
-  <li>Create a table that follows the rules of UCharReplacer (for more
-    information, see the int_daisy_unicodeTranscoder documentation in Daisy Pipeline), 
-    and place it in a new package in the
-    "org.daisy.dotify.translator" package, e.g "de_DE/de_DE.xml".<br />
-    <em>If your locale has special requirements (such as contractions), this
-    method cannot be used. In this case, another implementation must be
-    created. If your class implements the StringFilter interface, the next step
-    can still be applied.</em></li>
-  <li>Add your locale to the system, by adding the name of your implementation
-  	to the org.daisy.dotify.translator.BrailleFilter file in META-INF/services.
-  </li>
-</ul>
-
-<h3>Customizing layout</h3>
-<p>Page layout, such as headers and footers, as well as the interpretation of
-elements in the input document are customized by writing a XSLT stylesheet for the
-input format, so that the input document's contents is expressed using the OBFL
-grammar. See "flow.dtd" in the "org.daisy.dotify.formatter"
-package for a description of this format.</p>
-
-<p>If there exist an XSLT for the input format, it could be extended as defined
-by XSLT. As a general guideline, it is ok to extend a stylesheet in
-"setups.common". It is however, not recommended to extend another locale's
-stylesheets. In this case, it is better to copy the stylesheet into your
-locale's directory, and modify it.</p>
-
-<h3>Adding input formats</h3>
-<p>Similarly to customizing layout, a new input format requires a translation
-between the grammar in the input document and OBFL. This is 
-achieved by applying an XSLT tailored for the task.</p>
-
-<p>Detecting the input format can require some work. However, the
-InputDetectorTaskSystem is specifically designed to aid the process of
-selecting and executing the correct validation rules and XSLT stylesheet for 
-a given input document and locale. It can be inserted at the appropriate place in
-another TaskSystem.</p>
-
-<p>Add to InputDetectorTaskSystem the lines needed to support the new format,
-e.g:</p>
-
-<p><code>if (rootNS.equals("http://www.daisy.org/z3986/2005/dtbook/")
-&amp;&amp; rootElement.equals("dtbook")) {</code><code>inputformat =
-"dtbook.properties";</code><code>}</code></p>
-
-<p>Choose a suitable name for the properties file, typically using the name of
-the format, e.g. "html.properties".</p>
-
-<p>Refer to the Javadoc for more information on how to customize the
-InputDetectorTaskSystem for your locale.</p>
-
-<h3>Adding output formats</h3>
-
-<p>First, consider if your needs could be met by converting the PEF file to
-your desired format using (or extending) <a href="http://code.google.com/p/brailleutils/">Braille Utils</a>.
-If not, add an output format by implementing "PagedMediaWriter". Put your
-creation in the "org.daisy.dotify.formatter.writers" package. If
-your output format requirements cannot be met by implementing
-"PagedMediaWriter", please consider submitting a <a
-href="http://code.google.com/p/dotify/issues/list">feature request</a>.</p>
+<p>Please refer to the documentation of these packages for more information.</p>
 <!--
 <h2>Package Specification</h2>
 

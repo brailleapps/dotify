@@ -1,24 +1,23 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.Formatter;
+import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
+import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
-import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.formatter.dom.SpanProperties;
-import org.daisy.dotify.formatter.utils.BlockHandler;
-import org.daisy.dotify.text.FilterFactory;
-import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.formatter.dom.TextProperties;
+import org.daisy.dotify.formatter.utils.BlockHandler.ListItem;
 import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.tools.StateObject;
+import org.daisy.dotify.translator.BrailleTranslator;
 
 
 /**
@@ -30,20 +29,24 @@ public class FormatterImpl implements Formatter {
 	private int rightMargin;
 	private final BlockStructImpl flowStruct;
 	private final Stack<BlockProperties> context;
-	private boolean firstRow;
+	//private boolean firstRow;
 	private final StateObject state;
+	//private CrossReferences refs;
 	private StringFilter filter;
 
-	private FilterFactory filtersFactory;
-	private FilterLocale locale;
-	private BlockHandler bh;
+	private BrailleTranslator translator;
+	//private FilterLocale locale;
+	//private BlockHandler bh;
+	
+	private int blockIndent;
+	private Stack<Integer> blockIndentParent;
+	private ListItem listItem;
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement SpanProperites
 	// TODO: Implement floating elements
 	/**
-	 * Create a new flow
-	 * @param filtersFactory the filters factory to use
+	 * Creates a new formatter
 	 */
 	public FormatterImpl() {
 		//this.filters = builder.filtersFactory.getDefault();
@@ -53,62 +56,52 @@ public class FormatterImpl implements Formatter {
 		this.flowStruct = new BlockStructImpl(); //masters
 		this.state = new StateObject();
 		this.filter = null;
+		//this.refs = null;
+		this.listItem = null;
 	}
 
 
-	public void setFilterFactory(FilterFactory filterFactory) {
+	public void setBrailleTranslator(BrailleTranslator translator) {
 		state.assertUnopened();
-		this.filtersFactory = filterFactory;
+		this.translator = translator;
 	}
-
+/*
 	public void setLocale(FilterLocale locale) {
 		state.assertUnopened();
 		this.locale = locale;
 		filter = null;
-	}
-	
+	}*/
+
 	public void open() {
 		state.assertUnopened();
-		bh = new BlockHandler(getDefaultFilter());
+		//bh = new BlockHandler(getDefaultFilter());
+		this.blockIndent = 0;
+		this.blockIndentParent = new Stack<Integer>();
+		blockIndentParent.add(0);
 		state.open();
 	}
 
 	public void addLayoutMaster(String name, LayoutMaster master) {
 		flowStruct.addLayoutMaster(name, master);
 	}
-	
-	//TODO Handle SpanProperites
-	public void addChars(CharSequence c, SpanProperties p) {
-		state.assertOpen();
-		addChars(c);
-	}
 
-	// Using BlockHandler
-	public void addChars(CharSequence c) {
+	public void addChars(CharSequence c, TextProperties p) {
 		state.assertOpen();
 		assert context.size()!=0;
 		if (context.size()==0) return;
-		bh.setBlockProperties(context.peek());
-		{
-			LayoutMaster master = flowStruct.getCurrentSequence().getLayoutMaster();
-			int flowWidth = master.getFlowWidth();
-			bh.setWidth(flowWidth - rightMargin);
+		BlockImpl bl = flowStruct.getCurrentSequence().getCurrentBlock();
+		if (listItem!=null) {
+			//append to this block
+			bl.setListItem(listItem.getLabel(), listItem.getType());
+			//list item has been used now, discard
+			listItem = null;
 		}
-		ArrayList<Row> ret;
-		if (firstRow) {
-			ret = bh.layoutBlock(c, leftMargin, flowStruct.getCurrentSequence().getLayoutMaster());
-			firstRow = false;
-		} else {
-			Row r = flowStruct.getCurrentSequence().getCurrentBlock().pop();
-			ret = bh.appendBlock(c, leftMargin, r, flowStruct.getCurrentSequence().getLayoutMaster());
-		}
-		for (Row r : ret) {
-			flowStruct.getCurrentSequence().getCurrentBlock().push(r);
-		}
+		bl.addChars(c, p, context.peek());		
 	}
 	// END Using BlockHandler
 
 	public void insertMarker(Marker m) {
+		//FIXME: this does not work
 		state.assertOpen();
 		flowStruct.getCurrentSequence().getCurrentBlock().addMarker(m);
 	}
@@ -119,9 +112,20 @@ public class FormatterImpl implements Formatter {
 
 	public void startBlock(BlockProperties p, String blockId) {
 		state.assertOpen();
-		assert bh.getCurrentLeader() == null;
+		leftMargin += p.getLeftMargin();
+		rightMargin += p.getRightMargin();
 		if (context.size()>0) {
-			bh.addToBlockIndent(context.peek().getBlockIndent());
+			addToBlockIndent(context.peek().getBlockIndent());
+		}
+		RowDataProperties rdp = new RowDataProperties.Builder(
+				getTranslator(), flowStruct.getCurrentSequence().getLayoutMaster()).
+					blockIndent(blockIndent).
+					blockIndentParent(blockIndentParent.peek()).
+					leftMargin(leftMargin).
+					rightMargin(rightMargin).
+					build();
+		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId, rdp);
+		if (context.size()>0) {
 			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
 				switch (context.peek().getListType()) {
@@ -133,42 +137,43 @@ public class FormatterImpl implements Formatter {
 				case PL: default:
 					listLabel = "";
 				}
-				bh.setListItem(listLabel, context.peek().getListType());
+				listItem = new ListItem(listLabel, context.peek().getListType());
 			}
 		}
-		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId);
 		c.addSpaceBefore(p.getTopMargin());
 		c.setBreakBeforeType(p.getBreakBeforeType());
 		c.setKeepType(p.getKeepType());
 		c.setKeepWithNext(p.getKeepWithNext());
 		c.setIdentifier(p.getIdentifier());
 		context.push(p);
-		leftMargin += p.getLeftMargin();
-		rightMargin += p.getRightMargin();
-		firstRow = true;
+		//firstRow = true;
 	}
 	
 	public void endBlock() {
 		state.assertOpen();
-		/*if (currentLeader!=null) {
-			addChars("");
-		}*/
-		// BlockHandler
-		if (bh.getCurrentLeader()!=null || bh.getListItem()!=null) {
-			addChars("");
+		if (listItem!=null) {
+			addChars("", new TextProperties.Builder(null).build());
 		}
-		// BlockHandler
 		BlockProperties p = context.pop();
 		flowStruct.getCurrentSequence().getCurrentBlock().addSpaceAfter(p.getBottomMargin());
-		if (context.size()>0) {
-			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null);
-			c.setKeepType(context.peek().getKeepType());
-			c.setKeepWithNext(context.peek().getKeepWithNext());
-			bh.subtractFromBlockIndent(context.peek().getBlockIndent());
-		}
 		leftMargin -= p.getLeftMargin();
 		rightMargin -= p.getRightMargin();
-		firstRow = true;
+		if (context.size()>0) {
+			Keep keep = context.peek().getKeepType();
+			int next = context.peek().getKeepWithNext();
+			subtractFromBlockIndent(context.peek().getBlockIndent());
+			RowDataProperties rdp = new RowDataProperties.Builder(
+					getTranslator(), flowStruct.getCurrentSequence().getLayoutMaster()).
+						blockIndent(blockIndent).
+						blockIndentParent(blockIndentParent.peek()).
+						leftMargin(leftMargin).
+						rightMargin(rightMargin).
+						build();
+			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, rdp);
+			c.setKeepType(keep);
+			c.setKeepWithNext(next);
+		}
+		//firstRow = true;
 	}
 
 	public void newSequence(SequenceProperties p) {
@@ -178,18 +183,12 @@ public class FormatterImpl implements Formatter {
 
 	public void insertLeader(Leader leader) {
 		state.assertOpen();
-		//currentLeader = leader;
-		if (bh.getCurrentLeader()!=null) {
-			addChars("");
-		}
-		bh.setCurrentLeader(leader);
+		flowStruct.getCurrentSequence().getCurrentBlock().insertLeader(leader);
 	}
 	
 	public void newLine() {
 		state.assertOpen();
-		Row r = new Row("");
-		r.setLeftMargin(leftMargin + context.peek().getTextIndent());
-		flowStruct.getCurrentSequence().getCurrentBlock().push(r);
+		flowStruct.getCurrentSequence().getCurrentBlock().newLine(leftMargin + context.peek().getTextIndent());
 	}
 
 	/**
@@ -228,21 +227,42 @@ public class FormatterImpl implements Formatter {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
-
+/*
 	public FilterFactory getFilterFactory() {
 		return filtersFactory;
-	}
+	}*/
 
-
+/*
 	public FilterLocale getFilterLocale() {
 		return locale;
-	}
+	}*/
 
-
+/*
 	public StringFilter getDefaultFilter() {
 		if (filter == null) {
 			filter = filtersFactory.newStringFilter(locale);
 		}
 		return filter;
+	}*/
+	
+	private void addToBlockIndent(int value) {
+		blockIndentParent.push(blockIndent);
+		blockIndent += value;
 	}
+	
+	private void subtractFromBlockIndent(int value) {
+		int test = blockIndentParent.pop();
+		blockIndent -= value;
+		assert blockIndent==test;
+	}
+
+	public void insertReference(String identifier, NumeralStyle numeralStyle) {
+		flowStruct.getCurrentSequence().getCurrentBlock().insertReference(identifier, numeralStyle);
+	}
+
+
+	public BrailleTranslator getTranslator() {
+		return translator;
+	}
+
 }

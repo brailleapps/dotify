@@ -21,8 +21,8 @@ class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 		return p;
 	}*/
 
-	public BlockImpl newBlock(String blockId) {
-		return (BlockImpl)this.push((Block)new BlockImpl(blockId));
+	public BlockImpl newBlock(String blockId, RowDataProperties rdp) {
+		return (BlockImpl)this.push((Block)new BlockImpl(blockId, rdp));
 	}
 	
 	public BlockImpl getCurrentBlock() {

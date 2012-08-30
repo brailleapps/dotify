@@ -14,8 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.setups.common.CommonResourceLocator;
-import org.daisy.dotify.setups.common.CommonResourceLocator.CommonResourceIdentifier;
 import org.daisy.dotify.system.InputManager;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.ResourceLocator;
@@ -188,8 +186,7 @@ class XMLInputManager implements InputManager {
 				p.loadFromXML(propsStream);
 				propsStream.close();
 
-				HashMap h = new HashMap();
-				h.putAll(p);
+
 				HashMap xsltProps = new HashMap();
 				xsltProps.putAll(parameters.getProperties());
 				for (Object key : p.keySet()) {
@@ -210,12 +207,6 @@ class XMLInputManager implements InputManager {
 						logger.info("Unrecognized key: " + key);
 					}
 				}
-				//TODO: make this optional using a parameter
-				// Whitespace normalizer TransformerFactoryConstants.SAXON8
-				setup.add(new XsltTask("OBFL whitespace normalizer",
-										new CommonResourceLocator().getResourceByIdentifier(CommonResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
-										null,
-										h));
 			} else {
 				throw new TaskSystemException("Unable to open a configuration stream for the format.");
 			}

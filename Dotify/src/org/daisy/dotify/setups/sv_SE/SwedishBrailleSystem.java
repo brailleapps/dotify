@@ -25,8 +25,10 @@ import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.StringFilter;
-import org.daisy.dotify.translator.BrailleFilterFactory;
+import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
+import org.daisy.dotify.translator.UnsupportedSpecificationException;
 import org.xml.sax.SAXException;
 
 
@@ -91,7 +93,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		// Layout FLOW as PEF
 		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
-		BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
+		//BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
 
 		// Customize which parameters are sent to the PEFMediaWriter, as it outputs all parameters for future reference
 		Properties p2 = new Properties();
@@ -107,9 +109,16 @@ public class SwedishBrailleSystem implements TaskSystem {
 		p2.remove("output");
 		p2.remove(SystemKeys.TEMP_FILES_DIRECTORY);
 
+		//StringFilter swedishFilter = new SwedishBrailleFilter(sv_SE);
+		
+		BrailleTranslator bt;
+		try {
+			bt = BrailleTranslatorFactoryMaker.newInstance().newBrailleTranslator(sv_SE, BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		} catch (UnsupportedSpecificationException e1) {
+			throw new TaskSystemException(e1);
+		}
 		PEFMediaWriter paged = new PEFMediaWriter(p2);
-		StringFilter swedishFilter = factory.newStringFilter(sv_SE);
-		setup.add(new LayoutEngineTask("OBFL to PEF converter", factory, sv_SE, paged));
+		setup.add(new LayoutEngineTask("OBFL to PEF converter", bt, paged));
 
 		// Split result into volumes
 		//setup.add(new XsltTask("Volume splitter", volumeSplitter, null, h));
@@ -128,7 +137,7 @@ public class SwedishBrailleSystem implements TaskSystem {
     						build();
     	SwedishVolumeCoverPage cover;
 		try {
-			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, swedishFilter, p.getPageHeight());
+			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, bt, p.getPageHeight());
 		} catch (XPathExpressionException e) {
 			throw new TaskSystemException(e);
 		} catch (ParserConfigurationException e) {

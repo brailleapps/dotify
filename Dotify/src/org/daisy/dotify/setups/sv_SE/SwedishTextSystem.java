@@ -8,10 +8,11 @@ import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.RegexFilter;
-import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
+import org.daisy.dotify.translator.UnsupportedSpecificationException;
 
 
 /**
@@ -37,18 +38,17 @@ public class SwedishTextSystem implements TaskSystem {
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 
 		// Layout FLOW as text
-		MyFilterFactory factory = new MyFilterFactory();
+		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
+		BrailleTranslator bt;
+		try {
+			bt = BrailleTranslatorFactoryMaker.newInstance().newBrailleTranslator(sv_SE, BrailleTranslatorFactory.MODE_BYPASS);
+		} catch (UnsupportedSpecificationException e1) {
+			throw new TaskSystemException(e1);
+		}
 		TextMediaWriter paged = new TextMediaWriter(p.getProperties(), "UTF-8");
-		setup.add(new LayoutEngineTask("OBFL to Text converter", factory, FilterLocale.parse("sv-SE"), paged));
+		setup.add(new LayoutEngineTask("OBFL to Text converter", bt, paged));
 
 		return setup;
-	}
-	
-	private static class MyFilterFactory implements FilterFactory {
-		public StringFilter newStringFilter(FilterLocale target) {
-			// remove zero width space
-			return new RegexFilter("\\u200B", "");
-		}
 	}
 
 }

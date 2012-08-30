@@ -11,7 +11,7 @@ public interface TocSequenceEvent extends VolumeSequenceEvent {
 	 * Returns true if this toc sequence applies to the supplied context
 	 * @param volume
 	 * @param volumeCount
-	 * @return
+	 * @return returns true if this toc sequence applies to the supplied context, false otherwise
 	 */
 	public boolean appliesTo(int volume, int volumeCount);
 	
@@ -19,7 +19,7 @@ public interface TocSequenceEvent extends VolumeSequenceEvent {
 	 * Gets the TOC events 
 	 * @param volume
 	 * @param volumeCount
-	 * @return
+	 * @return returns the TOC events
 	 */
 	public TocEvents getTocEvents(int volume, int volumeCount);	
 	

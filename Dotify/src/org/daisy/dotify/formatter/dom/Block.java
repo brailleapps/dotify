@@ -1,7 +1,5 @@
 package org.daisy.dotify.formatter.dom;
 
-import java.util.ArrayList;
-
 import org.daisy.dotify.formatter.dom.FormattingTypes.BreakBefore;
 import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
 /**
@@ -9,7 +7,7 @@ import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
  * associated with it.
  * @author Joel Håkansson
  */
-public interface Block extends Iterable<Row> {
+public interface Block {
 
 	/**
 	 * Gets the number of empty rows that should precede the 
@@ -21,9 +19,8 @@ public interface Block extends Iterable<Row> {
 	public int getKeepWithNext();
 	public String getIdentifier();
 	public Keep getKeepType();
-	public ArrayList<Marker> getGroupMarkers();
 	public BreakBefore getBreakBeforeType();
-	public int getRowCount();
+	public RowDataManager getRowDataManager(CrossReferences refs);
 	public String getBlockIdentifier();
 	
 }

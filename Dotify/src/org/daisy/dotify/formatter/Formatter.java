@@ -2,16 +2,15 @@ package org.daisy.dotify.formatter;
 
 import java.io.Closeable;
 
+import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.formatter.dom.SpanProperties;
-import org.daisy.dotify.text.FilterFactory;
-import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.formatter.dom.TextProperties;
+import org.daisy.dotify.translator.BrailleTranslator;
 
 
 /**
@@ -23,16 +22,21 @@ import org.daisy.dotify.text.StringFilter;
  * @author Joel Håkansson, TPB
  */
 public interface Formatter extends Closeable {
-	
+	/*
 	public FilterFactory getFilterFactory();
+	*/
+	public BrailleTranslator getTranslator();
+	public void setBrailleTranslator(BrailleTranslator translator);
 	
-	public void setFilterFactory(FilterFactory filterFactory);
-	
+	/*
 	public StringFilter getDefaultFilter();
-	
+	*/
+	/*
 	public FilterLocale getFilterLocale();
-	
+	*/
+	/*
 	public void setLocale(FilterLocale locale);
+	*/
 	
 	/**
 	 * Opens the Formatter for writing.
@@ -86,19 +90,13 @@ public interface Formatter extends Closeable {
 	 * @param leader the leader to insert
 	 */
 	public void insertLeader(Leader leader);
-
-	/**
-	 * Add chars to the current block
-	 * @param chars the characters to add to the flow
-	 */
-	public void addChars(CharSequence chars);
 	
 	/**
 	 * Add chars to the current block
 	 * @param chars the characters to add to the flow
 	 * @param props the SpanProperties for the characters 
 	 */
-	public void addChars(CharSequence chars, SpanProperties props);
+	public void addChars(CharSequence chars, TextProperties props);
 	
 	/**
 	 * Explicitly break the current line, even if the line has space 
@@ -113,6 +111,8 @@ public interface Formatter extends Closeable {
 	 * @param master the LayoutMaster
 	 */
 	public void addLayoutMaster(String name, LayoutMaster master);
+	
+	public void insertReference(String identifier, NumeralStyle numeralStyle);
 	
 	public BlockStruct getFlowStruct();
 }

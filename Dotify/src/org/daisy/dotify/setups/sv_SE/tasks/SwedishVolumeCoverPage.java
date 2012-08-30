@@ -14,7 +14,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.utils.TextBorder;
-import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;
 import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
 import org.w3c.dom.Document;
@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
 
 @SuppressWarnings("deprecation")
 public class SwedishVolumeCoverPage implements VolumeCoverPage {
-	private StringFilter filters;
+	private BrailleTranslator filters;
 	private String title;
 	private ArrayList<String> creator;
 	//private int rows;
@@ -31,7 +31,7 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
 	private TextBorder tb;
 	private int height;
 
-	public SwedishVolumeCoverPage(File dtbook, TextBorder tb, StringFilter filters, int height) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+	public SwedishVolumeCoverPage(File dtbook, TextBorder tb, BrailleTranslator filters, int height) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		DocumentBuilder docBuilder = initDocumentBuilder();
 		Document d = docBuilder.parse(dtbook);
 		XPath xp = XPathFactory.newInstance().newXPath();
@@ -69,7 +69,7 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
 
     	// add title
     	if (title!=null && title.length()>0) {
-	    	for (String s : tb.addBorderToParagraph(filters.filter(title))) {
+	    	for (String s : tb.addBorderToParagraph(filters.translate(title))) {
 	    		ret.add(new Row(s));
 	    	}
    			ret.add(new Row(tb.addBorderToRow("")));
@@ -77,13 +77,13 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
     	
     	// add authors
     	if (creator.size()>3) {
-    		for (String s : tb.addBorderToParagraph(filters.filter(creator.get(0) + " m.fl."))) {
+    		for (String s : tb.addBorderToParagraph(filters.translate(creator.get(0) + " m.fl."))) {
     			ret.add(new Row(s));
     		}
     	} else {
 	    	for (String c : creator) {
 	    		if (c!=null && c.length()>0) {
-		    		for (String s : tb.addBorderToParagraph(filters.filter(c))) {
+		    		for (String s : tb.addBorderToParagraph(filters.translate(c))) {
 		    			ret.add(new Row(s));
 		    		}
 	    		}
@@ -97,7 +97,9 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
     	} else {
     		voltext = "Volym "+intToText(volumeNo)+" av "+intToText(volumeCount);
     	}
-    	ArrayList<String> vol = tb.addBorderToParagraph(filters.filter(voltext));
+    	filters.setHyphenating(false);
+    	ArrayList<String> vol = tb.addBorderToParagraph(filters.translate(voltext));
+    	filters.setHyphenating(true);
     	while (ret.size()<height-vol.size()-1) {
     		ret.add(new Row(tb.addBorderToRow("")));
     	}

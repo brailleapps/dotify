@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.dom;
 
+
 /**
  * Provides a complete braille book.
  *  
@@ -12,19 +13,34 @@ public interface BookStruct {
 	 * @param volumeNumber the volume number to get content for, one-based
 	 * @return returns the content
 	 */
-	public Iterable<PageSequence> getPreVolumeContents(int volumeNumber, VolumeStruct volumeData);
+	public PageStruct getPreVolumeContents(int volumeNumber);
 	
 	/**
 	 * Gets static or generated content to be placed last in a volume
 	 * @param volumeNumber the volume number to get content for, one-based
 	 * @return returns the content
 	 */
-	public Iterable<PageSequence> getPostVolumeContents(int volumeNumber, VolumeStruct volumeData);
+	public PageStruct getPostVolumeContents(int volumeNumber);
 
 	/**
 	 * Gets the contents of the book
-	 * @return
+	 * @return returns the contents of the book
 	 */
-	public PageStruct getPageStruct();
+	public PageStruct getContentsPageStruct();
+	
+	public void setVolumeStruct(VolumeStruct volumeStruct);
+	
+	/**
+	 * Returns true if any requested id was not found since it was last reset
+	 * or if an id has changed page or volume between requests.
+	 * @return returns true if, and only if, at least one request to getPage or getVolumeNumber
+	 * returned null or a different location than before, false otherwise
+	 */
+	public boolean isDirty();
+	
+	/**
+	 * Attempts to reset dirty to false. This may involve re-formatting the contents.
+	 */
+	public void resetDirty();
 
 }

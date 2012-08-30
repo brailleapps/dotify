@@ -7,13 +7,13 @@ import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockStruct;
-import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.EventContents;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
-import org.daisy.dotify.formatter.dom.Page;
+import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
+import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.dom.TocEvent;
 import org.daisy.dotify.formatter.utils.Expression;
 
@@ -23,52 +23,28 @@ import org.daisy.dotify.formatter.utils.Expression;
  * @author Joel Håkansson
  */
 public class BlockEventHandler {
-	private final CrossReferences refs;
 	private final Formatter formatter;
-	private boolean isDirty;
-	
-	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters) {
-		this(factory, masters, null);
-	}
 
-	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters, CrossReferences refs) {
-		this.refs = refs;
+	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters) {
 		this.formatter = factory.newFormatter();
 		this.formatter.open();
 		for (String name : masters.keySet()) {
 			this.formatter.addLayoutMaster(name, masters.get(name));
 		}
-		isDirty = false;
 	}
 	
 	private void runBlockContents(BlockEvent b) {
 		for (EventContents bc : b) {
 			switch (bc.getContentType()) {
 				case PCDATA: {
-					formatter.addChars(((TextContents)bc).getText());
+					TextContents tc = (TextContents)bc;
+					formatter.addChars(tc.getText(), tc.getSpanProperties());
 					break; }
 				case LEADER: {
 					formatter.insertLeader(((Leader)bc));
 					break; }
 				case PAGE_NUMBER: {
-					if (refs==null) {
-						throw new RuntimeException("No cross references supplied.");
-					}
-					String refid = ((PageNumberReference)bc).getRefId();
-					Page page = refs.getPage(refid);
-					if (page==null) {
-						isDirty = true;
-						formatter.addChars("??");
-					} else {
-						int p = page.getPageIndex()+1;
-						switch (((PageNumberReference)bc).getNumeralStyle()) {
-							case ROMAN:
-								formatter.addChars(""+RomanNumeral.int2roman(p));
-								break;
-							case DEFAULT:default:
-								formatter.addChars(""+p);
-						}
-					}
+					formatter.insertReference(((PageNumberReference)bc).getRefId(), ((PageNumberReference)bc).getNumeralStyle());
 					break; }
 				case BLOCK: {
 					BlockEvent ev = (BlockEvent)bc;
@@ -87,8 +63,13 @@ public class BlockEventHandler {
 					break; }
 				case EVALUATE: {
 					Evaluate e = ((Evaluate)bc);
-					formatter.addChars((new Expression().evaluate(e.getExpression(), e.getVariables())).toString());
+					formatter.addChars((new Expression().evaluate(e.getExpression(), e.getVariables())).toString(), new TextProperties.Builder(null).build());
 					break; }
+				case MARKER: {
+					Marker m = ((Marker)bc);
+					formatter.insertMarker(m);
+					break;
+				}
 				default:
 					throw new RuntimeException("Unknown contents: " + bc.getContentType());
 			}
@@ -114,10 +95,6 @@ public class BlockEventHandler {
 			runBlockContents(e);
 			formatter.endBlock();
 		}
-	}
-	
-	public boolean isDirty() {
-		return isDirty;
 	}
 	
 	public BlockStruct close() throws IOException {

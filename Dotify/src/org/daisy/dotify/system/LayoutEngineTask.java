@@ -16,13 +16,12 @@ import org.daisy.dotify.formatter.PagedMediaWriterException;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.VolumeSplitterFactory;
 import org.daisy.dotify.formatter.WriterHandler;
+import org.daisy.dotify.formatter.core.BookStructImpl;
 import org.daisy.dotify.formatter.core.ObflParser;
+import org.daisy.dotify.formatter.dom.BookStruct;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
-import org.daisy.dotify.text.FilterFactory;
-import org.daisy.dotify.text.FilterLocale;
-
-//TODO: Validate against schema
+import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
  * <p>
@@ -39,43 +38,30 @@ import org.daisy.dotify.text.FilterLocale;
  *
  */
 public class LayoutEngineTask extends InternalTask  {
-	private final FilterFactory filterFactory;
-	private final FilterLocale locale;
+	private final BrailleTranslator translator;
+	//private final FilterLocale locale;
 	private final PagedMediaWriter writer;
 	private final Logger logger;
-	//private Schema schema;
 	
 	/**
-	 * Create a new instance of LayoutEngineTask.
+	 * Creates a new instance of LayoutEngineTask.
 	 * @param name a descriptive name for the task
-	 * @param flow 
-	 * @param paginator
-	 * @param writer
+	 * @param filterFactory the filter factory to use
+	 * @param locale the context locale
+	 * @param writer the output writer
 	 */
-	public LayoutEngineTask(String name, FilterFactory filterFactory, FilterLocale locale, PagedMediaWriter writer) {
+	public LayoutEngineTask(String name, BrailleTranslator translator, PagedMediaWriter writer) {
 		super(name);
-		this.filterFactory = filterFactory;
-		this.locale = locale;
+		this.translator = translator;
+		//this.locale = locale;
 		this.writer = writer;
-		//this.schema = null;
 		this.logger = Logger.getLogger(LayoutEngineTask.class.getCanonicalName());
 	}
-	/*
-	public void setSchema(Schema schema) {
-		this.schema = schema;
-	}*/
 
 	@Override
 	public void execute(File input, File output) throws InternalTaskException {
 		try {
-/* SAX impl
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			spf.setNamespaceAware(true);
-			if (schema != null) {
-				spf.setSchema(schema);
-			}
-			SAXParser sp = spf.newSAXParser();*/
-			
+		
 			logger.info("Validating input...");
 			
 			try {
@@ -86,57 +72,39 @@ public class LayoutEngineTask extends InternalTask  {
 
 			logger.info("Parsing input...");
 
-			
-/* SAX impl
-			performer.open();
-			FlowHandler flow = new FlowHandler(performer);
-			sp.parse(input, flow);*/
-
 			FormatterFactory formatterFactory = FormatterFactory.newInstance();
-			formatterFactory.setFilterFactory(filterFactory);
-			formatterFactory.setLocale(locale);
+			formatterFactory.setTranslator(translator);
+			//formatterFactory.setLocale(locale);
 
 	        ObflParser obflParser = new ObflParser(formatterFactory);
-	        obflParser.setPaginatorFactory(PaginatorFactory.newInstance());
+	        //obflParser.setPaginatorFactory(PaginatorFactory.newInstance());
 			//FIXME: add target size variable (use splitterMax?)
 			//splitterFactory.setTargetVolumeSize(targetVolumeSize);
 			VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
-			obflParser.setVolumeSplitterFactory(splitterFactory);
-	        VolumeStruct volumes = obflParser.parse(new FileInputStream(input));
-/*
-			logger.info("Paginating...");
-			Paginator paginator = PaginatorFactory.newInstance().newPaginator();
-			paginator.open(formatterFactory);
+			//obflParser.setVolumeSplitterFactory(splitterFactory);
+			obflParser.parse(new FileInputStream(input));
 
-			PaginatorHandler.paginate(flow.getBlockStruct().getBlockSequenceIterable(), paginator);
-			paginator.close();
-
-			PageStruct pageStruct = paginator.getPageStruct();
-			
-
-
-			BookStruct bookStruct = new DefaultBookStruct(
-					pageStruct,
-					flow.getMasters(),
-					flow.getVolumeTemplates(),
-					flow.getTocs(),
-					formatterFactory
+			BookStruct bookStruct = new BookStructImpl(
+					obflParser.getBlockStruct(),
+					obflParser.getMasters(),
+					obflParser.getVolumeTemplates(),
+					obflParser.getTocs(),
+					formatterFactory,
+					PaginatorFactory.newInstance()
 				);
-*/
+			
+	        VolumeStruct volumes = splitterFactory.newSplitter().split(bookStruct);
+
 			logger.info("Rendering output...");
 			writer.open(new FileOutputStream(output));
 			//splitterFactory.newSplitter().split(bookStruct)
 			WriterHandler.write(volumes, writer);
 			writer.close();
 
-		/*} catch (SAXException e) {
-			throw new InternalTaskException("SAXException while runing task.", e);*/
 		} catch (FileNotFoundException e) {
 			throw new InternalTaskException("FileNotFoundException while running task. ", e);
 		} catch (IOException e) {
 			throw new InternalTaskException("IOException while running task. ", e);
-		/*} catch (ParserConfigurationException e) {
-			throw new InternalTaskException("ParserConfigurationException while running task. ", e);*/
 		} catch (PagedMediaWriterException e) {
 			throw new InternalTaskException("Could not open media writer.", e);
 		} catch (XMLStreamException e) {

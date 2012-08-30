@@ -317,56 +317,13 @@
 	<xsl:template match="dtb:dd" mode="apply-block-attributes">
 		<xsl:attribute name="text-indent">3</xsl:attribute>
 	</xsl:template>
-
-	<!-- Svenska skrivregler för punktskrift 2009, page 34
-	<xsl:template match="dtb:em" mode="inline-mode">
-		<xsl:call-template name="addMarkers">
-			<xsl:with-param name="prefix-single-word" select="'&#x2820;&#x2804;'"/>
-			<xsl:with-param name="prefix-multi-word" select="'&#x2820;&#x2824;'"/>
-			<xsl:with-param name="postfix-multi-word" select="'&#x2831;'"/>
-		</xsl:call-template>
-	</xsl:template> -->
-
-	<!-- Svenska skrivregler för punktskrift 2009, page 34 
-	<xsl:template match="dtb:strong" mode="inline-mode">
-		<xsl:call-template name="addMarkers">
-			<xsl:with-param name="prefix-single-word" select="'&#x2828;'"/>
-			<xsl:with-param name="prefix-multi-word" select="'&#x2828;&#x2828;'"/>
-			<xsl:with-param name="postfix-multi-word" select="'&#x2831;'"/>
-		</xsl:call-template>
-	</xsl:template>-->
-
-	<!-- Svenska skrivregler för punktskrift 2009, page 32
-	<xsl:template match="dtb:sup" mode="inline-mode">
-		<xsl:call-template name="addMarkersAlfaNum">
-			<xsl:with-param name="prefix" select="'&#x282c;'"/>
-			<xsl:with-param name="postfix" select="''"/>
-		</xsl:call-template>
-	</xsl:template> -->
-
-	<!-- Svenska skrivregler för punktskrift 2009, page 32
-	<xsl:template match="dtb:sub" mode="inline-mode">
-		<xsl:call-template name="addMarkersAlfaNum">
-			<xsl:with-param name="prefix" select="'&#x2823;'"/>
-			<xsl:with-param name="postfix" select="''"/>
-		</xsl:call-template>
-	</xsl:template> -->
 	
-	<xsl:template name="addMarkersAlfaNum">
-		<xsl:param name="prefix" select="''"/>
-		<xsl:param name="postfix" select="''"/>
+	<xsl:template match="text()">
 		<xsl:choose>
-			<!-- text contains a single alfa/numerical string -->
-			<xsl:when test="count(node())=1 and text() and matches(text(),'^[a-zA-Z0-9]*$')">
-				<xsl:value-of select="$prefix"/>
-				<xsl:apply-templates/>
-				<xsl:value-of select="$postfix"/>
+			<xsl:when test="ancestor::dtb:*[@xml:lang][1][not(self::dtb:dtbook)]">
+				<span><xsl:attribute name="xml:lang"><xsl:value-of select="ancestor::dtb:*[@xml:lang][1]/@xml:lang"/></xsl:attribute><xsl:value-of select="."/></span>
 			</xsl:when>
-			<!-- Otherwise -->
-			<xsl:otherwise>
-				<xsl:message terminate="yes">Error: sub/sub contains a complex expression for which there is no specified formatting.</xsl:message>
-				<xsl:apply-templates/>
-			</xsl:otherwise>		
+			<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 

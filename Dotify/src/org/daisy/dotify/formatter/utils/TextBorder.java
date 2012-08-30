@@ -2,6 +2,8 @@ package org.daisy.dotify.formatter.utils;
 
 import java.util.ArrayList;
 
+import org.daisy.dotify.translator.BrailleTranslatorResult;
+
 /**
  * Provides a way to add a border to a set of paragraphs.
  * @author Joel Håkansson, TPB
@@ -195,13 +197,10 @@ public class TextBorder {
 	 * @param text the text to add borders to
 	 * @return returns an ArrayList of String where each String is a row in the block.
 	 */
-	public ArrayList<String> addBorderToParagraph(String text) {
+	public ArrayList<String> addBorderToParagraph(BrailleTranslatorResult bph) {
 		ArrayList<String> ret = new ArrayList<String>();
-		BreakPointHandler bph = new BreakPointHandler(text);
-    	BreakPoint bp;
     	while (bph.hasNext()) {
-    		bp = bph.nextRow(rowFill);
-    		ret.add(addBorderToRow(bp.getHead().replaceAll("\\s*\\z", "")));
+    		ret.add(addBorderToRow(bph.nextTranslatedRow(rowFill, true).replaceAll("\\s*\\z", "")));
     	}
     	return ret;
 	}
