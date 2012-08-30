@@ -378,10 +378,12 @@ DotifyTranslator/src/org/daisy/dotify/text/CharFilter.java -text svneol=unset#te
 DotifyTranslator/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/FilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/text/HyphenatorFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringSplitter.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/text/TextFileReader.java -text
 DotifyTranslator/src/org/daisy/dotify/text/package.html -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslator.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactory.java -text
