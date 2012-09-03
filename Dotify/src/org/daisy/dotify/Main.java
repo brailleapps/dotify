@@ -92,7 +92,8 @@ public class Main extends AbstractUI {
 			Main.exitWithCode(ExitCode.MISSING_RESOURCE);
 		}
 		
-		File output = new File(p.get(1));
+		File output = new File(p.get(1)).getAbsoluteFile();
+
 		String setup = p.get(2);
 		String context = p.get(3);
 		
