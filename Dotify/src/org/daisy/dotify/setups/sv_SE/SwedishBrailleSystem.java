@@ -100,7 +100,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		p2.putAll(p.getProperties());
 		// Localization parameters are not that interesting in retrospect
 		p2.remove("l10nrearjacketcopy");
-		p2.remove("l10imagedescription");
+		p2.remove("l10nimagedescription");
 		p2.remove("l10ncolophon");
 		p2.remove("l10ncaption");
 		// System file paths should be concealed for security reasons 
