@@ -86,7 +86,7 @@ public class ValidatorTask extends InternalTask {
 		}
 	
 		public void error(SAXParseException exception) throws SAXException {
-			logger.log(Level.WARNING, "SAXParseException in validator task", exception);
+			logger.log(Level.WARNING, "SAXParseException in validator task: " + exception.getMessage());
 			error = true;
 		}
 	

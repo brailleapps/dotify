@@ -212,7 +212,7 @@ public class BlockHandler {
 		//      preContentPos ^
 
 		int preTextIndent = LayoutTools.length(preContent);
-		final int preContentPos = margin+preTextIndent;
+		int preContentPos = margin+preTextIndent;
 		preTabText = preTabText.replaceAll("\u00ad", "");
 		int preTabPos = preContentPos+LayoutTools.length(preTabText);
 		int postTabTextLen = btr.countRemaining();
@@ -251,6 +251,7 @@ public class BlockHandler {
 				preTextIndent = LayoutTools.length(preContent);
 				preTabText = "";
 				
+				preContentPos = margin+preTextIndent;
 				preTabPos = preContentPos;
 				maxLenText = available-(preContentPos);
 				offset = leaderPos-preTabPos;
@@ -274,7 +275,10 @@ public class BlockHandler {
 			nr.addMarkers(r);
 		}
 		nr.setLeftMargin(margin);
-
+		/*
+		if (nr.getChars().length()>master.getFlowWidth()) {
+			throw new RuntimeException("Row is too long (" + nr.getChars().length() + "/" + master.getFlowWidth() + ") '" + nr.getChars() + "'");
+		}*/
 		ret.add(nr);
 	}
 }
