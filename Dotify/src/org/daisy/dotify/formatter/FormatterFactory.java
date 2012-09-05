@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import javax.imageio.spi.ServiceRegistry;
 
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
@@ -15,11 +14,11 @@ import org.daisy.dotify.translator.BrailleTranslator;
  */
 public class FormatterFactory {
 	private BrailleTranslator factory;
-	private FilterLocale locale;
+	//private FilterLocale locale;
 	
 	protected FormatterFactory() {
 		factory = null;
-		locale = null;
+		//locale = null;
 	}
 
 	public static FormatterFactory newInstance() {

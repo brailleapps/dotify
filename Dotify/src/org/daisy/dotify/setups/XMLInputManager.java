@@ -187,8 +187,10 @@ class XMLInputManager implements InputManager {
 				propsStream.close();
 
 
-				HashMap xsltProps = new HashMap();
-				xsltProps.putAll(parameters.getProperties());
+				HashMap<String, Object> xsltProps = new HashMap<String, Object>();
+				for (Object key : parameters.getKeys()) {
+					xsltProps.put(key.toString(), parameters.getProperty(key));
+				}
 				for (Object key : p.keySet()) {
 					String[] schemas = p.get(key).toString().split("\\s*,\\s*");
 					if ("validation".equals(key.toString())) {

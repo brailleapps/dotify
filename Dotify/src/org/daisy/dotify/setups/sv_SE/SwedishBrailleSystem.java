@@ -97,7 +97,11 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		// Customize which parameters are sent to the PEFMediaWriter, as it outputs all parameters for future reference
 		Properties p2 = new Properties();
-		p2.putAll(p.getProperties());
+		HashMap<String, Object> h = new HashMap<String, Object>();
+		for (Object key : p.getKeys()) {
+			p2.put(key, p.getProperty(key));
+			h.put(key.toString(), p.getProperty(key));
+		}
 		// Localization parameters are not that interesting in retrospect
 		p2.remove("l10nrearjacketcopy");
 		p2.remove("l10nimagedescription");
@@ -155,8 +159,6 @@ public class SwedishBrailleSystem implements TaskSystem {
 		finalizerOptions.put("finalizer-output", "\u2800\u2800\u2824\u2824");
 		setup.add(new XsltTask("Braille finalizer", brailleFinalizer, null, finalizerOptions));
 
-		HashMap h = new HashMap();
-		h.putAll(p.getProperties());
 		// Finalize meta data from input file
 		setup.add(new XsltTask("Meta data finalizer", metaFinalizer, null, h));
 

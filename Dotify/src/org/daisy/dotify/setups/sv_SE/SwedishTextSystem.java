@@ -45,7 +45,7 @@ public class SwedishTextSystem implements TaskSystem {
 		} catch (UnsupportedSpecificationException e1) {
 			throw new TaskSystemException(e1);
 		}
-		TextMediaWriter paged = new TextMediaWriter(p.getProperties(), "UTF-8");
+		TextMediaWriter paged = new TextMediaWriter("UTF-8");
 		setup.add(new LayoutEngineTask("OBFL to Text converter", bt, paged));
 
 		return setup;

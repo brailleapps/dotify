@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.writers;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 
 import org.daisy.dotify.formatter.PagedMediaWriter;
 import org.daisy.dotify.formatter.PagedMediaWriterException;
@@ -35,7 +34,7 @@ public class TextMediaWriter implements PagedMediaWriter {
 	 * "identifier", "date"
 	 * @param p configuration Properties
 	 */
-	public TextMediaWriter(Properties p, String encoding) {
+	public TextMediaWriter(String encoding) {
 		//this.p = p;
 		hasOpenVolume = false;
 		hasOpenSection = false;

@@ -47,16 +47,11 @@ public class RunParameters {
 	}
 
 	public String getProperty(Object key) {
-		return (String)p.get(key);
+		return p.get(key).toString();
 	}
 	
-	/**
-	 * 
-	 * @return
-	 * @deprecated
-	 */
-	public Properties getProperties() {
-		return p;
+	public Iterable<Object> getKeys() {
+		return p.keySet();
 	}
 
 	/**
@@ -92,5 +87,10 @@ public class RunParameters {
 	 */
 	public float getRowgap() {
 		return rowgap;
+	}
+
+	@Override
+	public String toString() {
+		return p.toString();
 	}
 }

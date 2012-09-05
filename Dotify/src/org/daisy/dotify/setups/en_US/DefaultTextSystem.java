@@ -8,10 +8,7 @@ import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.text.FilterFactory;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.RegexFilter;
-import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
@@ -48,7 +45,7 @@ public class DefaultTextSystem implements TaskSystem {
 		} catch (UnsupportedSpecificationException e) {
 			throw new TaskSystemException(e);
 		}
-		TextMediaWriter paged = new TextMediaWriter(p.getProperties(), "UTF-8");
+		TextMediaWriter paged = new TextMediaWriter("UTF-8");
 
 		setup.add(new LayoutEngineTask("OBFL to Text converter", bt, paged));
 

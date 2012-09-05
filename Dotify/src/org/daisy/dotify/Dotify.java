@@ -57,7 +57,6 @@ public class Dotify {
 	 * @throws IOException
 	 * @throws InternalTaskException
 	 */
-	@SuppressWarnings("deprecation")
 	public static void run(File input, File output, String setup, FilterLocale context, HashMap<String, String> params) throws IOException, InternalTaskException {
 		Progress progress = new Progress();
 		sendMessage(SystemProperties.SYSTEM_NAME + " started on " + progress.getStart());
@@ -157,12 +156,12 @@ public class Dotify {
 				tasks.addAll(ts.compile(rp));
 			}
 		} catch (TaskSystemException e) {
-			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + rp.getProperties().toString(), e);
+			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + rp, e);
 		} catch (TaskSystemFactoryException e) {
 			throw new RuntimeException("Unable to retrieve a TaskSystem", e);
 		}
 		
-		sendMessage("About to run TaskSystem \"" + (ts!=null?ts.getName():"") + "\" with parameters " + rp.getProperties().toString());
+		sendMessage("About to run TaskSystem \"" + (ts!=null?ts.getName():"") + "\" with parameters " + rp);
 
 		// Run tasks
 		double i = 0;

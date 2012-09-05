@@ -15,7 +15,6 @@ import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.utils.BlockHandler.ListItem;
-import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.translator.BrailleTranslator;
 
@@ -32,7 +31,7 @@ public class FormatterImpl implements Formatter {
 	//private boolean firstRow;
 	private final StateObject state;
 	//private CrossReferences refs;
-	private StringFilter filter;
+	//private StringFilter filter;
 
 	private BrailleTranslator translator;
 	//private FilterLocale locale;
@@ -55,7 +54,7 @@ public class FormatterImpl implements Formatter {
 		this.rightMargin = 0;
 		this.flowStruct = new BlockStructImpl(); //masters
 		this.state = new StateObject();
-		this.filter = null;
+		//this.filter = null;
 		//this.refs = null;
 		this.listItem = null;
 	}
