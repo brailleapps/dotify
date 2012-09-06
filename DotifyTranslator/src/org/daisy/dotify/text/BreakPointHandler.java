@@ -14,6 +14,7 @@ package org.daisy.dotify.text;
  */
 public class BreakPointHandler {
 	private final static char SOFT_HYPHEN = '\u00ad';
+	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final static char DASH = '-';
 	private final static char SPACE = ' ';
 	private String charsStr;
@@ -58,7 +59,7 @@ public class BreakPointHandler {
 			for (char c : charsStr.toCharArray()) {
 				strPos++;
 				switch (c) {
-					case SOFT_HYPHEN: 
+					case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
 						break;
 					default:
 						len++;
@@ -87,7 +88,7 @@ public class BreakPointHandler {
 				int i=strPos;
 whileLoop:		while (i>=0) {
 					switch (charsStr.charAt(i)) {
-						case SPACE : case DASH : case SOFT_HYPHEN : 
+						case SPACE: case DASH: case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
 							break whileLoop;
 					}
 					i--;
@@ -104,8 +105,11 @@ whileLoop:		while (i>=0) {
 				} else if (charsStr.charAt(i)==SPACE) { // don't ignore space at breakpoint
 					head = charsStr.substring(0, i+1); //i
 					tailStart = i+1;
-				} else if (charsStr.charAt(i)==SOFT_HYPHEN){ // convert soft hyphen to hard hyphen 
+				} else if (charsStr.charAt(i)==SOFT_HYPHEN) { // convert soft hyphen to hard hyphen 
 					head = charsStr.substring(0, i) + DASH;
+					tailStart = i+1;
+				}  else if (charsStr.charAt(i)==ZERO_WIDTH_SPACE) { // ignore zero width space 
+					head = charsStr.substring(0, i);
 					tailStart = i+1;
 				} else if (charsStr.charAt(i)==DASH && charsStr.length()>1 && charsStr.charAt(i-1)==SPACE) {
 					// if hyphen is preceded by space, back up one more
@@ -145,7 +149,7 @@ whileLoop:		while (i>=0) {
 	}
 	
 	private String finalize(String str) {
-		return str.replaceAll("\u00ad", "");
+		return str.replaceAll(""+SOFT_HYPHEN, "").replaceAll(""+ZERO_WIDTH_SPACE, "");
 	}
 	/**
 	 * Does this BreakPointHandler has any text left to break into rows 

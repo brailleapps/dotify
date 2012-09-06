@@ -31,6 +31,28 @@ public class SwedishBrailleTranslatorTest {
 	}
 	
 	@Test
+	public void testBypassZeroWidthSpace_01() {	
+		BrailleTranslatorResult btr = bypass.translate("CD-versionen");
+		assertEquals("CD-versionen", btr.getTranslatedRemainder());
+	}
+	
+	@Test
+	public void testBypassZeroWidthSpace_02() {	
+		BrailleTranslatorResult btr = bypass.translate("CD-versionen");
+		assertEquals("CD-", btr.nextTranslatedRow(4, false));
+	}
+	
+	@Test
+	public void testBypassZeroWidthSpace_03() {
+		//Setup
+		BrailleTranslatorResult btr = bypass.translate("CD-versionen");
+		btr.nextTranslatedRow(3, false);
+		
+		//Test
+		assertEquals("versionen", btr.getTranslatedRemainder());
+	}
+
+	@Test
 	public void testTranslator() {
 		//Setup
 		BrailleTranslatorResult btr = translator.translate(TEST_INPUT_STRING_1);
