@@ -92,10 +92,11 @@ class XMLInputManager implements InputManager {
 		String input = parameters.getProperty(SystemKeys.INPUT);
 		String inputformat = null;
 		Peeker peeker = null;
+		FileInputStream is = null;
 		try {
 			PeekResult peekResult;
 			peeker = PeekerPool.getInstance().acquire();
-			FileInputStream is = new FileInputStream(new File(input));
+			is = new FileInputStream(new File(input));
 			peekResult = peeker.peek(is);
 			String rootNS = peekResult.getRootElementNsUri();
 			String rootElement = peekResult.getRootElementLocalName();
@@ -106,29 +107,12 @@ class XMLInputManager implements InputManager {
 				if (inputformat !=null && "".equals(inputformat)) {
 					return new ArrayList<InternalTask>();
 				}
-				/*
-				if (rootNS.equals("http://www.daisy.org/z3986/2005/dtbook/") && rootElement.equals("dtbook")) {
-					inputformat = "dtbook.properties";
-				} else if (rootNS.equals("http://www.daisy.org/ns/2011/obfl") && rootElement.equals("obfl")) {
-					//no transformation or validation required, we're ready.
-					return new ArrayList<InternalTask>();
-				}*/
-				// else if {
-					// Add more input formats here...
-				// }
 			} else {
 				inputformat = p.getProperty(rootElement);
 				if (inputformat !=null && "".equals(inputformat)) {
 					return new ArrayList<InternalTask>();
 				}
 			}
-			// TODO: if this becomes a documented feature of the system, then a namespace should be added... 
-			/*
-			else if (rootElement.equals("obfl")) {
-				//no transformation or validation required, we're ready.
-				return new ArrayList<InternalTask>();
-			}*/
-			is.close();
 		} catch (SAXException e) {
 			throw new TaskSystemException("SAXException while reading input", e);
 		} catch (IOException e) {
@@ -136,6 +120,9 @@ class XMLInputManager implements InputManager {
 		}  finally {
 			if (peeker!=null) {
 				PeekerPool.getInstance().release(peeker);
+			}
+			if (is!=null) {
+				try { is.close(); } catch (IOException e) { }
 			}
 		}
 		String xmlformat = "xml.properties";
