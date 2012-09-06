@@ -351,6 +351,7 @@ DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactory.java -
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactoryMaker.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorResult.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/DefaultBrailleTranslatorResult.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/DefaultBypassTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/SimpleBrailleTranslator.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
@@ -367,6 +368,7 @@ DotifyTranslator/tests/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.ja
 DotifyTranslator/tests/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 DotifyTranslator/tests/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
 DotifyTranslator/tests/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
+DotifyTranslator/tests/org/daisy/dotify/translator/DefaultBypassTranslatorTest.java -text
 DotifyTranslator/tests/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
 DotifyTranslator/tests/org/daisy/dotify/translator/sv_SE/CapitalizationMarkersTest.java -text
 DotifyTranslator/tests/org/daisy/dotify/translator/sv_SE/SwedishBrailleFilterTest.java -text

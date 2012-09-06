@@ -34,7 +34,7 @@ public class BrailleTranslatorFactoryMaker {
 		return new BrailleTranslatorFactoryMaker();
 	}
 	
-	private String toKey(FilterLocale locale, String grade) {
+	private static String toKey(FilterLocale locale, String grade) {
 		return locale.toString() + "(" + grade + ")";
 	}
 	
