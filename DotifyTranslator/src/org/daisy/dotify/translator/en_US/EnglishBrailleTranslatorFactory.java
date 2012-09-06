@@ -1,7 +1,7 @@
 package org.daisy.dotify.translator.en_US;
 
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.RegexFilter;
+import org.daisy.dotify.text.IdentityFilter;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.translator.SimpleBrailleTranslator;
@@ -16,7 +16,7 @@ public class EnglishBrailleTranslatorFactory implements BrailleTranslatorFactory
 
 	public BrailleTranslator newTranslator(FilterLocale locale, String mode) throws UnsupportedSpecificationException {
 		if (locale.equals(en_US) && (mode.equals(MODE_BYPASS))) {
-			return new SimpleBrailleTranslator(new RegexFilter("\\u200B", ""), en_US);
+			return new SimpleBrailleTranslator(new IdentityFilter(), en_US);
 		}
 		throw new UnsupportedSpecificationException("Factory does not support " + locale + "/" + mode);
 	}
