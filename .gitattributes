@@ -179,7 +179,6 @@ Dotify/src/org/daisy/dotify/formatter/utils/TextBorder.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/formatter/writers/PEFMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/writers/TextMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/writers/package.html -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/input/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/ConfigUrlLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/DefaultConfigUrlResourceLocator.java -text
