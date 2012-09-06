@@ -41,7 +41,7 @@ public class TaskSystemFactoryMaker {
 		return new TaskSystemFactoryMaker();
 	}
 	
-	private String toKey(FilterLocale context, String outputFormat) {
+	private static String toKey(FilterLocale context, String outputFormat) {
 		return context.toString() + "(" + outputFormat + ")";
 	}
 	
@@ -64,13 +64,7 @@ public class TaskSystemFactoryMaker {
 	}
 	
 	/**
-	 *  System setups are defined here.
-	 *  
-	 *  Each system setup consists of a series of tasks that, put together, performs a format conversion. 
-	 *  A system is labeled by an identifier when inserted into the HashMap.
-	 *  The recommended practice is to use a language region (or sub region) as identifier.
-	 *
-	 *  New system setups can be added to the conversion system by following the example below.
+	 *  Gets a task system for the specified output format and context
 	 */
 	public TaskSystem newTaskSystem(String outputFormat, FilterLocale context) throws TaskSystemFactoryException {
 		return getFactory(context, outputFormat).newTaskSystem(context, outputFormat);

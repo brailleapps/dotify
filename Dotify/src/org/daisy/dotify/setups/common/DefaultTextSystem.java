@@ -1,13 +1,19 @@
-package org.daisy.dotify.setups.sv_SE;
+package org.daisy.dotify.setups.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.daisy.dotify.formatter.writers.TextMediaWriter;
+import org.daisy.dotify.system.InputManager;
+import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.RunParameters;
+import org.daisy.dotify.system.SystemResourceLocator;
+import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
+import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
@@ -22,11 +28,13 @@ import org.daisy.dotify.translator.UnsupportedSpecificationException;
  * @author Joel Håkansson, TPB
  *
  */
-public class SwedishTextSystem implements TaskSystem {
+public class DefaultTextSystem implements TaskSystem {
 	private final String name;
+	private final FilterLocale context;
 	
-	public SwedishTextSystem(String name) {
+	public DefaultTextSystem(String name, FilterLocale context) {
 		this.name = name;
+		this.context = context;
 	}
 	
 	public String getName() {
@@ -36,15 +44,28 @@ public class SwedishTextSystem implements TaskSystem {
 	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
 
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-
+		//InputDetector
+		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context);
+		setup.addAll(idts.compile(p));
+		{
+			// Whitespace normalizer TransformerFactoryConstants.SAXON8
+			HashMap<String, Object> h = new HashMap<String, Object>();
+			for (Object key : p.getKeys()) {
+				h.put(key.toString(), p.getProperty(key));
+			}
+			setup.add(new XsltTask("OBFL whitespace normalizer",
+									SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+									null,
+									h));
+		}
 		// Layout FLOW as text
-		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
 		BrailleTranslator bt;
 		try {
-			bt = BrailleTranslatorFactoryMaker.newInstance().newBrailleTranslator(sv_SE, BrailleTranslatorFactory.MODE_BYPASS);
-		} catch (UnsupportedSpecificationException e1) {
-			throw new TaskSystemException(e1);
+			bt = BrailleTranslatorFactoryMaker.newInstance().newBrailleTranslator(context, BrailleTranslatorFactory.MODE_BYPASS);
+		} catch (UnsupportedSpecificationException e) {
+			throw new TaskSystemException(e);
 		}
+
 		TextMediaWriter paged = new TextMediaWriter("UTF-8");
 		setup.add(new LayoutEngineTask("OBFL to Text converter", bt, paged));
 

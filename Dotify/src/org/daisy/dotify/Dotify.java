@@ -13,18 +13,15 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.system.InputManager;
-import org.daisy.dotify.system.InputManagerFactoryMaker;
+import org.daisy.dotify.system.ConfigurationManager;
+import org.daisy.dotify.system.ConfigurationManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.RunParameters;
-import org.daisy.dotify.system.SystemResourceLocator;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.system.TaskSystemFactoryMaker;
-import org.daisy.dotify.system.XsltTask;
-import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.Progress;
 import org.daisy.util.file.FileJuggler;
@@ -132,31 +129,15 @@ public class Dotify {
 		// Load setup
 		ArrayList<InternalTask> tasks = new ArrayList<InternalTask>();
 		TaskSystem ts = null;
-		
-		//InputDetector
-		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context);
-		Logger logger = Logger.getLogger(Dotify.class.getCanonicalName());
-		logger.fine("Adding tasks from InputManager: " + idts.getName());
+
 		RunParameters rp = null;
 		try {
-			rp = RunParameters.load(idts.getConfigurationURL(setup), map);
-			
-			tasks.addAll(idts.compile(rp));
-			//if OBFL output, bypass task system 
-			if (!SystemKeys.OBFL_FORMAT.equals(outputformat)) {
-				{
-					// Whitespace normalizer TransformerFactoryConstants.SAXON8
-					HashMap<String, Object> h = new HashMap<String, Object>();
-					h.putAll(map);
-					tasks.add(new XsltTask("OBFL whitespace normalizer",
-											SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
-											null,
-											h));
-				}
-				ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
-				logger.fine("Adding tasks from TaskSystem: " + ts.getName());
-				tasks.addAll(ts.compile(rp));
-			}
+			ConfigurationManager cm = ConfigurationManagerFactoryMaker.newInstance().newConfigurationManager(context);
+			rp = RunParameters.load(cm.getConfigurationURL(setup), map);
+
+			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
+			sendMessage("Adding tasks from TaskSystem: " + ts.getName());
+			tasks.addAll(ts.compile(rp));
 		} catch (TaskSystemException e) {
 			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + rp, e);
 		} catch (TaskSystemFactoryException e) {

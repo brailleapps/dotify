@@ -13,7 +13,7 @@ public interface SystemProperties {
 	/**
 	 * Defines the system build
 	 */
-	public static final String SYSTEM_BUILD = "20120816";
+	public static final String SYSTEM_BUILD = "20120906";
 	/**
 	 * Defines the system release
 	 */

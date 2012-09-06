@@ -49,18 +49,19 @@ public class TextNodeTask extends InternalTask {
 			e1.printStackTrace();
 		}
 
-		TextNodeFilter tnf;
+		TextNodeFilter tnf = null;
 
 		try {
 			tnf = new TextNodeFilter(inFactory.createXMLEventReader(new FileInputStream(input)), new FileOutputStream(output), filters);
 			tnf.filter();
-			tnf.close();
 		} catch (FileNotFoundException e) {
 			throw new InternalTaskException("FileNotFoundException:", e);
 		} catch (XMLStreamException e) {
 			throw new InternalTaskException("XMLStreamException:", e);
-		} catch (IOException e) {
-			throw new InternalTaskException("IOException:", e);
+		} finally {
+			if (tnf!=null) {
+				try { tnf.close(); } catch (IOException e) { }
+			}
 		}
 
 	}

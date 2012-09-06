@@ -17,13 +17,17 @@ import org.daisy.dotify.formatter.writers.PEFMediaWriter;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
+import org.daisy.dotify.system.InputManager;
+import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
+import org.daisy.dotify.system.SystemResourceLocator;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
+import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
@@ -64,10 +68,14 @@ import org.xml.sax.SAXException;
 @SuppressWarnings("deprecation")
 public class SwedishBrailleSystem implements TaskSystem {
 	private final CommonResourceLocator commonResourceLocator;
+	private final String outputFormat;
+	private final FilterLocale context;
 	private final String name;
 	
-	public SwedishBrailleSystem(String name) {
+	public SwedishBrailleSystem(String name, String outputFormat, FilterLocale context) {
 		this.commonResourceLocator = new CommonResourceLocator();
+		this.context = context;
+		this.outputFormat = outputFormat;
 		this.name = name;
 	}
 	
@@ -76,6 +84,10 @@ public class SwedishBrailleSystem implements TaskSystem {
 	}
 
 	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
+		if (SystemKeys.OBFL_FORMAT.equals(outputFormat)) {
+			return new ArrayList<InternalTask>();
+		}
+		
 		URL brailleFinalizer;
 		URL metaFinalizer;
 
@@ -86,22 +98,29 @@ public class SwedishBrailleSystem implements TaskSystem {
 			throw new TaskSystemException("Could not locate resource.", e);
 		}
 		//configURL = new URL(resourceBase, config);
-		
-
-		
-		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-
-		// Layout FLOW as PEF
-		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
-		//BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
-
-		// Customize which parameters are sent to the PEFMediaWriter, as it outputs all parameters for future reference
 		Properties p2 = new Properties();
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		for (Object key : p.getKeys()) {
 			p2.put(key, p.getProperty(key));
 			h.put(key.toString(), p.getProperty(key));
 		}
+		
+		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
+		//InputDetector
+		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context);
+		setup.addAll(idts.compile(p));
+		
+		// Whitespace normalizer TransformerFactoryConstants.SAXON8
+		setup.add(new XsltTask("OBFL whitespace normalizer",
+								SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+								null,
+								h));
+
+		// Layout FLOW as PEF
+		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
+		//BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
+
+		// Customize which parameters are sent to the PEFMediaWriter, as it outputs all parameters for future reference
 		// Localization parameters are not that interesting in retrospect
 		p2.remove("l10nrearjacketcopy");
 		p2.remove("l10nimagedescription");

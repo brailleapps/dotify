@@ -1,2 +1,2 @@
 org.daisy.dotify.setups.sv_SE.SwedishTaskSystemFactory
-org.daisy.dotify.setups.en_US.EnglishTaskSystemFactory
+org.daisy.dotify.setups.common.DefaultTextSystemFactory
