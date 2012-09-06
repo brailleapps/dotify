@@ -135,7 +135,8 @@ public class Dotify {
 		
 		//InputDetector
 		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context);
-
+		Logger logger = Logger.getLogger(Dotify.class.getCanonicalName());
+		logger.fine("Adding tasks from InputManager: " + idts.getName());
 		RunParameters rp = null;
 		try {
 			rp = RunParameters.load(idts.getConfigurationURL(setup), map);
@@ -153,6 +154,7 @@ public class Dotify {
 											h));
 				}
 				ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
+				logger.fine("Adding tasks from TaskSystem: " + ts.getName());
 				tasks.addAll(ts.compile(rp));
 			}
 		} catch (TaskSystemException e) {

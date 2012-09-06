@@ -56,7 +56,6 @@ import org.xml.sax.SAXException;
  *
  */
 class XMLInputManager implements InputManager {
-	//private final URL resourceBase;
 	private final static String PRESETS_PATH = "presets/";
 	private final static String CONFIG_PATH = "config/";
 	private final ResourceLocator localLocator;
@@ -71,11 +70,10 @@ class XMLInputManager implements InputManager {
 	 * @param commonBase a path relative the resource root to the common resources
 	 */
 	XMLInputManager(ResourceLocator localLocator, ResourceLocator commonLocator) {
-		this(localLocator, commonLocator, "InputDetectorTaskSystem");
+		this(localLocator, commonLocator, "XMLInputManager");
 	}
 	
 	XMLInputManager(ResourceLocator localLocator, ResourceLocator commonLocator, String name) {
-		//this.resourceBase = resourceBase;
 		this.localLocator = localLocator;
 		this.commonLocator = commonLocator;
 		this.name = name;
@@ -132,32 +130,33 @@ class XMLInputManager implements InputManager {
 
 		if (inputformat!=null) {
 			try {
-				return readConfiguration(localLocator, localLocator.getResource(basePath + inputformat), parameters);
+				return readConfiguration(localLocator, basePath + inputformat, parameters);
 			} catch (ResourceLocatorException e) {
 				logger.fine("Cannot find URL " + basePath + inputformat);
 			}
 		}
 		try {
-			return readConfiguration(localLocator, localLocator.getResource(basePath + xmlformat), parameters);
+			return readConfiguration(localLocator, basePath + xmlformat, parameters);
 		} catch (ResourceLocatorException e) {
 			logger.fine("Cannot find URL " + basePath + xmlformat);
 		}
 		if (inputformat!=null) {
 			try {
-				return readConfiguration(commonLocator, commonLocator.getResource(basePath + inputformat), parameters);
+				return readConfiguration(commonLocator, basePath + inputformat, parameters);
 			} catch (ResourceLocatorException e) {
 				logger.fine("Cannot find URL " + basePath + inputformat);
 			}
 		}
 		try {
-			return readConfiguration(commonLocator, commonLocator.getResource(basePath + xmlformat), parameters);
+			return readConfiguration(commonLocator, basePath + xmlformat, parameters);
 		} catch (ResourceLocatorException e) {
 			logger.fine("Cannot find URL " + basePath + xmlformat);
 		}
 		throw new TaskSystemException("Unable to open a configuration stream for the format.");
 	}
 	
-	private ArrayList<InternalTask> readConfiguration(ResourceLocator locator, URL t, RunParameters parameters) throws TaskSystemException {
+	private ArrayList<InternalTask> readConfiguration(ResourceLocator locator, String path, RunParameters parameters) throws TaskSystemException, ResourceLocatorException {
+		URL t = locator.getResource(path);
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 		try {
 			InputStream propsStream = null;
@@ -189,7 +188,7 @@ class XMLInputManager implements InputManager {
 					} else if ("transformation".equals(key.toString())) {
 						for (String s : schemas) {
 							if (s!=null && s!="") {
-								setup.add(new XsltTask("Input to FLOW converter: " + s, locator.getResource(s), null, xsltProps));
+								setup.add(new XsltTask("Input to OBFL converter: " + s, locator.getResource(s), null, xsltProps));
 							}
 						}
 					} else {

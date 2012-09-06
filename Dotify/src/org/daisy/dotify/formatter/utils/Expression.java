@@ -135,41 +135,41 @@ public class Expression {
 		}
 	}
 
-	private double toNumber(Object input) {
+	private static double toNumber(Object input) {
 		return Double.parseDouble(input.toString());
 	}
 	
-	private double add(Object[] input) {
+	private static double add(Object[] input) {
 		double ret = toNumber(input[0]);
 		for (int i=1; i<input.length; i++) { ret += toNumber(input[i]); }
 		return ret;
 	}
 	
-	private double subtract(Object[] input) {
+	private static double subtract(Object[] input) {
 		double ret = toNumber(input[0]);
 		for (int i=1; i<input.length; i++) { ret -= toNumber(input[i]); }
 		return ret;
 	}
 	
-	private double multiply(Object[] input) {
+	private static double multiply(Object[] input) {
 		double ret = toNumber(input[0]);
 		for (int i=1; i<input.length; i++) { ret *= toNumber(input[i]); }
 		return ret;
 	}
 	
-	private double divide(Object[] input) {
+	private static double divide(Object[] input) {
 		double ret = toNumber(input[0]);
 		for (int i=1; i<input.length; i++) { ret /= toNumber(input[i]); }
 		return ret;
 	}
 	
-	private double modulo(Object[] input) {
+	private static double modulo(Object[] input) {
 		double ret = toNumber(input[0]);
 		for (int i=1; i<input.length; i++) { ret %= toNumber(input[i]); }
 		return ret;
 	}
 	
-	private boolean equals(Object[] input) {
+	private static boolean equals(Object[] input) {
 		try {
 			for (int i=1; i<input.length; i++) { 
 				if (((Double)(input[i-1])).doubleValue()!=((Double)(input[i])).doubleValue()) {
@@ -187,7 +187,7 @@ public class Expression {
 		}
 	}
 	
-	private boolean smallerThan(Object[] input) {
+	private static boolean smallerThan(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
 			if (!(toNumber(input[i-1])<toNumber((input[i])))) {
 				return false;
@@ -196,7 +196,7 @@ public class Expression {
 		return true;
 	}
 	
-	private boolean smallerThanOrEqualTo(Object[] input) {
+	private static boolean smallerThanOrEqualTo(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
 			if (!(toNumber(input[i-1])<=toNumber((input[i])))) {
 				return false;
@@ -205,7 +205,7 @@ public class Expression {
 		return true;
 	}
 	
-	private boolean greaterThan(Object[] input) {
+	private static boolean greaterThan(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
 			if (!(toNumber(input[i-1])>toNumber((input[i])))) {
 				return false;
@@ -214,7 +214,7 @@ public class Expression {
 		return true;
 	}
 	
-	private boolean greaterThanOrEqualTo(Object[] input) {
+	private static boolean greaterThanOrEqualTo(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
 			if (!(toNumber(input[i-1])>=toNumber((input[i])))) {
 				return false;
@@ -223,7 +223,7 @@ public class Expression {
 		return true;
 	}
 	
-	private boolean and(Object[] input) {
+	private static boolean and(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
 			if (!((Boolean)(input[i-1]) & (Boolean)((input[i])))) {
 				return false;
@@ -232,7 +232,7 @@ public class Expression {
 		return true;
 	}
 	
-	private boolean or(Object[] input) {
+	private static boolean or(Object[] input) {
 		for (int i=0; i<input.length; i++) { 
 			if ((Boolean)(input[i])) {
 				return true;
@@ -241,7 +241,7 @@ public class Expression {
 		return false;
 	}
 	
-	private Object ifOp(Object[] input) {
+	private static Object ifOp(Object[] input) {
 		if (input.length!=3) {
 			throw new IllegalArgumentException("Wrong number of arguments: (if arg1 arg2 arg3)");
 		}
@@ -252,7 +252,7 @@ public class Expression {
 		}
 	}
 	
-	private String now(Object[] input) {
+	private static String now(Object[] input) {
 		if (input.length>1) {
 			throw new IllegalArgumentException("Wrong number of arguments: (now format)");
 		}
@@ -260,7 +260,7 @@ public class Expression {
 		return sdf.format(new Date());
 	}
 	
-	private int round(Object[] input) {
+	private static int round(Object[] input) {
 		if (input.length>1) {
 			throw new IllegalArgumentException("Wrong number of arguments: (round value)");
 		}
@@ -275,7 +275,7 @@ public class Expression {
 		return input[1];
 	}
 
-	private String[] getArgs(String expr) {
+	private static String[] getArgs(String expr) {
 		expr = expr.trim();
 		ArrayList<String> ret = new ArrayList<String>();
 		int ci = 0;
