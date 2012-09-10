@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +55,6 @@ import org.xml.sax.SAXException;
  *
  */
 class XMLInputManager implements InputManager {
-	private final static String PRESETS_PATH = "presets/";
 	private final static String CONFIG_PATH = "config/";
 	private final ResourceLocator localLocator;
 	private final ResourceLocator commonLocator;
@@ -99,7 +97,7 @@ class XMLInputManager implements InputManager {
 			String rootNS = peekResult.getRootElementNsUri();
 			String rootElement = peekResult.getRootElementLocalName();
 			Properties p = new Properties();
-			p.loadFromXML(new DefaultConfigUrlResourceLocator().getInputFormatCatalogResourceURL().openStream());
+			p.loadFromXML(new DefaultInputUrlResourceLocator().getInputFormatCatalogResourceURL().openStream());
 			if (rootNS!=null) {
 				inputformat = p.getProperty(rootElement+"@"+rootNS);
 				if (inputformat !=null && "".equals(inputformat)) {
@@ -205,27 +203,6 @@ class XMLInputManager implements InputManager {
 			throw new TaskSystemException("Unable to open settings file.", e);
 		}
 		return setup;
-	}
-
-	public URL getConfigurationURL(String identifier) throws ResourceLocatorException {
-		ConfigUrlLocator c = new ConfigUrlLocator();
-		String subPath = c.getSubpath(identifier);
-		if (subPath==null) {
-        	// try identifier as path
-        	try {
-        		return new URL(identifier);
-        	} catch (MalformedURLException e) {
-        		throw new IllegalArgumentException("Cannot find configuration for " + identifier);
-        	}
-		} else {
-			try {
-				return localLocator.getResource(PRESETS_PATH + subPath);
-			} catch (ResourceLocatorException e) {
-				// try common locator
-				
-			}
-			return commonLocator.getResource(PRESETS_PATH + subPath);
-		}
 	}
 
 }

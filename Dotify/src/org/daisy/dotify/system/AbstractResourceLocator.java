@@ -13,11 +13,15 @@ public abstract class AbstractResourceLocator implements ResourceLocator {
 	private final String basePath;
 
 	public AbstractResourceLocator() {
-		this.basePath = "";
+		this(null);
 	}
 	
 	public AbstractResourceLocator(String basePath) {
-		this.basePath = basePath+"/";
+		if (basePath==null || basePath.equals("")) {
+			this.basePath = "";
+		} else {
+			this.basePath = basePath+"/";
+		}
 	}
 	
 	public URL getResource(String subpath) throws ResourceLocatorException {

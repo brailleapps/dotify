@@ -84,6 +84,7 @@ public class LayoutEngineTask extends InternalTask  {
 			//obflParser.setVolumeSplitterFactory(splitterFactory);
 			obflParser.parse(new FileInputStream(input));
 
+			logger.info("Working...");
 			BookStruct bookStruct = new BookStructImpl(
 					obflParser.getBlockStruct(),
 					obflParser.getMasters(),

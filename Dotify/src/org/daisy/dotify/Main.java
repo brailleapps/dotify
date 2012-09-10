@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.daisy.braille.ui.AbstractUI;
-import org.daisy.dotify.setups.ConfigUrlLocator;
+import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.TaskSystemFactoryException;
@@ -29,7 +29,7 @@ public class Main extends AbstractUI {
 		reqArgs.add(new Argument("path_to_output", "Path to the output file"));
 		{
 			ArrayList<Definition> vals = new ArrayList<Definition>();
-			ConfigUrlLocator c =  new ConfigUrlLocator();
+			ConfigurationsCatalog c = ConfigurationsCatalog.newInstance();
 			for (Object o : c.getKeys()) {
 				vals.add(new Definition(o.toString(), "A setup"));
 			}

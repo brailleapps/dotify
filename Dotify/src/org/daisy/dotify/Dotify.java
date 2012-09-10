@@ -3,6 +3,7 @@ package org.daisy.dotify;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,10 +14,11 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.system.ConfigurationManager;
-import org.daisy.dotify.system.ConfigurationManagerFactoryMaker;
+import org.daisy.dotify.config.ConfigurationsCatalog;
+import org.daisy.dotify.setups.LocalizationManager;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
+import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
@@ -113,6 +115,18 @@ public class Dotify {
 			map.put(SystemKeys.IDENTIFIER, "dummy-id-"+ id);
 		}
 		
+		try {
+			URL res = new LocalizationManager().getLocalizationUrl(context);
+			Properties p = new Properties();
+			p.loadFromXML(res.openStream());
+			for (Object key : p.keySet()) {
+				map.put(key.toString(), p.get(key).toString());
+			}
+		} catch (Exception e) {
+			Logger log = Logger.getLogger(Dotify.class.getCanonicalName());
+			log.fine("Failed to load localization");
+		}
+
 		// Load additional settings from file
 		if (map.get("config")==null || "".equals(map.get("config"))) {
 			map.remove("config");
@@ -132,8 +146,15 @@ public class Dotify {
 
 		RunParameters rp = null;
 		try {
-			ConfigurationManager cm = ConfigurationManagerFactoryMaker.newInstance().newConfigurationManager(context);
-			rp = RunParameters.load(cm.getConfigurationURL(setup), map);
+			ConfigurationsCatalog cm = ConfigurationsCatalog.newInstance();
+			URL url = null;
+			try {
+				url = cm.getConfigurationURL(setup);
+			} catch (ResourceLocatorException e) {
+				//try as file
+				url = new URL(setup);
+			}
+			rp = RunParameters.load(url, map);
 
 			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
 			sendMessage("Adding tasks from TaskSystem: " + ts.getName());

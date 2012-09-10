@@ -5,18 +5,14 @@ import java.net.URL;
 import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
 
-class DefaultConfigUrlResourceLocator extends AbstractResourceLocator {
+class DefaultInputUrlResourceLocator extends AbstractResourceLocator {
 
-	DefaultConfigUrlResourceLocator() {
+	DefaultInputUrlResourceLocator() {
 		super();
 	}
 
-	DefaultConfigUrlResourceLocator(String basePath) {
+	DefaultInputUrlResourceLocator(String basePath) {
 		super(basePath);
-	}
-	
-	URL getConfigurationCatalogResourceURL() throws ResourceLocatorException {
-		return getResource("presets_catalog.xml");
 	}
 	
 	URL getInputFormatCatalogResourceURL() throws ResourceLocatorException {
