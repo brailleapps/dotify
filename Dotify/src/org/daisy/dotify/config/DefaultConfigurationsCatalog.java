@@ -11,7 +11,14 @@ import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.system.ResourceLocatorException;
 
-public class DefaultConfigurationsCatalog extends ConfigurationsCatalog {
+/**
+ * Provides a default configurations catalog. The default configurations catalog
+ * will scan the service registry for configurations providers and collect the keys
+ * of every provider. If more than one provider contains the same key, the 
+ * most recently added will be used, and a debug message will be sent to the log.
+ * @author Joel Håkansson
+ */
+class DefaultConfigurationsCatalog extends ConfigurationsCatalog {
 	private final Map<String, ConfigurationsProvider> map;
 	
 	DefaultConfigurationsCatalog() {

@@ -9,19 +9,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.system.AbstractResourceLocator;
-import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.text.FilterLocale;
 
-public class LocalizationResourceLocator extends AbstractResourceLocator {
-
+/**
+ * Provides a resource locator for localized resources. Using this
+ * class makes it possible to locate a resource using a path relative
+ * to the localization base folder, without knowledge of the locale
+ * to base folder mapping.
+ * @author Joel Håkansson
+ */
+class LocalizationResourceLocator extends AbstractResourceLocator {
 	private final Properties tables;
 	
-	public LocalizationResourceLocator() {
+	/**
+	 * Creates a new instance.
+	 */
+	LocalizationResourceLocator() {
 		super();
 		Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
 		tables = new Properties();
 		try {
-	        URL tablesURL = getLocalizationCatalogURL();
+	        URL tablesURL = getResource("localization_catalog.xml");
 	        if(tablesURL!=null){
 	        	tables.loadFromXML(tablesURL.openStream());
 	        } else {
@@ -36,11 +45,22 @@ public class LocalizationResourceLocator extends AbstractResourceLocator {
 		super(basePath);
 		tables = new Properties();
 	}
-	
+
+	/**
+	 * Returns true if the specified locale is at all supported, that is to say
+	 * that there is an entry for the locale in the localization catalog.
+	 * @param locale the locale to test
+	 * @return returns true if the locale is supported, false otherwise
+	 */
 	public boolean supportsLocale(FilterLocale locale) {
 		return tables.getProperty(locale.toString())!=null;
 	}
 	
+	/**
+	 * Lists all supported locales, that is to say all locales that are
+	 * in the localization catalog.
+	 * @return returns a list of supported locales
+	 */
 	public Set<String> listSupportedLocales() {
 		HashSet<String> ret = new HashSet<String>();
 		for (Object key : tables.keySet()) {
@@ -49,16 +69,13 @@ public class LocalizationResourceLocator extends AbstractResourceLocator {
 		return ret;
 	}
 	
-	public URL getLocalizationCatalogURL() throws ResourceLocatorException {
-		return getResource("localization_catalog.xml");
-	}
-	
 	/**
 	 * Gets a resource locator for the given locale.
-	 * @param locale
-	 * @return
+	 * @param locale the locale to get a resource locator for
+	 * @return returns a resource locator
+	 * @throws IllegalArgumentException if the locale is not supported
 	 */
-	public LocalizationResourceLocator getResourceLocator(FilterLocale locale) {
+	public ResourceLocator getResourceLocator(FilterLocale locale) {
 		String languageFileRelativePath = tables.getProperty(locale.toString());
         if(languageFileRelativePath==null) {
         	throw new IllegalArgumentException("Locale not supported: " + locale.toString());
