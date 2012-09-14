@@ -188,10 +188,12 @@
 	</xsl:template>
 
 	<xsl:template match="*" mode="toc-text">
-		<xsl:apply-templates/>
+		<xsl:apply-templates mode="toc-text"/>
 	</xsl:template>
 	<xsl:template match="text()" mode="toc-text">
-		<xsl:value-of select="."/>
+		<!-- Hack to remove braille markers from toc entries. This will do for now, since the long term goal
+			 is for all braille markers to be added in the translator. -->
+		<xsl:value-of select="translate(., '&#x2820;&#x2804;&#x2823;&#x2824;&#x2828;&#x282c;&#x2831;', '')"/>
 	</xsl:template>
 	<xsl:template match="dtb:br" mode="toc-text">
 		<xsl:text> </xsl:text>
