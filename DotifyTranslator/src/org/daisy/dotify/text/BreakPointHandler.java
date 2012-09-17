@@ -33,18 +33,30 @@ public class BreakPointHandler {
 	}
 
 	/**
-	 * Get the next row from this BreakPointHandler
+	 * Gets the next row from this BreakPointHandler
 	 * @param breakPoint the desired breakpoint for this row
 	 * @return returns the next BreakPoint
 	 */
 	public BreakPoint nextRow(int breakPoint, boolean force) {
+		return doNextRow(breakPoint, force, false);
+	}
+	
+	/**
+	 * Tries to break the row at the breakpoint but does not modify the buffer.
+	 * @param breakPoint
+	 * @return
+	 */
+	public BreakPoint tryNextRow(int breakPoint) {
+		return doNextRow(breakPoint, false, true);
+	}
+	
+	private BreakPoint doNextRow(int breakPoint, boolean force, boolean test) {
 		if (charsStr.length()==0) {
 			// pretty simple...
 			return new BreakPoint("", "", false);
 		}
 		String head;
 		boolean hard = false;
-		{
 		String tail;
 		assert charsStr.length()==charsStr.codePointCount(0, charsStr.length());
 		if (charsStr.length()<=breakPoint) {
@@ -128,13 +140,14 @@ whileLoop:		while (i>=0) {
 			head = head.replaceAll("\\s+\\z", "");
 		}
 		assert (tail.length()<=charsStr.length());
-		charsStr = tail;
-		}
 		//trim leading whitespace in tail
-		charsStr = charsStr.replaceAll("\\A\\s+", "");
-		
+		tail = tail.replaceAll("\\A\\s+", "");
 		head = finalize(head);
-		return new BreakPoint(head, charsStr, hard);
+		if (!test) {
+			charsStr = tail;
+		}
+		
+		return new BreakPoint(head, tail, hard);
 	}
 
 	public int countRemaining() {
