@@ -100,10 +100,10 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 			ArrayList<Page> pages = new ArrayList<Page>();
 			StringBuilder sb = new StringBuilder();
 			{
-				int pageIndex=0;
 				boolean volBreakAllowed = true;
 				for (PageSequence seq :ps) {
 					LayoutMaster lm = seq.getLayoutMaster();
+					int pageIndex=0;
 					for (Page p : seq) {
 						if (!lm.duplex() || pageIndex%2==0) {
 							volBreakAllowed = true;
@@ -156,10 +156,10 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 					int contentSheets = targetSheetsInVolume-volumeOverhead[i-1];
 					int offset = -1;
 					BreakPoint bp;
-					do  {
+					do {
 						offset++;
 						bp = volBreaks.tryNextRow(contentSheets+offset);
-					} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitterMax);
+					} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<=splitterMax);
 					bp = volBreaks.nextRow(contentSheets + offset, true);
 					contentSheets = bp.getHead().length();
 					targetVolSize[i-1] = contentSheets + volumeOverhead[i-1];

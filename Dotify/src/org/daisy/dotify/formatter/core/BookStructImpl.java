@@ -86,11 +86,11 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 		
 		this.ps = paginator.getPageStruct();
 		
-		int pageIndex=0;
 		int sheetIndex=0;
 		this.pageSheetMap = new HashMap<Page, Integer>();
 		for (PageSequence s : this.ps.getContents()) {
 			LayoutMaster lm = s.getLayoutMaster();
+			int pageIndex=0;
 			for (Page p : s) {
 				if (!lm.duplex() || pageIndex%2==0) {
 					sheetIndex++;
