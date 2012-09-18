@@ -51,7 +51,7 @@ Dotify/build-doc.xml -text svneol=unset#text/plain
 Dotify/build-properties.xml -text
 Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
 Dotify/build.xml -text svneol=unset#text/plain
-Dotify/lib/dotify-translator-1.0.jar -text
+Dotify/lib/dotify-translator.jar -text
 Dotify/lib/icu4j-3_8.jar -text
 Dotify/lib/junit-4.7.jar -text
 Dotify/lib/onvdl.jar -text
