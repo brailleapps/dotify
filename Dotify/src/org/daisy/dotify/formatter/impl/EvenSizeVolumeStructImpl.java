@@ -6,11 +6,14 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.formatter.dom.BookStruct;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.formatter.utils.PageTools;
+import org.daisy.dotify.text.BreakPoint;
+import org.daisy.dotify.text.BreakPointHandler;
 
 class EvenSizeVolumeStructImpl implements VolumeStruct {
 	private final Logger logger;
@@ -19,6 +22,7 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 	private final BookStruct struct;
 	
 	private Integer[] volumeOverhead;
+	private Integer[] targetVolSize;
 	
 	private final int splitterMax;
 	private EvenSizeVolumeSplitterCalculator sdc;
@@ -34,6 +38,7 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		this.splitterMax = splitterMax;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 		this.volumeOverhead = new Integer[0];
+		this.targetVolSize = new Integer[0];
 		this.volSheet = new HashMap<Integer, Integer>();
 		this.volumeForContentSheetChanged = false;
 		struct.setVolumeStruct(this);
@@ -65,8 +70,12 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 			if (retVolume<volumeOverhead.length && volumeOverhead[retVolume]!=null) {
 				lastSheetInCurrentVolume -= volumeOverhead[retVolume];
 			}
+			if (retVolume<targetVolSize.length && targetVolSize[retVolume]!=null) {
+				lastSheetInCurrentVolume += targetVolSize[retVolume];
+			} else {
+				lastSheetInCurrentVolume += sdc.sheetsInVolume(retVolume+1);
+			}
 			retVolume++;
-			lastSheetInCurrentVolume += sheetsInVolume(retVolume);
 		}
 		Integer cv = volSheet.get(sheetIndex);
 		if (cv==null || cv!=retVolume) {
@@ -82,21 +91,43 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		int totalPreCount = 0;
 		int totalPostCount = 0;
 		int prvVolCount = 0;
+		
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
 			Iterable<PageSequence> ps = struct.getContentsPageStruct().getContents();
 			final int contents = PageTools.countSheets(ps); 
 			ArrayList<Page> pages = new ArrayList<Page>();
-			for (PageSequence seq :ps) {
-				for (Page p : seq) {
-					pages.add(p);
+			StringBuilder sb = new StringBuilder();
+			{
+				int pageIndex=0;
+				boolean volBreakAllowed = true;
+				for (PageSequence seq :ps) {
+					LayoutMaster lm = seq.getLayoutMaster();
+					for (Page p : seq) {
+						if (!lm.duplex() || pageIndex%2==0) {
+							volBreakAllowed = true;
+							sb.append("s");
+						}
+						volBreakAllowed &= p.allowsVolumeBreak();
+						if (!lm.duplex() || pageIndex%2==1) {
+							if (volBreakAllowed) {
+								sb.append("\u200b");
+							}
+						}
+						pages.add(p);
+						pageIndex++;
+					}
 				}
 			}
+			logger.fine("Volume break string: " + sb.toString().replace('\u200b', '-'));
+			BreakPointHandler volBreaks = new BreakPointHandler(sb.toString());
+
 			volumeForContentSheetChanged = false;
 			sdc = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax);
 			if (sdc.getVolumeCount()!=prvVolCount) {
 				volumeOverhead = new Integer[sdc.getVolumeCount()];
+				targetVolSize = new Integer[sdc.getVolumeCount()];
 				prvVolCount = sdc.getVolumeCount();
 			}
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
@@ -112,25 +143,33 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 				postV.add(struct.getPostVolumeContents(i).getContents());
 			}
 			for (int i=1;i<=getVolumeCount();i++) {
-				//Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
-				//Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
 				int preCount = PageTools.countSheets(preV.get(i-1));
 				int postCount = PageTools.countSheets(postV.get(i-1));
+				totalPreCount += preCount;
+				totalPostCount += postCount;
 				if ((i-1)<volumeOverhead.length) {
 					volumeOverhead[i-1] = preCount + postCount;
+					int targetSheetsInVolume = sdc.sheetsInVolume(i);
+					if (i==getVolumeCount()) {
+						targetSheetsInVolume = splitterMax;
+					}
+					int contentSheets = targetSheetsInVolume-volumeOverhead[i-1];
+					int offset = -1;
+					BreakPoint bp;
+					do  {
+						offset++;
+						bp = volBreaks.tryNextRow(contentSheets+offset);
+					} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitterMax);
+					bp = volBreaks.nextRow(contentSheets + offset, true);
+					contentSheets = bp.getHead().length();
+					targetVolSize[i-1] = contentSheets + volumeOverhead[i-1];
 				} else {
 					throw new RuntimeException("Error in code: " + i);
 				}
 			}
 			for (int i=1;i<=getVolumeCount();i++) {
-				//Iterable<PageSequence> pre = struct.getPreVolumeContents(i).getContents();
-				//Iterable<PageSequence> post = struct.getPostVolumeContents(i).getContents();
-				int preCount = PageTools.countSheets(preV.get(i-1));
-				int postCount = PageTools.countSheets(postV.get(i-1));
-				totalPreCount += preCount;
-				totalPostCount += postCount;
-				int contentSheets = sheetsInVolume(i)-preCount-postCount;
-				//System.out.println("DEBUG " + preCount + " " + postCount + " " + contentSheets + " " + sheetsInVolume(i));
+				int contentSheets = targetVolSize[i-1] - volumeOverhead[i-1];
+				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+volumeOverhead[i-1]));
 				PageStructCopy body = new PageStructCopy();
 				while (true) {
 					if (pageIndex>=pages.size()) {
@@ -143,12 +182,16 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 						break;
 					}
 				}
-				int sheetsInVolume = preCount + PageTools.countSheets(body) + postCount;
-				if (sheetsInVolume>sheetsInVolume(i)) {
+				int sheetsInVolume = PageTools.countSheets(body) + volumeOverhead[i-1];
+				if (sheetsInVolume>targetVolSize[i-1]) {
 					ok2 = false;
-					//throw new RuntimeException("Error in code. Expected " + sheetsInVolume(i) + ", actual " + sheetsInVolume);
+					logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
 				}
 				ret.add(new VolumeImpl(preV.get(i-1), body, postV.get(i-1)));
+			}
+			if (volBreaks.hasNext()) {
+				ok2 = false;
+				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(pages.size()-pageIndex));
 			}
 			if (!struct.isDirty() && pageIndex==pages.size() && ok2 && (!volumeForContentSheetChanged)) {
 				//everything fits
@@ -164,12 +207,4 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		return ret.iterator();
 	}
 
-	/**
-	 * 
-	 * @param volIndex, volume index, one-based
-	 * @return
-	 */
-	public int sheetsInVolume(int volIndex) {
-		return sdc.sheetsInVolume(volIndex);
-	}
 }

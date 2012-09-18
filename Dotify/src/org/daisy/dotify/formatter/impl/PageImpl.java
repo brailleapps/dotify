@@ -33,6 +33,7 @@ class PageImpl implements Page {
 	private final int flowHeight;
 	private int contentMarkersBegin;
 	private boolean isVolBreak;
+	private boolean isVolBreakAllowed;
 	
 	public PageImpl(PageSequenceImpl parent, int pageIndex) {
 		this.rows = new ArrayList<Row>();
@@ -43,6 +44,7 @@ class PageImpl implements Page {
 		PageTemplate template = parent.getLayoutMaster().getTemplate(pageIndex+1);
 		this.flowHeight = parent.getLayoutMaster().getPageHeight()-template.getHeaderHeight()-template.getFooterHeight();
 		this.isVolBreak = false;
+		this.isVolBreakAllowed = true;
 	}
 	
 	public void newRow(Row r) {
@@ -210,6 +212,14 @@ class PageImpl implements Page {
 		//TODO: include page number offset?
 		int pagenum = p.getPageIndex() + 1;
 		return f.style(pagenum);
+	}
+	
+	void setAllowsVolumeBreak(boolean value) {
+		this.isVolBreakAllowed = value;
+	}
+
+	public boolean allowsVolumeBreak() {
+		return isVolBreakAllowed;
 	}
 
 }

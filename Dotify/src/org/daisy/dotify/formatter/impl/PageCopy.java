@@ -42,4 +42,8 @@ class PageCopy implements Page {
 		return parent;
 	}
 
+	public boolean allowsVolumeBreak() {
+		return p.allowsVolumeBreak();
+	}
+
 }

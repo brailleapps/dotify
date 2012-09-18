@@ -21,6 +21,7 @@ public class BlockProperties {
 	private final BreakBefore breakBefore;
 	private final Keep keep;
 	private final int keepWithNext;
+	private final int keepWithNextSheets;
 	private final int blockIndent;
 	private final String identifier;
 
@@ -40,6 +41,7 @@ public class BlockProperties {
 		BreakBefore breakBefore = BreakBefore.AUTO;
 		Keep keep = Keep.AUTO;
 		int keepWithNext = 0;
+		int keepWithNextSheets = 0;
 		int blockIndent = 0;
 		String identifier = "";
 		
@@ -63,6 +65,7 @@ public class BlockProperties {
 			breakBefore = b.getBreakBeforeType();
 			keep = b.getKeepType();
 			keepWithNext = b.getKeepWithNext();
+			keepWithNextSheets = b.getKeepWithNextSheets();
 			blockIndent = b.getBlockIndent();
 			identifier = b.getIdentifier();
 		}
@@ -176,6 +179,11 @@ public class BlockProperties {
 			return this;
 		}
 		
+		public Builder keepWithNextSheets(int keepWithNextSheets) {
+			this.keepWithNextSheets = keepWithNextSheets;
+			return this;
+		}
+		
 		/**
 		 * Set the block indent for the block, in characters.
 		 * The block indent controls the indent of child blocks
@@ -214,6 +222,7 @@ public class BlockProperties {
 		breakBefore = builder.breakBefore;
 		keep = builder.keep;
 		keepWithNext = builder.keepWithNext;
+		keepWithNextSheets = builder.keepWithNextSheets;
 		blockIndent = builder.blockIndent;
 		identifier = builder.identifier;
 	}
@@ -321,6 +330,10 @@ public class BlockProperties {
 	 */
 	public int getKeepWithNext() {
 		return keepWithNext;
+	}
+	
+	public int getKeepWithNextSheets() {
+		return keepWithNextSheets;
 	}
 	
 	public String getIdentifier() {

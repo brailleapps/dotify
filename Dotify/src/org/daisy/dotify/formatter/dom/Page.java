@@ -32,6 +32,12 @@ public interface Page {
 	 * @return returns the page index in the sequence (zero based)
 	 */
 	public int getPageIndex();
+	
+	/**
+	 * Returns true if this page allows volume break after it.
+	 * @return returns true if the page allows volume break, false otherwise
+	 */
+	public boolean allowsVolumeBreak();
 
 	/**
 	 * Gets the parent sequence for this page

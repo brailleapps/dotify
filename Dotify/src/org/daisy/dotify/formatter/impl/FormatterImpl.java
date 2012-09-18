@@ -144,6 +144,7 @@ public class FormatterImpl implements Formatter {
 		c.setKeepType(p.getKeepType());
 		c.setKeepWithNext(p.getKeepWithNext());
 		c.setIdentifier(p.getIdentifier());
+		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		context.push(p);
 		//firstRow = true;
 	}

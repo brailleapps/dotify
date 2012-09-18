@@ -25,6 +25,7 @@ class BlockImpl implements Block {
 	private FormattingTypes.BreakBefore breakBefore;
 	private FormattingTypes.Keep keep;
 	private int keepWithNext;
+	private int keepWithNextSheets;
 	private String id;
 	private Stack<Segment> segments;
 	private final RowDataProperties rdp;
@@ -37,6 +38,7 @@ class BlockImpl implements Block {
 		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
 		this.keep = FormattingTypes.Keep.AUTO;
 		this.keepWithNext = 0;
+		this.keepWithNextSheets = 0;
 		this.id = "";
 		this.blockId = blockId;
 		this.segments = new Stack<Segment>();
@@ -92,6 +94,10 @@ class BlockImpl implements Block {
 		return keepWithNext;
 	}
 	
+	public int getKeepWithNextSheets() {
+		return keepWithNextSheets;
+	}
+	
 	public String getIdentifier() {
 		return id;
 	}
@@ -114,6 +120,10 @@ class BlockImpl implements Block {
 	
 	public void setKeepWithNext(int keepWithNext) {
 		this.keepWithNext = keepWithNext;
+	}
+	
+	public void setKeepWithNextSheets(int keepWithNextSheets) {
+		this.keepWithNextSheets = keepWithNextSheets;
 	}
 	
 	public void setIdentifier(String id) {

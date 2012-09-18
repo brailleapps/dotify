@@ -352,6 +352,7 @@
 	<!-- Override default processing -->
 	<xsl:template match="dtb:h1[parent::dtb:level1/@class='part']">
 		<block><xsl:apply-templates select="." mode="apply-block-attributes"/>
+			<xsl:attribute name="keep-with-next-sheets">1</xsl:attribute>
 			<block><leader position="100%" align="right" pattern=":"/></block>
 			<block margin-left="2" margin-right="2" text-indent="2"><xsl:apply-templates/></block>
 			<block><leader position="100%" align="right" pattern=":"/></block>

@@ -366,6 +366,8 @@ public class ObflParser {
 				builder.keep(FormattingTypes.Keep.valueOf(att.getValue().toUpperCase()));
 			} else if (name.equals("keep-with-next")) {
 				builder.keepWithNext(Integer.parseInt(att.getValue()));
+			} else if (name.equals("keep-with-next-sheets")) {
+				builder.keepWithNextSheets(Integer.parseInt(att.getValue()));
 			} else if (name.equals("block-indent")) {
 				builder.blockIndent(Integer.parseInt(att.getValue()));
 			} else if (name.equals("id")) {

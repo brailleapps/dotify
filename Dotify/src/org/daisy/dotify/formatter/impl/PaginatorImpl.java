@@ -181,6 +181,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 				if (rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
 					insertIdentifier(g.getIdentifier());
 				}
+				((PageSequenceImpl)currentSequence()).setSheetKeepProperty(g.getKeepWithNextSheets());
 				for (Row row : rdm) {
 					if (first) {
 						first = false;

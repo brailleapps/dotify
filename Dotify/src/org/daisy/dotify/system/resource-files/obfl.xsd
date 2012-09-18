@@ -33,9 +33,9 @@
 			<xs:element ref="template" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="default-template"/>
 		</xs:sequence>
-		<xs:attribute name="name" use="required" type="xs:ID"/>
-		<xs:attribute name="page-width" use="required" type="xs:anySimpleType"/>
-		<xs:attribute name="page-height" use="required" type="xs:anySimpleType"/>
+		<xs:attribute name="name" type="xs:ID" use="required"/>
+		<xs:attribute name="page-width" type="xs:anySimpleType" use="required"/>
+		<xs:attribute name="page-height" type="xs:anySimpleType" use="required"/>
 		<xs:attribute name="inner-margin" type="xs:anySimpleType"/>
 		<xs:attribute name="outer-margin" type="xs:anySimpleType"/>
 		<xs:attribute name="row-spacing" type="xs:anySimpleType"/>
@@ -55,7 +55,7 @@
 			<xs:element ref="header"/>
 			<xs:element ref="footer"/>
 		</xs:sequence>
-		<xs:attribute name="use-when" use="required" type="xs:anySimpleType"/>
+		<xs:attribute name="use-when" type="xs:anySimpleType" use="required"/>
 	</xs:complexType>
 	<xs:element name="template" type="template"/>
 	<xs:complexType name="default-template">
@@ -98,7 +98,7 @@
 	</xs:complexType>
 	<xs:element name="current-page" type="current-page"/>
 	<xs:complexType name="marker-reference">
-		<xs:attribute name="marker" use="required" type="xs:NMTOKEN"/>
+		<xs:attribute name="marker" type="xs:NMTOKEN" use="required"/>
 		<xs:attribute name="direction" use="required">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
@@ -119,18 +119,18 @@
 	</xs:complexType>
 	<xs:element name="marker-reference" type="marker-reference"/>
 	<xs:complexType name="string">
-		<xs:attribute name="value" use="required" type="xs:anySimpleType"/>
+		<xs:attribute name="value" type="xs:anySimpleType" use="required"/>
 	</xs:complexType>
 	<xs:element name="string" type="string"/>
 	<xs:complexType name="evaluate">
-		<xs:attribute name="expression" use="required" type="xs:anySimpleType"/>
+		<xs:attribute name="expression" type="xs:anySimpleType" use="required"/>
 	</xs:complexType>
 	<xs:element name="evaluate" type="evaluate"/>
 	<xs:complexType name="table-of-contents">
 		<xs:sequence>
 			<xs:element ref="toc-entry" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="name" use="required" type="xs:ID"/>
+		<xs:attribute name="name" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:element name="table-of-contents" type="table-of-contents"/>
 	<xs:complexType name="toc-entry" mixed="true">
@@ -144,7 +144,7 @@
 			<xs:element ref="span"/>
 			<xs:element ref="toc-entry"/>
 		</xs:choice>
-		<xs:attribute name="ref-id" use="required" type="xs:IDREF"/>
+		<xs:attribute name="ref-id" type="xs:IDREF" use="required"/>
 		<xs:attribute name="break-before">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
@@ -175,6 +175,22 @@
 					<xs:enumeration value="4"/>
 					<xs:enumeration value="5"/>
 					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-next-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
@@ -236,7 +252,7 @@
 			<xs:element ref="on-volume-end" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="on-toc-end" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="toc" use="required" type="xs:IDREF"/>
+		<xs:attribute name="toc" type="xs:IDREF" use="required"/>
 		<xs:attribute name="range" use="required">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
@@ -245,8 +261,8 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
-		<xs:attribute name="use-when" use="required" type="xs:anySimpleType"/>
-		<xs:attribute name="master" use="required" type="xs:IDREF"/>
+		<xs:attribute name="use-when" type="xs:anySimpleType" use="required"/>
+		<xs:attribute name="master" type="xs:IDREF" use="required"/>
 		<xs:attribute name="initial-page-number" type="xs:anySimpleType"/>
 		<xs:attribute ref="xml:lang"/>
 		<xs:attribute name="hyphenate">
@@ -292,7 +308,7 @@
 			<xs:element ref="block" maxOccurs="unbounded"/>
 			<xs:element ref="float-item" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="master" use="required" type="xs:IDREF"/>
+		<xs:attribute name="master" type="xs:IDREF" use="required"/>
 		<xs:attribute name="initial-page-number" type="xs:anySimpleType"/>
 		<xs:attribute ref="xml:lang"/>
 		<xs:attribute name="hyphenate">
@@ -309,7 +325,7 @@
 		<xs:sequence>
 			<xs:element ref="block" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="name" use="required" type="xs:ID"/>
+		<xs:attribute name="name" type="xs:ID" use="required"/>
 		<xs:attribute ref="xml:lang"/>
 	</xs:complexType>
 	<xs:element name="float-item" type="float-item"/>
@@ -357,6 +373,22 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="keep-with-next-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 		<xs:attribute name="list-type">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
@@ -398,8 +430,8 @@
 	</xs:complexType>
 	<xs:element name="span" type="span"/>
 	<xs:complexType name="marker">
-		<xs:attribute name="class" use="required" type="xs:anySimpleType"/>
-		<xs:attribute name="value" use="required" type="xs:anySimpleType"/>
+		<xs:attribute name="class" type="xs:anySimpleType" use="required"/>
+		<xs:attribute name="value" type="xs:anySimpleType" use="required"/>
 	</xs:complexType>
 	<xs:element name="marker" type="marker"/>
 	<xs:complexType name="leader">
@@ -413,17 +445,17 @@
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="pattern" type="xs:anySimpleType"/>
-		<xs:attribute name="position" use="required" type="xs:anySimpleType"/>
+		<xs:attribute name="position" type="xs:anySimpleType" use="required"/>
 	</xs:complexType>
 	<xs:element name="leader" type="leader"/>
 	<xs:complexType name="anchor">
-		<xs:attribute name="float-item" use="required" type="xs:IDREF"/>
+		<xs:attribute name="float-item" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:element name="anchor" type="anchor"/>
 	<xs:complexType name="br"/>
 	<xs:element name="br" type="br"/>
 	<xs:complexType name="page-number">
-		<xs:attribute name="ref-id" use="required" type="xs:IDREF"/>
+		<xs:attribute name="ref-id" type="xs:IDREF" use="required"/>
 		<xs:attribute name="style">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
