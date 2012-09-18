@@ -367,12 +367,12 @@ DotifyTranslator/src/org/daisy/dotify/translator/sv_SE/SwedishBrailleTranslatorF
 DotifyTranslator/src/org/daisy/dotify/translator/sv_SE/package.html -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/sv_SE/sv_SE-pas1.xml -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/sv_SE/sv_SE-pas2.xml -text svneol=unset#text/plain
-DotifyTranslator/tests/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
-DotifyTranslator/tests/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
-DotifyTranslator/tests/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
-DotifyTranslator/tests/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
-DotifyTranslator/tests/org/daisy/dotify/translator/DefaultBypassTranslatorTest.java -text
-DotifyTranslator/tests/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
-DotifyTranslator/tests/org/daisy/dotify/translator/sv_SE/CapitalizationMarkersTest.java -text
-DotifyTranslator/tests/org/daisy/dotify/translator/sv_SE/SwedishBrailleFilterTest.java -text
-DotifyTranslator/tests/org/daisy/dotify/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
+DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
+DotifyTranslator/test/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
+DotifyTranslator/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
+DotifyTranslator/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
+DotifyTranslator/test/org/daisy/dotify/translator/DefaultBypassTranslatorTest.java -text
+DotifyTranslator/test/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
+DotifyTranslator/test/org/daisy/dotify/translator/sv_SE/CapitalizationMarkersTest.java -text
+DotifyTranslator/test/org/daisy/dotify/translator/sv_SE/SwedishBrailleFilterTest.java -text
+DotifyTranslator/test/org/daisy/dotify/translator/sv_SE/SwedishBrailleTranslatorTest.java -text

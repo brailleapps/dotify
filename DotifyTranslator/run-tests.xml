@@ -4,7 +4,7 @@
 	
 	<import file="build-properties.xml"/>
 
-	<property name="test-src.dir" value="${basedir}/tests"/>
+	<property name="test-src.dir" value="${basedir}/test"/>
 
 	<property name="test-build.dir" value="${ant-output.dir}/test-build.temp"/>
 	<property name="tests-jar.name" value="tests-temp.jar"/>
