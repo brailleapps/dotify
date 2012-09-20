@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>		
+	<comment>Paths to hyphenation configuration files.</comment>
+
+	<entry key="en">resource-files/en-GB.xml</entry>	
+	<entry key="en-US">resource-files/en-US.xml</entry>
+	<entry key="en-GB">resource-files/en-GB.xml</entry>
+
+	<entry key="sv">resource-files/sv.xml</entry>
+	<entry key="sv-SE">resource-files/sv.xml</entry>
+
+	<entry key="no">resource-files/no.xml</entry>
+	<entry key="no-NO">resource-files/no.xml</entry>
+
+	<entry key="de">resource-files/de.xml</entry>
+	<entry key="de-DE">resource-files/de.xml</entry>
+
+	<entry key="fr">resource-files/fr.xml</entry>
+	<entry key="fr-FR">resource-files/fr.xml</entry>
+	
+	<entry key="fi">resource-files/fi.xml</entry>
+	<entry key="fi-FI">resource-files/fi.xml</entry>
+
+</properties>

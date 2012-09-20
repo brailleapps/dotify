@@ -5,10 +5,13 @@ import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
 
 class LatexHyphenator extends AbstractHyphenator {
-	private final net.davidashen.text.Hyphenator hyphenator;
+	private final HyphenationConfig hyphenator;
 	
 	LatexHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
-		this.hyphenator = LatexHyphenatorCore.getInstance().getHyphenator(locale);
+		LatexHyphenatorCore core = LatexHyphenatorCore.getInstance();
+		this.hyphenator = core.getHyphenator(locale);
+		this.beginLimit = hyphenator.getBeginLimit();
+		this.endLimit = hyphenator.getEndLimit();
 	}
 	
 	static boolean supportsLocale(FilterLocale locale) {
@@ -16,7 +19,7 @@ class LatexHyphenator extends AbstractHyphenator {
 	}
 
 	public String hyphenate(String phrase) {
-		return hyphenator.hyphenate(phrase, getBeginLimit(), getEndLimit());
+		return hyphenator.getHyphenator().hyphenate(phrase, getBeginLimit(), getEndLimit());
 	}
 
 }

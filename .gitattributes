@@ -320,20 +320,28 @@ DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactoryMaker.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/HyphenatorErrorHandler.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/HyphenationConfig.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/LatexHyphenator.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/LatexHyphenatorCore.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/LatexHyphenatorFactory.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/LatexRulesLocator.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/dehyph_x.tex -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/fihyph.tex -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/frhyph_x.tex -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/hyphenation_tables.xml -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/nohyphbx.tex -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/sehyph.tex -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/ukhyph.tex -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/ushyph.tex -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/rules/ushyphmax.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/LatexRulesLocator.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/hyphenation-catalog.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/de.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/en-GB.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/en-US.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/fi.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/fr.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/no.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/sv.xml -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/dehyph_x.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/fihyph.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/frhyph_x.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/nohyphbx.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/sehyph.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/ukhyph.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/ushyph.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/tex/ushyphmax.tex -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/latex/resource-files/utf8/hyph_sv_SE.dic -text
 DotifyTranslator/src/org/daisy/dotify/text/BreakPoint.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/BreakPointHandler.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/CaseFilter.java -text svneol=unset#text/plain
@@ -359,7 +367,6 @@ DotifyTranslator/src/org/daisy/dotify/translator/SimpleBrailleTranslator.java -t
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UnsupportedSpecificationException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/en_US/EnglishBrailleTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/package.html -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
