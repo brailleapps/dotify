@@ -106,5 +106,10 @@ class HyphenationConfig {
 	public net.davidashen.text.Hyphenator getHyphenator() {
 		return hyphenator;
 	}
+
+	@Override
+	public String toString() {
+		return "HyphenationConfig [encoding=" + encoding + ", beginLimit=" + beginLimit + ", endLimit=" + endLimit + ", mode=" + mode + ", patternPath=" + patternPath + "]";
+	}
 	
 }
