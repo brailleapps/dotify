@@ -139,7 +139,7 @@ class PageImpl implements Page {
 		ArrayList<Row> ret = new ArrayList<Row>();
 		for (ArrayList<Object> row : fields) {
 			try {
-				ret.add(new Row(distribute(row, lm.getFlowWidth(), " ", translator)));
+				ret.add(new Row(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator)));
 			} catch (LayoutToolsException e) {
 				throw new FormatterException("Error while rendering header", e);
 			}

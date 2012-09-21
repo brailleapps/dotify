@@ -17,13 +17,17 @@ import org.daisy.dotify.formatter.utils.LayoutTools;
  * @author Joel Håkansson
  */
 public class WriterHandler {
-	private static final Character SPACE_CHAR = ' '; //'\u2800'
+	private final String marginCharacter;
+	
+	public WriterHandler(String marginCharacter) {
+		this.marginCharacter = marginCharacter;
+	}
 	/**
 	 * Writes this structure to the suppled PagedMediaWriter.
 	 * @param writer the PagedMediaWriter to write to
 	 * @throws IOException if IO fails
 	 */
-	public static void write(VolumeStruct volumeStruct, PagedMediaWriter writer) throws IOException {
+	public void write(VolumeStruct volumeStruct, PagedMediaWriter writer) throws IOException {
 		try {
 			for (Volume v : volumeStruct) {
 				boolean firstInVolume = true;
@@ -67,7 +71,7 @@ public class WriterHandler {
 		}
 	}
 	
-	private static void writePage(PagedMediaWriter writer, Page p, LayoutMaster lm) throws FormatterException {
+	private void writePage(PagedMediaWriter writer, Page p, LayoutMaster lm) throws FormatterException {
 		writer.newPage();
 		int pagenum = p.getPageIndex()+1;
 		List<Row> rows = p.getRows();
@@ -78,7 +82,7 @@ public class WriterHandler {
 				String chars = row.getChars().replaceAll("\\s*\\z", "");
 				// add left margin
 				int rowWidth = LayoutTools.length(chars)+row.getLeftMargin();
-				String r = 	LayoutTools.fill(SPACE_CHAR, margin) + chars;
+				String r = 	LayoutTools.fill(marginCharacter, margin) + chars;
 				if (rowWidth>lm.getFlowWidth()) {
 					throw new FormatterException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
 				}

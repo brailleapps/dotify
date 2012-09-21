@@ -28,6 +28,11 @@
 
 	<xsl:output method="xml" media-type="application/x-pef+xml" encoding="utf-8" indent="no"/>
 	
+	<xsl:template match="/">
+		<xsl:message terminate="no">Braille Finalizer has been deprecated.</xsl:message>
+		<xsl:apply-templates/>
+	</xsl:template>
+	
 	<xsl:template match="text()[parent::pef:row]">
 		<xsl:value-of select="translate(., $finalizer-input, $finalizer-output)"/>
 	</xsl:template>

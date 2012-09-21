@@ -22,8 +22,8 @@ import org.daisy.dotify.translator.BrailleTranslatorResult;
  * @author Joel Håkansson, TPB
  */
 public class BlockHandler {
-	private static final Character SPACE_CHAR = ' ';
 	private final BrailleTranslator translator;
+	private final String spaceChar;
 	//private int currentListNumber;
 	//private BlockProperties.ListType currentListType;
 	private Leader currentLeader;
@@ -77,6 +77,8 @@ public class BlockHandler {
 		this.available = builder.available;
 		this.item = null;
 		this.master = builder.master;
+		this.spaceChar = translator.translate(" ").getTranslatedRemainder();
+		
 	}
 	/*
 	public void setCurrentListType(BlockProperties.ListType type) {
@@ -201,7 +203,7 @@ public class BlockHandler {
 	private void newRow(String contentBefore, BrailleTranslatorResult chars, int available, int margin, int indent, BlockProperties p, int blockIndent) {
 		int thisIndent = indent + blockIndent - LayoutTools.length(contentBefore);
 		//assert thisIndent >= 0;
-		String preText = contentBefore + LayoutTools.fill(SPACE_CHAR, thisIndent).toString();
+		String preText = contentBefore + LayoutTools.fill(spaceChar, thisIndent).toString();
 		newRow(null, margin, preText, "", chars, available, p, blockIndent);
 	}
 
@@ -247,7 +249,7 @@ public class BlockHandler {
 				}
 				ret.add(row);
 
-				preContent = LayoutTools.fill(SPACE_CHAR, p.getTextIndent()+blockIndent);
+				preContent = LayoutTools.fill(spaceChar, p.getTextIndent()+blockIndent);
 				preTextIndent = LayoutTools.length(preContent);
 				preTabText = "";
 				

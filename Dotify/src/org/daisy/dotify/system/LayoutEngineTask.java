@@ -99,7 +99,10 @@ public class LayoutEngineTask extends InternalTask  {
 			logger.info("Rendering output...");
 			writer.open(new FileOutputStream(output));
 			//splitterFactory.newSplitter().split(bookStruct)
-			WriterHandler.write(volumes, writer);
+			String ms = translator.translate(" ").getTranslatedRemainder();
+
+			WriterHandler wh = new WriterHandler(ms);
+			wh.write(volumes, writer);
 			writer.close();
 
 		} catch (FileNotFoundException e) {

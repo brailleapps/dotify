@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.formatter.PagedMediaWriter;
@@ -28,6 +29,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 	private int cRowgap;
 	private boolean cDuplex;
 	private StateObject state;
+	private int errorCount = 0;
 	
 	/**
 	 * Create a new PEFMediaWriter using the supplied Properties. Available properties are:
@@ -88,6 +90,15 @@ public class PEFMediaWriter implements PagedMediaWriter {
 	public void newRow(CharSequence row) {
 		state.assertOpen();
 		pst.print("<row>");
+		if (row.toString().matches("[^\u2800-\u28FF]+")) {
+			if (errorCount<10) {
+				Logger.getLogger(this.getClass().getCanonicalName()).fine(
+						"Non-braille characters in output"+
+							(errorCount==9?" (supressing additional messages of this kind)":"") + ": " + row
+						);
+				errorCount++;
+			}
+		}
 		pst.print(row);
 		pst.print("</row>");
 		pst.println();
