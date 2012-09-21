@@ -4,7 +4,7 @@
 	
 	<import file="build-properties.xml"/>
 	
-	<property name="dist.jar" value="${dist.dir}/dotify-${release-version}.jar"/>
+	<property name="dist.jar" value="${dist.dir}/dotify.jar"/>
 	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
 
 	<patternset id="dist-jar.patternset">
