@@ -3,7 +3,7 @@
 <properties>		
 	<comment>Configuration for Swedish.</comment>
 
-	<entry key="patternPath">resource-files/utf8/hyph_sv_SE.dic</entry>
+	<entry key="patternPath">resource-files/aoo/hyph_sv_SE.dic</entry>
 	<entry key="mode">character</entry>
 	<entry key="encoding">UTF-8</entry>
 	<entry key="beginLimit">2</entry>
