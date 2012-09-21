@@ -18,7 +18,7 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private final HashMap<String, Page> pageReferences;
 		private final FormatterFactory formatterFactory;
 		private Formatter formatter;
-		private int sheetKeep;
+		private int keepNextSheets;
 		
 		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterFactory formatterFactory) {
 			this.pages = new Stack<Page>();
@@ -27,7 +27,7 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 			this.pageReferences = pageReferences;
 			this.formatterFactory = formatterFactory;
 			this.formatter = null;
-			this.sheetKeep = 0;
+			this.keepNextSheets = 0;
 		}
 
 		int rowsOnCurrentPage() {
@@ -36,19 +36,23 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		
 		void newPage() {
 			pages.push(new PageImpl(this, pages.size()+pagesOffset));
-			if (sheetKeep>0) {
+			if (keepNextSheets>0) {
 				((PageImpl)currentPage()).setAllowsVolumeBreak(false);
 			}
 			if (!getLayoutMaster().duplex() || getPageCount()%2==0) {
-				if (sheetKeep>0) {
-					sheetKeep--;
+				if (keepNextSheets>0) {
+					keepNextSheets--;
 				}
 			}
 		}
 		
-		void setSheetKeepProperty(int value) {
-			sheetKeep = Math.max(value, sheetKeep);
-			if (sheetKeep>0) {
+		void setKeepWithPreviousSheets(int value) {
+			((PageImpl)currentPage()).setKeepWithPreviousSheets(value);
+		}
+		
+		void setKeepWithNextSheets(int value) {
+			keepNextSheets = Math.max(value, keepNextSheets);
+			if (keepNextSheets>0) {
 				((PageImpl)currentPage()).setAllowsVolumeBreak(false);
 			}
 		}

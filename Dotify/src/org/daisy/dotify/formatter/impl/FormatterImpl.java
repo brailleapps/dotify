@@ -156,6 +156,7 @@ public class FormatterImpl implements Formatter {
 		}
 		BlockProperties p = context.pop();
 		flowStruct.getCurrentSequence().getCurrentBlock().addSpaceAfter(p.getBottomMargin());
+		flowStruct.getCurrentSequence().getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		leftMargin -= p.getLeftMargin();
 		rightMargin -= p.getRightMargin();
 		if (context.size()>0) {

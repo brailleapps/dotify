@@ -21,6 +21,32 @@ public class EvenSizeVolumeSplitterCalculatorTest {
 	}
 	
 	@Test
+	public void breakpointsWithOffset() {
+		int i = 479;
+		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, 49, 1);
+		for (int j=1; j<i; j++) {
+			if (j==44 || j==88 || j==132 || j==176 || j==220 || j==264 || j==307 || j==350 || j==393 || j==436) {
+				assertTrue("Assert that sheet is a break point: " + j, ssd.isBreakpoint(j));
+			} else {
+				assertTrue("Assert that sheet is not a break point: " + j, !ssd.isBreakpoint(j));
+			}
+		}
+	}
+	
+	@Test
+	public void breakpointsWithOffset_2() {
+		int i = 479;
+		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, 49, 2);
+		for (int j=1; j<i; j++) {
+			if (j==40 || j==80 || j==120 || j==160 || j==200 || j==240 || j==280 || j==320 || j==360 || j==400 || j==440) {
+				assertTrue("Assert that sheet is a break point: " + j, ssd.isBreakpoint(j));
+			} else {
+				assertTrue("Assert that sheet is not a break point: " + j, !ssd.isBreakpoint(j));
+			}
+		}
+	}
+	
+	@Test
 	public void volumeNumber() {
 		int i = 479;
 		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, 49);
@@ -38,6 +64,20 @@ public class EvenSizeVolumeSplitterCalculatorTest {
 		int i = 479;
 		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, 49);
 		assertTrue("Assert that number of volumes is correct: " + ssd.getVolumeCount(), ssd.getVolumeCount()==10);
+	}
+	
+	@Test
+	public void volumeCountWithOffset() {
+		int i = 479;
+		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, 49, 1);
+		assertTrue("Assert that number of volumes is correct: " + ssd.getVolumeCount(), ssd.getVolumeCount()==11);
+	}
+	
+	@Test
+	public void volumeCountWithOffset_2() {
+		int i = 479;
+		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, 49, 2);
+		assertTrue("Assert that number of volumes is correct: " + ssd.getVolumeCount(), ssd.getVolumeCount()==12);
 	}
 	
 	@Test (expected=IndexOutOfBoundsException.class)

@@ -21,6 +21,7 @@ public class BlockProperties {
 	private final BreakBefore breakBefore;
 	private final Keep keep;
 	private final int keepWithNext;
+	private final int keepWithPreviousSheets;
 	private final int keepWithNextSheets;
 	private final int blockIndent;
 	private final String identifier;
@@ -41,6 +42,7 @@ public class BlockProperties {
 		BreakBefore breakBefore = BreakBefore.AUTO;
 		Keep keep = Keep.AUTO;
 		int keepWithNext = 0;
+		int keepWithPreviousSheets = 0;
 		int keepWithNextSheets = 0;
 		int blockIndent = 0;
 		String identifier = "";
@@ -65,6 +67,7 @@ public class BlockProperties {
 			breakBefore = b.getBreakBeforeType();
 			keep = b.getKeepType();
 			keepWithNext = b.getKeepWithNext();
+			keepWithPreviousSheets = b.getKeepWithPreviousSheets();
 			keepWithNextSheets = b.getKeepWithNextSheets();
 			blockIndent = b.getBlockIndent();
 			identifier = b.getIdentifier();
@@ -179,6 +182,11 @@ public class BlockProperties {
 			return this;
 		}
 		
+		public Builder keepWithPreviousSheets(int keepWithPreviousSheets) {
+			this.keepWithPreviousSheets = keepWithPreviousSheets;
+			return this;
+		}
+		
 		public Builder keepWithNextSheets(int keepWithNextSheets) {
 			this.keepWithNextSheets = keepWithNextSheets;
 			return this;
@@ -222,6 +230,7 @@ public class BlockProperties {
 		breakBefore = builder.breakBefore;
 		keep = builder.keep;
 		keepWithNext = builder.keepWithNext;
+		keepWithPreviousSheets = builder.keepWithPreviousSheets;
 		keepWithNextSheets = builder.keepWithNextSheets;
 		blockIndent = builder.blockIndent;
 		identifier = builder.identifier;
@@ -330,6 +339,10 @@ public class BlockProperties {
 	 */
 	public int getKeepWithNext() {
 		return keepWithNext;
+	}
+	
+	public int getKeepWithPreviousSheets() {
+		return keepWithPreviousSheets;
 	}
 	
 	public int getKeepWithNextSheets() {

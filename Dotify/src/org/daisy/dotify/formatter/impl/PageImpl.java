@@ -34,6 +34,7 @@ class PageImpl implements Page {
 	private int contentMarkersBegin;
 	private boolean isVolBreak;
 	private boolean isVolBreakAllowed;
+	private int keepPreviousSheets;
 	
 	public PageImpl(PageSequenceImpl parent, int pageIndex) {
 		this.rows = new ArrayList<Row>();
@@ -45,6 +46,7 @@ class PageImpl implements Page {
 		this.flowHeight = parent.getLayoutMaster().getPageHeight()-template.getHeaderHeight()-template.getFooterHeight();
 		this.isVolBreak = false;
 		this.isVolBreakAllowed = true;
+		this.keepPreviousSheets = 0;
 	}
 	
 	public void newRow(Row r) {
@@ -214,12 +216,20 @@ class PageImpl implements Page {
 		return f.style(pagenum);
 	}
 	
+	void setKeepWithPreviousSheets(int value) {
+		keepPreviousSheets = Math.max(value, keepPreviousSheets);
+	}
+	
 	void setAllowsVolumeBreak(boolean value) {
 		this.isVolBreakAllowed = value;
 	}
 
 	public boolean allowsVolumeBreak() {
 		return isVolBreakAllowed;
+	}
+
+	public int keepPreviousSheets() {
+		return keepPreviousSheets;
 	}
 
 }

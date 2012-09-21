@@ -38,6 +38,8 @@ public interface Page {
 	 * @return returns true if the page allows volume break, false otherwise
 	 */
 	public boolean allowsVolumeBreak();
+	
+	public int keepPreviousSheets();
 
 	/**
 	 * Gets the parent sequence for this page

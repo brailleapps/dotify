@@ -23,6 +23,7 @@ public interface Block {
 	public RowDataManager getRowDataManager(CrossReferences refs);
 	public String getBlockIdentifier();
 	
+	public int getKeepWithPreviousSheets();
 	public int getKeepWithNextSheets();
 	
 }

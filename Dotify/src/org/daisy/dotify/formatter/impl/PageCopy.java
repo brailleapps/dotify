@@ -46,4 +46,8 @@ class PageCopy implements Page {
 		return p.allowsVolumeBreak();
 	}
 
+	public int keepPreviousSheets() {
+		return p.keepPreviousSheets();
+	}
+
 }

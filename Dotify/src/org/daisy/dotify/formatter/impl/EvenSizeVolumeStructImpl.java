@@ -16,6 +16,7 @@ import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
 
 class EvenSizeVolumeStructImpl implements VolumeStruct {
+	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Logger logger;
 
 	// the struct
@@ -85,23 +86,39 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 		return retVolume;
 	}
 	
+	private void trimEnd(StringBuilder sb, Page p) {
+		int i = 0;
+		int x = sb.length()-1;
+		while (i<p.keepPreviousSheets() && x>0) {
+			if (sb.charAt(x)=='s') {
+				x--;
+				i++;
+			}
+			if (sb.charAt(x)==ZERO_WIDTH_SPACE) {
+				sb.deleteCharAt(x);
+				x--;
+			}
+		}
+	}
+	
 	public Iterator<Volume> iterator() {
 		int j = 1;
 		boolean ok = false;
 		int totalPreCount = 0;
 		int totalPostCount = 0;
 		int prvVolCount = 0;
-		
+		int volumeOffset = 0;
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
 			Iterable<PageSequence> ps = struct.getContentsPageStruct().getContents();
 			final int contents = PageTools.countSheets(ps); 
 			ArrayList<Page> pages = new ArrayList<Page>();
-			StringBuilder sb = new StringBuilder();
+			StringBuilder res = new StringBuilder();
 			{
 				boolean volBreakAllowed = true;
 				for (PageSequence seq :ps) {
+					StringBuilder sb = new StringBuilder();
 					LayoutMaster lm = seq.getLayoutMaster();
 					int pageIndex=0;
 					for (Page p : seq) {
@@ -110,21 +127,24 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 							sb.append("s");
 						}
 						volBreakAllowed &= p.allowsVolumeBreak();
+						trimEnd(sb, p);
 						if (!lm.duplex() || pageIndex%2==1) {
 							if (volBreakAllowed) {
-								sb.append("\u200b");
+								sb.append(ZERO_WIDTH_SPACE);
 							}
 						}
 						pages.add(p);
 						pageIndex++;
 					}
+					res.append(sb);
+					res.append(ZERO_WIDTH_SPACE);
 				}
 			}
-			logger.fine("Volume break string: " + sb.toString().replace('\u200b', '-'));
-			BreakPointHandler volBreaks = new BreakPointHandler(sb.toString());
+			logger.fine("Volume break string: " + res.toString().replace(ZERO_WIDTH_SPACE, '-'));
+			BreakPointHandler volBreaks = new BreakPointHandler(res.toString());
 
 			volumeForContentSheetChanged = false;
-			sdc = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax);
+			sdc = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset);
 			if (sdc.getVolumeCount()!=prvVolCount) {
 				volumeOverhead = new Integer[sdc.getVolumeCount()];
 				targetVolSize = new Integer[sdc.getVolumeCount()];
@@ -192,6 +212,11 @@ class EvenSizeVolumeStructImpl implements VolumeStruct {
 			if (volBreaks.hasNext()) {
 				ok2 = false;
 				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(pages.size()-pageIndex));
+				if (volumeOffset<1) {
+					volumeOffset++;
+				} else {
+					logger.warning("Could not fit contents even when adding a new volume.");
+				}
 			}
 			if (!struct.isDirty() && pageIndex==pages.size() && ok2 && (!volumeForContentSheetChanged)) {
 				//everything fits

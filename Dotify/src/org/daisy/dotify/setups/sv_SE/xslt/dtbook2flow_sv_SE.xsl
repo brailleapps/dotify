@@ -134,6 +134,7 @@
 		<xsl:if test="not(dtb:h1)">
 			<xsl:attribute name="margin-top">3</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="keep-with-previous-sheets">1</xsl:attribute>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<!-- If level1 has part, format level2 as level1 -->

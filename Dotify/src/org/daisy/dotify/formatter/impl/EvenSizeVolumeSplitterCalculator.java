@@ -22,7 +22,15 @@ public class EvenSizeVolumeSplitterCalculator {
 	 * @param splitterMax maximum number of sheets in a volume
 	 */
 	public EvenSizeVolumeSplitterCalculator(int sheets, int splitterMax) {
-		volumes = (int)Math.ceil(sheets/(double)splitterMax);
+		this(sheets, splitterMax, 0);
+	}
+	/**
+	 * @param sheets
+	 * @param splitterMax
+	 * @param volumeOffset
+	 */
+	public EvenSizeVolumeSplitterCalculator(int sheets, int splitterMax, int volumeOffset) {
+		volumes = (int)Math.ceil(sheets/(double)splitterMax) + volumeOffset;
 		this.sheets = sheets;
 		this.breakpoint = (int)Math.ceil(sheets/(double)volumes);
 		int slv = sheets - (breakpoint * (volumes - 1));

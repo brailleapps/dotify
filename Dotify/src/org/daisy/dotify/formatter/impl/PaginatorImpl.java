@@ -181,7 +181,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 				if (rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
 					insertIdentifier(g.getIdentifier());
 				}
-				((PageSequenceImpl)currentSequence()).setSheetKeepProperty(g.getKeepWithNextSheets());
+				((PageSequenceImpl)currentSequence()).setKeepWithNextSheets(g.getKeepWithNextSheets());
 				for (Row row : rdm) {
 					if (first) {
 						first = false;
@@ -194,6 +194,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 						newRow(row);
 					}
 				}
+				((PageSequenceImpl)currentSequence()).setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
 				if (g.getSpaceAfter()>=getPageInfo().getFlowHeight()-getPageInfo().countRows()) {
 					newPage();
 				} else {
