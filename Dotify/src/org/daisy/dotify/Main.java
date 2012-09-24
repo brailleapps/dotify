@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+/*import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;*/
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.daisy.braille.ui.AbstractUI;
 import org.daisy.dotify.config.ConfigurationsCatalog;
@@ -92,19 +97,66 @@ public class Main extends AbstractUI {
 			Main.exitWithCode(ExitCode.MISSING_RESOURCE);
 		}
 		
-		File output = new File(p.get(1)).getAbsoluteFile();
+		final File output = new File(p.get(1)).getAbsoluteFile();
 
-		String setup = p.get(2);
-		String context = p.get(3);
+		final String setup = p.get(2);
+		final String context = p.get(3);
 		
 		//File output = new File(args[1]);
-		HashMap<String, String> props = new HashMap<String, String>();
+		final HashMap<String, String> props = new HashMap<String, String>();
 		//props.put("debug", "true");
 		//props.put(SystemKeys.TEMP_FILES_DIRECTORY, TEMP_DIR);
-		props.put(SystemKeys.WRITE_TEMP_FILES, "true");
 
 		props.putAll(m.getOptional(args));
 		
+		if (input.isDirectory() && output.isDirectory()) {
+			if ("true".equals(props.get(SystemKeys.WRITE_TEMP_FILES))) {
+				Main.exitWithCode(ExitCode.ILLEGAL_ARGUMENT_VALUE, "Cannot write debug files in batch mode.");
+			}
+			String format = props.get(SystemKeys.OUTPUT_FORMAT);
+			if (format==null) {
+				Main.exitWithCode(ExitCode.MISSING_ARGUMENT, SystemKeys.OUTPUT_FORMAT + " must be specified in batch mode.");
+			} else if (format.equals(SystemKeys.PEF_FORMAT)) {
+				format = "pef";
+			} else if (format.equals(SystemKeys.TEXT_FORMAT)) {
+				format = "txt";
+			} else if (format.equals(SystemKeys.OBFL_FORMAT)) {
+				format = "obfl";
+			} else {
+				Main.exitWithCode(ExitCode.ILLEGAL_ARGUMENT_VALUE, "Unknown output format.");
+			}
+			//Experimental parallelization code in comment.
+			//ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+			final String ext = format;
+			for (final File f : input.listFiles()) {
+				//es.execute(new Runnable() {
+					//public void run() {
+						try {
+							runDotify(f, new File(output, f.getName()+"."+ext), setup, context, props);
+						} catch (InternalTaskException e) {
+							Logger.getLogger(Main.class.getCanonicalName()).log(Level.WARNING, "Failed to process " + f, e);
+						} catch (IOException e) {
+							Logger.getLogger(Main.class.getCanonicalName()).log(Level.WARNING, "Failed to read " + f, e);
+						}
+					//}});
+			}
+			//es.shutdown();
+			//try {
+			//	es.awaitTermination(600, TimeUnit.SECONDS);
+			//} catch (InterruptedException e) {
+			//	e.printStackTrace();
+			//}
+		} else if (input.isDirectory()) { 
+			Main.exitWithCode(ExitCode.ILLEGAL_ARGUMENT_VALUE, "If input is a directory, output must be an existing directory too.");
+		} else {
+			runDotify(input, output, setup, context, props);
+		}
+	}
+	
+	private static void runDotify(File input, File output, String setup, String context, HashMap<String, String> props) throws InternalTaskException, IOException {
+		if (!input.exists()) {
+			Main.exitWithCode(ExitCode.MISSING_RESOURCE, "Cannot find input file: " + input);
+		}
 		Dotify.run(input, output, setup, FilterLocale.parse(context), props);
 	}
 

@@ -277,6 +277,9 @@ Dotify/test/org/daisy/dotify/formatter/utils/ExpressionTest.java -text svneol=un
 Dotify/test/org/daisy/dotify/formatter/utils/PositionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/setups/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/system/InputManagerFactoryMakerTest.java -text
+Dotify/test/org/daisy/dotify/system/ObflWsXsltTest.java -text
+Dotify/test/org/daisy/dotify/system/resource-files/ws-test-expected.xml -text
+Dotify/test/org/daisy/dotify/system/resource-files/ws-test-input.xml -text
 Dotify/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text

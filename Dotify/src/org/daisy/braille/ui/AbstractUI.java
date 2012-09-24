@@ -289,6 +289,13 @@ public abstract class AbstractUI {
 	}
 	
 	public static void exitWithCode(ExitCode e) {
+		exitWithCode(e, null);
+	}
+	
+	public static void exitWithCode(ExitCode e, String message) {
+		if (message!=null) {
+			System.out.println(message);
+		}
 		System.exit(-e.ordinal());
 	}
 	
