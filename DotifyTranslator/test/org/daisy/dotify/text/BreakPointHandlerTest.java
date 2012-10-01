@@ -2,8 +2,6 @@ package org.daisy.dotify.text;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.text.BreakPoint;
-import org.daisy.dotify.text.BreakPointHandler;
 import org.junit.Test;
 
 public class BreakPointHandlerTest {
@@ -103,6 +101,24 @@ public class BreakPointHandlerTest {
 		assertEquals("at the evi-", bp.getHead());
 		assertEquals("dence on the ev­i­dence", bp.getTail());
 		assertTrue(!bp.isHardBreak());
+	}
+	@Test
+	public void testFinalizer() {
+		BreakPointHandler bph = new BreakPointHandler("Remove softhyphen (\u00ad) and zero width space (\u200b)");
+		assertEquals("Remove softhyphen () and zero width space ()", bph.getRemaining());
+	}
+	@Test
+	public void testFinalizer_performance() {
+		//This test is most interesting to run manually when optimizing performance, but it is included 
+		//here in case of future improvements. 
+		BreakPointHandler bph = new BreakPointHandler("Remove softhyphen (\u00ad) and zero width space (\u200b)");
+		int threshold = 300;
+		long d= System.currentTimeMillis();
+		for (int i=0; i<100000; i++) {
+			bph.getRemaining();
+		}
+		long actualTime = System.currentTimeMillis()-d;
+		assertTrue("Time exceeded threshold ("+threshold+" ms), was " + actualTime + " ms.", (actualTime<threshold));
 	}
 	
 }

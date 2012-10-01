@@ -162,7 +162,19 @@ whileLoop:		while (i>=0) {
 	}
 	
 	private String finalize(String str) {
-		return str.replaceAll(""+SOFT_HYPHEN, "").replaceAll(""+ZERO_WIDTH_SPACE, "");
+		StringBuilder sb = new StringBuilder();
+		for (char c : str.toCharArray()) {
+			switch (c) {
+				case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
+					// remove from output
+					break;
+				default:
+					sb.append(c);
+			}
+		}
+		return sb.toString();
+		/*
+		return str.replaceAll(""+SOFT_HYPHEN, "").replaceAll(""+ZERO_WIDTH_SPACE, "");*/
 	}
 	/**
 	 * Does this BreakPointHandler has any text left to break into rows 
