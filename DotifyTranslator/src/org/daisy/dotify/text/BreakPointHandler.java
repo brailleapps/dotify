@@ -1,5 +1,7 @@
 package org.daisy.dotify.text;
 
+import java.util.regex.Pattern;
+
 
 /**
  * Breaks a paragraph of text into rows. It is assumed that all 
@@ -17,6 +19,8 @@ public class BreakPointHandler {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final static char DASH = '-';
 	private final static char SPACE = ' ';
+	private final static Pattern leadingWhitespace = Pattern.compile("\\A\\s+");
+	private final static Pattern trailingWhitespace = Pattern.compile("\\s+\\z");
 	private String charsStr;
 	
 	/**
@@ -137,11 +141,11 @@ whileLoop:		while (i>=0) {
 			} else {
 				tail = "";
 			}
-			head = head.replaceAll("\\s+\\z", "");
+			head = trailingWhitespace.matcher(head).replaceAll("");
 		}
 		assert (tail.length()<=charsStr.length());
 		//trim leading whitespace in tail
-		tail = tail.replaceAll("\\A\\s+", "");
+		tail = leadingWhitespace.matcher(tail).replaceAll("");
 		head = finalize(head);
 		if (!test) {
 			charsStr = tail;
