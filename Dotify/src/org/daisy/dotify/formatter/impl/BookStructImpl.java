@@ -1,8 +1,10 @@
-package org.daisy.dotify.formatter.core;
+package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,12 +13,15 @@ import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
+import org.daisy.dotify.formatter.core.BlockEventHandler;
+import org.daisy.dotify.formatter.core.BlockSequenceManipulator;
+import org.daisy.dotify.formatter.core.SequenceEventImpl;
+import org.daisy.dotify.formatter.core.TableOfContents;
 import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.BookStruct;
-import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
@@ -25,9 +30,13 @@ import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.TocEvents;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
+import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
+import org.daisy.dotify.formatter.utils.PageTools;
+import org.daisy.dotify.text.BreakPoint;
+import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.tools.CompoundIterable;
 
 /**
@@ -35,23 +44,21 @@ import org.daisy.dotify.tools.CompoundIterable;
  * 
  * @author Joel Håkansson
  */
-public class BookStructImpl implements BookStruct, CrossReferences {
+public class BookStructImpl implements BookStruct {
+	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Logger logger;
 	private final BlockStruct bs;
-	private PageStruct ps;
+	
 	private final Map<String, LayoutMaster> masters;
 	private final Iterable<VolumeTemplate> volumeTemplates;
 	private final Map<String, TableOfContents> tocs;
 	private final FormatterFactory formatterFactory;
 	private final PaginatorFactory paginatorFactory;
-	private Map<Page, Integer> pageSheetMap;
-	private final Map<Integer, PageStruct> volPreStructMap;
-	private final Map<Integer, PageStruct> volPostStructMap;
-	private final Map<String, Integer> volLocations;
-	private final Map<String, Integer> pageLocations;
-	private boolean isDirty;
-	private VolumeStruct volumeData;
-	
+
+	private final CrossReferenceHandler crh;
+
+	//private VolumeStruct volumeData;
+
 	public BookStructImpl(BlockStruct bs, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
 			FormatterFactory factory, PaginatorFactory paginatorFactory) throws FormatterException {
 		this.bs = bs;
@@ -63,53 +70,29 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 		this.tocs = tocs;
 		
 		this.logger = Logger.getLogger(BookStructImpl.class.getCanonicalName());
-		
-		this.volPreStructMap = new HashMap<Integer, PageStruct>();
-		this.volPostStructMap = new HashMap<Integer, PageStruct>();
-		this.volLocations = new HashMap<String, Integer>();
-		this.pageLocations = new HashMap<String, Integer>();
-		this.isDirty = false;
 
-		reformat();
+		this.crh = new CrossReferenceHandler();
 	}
 	
-	public void reformat() throws FormatterException {
+	private void reformat() throws FormatterException {
 		Paginator paginator = paginatorFactory.newPaginator();
 		paginator.open(formatterFactory);
 
 		try {
-			paginator.paginate(bs.getBlockSequenceIterable(), this);
+			paginator.paginate(bs.getBlockSequenceIterable(), crh);
 			paginator.close();
 		} catch (IOException e) {
 			throw new FormatterException(e);
 		}
-		
-		this.ps = paginator.getPageStruct();
-		
-		int sheetIndex=0;
-		this.pageSheetMap = new HashMap<Page, Integer>();
-		for (PageSequence s : this.ps.getContents()) {
-			LayoutMaster lm = s.getLayoutMaster();
-			int pageIndex=0;
-			for (Page p : s) {
-				if (!lm.duplex() || pageIndex%2==0) {
-					sheetIndex++;
-				}
-				pageSheetMap.put(p, sheetIndex);
-				pageIndex++;
-			}
-		}
-	}
-	
-	public void setVolumeStruct(VolumeStruct volumeStruct) {
-		this.volumeData = volumeStruct;
+
+		crh.setContents(paginator.getPageStruct());
 	}
 
-	public PageStruct getPreVolumeContents(int volumeNumber) {
+	private PageStruct getPreVolumeContents(int volumeNumber) {
 		return getVolumeContents(volumeNumber, true);
 	}
 
-	public PageStruct getPostVolumeContents(int volumeNumber) {
+	private PageStruct getPostVolumeContents(int volumeNumber) {
 		return getVolumeContents(volumeNumber, false);
 	}
 	
@@ -117,15 +100,15 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 		try {
 			ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
 			for (VolumeTemplate t : volumeTemplates) {
-				if (t.appliesTo(volumeNumber, volumeData.getVolumeCount())) {
+				if (t.appliesTo(volumeNumber, crh.getVolumeCount())) {
 					for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 						switch (seq.getType()) {
 							case TABLE_OF_CONTENTS: {
 								TocSequenceEvent toc = (TocSequenceEvent)seq;
-								if (toc.appliesTo(volumeNumber, volumeData.getVolumeCount())) {
+								if (toc.appliesTo(volumeNumber, crh.getVolumeCount())) {
 									BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
 									TableOfContents data = tocs.get(toc.getTocName());
-									TocEvents events = toc.getTocEvents(volumeNumber, volumeData.getVolumeCount());
+									TocEvents events = toc.getTocEvents(volumeNumber, crh.getVolumeCount());
 									SequenceEventImpl evs = new SequenceEventImpl(toc.getSequenceProperties());
 									for (BlockEvent e : events.getTocStartEvents()) {
 										evs.push(e);
@@ -134,7 +117,7 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 										evs.push(e);
 									}
 									if (toc.getRange()==TocRange.DOCUMENT) {
-										for (BlockEvent e : events.getVolumeEndEvents(volumeData.getVolumeCount())) {
+										for (BlockEvent e : events.getVolumeEndEvents(crh.getVolumeCount())) {
 											evs.push(e);
 										}
 									}
@@ -149,7 +132,7 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 										//assumes toc is in sequential order
 										for (String id : data.getTocIdList()) {
 											String ref = data.getRefForID(id);
-											int vol = getVolumeNumber(ref);
+											int vol = crh.getVolumeNumber(ref);
 											if (vol<volumeNumber) {
 												
 											} else if (vol==volumeNumber) {
@@ -177,7 +160,7 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 												r.add(fsm.newSequence());
 												ib.add(r);
 											} catch (Exception e) {
-												logger.log(Level.SEVERE, "TOC failed for: volume " + volumeNumber + " of " + volumeData.getVolumeCount(), e);
+												logger.log(Level.SEVERE, "TOC failed for: volume " + volumeNumber + " of " + crh.getVolumeCount(), e);
 											}
 										}
 									} else if (toc.getRange()==TocRange.DOCUMENT) {
@@ -188,7 +171,7 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 										for (Block b : fsm.getBlocks()) {
 											if (b.getBlockIdentifier()!=null) {
 												String ref = data.getRefForID(b.getBlockIdentifier());
-												Integer vol = getVolumeNumber(ref);
+												Integer vol = crh.getVolumeNumber(ref);
 												if (vol!=null) {
 													if (nv!=vol) {
 														BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
@@ -223,7 +206,7 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 								BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
 								SequenceEvent seqEv = ((SequenceEvent)seq);
 								HashMap<String, String> vars = new HashMap<String, String>();
-								vars.put(t.getVolumeCountVariableName(), volumeData.getVolumeCount()+"");
+								vars.put(t.getVolumeCountVariableName(), crh.getVolumeCount()+"");
 								vars.put(t.getVolumeNumberVariableName(), volumeNumber+"");
 								seqEv.setEvaluateContext(vars);
 								beh.formatSequence(seqEv);
@@ -239,90 +222,203 @@ public class BookStructImpl implements BookStruct, CrossReferences {
 			Paginator paginator2 = paginatorFactory.newPaginator();
 			paginator2.open(formatterFactory);
 			CompoundIterable<BlockSequence> ci = new CompoundIterable<BlockSequence>(ib);
-			paginator2.paginate(ci, this);
+			paginator2.paginate(ci, crh);
 			paginator2.close();
 			PageStruct ret = paginator2.getPageStruct();
 			if (pre) {
-				volPreStructMap.put(volumeNumber, ret);
+				VolData d = crh.getVolData(volumeNumber);
+				if (d==null) {
+					d = new VolData();
+					crh.setVolData(volumeNumber, d);
+				}
+				d.setPreVolData(ret);
 			} else {
-				volPostStructMap.put(volumeNumber, ret);
+				VolData d = crh.getVolData(volumeNumber);
+				if (d==null) {
+					d = new VolData();
+					crh.setVolData(volumeNumber, d);
+				}
+				d.setPostVolData(ret);
 			}
 			return ret;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
+
+	private int getVolumeMaxSize(int volumeNumber) {
+		for (VolumeTemplate t : volumeTemplates) {
+			if (t==null) {
+				System.out.println("VOLDATA NULL");
+			}
+			if (t.appliesTo(volumeNumber, crh.getVolumeCount())) {
+				return t.getVolumeMaxSize();
+			}
+		}
+		return 50;
+	}
 	
-	private int verifyVolumeLocation(String refid, int vol) {
-		Integer v = volLocations.get(refid);
-		volLocations.put(refid, vol);
-		if (v!=null && v!=vol) {
-			//this refid has been requested before and it changed location
-			isDirty = true;
-		}
-		return vol;
-	}
-	
-	private Page verifyPageLocation(String refid, Page page) {
-		Integer p = pageLocations.get(refid);
-		pageLocations.put(refid, page.getPageIndex());
-		if (p!=null && p!=page.getPageIndex()) {
-			//this refid has been requested before and it changed location
-			isDirty = true;
-		}
-		return page;
-	}
-
-	public Integer getVolumeNumber(String refid) {
-		for (int i=1; i<=volumeData.getVolumeCount(); i++) {
-			if (volPreStructMap.get(i)!=null && volPreStructMap.get(i).getPage(refid)!=null) {
-				return verifyVolumeLocation(refid, i);
+	private void trimEnd(StringBuilder sb, Page p) {
+		int i = 0;
+		int x = sb.length()-1;
+		while (i<p.keepPreviousSheets() && x>0) {
+			if (sb.charAt(x)=='s') {
+				x--;
+				i++;
 			}
-			if (volPostStructMap.get(i)!=null &&  volPostStructMap.get(i).getPage(refid)!=null) {
-				return verifyVolumeLocation(refid, i);
+			if (sb.charAt(x)==ZERO_WIDTH_SPACE) {
+				sb.deleteCharAt(x);
+				x--;
 			}
 		}
-		Integer i = pageSheetMap.get(getPage(refid));
-		if (i!=null) {
-			return verifyVolumeLocation(refid, volumeData.getVolumeForContentSheet(i));
-		}
-		isDirty = true;
-		return null;
 	}
 
-	public PageStruct getContentsPageStruct() {
-		return ps;
-	}
-
-	public Page getPage(String refid) {
-		Page ret;
-		if (ps!=null && (ret=ps.getPage(refid))!=null) {
-			return verifyPageLocation(refid, ret);
-		}
-		if (volumeData!=null) {
-			for (int i=1; i<=volumeData.getVolumeCount(); i++) {
-				if (volPreStructMap.get(i)!=null && (ret=volPreStructMap.get(i).getPage(refid))!=null) {
-					return verifyPageLocation(refid, ret);
-				}
-				if (volPostStructMap.get(i)!=null &&  (ret=volPostStructMap.get(i).getPage(refid))!=null) {
-					return verifyPageLocation(refid, ret);
-				}
-			}
-		}
-		isDirty = true;
-		return null;
-	}
-
-	public boolean isDirty() {
-		return isDirty;
-	}
-
-	public void resetDirty() {
-		isDirty = false;
+	public VolumeStruct getVolumeStruct() {
 		try {
 			reformat();
 		} catch (FormatterException e) {
 			throw new RuntimeException("Error while reformatting.");
 		}
+		int j = 1;
+		boolean ok = false;
+		int totalPreCount = 0;
+		int totalPostCount = 0;
+		int prvVolCount = 0;
+		int volumeOffset = 0;
+		ArrayList<Volume> ret = new ArrayList<Volume>();
+		while (!ok) {
+			// make a preliminary calculation based on contents only
+			Iterable<PageSequence> ps = crh.getContents().getContents();
+			final int contents = PageTools.countSheets(ps); 
+			ArrayList<Page> pages = new ArrayList<Page>();
+			StringBuilder res = new StringBuilder();
+			{
+				boolean volBreakAllowed = true;
+				for (PageSequence seq :ps) {
+					StringBuilder sb = new StringBuilder();
+					LayoutMaster lm = seq.getLayoutMaster();
+					int pageIndex=0;
+					for (Page p : seq) {
+						if (!lm.duplex() || pageIndex%2==0) {
+							volBreakAllowed = true;
+							sb.append("s");
+						}
+						volBreakAllowed &= p.allowsVolumeBreak();
+						trimEnd(sb, p);
+						if (!lm.duplex() || pageIndex%2==1) {
+							if (volBreakAllowed) {
+								sb.append(ZERO_WIDTH_SPACE);
+							}
+						}
+						pages.add(p);
+						pageIndex++;
+					}
+					res.append(sb);
+					res.append(ZERO_WIDTH_SPACE);
+				}
+			}
+			logger.fine("Volume break string: " + res.toString().replace(ZERO_WIDTH_SPACE, '-'));
+			BreakPointHandler volBreaks = new BreakPointHandler(res.toString());
+			int splitterMax = getVolumeMaxSize(1);
+						
+			crh.setSDC(new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset));
+			if (crh.getVolumeCount()!=prvVolCount) {
+				prvVolCount = crh.getVolumeCount();
+			}
+			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
+			boolean ok2 = true;
+			totalPreCount = 0;
+			totalPostCount = 0;
+			ret = new ArrayList<Volume>();
+			int pageIndex = 0;
+			ArrayList<Iterable<PageSequence>> preV = new ArrayList<Iterable<PageSequence>>();
+			ArrayList<Iterable<PageSequence>> postV = new ArrayList<Iterable<PageSequence>>();
+			
+			for (int i=1;i<=crh.getVolumeCount();i++) {
+				if (splitterMax!=getVolumeMaxSize(i)) {
+					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
+				}
+				preV.add(getPreVolumeContents(i).getContents());
+				postV.add(getPostVolumeContents(i).getContents());
+			}
+			for (int i=1;i<=crh.getVolumeCount();i++) {
+				
+				totalPreCount += crh.getVolData(i).getPreVolSize();
+				totalPostCount += crh.getVolData(i).getPostVolSize();
+
+				int targetSheetsInVolume = crh.sheetsInVolume(i);
+				if (i==crh.getVolumeCount()) {
+					targetSheetsInVolume = splitterMax;
+				}
+				int contentSheets = targetSheetsInVolume-crh.getVolData(i).getVolOverhead();
+				int offset = -1;
+				BreakPoint bp;
+				do {
+					offset++;
+					bp = volBreaks.tryNextRow(contentSheets+offset);
+				} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<=splitterMax);
+				bp = volBreaks.nextRow(contentSheets + offset, true);
+				contentSheets = bp.getHead().length();
+				crh.getVolData(i).setTargetVolSize(contentSheets + crh.getVolData(i).getVolOverhead());
+			}
+			for (int i=1;i<=crh.getVolumeCount();i++) {
+				int contentSheets = crh.getVolData(i).getTargetVolSize() - crh.getVolData(i).getVolOverhead();
+				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+crh.getVolData(i).getVolOverhead()));
+				PageStructCopy body = new PageStructCopy();
+				while (true) {
+					if (pageIndex>=pages.size()) {
+						break;
+					}
+					if (body.countSheets(pages.get(pageIndex))<=contentSheets) {
+						body.addPage(pages.get(pageIndex));
+						pageIndex++;
+					} else {
+						break;
+					}
+				}
+				int sheetsInVolume = PageTools.countSheets(body) + crh.getVolData(i).getVolOverhead();
+				if (sheetsInVolume>crh.getVolData(i).getTargetVolSize()) {
+					ok2 = false;
+					logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
+				}
+				ret.add(new VolumeImpl(preV.get(i-1), body, postV.get(i-1)));
+			}
+			if (volBreaks.hasNext()) {
+				ok2 = false;
+				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(pages.size()-pageIndex));
+				if (volumeOffset<1) {
+					volumeOffset++;
+				} else {
+					logger.warning("Could not fit contents even when adding a new volume.");
+				}
+			}
+			if (!crh.isDirty() && pageIndex==pages.size() && ok2) {
+				//everything fits
+				ok = true;
+			} else if (j>9) {
+				throw new RuntimeException("Failed to complete volume division.");
+			} else {
+				j++;
+				crh.setDirty(false);
+				try {
+					reformat();
+				} catch (FormatterException e) {
+					throw new RuntimeException("Error while reformatting.");
+				}
+				logger.info("Things didn't add up, running another iteration (" + j + ")");
+			}
+		}
+		return new VolumeStructData(ret);
 	}
+	
+	class VolumeStructData implements VolumeStruct {
+		private final List<Volume> ret;
+		VolumeStructData(List<Volume> ret) {
+			this.ret = ret;
+		}
+		public Iterator<Volume> iterator() {
+			return ret.iterator();
+		}
+	};
+
 }

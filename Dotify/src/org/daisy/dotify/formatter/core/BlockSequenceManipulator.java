@@ -16,7 +16,7 @@ import org.daisy.dotify.formatter.dom.SequenceProperties;
  * Provides methods for manipulating a flow sequence.
  * @author Joel Håkansson
  */
-class BlockSequenceManipulator {
+public class BlockSequenceManipulator {
 	private HashMap<String, Integer> taggedEntries;
 	private final Stack<Block> sequence;
 	private final SequenceProperties props;

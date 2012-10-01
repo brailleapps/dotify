@@ -8,17 +8,15 @@ class VolumeTemplateImpl implements VolumeTemplate {
 	public final static String DEFAULT_VOLUME_NUMBER_VARIABLE_NAME = "volume";
 	public final static String DEFAULT_VOLUME_COUNT_VARIABLE_NAME = "volumes";
 	private final String volumeNumberVar, volumeCountVar, condition;
+	private final int splitterMax;
 	private Iterable<VolumeSequenceEvent> preVolumeContent;
 	private Iterable<VolumeSequenceEvent> postVolumeContent;
-	
-	public VolumeTemplateImpl() {
-		this(null, null, null);
-	}
 
-	public VolumeTemplateImpl(String volumeVar, String volumeCountVar, String condition) {
+	public VolumeTemplateImpl(String volumeVar, String volumeCountVar, String condition, Integer splitterMax) {
 		this.volumeNumberVar = (volumeVar!=null?volumeVar:DEFAULT_VOLUME_NUMBER_VARIABLE_NAME);
 		this.volumeCountVar = (volumeCountVar!=null?volumeCountVar:DEFAULT_VOLUME_COUNT_VARIABLE_NAME);
 		this.condition = condition;
+		this.splitterMax = splitterMax;
 	}
 
 	public boolean appliesTo(int volume, int volumeCount) {
@@ -52,6 +50,10 @@ class VolumeTemplateImpl implements VolumeTemplate {
 
 	public String getVolumeCountVariableName() {
 		return volumeCountVar;
+	}
+
+	public int getVolumeMaxSize() {
+		return splitterMax;
 	}
 
 }

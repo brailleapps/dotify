@@ -70,7 +70,6 @@ Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.config.ConfigurationsProvider -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Formatter -text
 Dotify/src/META-INF/services/org.daisy.dotify.formatter.Paginator -text
-Dotify/src/META-INF/services/org.daisy.dotify.formatter.VolumeSplitter -text
 Dotify/src/META-INF/services/org.daisy.dotify.system.InputManagerFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
 Dotify/src/org/daisy/braille/ui/AbstractUI.java -text
@@ -103,7 +102,6 @@ Dotify/src/org/daisy/dotify/formatter/core/BlockEventHandler.java -text
 Dotify/src/org/daisy/dotify/formatter/core/BlockEventImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/core/BlockPosition.java -text
 Dotify/src/org/daisy/dotify/formatter/core/BlockSequenceManipulator.java -text
-Dotify/src/org/daisy/dotify/formatter/core/BookStructImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/core/CompoundField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/core/ConditionalEvents.java -text
 Dotify/src/org/daisy/dotify/formatter/core/CurrentPageField.java -text svneol=unset#text/plain
@@ -163,9 +161,9 @@ Dotify/src/org/daisy/dotify/formatter/dom/package.html -text svneol=unset#text/p
 Dotify/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/BlockStructImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitter.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/BookStructImpl.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
 Dotify/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeStructImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PageCopy.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
@@ -176,6 +174,7 @@ Dotify/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unse
 Dotify/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/RowDataManagerImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/VolData.java -text
 Dotify/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/package.html -text svneol=unset#text/plain

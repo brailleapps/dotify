@@ -481,7 +481,8 @@ public class ObflParser {
 		String volumeVar = getAttr(event, "volume-number-variable");
 		String volumeCountVar = getAttr(event, "volume-count-variable");
 		String useWhen = getAttr(event, "use-when");
-		VolumeTemplateImpl template = new VolumeTemplateImpl(volumeVar, volumeCountVar, useWhen);
+		String splitterMax = getAttr(event, "sheets-in-volume-max");
+		VolumeTemplateImpl template = new VolumeTemplateImpl(volumeVar, volumeCountVar, useWhen, Integer.parseInt(splitterMax));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, PRE_CONTENT)) {

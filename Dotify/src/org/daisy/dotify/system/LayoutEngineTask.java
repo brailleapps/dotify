@@ -14,12 +14,11 @@ import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.PagedMediaWriter;
 import org.daisy.dotify.formatter.PagedMediaWriterException;
 import org.daisy.dotify.formatter.PaginatorFactory;
-import org.daisy.dotify.formatter.VolumeSplitterFactory;
 import org.daisy.dotify.formatter.WriterHandler;
-import org.daisy.dotify.formatter.core.BookStructImpl;
 import org.daisy.dotify.formatter.core.ObflParser;
 import org.daisy.dotify.formatter.dom.BookStruct;
 import org.daisy.dotify.formatter.dom.VolumeStruct;
+import org.daisy.dotify.formatter.impl.BookStructImpl;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.translator.BrailleTranslator;
 
@@ -78,9 +77,7 @@ public class LayoutEngineTask extends InternalTask  {
 
 	        ObflParser obflParser = new ObflParser(formatterFactory);
 	        //obflParser.setPaginatorFactory(PaginatorFactory.newInstance());
-			//FIXME: add target size variable (use splitterMax?)
-			//splitterFactory.setTargetVolumeSize(targetVolumeSize);
-			VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
+			//VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
 			//obflParser.setVolumeSplitterFactory(splitterFactory);
 			obflParser.parse(new FileInputStream(input));
 
@@ -93,8 +90,7 @@ public class LayoutEngineTask extends InternalTask  {
 					formatterFactory,
 					PaginatorFactory.newInstance()
 				);
-			
-	        VolumeStruct volumes = splitterFactory.newSplitter().split(bookStruct);
+			VolumeStruct volumes = bookStruct.getVolumeStruct();
 
 			logger.info("Rendering output...");
 			writer.open(new FileOutputStream(output));

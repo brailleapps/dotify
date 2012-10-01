@@ -15,4 +15,10 @@ public interface VolumeTemplate {
 	
 	public String getVolumeNumberVariableName();
 	public String getVolumeCountVariableName();
+	
+	/**
+	 * Gets the maximum number of sheets allowed.
+	 * @return returns the number of sheets allowed
+	 */
+	public int getVolumeMaxSize();
 }

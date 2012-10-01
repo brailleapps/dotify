@@ -9,7 +9,7 @@ import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 
 
-class SequenceEventImpl extends Stack<BlockEvent> implements SequenceEvent {
+public class SequenceEventImpl extends Stack<BlockEvent> implements SequenceEvent {
 	private final SequenceProperties props;
 	
 	public SequenceEventImpl(SequenceProperties props) {

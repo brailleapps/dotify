@@ -10,6 +10,7 @@
 	<xsl:import href="dtbook2flow_sv_SE.xsl" />
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:param name="toc-indent-multiplier" select="1"/>
+	<xsl:param name="splitterMax" select="10"/>
 
 	<xsl:template match="/">
 		<!--Note! This works with Saxon (which is used in Dotify), but not with XMLSpy's engine -->
@@ -75,39 +76,47 @@
 				<footer></footer>
 			</default-template>
 		</layout-master>
-		<xsl:if test="//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']]">
-		<table-of-contents name="full-toc">
-			<xsl:apply-templates select="//dtb:level1" mode="toc"/>
-		</table-of-contents>
-		<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(= $volume 1)">
-			<pre-content>
-				<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
-					<on-toc-start>
-						<block margin-bottom="1">Innehåll</block>
-						<block margin-bottom="1">Sid­hän­vis­ning­ar till svart­skrifts­bo­ken står in­om pa­ren­tes.</block>
-					</on-toc-start>
-					<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
-						<block keep="all" keep-with-next="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
-					</on-volume-start>
-					<on-volume-start use-when="(&amp; (> $volumes 1) (> $started-volume-number 1))">
-						<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
-					</on-volume-start>
-				</toc-sequence>
-				<xsl:apply-templates select="//dtb:frontmatter" mode="pre-volume-mode"/>
-			</pre-content>
-			<post-content/>
-		</volume-template>
-		<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(> $volume 1)">
-			<pre-content>
-				<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
-					<on-toc-start>
-						<block margin-bottom="1">Innehåll volym <evaluate expression="(round $volume)"/></block>
-					</on-toc-start>
-				</toc-sequence>
-			</pre-content>
-			<post-content/>
-		</volume-template>
-		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']]">
+			<table-of-contents name="full-toc">
+				<xsl:apply-templates select="//dtb:level1" mode="toc"/>
+			</table-of-contents>
+			<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(= $volume 1)" sheets-in-volume-max="{$splitterMax}">
+				<pre-content>
+					<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
+						<on-toc-start>
+							<block margin-bottom="1">Innehåll</block>
+							<block margin-bottom="1">Sid­hän­vis­ning­ar till svart­skrifts­bo­ken står in­om pa­ren­tes.</block>
+						</on-toc-start>
+						<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
+							<block keep="all" keep-with-next="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+						</on-volume-start>
+						<on-volume-start use-when="(&amp; (> $volumes 1) (> $started-volume-number 1))">
+							<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+						</on-volume-start>
+					</toc-sequence>
+					<xsl:apply-templates select="//dtb:frontmatter" mode="pre-volume-mode"/>
+				</pre-content>
+				<post-content/>
+			</volume-template>
+			<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(> $volume 1)" sheets-in-volume-max="{$splitterMax}">
+				<pre-content>
+					<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
+						<on-toc-start>
+							<block margin-bottom="1">Innehåll volym <evaluate expression="(round $volume)"/></block>
+						</on-toc-start>
+					</toc-sequence>
+				</pre-content>
+				<post-content/>
+			</volume-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<volume-template sheets-in-volume-max="{$splitterMax}">
+					<pre-content/>
+					<post-content/>
+				</volume-template>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- Don't output a sequence if there is nothing left when doctitle, docauthor and level1@class='backCoverText', level1@class='rearjacketcopy' and level1@class='colophon' has been moved -->

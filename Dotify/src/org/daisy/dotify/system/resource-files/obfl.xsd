@@ -246,6 +246,7 @@
 		<xs:attribute name="use-when" type="xs:anySimpleType"/>
 		<xs:attribute name="volume-number-variable" type="xs:anySimpleType"/>
 		<xs:attribute name="volume-count-variable" type="xs:anySimpleType"/>
+		<xs:attribute name="sheets-in-volume-max" type="xs:int" use="required"/>
 	</xs:complexType>
 	<xs:element name="volume-template" type="volume-template"/>
 	<xs:complexType name="pre-content">

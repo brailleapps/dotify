@@ -8,6 +8,8 @@ import org.daisy.dotify.formatter.dom.VolumeStruct;
  * volumes.
  * 
  * @author Joel Håkansson
+ * @deprecated volume splitting should be controlled by OBFL markup, if additional logic is required
+ * for volume splitting, modify OBFL to support it.
  */
 public interface VolumeSplitter {
 	
@@ -18,12 +20,4 @@ public interface VolumeSplitter {
 	 */
 	public VolumeStruct split(BookStruct book);
 
-	/**
-	 * Sets the target volume size, in other words,
-	 * the desired volume size. Depending on implementation,
-	 * this value may be a maximum value or it may be
-	 * exceeded.
-	 * @param sheets the target volume size, in sheets.
-	 */
-	public void setTargetVolumeSize(int sheets);
 }

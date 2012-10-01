@@ -11,7 +11,7 @@ public interface VolumeStruct extends Iterable<Volume> {
 	 * Gets the number of volumes.
 	 * @return returns the number of volumes
 	 */
-	public int getVolumeCount();
+	//public int getVolumeCount();
 	
 	/**
 	 * Gets the volume for the supplied sheetIndex. This sheetIndex only counts content
@@ -20,5 +20,5 @@ public interface VolumeStruct extends Iterable<Volume> {
 	 * @return returns the volume number, one based
 	 * @throws IndexOutOfBoundsException if sheetIndex is outside of agreed boundaries
 	 */
-	public int getVolumeForContentSheet(int sheetIndex);
+	//public int getVolumeForContentSheet(int sheetIndex);
 }
