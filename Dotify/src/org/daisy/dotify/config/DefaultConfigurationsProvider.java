@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -40,8 +41,8 @@ public class DefaultConfigurationsProvider extends AbstractResourceLocator imple
 			logger.log(Level.WARNING, "Failed to load catalog.", e);
 		}
 		urls = new HashMap<String, String>();
-		for (Object key : props.keySet()) {
-			urls.put(key.toString(), PRESETS_PATH + props.getProperty((String)key));
+		for (Entry<Object, Object> e : props.entrySet()) {
+			urls.put(e.getKey().toString(), PRESETS_PATH + e.getValue());
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.formatter.PagedMediaWriter;
@@ -19,6 +20,7 @@ import org.daisy.dotify.tools.StateObject;
  *
  */
 public class PEFMediaWriter implements PagedMediaWriter {
+	private final Pattern nonBraillePattern;
 	private PrintStream pst;
 	private Properties p;
 	private boolean hasOpenVolume;
@@ -46,6 +48,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		cRowgap = 0;
 		cDuplex = true;
 		state = new StateObject("Writer");
+		this.nonBraillePattern = Pattern.compile("[^\u2800-\u28FF]+");
 	}
 
 	public void open(OutputStream os) throws PagedMediaWriterException {
@@ -89,8 +92,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 
 	public void newRow(CharSequence row) {
 		state.assertOpen();
-		pst.print("<row>");
-		if (row.toString().matches("[^\u2800-\u28FF]+")) {
+		if (nonBraillePattern.matcher(row).matches()) {
 			if (errorCount<10) {
 				Logger.getLogger(this.getClass().getCanonicalName()).fine(
 						"Non-braille characters in output"+
@@ -99,9 +101,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 				errorCount++;
 			}
 		}
-		pst.print(row);
-		pst.print("</row>");
-		pst.println();
+		pst.println("<row>"+row+"</row>");
 	}
 	
 	public void newRow() {

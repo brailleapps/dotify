@@ -14,11 +14,12 @@ import org.daisy.dotify.translator.BrailleTranslator;
  */
 public class FormatterFactory {
 	private BrailleTranslator factory;
-	//private FilterLocale locale;
+	private final FormatterProxy proxy;
 	
 	protected FormatterFactory() {
 		factory = null;
-		//locale = null;
+		//Gets the first formatter (assumes there is at least one).
+		proxy = ServiceRegistry.lookupProviders(FormatterProxy.class).next();
 	}
 
 	public static FormatterFactory newInstance() {
@@ -32,24 +33,12 @@ public class FormatterFactory {
 	public void setTranslator(BrailleTranslator factory) {
 		this.factory = factory;
 	}
-	/*
-	public void setLocale(FilterLocale locale) {
-		this.locale = locale;
-	}*/
 	
 	public Formatter newFormatter() {
-		Iterator<Formatter> i = ServiceRegistry.lookupProviders(Formatter.class);
-		while (i.hasNext()) {
-			Formatter f = i.next();
-			if (factory!=null) { 
-				f.setBrailleTranslator(factory);
-			}
-			/*
-			if (locale!=null) {
-				f.setLocale(locale);
-			}*/
-			return f;
+		Formatter ret = proxy.newFormatter();
+		if (factory!=null) { 
+			ret.setBrailleTranslator(factory);
 		}
-		throw new RuntimeException("Cannot find formatter.");
+		return ret;
 	}
 }

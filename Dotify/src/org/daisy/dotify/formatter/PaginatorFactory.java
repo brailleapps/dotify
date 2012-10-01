@@ -11,9 +11,11 @@ import javax.imageio.spi.ServiceRegistry;
  * @author Joel Håkansson
  */
 public class PaginatorFactory {
+	private final PaginatorProxy proxy;
 	
 	protected PaginatorFactory() {
-		
+		//Gets the first paginator (assumes there is at least one).
+		this.proxy = ServiceRegistry.lookupProviders(PaginatorProxy.class).next();
 	}
 
 	public static PaginatorFactory newInstance() {
@@ -25,10 +27,6 @@ public class PaginatorFactory {
 	}
 	
 	public Paginator newPaginator() {
-		Iterator<Paginator> i = ServiceRegistry.lookupProviders(Paginator.class);
-		while (i.hasNext()) {
-			return i.next();
-		}
-		throw new RuntimeException("Cannot find paginator.");
+		return proxy.newPaginator();
 	}
 }
