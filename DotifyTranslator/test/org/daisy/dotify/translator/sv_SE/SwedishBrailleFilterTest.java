@@ -1,6 +1,7 @@
 package org.daisy.dotify.translator.sv_SE;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 
@@ -203,5 +204,23 @@ public class SwedishBrailleFilterTest {
 	@Test
 	public void testSwedishFilter_additional_ex3() throws FileNotFoundException {
 		assertEquals("⠘⠦⠓⠚⠜⠗⠞⠑⠗⠘⠴", filter.filter("\u2665")); // hjärter
+	}
+	@Test
+	public void testFinalizer_001() {
+		assertEquals("This\u2800is\u2800a\u2800test\u2800string\u2800to\u2800finalize\u2800\u2824\u2800nothing\u2800more.", filter.finalize("This is a test string to finalize - nothing more."));
+	}
+	@Test
+	public void testFinalizer_performance() {
+		//This test is most interesting to run manually when optimizing performance, but it is included 
+		//here in case of future improvements. 
+		String s ="This is a test string to finalize - nothing more.";
+		int threshold = 500;
+		SwedishBrailleFilter f = new SwedishBrailleFilter();
+		long d= System.currentTimeMillis();
+		for (int i=0; i<100000; i++) {
+			f.finalize(s);
+		}
+		long actualTime = System.currentTimeMillis()-d;
+		assertTrue("Time exceeded threshold ("+threshold+" ms), was " + actualTime + " ms.", (actualTime<threshold));
 	}
 }
