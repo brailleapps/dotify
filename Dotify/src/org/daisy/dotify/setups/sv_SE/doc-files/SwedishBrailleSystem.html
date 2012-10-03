@@ -26,42 +26,6 @@
 
 <h2 id="overview">Overview</h2>
 
-<p>This document applies to the following Conversion Setups:</p>
-<ul>
-  <li>Swedish - A4</li>
-  <li>Swedish - FA44</li>
-</ul>
-
-<p>All of them produce uncontracted Swedish braille.</p>
-
-<h4>Swedish - A4</h4>
-
-<p>This setup will create documents intended for A4 while maintaining
-compatibility with existing software. This means that the paper size in the
-output will be narrower than A4, i.e. 32 braille cells wide. Other properties
-of this setup are:</p>
-<ul>
-  <li>Page height: 29 characters</li>
-  <li>Inner margin: 2 characters</li>
-  <li>Outer margin: 2 characters</li>
-  <li>Row gap: 0 </li>
-  <li>Volume size: about 50 sheets</li>
-</ul>
-
-<h4>Swedish - FA44</h4>
-
-<p>This setup will create documents intended for FA44 while maintaining
-compatibility with existing software. This means that the paper size in the
-output will be narrower than FA44, i.e. 42 braille cells wide. Other properties
-of this setup are:</p>
-<ul>
-  <li>Page height: 29 characters</li>
-  <li>Inner margin: 3 characters</li>
-  <li>Outer margin: 3 characters</li>
-  <li>Row gap: 0 </li>
-  <li>Volume size: about 50 sheets</li>
-</ul>
-
 <h2 id="inputReqs">Input Requirements</h2>
 
 <p>A DTBook document. Notes and tables are not allowed.</p>
@@ -95,7 +59,7 @@ should contain one or more of the following entries:</p>
     <dd>Set the outer margin, in characters (integer &gt;= 0)</dd>
   <dt>rowgap</dt>
     <dd>Set the row gap (integer &gt;= 0)</dd>
-  <dt>max</dt>
+  <dt>splitterMax</dt>
     <dd>Set the volume splitter max parameter, see below</dd>
   <dt>l10nrearjacketcopy</dt>
     <dd>Set the text string to be used when announcing this particular block of
@@ -109,27 +73,13 @@ should contain one or more of the following entries:</p>
   <dt>l10ncaption</dt>
     <dd>Set the text string to be used when announcing this particular block of
       text</dd>
-  <dt>finalizer-input</dt>
-    <dd>Set the braille finalizer finalizer-input parameter, see below</dd>
-  <dt>finalizer-output</dt>
-    <dd>Set the braille finalizer finalizer-output parameter, see below</dd>
 </dl>
 
 <h4>Volume Splitter</h4>
 
-<p>The volume splitter used in this setup is very simple. It will distribute
-pages into volumes equally with a maximum of "max" pages per volume.</p>
-
-<h4>Braille Finalizer</h4>
-
-<p>The Braille finalizer performs post rendering character replacing. The
-purpose is to replace remaining non braille characters that are needed in the
-layout process, such as space, no-break space, hyphen and soft hyphen. It takes
-two parameters: finalizer-input and finalizer-output.</p>
-
-<p>For each row, the braille-finalizer replaces occurrences of characters in
-the finalizer-input string with the character at the corresponding position in
-the finalizer-output string.</p>
+<p>The volume splitter used in this setup will attempt to distribute pages into
+volumes equally with a maximum of "max" pages per volume. However, it is
+possible to disallow volume breaks at certain places in the text.</p>
 
 <h2 id="transformers">Appendix: List of Internal Tasks used</h2>
 
@@ -138,12 +88,10 @@ documentation</em>. These are developer and systems-administrator centric
 documents.</p>
 <ol>
   <li>InputDetectorTaskSystem</li>
-  <li>FLOW whitespace normalizer</li>
-  <li>FLOW validator</li>
-  <li>FLOW to PEF converter</li>
-  <li>Volume splitter</li>
+  <li>OBFL whitespace normalizer</li>
+  <li>OBFL validator</li>
+  <li>OBFL to PEF converter</li>
   <li>Cover page adder</li>
-  <li>Braille finalizer</li>
   <li>Meta data finalizer</li>
 </ol>
 </body>

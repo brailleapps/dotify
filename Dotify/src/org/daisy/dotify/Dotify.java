@@ -125,16 +125,11 @@ public class Dotify {
 			map.put(SystemKeys.IDENTIFIER, "dummy-id-"+ id);
 		}
 		
-		try {
-			URL res = new LocalizationManager().getLocalizationUrl(context);
-			Properties p = new Properties();
-			p.loadFromXML(res.openStream());
+		{
+			Properties p = new LocalizationManager().getLocalizationProperties(context);
 			for (Object key : p.keySet()) {
 				map.put(key.toString(), p.get(key).toString());
 			}
-		} catch (Exception e) {
-			Logger log = Logger.getLogger(Dotify.class.getCanonicalName());
-			log.fine("Failed to load localization");
 		}
 
 		// Load additional settings from file

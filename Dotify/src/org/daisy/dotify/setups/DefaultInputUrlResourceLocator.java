@@ -1,22 +1,53 @@
 package org.daisy.dotify.setups;
 
-import java.net.URL;
+import java.io.IOException;
+import java.util.InvalidPropertiesFormatException;
+import java.util.Properties;
 
 import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
 
 class DefaultInputUrlResourceLocator extends AbstractResourceLocator {
+	private static DefaultInputUrlResourceLocator instance;
+	private Properties props;
 
-	DefaultInputUrlResourceLocator() {
+	private DefaultInputUrlResourceLocator() {
 		super();
+		props = null;
 	}
 
-	DefaultInputUrlResourceLocator(String basePath) {
-		super(basePath);
+	synchronized static DefaultInputUrlResourceLocator getInstance() {
+		if (instance==null) {
+			instance = new DefaultInputUrlResourceLocator();
+		}
+		return instance;
 	}
 	
-	URL getInputFormatCatalogResourceURL() throws ResourceLocatorException {
-		return getResource("input_format_catalog.xml");
+	private synchronized void loadIfNotLoaded() throws ResourceLocatorException {
+		if (props==null) {
+			props = new Properties();
+			try {
+				props.loadFromXML(getResource("input_format_catalog.xml").openStream());
+			} catch (InvalidPropertiesFormatException e) {
+				throw new ResourceLocatorException();
+			} catch (IOException e) {
+				throw new ResourceLocatorException();
+			}
+		}
+	}
+
+	Properties getInputFormatCatalog() throws ResourceLocatorException {
+		loadIfNotLoaded();
+		return props;
+	}
+	
+	String getConfigFileName(String rootElement, String rootNS) throws ResourceLocatorException {
+		loadIfNotLoaded();
+		if (rootNS!=null) {
+			return props.getProperty(rootElement+"@"+rootNS);
+		} else {
+			return props.getProperty(rootElement);
+		}
 	}
 
 }

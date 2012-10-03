@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,7 +83,7 @@ class XMLInputManager implements InputManager {
 		return name;
 	}
 
-	public ArrayList<InternalTask> compile(RunParameters parameters)
+	public List<InternalTask> compile(RunParameters parameters)
 			throws TaskSystemException {
 
 		String input = parameters.getProperty(SystemKeys.INPUT);
@@ -96,18 +97,11 @@ class XMLInputManager implements InputManager {
 			peekResult = peeker.peek(is);
 			String rootNS = peekResult.getRootElementNsUri();
 			String rootElement = peekResult.getRootElementLocalName();
-			Properties p = new Properties();
-			p.loadFromXML(new DefaultInputUrlResourceLocator().getInputFormatCatalogResourceURL().openStream());
-			if (rootNS!=null) {
-				inputformat = p.getProperty(rootElement+"@"+rootNS);
-				if (inputformat !=null && "".equals(inputformat)) {
-					return new ArrayList<InternalTask>();
-				}
-			} else {
-				inputformat = p.getProperty(rootElement);
-				if (inputformat !=null && "".equals(inputformat)) {
-					return new ArrayList<InternalTask>();
-				}
+			DefaultInputUrlResourceLocator p = DefaultInputUrlResourceLocator.getInstance();
+
+			inputformat = p.getConfigFileName(rootElement, rootNS);
+			if (inputformat !=null && "".equals(inputformat)) {
+				return new ArrayList<InternalTask>();
 			}
 		} catch (SAXException e) {
 			throw new TaskSystemException("SAXException while reading input", e);
