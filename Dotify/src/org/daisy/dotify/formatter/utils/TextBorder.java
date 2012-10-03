@@ -25,10 +25,11 @@ public class TextBorder {
 		 * Align text to the right
 		 */
 		RIGHT};
-	private int topFill, rowFill, bottomFill;
-	private String 	topLeftCorner, topBorder, topRightCorner, 
+	private final int topFill, rowFill, bottomFill;
+	private final String 	topLeftCorner, topBorder, topRightCorner, 
 					leftBorder, rightBorder,
-					bottomLeftCorner, bottomBorder, bottomRightCorner;
+					bottomLeftCorner, bottomBorder, bottomRightCorner,
+					fillCharacter;
 	private Align align;
 
 	/**
@@ -39,14 +40,15 @@ public class TextBorder {
 		int width;
 		String 	topLeftCorner, topBorder, topRightCorner, 
 				leftBorder, rightBorder,
-				bottomLeftCorner, bottomBorder, bottomRightCorner;
+				bottomLeftCorner, bottomBorder, bottomRightCorner,
+				fillCharacter;
 		Align align;
 		
 		/**
 		 * Creates a new Builder
 		 * @param width the width of the block including borders
 		 */
-		public Builder(int width) {
+		public Builder(int width, String fillCharacter) {
 			this.width = width;
 			this.topLeftCorner = "";
 			this.topBorder = "";
@@ -171,6 +173,7 @@ public class TextBorder {
 		this.topFill = builder.width - (topLeftCorner.length() + topRightCorner.length());
 		this.rowFill = builder.width - (leftBorder.length() + rightBorder.length());
 		this.bottomFill = builder.width - (bottomLeftCorner.length() + bottomRightCorner.length());
+		this.fillCharacter = builder.fillCharacter;
 	}
 
 	/**
@@ -220,19 +223,19 @@ public class TextBorder {
     	switch (align) {
 	    	case LEFT: break;
 	    	case CENTER:
-	    		sb.append(LayoutTools.fill(' ', (int)Math.floor( (rowFill - text.length())/2d) ));
+	    		sb.append(LayoutTools.fill(fillCharacter, (int)Math.floor( (rowFill - text.length())/2d) ));
 	    		break;
 	    	case RIGHT:
-	    		sb.append(LayoutTools.fill(' ', rowFill - text.length()));
+	    		sb.append(LayoutTools.fill(fillCharacter, rowFill - text.length()));
 	    		break;
     	}
     	sb.append(text);
     	switch (align) {
 	    	case LEFT:
-	    		sb.append(LayoutTools.fill(' ', rowFill - text.length()));
+	    		sb.append(LayoutTools.fill(fillCharacter, rowFill - text.length()));
 	    		break;
 	    	case CENTER:
-	    		sb.append(LayoutTools.fill(' ', (int)Math.ceil( (rowFill - text.length())/2d) ));
+	    		sb.append(LayoutTools.fill(fillCharacter, (int)Math.ceil( (rowFill - text.length())/2d) ));
 	    		break;
 	    	case RIGHT: break;
     	}
