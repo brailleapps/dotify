@@ -149,7 +149,7 @@ public class BlockHandler {
 	
 	/**
 	 * Break text into rows. 
-	 * @param text the text to break into rows
+	 * @param btr the translator result to break into rows
 	 * @param leftMargin left margin of the text
 	 * @param blockIndent the block indent
 	 * @param blockIndentParent the block indent parent
@@ -161,10 +161,11 @@ public class BlockHandler {
 	
 	/**
 	 * Continue a block of text, starting on the supplied row.
-	 * @param text the text to break into rows
+	 * @param btr the translator result to break into rows
 	 * @param leftMargin left margin of the text
 	 * @param row the row to continue the layout on
-	 * @param master the layout master to use
+	 * @param blockIndent the block indent
+	 * @param blockIndentParent the block indent parent
 	 * @return returns an ArrayList of Rows. The first row being the supplied row, with zero or more characters
 	 * from <tt>text</tt>
 	 */

@@ -8,8 +8,8 @@ public interface InputManagerFactory {
 	
 	/**
 	 * Returns true if this factory can create instances for the specified locale.
-	 * @param locale
-	 * @return
+	 * @param locale the locale to test
+	 * @return true if this factory can create instances for the specified locale, false otherwise
 	 */
 	public boolean supportsLocale(FilterLocale locale);
 	
@@ -20,5 +20,9 @@ public interface InputManagerFactory {
 	 */
 	public InputManager newInputManager(FilterLocale locale);
 	
+	/**
+	 * Lists the supported locales.
+	 * @return returns a set of supported locales
+	 */
 	public Set<String> listSupportedLocales();
 }

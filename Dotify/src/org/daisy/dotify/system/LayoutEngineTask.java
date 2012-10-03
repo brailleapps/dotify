@@ -45,8 +45,7 @@ public class LayoutEngineTask extends InternalTask  {
 	/**
 	 * Creates a new instance of LayoutEngineTask.
 	 * @param name a descriptive name for the task
-	 * @param filterFactory the filter factory to use
-	 * @param locale the context locale
+	 * @param translator the translator to use
 	 * @param writer the output writer
 	 */
 	public LayoutEngineTask(String name, BrailleTranslator translator, PagedMediaWriter writer) {

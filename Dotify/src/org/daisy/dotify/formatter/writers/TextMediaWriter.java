@@ -30,9 +30,8 @@ public class TextMediaWriter implements PagedMediaWriter {
 	private StateObject state;
 	
 	/**
-	 * Create a new PEFMediaWriter using the supplied Properties. Available properties are:
-	 * "identifier", "date"
-	 * @param p configuration Properties
+	 * Creates a new text media writer using with the specified encoding.
+	 * @param encoding the encoding to use.
 	 */
 	public TextMediaWriter(String encoding) {
 		//this.p = p;

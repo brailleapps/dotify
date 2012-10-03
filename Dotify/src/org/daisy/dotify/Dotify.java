@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,12 @@ import org.daisy.dotify.tools.Progress;
 import org.daisy.util.file.FileJuggler;
 import org.daisy.util.file.FileUtils;
 
+/**
+ * Provides an entry point for simple embedding of Dotify. To run, call <tt>Dotify.run</tt>.
+ * 
+ * @author Joel Håkansson
+ *
+ */
 public class Dotify {
 	final static String TEMP_DIR;// = System.getProperty("java.io.tmpdir");
 	private final static HashMap<String, String> extensionBindings;
@@ -45,6 +52,9 @@ public class Dotify {
 			TEMP_DIR = System.getProperty("user.home");
 		}
 	}
+	
+	// hide default constructor to disable instantiation.
+	private Dotify() { }
 
 	/**
 	 * Runs Dotify with the supplied parameters.
@@ -56,7 +66,7 @@ public class Dotify {
 	 * @throws IOException
 	 * @throws InternalTaskException
 	 */
-	public static void run(File input, File output, String setup, FilterLocale context, HashMap<String, String> params) throws IOException, InternalTaskException {
+	public static void run(File input, File output, String setup, FilterLocale context, Map<String, String> params) throws IOException, InternalTaskException {
 		Progress progress = new Progress();
 		sendMessage(SystemProperties.SYSTEM_NAME + " started on " + progress.getStart());
 		

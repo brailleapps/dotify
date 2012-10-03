@@ -198,7 +198,7 @@ public class TextBorder {
 	 * fill up unused space and surrounded by the left and right border patterns.</p>
 	 * <p>If the text does not fit within a row, the text is broken and the process 
 	 * is continued on a new row.</p>
-	 * @param text the text to add borders to
+	 * @param bph the translator result to add borders to
 	 * @return returns an ArrayList of String where each String is a row in the block.
 	 */
 	public ArrayList<String> addBorderToParagraph(BrailleTranslatorResult bph) {
