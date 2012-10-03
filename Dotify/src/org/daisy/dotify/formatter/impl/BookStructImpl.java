@@ -3,8 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +19,6 @@ import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.BlockStruct;
-import org.daisy.dotify.formatter.dom.BookStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
@@ -32,7 +29,6 @@ import org.daisy.dotify.formatter.dom.TocSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
-import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
 import org.daisy.dotify.formatter.utils.PageTools;
 import org.daisy.dotify.text.BreakPoint;
@@ -44,7 +40,7 @@ import org.daisy.dotify.tools.CompoundIterable;
  * 
  * @author Joel Håkansson
  */
-public class BookStructImpl implements BookStruct {
+public class BookStructImpl {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Logger logger;
 	private final BlockStruct bs;
@@ -273,7 +269,7 @@ public class BookStructImpl implements BookStruct {
 		}
 	}
 
-	public VolumeStruct getVolumeStruct() {
+	public Iterable<Volume> getVolumes() {
 		try {
 			reformat();
 		} catch (FormatterException e) {
@@ -408,10 +404,10 @@ public class BookStructImpl implements BookStruct {
 				logger.info("Things didn't add up, running another iteration (" + j + ")");
 			}
 		}
-		return new VolumeStructData(ret);
+		return ret;
 	}
-	
-	class VolumeStructData implements VolumeStruct {
+/*	
+	class VolumeStructData implements Iterable<Volume> {
 		private final List<Volume> ret;
 		VolumeStructData(List<Volume> ret) {
 			this.ret = ret;
@@ -420,5 +416,5 @@ public class BookStructImpl implements BookStruct {
 			return ret.iterator();
 		}
 	};
-
+*/
 }

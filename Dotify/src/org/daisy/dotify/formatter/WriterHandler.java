@@ -8,7 +8,6 @@ import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.Volume;
-import org.daisy.dotify.formatter.dom.VolumeStruct;
 import org.daisy.dotify.formatter.utils.LayoutTools;
 
 /**
@@ -27,9 +26,9 @@ public class WriterHandler {
 	 * @param writer the PagedMediaWriter to write to
 	 * @throws IOException if IO fails
 	 */
-	public void write(VolumeStruct volumeStruct, PagedMediaWriter writer) throws IOException {
+	public void write(Iterable<Volume> volumes, PagedMediaWriter writer) throws IOException {
 		try {
-			for (Volume v : volumeStruct) {
+			for (Volume v : volumes) {
 				boolean firstInVolume = true;
 				for (PageSequence s : v.getPreVolumeContents()) {
 					LayoutMaster lm = s.getLayoutMaster();

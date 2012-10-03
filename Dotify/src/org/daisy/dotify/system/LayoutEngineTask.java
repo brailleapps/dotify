@@ -16,8 +16,7 @@ import org.daisy.dotify.formatter.PagedMediaWriterException;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.WriterHandler;
 import org.daisy.dotify.formatter.core.ObflParser;
-import org.daisy.dotify.formatter.dom.BookStruct;
-import org.daisy.dotify.formatter.dom.VolumeStruct;
+import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.impl.BookStructImpl;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.translator.BrailleTranslator;
@@ -81,7 +80,7 @@ public class LayoutEngineTask extends InternalTask  {
 			obflParser.parse(new FileInputStream(input));
 
 			logger.info("Working...");
-			BookStruct bookStruct = new BookStructImpl(
+			BookStructImpl bookStruct = new BookStructImpl(
 					obflParser.getBlockStruct(),
 					obflParser.getMasters(),
 					obflParser.getVolumeTemplates(),
@@ -89,7 +88,7 @@ public class LayoutEngineTask extends InternalTask  {
 					formatterFactory,
 					PaginatorFactory.newInstance()
 				);
-			VolumeStruct volumes = bookStruct.getVolumeStruct();
+			Iterable<Volume> volumes = bookStruct.getVolumes();
 
 			logger.info("Rendering output...");
 			writer.open(new FileOutputStream(output));

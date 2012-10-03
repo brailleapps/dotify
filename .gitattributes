@@ -130,7 +130,6 @@ Dotify/src/org/daisy/dotify/formatter/dom/BlockEvent.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/BlockProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/BlockSequence.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/BlockStruct.java -text
-Dotify/src/org/daisy/dotify/formatter/dom/BookStruct.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/CrossReferences.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/EventContents.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/FormattingTypes.java -text svneol=unset#text/plain
@@ -157,7 +156,6 @@ Dotify/src/org/daisy/dotify/formatter/dom/TocEvents.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/TocSequenceEvent.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Volume.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/VolumeSequenceEvent.java -text
-Dotify/src/org/daisy/dotify/formatter/dom/VolumeStruct.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/VolumeTemplate.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
