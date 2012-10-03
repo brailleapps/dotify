@@ -59,6 +59,7 @@ public class TextBorder {
 			this.bottomBorder = "";
 			this.bottomRightCorner = "";
 			this.align = Align.LEFT;
+			this.fillCharacter = fillCharacter;
 		}
 		
 		/**
