@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Braille finalizer
+	Braille finalizer (DEPRECATED)
 
 	Performs post rendering character replacing. The purpose is to 
 	replace remaining non braille characters that are needed in the 

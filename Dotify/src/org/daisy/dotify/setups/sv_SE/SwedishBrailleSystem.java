@@ -88,11 +88,11 @@ public class SwedishBrailleSystem implements TaskSystem {
 			return new ArrayList<InternalTask>();
 		}
 		
-		URL brailleFinalizer;
+		//URL brailleFinalizer;
 		URL metaFinalizer;
 
 		try {
-			brailleFinalizer = commonResourceLocator.getResource("xslt/braille-finalizer.xsl");
+			//brailleFinalizer = commonResourceLocator.getResource("xslt/braille-finalizer.xsl");
 			metaFinalizer = commonResourceLocator.getResource("xslt/meta-finalizer.xsl");
 		} catch (ResourceLocatorException e) {
 			throw new TaskSystemException("Could not locate resource.", e);
@@ -173,10 +173,10 @@ public class SwedishBrailleSystem implements TaskSystem {
 		setup.add(new VolumeCoverPageTask("Cover page adder", cover));
 
 		// Finalizes character data on rows
-		HashMap<String, Object> finalizerOptions = new HashMap<String, Object>();
-		finalizerOptions.put("finalizer-input", " \u00a0-\u00ad");
-		finalizerOptions.put("finalizer-output", "\u2800\u2800\u2824\u2824");
-		setup.add(new XsltTask("Braille finalizer", brailleFinalizer, null, finalizerOptions));
+		//HashMap<String, Object> finalizerOptions = new HashMap<String, Object>();
+		//finalizerOptions.put("finalizer-input", " \u00a0-\u00ad");
+		//finalizerOptions.put("finalizer-output", "\u2800\u2800\u2824\u2824");
+		//setup.add(new XsltTask("Braille finalizer", brailleFinalizer, null, finalizerOptions));
 
 		// Finalize meta data from input file
 		setup.add(new XsltTask("Meta data finalizer", metaFinalizer, null, h));
