@@ -145,15 +145,16 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		// Split result into volumes
 		//setup.add(new XsltTask("Volume splitter", volumeSplitter, null, h));
+		String space = bt.translate(" ").getTranslatedRemainder();
 
 		// Add a title page first in each volume
     	TextBorder tb = new TextBorder.Builder(p.getFlowWidth()+p.getInnerMargin()).
-    						topLeftCorner(LayoutTools.fill(' ', p.getInnerMargin()) + "\u280F").
+    						topLeftCorner(LayoutTools.fill(space, p.getInnerMargin()) + "\u280F").
     						topBorder("\u2809").
     						topRightCorner("\u2839").
-    						leftBorder(LayoutTools.fill(' ', p.getInnerMargin()) + "\u2807  ").
-    						rightBorder("  \u2838").
-    						bottomLeftCorner(LayoutTools.fill(' ', p.getInnerMargin()) + "\u2827").
+    						leftBorder(LayoutTools.fill(space, p.getInnerMargin()) + "\u2807"+space+space).
+    						rightBorder(space+space+"\u2838").
+    						bottomLeftCorner(LayoutTools.fill(space, p.getInnerMargin()) + "\u2827").
     						bottomBorder("\u2824").
     						bottomRightCorner("\u283c").
     						alignment(TextBorder.Align.CENTER).
