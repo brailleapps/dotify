@@ -202,9 +202,8 @@ Dotify/src/org/daisy/dotify/setups/XMLInputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/setups/common/CommonResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/DefaultTextSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/DefaultTextSystemFactory.java -text
-Dotify/src/org/daisy/dotify/setups/common/config/obfl/dtbook.properties -text
-Dotify/src/org/daisy/dotify/setups/common/config/obfl/xml.properties -text
-Dotify/src/org/daisy/dotify/setups/common/config/pef/xml.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/common/config/braille/xml.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/common/config/output_mode_catalog.xml -text
 Dotify/src/org/daisy/dotify/setups/common/config/text/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/config/text/xml.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/doc-files/DefaultTextSystem.html -text svneol=unset#text/plain
@@ -218,14 +217,13 @@ Dotify/src/org/daisy/dotify/setups/common/xslt/dtbook2obfl_text.xsl -text
 Dotify/src/org/daisy/dotify/setups/common/xslt/meta-finalizer.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/xslt/simple-splitter.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/xslt/xml2flow.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/en_US/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/input_format_catalog.xml -text
 Dotify/src/org/daisy/dotify/setups/localization_catalog.xml -text
 Dotify/src/org/daisy/dotify/setups/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishTaskSystemFactory.java -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/config/obfl/dtbook.properties -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/config/pef/dtbook.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/sv_SE/config/braille/dtbook.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/sv_SE/config/output_mode_catalog.xml -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/config/text/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishTextSystem.html -text svneol=unset#text/plain

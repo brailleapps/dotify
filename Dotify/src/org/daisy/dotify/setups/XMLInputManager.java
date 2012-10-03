@@ -121,34 +121,54 @@ class XMLInputManager implements InputManager {
 				try { is.close(); } catch (IOException e) { }
 			}
 		}
+		Properties p = new Properties();
+		try {
+			try {
+				p.loadFromXML(localLocator.getResource(CONFIG_PATH+"output_mode_catalog.xml").openStream());
+			} catch (ResourceLocatorException e1) {
+				try {
+					p.loadFromXML(commonLocator.getResource(CONFIG_PATH+"output_mode_catalog.xml").openStream());
+				} catch (ResourceLocatorException e2) {
+					logger.log(Level.FINE, "Failed to localize resource.", e2);
+				}
+			}
+		} catch (InvalidPropertiesFormatException e1) {
+			logger.log(Level.FINE, "Invalid format.", e1);
+		} catch (IOException e1) {
+			logger.log(Level.FINE, "I/O error.", e1);
+		}
+		
 		String xmlformat = "xml.properties";
-		String outputformat = parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toLowerCase();
+		String outputMode = p.getProperty(parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toLowerCase());
+		if (outputMode==null) {
+			logger.info("Failed to set output mode for '" +parameters.getProperty(SystemKeys.OUTPUT_FORMAT)+ "'. Using braille mode.");
+		}
 
-		String basePath = CONFIG_PATH + outputformat + "/";
+		String basePath = CONFIG_PATH + outputMode + "/";
 
 		if (inputformat!=null) {
 			try {
 				return readConfiguration(localLocator, basePath + inputformat, parameters);
 			} catch (ResourceLocatorException e) {
-				logger.fine("Cannot find URL " + basePath + inputformat);
+				logger.fine("Cannot find localized URL " + basePath + inputformat);
 			}
 		}
 		try {
 			return readConfiguration(localLocator, basePath + xmlformat, parameters);
 		} catch (ResourceLocatorException e) {
-			logger.fine("Cannot find URL " + basePath + xmlformat);
+			logger.fine("Cannot find localized URL " + basePath + xmlformat);
 		}
 		if (inputformat!=null) {
 			try {
 				return readConfiguration(commonLocator, basePath + inputformat, parameters);
 			} catch (ResourceLocatorException e) {
-				logger.fine("Cannot find URL " + basePath + inputformat);
+				logger.fine("Cannot find common URL " + basePath + inputformat);
 			}
 		}
 		try {
 			return readConfiguration(commonLocator, basePath + xmlformat, parameters);
 		} catch (ResourceLocatorException e) {
-			logger.fine("Cannot find URL " + basePath + xmlformat);
+			logger.fine("Cannot find common URL " + basePath + xmlformat);
 		}
 		throw new TaskSystemException("Unable to open a configuration stream for the format.");
 	}
