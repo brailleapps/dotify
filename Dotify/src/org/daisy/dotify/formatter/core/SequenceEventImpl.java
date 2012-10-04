@@ -7,11 +7,18 @@ import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 
-
-
+/**
+ * Provides a sequence event object.
+ * 
+ * @author Joel Håkansson
+ */
 public class SequenceEventImpl extends Stack<BlockEvent> implements SequenceEvent {
 	private final SequenceProperties props;
 	
+	/**
+	 * Creates a new sequence event
+	 * @param props
+	 */
 	public SequenceEventImpl(SequenceProperties props) {
 		this.props = props;
 	}

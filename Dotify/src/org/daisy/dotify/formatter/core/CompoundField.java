@@ -3,9 +3,9 @@ package org.daisy.dotify.formatter.core;
 import java.util.ArrayList;
 
 /**
+ * Provides a compound field object.
  * 
- * @author joha
- *
+ * @author Joel Håkansson
  */
 public class CompoundField extends ArrayList<Object> {
 

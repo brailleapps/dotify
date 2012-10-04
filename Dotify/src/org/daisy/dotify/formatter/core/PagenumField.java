@@ -6,7 +6,7 @@ package org.daisy.dotify.formatter.core;
  * the final document. Its value is resolved by the LayoutPerformer when its 
  * location in the flow is known.
  * 
- * @author joha
+ * @author Joel Håkansson
  *
  */
 public class PagenumField extends NumeralField {

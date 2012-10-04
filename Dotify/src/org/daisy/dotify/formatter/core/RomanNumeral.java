@@ -1,12 +1,13 @@
 package org.daisy.dotify.formatter.core;
 
-//http://leepoint.net/notes-java/examples/components/romanNumerals/romanNumeral.html
-// File   : gui/componenents/calculators/Roman.java
-//Description: A static method for converting binary integers to Roman numbers.
-//Illustrates: Static inner value class, StringBuffer, throw exceptions.
-//Author : Fred Swartz - 2006-12-29 - Placed in public domain.
-
-/////////////////////////////////////////////////////////////////// class Roman
+/**
+ * Provides a static method for converting binary integers to Roman numbers.
+ * <p>http://leepoint.net/notes-java/examples/components/romanNumerals/romanNumeral.html</p>
+ * <p>Illustrates: Static inner value class, StringBuffer, throw exceptions.</p>
+ * <p>2006-12-29 - Placed in public domain.</p>
+ * @author Fred Swartz
+ *
+ */
 public class RomanNumeral {
  //================================================================ constant
  // This could be alternatively be done with parallel arrays.

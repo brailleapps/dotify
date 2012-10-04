@@ -8,7 +8,13 @@ package org.daisy.dotify.formatter.core;
  *
  */
 public class MarkerReferenceField {
+	/**
+	 * Defines marker search directions.
+	 */
 	public static enum MarkerSearchDirection {FORWARD, BACKWARD}
+	/**
+	 * Defines marker search scopes.
+	 */
 	public static enum MarkerSearchScope {PAGE_CONTENT, PAGE, SEQUENCE}
 
 	private String markerName;

@@ -3,7 +3,11 @@ package org.daisy.dotify.formatter.core;
 import org.daisy.dotify.formatter.dom.EventContents;
 import org.daisy.dotify.formatter.dom.TextProperties;
 
-
+/**
+ * Provides a text event object.
+ * @author Joel Håkansson
+ *
+ */
 public class TextContents implements EventContents {
 	private final String text;
 	private final TextProperties p;

@@ -5,7 +5,12 @@ import java.util.Map;
 
 import org.daisy.dotify.formatter.dom.EventContents;
 
-
+/**
+ * Provides an evaluate event object.
+ * 
+ * @author Joel Håkansson
+ *
+ */
 public class Evaluate implements EventContents {
 	private final String expression;
 	private final Map<String, String> vars;

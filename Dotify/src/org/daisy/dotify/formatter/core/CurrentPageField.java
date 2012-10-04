@@ -10,6 +10,9 @@ package org.daisy.dotify.formatter.core;
  *
  */
 public class CurrentPageField extends PagenumField {
+	/**
+	 * Defines page number types
+	 */
 	public static enum PagenumType {
 		/**
 		 * The field represents the current page
