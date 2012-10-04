@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.dom.book;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.utils.PageTools;
 
-public class CrossReferenceHandler implements CrossReferences {
+class CrossReferenceHandler implements CrossReferences {
 	private final Map<String, Integer> volLocations;
 	private final Map<String, Integer> pageLocations;
 	private final Map<Integer, VolData> volData;

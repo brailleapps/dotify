@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.dom.book;
 
 import java.io.IOException;
 import java.util.ArrayList;

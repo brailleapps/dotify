@@ -156,17 +156,17 @@ Dotify/src/org/daisy/dotify/formatter/dom/TocSequenceEvent.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Volume.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/VolumeSequenceEvent.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/VolumeTemplate.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/book/BookStructImpl.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/book/CrossReferenceHandler.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/book/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/dom/book/PageCopy.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/dom/book/PageSequenceCopy.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/dom/book/PageStructCopy.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/dom/book/VolData.java -text
+Dotify/src/org/daisy/dotify/formatter/dom/book/VolumeImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/dom/package.html -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/impl/BookStructImpl.java -text
-Dotify/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
-Dotify/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/FormatterProxyImpl.java -text
-Dotify/src/org/daisy/dotify/formatter/impl/PageCopy.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/impl/PageSequenceCopy.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/impl/PageStructCopy.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/PaginatorProxyImpl.java -text
-Dotify/src/org/daisy/dotify/formatter/impl/VolData.java -text
-Dotify/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/formatter/BlockImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/formatter/BlockSequenceImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/impl/formatter/BlockStructImpl.java -text svneol=unset#text/plain
@@ -269,7 +269,7 @@ Dotify/src/org/daisy/dotify/tools/Progress.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/package.html -text svneol=unset#text/plain
-Dotify/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
+Dotify/test/org/daisy/dotify/formatter/dom/book/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/formatter/utils/ExpressionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/formatter/utils/PositionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/setups/XMLInputManagerFactoryTest.java -text

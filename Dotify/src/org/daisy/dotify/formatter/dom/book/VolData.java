@@ -1,9 +1,9 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.dom.book;
 
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.utils.PageTools;
 
-public class VolData {
+class VolData {
 	private PageStruct preVolData;
 	private PageStruct postVolData;
 	private int preVolSize;

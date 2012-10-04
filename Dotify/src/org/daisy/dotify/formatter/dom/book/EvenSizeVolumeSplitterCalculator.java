@@ -1,11 +1,11 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.dom.book;
 
 /**
  * Provides information needed to split a book into volumes. 
  * 
  * @author Joel Håkansson
  */
-public class EvenSizeVolumeSplitterCalculator {
+class EvenSizeVolumeSplitterCalculator {
 	private final int sheets;
 	// breakpoint, in sheets
 	private final int breakpoint;

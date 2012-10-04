@@ -1,8 +1,9 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.dom.book;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.formatter.dom.book.EvenSizeVolumeSplitterCalculator;
 import org.junit.Test;
 
 public class EvenSizeVolumeSplitterCalculatorTest {
