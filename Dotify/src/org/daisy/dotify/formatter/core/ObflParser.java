@@ -23,6 +23,7 @@ import org.daisy.dotify.formatter.core.MarkerReferenceField.MarkerSearchDirectio
 import org.daisy.dotify.formatter.core.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockEvent;
+import org.daisy.dotify.formatter.dom.BlockEventImpl;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
@@ -30,9 +31,10 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.PageTemplate;
-import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
+import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.TextProperties;
+import org.daisy.dotify.formatter.dom.TocBlockEventImpl;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
@@ -431,7 +433,7 @@ public class ObflParser {
 		do {
 			tocId = ""+((int)Math.round((99999999*Math.random())));
 		} while (toc.containsTocID(tocId));
-		TocEventImpl ret = new TocEventImpl(refId, tocId, blockBuilder(event.asStartElement().getAttributes()));
+		TocBlockEventImpl ret = new TocBlockEventImpl(refId, tocId, blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {

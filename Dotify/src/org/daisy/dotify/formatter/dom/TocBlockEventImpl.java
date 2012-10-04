@@ -1,10 +1,11 @@
-package org.daisy.dotify.formatter.core;
+package org.daisy.dotify.formatter.dom;
 
-import org.daisy.dotify.formatter.dom.BlockProperties;
-import org.daisy.dotify.formatter.dom.TocBlockEvent;
-
-
-class TocEventImpl extends BlockEventImpl implements TocBlockEvent {
+/**
+ * Provides an interface for TOC block event.
+ * 
+ * @author Joel Håkansson
+ */
+public class TocBlockEventImpl extends BlockEventImpl {
 	/**
 	 * 
 	 */
@@ -12,7 +13,7 @@ class TocEventImpl extends BlockEventImpl implements TocBlockEvent {
 	private final String refId;
 	private final String tocId;
 	
-	public TocEventImpl(String refId, String tocId, BlockProperties props) {
+	public TocBlockEventImpl(String refId, String tocId, BlockProperties props) {
 		super(props);
 		this.refId = refId;
 		this.tocId = tocId;
