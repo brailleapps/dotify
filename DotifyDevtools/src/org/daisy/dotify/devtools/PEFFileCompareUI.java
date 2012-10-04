@@ -1,6 +1,11 @@
 package org.daisy.dotify.devtools;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import org.daisy.dotify.devtools.PEFFileCompare.NormalizationResource;
 
 /**
  * Provides a command line tool for comparing two folders with pef files for differences.
@@ -25,12 +30,23 @@ public class PEFFileCompareUI {
 			System.exit(-1);
 		}
 		System.out.println("Initiating...");
-		PEFFileCompare fc = new PEFFileCompare(args[0], args[1]);
+		PEFFileCompare fc = new PEFFileCompare(new PEFFileFilter(), new NormalizationResource() {
+			@Override
+			public InputStream getNormalizationResourceAsStream() {
+				return this.getClass().getResourceAsStream("resource-files/strip-meta.xsl");
+			}
+		});
 		System.out.println("Running...");
-		fc.run();
-		boolean ok = true;
+		fc.run(args[0], args[1]);
+		System.out.println("Done.");
+		if (fc.getNotices().size()>0) {
+			System.out.println();
+			System.out.println("--- Notices ---");
+			for (String msg : fc.getNotices()) {
+				System.out.println("Notice: " + msg);
+			}
+		}
 		if (fc.getWarnings().size()>0) {
-			ok = false;
 			System.out.println();
 			System.out.println("--- Warnings ---");
 			for (String msg : fc.getWarnings()) {
@@ -38,23 +54,25 @@ public class PEFFileCompareUI {
 			}
 		}
 		if (fc.getDiffs().size()>0) {
-			ok = false;
 			System.out.println();
 			System.out.println("--- Differences ---");
 			for (String filename : fc.getDiffs()) {
 				System.out.println(filename);
 			}
 		}
-		if (!ok) {
-			System.out.println();
+		System.out.println();
+		if (fc.getOk().size()!=fc.checkedCount()) {
+			System.out.println("Checked " + fc.checkedCount() + " file(s), but only " + fc.getOk().size() + " were ok.");
+		} else {
+			System.out.println("No differences was found!");
 		}
-		System.out.println("Done.");
-		if (ok) {
-			if (fc.getOk().size()<fc.checkedCount()) {
-				System.out.println("Checked " + fc.checkedCount() + " file(s), but only " + fc.getOk().size() + " were ok.");
-			} else {
-				System.out.println("Everything was ok!");
-			}
+	}
+	
+	private static class PEFFileFilter implements FileFilter {
+
+		@Override
+		public boolean accept(File pathname) {
+			return pathname.getName().endsWith(".pef") && !pathname.isDirectory();
 		}
 	}
 }

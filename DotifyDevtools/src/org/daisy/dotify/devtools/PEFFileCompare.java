@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,24 +23,24 @@ import javax.xml.transform.stream.StreamSource;
 import org.daisy.braille.tools.FileCompare;
 
 /**
- * Provides comparing of two folders with pef files for differences.
+ * Provides comparing of two folders with xml files for differences.
  * Meta data in the files is ignored when comparing.
  * 
  * A flat organization of files is assumed.
  * 
  * Warnings are generated if stray files are found (a file with the same name
- * cannot be found in the other folder) or if the folders contain other folders
- * or files not ending with '.pef'.
+ * cannot be found in the other folder) or if the folders contain folders
+ * or files not matching the file filter.
  * 
  * @author Joel Håkansson
  */
 public class PEFFileCompare {
-	private final File dir1;
-	private final File dir2;
-
-	private List<String> warnings;
-	private List<String> diffs;
-	private List<String> oks;
+	private final FileFilter filter;
+	private final NormalizationResource nr;
+	private final List<String> notices;
+	private final List<String> warnings;
+	private final List<String> diffs;
+	private final List<String> oks;
 	private int checked;
 	
 	/**
@@ -49,27 +50,31 @@ public class PEFFileCompare {
 	 * @throws FileNotFoundException
 	 * @throws IllegalArgumentException if path is not a directory
 	 */
-	public PEFFileCompare(String path1, String path2) throws FileNotFoundException {
-		dir1 = getExistingPath(path1);
-		dir2 = getExistingPath(path2);
-		if (!dir1.isDirectory()) {
-			throw new IllegalArgumentException("Path is not a directory: " +path1);
-		}
-		if (!dir2.isDirectory()) {
-			throw new IllegalArgumentException("Path is not a directory: " +path2);
-		}
+	public PEFFileCompare(FileFilter filter, NormalizationResource nr) {
+		this.filter = filter;
+		this.nr = nr;
+		notices = new ArrayList<String>();
 		warnings = new ArrayList<String>();
 		diffs = new ArrayList<String>();
 		oks = new ArrayList<String>();
 		checked = 0;
 	}
 	
-	public void run() {
+	public void run(String path1, String path2) throws FileNotFoundException {
+		final File dir1 = getExistingPath(path1);
+		final File dir2 = getExistingPath(path2);
+		if (!dir1.isDirectory()) {
+			throw new IllegalArgumentException("Path is not a directory: " +path1);
+		}
+		if (!dir2.isDirectory()) {
+			throw new IllegalArgumentException("Path is not a directory: " +path2);
+		}
+		
 		final HashMap<String, Integer> x = new HashMap<String, Integer>();
 		final HashMap<String, File> files1 = new HashMap<String, File>();
 		final HashMap<String, File> files2 = new HashMap<String, File>();
-		PefFileFilter dir1Matches = new PefFileFilter();
-		PefFileFilter dir2Matches = new PefFileFilter();
+		PefFileFilter dir1Matches = new PefFileFilter(filter);
+		PefFileFilter dir2Matches = new PefFileFilter(filter);
 		for (File f : dir1.listFiles(dir1Matches)) {
 			files1.put(f.getName(), f);
 			x.put(f.getName(), 1);
@@ -93,7 +98,7 @@ public class PEFFileCompare {
 			warning(f + " will not be examined.");
 		}
 
-		checked += x.size();
+		checked += Math.min(files1.size(), files2.size());
 		
 		ExecutorService e = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		int i2 = 1;
@@ -116,7 +121,7 @@ public class PEFFileCompare {
 					
 					int v = x.get(key);
 					if (v!=0) {
-						warning("Unmatched file '" + key + "' in " + (v==1?dir1:dir2));
+						notice("Unmatched file '" + key + "' in " + (v==1?dir1:dir2));
 					} else {
 						File f1 = files1.get(key);
 						File f2 = files2.get(key);
@@ -130,11 +135,11 @@ public class PEFFileCompare {
 						        Source xslt;
 						        Transformer transformer;
 						        
-						        xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/strip-meta.xsl"));
+						        xslt = new StreamSource(nr.getNormalizationResourceAsStream());
 						        transformer = factory.newTransformer(xslt);
 						        transformer.transform(xml1, new StreamResult(t1));
 						        
-						        xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/strip-meta.xsl"));
+						        xslt = new StreamSource(nr.getNormalizationResourceAsStream());
 						        transformer = factory.newTransformer(xslt);
 						        transformer.transform(xml2, new StreamResult(t2));
 						        
@@ -182,7 +187,11 @@ public class PEFFileCompare {
 		}
 		
 	}
-		
+
+	private void notice(String msg) {
+		notices.add(msg);
+	}
+
 	private void warning(String msg) {
 		warnings.add(msg);
 	}
@@ -193,6 +202,10 @@ public class PEFFileCompare {
 	
 	private void ok(String filename) {
 		oks.add(filename);
+	}
+	
+	public List<String> getNotices() {
+		return notices;
 	}
 	
 	public List<String> getWarnings() {
@@ -220,9 +233,11 @@ public class PEFFileCompare {
 	}
 	
 	private class PefFileFilter implements FileFilter {
+		private final FileFilter filter;
 		private ArrayList<File> noMatch;
 		
-		public PefFileFilter() {
+		public PefFileFilter(FileFilter filter) {
+			this.filter = filter;
 			noMatch = new ArrayList<File>();
 		}
 		
@@ -231,13 +246,16 @@ public class PEFFileCompare {
 		}
 
 		public boolean accept(File pathname) {
-			boolean isPef = pathname.getName().endsWith(".pef") && !pathname.isDirectory();
-			if (!isPef) {
+			boolean isMatch = filter.accept(pathname);
+			if (!isMatch) {
 				noMatch.add(pathname);
 			}
-			return isPef;
+			return isMatch;
 		}
 		
 	}
 
+	interface NormalizationResource {
+		InputStream getNormalizationResourceAsStream();
+	}
 }
