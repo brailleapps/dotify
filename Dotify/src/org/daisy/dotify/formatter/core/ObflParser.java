@@ -30,9 +30,11 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.PageTemplate;
+import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
+import org.daisy.dotify.formatter.dom.TocSequenceEventImpl;
+import org.daisy.dotify.formatter.dom.TocSequenceEventImpl.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
 import org.daisy.dotify.formatter.utils.Expression;
@@ -533,7 +535,7 @@ public class ObflParser {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
-		SequenceEventImpl volSeq = new SequenceEventImpl(builder.build());
+		StaticSequenceEvent volSeq = new StaticSequenceEvent(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, BLOCK)) {

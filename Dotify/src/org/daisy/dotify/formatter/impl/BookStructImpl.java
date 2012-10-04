@@ -13,7 +13,6 @@ import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.core.BlockEventHandler;
 import org.daisy.dotify.formatter.core.BlockSequenceManipulator;
-import org.daisy.dotify.formatter.core.SequenceEventImpl;
 import org.daisy.dotify.formatter.core.TableOfContents;
 import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockEvent;
@@ -24,9 +23,10 @@ import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
+import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocEvents;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
+import org.daisy.dotify.formatter.dom.TocSequenceEventImpl;
+import org.daisy.dotify.formatter.dom.TocSequenceEventImpl.TocRange;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
@@ -98,14 +98,14 @@ public class BookStructImpl {
 			for (VolumeTemplate t : volumeTemplates) {
 				if (t.appliesTo(volumeNumber, crh.getVolumeCount())) {
 					for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
-						switch (seq.getType()) {
+						switch (seq.getVolumeSequenceType()) {
 							case TABLE_OF_CONTENTS: {
-								TocSequenceEvent toc = (TocSequenceEvent)seq;
+								TocSequenceEventImpl toc = (TocSequenceEventImpl)seq;
 								if (toc.appliesTo(volumeNumber, crh.getVolumeCount())) {
 									BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
 									TableOfContents data = tocs.get(toc.getTocName());
 									TocEvents events = toc.getTocEvents(volumeNumber, crh.getVolumeCount());
-									SequenceEventImpl evs = new SequenceEventImpl(toc.getSequenceProperties());
+									StaticSequenceEvent evs = new StaticSequenceEvent(toc.getSequenceProperties());
 									for (BlockEvent e : events.getTocStartEvents()) {
 										evs.push(e);
 									}
@@ -147,7 +147,7 @@ public class BookStructImpl {
 												fsm.removeRange(data.getTocIdList().iterator().next(), start);
 												fsm.removeTail(stop);
 												BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
-												SequenceEventImpl evs2 = new SequenceEventImpl(toc.getSequenceProperties());
+												StaticSequenceEvent evs2 = new StaticSequenceEvent(toc.getSequenceProperties());
 												for (BlockEvent e : events.getTocEndEvents()) {
 													evs2.add(e);
 												}
@@ -171,7 +171,7 @@ public class BookStructImpl {
 												if (vol!=null) {
 													if (nv!=vol) {
 														BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
-														SequenceEventImpl evs2 = new SequenceEventImpl(toc.getSequenceProperties());
+														StaticSequenceEvent evs2 = new StaticSequenceEvent(toc.getSequenceProperties());
 														if (nv>0) {
 															for (BlockEvent e : events.getVolumeEndEvents(nv)) {
 																evs2.add(e);

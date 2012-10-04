@@ -1,8 +1,7 @@
-package org.daisy.dotify.formatter.core;
+package org.daisy.dotify.formatter.dom;
 
 import java.util.Map;
 
-import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.utils.Expression;
 
 class ConditionalEvents {

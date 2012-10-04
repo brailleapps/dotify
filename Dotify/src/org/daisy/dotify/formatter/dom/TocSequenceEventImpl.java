@@ -1,18 +1,30 @@
-package org.daisy.dotify.formatter.core;
+package org.daisy.dotify.formatter.dom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.dom.BlockEvent;
-import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.formatter.dom.TocEvents;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent;
-import org.daisy.dotify.formatter.dom.VolumeTemplate;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.tools.CompoundIterable;
-
-class TocSequenceEventImpl implements TocSequenceEvent {
+/**
+ * Provides a TOC sequence event object.
+ * 
+ * @author Joel Håkansson
+ */
+public class TocSequenceEventImpl implements VolumeSequenceEvent {
+	/**
+	 * Defines TOC ranges.
+	 */
+	public enum TocRange {
+		/**
+		 * Defines the TOC range to include the entire document
+		 */
+		DOCUMENT,
+		/**
+		 * Defines the TOC range to include entries within the volume
+		 */
+		VOLUME};
+	
 	public final static String DEFAULT_EVENT_VOLUME_NUMBER = "started-volume-number";
 	private final SequenceProperties props;
 	private final String tocName;
@@ -54,8 +66,8 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		tocEndEvents.add(new ConditionalEvents(events, condition));
 	}
 
-	public Type getType() {
-		return Type.TABLE_OF_CONTENTS;
+	public VolumeSequenceType getVolumeSequenceType() {
+		return VolumeSequenceType.TABLE_OF_CONTENTS;
 	}
 
 	public String getTocName() {
@@ -66,6 +78,12 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		return range;
 	}
 
+	/**
+	 * Returns true if this toc sequence applies to the supplied context
+	 * @param volume
+	 * @param volumeCount
+	 * @return returns true if this toc sequence applies to the supplied context, false otherwise
+	 */
 	public boolean appliesTo(int volume, int volumeCount) {
 		if (condition==null) {
 			return true;
@@ -77,6 +95,12 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		return new Expression().evaluate(condition, vars).equals(true);
 	}
 
+	/**
+	 * Gets the TOC events 
+	 * @param volume
+	 * @param volumeCount
+	 * @return returns the TOC events
+	 */
 	public TocEvents getTocEvents(int volume, int volumeCount) {
 		return new TocEventsImpl(volume, volumeCount);
 	}

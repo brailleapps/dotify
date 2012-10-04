@@ -1,25 +1,22 @@
-package org.daisy.dotify.formatter.core;
+package org.daisy.dotify.formatter.dom;
 
 import java.util.Map;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.dom.BlockEvent;
-import org.daisy.dotify.formatter.dom.SequenceEvent;
-import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 /**
- * Provides a sequence event object.
+ * Provides a static sequence event object.
  * 
  * @author Joel Håkansson
  */
-public class SequenceEventImpl extends Stack<BlockEvent> implements SequenceEvent {
+public class StaticSequenceEvent extends Stack<BlockEvent> implements SequenceEvent {
 	private final SequenceProperties props;
 	
 	/**
 	 * Creates a new sequence event
 	 * @param props
 	 */
-	public SequenceEventImpl(SequenceProperties props) {
+	public StaticSequenceEvent(SequenceProperties props) {
 		this.props = props;
 	}
 
@@ -32,8 +29,8 @@ public class SequenceEventImpl extends Stack<BlockEvent> implements SequenceEven
 		return props;
 	}
 
-	public Type getType() {
-		return Type.STATIC;
+	public VolumeSequenceType getVolumeSequenceType() {
+		return VolumeSequenceType.STATIC;
 	}
 
 	public void setEvaluateContext(Map<String, String> vars) {
