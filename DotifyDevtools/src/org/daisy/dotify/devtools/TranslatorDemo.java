@@ -12,11 +12,15 @@ import java.io.InputStream;
 import java.util.Collection;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
 
 import org.daisy.braille.table.BrailleConverter;
 import org.daisy.braille.table.Table;
@@ -30,11 +34,13 @@ import org.daisy.dotify.translator.UnsupportedSpecificationException;
 
 
 public class TranslatorDemo extends javax.swing.JFrame {
+	final static String DEFAULT_LIMIT = "30";
 	final JTextArea textPanel;
 	final JTextArea braillePanel;
 	final JTextArea braille2Panel;
 	final JComboBox tableSelect;
 	final JCheckBox hyphenate;
+	final JTextField limitBox;
 	private BrailleConverter conv;
 	private BrailleTranslator t;
 	private int limit;
@@ -50,6 +56,8 @@ public class TranslatorDemo extends javax.swing.JFrame {
 		this.braille2Panel = new JTextArea(10, 40);
 		this.tableSelect = new JComboBox();
 		this.hyphenate = new JCheckBox("Hyphenate");
+
+		this.limitBox = new JTextField(3);
 		this.limit = 30;
 		try {
 			initComponents();
@@ -90,6 +98,11 @@ public class TranslatorDemo extends javax.swing.JFrame {
         //conv = TableCatalog.newInstance().get("se_tpb.CXTableProvider.TableType.SV_SE_CX").newBrailleConverter();
 		hyphenate.addActionListener(new HyphenateActionListener());
 		hyphenate.setSelected(true);
+		hyphenate.setBackground(Color.BLACK);
+		hyphenate.setForeground(Color.WHITE);
+		
+		limitBox.addActionListener(new LimitActionListener());
+		limitBox.setText(DEFAULT_LIMIT);
 
         KeyListener kl = new InputKeyListener();
         textPanel.addKeyListener(kl);
@@ -105,23 +118,37 @@ public class TranslatorDemo extends javax.swing.JFrame {
         getContentPane().setBackground(Color.BLACK);
         mainLayout.setAutoCreateGaps(true);
         mainLayout.setAutoCreateContainerGaps(true);
-        JLabel textLabel = new JLabel("Text Input");
+        JLabel textLabel = new JLabel("Input");
         textLabel.setForeground(Color.GRAY);
-        JLabel brailleLabel = new JLabel("Braille (CX)");
-        brailleLabel.setForeground(Color.GRAY);
+        JLabel brailleLabel = new JLabel("Using table");
+        brailleLabel.setForeground(Color.WHITE);
         
-        JLabel braille2Label = new JLabel("Braille (Unicode)");
+        JLabel braille2Label = new JLabel("Braille");
         braille2Label.setForeground(Color.GRAY);
+        
+    	JLabel limitLabel;
+		limitLabel = new JLabel("Columns");
+		limitLabel.setForeground(Color.WHITE);
         
         GroupLayout.SequentialGroup h2Group = mainLayout.createSequentialGroup();
         h2Group.addGroup(mainLayout.createParallelGroup()
         		.addComponent(textLabel)
         		.addComponent(textPanel)
-        		.addComponent(hyphenate)
+        		.addGroup(
+        				mainLayout.createSequentialGroup()
+        				.addComponent(hyphenate)
+        				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED,
+                     GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(limitLabel)
+        				.addComponent(limitBox)
+        			)
         		.addComponent(braille2Label)
         		.addComponent(braille2Panel)
-        		.addComponent(tableSelect)
-        		.addComponent(brailleLabel)
+        		.addGroup(
+        				mainLayout.createSequentialGroup()
+        				.addComponent(brailleLabel)
+        				.addComponent(tableSelect)
+        			)
         		.addComponent(braillePanel)
         		);
         mainLayout.setHorizontalGroup(h2Group);
@@ -130,17 +157,43 @@ public class TranslatorDemo extends javax.swing.JFrame {
         v2Group
     	.addComponent(textLabel)
     	.addComponent(textPanel)
-    	.addComponent(hyphenate)
+    	.addGroup(
+    			mainLayout.createParallelGroup(Alignment.CENTER)
+    			.addComponent(hyphenate)
+    			.addComponent(limitLabel)
+    			.addComponent(limitBox)
+    		)
     	.addComponent(braille2Label)
     	.addComponent(braille2Panel)
-    	.addComponent(tableSelect)
-        .addComponent(brailleLabel)
+    	.addGroup(
+    			mainLayout.createParallelGroup(Alignment.CENTER)
+    			.addComponent(brailleLabel)
+    			.addComponent(tableSelect)
+    		)
     	.addComponent(braillePanel);
         mainLayout.setVerticalGroup(v2Group);
         
         //Display the window.
         pack();
         setLocationRelativeTo(null);
+    }
+    
+    public void updateLimit() {
+    	boolean failed = false;
+    	try {
+    		limit = Integer.parseInt(limitBox.getText());
+        	if (limit<5 || limit>50) {
+        		failed = true;
+    		}
+    	} catch (NumberFormatException e) {
+    		failed = true;
+    	}
+    	if (failed) {
+    		JOptionPane.showMessageDialog(null, "Enter a number between 5 and 50", "Error", JOptionPane.ERROR_MESSAGE);
+    		limitBox.setText(DEFAULT_LIMIT);
+    		limit = Integer.parseInt(limitBox.getText());
+    	}
+		updateTranslation();
     }
     
     public void updateHyphenating() {
@@ -203,6 +256,15 @@ public class TranslatorDemo extends javax.swing.JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			updateHyphenating();
+		}
+    	
+    }
+    
+    public class LimitActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			updateLimit();
 		}
     	
     }
