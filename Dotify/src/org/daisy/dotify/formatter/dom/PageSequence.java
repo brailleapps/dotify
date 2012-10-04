@@ -3,6 +3,11 @@ package org.daisy.dotify.formatter.dom;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 
+/**
+ * Provides an interface for a sequence of pages.
+ * 
+ * @author Joel Håkansson
+ */
 public interface PageSequence extends Iterable<Page>, Sequence {
 	/**
 	 * Gets the number of pages in this sequence

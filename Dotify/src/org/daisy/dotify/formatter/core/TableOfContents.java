@@ -7,7 +7,7 @@ import java.util.Stack;
 
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.EventContents;
-import org.daisy.dotify.formatter.dom.TocEvent;
+import org.daisy.dotify.formatter.dom.TocBlockEvent;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
 
 
@@ -26,16 +26,16 @@ public class TableOfContents implements Iterable<BlockEvent> {
 	}
 	
 	private void collectIds(BlockEvent e) {
-		String tocId = ((TocEvent)e).getTocId();
+		String tocId = ((TocBlockEvent)e).getTocId();
 		if (tocId!=null) {
-			if (refs.put(tocId, ((TocEvent)e).getRefId())!=null) {
+			if (refs.put(tocId, ((TocBlockEvent)e).getRefId())!=null) {
 				throw new RuntimeException("Identifier is not unique: " + tocId);
 			}
 		}
 		for (EventContents c : e) {
 			switch (c.getContentType()) {
 			case TOC_ENTRY:
-				collectIds((TocEvent)c);
+				collectIds((TocBlockEvent)c);
 				break;
 			default:
 				break;

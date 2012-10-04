@@ -1,6 +1,10 @@
 package org.daisy.dotify.formatter.dom;
 
-
+/**
+ * Provides an interface for a sequence of block contents.
+ * 
+ * @author Joel Håkansson
+ */
 public interface BlockSequence extends Iterable<Block>, Sequence {
 	/**
 	 * Get the initial page number, i.e. the number that the first page in the sequence should have

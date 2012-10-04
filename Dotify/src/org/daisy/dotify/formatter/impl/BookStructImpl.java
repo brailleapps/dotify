@@ -25,8 +25,8 @@ import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocEvents;
-import org.daisy.dotify.formatter.dom.TocSequenceEventImpl;
-import org.daisy.dotify.formatter.dom.TocSequenceEventImpl.TocRange;
+import org.daisy.dotify.formatter.dom.TocSequenceEvent;
+import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
@@ -100,7 +100,7 @@ public class BookStructImpl {
 					for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 						switch (seq.getVolumeSequenceType()) {
 							case TABLE_OF_CONTENTS: {
-								TocSequenceEventImpl toc = (TocSequenceEventImpl)seq;
+								TocSequenceEvent toc = (TocSequenceEvent)seq;
 								if (toc.appliesTo(volumeNumber, crh.getVolumeCount())) {
 									BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
 									TableOfContents data = tocs.get(toc.getTocName());

@@ -33,8 +33,8 @@ import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TocSequenceEventImpl;
-import org.daisy.dotify.formatter.dom.TocSequenceEventImpl.TocRange;
+import org.daisy.dotify.formatter.dom.TocSequenceEvent;
+import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
 import org.daisy.dotify.formatter.utils.Expression;
@@ -560,7 +560,7 @@ public class ObflParser {
 		TocRange range = TocRange.valueOf(getAttr(event, "range").toUpperCase());
 		String condition = getAttr(event, "use-when");
 		String volEventVar = getAttr(event, "toc-event-volume-number-variable");
-		TocSequenceEventImpl tocSequence = new TocSequenceEventImpl(builder.build(), tocName, range, condition, volEventVar, template);
+		TocSequenceEvent tocSequence = new TocSequenceEvent(builder.build(), tocName, range, condition, volEventVar, template);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ON_TOC_START)) {

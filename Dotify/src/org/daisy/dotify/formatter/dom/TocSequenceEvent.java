@@ -11,7 +11,7 @@ import org.daisy.dotify.tools.CompoundIterable;
  * 
  * @author Joel Håkansson
  */
-public class TocSequenceEventImpl implements VolumeSequenceEvent {
+public class TocSequenceEvent implements VolumeSequenceEvent {
 	/**
 	 * Defines TOC ranges.
 	 */
@@ -37,7 +37,7 @@ public class TocSequenceEventImpl implements VolumeSequenceEvent {
 	private final VolumeTemplate template;
 	private final String volEventVariable;
 	
-	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocRange range, String condition, String volEventVar, VolumeTemplate template) {
+	public TocSequenceEvent(SequenceProperties props, String tocName, TocRange range, String condition, String volEventVar, VolumeTemplate template) {
 		this.props = props;
 		this.tocName = tocName;
 		this.range = range;

@@ -1,10 +1,10 @@
 package org.daisy.dotify.formatter.core;
 
 import org.daisy.dotify.formatter.dom.BlockProperties;
-import org.daisy.dotify.formatter.dom.TocEvent;
+import org.daisy.dotify.formatter.dom.TocBlockEvent;
 
 
-class TocEventImpl extends BlockEventImpl implements TocEvent {
+class TocEventImpl extends BlockEventImpl implements TocBlockEvent {
 	/**
 	 * 
 	 */
