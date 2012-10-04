@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.impl.formatter;
 
 import java.util.Stack;
 
@@ -13,6 +13,7 @@ import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.NewLineSegment;
 import org.daisy.dotify.formatter.dom.RowDataManager;
+import org.daisy.dotify.formatter.dom.RowDataProperties;
 import org.daisy.dotify.formatter.dom.Segment;
 import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.dom.TextSegment;

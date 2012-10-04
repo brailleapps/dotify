@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.impl.formatter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +14,7 @@ import org.daisy.dotify.formatter.dom.NewLineSegment;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.RowDataManager;
+import org.daisy.dotify.formatter.dom.RowDataProperties;
 import org.daisy.dotify.formatter.dom.Segment;
 import org.daisy.dotify.formatter.dom.TextSegment;
 import org.daisy.dotify.formatter.utils.BlockHandler;
@@ -21,14 +22,14 @@ import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
-public class RowDataManagerImpl implements RowDataManager {
+class RowDataManagerImpl implements RowDataManager {
 	private boolean isVolatile;
 	private final ArrayList<Marker> groupMarkers;
 	private final ArrayList<String> groupAnchors;
 	private final Stack<Row> rows;
 	private final CrossReferences refs;
 	
-	public RowDataManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
+	RowDataManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
 		this.groupMarkers = new ArrayList<Marker>();
 		this.groupAnchors = new ArrayList<String>();
 		this.refs = refs;

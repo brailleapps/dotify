@@ -5,7 +5,7 @@ package org.daisy.dotify.formatter.dom;
  * 
  * @author Joel Håkansson
  */
-public class TocBlockEventImpl extends BlockEventImpl {
+public class TocBlockEvent extends BlockEventImpl {
 	/**
 	 * 
 	 */
@@ -13,7 +13,7 @@ public class TocBlockEventImpl extends BlockEventImpl {
 	private final String refId;
 	private final String tocId;
 	
-	public TocBlockEventImpl(String refId, String tocId, BlockProperties props) {
+	public TocBlockEvent(String refId, String tocId, BlockProperties props) {
 		super(props);
 		this.refId = refId;
 		this.tocId = tocId;

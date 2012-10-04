@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.impl.formatter;
 
 import java.io.IOException;
 import java.util.Stack;
@@ -12,6 +12,7 @@ import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.dom.RowDataProperties;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.utils.BlockHandler.ListItem;

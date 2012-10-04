@@ -1,6 +1,14 @@
 package org.daisy.dotify.formatter.dom;
 
+/**
+ * Provides common formatting types.
+ * 
+ * @author Joel Håkansson
+ */
 public class FormattingTypes {
+	
+	//hide constructor
+	private FormattingTypes() { }
 	/**
 	 * Defines list styles.
 	 */ 

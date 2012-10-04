@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.impl.paginator;
 
 import java.io.IOException;
 import java.util.List;

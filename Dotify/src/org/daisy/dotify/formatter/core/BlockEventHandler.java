@@ -14,7 +14,7 @@ import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TocBlockEventImpl;
+import org.daisy.dotify.formatter.dom.TocBlockEvent;
 import org.daisy.dotify.formatter.utils.Expression;
 
 /**
@@ -53,7 +53,7 @@ public class BlockEventHandler {
 					formatter.endBlock();
 					break; }
 				case TOC_ENTRY: {
-					TocBlockEventImpl ev = (TocBlockEventImpl)bc;
+					TocBlockEvent ev = (TocBlockEvent)bc;
 					formatter.startBlock(ev.getProperties(), ev.getTocId());
 					runBlockContents(ev);
 					formatter.endBlock();
@@ -86,7 +86,7 @@ public class BlockEventHandler {
 		formatter.newSequence(events.getSequenceProperties());
 		for (BlockEvent e : events) {
 			if (e.getContentType()==ContentType.TOC_ENTRY) {
-				formatter.startBlock(e.getProperties(), ((TocBlockEventImpl)e).getTocId());
+				formatter.startBlock(e.getProperties(), ((TocBlockEvent)e).getTocId());
 			} else if (e.getContentType()==ContentType.BLOCK) {
 				formatter.startBlock(e.getProperties());
 			} else {

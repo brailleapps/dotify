@@ -34,7 +34,7 @@ import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TocBlockEventImpl;
+import org.daisy.dotify.formatter.dom.TocBlockEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
@@ -433,7 +433,7 @@ public class ObflParser {
 		do {
 			tocId = ""+((int)Math.round((99999999*Math.random())));
 		} while (toc.containsTocID(tocId));
-		TocBlockEventImpl ret = new TocBlockEventImpl(refId, tocId, blockBuilder(event.asStartElement().getAttributes()));
+		TocBlockEvent ret = new TocBlockEvent(refId, tocId, blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {

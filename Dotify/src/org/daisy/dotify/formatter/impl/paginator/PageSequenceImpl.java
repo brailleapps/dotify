@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.impl;
+package org.daisy.dotify.formatter.impl.paginator;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterProxy;
+import org.daisy.dotify.formatter.impl.formatter.FormatterImpl;
 
 /**
  * Provides a formatter proxy implementation. This class is intended to be instantiated
