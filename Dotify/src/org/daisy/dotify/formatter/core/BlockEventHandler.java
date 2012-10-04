@@ -6,15 +6,14 @@ import java.util.Map;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.dom.BlockEvent;
-import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.EventContents;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
+import org.daisy.dotify.formatter.dom.block.BlockStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TocBlockEvent;
 import org.daisy.dotify.formatter.utils.Expression;
 
 /**

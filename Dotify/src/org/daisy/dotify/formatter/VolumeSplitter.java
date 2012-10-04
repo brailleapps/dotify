@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter;
 
 import org.daisy.dotify.formatter.dom.Volume;
-import org.daisy.dotify.formatter.dom.book.BookStructImpl;
+import org.daisy.dotify.formatter.dom.book.BookStruct;
 
 /**
  * Provides an interface for organizing a paginated book into 
@@ -18,6 +18,6 @@ public interface VolumeSplitter {
 	 * @param book the book to split
 	 * @return the volumes
 	 */
-	public Iterable<Volume> split(BookStructImpl book);
+	public Iterable<Volume> split(BookStruct book);
 
 }

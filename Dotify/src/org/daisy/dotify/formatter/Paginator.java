@@ -3,11 +3,11 @@ package org.daisy.dotify.formatter;
 import java.io.Closeable;
 import java.io.IOException;
 
-import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.formatter.dom.block.BlockSequence;
 
 
 

@@ -7,7 +7,6 @@ import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.dom.Block;
-import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Marker;
@@ -17,6 +16,7 @@ import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.RowDataManager;
+import org.daisy.dotify.formatter.dom.block.BlockSequence;
 import org.daisy.dotify.tools.StateObject;
 
 

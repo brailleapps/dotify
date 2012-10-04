@@ -13,11 +13,8 @@ import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.core.BlockEventHandler;
 import org.daisy.dotify.formatter.core.BlockSequenceManipulator;
-import org.daisy.dotify.formatter.core.TableOfContents;
 import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockEvent;
-import org.daisy.dotify.formatter.dom.BlockSequence;
-import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
@@ -30,6 +27,8 @@ import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
+import org.daisy.dotify.formatter.dom.block.BlockSequence;
+import org.daisy.dotify.formatter.dom.block.BlockStruct;
 import org.daisy.dotify.formatter.utils.PageTools;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
@@ -40,7 +39,7 @@ import org.daisy.dotify.tools.CompoundIterable;
  * 
  * @author Joel Håkansson
  */
-public class BookStructImpl {
+public class BookStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Logger logger;
 	private final BlockStruct bs;
@@ -55,7 +54,7 @@ public class BookStructImpl {
 
 	//private VolumeStruct volumeData;
 
-	public BookStructImpl(BlockStruct bs, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
+	public BookStruct(BlockStruct bs, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
 			FormatterFactory factory, PaginatorFactory paginatorFactory) throws FormatterException {
 		this.bs = bs;
 		this.formatterFactory = factory;
@@ -65,7 +64,7 @@ public class BookStructImpl {
 		this.volumeTemplates = volumeTemplates;
 		this.tocs = tocs;
 		
-		this.logger = Logger.getLogger(BookStructImpl.class.getCanonicalName());
+		this.logger = Logger.getLogger(BookStruct.class.getCanonicalName());
 
 		this.crh = new CrossReferenceHandler();
 	}

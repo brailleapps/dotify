@@ -1,4 +1,8 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.dom.block;
+
+import org.daisy.dotify.formatter.dom.Block;
+import org.daisy.dotify.formatter.dom.Sequence;
+import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 /**
  * Provides an interface for a sequence of block contents.

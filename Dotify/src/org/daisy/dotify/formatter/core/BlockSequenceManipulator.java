@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.dom.Block;
-import org.daisy.dotify.formatter.dom.BlockSequence;
-import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
+import org.daisy.dotify.formatter.dom.block.BlockSequence;
+import org.daisy.dotify.formatter.dom.block.BlockStruct;
 
 /**
  * Provides methods for manipulating a flow sequence.

@@ -1,4 +1,6 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
+
+import org.daisy.dotify.formatter.dom.BlockProperties;
 
 /**
  * Provides an interface for TOC block event.

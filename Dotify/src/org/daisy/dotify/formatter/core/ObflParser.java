@@ -23,9 +23,7 @@ import org.daisy.dotify.formatter.core.MarkerReferenceField.MarkerSearchDirectio
 import org.daisy.dotify.formatter.core.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockEvent;
-import org.daisy.dotify.formatter.dom.BlockEventImpl;
 import org.daisy.dotify.formatter.dom.BlockProperties;
-import org.daisy.dotify.formatter.dom.BlockStruct;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
@@ -34,11 +32,12 @@ import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TocBlockEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.VolumeTemplate;
+import org.daisy.dotify.formatter.dom.block.BlockStruct;
+import org.daisy.dotify.formatter.dom.book.TableOfContents;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.formatter.utils.Position;
 import org.daisy.dotify.text.FilterLocale;
@@ -412,7 +411,7 @@ public class ObflParser {
 		String tocName = getAttr(event, "name");
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
-		TableOfContents toc = new TableOfContents();
+		TableOfContentsImpl toc = new TableOfContentsImpl();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, TOC_ENTRY)) {
@@ -425,7 +424,7 @@ public class ObflParser {
 	}
 
 	@SuppressWarnings("unchecked")
-	private BlockEvent parseTocEntry(XMLEvent event, XMLEventReader input, TableOfContents toc, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private BlockEvent parseTocEntry(XMLEvent event, XMLEventReader input, TableOfContentsImpl toc, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		String refId = getAttr(event, "ref-id");
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);

@@ -17,7 +17,7 @@ import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.WriterHandler;
 import org.daisy.dotify.formatter.core.ObflParser;
 import org.daisy.dotify.formatter.dom.Volume;
-import org.daisy.dotify.formatter.dom.book.BookStructImpl;
+import org.daisy.dotify.formatter.dom.book.BookStruct;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.translator.BrailleTranslator;
 
@@ -80,7 +80,7 @@ public class LayoutEngineTask extends InternalTask  {
 			obflParser.parse(new FileInputStream(input));
 
 			logger.info("Working...");
-			BookStructImpl bookStruct = new BookStructImpl(
+			BookStruct bookStruct = new BookStruct(
 					obflParser.getBlockStruct(),
 					obflParser.getMasters(),
 					obflParser.getVolumeTemplates(),

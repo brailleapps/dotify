@@ -3,10 +3,10 @@ package org.daisy.dotify.formatter.impl.formatter;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.dom.Block;
-import org.daisy.dotify.formatter.dom.BlockSequence;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.RowDataProperties;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
+import org.daisy.dotify.formatter.dom.block.BlockSequence;
 
 
 class BlockSequenceImpl extends Stack<Block> implements BlockSequence {

@@ -8,18 +8,18 @@ import java.util.Stack;
 import org.daisy.dotify.formatter.dom.BlockEvent;
 import org.daisy.dotify.formatter.dom.EventContents;
 import org.daisy.dotify.formatter.dom.EventContents.ContentType;
-import org.daisy.dotify.formatter.dom.TocBlockEvent;
+import org.daisy.dotify.formatter.dom.book.TableOfContents;
 
 
 /**
  * Provides table of contents entries to be used when building a Table of Contents
  * @author Joel Håkansson
  */
-public class TableOfContents implements Iterable<BlockEvent> {
+class TableOfContentsImpl implements TableOfContents {
 	private final Stack<BlockEvent> data;
 	private final LinkedHashMap<String, String> refs;
 	
-	public TableOfContents() {
+	public TableOfContentsImpl() {
 		this.data = new Stack<BlockEvent>();
 		this.refs = new LinkedHashMap<String, String>();
 		

@@ -1,13 +1,16 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.core;
 
 import java.util.Map;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.core.Evaluate;
+import org.daisy.dotify.formatter.dom.BlockContents;
+import org.daisy.dotify.formatter.dom.BlockEvent;
+import org.daisy.dotify.formatter.dom.BlockProperties;
+import org.daisy.dotify.formatter.dom.EventContents;
 
 
 
-public class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
+class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
 	private final BlockProperties props;
 
 	public BlockEventImpl(BlockProperties props) {
