@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.daisy.dotify.formatter.dom.book.VolumeTemplate;
+import org.daisy.dotify.formatter.obfl.BlockEvent;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.tools.CompoundIterable;
 /**

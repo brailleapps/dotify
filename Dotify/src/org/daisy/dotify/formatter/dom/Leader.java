@@ -12,7 +12,7 @@ import org.daisy.dotify.formatter.utils.Position;
  * 
  * @author Joel Håkansson, TPB
  */
-public class Leader implements EventContents, Segment {
+public class Leader {
 	/**
 	 * Alignment values for leaders
 	 */
@@ -98,10 +98,16 @@ public class Leader implements EventContents, Segment {
 		}
 	}
 
-	private Leader(Builder builder) {
+	protected Leader(Builder builder) {
 		this.pattern = builder.pattern;
 		this.position = builder.pos;
 		this.align = builder.align;
+	}
+	
+	protected Leader(Leader l) {
+		this.pattern = l.pattern;
+		this.position = l.position;
+		this.align = l.align;
 	}
 	
 	/**
@@ -129,14 +135,6 @@ public class Leader implements EventContents, Segment {
 	 */
 	public Alignment getAlignment() {
 		return align;
-	}
-
-	public ContentType getContentType() {
-		return ContentType.LEADER;
-	}
-	
-	public SegmentType getSegmentType() {
-		return SegmentType.Leader;
 	}
 
 	public boolean canContainEventObjects() {

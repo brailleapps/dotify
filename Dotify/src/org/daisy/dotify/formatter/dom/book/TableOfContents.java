@@ -2,7 +2,7 @@ package org.daisy.dotify.formatter.dom.book;
 
 import java.util.Set;
 
-import org.daisy.dotify.formatter.dom.BlockEvent;
+import org.daisy.dotify.formatter.obfl.BlockEvent;
 
 public interface TableOfContents extends Iterable<BlockEvent> {
 

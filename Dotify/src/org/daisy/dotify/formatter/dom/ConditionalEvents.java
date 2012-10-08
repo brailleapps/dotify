@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.dom;
 
 import java.util.Map;
 
+import org.daisy.dotify.formatter.obfl.BlockEvent;
 import org.daisy.dotify.formatter.utils.Expression;
 
 class ConditionalEvents {

@@ -3,6 +3,8 @@ package org.daisy.dotify.formatter.dom;
 import java.util.Map;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.obfl.BlockEvent;
+
 
 /**
  * Provides a static sequence event object.

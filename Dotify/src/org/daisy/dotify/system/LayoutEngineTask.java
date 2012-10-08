@@ -15,9 +15,9 @@ import org.daisy.dotify.formatter.PagedMediaWriter;
 import org.daisy.dotify.formatter.PagedMediaWriterException;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.WriterHandler;
-import org.daisy.dotify.formatter.core.ObflParser;
 import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.book.BookStruct;
+import org.daisy.dotify.formatter.obfl.ObflParser;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.translator.BrailleTranslator;
 

@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter.dom;
 
+import org.daisy.dotify.formatter.obfl.BlockEvent;
+
 
 /**
  * Provides the toc events for a specified context

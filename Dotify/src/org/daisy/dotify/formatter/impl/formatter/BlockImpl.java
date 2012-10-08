@@ -2,21 +2,16 @@ package org.daisy.dotify.formatter.impl.formatter;
 
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
-import org.daisy.dotify.formatter.core.PageNumberReference;
-import org.daisy.dotify.formatter.dom.AnchorSegment;
 import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
-import org.daisy.dotify.formatter.dom.NewLineSegment;
 import org.daisy.dotify.formatter.dom.RowDataManager;
 import org.daisy.dotify.formatter.dom.RowDataProperties;
-import org.daisy.dotify.formatter.dom.Segment;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TextSegment;
+import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
 
 
 class BlockImpl implements Block {
@@ -50,7 +45,7 @@ class BlockImpl implements Block {
 	}
 
 	public void addMarker(Marker m) {
-		segments.add(m);
+		segments.add(new MarkerSegment(m));
 	}
 	
 	public void addAnchor(String ref) {
@@ -66,11 +61,11 @@ class BlockImpl implements Block {
 	}
 	
 	public void insertLeader(Leader l) {
-		segments.push(l);
+		segments.push(new LeaderSegment(l));
 	}
 	
 	public void insertReference(String identifier, NumeralStyle numeralStyle) {
-		segments.push(new PageNumberReference(identifier, numeralStyle));
+		segments.push(new PageNumberReferenceSegment(identifier, numeralStyle));
 	}
 	
 	public void setListItem(String label, FormattingTypes.ListStyle type) {

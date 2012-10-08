@@ -3,13 +3,14 @@ package org.daisy.dotify.formatter.dom;
 
 
 
+
 /**
  * A Marker is a reference data inserted at some point in the flow. It can be used to create 
  * running headers/footers.
  * @author Joel Håkansson, TPB
  *
  */
-public class Marker implements EventContents, Segment {
+public class Marker {
 	private String name;
 	private String value;
 	
@@ -40,14 +41,6 @@ public class Marker implements EventContents, Segment {
 	 */
 	public String getValue() {
 		return value;
-	}
-
-	public ContentType getContentType() {
-		return ContentType.MARKER;
-	}
-	
-	public SegmentType getSegmentType() {
-		return SegmentType.Marker;
 	}
 
 	public boolean canContainEventObjects() {

@@ -2,7 +2,6 @@ package org.daisy.dotify.formatter;
 
 import java.io.Closeable;
 
-import org.daisy.dotify.formatter.core.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.dom.BlockProperties;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
@@ -10,6 +9,7 @@ import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.dom.block.BlockStruct;
+import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
 import org.daisy.dotify.translator.BrailleTranslator;
 
 
