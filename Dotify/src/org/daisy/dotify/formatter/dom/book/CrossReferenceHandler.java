@@ -50,7 +50,7 @@ class CrossReferenceHandler implements CrossReferences {
 		for (PageSequence s : ps.getContents()) {
 			LayoutMaster lm = s.getLayoutMaster();
 			int pageIndex=0;
-			for (Page p : s) {
+			for (Page p : s.getPages()) {
 				if (!lm.duplex() || pageIndex%2==0) {
 					sheetIndex++;
 				}

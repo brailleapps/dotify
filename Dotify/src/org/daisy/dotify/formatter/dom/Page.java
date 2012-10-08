@@ -14,13 +14,13 @@ public interface Page {
 	 * Gets all markers for this page
 	 * @return returns a list of all markers on a page
 	 */
-	public List<Marker> getMarkers();
+	//public List<Marker> getMarkers();
 	
 	/**
 	 * Gets markers for this page excluding markers before text content
 	 * @return returns a list of markers on a page
 	 */
-	public List<Marker> getContentMarkers();
+	//public List<Marker> getContentMarkers();
 	
 	/**
 	 * Gets the rows on this page

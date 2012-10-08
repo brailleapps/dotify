@@ -37,13 +37,13 @@ public class PaginatorImpl implements Paginator, PageInfo {
 		this.formatterFactory = formatterFactory;
 	}
 
-	public void newSequence(LayoutMaster master, int pagesOffset) {
+	private void newSequence(LayoutMaster master, int pagesOffset) {
 		state.assertOpen();
 		//sequence.push(new PageSequence(templates.get(masterName)));
 		pageStruct.push(new PageSequenceImpl(master, pagesOffset, pageStruct.pageReferences, formatterFactory));
 	}
 	
-	public void newSequence(LayoutMaster master) {
+	private void newSequence(LayoutMaster master) {
 		if (pageStruct.size()==0) {
 			newSequence(master, 0);
 		} else {
@@ -63,22 +63,22 @@ public class PaginatorImpl implements Paginator, PageInfo {
 		return ((PageSequenceImpl)currentSequence()).currentPage();
 	}
 
-	public void newPage() {
+	private void newPage() {
 		state.assertOpen();
 		((PageSequenceImpl)currentSequence()).newPage();
 	}
 	
-	public void newRow(Row row) {
+	private void newRow(Row row) {
 		state.assertOpen();
 		((PageSequenceImpl)currentSequence()).newRow(row);
 	}
 	
-	public void newRow(Row row, String id) {
+	private void newRow(Row row, String id) {
 		state.assertOpen();
 		((PageSequenceImpl)currentSequence()).newRow(row, id);
 	}
 
-	public void insertMarkers(List<Marker> m) {
+	private void insertMarkers(List<Marker> m) {
 		state.assertOpen();
 		((PageImpl)((PageSequenceImpl)currentSequence()).currentPage()).addMarkers(m);
 	}
@@ -87,7 +87,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 		return currentSequence().getLayoutMaster();
 	}*/
 	
-	public PageInfo getPageInfo() {
+	private PageInfo getPageInfo() {
 		return this;
 	}
 	
@@ -117,7 +117,7 @@ public class PaginatorImpl implements Paginator, PageInfo {
 		state.close();
 	}
 
-	public void insertIdentifier(String id) {
+	private void insertIdentifier(String id) {
 		((PageSequenceImpl)currentSequence()).insertIdentifier(id);
 	}
 	

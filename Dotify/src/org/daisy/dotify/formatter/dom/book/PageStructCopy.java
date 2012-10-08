@@ -21,7 +21,7 @@ class PageStructCopy implements Iterable<PageSequence> {
 	public void addPage(Page p) {
 		if (seq.empty() || originalSeq != p.getParent()) {
 			originalSeq = p.getParent();
-			seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster(), originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
+			seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
 			pagesInSeq = 0;
 		}
 		((PageSequenceCopy)seq.peek()).addPage(p);

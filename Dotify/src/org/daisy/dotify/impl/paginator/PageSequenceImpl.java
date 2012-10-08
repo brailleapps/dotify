@@ -11,8 +11,8 @@ import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.Row;
 
-class PageSequenceImpl implements Iterable<Page>, PageSequence {
-		private final Stack<Page> pages;
+class PageSequenceImpl implements PageSequence {
+		private final Stack<PageImpl> pages;
 		private final LayoutMaster master;
 		private final int pagesOffset;
 		private final HashMap<String, Page> pageReferences;
@@ -21,7 +21,7 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		private int keepNextSheets;
 		
 		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterFactory formatterFactory) {
-			this.pages = new Stack<Page>();
+			this.pages = new Stack<PageImpl>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
 			this.pageReferences = pageReferences;
@@ -65,7 +65,7 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 			return pages.size();
 		}
 		
-		public Page getPage(int index) {
+		public PageImpl getPage(int index) {
 			return pages.get(index);
 		}
 		
@@ -88,9 +88,13 @@ class PageSequenceImpl implements Iterable<Page>, PageSequence {
 		public LayoutMaster getLayoutMaster() {
 			return master;
 		}
-
+/*
 		public Iterator<Page> iterator() {
-			return pages.iterator();
+			return (Iterator<Page>)pages.iterator();
+		}*/
+		
+		public Iterable<? extends Page> getPages() {
+			return pages;
 		}
 		
 		void insertIdentifier(String id) {

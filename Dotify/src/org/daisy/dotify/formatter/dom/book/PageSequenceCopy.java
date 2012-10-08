@@ -18,24 +18,20 @@ import org.daisy.dotify.formatter.dom.PageSequence;
 class PageSequenceCopy implements PageSequence {
 	private final Stack<Page> pages;
 	private final LayoutMaster master;
-	private final int pageOffset;
-	private final FormatterFactory formatterFactory;
-	private Formatter formatter;
+	//private final int pageOffset;
+	//private final FormatterFactory formatterFactory;
+	//private Formatter formatter;
 	
-	PageSequenceCopy(LayoutMaster master, int pageOffset, FormatterFactory formatterFactory) {
+	PageSequenceCopy(LayoutMaster master) { //, int pageOffset, FormatterFactory formatterFactory) {
 		this.pages = new Stack<Page>();
 		this.master = master;
-		this.pageOffset = pageOffset;
-		this.formatterFactory = formatterFactory;
-		this.formatter = null;
+		//this.pageOffset = pageOffset;
+		//this.formatterFactory = formatterFactory;
+		//this.formatter = null;
 	}
 	
 	void addPage(Page p) {
 		pages.add(new PageCopy(p, this));
-	}
-
-	public Iterator<Page> iterator() {
-		return pages.iterator();
 	}
 
 	public LayoutMaster getLayoutMaster() {
@@ -49,7 +45,7 @@ class PageSequenceCopy implements PageSequence {
 	public Page getPage(int index) {
 		return pages.get(index);
 	}
-
+/*
 	public int getPageNumberOffset() {
 		return pageOffset;
 	}
@@ -63,6 +59,10 @@ class PageSequenceCopy implements PageSequence {
 			formatter = formatterFactory.newFormatter();
 		}
 		return formatter;
+	}
+*/
+	public Iterable<? extends Page> getPages() {
+		return pages;
 	}
 
 }

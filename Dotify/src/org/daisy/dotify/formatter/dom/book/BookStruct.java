@@ -291,7 +291,7 @@ public class BookStruct {
 					StringBuilder sb = new StringBuilder();
 					LayoutMaster lm = seq.getLayoutMaster();
 					int pageIndex=0;
-					for (Page p : seq) {
+					for (Page p : seq.getPages()) {
 						if (!lm.duplex() || pageIndex%2==0) {
 							volBreakAllowed = true;
 							sb.append("s");

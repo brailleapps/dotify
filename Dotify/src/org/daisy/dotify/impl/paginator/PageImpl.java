@@ -114,7 +114,7 @@ class PageImpl implements Page {
 		return pageIndex;
 	}
 
-	public PageSequence getParent() {
+	public PageSequenceImpl getParent() {
 		return parent;
 	}
 	
@@ -156,7 +156,7 @@ class PageImpl implements Page {
 		return LayoutTools.distribute(chunkF, width, padding, LayoutTools.DistributeMode.EQUAL_SPACING);
 	}
 	
-	private static String resolveField(Object field, Page p) {
+	private static String resolveField(Object field, PageImpl p) {
 		if (field instanceof CompoundField) {
 			return resolveCompoundField((CompoundField)field, p);
 		} else if (field instanceof MarkerReferenceField) {
@@ -169,7 +169,7 @@ class PageImpl implements Page {
 		}
 	}
 
-	private static String resolveCompoundField(CompoundField f, Page p) {
+	private static String resolveCompoundField(CompoundField f, PageImpl p) {
 		StringBuffer sb = new StringBuffer();
 		for (Object f2 : f) {
 			sb.append(resolveField(f2, p));
@@ -177,7 +177,7 @@ class PageImpl implements Page {
 		return sb.toString();
 	}
 
-	public static String findMarker(Page page, MarkerReferenceField markerRef) {
+	private static String findMarker(PageImpl page, MarkerReferenceField markerRef) {
 		int dir = 1;
 		int index = 0;
 		int count = 0;
@@ -203,7 +203,7 @@ class PageImpl implements Page {
 			int nextPage = page.getPageIndex() - page.getParent().getPageNumberOffset() + dir;
 			//System.out.println("Next page: "+page.getPageIndex() + " | " + nextPage);
 			if (nextPage < page.getParent().getPageCount() && nextPage >= 0) {
-				Page next = page.getParent().getPage(nextPage);
+				PageImpl next = page.getParent().getPage(nextPage);
 				return findMarker(next, markerRef);
 			}
 		}

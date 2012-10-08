@@ -21,7 +21,7 @@ class PageCopy implements Page {
 		this.p = p;
 		this.parent = parent;
 	}
-
+/*
 	public List<Marker> getMarkers() {
 		return p.getMarkers();
 	}
@@ -29,7 +29,7 @@ class PageCopy implements Page {
 	public List<Marker> getContentMarkers() {
 		return p.getContentMarkers();
 	}
-
+*/
 	public List<Row> getRows() {
 		return p.getRows();
 	}

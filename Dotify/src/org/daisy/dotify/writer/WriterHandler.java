@@ -37,7 +37,7 @@ public class WriterHandler {
 						writer.newVolume(lm);
 					}
 					writer.newSection(lm);
-					for (Page p : s) {
+					for (Page p : s.getPages()) {
 						writePage(writer, p, lm);
 					}
 				}
