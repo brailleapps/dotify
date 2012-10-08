@@ -13,7 +13,6 @@ import javax.xml.xpath.XPathExpressionException;
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.formatter.utils.LayoutTools;
 import org.daisy.dotify.formatter.utils.TextBorder;
-import org.daisy.dotify.formatter.writers.PEFMediaWriter;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
@@ -33,6 +32,7 @@ import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
 import org.daisy.dotify.translator.UnsupportedSpecificationException;
+import org.daisy.dotify.writer.PEFMediaWriter;
 import org.xml.sax.SAXException;
 
 

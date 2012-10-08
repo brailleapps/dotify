@@ -8,6 +8,7 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.PageStruct;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.block.BlockSequence;
+import org.daisy.dotify.writer.PagedMediaWriter;
 
 
 

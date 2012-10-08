@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.obfl.BlockEvent;
+import org.daisy.dotify.formatter.obfl.SequenceEvent;
 
 
 /**

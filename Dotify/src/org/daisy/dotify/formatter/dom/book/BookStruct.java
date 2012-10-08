@@ -11,26 +11,26 @@ import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
-import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
-import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocEvents;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent;
 import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
-import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
+import org.daisy.dotify.formatter.dom.block.Block;
 import org.daisy.dotify.formatter.dom.block.BlockSequence;
 import org.daisy.dotify.formatter.dom.block.BlockStruct;
 import org.daisy.dotify.formatter.obfl.BlockEvent;
 import org.daisy.dotify.formatter.obfl.BlockEventHandler;
+import org.daisy.dotify.formatter.obfl.SequenceEvent;
 import org.daisy.dotify.formatter.utils.PageTools;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.tools.CompoundIterable;
+import org.daisy.dotify.writer.Volume;
 
 /**
  * Provides a default implementation of BookStruct

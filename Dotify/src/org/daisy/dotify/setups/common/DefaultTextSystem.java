@@ -3,7 +3,6 @@ package org.daisy.dotify.setups.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.daisy.dotify.formatter.writers.TextMediaWriter;
 import org.daisy.dotify.system.InputManager;
 import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
@@ -19,6 +18,7 @@ import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
 import org.daisy.dotify.translator.UnsupportedSpecificationException;
+import org.daisy.dotify.writer.TextMediaWriter;
 
 
 /**

@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.dom.block;
 
-import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.Sequence;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 

@@ -10,7 +10,6 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.PageNumberReference;
-import org.daisy.dotify.formatter.dom.SequenceEvent;
 import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.obfl.EventContents.ContentType;
 import org.daisy.dotify.formatter.utils.Expression;

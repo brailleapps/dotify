@@ -11,15 +11,15 @@ import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.PagedMediaWriter;
-import org.daisy.dotify.formatter.PagedMediaWriterException;
 import org.daisy.dotify.formatter.PaginatorFactory;
-import org.daisy.dotify.formatter.WriterHandler;
-import org.daisy.dotify.formatter.dom.Volume;
 import org.daisy.dotify.formatter.dom.book.BookStruct;
 import org.daisy.dotify.formatter.obfl.ObflParser;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.writer.PagedMediaWriter;
+import org.daisy.dotify.writer.PagedMediaWriterException;
+import org.daisy.dotify.writer.Volume;
+import org.daisy.dotify.writer.WriterHandler;
 
 /**
  * <p>

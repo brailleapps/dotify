@@ -1,29 +1,25 @@
 package org.daisy.dotify.formatter.dom.book;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.daisy.dotify.formatter.dom.PageSequence;
-import org.daisy.dotify.formatter.dom.Volume;
+import org.daisy.dotify.tools.CompoundIterable;
+import org.daisy.dotify.writer.Volume;
 
 class VolumeImpl implements Volume {
-	private final Iterable<PageSequence> preVolume;
-	private final Iterable<PageSequence> body;
-	private final Iterable<PageSequence> postVolume;
+	private final CompoundIterable<PageSequence> ret;
 	
 	public VolumeImpl(Iterable<PageSequence> preVolume, Iterable<PageSequence> body, Iterable<PageSequence> postVolume) {
-		this.preVolume = preVolume;
-		this.body = body;
-		this.postVolume = postVolume;
+		List<Iterable<PageSequence>> contents = new ArrayList<Iterable<PageSequence>>();
+		contents.add(preVolume);
+		contents.add(body);
+		contents.add(postVolume);
+		this.ret = new CompoundIterable<PageSequence>(contents);
 	}
 
-	public Iterable<PageSequence> getPreVolumeContents() {
-		return preVolume;
-	}
-
-	public Iterable<PageSequence> getPostVolumeContents() {
-		return postVolume;
-	}
-
-	public Iterable<PageSequence> getBody() {
-		return body;
+	public Iterable<PageSequence> getContents() {
+		return ret;
 	}
 
 }

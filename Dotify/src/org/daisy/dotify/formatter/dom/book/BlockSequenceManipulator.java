@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.dom.Block;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
+import org.daisy.dotify.formatter.dom.block.Block;
 import org.daisy.dotify.formatter.dom.block.BlockSequence;
 import org.daisy.dotify.formatter.dom.block.BlockStruct;
 
