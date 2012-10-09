@@ -104,7 +104,6 @@ Dotify/src/org/daisy/dotify/formatter/dom/LayoutMaster.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Leader.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Marker.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/Page.java -text
-Dotify/src/org/daisy/dotify/formatter/dom/PageInfo.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/dom/PageNumberReference.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/PageSequence.java -text
 Dotify/src/org/daisy/dotify/formatter/dom/PageStruct.java -text

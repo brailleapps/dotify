@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.formatter.Paginator;
 import org.daisy.dotify.formatter.PaginatorFactory;
 import org.daisy.dotify.formatter.dom.book.BookStruct;
 import org.daisy.dotify.formatter.obfl.ObflParser;
@@ -80,13 +81,17 @@ public class LayoutEngineTask extends InternalTask  {
 			obflParser.parse(new FileInputStream(input));
 
 			logger.info("Working...");
+			PaginatorFactory paginatorFactory = PaginatorFactory.newInstance();
+			Paginator paginator = paginatorFactory.newPaginator();
+			paginator.open(formatterFactory, obflParser.getBlockStruct().getBlockSequenceIterable());
+			
 			BookStruct bookStruct = new BookStruct(
-					obflParser.getBlockStruct(),
+					paginator,
 					obflParser.getMasters(),
 					obflParser.getVolumeTemplates(),
 					obflParser.getTocs(),
 					formatterFactory,
-					PaginatorFactory.newInstance()
+					paginatorFactory
 				);
 			Iterable<Volume> volumes = bookStruct.getVolumes();
 

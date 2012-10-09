@@ -2,7 +2,6 @@ package org.daisy.dotify.formatter.dom.book;
 
 import java.util.List;
 
-import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.Row;

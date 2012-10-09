@@ -22,7 +22,6 @@ import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.block.Block;
 import org.daisy.dotify.formatter.dom.block.BlockSequence;
-import org.daisy.dotify.formatter.dom.block.BlockStruct;
 import org.daisy.dotify.formatter.obfl.BlockEvent;
 import org.daisy.dotify.formatter.obfl.BlockEventHandler;
 import org.daisy.dotify.formatter.obfl.SequenceEvent;
@@ -40,7 +39,8 @@ import org.daisy.dotify.writer.Volume;
 public class BookStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Logger logger;
-	private final BlockStruct bs;
+	private final Paginator contentPaginator;
+	//private final BlockStruct bs;
 	
 	private final Map<String, LayoutMaster> masters;
 	private final Iterable<VolumeTemplate> volumeTemplates;
@@ -52,9 +52,9 @@ public class BookStruct {
 
 	//private VolumeStruct volumeData;
 
-	public BookStruct(BlockStruct bs, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
+	public BookStruct(Paginator content, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
 			FormatterFactory factory, PaginatorFactory paginatorFactory) throws FormatterException {
-		this.bs = bs;
+		this.contentPaginator = content;
 		this.formatterFactory = factory;
 		this.paginatorFactory = paginatorFactory;
 
@@ -68,17 +68,14 @@ public class BookStruct {
 	}
 	
 	private void reformat() throws FormatterException {
-		Paginator paginator = paginatorFactory.newPaginator();
-		paginator.open(formatterFactory);
 
 		try {
-			paginator.paginate(bs.getBlockSequenceIterable(), crh);
-			paginator.close();
+			crh.setContents(contentPaginator.paginate(crh));
+			//paginator.close();
 		} catch (IOException e) {
 			throw new FormatterException(e);
 		}
 
-		crh.setContents(paginator.getPageStruct());
 	}
 
 	private PageStruct getPreVolumeContents(int volumeNumber) {
@@ -213,11 +210,9 @@ public class BookStruct {
 				}
 			}
 			Paginator paginator2 = paginatorFactory.newPaginator();
-			paginator2.open(formatterFactory);
-			CompoundIterable<BlockSequence> ci = new CompoundIterable<BlockSequence>(ib);
-			paginator2.paginate(ci, crh);
+			paginator2.open(formatterFactory, new CompoundIterable<BlockSequence>(ib));
+			PageStruct ret = paginator2.paginate(crh);
 			paginator2.close();
-			PageStruct ret = paginator2.getPageStruct();
 			if (pre) {
 				VolData d = crh.getVolData(volumeNumber);
 				if (d==null) {
@@ -266,6 +261,7 @@ public class BookStruct {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Iterable<Volume> getVolumes() {
 		try {
 			reformat();
@@ -281,7 +277,7 @@ public class BookStruct {
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
-			Iterable<PageSequence> ps = crh.getContents().getContents();
+			Iterable<? extends PageSequence> ps = crh.getContents().getContents();
 			final int contents = PageTools.countSheets(ps); 
 			ArrayList<Page> pages = new ArrayList<Page>();
 			StringBuilder res = new StringBuilder();
@@ -331,8 +327,8 @@ public class BookStruct {
 				if (splitterMax!=getVolumeMaxSize(i)) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
-				preV.add(getPreVolumeContents(i).getContents());
-				postV.add(getPostVolumeContents(i).getContents());
+				preV.add((Iterable<PageSequence>) getPreVolumeContents(i).getContents());
+				postV.add((Iterable<PageSequence>) getPostVolumeContents(i).getContents());
 			}
 			for (int i=1;i<=crh.getVolumeCount();i++) {
 				

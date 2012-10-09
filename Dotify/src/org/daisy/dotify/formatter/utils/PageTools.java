@@ -13,7 +13,7 @@ public class PageTools {
 	// Default constructor is private as this class is not intended to be instantiated.
 	private PageTools() { }
 
-	public static int countSheets(Iterable<PageSequence> mf) {
+	public static int countSheets(Iterable<? extends PageSequence> mf) {
 		int sheets = 0;
 		for (PageSequence seq : mf) {
 			LayoutMaster lm = seq.getLayoutMaster();

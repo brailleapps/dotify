@@ -1,10 +1,7 @@
 package org.daisy.dotify.formatter.dom.book;
 
-import java.util.Iterator;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;

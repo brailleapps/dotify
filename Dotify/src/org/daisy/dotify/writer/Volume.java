@@ -12,6 +12,6 @@ public interface Volume {
 	 * Gets the contents
 	 * @return returns the contents
 	 */
-	public Iterable<PageSequence> getContents();
+	public Iterable<? extends PageSequence> getContents();
 	
 }

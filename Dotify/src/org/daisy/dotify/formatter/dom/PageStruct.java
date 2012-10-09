@@ -13,7 +13,7 @@ public interface PageStruct {
 	 * Gets the contents
 	 * @return returns the content
 	 */
-	public Iterable<PageSequence> getContents();
+	public Iterable<? extends PageSequence> getContents();
 	public Page getPage(String refid);
 	
 }

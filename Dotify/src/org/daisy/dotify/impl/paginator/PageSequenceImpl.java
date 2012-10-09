@@ -69,7 +69,7 @@ class PageSequenceImpl implements PageSequence {
 			return pages.get(index);
 		}
 		
-		Page currentPage() {
+		PageImpl currentPage() {
 			return pages.peek();
 		}
 		

@@ -31,7 +31,7 @@ public interface Paginator extends Closeable {
 	/**
 	 * Opens for writing to the supplied writer 
 	 */
-	public void open(FormatterFactory formatterFactory);
+	public void open(FormatterFactory formatterFactory, Iterable<BlockSequence> fs);
 
 	/**
 	 * Paginates the block sequence
@@ -39,7 +39,7 @@ public interface Paginator extends Closeable {
 	 * @param refs cross references
 	 * @throws IOException
 	 */
-	public void paginate(Iterable<BlockSequence> fs, CrossReferences refs) throws IOException;
+	public PageStruct paginate(CrossReferences refs) throws IOException;
 	
-	public PageStruct getPageStruct();
+	//public PageStruct getPageStruct();
 }
