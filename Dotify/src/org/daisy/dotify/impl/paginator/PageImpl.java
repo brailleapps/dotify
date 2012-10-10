@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.dotify.formatter.FormatterException;
+import org.daisy.dotify.formatter.dom.Field;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Page;
-import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.obfl.CompoundField;
@@ -135,9 +135,9 @@ class PageImpl implements Page {
 	}
 	
 	
-	private ArrayList<Row> renderFields(LayoutMaster lm, ArrayList<ArrayList<Object>> fields, BrailleTranslator translator) throws FormatterException {
+	private List<Row> renderFields(LayoutMaster lm, List<List<Field>> fields, BrailleTranslator translator) throws FormatterException {
 		ArrayList<Row> ret = new ArrayList<Row>();
-		for (ArrayList<Object> row : fields) {
+		for (List<Field> row : fields) {
 			try {
 				ret.add(new Row(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator)));
 			} catch (LayoutToolsException e) {
@@ -147,16 +147,16 @@ class PageImpl implements Page {
 		return ret;
 	}
 	
-	private String distribute(ArrayList<Object> chunks, int width, String padding, BrailleTranslator translator) throws LayoutToolsException {
+	private String distribute(List<Field> chunks, int width, String padding, BrailleTranslator translator) throws LayoutToolsException {
 		ArrayList<String> chunkF = new ArrayList<String>();
-		for (Object f : chunks) {
+		for (Field f : chunks) {
 			BrailleTranslatorResult btr = translator.translate(resolveField(f, this).replaceAll("\u00ad", ""));
 			chunkF.add(btr.getTranslatedRemainder());
 		}
 		return LayoutTools.distribute(chunkF, width, padding, LayoutTools.DistributeMode.EQUAL_SPACING);
 	}
 	
-	private static String resolveField(Object field, PageImpl p) {
+	private static String resolveField(Field field, PageImpl p) {
 		if (field instanceof CompoundField) {
 			return resolveCompoundField((CompoundField)field, p);
 		} else if (field instanceof MarkerReferenceField) {
@@ -171,7 +171,7 @@ class PageImpl implements Page {
 
 	private static String resolveCompoundField(CompoundField f, PageImpl p) {
 		StringBuffer sb = new StringBuffer();
-		for (Object f2 : f) {
+		for (Field f2 : f) {
 			sb.append(resolveField(f2, p));
 		}
 		return sb.toString();

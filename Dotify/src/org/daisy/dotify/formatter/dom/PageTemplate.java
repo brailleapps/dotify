@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.dom;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Specifies page objects such as header and footer
@@ -30,7 +30,7 @@ public interface PageTemplate {
 	 * resolved string, which could affect its length.
 	 * @return returns an ArrayList containing an ArrayList of String
 	 */
-	public ArrayList<ArrayList<Object>> getHeader();
+	public List<List<Field>> getHeader();
 	
 	/**
 	 * Get footer rows for a page using this Template. Each ArrayList must 
@@ -39,7 +39,7 @@ public interface PageTemplate {
 	 * resolved string, which could affect its length.
 	 * @return returns an ArrayList containing an ArrayList of String
 	 */
-	public ArrayList<ArrayList<Object>> getFooter();
+	public List<List<Field>> getFooter();
 	
 	/**
 	 * Test if this Template applies to this pagenum.

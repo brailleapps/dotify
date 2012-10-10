@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter.obfl;
 
+import org.daisy.dotify.formatter.dom.Field;
+
 /**
  * A MarkerReferenceField is a place holder for a marker's value. 
  * Its value is resolved by the LayoutPerformer when its location 
@@ -7,7 +9,7 @@ package org.daisy.dotify.formatter.obfl;
  * @author joha
  *
  */
-public class MarkerReferenceField {
+public class MarkerReferenceField implements Field {
 	/**
 	 * Defines marker search directions.
 	 */

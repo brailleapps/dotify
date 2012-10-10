@@ -12,7 +12,6 @@ import org.daisy.dotify.formatter.dom.PageNumberReference;
 import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.dom.RowDataProperties;
 import org.daisy.dotify.formatter.dom.block.RowDataManager;
-import org.daisy.dotify.formatter.utils.BlockHandler;
 import org.daisy.dotify.formatter.utils.RomanNumeral;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;

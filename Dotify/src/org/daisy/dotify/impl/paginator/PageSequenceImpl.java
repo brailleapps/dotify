@@ -1,7 +1,6 @@
 package org.daisy.dotify.impl.paginator;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.Formatter;

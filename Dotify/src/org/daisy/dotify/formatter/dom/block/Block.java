@@ -1,7 +1,6 @@
 package org.daisy.dotify.formatter.dom.block;
 
 import org.daisy.dotify.formatter.dom.CrossReferences;
-import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.FormattingTypes.BreakBefore;
 import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
 /**

@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.obfl;
 
+import org.daisy.dotify.formatter.dom.Field;
 import org.daisy.dotify.formatter.utils.RomanNumeral;
 
 /**
@@ -7,7 +8,7 @@ import org.daisy.dotify.formatter.utils.RomanNumeral;
  * 
  * @author Joel Håkansson
  */
-public class NumeralField {
+public class NumeralField implements Field {
 	/**
 	 * Defines numeral styles
 	 */

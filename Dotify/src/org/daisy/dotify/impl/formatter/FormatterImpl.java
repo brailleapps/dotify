@@ -15,7 +15,7 @@ import org.daisy.dotify.formatter.dom.RowDataProperties;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
-import org.daisy.dotify.formatter.utils.BlockHandler.ListItem;
+import org.daisy.dotify.impl.formatter.BlockHandler.ListItem;
 import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.translator.BrailleTranslator;
 

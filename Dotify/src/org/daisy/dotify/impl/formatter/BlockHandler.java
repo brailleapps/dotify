@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.utils;
+package org.daisy.dotify.impl.formatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.formatter.utils.LayoutTools;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -21,7 +22,7 @@ import org.daisy.dotify.translator.BrailleTranslatorResult;
  * 
  * @author Joel Håkansson, TPB
  */
-public class BlockHandler {
+class BlockHandler {
 	private final BrailleTranslator translator;
 	private final String spaceChar;
 	//private int currentListNumber;

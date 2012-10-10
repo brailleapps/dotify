@@ -19,6 +19,7 @@ import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.dom.BlockProperties;
+import org.daisy.dotify.formatter.dom.Field;
 import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
@@ -203,12 +204,12 @@ public class ObflParser {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, HEADER)) {
-				ArrayList<Object> fields = parseHeaderFooter(event, input);
+				ArrayList<Field> fields = parseHeaderFooter(event, input);
 				if (fields.size()>0) {
 					template.addToHeader(fields);
 				}
 			} else if (equalsStart(event, FOOTER)) {
-				ArrayList<Object> fields = parseHeaderFooter(event, input);
+				ArrayList<Field> fields = parseHeaderFooter(event, input);
 				if (fields.size()>0) {
 					template.addToFooter(fields);
 				}
@@ -219,12 +220,12 @@ public class ObflParser {
 		return template;
 	}
 	
-	private ArrayList<Object> parseHeaderFooter(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		ArrayList<Object> fields = new ArrayList<Object>();
+	private ArrayList<Field> parseHeaderFooter(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		ArrayList<Field> fields = new ArrayList<Field>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, FIELD)) {
-				ArrayList<Object> compound = parseField(event, input);
+				ArrayList<Field> compound = parseField(event, input);
 				if (compound.size()==1) {
 					fields.add(compound.get(0));
 				} else {
@@ -239,15 +240,15 @@ public class ObflParser {
 		return fields;
 	}
 	
-	private ArrayList<Object> parseField(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		ArrayList<Object> compound = new ArrayList<Object>();
+	private ArrayList<Field> parseField(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		ArrayList<Field> compound = new ArrayList<Field>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, STRING)) {
-				compound.add(getAttr(event, "value"));
+				compound.add(new StringField(getAttr(event, "value")));
 			} else if (equalsStart(event, EVALUATE)) {
 				//FIXME: add variables...
-				compound.add(new Expression().evaluate(getAttr(event, "expression")));
+				compound.add(new StringField(new Expression().evaluate(getAttr(event, "expression"))));
 			} else if (equalsStart(event, CURRENT_PAGE)) {
 				compound.add(new CurrentPageField(NumeralStyle.valueOf(getAttr(event, "style").toUpperCase())));
 			} else if (equalsStart(event, MARKER_REFERENCE)) {

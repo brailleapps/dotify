@@ -2,15 +2,17 @@ package org.daisy.dotify.formatter.obfl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.daisy.dotify.formatter.dom.Field;
 import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.utils.Expression;
 
 
 class PageTemplateImpl implements PageTemplate {
 	private final String condition;
-	private final ArrayList<ArrayList<Object>> header;
-	private final ArrayList<ArrayList<Object>> footer;
+	private final List<List<Field>> header;
+	private final List<List<Field>> footer;
 	private final HashMap<Integer, Boolean> appliesTo;
 	
 	public PageTemplateImpl() {
@@ -24,26 +26,26 @@ class PageTemplateImpl implements PageTemplate {
 	 */
 	public PageTemplateImpl(String useWhen) {
 		this.condition = useWhen;
-		this.header = new ArrayList<ArrayList<Object>>();
-		this.footer = new ArrayList<ArrayList<Object>>();
+		this.header = new ArrayList<List<Field>>();
+		this.footer = new ArrayList<List<Field>>();
 		this.appliesTo = new HashMap<Integer, Boolean>();		
 	}
 
-	public void addToHeader(ArrayList<Object> obj) {
+	public void addToHeader(List<Field> obj) {
 		header.add(obj);
 	}
 	
-	public void addToFooter(ArrayList<Object> obj) {
+	public void addToFooter(List<Field> obj) {
 		footer.add(obj);
 	}
 
-	public ArrayList<ArrayList<Object>> getHeader() {
+	public List<List<Field>> getHeader() {
 		//ArrayList<ArrayList<Object>> ret = new ArrayList<ArrayList<Object>>();
 		//ret.add(header);
 		return header;
 	}
 	
-	public ArrayList<ArrayList<Object>> getFooter() {
+	public List<List<Field>> getFooter() {
 		//ArrayList<ArrayList<Object>> ret = new ArrayList<ArrayList<Object>>();
 		//ret.add(footer);
 		return footer;
