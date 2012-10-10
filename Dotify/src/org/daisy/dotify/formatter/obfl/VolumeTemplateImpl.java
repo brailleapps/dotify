@@ -1,7 +1,5 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
-import org.daisy.dotify.formatter.dom.book.VolumeTemplate;
 import org.daisy.dotify.formatter.utils.Expression;
 
 class VolumeTemplateImpl implements VolumeTemplate {

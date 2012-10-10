@@ -1,6 +1,5 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.obfl.BlockEvent;
 
 
 /**
@@ -8,7 +7,7 @@ import org.daisy.dotify.formatter.obfl.BlockEvent;
  * @author Joel Håkansson
  *
  */
-public interface TocEvents {
+interface TocEvents {
 	
 	/**
 	 * Gets the events that should precede the TOC

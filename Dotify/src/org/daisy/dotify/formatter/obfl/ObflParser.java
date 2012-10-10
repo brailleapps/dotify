@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Stack;
 
 import javax.xml.namespace.QName;
@@ -25,17 +24,13 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.PageTemplate;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
-import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 import org.daisy.dotify.formatter.dom.block.BlockStruct;
-import org.daisy.dotify.formatter.dom.book.TableOfContents;
-import org.daisy.dotify.formatter.dom.book.VolumeTemplate;
+import org.daisy.dotify.formatter.dom.book.VolumeContentFormatter;
 import org.daisy.dotify.formatter.obfl.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.formatter.obfl.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.formatter.utils.Position;
 import org.daisy.dotify.text.FilterLocale;
@@ -534,7 +529,7 @@ public class ObflParser {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
-		StaticSequenceEvent volSeq = new StaticSequenceEvent(builder.build());
+		StaticSequenceEventImpl volSeq = new StaticSequenceEventImpl(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, BLOCK)) {
@@ -559,7 +554,7 @@ public class ObflParser {
 		TocRange range = TocRange.valueOf(getAttr(event, "range").toUpperCase());
 		String condition = getAttr(event, "use-when");
 		String volEventVar = getAttr(event, "toc-event-volume-number-variable");
-		TocSequenceEvent tocSequence = new TocSequenceEvent(builder.build(), tocName, range, condition, volEventVar, template);
+		TocSequenceEventImpl tocSequence = new TocSequenceEventImpl(builder.build(), tocName, range, condition, volEventVar, template);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ON_TOC_START)) {
@@ -677,21 +672,25 @@ public class ObflParser {
 		return 	event.getEventType()==XMLStreamConstants.END_ELEMENT 
 				&& event.asEndElement().getName().equals(element);
 	}
-	
+	/*
 	public Map<String, TableOfContents> getTocs() {
 		return tocs;
-	}
-	
+	}*/
+	/*
 	public Iterable<VolumeTemplate> getVolumeTemplates() {
 		return volumeTemplates;
-	}
-	
+	}*/
+	/*
 	public Map<String, LayoutMaster> getMasters() {
 		return masters;
-	}
+	}*/
 	
 	public BlockStruct getBlockStruct() {
 		return formatter.getFlowStruct();
+	}
+	
+	public VolumeContentFormatter getVolumeContentFormatter() {
+		return new BlockEventHandlerRunner(formatterFactory, masters, tocs, volumeTemplates);
 	}
 
 }

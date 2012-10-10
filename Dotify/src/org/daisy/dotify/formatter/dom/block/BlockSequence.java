@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.dom.block;
 
-import org.daisy.dotify.formatter.dom.Sequence;
+import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 /**
@@ -8,7 +8,7 @@ import org.daisy.dotify.formatter.dom.SequenceProperties;
  * 
  * @author Joel Håkansson
  */
-public interface BlockSequence extends Iterable<Block>, Sequence {
+public interface BlockSequence extends Iterable<Block> {
 	/**
 	 * Get the initial page number, i.e. the number that the first page in the sequence should have
 	 * @return returns the initial page number, or null if no initial page number has been specified
@@ -28,5 +28,11 @@ public interface BlockSequence extends Iterable<Block>, Sequence {
 	public Block getBlock(int index);
 	
 	public SequenceProperties getSequenceProperties();
+	
+	/**
+	 * Gets the layout master for this sequence
+	 * @return returns the layout master for this sequence
+	 */
+	public LayoutMaster getLayoutMaster();
 
 }

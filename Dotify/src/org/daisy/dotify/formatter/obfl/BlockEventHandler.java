@@ -5,12 +5,12 @@ import java.util.Map;
 
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.dom.block.BlockStruct;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.Marker;
 import org.daisy.dotify.formatter.dom.PageNumberReference;
 import org.daisy.dotify.formatter.dom.TextProperties;
+import org.daisy.dotify.formatter.dom.block.BlockStruct;
 import org.daisy.dotify.formatter.obfl.EventContents.ContentType;
 import org.daisy.dotify.formatter.utils.Expression;
 
@@ -19,7 +19,7 @@ import org.daisy.dotify.formatter.utils.Expression;
  * 
  * @author Joel Håkansson
  */
-public class BlockEventHandler {
+class BlockEventHandler {
 	private final Formatter formatter;
 
 	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters) {

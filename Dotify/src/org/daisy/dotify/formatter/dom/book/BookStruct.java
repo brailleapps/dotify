@@ -2,9 +2,7 @@ package org.daisy.dotify.formatter.dom.book;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.formatter.FormatterException;
@@ -15,16 +13,7 @@ import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageSequence;
 import org.daisy.dotify.formatter.dom.PageStruct;
-import org.daisy.dotify.formatter.dom.StaticSequenceEvent;
-import org.daisy.dotify.formatter.dom.TocEvents;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent;
-import org.daisy.dotify.formatter.dom.TocSequenceEvent.TocRange;
-import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
-import org.daisy.dotify.formatter.dom.block.Block;
 import org.daisy.dotify.formatter.dom.block.BlockSequence;
-import org.daisy.dotify.formatter.obfl.BlockEvent;
-import org.daisy.dotify.formatter.obfl.BlockEventHandler;
-import org.daisy.dotify.formatter.obfl.SequenceEvent;
 import org.daisy.dotify.formatter.utils.PageTools;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
@@ -40,27 +29,19 @@ public class BookStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Logger logger;
 	private final Paginator contentPaginator;
-	//private final BlockStruct bs;
 	
-	private final Map<String, LayoutMaster> masters;
-	private final Iterable<VolumeTemplate> volumeTemplates;
-	private final Map<String, TableOfContents> tocs;
+	private final VolumeContentFormatter volumeFormatter;
 	private final FormatterFactory formatterFactory;
 	private final PaginatorFactory paginatorFactory;
 
 	private final CrossReferenceHandler crh;
 
-	//private VolumeStruct volumeData;
-
-	public BookStruct(Paginator content, Map<String, LayoutMaster> masters, Iterable<VolumeTemplate> volumeTemplates, Map<String, TableOfContents> tocs,
+	public BookStruct(Paginator content, VolumeContentFormatter volumeFormatter,
 			FormatterFactory factory, PaginatorFactory paginatorFactory) throws FormatterException {
 		this.contentPaginator = content;
 		this.formatterFactory = factory;
 		this.paginatorFactory = paginatorFactory;
-
-		this.masters = masters;
-		this.volumeTemplates = volumeTemplates;
-		this.tocs = tocs;
+		this.volumeFormatter = volumeFormatter;
 		
 		this.logger = Logger.getLogger(BookStruct.class.getCanonicalName());
 
@@ -85,129 +66,14 @@ public class BookStruct {
 	private PageStruct getPostVolumeContents(int volumeNumber) {
 		return getVolumeContents(volumeNumber, false);
 	}
-	
+
 	private PageStruct getVolumeContents(int volumeNumber, boolean pre) {
 		try {
-			ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
-			for (VolumeTemplate t : volumeTemplates) {
-				if (t.appliesTo(volumeNumber, crh.getVolumeCount())) {
-					for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
-						switch (seq.getVolumeSequenceType()) {
-							case TABLE_OF_CONTENTS: {
-								TocSequenceEvent toc = (TocSequenceEvent)seq;
-								if (toc.appliesTo(volumeNumber, crh.getVolumeCount())) {
-									BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
-									TableOfContents data = tocs.get(toc.getTocName());
-									TocEvents events = toc.getTocEvents(volumeNumber, crh.getVolumeCount());
-									StaticSequenceEvent evs = new StaticSequenceEvent(toc.getSequenceProperties());
-									for (BlockEvent e : events.getTocStartEvents()) {
-										evs.push(e);
-									}
-									for (BlockEvent e : data) {
-										evs.push(e);
-									}
-									if (toc.getRange()==TocRange.DOCUMENT) {
-										for (BlockEvent e : events.getVolumeEndEvents(crh.getVolumeCount())) {
-											evs.push(e);
-										}
-									}
-									for (BlockEvent e : events.getTocEndEvents()) {
-										evs.push(e);
-									}
-									if (toc.getRange()==TocRange.VOLUME) {
-										beh.formatSequence(evs);
-										BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
-										String start = null;
-										String stop = null;
-										//assumes toc is in sequential order
-										for (String id : data.getTocIdList()) {
-											String ref = data.getRefForID(id);
-											int vol = crh.getVolumeNumber(ref);
-											if (vol<volumeNumber) {
-												
-											} else if (vol==volumeNumber) {
-												if (start==null) {
-													start = id;
-												}
-												stop = id;
-											} else {
-												break;
-											}
-										}
-										// start/stop can be null if no entries are in that volume
-										if (start!=null && stop!=null) {
-											try {
-												ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
-												fsm.removeRange(data.getTocIdList().iterator().next(), start);
-												fsm.removeTail(stop);
-												BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
-												StaticSequenceEvent evs2 = new StaticSequenceEvent(toc.getSequenceProperties());
-												for (BlockEvent e : events.getTocEndEvents()) {
-													evs2.add(e);
-												}
-												beh2.formatSequence(evs2);
-												fsm.appendGroup(beh2.close().getBlockSequenceIterable().iterator().next());
-												r.add(fsm.newSequence());
-												ib.add(r);
-											} catch (Exception e) {
-												logger.log(Level.SEVERE, "TOC failed for: volume " + volumeNumber + " of " + crh.getVolumeCount(), e);
-											}
-										}
-									} else if (toc.getRange()==TocRange.DOCUMENT) {
-										beh.formatSequence(evs);
-										BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
-										int nv=0;
-										HashMap<String, BlockSequence> statics = new HashMap<String, BlockSequence>();
-										for (Block b : fsm.getBlocks()) {
-											if (b.getBlockIdentifier()!=null) {
-												String ref = data.getRefForID(b.getBlockIdentifier());
-												Integer vol = crh.getVolumeNumber(ref);
-												if (vol!=null) {
-													if (nv!=vol) {
-														BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
-														StaticSequenceEvent evs2 = new StaticSequenceEvent(toc.getSequenceProperties());
-														if (nv>0) {
-															for (BlockEvent e : events.getVolumeEndEvents(nv)) {
-																evs2.add(e);
-															}
-														}
-														nv = vol;
-														for (BlockEvent e : events.getVolumeStartEvents(vol)) {
-															evs2.add(e);
-														}
-														beh2.formatSequence(evs2);
-														statics.put(b.getBlockIdentifier(), beh2.close().getBlockSequenceIterable().iterator().next());
-													}
-												}
-											}
-										}
-										for (String key : statics.keySet()) {
-											fsm.insertGroup(statics.get(key), key);
-										}
-										ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
-										r.add(fsm.newSequence());
-										ib.add(r);
-									} else {
-										throw new RuntimeException("Coding error");
-									}
-								}
-								break; }
-							case STATIC: {
-								BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
-								SequenceEvent seqEv = ((SequenceEvent)seq);
-								HashMap<String, String> vars = new HashMap<String, String>();
-								vars.put(t.getVolumeCountVariableName(), crh.getVolumeCount()+"");
-								vars.put(t.getVolumeNumberVariableName(), volumeNumber+"");
-								seqEv.setEvaluateContext(vars);
-								beh.formatSequence(seqEv);
-								ib.add(beh.close().getBlockSequenceIterable());
-								break; }
-							default:
-								throw new RuntimeException("Unexpected error");
-						}
-					}
-					break;
-				}
+			List<Iterable<BlockSequence>> ib;
+			if (pre) {
+				ib = volumeFormatter.formatPreVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
+			} else {
+				ib = volumeFormatter.formatPostVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
 			}
 			Paginator paginator2 = paginatorFactory.newPaginator();
 			paginator2.open(formatterFactory, new CompoundIterable<BlockSequence>(ib));
@@ -232,18 +98,6 @@ public class BookStruct {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private int getVolumeMaxSize(int volumeNumber) {
-		for (VolumeTemplate t : volumeTemplates) {
-			if (t==null) {
-				System.out.println("VOLDATA NULL");
-			}
-			if (t.appliesTo(volumeNumber, crh.getVolumeCount())) {
-				return t.getVolumeMaxSize();
-			}
-		}
-		return 50;
 	}
 	
 	private void trimEnd(StringBuilder sb, Page p) {
@@ -308,11 +162,11 @@ public class BookStruct {
 			}
 			logger.fine("Volume break string: " + res.toString().replace(ZERO_WIDTH_SPACE, '-'));
 			BreakPointHandler volBreaks = new BreakPointHandler(res.toString());
-			int splitterMax = getVolumeMaxSize(1);
-						
+			int splitterMax = volumeFormatter.getVolumeMaxSize(1, crh.getExpectedVolumeCount());
+
 			crh.setSDC(new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset));
-			if (crh.getVolumeCount()!=prvVolCount) {
-				prvVolCount = crh.getVolumeCount();
+			if (crh.getExpectedVolumeCount()!=prvVolCount) {
+				prvVolCount = crh.getExpectedVolumeCount();
 			}
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
@@ -323,20 +177,20 @@ public class BookStruct {
 			ArrayList<Iterable<PageSequence>> preV = new ArrayList<Iterable<PageSequence>>();
 			ArrayList<Iterable<PageSequence>> postV = new ArrayList<Iterable<PageSequence>>();
 			
-			for (int i=1;i<=crh.getVolumeCount();i++) {
-				if (splitterMax!=getVolumeMaxSize(i)) {
+			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
+				if (splitterMax!=volumeFormatter.getVolumeMaxSize(i, crh.getExpectedVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
 				preV.add((Iterable<PageSequence>) getPreVolumeContents(i).getContents());
 				postV.add((Iterable<PageSequence>) getPostVolumeContents(i).getContents());
 			}
-			for (int i=1;i<=crh.getVolumeCount();i++) {
+			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
 				
 				totalPreCount += crh.getVolData(i).getPreVolSize();
 				totalPostCount += crh.getVolData(i).getPostVolSize();
 
 				int targetSheetsInVolume = crh.sheetsInVolume(i);
-				if (i==crh.getVolumeCount()) {
+				if (i==crh.getExpectedVolumeCount()) {
 					targetSheetsInVolume = splitterMax;
 				}
 				int contentSheets = targetSheetsInVolume-crh.getVolData(i).getVolOverhead();
@@ -350,7 +204,7 @@ public class BookStruct {
 				contentSheets = bp.getHead().length();
 				crh.getVolData(i).setTargetVolSize(contentSheets + crh.getVolData(i).getVolOverhead());
 			}
-			for (int i=1;i<=crh.getVolumeCount();i++) {
+			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
 				int contentSheets = crh.getVolData(i).getTargetVolSize() - crh.getVolData(i).getVolOverhead();
 				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+crh.getVolData(i).getVolOverhead()));
 				PageStructCopy body = new PageStructCopy();

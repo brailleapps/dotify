@@ -1,25 +1,18 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.obfl;
 
 import java.util.Map;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.obfl.BlockEvent;
-import org.daisy.dotify.formatter.obfl.SequenceEvent;
+import org.daisy.dotify.formatter.dom.SequenceProperties;
 
-
-/**
- * Provides a static sequence event object.
- * 
- * @author Joel Håkansson
- */
-public class StaticSequenceEvent extends Stack<BlockEvent> implements SequenceEvent {
+class StaticSequenceEventImpl extends Stack<BlockEvent> implements StaticSequenceEvent {
 	private final SequenceProperties props;
 	
 	/**
 	 * Creates a new sequence event
 	 * @param props
 	 */
-	public StaticSequenceEvent(SequenceProperties props) {
+	public StaticSequenceEventImpl(SequenceProperties props) {
 		this.props = props;
 	}
 

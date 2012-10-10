@@ -1,8 +1,8 @@
-package org.daisy.dotify.formatter.dom.book;
+package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.VolumeSequenceEvent;
 
-public interface VolumeTemplate {
+
+interface VolumeTemplate {
 
 	/**
 	 * Test if this Template applies to this combination of volume and volume count.

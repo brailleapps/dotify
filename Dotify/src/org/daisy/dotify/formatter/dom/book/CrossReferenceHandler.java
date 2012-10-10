@@ -177,7 +177,7 @@ class CrossReferenceHandler implements CrossReferences {
 		return retVolume;
 	}
 	
-	public int getVolumeCount() {
+	public int getExpectedVolumeCount() {
 		return sdc.getVolumeCount();
 	}
 

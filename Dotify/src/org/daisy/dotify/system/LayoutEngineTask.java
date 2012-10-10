@@ -87,9 +87,7 @@ public class LayoutEngineTask extends InternalTask  {
 			
 			BookStruct bookStruct = new BookStruct(
 					paginator,
-					obflParser.getMasters(),
-					obflParser.getVolumeTemplates(),
-					obflParser.getTocs(),
+					obflParser.getVolumeContentFormatter(),
 					formatterFactory,
 					paginatorFactory
 				);

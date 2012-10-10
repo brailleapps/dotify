@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.dom.book.TableOfContents;
 import org.daisy.dotify.formatter.obfl.EventContents.ContentType;
 
 

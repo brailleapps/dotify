@@ -1,32 +1,15 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.obfl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.dom.book.VolumeTemplate;
-import org.daisy.dotify.formatter.obfl.BlockEvent;
+import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.utils.Expression;
 import org.daisy.dotify.tools.CompoundIterable;
-/**
- * Provides a TOC sequence event object.
- * 
- * @author Joel Håkansson
- */
-public class TocSequenceEvent implements VolumeSequenceEvent {
-	/**
-	 * Defines TOC ranges.
-	 */
-	public enum TocRange {
-		/**
-		 * Defines the TOC range to include the entire document
-		 */
-		DOCUMENT,
-		/**
-		 * Defines the TOC range to include entries within the volume
-		 */
-		VOLUME};
-	
+
+class TocSequenceEventImpl implements TocSequenceEvent {
+
 	public final static String DEFAULT_EVENT_VOLUME_NUMBER = "started-volume-number";
 	private final SequenceProperties props;
 	private final String tocName;
@@ -39,7 +22,7 @@ public class TocSequenceEvent implements VolumeSequenceEvent {
 	private final VolumeTemplate template;
 	private final String volEventVariable;
 	
-	public TocSequenceEvent(SequenceProperties props, String tocName, TocRange range, String condition, String volEventVar, VolumeTemplate template) {
+	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocRange range, String condition, String volEventVar, VolumeTemplate template) {
 		this.props = props;
 		this.tocName = tocName;
 		this.range = range;
@@ -52,19 +35,19 @@ public class TocSequenceEvent implements VolumeSequenceEvent {
 		this.volEventVariable = (volEventVar!=null?volEventVar:DEFAULT_EVENT_VOLUME_NUMBER);
 	}
 	
-	public void addTocStartEvents(Iterable<BlockEvent> events, String condition) {
+	void addTocStartEvents(Iterable<BlockEvent> events, String condition) {
 		tocStartEvents.add(new ConditionalEvents(events, condition));
 	}
 
-	public void addVolumeStartEvents(Iterable<BlockEvent> events, String condition) {
+	void addVolumeStartEvents(Iterable<BlockEvent> events, String condition) {
 		volumeStartEvents.add(new ConditionalEvents(events, condition));
 	}
 	
-	public void addVolumeEndEvents(Iterable<BlockEvent> events, String condition) {
+	void addVolumeEndEvents(Iterable<BlockEvent> events, String condition) {
 		volumeEndEvents.add(new ConditionalEvents(events, condition));
 	}
 	
-	public void addTocEndEvents(Iterable<BlockEvent> events, String condition) {
+	void addTocEndEvents(Iterable<BlockEvent> events, String condition) {
 		tocEndEvents.add(new ConditionalEvents(events, condition));
 	}
 
@@ -156,5 +139,4 @@ public class TocSequenceEvent implements VolumeSequenceEvent {
 	public SequenceProperties getSequenceProperties() {
 		return props;
 	}
-
 }

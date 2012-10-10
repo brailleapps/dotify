@@ -6,7 +6,7 @@ package org.daisy.dotify.formatter.dom;
  * 
  * @author Joel Håkansson
  */
-public interface PageSequence extends Sequence {
+public interface PageSequence{
 	
 	public Iterable<? extends Page> getPages();
 	/**
@@ -14,6 +14,12 @@ public interface PageSequence extends Sequence {
 	 * @return returns the number of pages in this sequence
 	 */
 	public int getPageCount();
+	/**
+	 * Gets the layout master for this sequence
+	 * @return returns the layout master for this sequence
+	 */
+	public LayoutMaster getLayoutMaster();
+	
 	/**
 	 * Gets the page with the specified index, where index >= 0 && index < getPageCount()
 	 * @param index the page index

@@ -1,4 +1,6 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter.obfl;
+
+import org.daisy.dotify.formatter.dom.SequenceProperties;
 
 /**
  * Provides a volume sequence event object. A volume sequence is a chunk of contents
@@ -6,7 +8,7 @@ package org.daisy.dotify.formatter.dom;
  * 
  * @author Joel Håkansson
  */
-public interface VolumeSequenceEvent {
+interface VolumeSequenceEvent {
 	/**
 	 * Defines types of volume sequences
 	 */
@@ -15,7 +17,7 @@ public interface VolumeSequenceEvent {
 	 * Gets the volume sequence event type.
 	 * @return returns the volume sequence event type
 	 */
-	public VolumeSequenceType getVolumeSequenceType();
+	//public VolumeSequenceType getVolumeSequenceType();
 	/**
 	 * Gets the volume sequence event properties.
 	 * @return returns the volume sequence event properties
