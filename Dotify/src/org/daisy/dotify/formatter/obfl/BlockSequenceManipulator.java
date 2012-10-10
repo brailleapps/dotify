@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.formatter.dom.block.Block;
-import org.daisy.dotify.formatter.dom.block.BlockSequence;
-import org.daisy.dotify.formatter.dom.block.BlockStruct;
+import org.daisy.dotify.paginator.Block;
+import org.daisy.dotify.paginator.BlockSequence;
+import org.daisy.dotify.paginator.BlockStruct;
 
 /**
  * Provides methods for manipulating a flow sequence.
@@ -19,27 +18,29 @@ import org.daisy.dotify.formatter.dom.block.BlockStruct;
 class BlockSequenceManipulator {
 	private HashMap<String, Integer> taggedEntries;
 	private final Stack<Block> sequence;
-	private final SequenceProperties props;
+	//private final SequenceProperties props;
+	private int initialPagenum;
 	private final LayoutMaster master;
 	
 	public BlockSequenceManipulator(BlockStruct struct) {
 		this.sequence = new Stack<Block>();
-		SequenceProperties tmp = null;
+		//SequenceProperties tmp = null;
 		LayoutMaster tMaster = null;
 		for (BlockSequence b : struct.getBlockSequenceIterable()) {
-			tmp = b.getSequenceProperties();
+			//tmp = b.getSequenceProperties();
+			initialPagenum = b.getInitialPageNumber();
 			tMaster = b.getLayoutMaster();
 			for (Block bb : b) {
 				this.sequence.add(bb);
 			}
 		}
-		this.props = tmp;
+		//this.props = tmp;
 		this.master = tMaster;
 		this.taggedEntries = tagSequence(this.sequence);
 	}
 
 	private BlockSequence newSequence(List<Block> c) {
-		BlockSeqImpl ret = new BlockSeqImpl(props, master);
+		BlockSeqImpl ret = new BlockSeqImpl(initialPagenum, master);
 		ret.addAll(c);
 		return ret;
 	}
@@ -153,11 +154,13 @@ class BlockSequenceManipulator {
 		 * 
 		 */
 		private static final long serialVersionUID = -7098716884005865317L;
-		private final SequenceProperties p;
+		//private final SequenceProperties p;
 		private final LayoutMaster master;
+		private final int initialPagenum;
 		
-		private BlockSeqImpl(SequenceProperties p, LayoutMaster master) {
-			this.p = p;
+		private BlockSeqImpl(int initialPagenum, LayoutMaster master) {
+			//this.p = p;
+			this.initialPagenum = initialPagenum;
 			this.master = master;
 		}
 
@@ -166,7 +169,7 @@ class BlockSequenceManipulator {
 		}
 
 		public Integer getInitialPageNumber() {
-			return p.getInitialPageNumber();
+			return initialPagenum;
 		}
 
 		public int getBlockCount() {
@@ -176,10 +179,10 @@ class BlockSequenceManipulator {
 		public Block getBlock(int index) {
 			return this.elementAt(index);
 		}
-
+/*
 		public SequenceProperties getSequenceProperties() {
 			return p;
-		}
+		}*/
 	}
 
 }

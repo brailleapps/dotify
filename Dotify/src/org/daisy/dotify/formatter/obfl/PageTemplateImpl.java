@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.daisy.dotify.formatter.dom.Field;
 import org.daisy.dotify.formatter.dom.PageTemplate;
-import org.daisy.dotify.formatter.utils.Expression;
 
 
 class PageTemplateImpl implements PageTemplate {

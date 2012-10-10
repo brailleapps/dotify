@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.SequenceProperties;
+import org.daisy.dotify.formatter.SequenceProperties;
 
 /**
  * Provides a volume sequence event object. A volume sequence is a chunk of contents

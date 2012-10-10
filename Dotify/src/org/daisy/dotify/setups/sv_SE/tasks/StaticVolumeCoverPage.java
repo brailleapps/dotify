@@ -2,7 +2,7 @@ package org.daisy.dotify.setups.sv_SE.tasks;
 
 import java.util.List;
 
-import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.book.Row;
 
 /**
  * @author Joel Håkansson

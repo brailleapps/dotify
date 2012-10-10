@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.formatter.dom.block.SectionProperties;
+import org.daisy.dotify.paginator.SectionProperties;
 import org.daisy.dotify.tools.StateObject;
 
 

@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.dom;
 
-import org.daisy.dotify.formatter.dom.block.SectionProperties;
+import org.daisy.dotify.paginator.SectionProperties;
 
 
 

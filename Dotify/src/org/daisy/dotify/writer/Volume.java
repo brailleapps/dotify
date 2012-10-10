@@ -1,6 +1,6 @@
 package org.daisy.dotify.writer;
 
-import org.daisy.dotify.formatter.dom.PageSequence;
+import org.daisy.dotify.book.PageSequence;
 
 /**
  * Provides a container for a physical volume of braille

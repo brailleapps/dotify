@@ -3,11 +3,11 @@ package org.daisy.dotify.writer;
 import java.io.IOException;
 import java.util.List;
 
+import org.daisy.dotify.book.Page;
+import org.daisy.dotify.book.PageSequence;
+import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.Page;
-import org.daisy.dotify.formatter.dom.PageSequence;
-import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.utils.LayoutTools;
 
 /**

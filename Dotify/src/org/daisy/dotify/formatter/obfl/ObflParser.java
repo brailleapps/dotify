@@ -15,25 +15,24 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
+import org.daisy.dotify.book.VolumeContentFormatter;
+import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.dom.BlockProperties;
+import org.daisy.dotify.formatter.FormattingTypes;
+import org.daisy.dotify.formatter.Leader;
+import org.daisy.dotify.formatter.Position;
+import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.dom.Field;
-import org.daisy.dotify.formatter.dom.FormattingTypes;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.Leader;
 import org.daisy.dotify.formatter.dom.PageTemplate;
-import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
-import org.daisy.dotify.formatter.dom.block.BlockStruct;
-import org.daisy.dotify.formatter.dom.book.VolumeContentFormatter;
 import org.daisy.dotify.formatter.obfl.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.formatter.obfl.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.obfl.TocSequenceEvent.TocRange;
-import org.daisy.dotify.formatter.utils.Expression;
-import org.daisy.dotify.formatter.utils.Position;
+import org.daisy.dotify.paginator.BlockStruct;
 import org.daisy.dotify.text.FilterLocale;
 
 /**
@@ -120,7 +119,10 @@ public class ObflParser {
         inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
         inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
         inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        XMLEventReader input = inFactory.createXMLEventReader(stream);
+        parse(inFactory.createXMLEventReader(stream));
+	}
+	
+	public void parse(XMLEventReader input) throws XMLStreamException, FormatterException {
 		this.formatter = formatterFactory.newFormatter();
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
@@ -152,7 +154,6 @@ public class ObflParser {
 		try {
 			input.close();
 			formatter.close();
-			
 		} catch (IOException e) {
 			throw new FormatterException(e);
 		}

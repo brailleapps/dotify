@@ -3,13 +3,13 @@ package org.daisy.dotify.impl.paginator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.dotify.book.Page;
+import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.FormatterException;
+import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.dom.Field;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.Marker;
-import org.daisy.dotify.formatter.dom.Page;
 import org.daisy.dotify.formatter.dom.PageTemplate;
-import org.daisy.dotify.formatter.dom.Row;
 import org.daisy.dotify.formatter.obfl.CompoundField;
 import org.daisy.dotify.formatter.obfl.CurrentPageField;
 import org.daisy.dotify.formatter.obfl.MarkerReferenceField;

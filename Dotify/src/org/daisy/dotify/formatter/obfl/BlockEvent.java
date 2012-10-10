@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.BlockProperties;
+import org.daisy.dotify.formatter.BlockProperties;
 
 /**
  * Provides an interface for block events.

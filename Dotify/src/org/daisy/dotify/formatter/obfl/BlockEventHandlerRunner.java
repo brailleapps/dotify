@@ -8,13 +8,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.book.VolumeContentFormatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.dom.CrossReferences;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.block.Block;
-import org.daisy.dotify.formatter.dom.block.BlockSequence;
-import org.daisy.dotify.formatter.dom.book.VolumeContentFormatter;
 import org.daisy.dotify.formatter.obfl.TocSequenceEvent.TocRange;
+import org.daisy.dotify.paginator.Block;
+import org.daisy.dotify.paginator.BlockSequence;
 
 class BlockEventHandlerRunner implements VolumeContentFormatter {
 	private final Iterable<VolumeTemplate> volumeTemplates;

@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.utils.Expression;
 
 class VolumeTemplateImpl implements VolumeTemplate {
 	public final static String DEFAULT_VOLUME_NUMBER_VARIABLE_NAME = "volume";

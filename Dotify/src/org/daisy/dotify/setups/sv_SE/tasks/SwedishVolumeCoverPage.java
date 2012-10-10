@@ -12,7 +12,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.utils.TextBorder;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;

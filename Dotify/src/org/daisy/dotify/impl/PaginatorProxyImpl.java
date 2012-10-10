@@ -1,8 +1,8 @@
 package org.daisy.dotify.impl;
 
-import org.daisy.dotify.formatter.Paginator;
-import org.daisy.dotify.formatter.PaginatorProxy;
 import org.daisy.dotify.impl.paginator.PaginatorImpl;
+import org.daisy.dotify.paginator.Paginator;
+import org.daisy.dotify.paginator.PaginatorProxy;
 
 public class PaginatorProxyImpl implements PaginatorProxy {
 

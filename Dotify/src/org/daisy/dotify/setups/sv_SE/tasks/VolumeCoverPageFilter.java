@@ -9,7 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 
-import org.daisy.dotify.formatter.dom.Row;
+import org.daisy.dotify.book.Row;
 import org.daisy.dotify.tools.StaxFilter2;
 
 /**

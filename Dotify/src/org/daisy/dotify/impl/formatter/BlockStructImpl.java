@@ -3,10 +3,10 @@ package org.daisy.dotify.impl.formatter;
 import java.util.HashMap;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.SequenceProperties;
-import org.daisy.dotify.formatter.dom.block.BlockSequence;
-import org.daisy.dotify.formatter.dom.block.BlockStruct;
+import org.daisy.dotify.paginator.BlockSequence;
+import org.daisy.dotify.paginator.BlockStruct;
 
 
 class BlockStructImpl implements BlockStruct {

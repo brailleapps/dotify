@@ -3,19 +3,18 @@ package org.daisy.dotify.impl.formatter;
 import java.io.IOException;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.dom.BlockProperties;
-import org.daisy.dotify.formatter.dom.FormattingTypes;
-import org.daisy.dotify.formatter.dom.FormattingTypes.Keep;
-import org.daisy.dotify.formatter.dom.block.BlockStruct;
+import org.daisy.dotify.formatter.FormattingTypes;
+import org.daisy.dotify.formatter.Leader;
+import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.SequenceProperties;
+import org.daisy.dotify.formatter.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.Leader;
-import org.daisy.dotify.formatter.dom.Marker;
-import org.daisy.dotify.formatter.dom.RowDataProperties;
-import org.daisy.dotify.formatter.dom.SequenceProperties;
 import org.daisy.dotify.formatter.dom.TextProperties;
 import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
 import org.daisy.dotify.impl.formatter.BlockHandler.ListItem;
+import org.daisy.dotify.paginator.BlockStruct;
 import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.translator.BrailleTranslator;
 

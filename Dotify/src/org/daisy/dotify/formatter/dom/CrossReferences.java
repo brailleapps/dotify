@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter.dom;
 
+import org.daisy.dotify.book.Page;
+
 /**
  * Provides an interface for cross references, that is to say
  * the location of a specific identifier.

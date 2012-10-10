@@ -1,6 +1,6 @@
 package org.daisy.dotify.impl.formatter;
 
-import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.Marker;
 
 class MarkerSegment extends Marker implements Segment {
 	

@@ -9,12 +9,12 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.daisy.dotify.book.BookStruct;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.Paginator;
-import org.daisy.dotify.formatter.PaginatorFactory;
-import org.daisy.dotify.formatter.dom.book.BookStruct;
 import org.daisy.dotify.formatter.obfl.ObflParser;
+import org.daisy.dotify.paginator.Paginator;
+import org.daisy.dotify.paginator.PaginatorFactory;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.writer.PagedMediaWriter;

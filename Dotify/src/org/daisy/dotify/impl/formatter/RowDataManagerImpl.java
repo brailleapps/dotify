@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
+import org.daisy.dotify.book.Page;
+import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.Leader;
+import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.dom.CrossReferences;
-import org.daisy.dotify.formatter.dom.Leader;
-import org.daisy.dotify.formatter.dom.Marker;
-import org.daisy.dotify.formatter.dom.Page;
-import org.daisy.dotify.formatter.dom.PageNumberReference;
-import org.daisy.dotify.formatter.dom.Row;
-import org.daisy.dotify.formatter.dom.RowDataProperties;
-import org.daisy.dotify.formatter.dom.block.RowDataManager;
 import org.daisy.dotify.formatter.utils.RomanNumeral;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.paginator.RowDataManager;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -87,7 +85,7 @@ class RowDataManagerImpl implements RowDataManager {
 				case Reference:
 				{
 					isVolatile = true;
-					PageNumberReference rs = (PageNumberReference)s;
+					PageNumberReferenceSegment rs = (PageNumberReferenceSegment)s;
 					Page page = null;
 					if (refs!=null) {
 						page = refs.getPage(rs.getRefId());

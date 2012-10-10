@@ -3,8 +3,8 @@ package org.daisy.dotify.writer;
 import java.io.Closeable;
 import java.io.OutputStream;
 
-import org.daisy.dotify.formatter.Paginator;
-import org.daisy.dotify.formatter.dom.block.SectionProperties;
+import org.daisy.dotify.paginator.Paginator;
+import org.daisy.dotify.paginator.SectionProperties;
 
 
 

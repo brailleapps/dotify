@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.Marker;
+import org.daisy.dotify.formatter.Marker;
 
 class MarkerEventContents extends Marker implements EventContents {
 
