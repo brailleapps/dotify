@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import org.daisy.dotify.book.BookStruct;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.obfl.ObflParser;
+import org.daisy.dotify.obfl.ObflParser;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorFactory;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
