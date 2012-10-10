@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 
 class PageNumberReferenceEventContents extends PageNumberReference
 		implements EventContents {

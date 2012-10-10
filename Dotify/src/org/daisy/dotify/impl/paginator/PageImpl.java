@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.daisy.dotify.book.Page;
 import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.CompoundField;
+import org.daisy.dotify.formatter.CurrentPageField;
 import org.daisy.dotify.formatter.Field;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.MarkerReferenceField;
 import org.daisy.dotify.formatter.PageTemplate;
-import org.daisy.dotify.formatter.obfl.CompoundField;
-import org.daisy.dotify.formatter.obfl.CurrentPageField;
-import org.daisy.dotify.formatter.obfl.MarkerReferenceField;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 

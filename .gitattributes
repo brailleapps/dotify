@@ -104,7 +104,9 @@ Dotify/src/org/daisy/dotify/config/resource-files/FA44_w43.xml -text svneol=unse
 Dotify/src/org/daisy/dotify/config/resource-files/w50.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/BlockPosition.java -text
 Dotify/src/org/daisy/dotify/formatter/BlockProperties.java -text
+Dotify/src/org/daisy/dotify/formatter/CompoundField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/CrossReferences.java -text
+Dotify/src/org/daisy/dotify/formatter/CurrentPageField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Field.java -text
 Dotify/src/org/daisy/dotify/formatter/Formatter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/FormatterException.java -text svneol=unset#text/plain
@@ -114,9 +116,13 @@ Dotify/src/org/daisy/dotify/formatter/FormattingTypes.java -text svneol=unset#te
 Dotify/src/org/daisy/dotify/formatter/LayoutMaster.java -text
 Dotify/src/org/daisy/dotify/formatter/Leader.java -text
 Dotify/src/org/daisy/dotify/formatter/Marker.java -text
+Dotify/src/org/daisy/dotify/formatter/MarkerReferenceField.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/NumeralField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/PageTemplate.java -text
+Dotify/src/org/daisy/dotify/formatter/PagenumField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Position.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
+Dotify/src/org/daisy/dotify/formatter/StringField.java -text
 Dotify/src/org/daisy/dotify/formatter/TextProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/BlockContents.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/BlockEvent.java -text
@@ -124,9 +130,7 @@ Dotify/src/org/daisy/dotify/formatter/obfl/BlockEventHandler.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/BlockEventHandlerRunner.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/BlockEventImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/BlockSequenceManipulator.java -text
-Dotify/src/org/daisy/dotify/formatter/obfl/CompoundField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/obfl/ConditionalEvents.java -text
-Dotify/src/org/daisy/dotify/formatter/obfl/CurrentPageField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/obfl/Evaluate.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/EventContents.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/Expression.java -text svneol=unset#text/plain
@@ -134,17 +138,13 @@ Dotify/src/org/daisy/dotify/formatter/obfl/LayoutMasterImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/LeaderEventContents.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/LineBreak.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/MarkerEventContents.java -text
-Dotify/src/org/daisy/dotify/formatter/obfl/MarkerReferenceField.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/obfl/NumeralField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/obfl/ObflParser.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/PageNumberReference.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/PageNumberReferenceEventContents.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/PageTemplateImpl.java -text
-Dotify/src/org/daisy/dotify/formatter/obfl/PagenumField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/obfl/SequenceEvent.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/StaticSequenceEvent.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/obfl/StaticSequenceEventImpl.java -text
-Dotify/src/org/daisy/dotify/formatter/obfl/StringField.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/TableOfContents.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/TableOfContentsImpl.java -text
 Dotify/src/org/daisy/dotify/formatter/obfl/TextContents.java -text

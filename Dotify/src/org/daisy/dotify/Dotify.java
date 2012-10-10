@@ -181,7 +181,7 @@ public class Dotify {
 			}
 			fj.swap();
 			i++;
-			progress.setProgress(i/tasks.size());
+			progress.updateProgress(i/tasks.size());
 			sendMessage(nf.format(progress.getProgress()) + " done. ETA " + progress.getETA());
 			//progress(i/tasks.size());
 		}

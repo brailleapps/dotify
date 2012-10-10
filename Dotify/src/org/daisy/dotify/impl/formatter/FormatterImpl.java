@@ -12,7 +12,7 @@ import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.formatter.FormattingTypes.Keep;
-import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.impl.formatter.BlockHandler.ListItem;
 import org.daisy.dotify.paginator.BlockStruct;
 import org.daisy.dotify.tools.StateObject;

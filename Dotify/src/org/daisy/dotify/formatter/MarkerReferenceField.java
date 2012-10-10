@@ -1,6 +1,5 @@
-package org.daisy.dotify.formatter.obfl;
+package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.formatter.Field;
 
 /**
  * A MarkerReferenceField is a place holder for a marker's value. 

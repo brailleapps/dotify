@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.obfl;
+package org.daisy.dotify.formatter;
 
 
 /**

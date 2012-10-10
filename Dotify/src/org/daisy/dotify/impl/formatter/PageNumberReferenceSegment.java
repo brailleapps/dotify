@@ -1,6 +1,6 @@
 package org.daisy.dotify.impl.formatter;
 
-import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 
 class PageNumberReferenceSegment implements Segment {
 	private final String refid;

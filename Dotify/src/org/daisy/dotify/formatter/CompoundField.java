@@ -1,8 +1,7 @@
-package org.daisy.dotify.formatter.obfl;
+package org.daisy.dotify.formatter;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.formatter.Field;
 
 /**
  * Provides a compound field object.

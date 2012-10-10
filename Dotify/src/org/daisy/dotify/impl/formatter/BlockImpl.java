@@ -8,7 +8,7 @@ import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.TextProperties;
-import org.daisy.dotify.formatter.obfl.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.paginator.Block;
 import org.daisy.dotify.paginator.RowDataManager;
 
