@@ -6,13 +6,13 @@ import java.util.Stack;
 
 import org.daisy.dotify.book.Page;
 import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.dom.CrossReferences;
-import org.daisy.dotify.formatter.utils.RomanNumeral;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.paginator.RowDataManager;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.tools.RomanNumeral;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 class RowDataManagerImpl implements RowDataManager {

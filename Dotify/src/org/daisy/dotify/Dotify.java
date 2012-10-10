@@ -3,6 +3,7 @@ package org.daisy.dotify;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -52,9 +54,14 @@ public class Dotify {
 			TEMP_DIR = System.getProperty("user.home");
 		}
 	}
-	
+	private final Map<String, String> params;
+	private final boolean writeTempFiles;
 	// hide default constructor to disable instantiation.
-	private Dotify() { }
+	private Dotify(Map<String, String> params) { 
+		this.params = params;
+		// get parameters
+		writeTempFiles = "true".equals(params.get(SystemKeys.WRITE_TEMP_FILES));
+	}
 
 	/**
 	 * Runs Dotify with the supplied parameters.
@@ -68,10 +75,9 @@ public class Dotify {
 	 */
 	public static void run(File input, File output, String setup, FilterLocale context, Map<String, String> params) throws IOException, InternalTaskException {
 		Progress progress = new Progress();
-		sendMessage(SystemProperties.SYSTEM_NAME + " started on " + progress.getStart());
+		Dotify d = new Dotify(params);
 		
-		// get parameters
-		boolean writeTempFiles = "true".equals(params.get(SystemKeys.WRITE_TEMP_FILES));
+		sendMessage(SystemProperties.SYSTEM_NAME + " started on " + progress.getStart());
 
 		File debug = new File(TEMP_DIR);
 		String cols = params.get("cols");
@@ -146,6 +152,42 @@ public class Dotify {
 		}
 		
 		// Load setup
+		List<InternalTask> tasks = d.loadSetup(map, setup, outputformat, context);
+
+		// Run tasks
+		FileJuggler fj = new FileJuggler(input, output);
+		
+		d.runTasks(tasks, fj, progress, debug);
+		
+		fj.close();
+		
+		sendMessage(SystemProperties.SYSTEM_NAME + " finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
+	}
+	
+	private void runTasks(List<InternalTask> tasks, FileJuggler fj, Progress progress, File debug) throws InternalTaskException, IOException {
+		double i = 0;
+		NumberFormat nf = NumberFormat.getPercentInstance();
+		for (InternalTask task : tasks) {
+			sendMessage("Running " + task.getName());
+			task.execute(fj.getInput(), fj.getOutput());
+			if (writeTempFiles) {
+				String it = ""+((int)i+1);
+				while (it.length()<3) {
+					it = "0" + it; 
+				}
+				File f = new File(debug, "debug_dotify_" + it + "_" + task.getName().replaceAll("[\\s:]+", "_"));
+				Logger.getLogger(Dotify.class.getCanonicalName()).fine("Writing debug file: " + f);
+				FileUtils.copy(fj.getOutput(), f);
+			}
+			fj.swap();
+			i++;
+			progress.setProgress(i/tasks.size());
+			sendMessage(nf.format(progress.getProgress()) + " done. ETA " + progress.getETA());
+			//progress(i/tasks.size());
+		}
+	}
+	
+	private List<InternalTask> loadSetup(Map<String, String> map, String setup, String outputformat, FilterLocale context) throws MalformedURLException {
 		ArrayList<InternalTask> tasks = new ArrayList<InternalTask>();
 		TaskSystem ts = null;
 
@@ -169,33 +211,8 @@ public class Dotify {
 		} catch (TaskSystemFactoryException e) {
 			throw new RuntimeException("Unable to retrieve a TaskSystem", e);
 		}
-		
 		sendMessage("About to run TaskSystem \"" + (ts!=null?ts.getName():"") + "\" with parameters " + rp);
-
-		// Run tasks
-		double i = 0;
-		FileJuggler fj = new FileJuggler(input, output);
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		for (InternalTask task : tasks) {
-			sendMessage("Running " + task.getName());
-			task.execute(fj.getInput(), fj.getOutput());
-			if (writeTempFiles) {
-				String it = ""+((int)i+1);
-				while (it.length()<3) {
-					it = "0" + it; 
-				}
-				File f = new File(debug, "debug_dotify_" + it + "_" + task.getName().replaceAll("[\\s:]+", "_"));
-				Logger.getLogger(Dotify.class.getCanonicalName()).fine("Writing debug file: " + f);
-				FileUtils.copy(fj.getOutput(), f);
-			}
-			fj.swap();
-			i++;
-			progress.setProgress(i/tasks.size());
-			sendMessage(nf.format(progress.getProgress()) + " done. ETA " + progress.getETA());
-			//progress(i/tasks.size());
-		}
-		fj.close();
-		sendMessage(SystemProperties.SYSTEM_NAME + " finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
+		return tasks;
 	}
 	
 	static String getDefaultDate(String dateFormat) {

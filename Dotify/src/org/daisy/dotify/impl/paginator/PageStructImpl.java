@@ -9,8 +9,8 @@ import org.daisy.dotify.book.PageSequence;
 import org.daisy.dotify.book.PageStruct;
 import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	//private final StringFilter filters;

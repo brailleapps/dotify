@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.utils;
+package org.daisy.dotify.impl.paginator;
 
 /**
  * A LayoutToolsException is an exception that indicates 
@@ -6,32 +6,32 @@ package org.daisy.dotify.formatter.utils;
  * application might want to catch.
  * @author Joel Håkansson, TPB
  */
-public class LayoutToolsException extends Exception {
+class PaginatorToolsException extends Exception {
 
 	static final long serialVersionUID = 2207586942417976960L;
 
 	/**
 	 * Constructs a new exception with null as its detail message.
 	 */
-	public LayoutToolsException() { super(); }
+	public PaginatorToolsException() { super(); }
 
 	/**
 	 * Constructs a new exception with the specified detail message.
 	 * @param message the detail message
 	 */
-	public LayoutToolsException(String message) { super(message); }
+	public PaginatorToolsException(String message) { super(message); }
 
 	/**
 	 * Constructs a new exception with the specified cause
 	 * @param cause the cause
 	 */
-	public LayoutToolsException(Throwable cause) { super(cause); }
+	public PaginatorToolsException(Throwable cause) { super(cause); }
 
 	/**
 	 * Constructs a new exception with the specified detail message and cause.
 	 * @param message the detail message
 	 * @param cause the cause
 	 */
-	public LayoutToolsException(String message, Throwable cause) { super(message, cause); }
+	public PaginatorToolsException(String message, Throwable cause) { super(message, cause); }
 
 }

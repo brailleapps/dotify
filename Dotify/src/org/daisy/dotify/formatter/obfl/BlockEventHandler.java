@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.TextProperties;
+import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.formatter.obfl.EventContents.ContentType;
 import org.daisy.dotify.paginator.BlockStruct;
 

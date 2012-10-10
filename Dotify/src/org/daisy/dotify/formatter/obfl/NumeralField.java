@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.Field;
-import org.daisy.dotify.formatter.utils.RomanNumeral;
+import org.daisy.dotify.formatter.Field;
+import org.daisy.dotify.tools.RomanNumeral;
 
 /**
  * Provides a numeral field.

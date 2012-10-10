@@ -2,8 +2,8 @@ package org.daisy.dotify.formatter.obfl;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.PageTemplate;
+import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.formatter.PageTemplate;
 
 /**
  * ConfigurableLayoutMaster will ensure that the LayoutMaster measurements adds up.

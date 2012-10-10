@@ -1,8 +1,8 @@
 package org.daisy.dotify.paginator;
 
+import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.formatter.FormattingTypes.Keep;
-import org.daisy.dotify.formatter.dom.CrossReferences;
 /**
  * Provides a block of rows and the properties
  * associated with it.

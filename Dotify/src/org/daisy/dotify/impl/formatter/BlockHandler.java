@@ -6,10 +6,10 @@ import java.util.List;
 import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.FormattingTypes;
+import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.utils.LayoutTools;
+import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -203,9 +203,9 @@ class BlockHandler {
 	}
 
 	private void newRow(String contentBefore, BrailleTranslatorResult chars, int available, int margin, int indent, BlockProperties p, int blockIndent) {
-		int thisIndent = indent + blockIndent - LayoutTools.length(contentBefore);
+		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
-		String preText = contentBefore + LayoutTools.fill(spaceChar, thisIndent).toString();
+		String preText = contentBefore + StringTools.fill(spaceChar, thisIndent).toString();
 		newRow(null, margin, preText, "", chars, available, p, blockIndent);
 	}
 
@@ -215,10 +215,10 @@ class BlockHandler {
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
 
-		int preTextIndent = LayoutTools.length(preContent);
+		int preTextIndent = StringTools.length(preContent);
 		int preContentPos = margin+preTextIndent;
 		preTabText = preTabText.replaceAll("\u00ad", "");
-		int preTabPos = preContentPos+LayoutTools.length(preTabText);
+		int preTabPos = preContentPos+StringTools.length(preTabText);
 		int postTabTextLen = btr.countRemaining();
 		int maxLenText = available-(preContentPos);
 		if (maxLenText<1) {
@@ -251,8 +251,8 @@ class BlockHandler {
 				}
 				ret.add(row);
 
-				preContent = LayoutTools.fill(spaceChar, p.getTextIndent()+blockIndent);
-				preTextIndent = LayoutTools.length(preContent);
+				preContent = StringTools.fill(spaceChar, p.getTextIndent()+blockIndent);
+				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				
 				preContentPos = margin+preTextIndent;
@@ -262,12 +262,12 @@ class BlockHandler {
 			}
 			if (offset - align > 0) {
 				String leaderPattern = translator.translate(currentLeader.getPattern()).getTranslatedRemainder();
-				tabSpace = LayoutTools.fill(leaderPattern, offset - align);
+				tabSpace = StringTools.fill(leaderPattern, offset - align);
 			} // else: leader position has been passed on an empty row or text does not fit on an empty row, ignore
 		}
 
-		maxLenText -= LayoutTools.length(tabSpace);
-		maxLenText -= LayoutTools.length(preTabText);
+		maxLenText -= StringTools.length(tabSpace);
+		maxLenText -= StringTools.length(preTabText);
 
 		Row nr = new Row(preContent + preTabText + tabSpace + btr.nextTranslatedRow(maxLenText, maxLenText>=available-(preContentPos)));
 		

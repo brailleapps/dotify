@@ -7,8 +7,8 @@ import org.daisy.dotify.book.Page;
 import org.daisy.dotify.book.PageSequence;
 import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.FormatterException;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.utils.LayoutTools;
+import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.tools.StringTools;
 
 /**
  * Provides a method for writing pages to a PagedMediaWriter,
@@ -59,8 +59,8 @@ public class WriterHandler {
 				// remove trailing whitespace
 				String chars = row.getChars().replaceAll("\\s*\\z", "");
 				// add left margin
-				int rowWidth = LayoutTools.length(chars)+row.getLeftMargin();
-				String r = 	LayoutTools.fill(marginCharacter, margin) + chars;
+				int rowWidth = StringTools.length(chars)+row.getLeftMargin();
+				String r = 	StringTools.fill(marginCharacter, margin) + chars;
 				if (rowWidth>lm.getFlowWidth()) {
 					throw new FormatterException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
 				}

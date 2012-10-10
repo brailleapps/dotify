@@ -11,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.formatter.utils.LayoutTools;
 import org.daisy.dotify.formatter.utils.TextBorder;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
@@ -28,6 +27,7 @@ import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
@@ -149,12 +149,12 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		// Add a title page first in each volume
     	TextBorder tb = new TextBorder.Builder(p.getFlowWidth()+p.getInnerMargin(), space).
-    						topLeftCorner(LayoutTools.fill(space, p.getInnerMargin()) + "\u280F").
+    						topLeftCorner(StringTools.fill(space, p.getInnerMargin()) + "\u280F").
     						topBorder("\u2809").
     						topRightCorner("\u2839").
-    						leftBorder(LayoutTools.fill(space, p.getInnerMargin()) + "\u2807"+space+space).
+    						leftBorder(StringTools.fill(space, p.getInnerMargin()) + "\u2807"+space+space).
     						rightBorder(space+space+"\u2838").
-    						bottomLeftCorner(LayoutTools.fill(space, p.getInnerMargin()) + "\u2827").
+    						bottomLeftCorner(StringTools.fill(space, p.getInnerMargin()) + "\u2827").
     						bottomBorder("\u2824").
     						bottomRightCorner("\u283c").
     						alignment(TextBorder.Align.CENTER).

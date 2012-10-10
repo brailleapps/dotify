@@ -1,18 +1,13 @@
-package org.daisy.dotify.formatter.utils;
+package org.daisy.dotify.impl.paginator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeSet;
 
-/**
- * LayoutTools is a utility class for simple static operations related
- * to text layout.
- * 
- * @author Joel Håkansson
- */
-public class LayoutTools {
+import org.daisy.dotify.formatter.utils.TabStopString;
+import org.daisy.dotify.tools.StringTools;
 
+class PaginatorTools {
 	/**
 	 * Distribution modes 
 	 */
@@ -26,59 +21,9 @@ public class LayoutTools {
 		 */
 		UNISIZE_TABLE_CELL
 	};
-
-	// Default constructor is private as this class is not intended to be instantiated.
-	private LayoutTools() { }
-
-	/**
-	 * Count the number of code points in a String. This is equivalent
-	 * to calling codePointCount on the entire String (beginIndex=0
-	 * and endIndex=string.length()).
-	 * @param str the String to count length on
-	 * @return returns the number of code points in the entire String
-	 */
-	public static int length(String str) {
-		return str.codePointCount(0, str.length());
-	}
-
-	/**
-	 * Fill a String with a single character 
-	 * @param c the character to fill with
-	 * @param length the length of the resulting String
-	 * @return returns a String filled with character c 
-	 */
-	public static String fill(char c, int length) {
-		/*
-		StringBuilder sb = new StringBuilder();
-		for (int i=0; i<length; i++) {
-			sb.append(c);
-		}
-		return sb.toString();*/
-		char[] ca = new char[length];
-		Arrays.fill(ca, c);
-		return new String(ca);
-	}
-
-	/**
-	 * Fill a String with copies of another String
-	 * @param s the String to fill with
-	 * @param length the length of the resulting String
-	 * @return returns a String filled with String s
-	 */
-	public static String fill(String s, int length) {
-		if (length<1) {
-			return "";
-		}
-		if (s.length()==0) {
-			throw new IllegalArgumentException("Cannot fill using an empty string.");
-		}
-		StringBuilder sb = new StringBuilder();
-		while (sb.codePointCount(0, sb.length())<length) {
-			sb.append(s);
-		}
-		return sb.subSequence(0, length).toString();
-	}
-
+	
+	private PaginatorTools() { }
+	
 	private static String distributeEqualSpacing(ArrayList<String> units, int width, String padding) {
 		if (units.size()==1) {
 			return units.get(0);
@@ -96,7 +41,7 @@ public class LayoutTools {
 			if (i>0) {
 				int spacing = (int)Math.round(i * target) - used;
 				used += spacing;
-				sb.append(fill(padding, spacing));
+				sb.append(StringTools.fill(padding, spacing));
 			}
 			sb.append(units.get(i));
 		}
@@ -104,7 +49,7 @@ public class LayoutTools {
 		return sb.toString();
 	}
 	
-	private static String distributeTable(ArrayList<String> units, int width, String padding) throws LayoutToolsException {
+	private static String distributeTable(ArrayList<String> units, int width, String padding) throws PaginatorToolsException {
 		double target = width/(double)units.size();
 		StringBuffer sb = new StringBuffer();
 		int used = 0;
@@ -114,11 +59,11 @@ public class LayoutTools {
 			used += spacing;
 			spacing -= cell.codePointCount(0, cell.length());
 			if (spacing<0) {
-				throw new LayoutToolsException("Text does not fit within cell: " + cell);
+				throw new PaginatorToolsException("Text does not fit within cell: " + cell);
 			}
 			sb.append(cell);
 			if (i<units.size()-1) {
-				sb.append(fill(padding, spacing));
+				sb.append(StringTools.fill(padding, spacing));
 			}
 		}
 		return sb.toString();
@@ -133,7 +78,7 @@ public class LayoutTools {
 	 * @param mode the distribution mode to use
 	 * @return returns a string of <tt>width</tt> chars 
 	 */
-	public static String distribute(ArrayList<String> units, int width, String padding, DistributeMode mode) throws LayoutToolsException {
+	public static String distribute(ArrayList<String> units, int width, String padding, DistributeMode mode) throws PaginatorToolsException {
 		switch (mode) {
 			case EQUAL_SPACING:
 				return distributeEqualSpacing(units, width, padding);
@@ -166,10 +111,9 @@ public class LayoutTools {
 					amount -= t.length();
 					break;
 			}
-			sb.append(fill(t.getPattern(), amount));
+			sb.append(StringTools.fill(t.getPattern(), amount));
 			sb.append(t.getText());
 		}
 		return sb.toString();
 	}
-
 }

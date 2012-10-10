@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.dom;
+package org.daisy.dotify.formatter;
 
 import org.daisy.dotify.text.FilterLocale;
 

@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.utils;
 
 import java.util.ArrayList;
 
+import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 /**
@@ -182,7 +183,7 @@ public class TextBorder {
 	 * @return returns the rendered top border 
 	 */
 	public String getTopBorder() {
-		return topLeftCorner + LayoutTools.fill(topBorder, topFill) + topRightCorner;
+		return topLeftCorner + StringTools.fill(topBorder, topFill) + topRightCorner;
 	}
 
 	/**
@@ -190,7 +191,7 @@ public class TextBorder {
 	 * @return returns the rendered bottom border
 	 */
 	public String getBottomBorder() { 
-		return bottomLeftCorner + LayoutTools.fill(bottomBorder, bottomFill) + bottomRightCorner;
+		return bottomLeftCorner + StringTools.fill(bottomBorder, bottomFill) + bottomRightCorner;
 	}
 
 	/**
@@ -224,19 +225,19 @@ public class TextBorder {
     	switch (align) {
 	    	case LEFT: break;
 	    	case CENTER:
-	    		sb.append(LayoutTools.fill(fillCharacter, (int)Math.floor( (rowFill - text.length())/2d) ));
+	    		sb.append(StringTools.fill(fillCharacter, (int)Math.floor( (rowFill - text.length())/2d) ));
 	    		break;
 	    	case RIGHT:
-	    		sb.append(LayoutTools.fill(fillCharacter, rowFill - text.length()));
+	    		sb.append(StringTools.fill(fillCharacter, rowFill - text.length()));
 	    		break;
     	}
     	sb.append(text);
     	switch (align) {
 	    	case LEFT:
-	    		sb.append(LayoutTools.fill(fillCharacter, rowFill - text.length()));
+	    		sb.append(StringTools.fill(fillCharacter, rowFill - text.length()));
 	    		break;
 	    	case CENTER:
-	    		sb.append(LayoutTools.fill(fillCharacter, (int)Math.ceil( (rowFill - text.length())/2d) ));
+	    		sb.append(StringTools.fill(fillCharacter, (int)Math.ceil( (rowFill - text.length())/2d) ));
 	    		break;
 	    	case RIGHT: break;
     	}

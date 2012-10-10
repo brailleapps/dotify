@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.TextProperties;
+import org.daisy.dotify.formatter.TextProperties;
 
 /**
  * Provides a text event object.

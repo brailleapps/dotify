@@ -1,7 +1,7 @@
 package org.daisy.dotify.impl.formatter;
 
 import org.daisy.dotify.formatter.FormattingTypes;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.translator.BrailleTranslator;
 
 class RowDataProperties {

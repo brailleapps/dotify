@@ -67,6 +67,65 @@ public class Expression {
 		}
 		return evaluate(expr);
 	}
+	
+	private Object doEval1(String expr) {
+		if (expr.startsWith("\"") && expr.endsWith("\"")) {
+			return expr.substring(1, expr.length()-1);
+		}
+		if (vars.containsKey(expr)) {
+			return vars.get(expr);
+		}
+		try {
+			return toNumber(expr);
+		} catch (NumberFormatException e) {
+			return expr;
+		}
+	}
+	
+	private Object doEval2(String[] args1) {
+		String operator = args1[0].trim();
+		Object[] args = new Object[args1.length-1];
+		for (int i=0; i<args.length; i++) {
+			args[i] = doEvaluate(args1[i+1]);
+		}
+		//System.arraycopy(args1, 1, args, 0, args1.length-1);
+		if ("+".equals(operator)) {
+			return add(args);
+		} else if ("-".equals(operator)) {
+			return subtract(args);
+		} else if ("*".equals(operator)) {
+			return multiply(args);
+		} else if ("/".equals(operator)) {
+			return divide(args);
+		} else if ("%".equals(operator)) {
+			return modulo(args);
+		} else if ("=".equals(operator)) {
+			return equals(args);
+		} else if ("<".equals(operator)) {
+			return smallerThan(args);
+		}  else if ("<=".equals(operator)) {
+			return smallerThanOrEqualTo(args);
+		} else if (">".equals(operator)) {
+			return greaterThan(args);
+		} else if (">=".equals(operator)) {
+			return greaterThanOrEqualTo(args);
+		} else if ("&".equals(operator)) {
+			return and(args);
+		} else if ("|".equals(operator)) {
+			return or(args);
+		} else if ("if".equals(operator)) {
+			return ifOp(args);
+		} else if ("now".equals(operator)) {
+			return now(args);
+		} else if ("round".equals(operator)) {
+			return round(args);
+		} else if ("set".equals(operator)) {
+			return set(args);
+		}
+		else {
+			throw new IllegalArgumentException("Unknown operator: '" + operator + "'");
+		}
+	}
 
 	private Object doEvaluate(String expr) {
 		
@@ -75,61 +134,9 @@ public class Expression {
 		int leftPar = expr.indexOf('(');
 		int rightPar = expr.lastIndexOf(')');
 		if (leftPar==-1 && rightPar==-1) {
-			if (expr.startsWith("\"") && expr.endsWith("\"")) {
-				return expr.substring(1, expr.length()-1);
-			}
-			if (vars.containsKey(expr)) {
-				return vars.get(expr);
-			}
-			try {
-				return toNumber(expr);
-			} catch (NumberFormatException e) {
-				return expr;
-			}
+			return doEval1(expr);
 		} else if (leftPar>-1 && rightPar>-1) {
-			String[] args1 = getArgs(expr.substring(leftPar+1, rightPar));
-			String operator = args1[0].trim();
-			Object[] args = new Object[args1.length-1];
-			for (int i=0; i<args.length; i++) {
-				args[i] = doEvaluate(args1[i+1]);
-			}
-			//System.arraycopy(args1, 1, args, 0, args1.length-1);
-			if ("+".equals(operator)) {
-				return add(args);
-			} else if ("-".equals(operator)) {
-				return subtract(args);
-			} else if ("*".equals(operator)) {
-				return multiply(args);
-			} else if ("/".equals(operator)) {
-				return divide(args);
-			} else if ("%".equals(operator)) {
-				return modulo(args);
-			} else if ("=".equals(operator)) {
-				return equals(args);
-			} else if ("<".equals(operator)) {
-				return smallerThan(args);
-			}  else if ("<=".equals(operator)) {
-				return smallerThanOrEqualTo(args);
-			} else if (">".equals(operator)) {
-				return greaterThan(args);
-			} else if (">=".equals(operator)) {
-				return greaterThanOrEqualTo(args);
-			} else if ("&".equals(operator)) {
-				return and(args);
-			} else if ("|".equals(operator)) {
-				return or(args);
-			} else if ("if".equals(operator)) {
-				return ifOp(args);
-			} else if ("now".equals(operator)) {
-				return now(args);
-			} else if ("round".equals(operator)) {
-				return round(args);
-			} else if ("set".equals(operator)) {
-				return set(args);
-			}
-			else {
-				throw new IllegalArgumentException("Unknown operator: '" + operator + "'");
-			}
+			return doEval2( getArgs(expr.substring(leftPar+1, rightPar)));
 		} else {
 			throw new IllegalArgumentException("Unmatched parenthesis");
 		}

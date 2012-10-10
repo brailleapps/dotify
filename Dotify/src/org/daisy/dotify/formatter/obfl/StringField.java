@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.obfl;
 
-import org.daisy.dotify.formatter.dom.Field;
+import org.daisy.dotify.formatter.Field;
 
 public class StringField implements Field {
 	private final Object obj;

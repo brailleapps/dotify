@@ -5,16 +5,14 @@ import java.util.List;
 
 import org.daisy.dotify.book.Page;
 import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.Field;
 import org.daisy.dotify.formatter.FormatterException;
+import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.dom.Field;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
-import org.daisy.dotify.formatter.dom.PageTemplate;
+import org.daisy.dotify.formatter.PageTemplate;
 import org.daisy.dotify.formatter.obfl.CompoundField;
 import org.daisy.dotify.formatter.obfl.CurrentPageField;
 import org.daisy.dotify.formatter.obfl.MarkerReferenceField;
-import org.daisy.dotify.formatter.utils.LayoutTools;
-import org.daisy.dotify.formatter.utils.LayoutToolsException;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -140,20 +138,20 @@ class PageImpl implements Page {
 		for (List<Field> row : fields) {
 			try {
 				ret.add(new Row(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator)));
-			} catch (LayoutToolsException e) {
+			} catch (PaginatorToolsException e) {
 				throw new FormatterException("Error while rendering header", e);
 			}
 		}
 		return ret;
 	}
 	
-	private String distribute(List<Field> chunks, int width, String padding, BrailleTranslator translator) throws LayoutToolsException {
+	private String distribute(List<Field> chunks, int width, String padding, BrailleTranslator translator) throws PaginatorToolsException {
 		ArrayList<String> chunkF = new ArrayList<String>();
 		for (Field f : chunks) {
 			BrailleTranslatorResult btr = translator.translate(resolveField(f, this).replaceAll("\u00ad", ""));
 			chunkF.add(btr.getTranslatedRemainder());
 		}
-		return LayoutTools.distribute(chunkF, width, padding, LayoutTools.DistributeMode.EQUAL_SPACING);
+		return PaginatorTools.distribute(chunkF, width, padding, PaginatorTools.DistributeMode.EQUAL_SPACING);
 	}
 	
 	private static String resolveField(Field field, PageImpl p) {

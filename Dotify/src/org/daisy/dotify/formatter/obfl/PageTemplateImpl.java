@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.daisy.dotify.formatter.dom.Field;
-import org.daisy.dotify.formatter.dom.PageTemplate;
+import org.daisy.dotify.formatter.Field;
+import org.daisy.dotify.formatter.PageTemplate;
 
 
 class PageTemplateImpl implements PageTemplate {

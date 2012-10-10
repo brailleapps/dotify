@@ -8,7 +8,7 @@ import org.daisy.dotify.book.PageSequence;
 import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.LayoutMaster;
 
 class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;

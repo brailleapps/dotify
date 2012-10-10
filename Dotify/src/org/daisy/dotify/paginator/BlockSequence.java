@@ -1,6 +1,6 @@
 package org.daisy.dotify.paginator;
 
-import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.LayoutMaster;
 
 /**
  * Provides an interface for a sequence of block contents.

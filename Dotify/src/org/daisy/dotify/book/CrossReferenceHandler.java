@@ -3,8 +3,8 @@ package org.daisy.dotify.book;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.dom.CrossReferences;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.CrossReferences;
+import org.daisy.dotify.formatter.LayoutMaster;
 
 class CrossReferenceHandler implements CrossReferences {
 	private final Map<String, Integer> volLocations;

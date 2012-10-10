@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import org.daisy.dotify.book.PageStruct;
 import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.dom.CrossReferences;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
+import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.writer.PagedMediaWriter;
 
 

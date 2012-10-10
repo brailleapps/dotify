@@ -2,8 +2,8 @@ package org.daisy.dotify.impl.formatter;
 
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.SequenceProperties;
-import org.daisy.dotify.formatter.dom.LayoutMaster;
 import org.daisy.dotify.paginator.Block;
 import org.daisy.dotify.paginator.BlockSequence;
 
