@@ -1,18 +1,21 @@
 /**
- * <p>Provides braille transformation classes.</p>
- * <p>Note: the following information is subject to change.</p>
- * <p>To add rules for another language:</p>
+ * <p>Provides braille transformation classes. This package contains everything
+ * needed to transform text into braille. Hyphenation is handled
+ * internally by the translator. This design allows
+ * for non-standard hyphenation as well as line break dependent braille
+ * markers, such as continuation signs etc.</p>
+ * 
+ * <p>The entry point for translating braille is the BrailleTranslatorFactoryMaker
+ * where an instance of a BrailleTranslator can be obtained.</p>
+ * 
+ * <p>To add a translator for another language:</p>
  * <ul>
- * 	<li>Create a table that follows the rules of UCharReplacer (for more
- *  information, see the int_daisy_unicodeTranscoder documentation in Daisy Pipeline), 
- *  and place it in a new sub package to this package, e.g "de_DE/de_DE.xml".<br />
- *  <em>If your locale has special requirements (such as contractions), this
- *  method cannot be used. In this case, another implementation must be
- *  created. If your class implements the StringFilter interface, the next step
- *  can still be applied.</em></li>
- *  <li>Add your locale to the system, by adding the name of your implementation
- *	to the org.daisy.dotify.translator.BrailleFilter file in META-INF/services.
- * </li>
+ * <li>Implement BrailleTranslator for your locale and place it the 
+ * org.daisy.dotify.impl.translator package or in a sub package thereof.</li>
+ * <li>Add the name of your implementation to the org.daisy.dotify.translator.BrailleFilter
+ *  file in META-INF/services</li>
+ *  <li>If your implementation uses a grade not defined in {@link org.daisy.dotify.translator.BrailleTranslatorFactory},
+ *  please add it to the API so that others may know about it.</li>
  * </ul>
  * @author Joel Håkansson
  */

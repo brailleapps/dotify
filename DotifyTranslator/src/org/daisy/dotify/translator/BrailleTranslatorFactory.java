@@ -8,7 +8,13 @@ import org.daisy.dotify.text.FilterLocale;
  *
  */
 public interface BrailleTranslatorFactory {
+	/**
+	 * Defines bypass mode
+	 */
 	public final static String MODE_BYPASS = "bypass";
+	/**
+	 * Defines uncontracted mode
+	 */
 	public final static String MODE_UNCONTRACTED = "uncontracted";
 	
 	/**
@@ -22,10 +28,9 @@ public interface BrailleTranslatorFactory {
 	/**
 	 * Creates a new translator with the given specification
 	 * @param locale the translator locale
-	 * @param mode the translator grade, or null for uncontracted braille
+	 * @param mode the translator grade
 	 * @return returns a new translator
-	 * @throws UnsupportedSpecificationException if the translator factory does not support
-	 * the desired specification
+	 * @throws UnsupportedSpecificationException if the specification is not supported
 	 */
 	public BrailleTranslator newTranslator(FilterLocale locale, String mode) throws UnsupportedSpecificationException;
 

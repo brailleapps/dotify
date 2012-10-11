@@ -11,7 +11,20 @@ import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.text.FilterLocale;
 
-public class BrailleTranslatorFactoryMaker {
+/**
+ * Provides a braille translator factory maker. This class will look for 
+ * implementations of the BrailleTranslatorFactory interface using the
+ * services API. It will return the first implementation that matches the
+ * requested specification.
+ * 
+ * <p>This class can be overridden by extending it and adding a reference
+ * to the new implementation to the services API. This class will then
+ * choose the new implementation when a new instance is requested.</p>
+ * 
+ * @author Joel Håkansson
+ *
+ */
+public class BrailleTranslatorFactoryMaker implements BrailleTranslatorFactory {
 	private final List<BrailleTranslatorFactory> factories;
 	private final Map<String, BrailleTranslatorFactory> map;
 	private final Logger logger;
@@ -26,6 +39,10 @@ public class BrailleTranslatorFactoryMaker {
 		this.map = new HashMap<String, BrailleTranslatorFactory>();
 	}
 
+	/**
+	 * Creates a new instance of braille translator factory maker.
+	 * @return returns a new braille translator factory maker.
+	 */
 	public static BrailleTranslatorFactoryMaker newInstance() {
 		Iterator<BrailleTranslatorFactoryMaker> i = ServiceRegistry.lookupProviders(BrailleTranslatorFactoryMaker.class);
 		while (i.hasNext()) {
@@ -42,6 +59,14 @@ public class BrailleTranslatorFactoryMaker {
 		return map.get(toKey(locale, grade))!=null;
 	}
 	
+	/**
+	 * Gets a factory for the given specification.
+	 * 
+	 * @param locale the locale for the factory
+	 * @param grade the grade for the factory
+	 * @return returns a braille translator factory
+	 * @throws UnsupportedSpecificationException if the specification is not supported
+	 */
 	public BrailleTranslatorFactory getFactory(FilterLocale locale, String grade) throws UnsupportedSpecificationException {
 		BrailleTranslatorFactory template = map.get(toKey(locale, grade));
 		if (template==null) {
@@ -60,13 +85,7 @@ public class BrailleTranslatorFactoryMaker {
 		return template;
 	}
 	
-	/**
-	 *  Instantiates a new braille translator with the given specification.
-	 *  @param locale the translator locale
-	 *  @param grade the translator grade, or null
-	 *  @throws UnsupportedSpecificationException if the specification is not supported
-	 */
-	public BrailleTranslator newBrailleTranslator(FilterLocale locale, String grade) throws UnsupportedSpecificationException {
+	public BrailleTranslator newTranslator(FilterLocale locale, String grade) throws UnsupportedSpecificationException {
 		return getFactory(locale, grade).newTranslator(locale, grade);
 	}
 }
