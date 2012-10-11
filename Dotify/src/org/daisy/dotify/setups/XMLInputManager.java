@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.system.InputManager;
+import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;

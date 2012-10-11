@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 import org.daisy.braille.ui.AbstractUI;
 import org.daisy.dotify.config.ConfigurationsCatalog;
-import org.daisy.dotify.system.InputManagerFactoryMaker;
+import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.text.FilterLocale;

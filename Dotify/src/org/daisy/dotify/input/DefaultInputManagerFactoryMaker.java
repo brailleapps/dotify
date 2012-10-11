@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.input;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +13,12 @@ import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.text.FilterLocale;
 
-public class InputManagerFactoryMaker {
+class DefaultInputManagerFactoryMaker extends InputManagerFactoryMaker {
 	private final List<InputManagerFactory> filters;
 	private final Map<FilterLocale, InputManagerFactory> map;
 	private final Logger logger;
 	
-	protected InputManagerFactoryMaker() {
+	public DefaultInputManagerFactoryMaker() {
 		logger = Logger.getLogger(InputManagerFactoryMaker.class.getCanonicalName());
 		filters = new ArrayList<InputManagerFactory>();
 		Iterator<InputManagerFactory> i = ServiceRegistry.lookupProviders(InputManagerFactory.class);
@@ -27,15 +27,7 @@ public class InputManagerFactoryMaker {
 		}
 		this.map = new HashMap<FilterLocale, InputManagerFactory>();
 	}
-
-	public static InputManagerFactoryMaker newInstance() {
-		Iterator<InputManagerFactoryMaker> i = ServiceRegistry.lookupProviders(InputManagerFactoryMaker.class);
-		while (i.hasNext()) {
-			return i.next();
-		}
-		return new InputManagerFactoryMaker();
-	}
-
+	
 	public InputManagerFactory getFactory(FilterLocale locale) {
 		InputManagerFactory template = map.get(locale);
 		if (template==null) {
@@ -60,10 +52,6 @@ public class InputManagerFactoryMaker {
 			ret.addAll(h.listSupportedLocales());
 		}
 		return ret;
-	}
-	
-	public InputManager newInputManager(FilterLocale locale) {
-		return getFactory(locale).newInputManager(locale);
 	}
 
 }

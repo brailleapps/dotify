@@ -1,9 +1,9 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.input;
 
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.system.InputManagerFactoryMaker;
+import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 

@@ -2,9 +2,9 @@ package org.daisy.dotify.setups;
 
 import java.util.Set;
 
+import org.daisy.dotify.input.InputManager;
+import org.daisy.dotify.input.InputManagerFactory;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
-import org.daisy.dotify.system.InputManager;
-import org.daisy.dotify.system.InputManagerFactory;
 import org.daisy.dotify.text.FilterLocale;
 
 public class XMLInputManagerFactory implements InputManagerFactory {

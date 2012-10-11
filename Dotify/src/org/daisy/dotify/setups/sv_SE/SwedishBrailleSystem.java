@@ -12,13 +12,13 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.formatter.utils.TextBorder;
+import org.daisy.dotify.input.InputManager;
+import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
-import org.daisy.dotify.system.InputManager;
-import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.ResourceLocatorException;

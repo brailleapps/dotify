@@ -3,10 +3,10 @@ package org.daisy.dotify.setups.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.daisy.dotify.input.InputManager;
+import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
-import org.daisy.dotify.system.InputManager;
-import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.RunParameters;
