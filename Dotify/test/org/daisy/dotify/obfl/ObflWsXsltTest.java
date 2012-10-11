@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.obfl;
 
 import static org.junit.Assert.assertTrue;
 
@@ -11,7 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
+import org.daisy.dotify.obfl.ObflResourceLocator;
+import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
+import org.daisy.dotify.system.InternalTaskException;
+import org.daisy.dotify.system.XsltTask;
 import org.junit.Test;
 public class ObflWsXsltTest {
 
@@ -19,7 +22,7 @@ public class ObflWsXsltTest {
 	public void testWsNormalizer() throws IOException, InternalTaskException {
 		
 		XsltTask t = new XsltTask("WS", 
-				SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+				ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
 				null, null);
 		
 		File in = File.createTempFile("TestInput", ".tmp");

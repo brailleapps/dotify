@@ -3,13 +3,13 @@ package org.daisy.dotify.setups.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.daisy.dotify.obfl.ObflResourceLocator;
+import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.system.InputManager;
 import org.daisy.dotify.system.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.RunParameters;
-import org.daisy.dotify.system.SystemResourceLocator;
-import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
@@ -54,7 +54,7 @@ public class DefaultTextSystem implements TaskSystem {
 				h.put(key.toString(), p.getProperty(key));
 			}
 			setup.add(new XsltTask("OBFL whitespace normalizer",
-									SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+									ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
 									null,
 									h));
 		}

@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.obfl;
 
 import java.net.URL;
 
@@ -6,24 +6,39 @@ import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
 
 /**
- * Provides a method to find resources relative to this class 
+ * Provides a method to find resources related to OBFL
  * @author Joel Håkansson
  *
  */
-public class SystemResourceLocator extends AbstractResourceLocator {
-	public enum SystemResourceIdentifier {
+public class ObflResourceLocator extends AbstractResourceLocator {
+	/**
+	 * Provides identifiers that can be used to locate specific resources
+	 * maintained by this class.
+	 */
+	public enum ObflResourceIdentifier {
+		/**
+		 * An XML schema describing OBFL.
+		 */
 		OBFL_XML_SCHEMA,
+		/**
+		 * An XSLT that normalizes whitespace in an OBFL file.
+		 */
 		OBFL_WHITESPACE_NORMALIZER_XSLT
 	}
-	private static SystemResourceLocator instance;
+	private static ObflResourceLocator instance;
 	
-	private SystemResourceLocator() {
+	private ObflResourceLocator() {
 		super();
 	}
 	
-	public static synchronized SystemResourceLocator getInstance() {
+	/**
+	 * Gets the instance of the Obfl resource locator if it exists, or creates
+	 * it if it does not (singleton).
+	 * @return returns the instance
+	 */
+	public static synchronized ObflResourceLocator getInstance() {
 		if (instance==null) {
-			instance = new SystemResourceLocator();
+			instance = new ObflResourceLocator();
 		}
 		return instance;
 	}
@@ -35,7 +50,7 @@ public class SystemResourceLocator extends AbstractResourceLocator {
 	 * @param identifier the identifier of the resource to get.
 	 * @return returns the URL to the resource
 	 */
-	public URL getResourceByIdentifier(SystemResourceIdentifier identifier) {
+	public URL getResourceByIdentifier(ObflResourceIdentifier identifier) {
 		try {
 			switch (identifier) {
 				case OBFL_XML_SCHEMA: return getResource("resource-files/obfl.xsd");

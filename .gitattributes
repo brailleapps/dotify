@@ -166,6 +166,7 @@ Dotify/src/org/daisy/dotify/obfl/LineBreak.java -text
 Dotify/src/org/daisy/dotify/obfl/MarkerEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/ObflParser.java -text
 Dotify/src/org/daisy/dotify/obfl/ObflQName.java -text
+Dotify/src/org/daisy/dotify/obfl/ObflResourceLocator.java -text
 Dotify/src/org/daisy/dotify/obfl/PageNumberReference.java -text
 Dotify/src/org/daisy/dotify/obfl/PageNumberReferenceEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text
@@ -183,6 +184,9 @@ Dotify/src/org/daisy/dotify/obfl/VolumeSequenceEvent.java -text
 Dotify/src/org/daisy/dotify/obfl/VolumeTemplate.java -text
 Dotify/src/org/daisy/dotify/obfl/VolumeTemplateImpl.java -text
 Dotify/src/org/daisy/dotify/obfl/package.html -text
+Dotify/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/obfl/resource-files/obfl.xsd -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/obfl/resource-files/xml.xsd -text
 Dotify/src/org/daisy/dotify/package.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/paginator/Block.java -text
 Dotify/src/org/daisy/dotify/paginator/BlockSequence.java -text
@@ -250,7 +254,6 @@ Dotify/src/org/daisy/dotify/system/LayoutEngineTask.java -text svneol=unset#text
 Dotify/src/org/daisy/dotify/system/ResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/ResourceLocatorException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/RunParameters.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/system/SystemResourceLocator.java -text
 Dotify/src/org/daisy/dotify/system/TaskSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TaskSystemException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TaskSystemFactory.java -text
@@ -262,9 +265,6 @@ Dotify/src/org/daisy/dotify/system/ValidatorException.java -text
 Dotify/src/org/daisy/dotify/system/ValidatorTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/XsltTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/package.html -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/system/resource-files/obfl-ws-normalizer.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/system/resource-files/obfl.xsd -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/system/resource-files/xml.xsd -text
 Dotify/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/Progress.java -text svneol=unset#text/plain
@@ -284,12 +284,12 @@ Dotify/test/org/daisy/dotify/book/EvenSizeVolumeSplitterCalculatorTest.java -tex
 Dotify/test/org/daisy/dotify/formatter/FormatterFactoryTest.java -text
 Dotify/test/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain
+Dotify/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
+Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-expected.xml -text
+Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-input.xml -text
 Dotify/test/org/daisy/dotify/paginator/PaginatorFactoryTest.java -text
 Dotify/test/org/daisy/dotify/setups/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/system/InputManagerFactoryMakerTest.java -text
-Dotify/test/org/daisy/dotify/system/ObflWsXsltTest.java -text
-Dotify/test/org/daisy/dotify/system/resource-files/ws-test-expected.xml -text
-Dotify/test/org/daisy/dotify/system/resource-files/ws-test-input.xml -text
 Dotify/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text

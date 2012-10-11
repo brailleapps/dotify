@@ -13,9 +13,10 @@ import org.daisy.dotify.book.BookStruct;
 import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.obfl.ObflParser;
+import org.daisy.dotify.obfl.ObflResourceLocator;
+import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorFactory;
-import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.PagedMediaWriterException;
@@ -63,7 +64,7 @@ public class LayoutEngineTask extends InternalTask  {
 			logger.info("Validating input...");
 			
 			try {
-				ValidatorTask.validate(input, SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_XML_SCHEMA));
+				ValidatorTask.validate(input, ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_XML_SCHEMA));
 			} catch (ValidatorException e) {
 				throw new InternalTaskException("Input validation failed.", e);
 			}

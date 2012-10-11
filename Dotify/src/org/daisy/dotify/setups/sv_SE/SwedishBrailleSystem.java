@@ -12,6 +12,8 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.formatter.utils.TextBorder;
+import org.daisy.dotify.obfl.ObflResourceLocator;
+import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
@@ -21,11 +23,9 @@ import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
-import org.daisy.dotify.system.SystemResourceLocator;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
-import org.daisy.dotify.system.SystemResourceLocator.SystemResourceIdentifier;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslator;
@@ -112,7 +112,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		
 		// Whitespace normalizer TransformerFactoryConstants.SAXON8
 		setup.add(new XsltTask("OBFL whitespace normalizer",
-								SystemResourceLocator.getInstance().getResourceByIdentifier(SystemResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
+								ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
 								null,
 								h));
 
