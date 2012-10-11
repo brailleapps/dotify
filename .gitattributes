@@ -340,6 +340,7 @@ DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactoryMaker.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/package-info.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/HyphenationConfig.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenator.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorCore.java -text
@@ -503,7 +504,7 @@ DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#t
 DotifyTranslator/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringSplitter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/TextFileReader.java -text
-DotifyTranslator/src/org/daisy/dotify/text/package.html -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/text/package-info.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslator.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactoryMaker.java -text
@@ -513,7 +514,7 @@ DotifyTranslator/src/org/daisy/dotify/translator/SimpleBrailleTranslator.java -t
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UnsupportedSpecificationException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/package.html -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/translator/package-info.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
