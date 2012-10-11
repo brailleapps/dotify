@@ -84,7 +84,7 @@ public class TranslatorDemo extends javax.swing.JFrame {
         braille2Panel.setFont(f.deriveFont(24f));
         
 		try {
-			t = BrailleTranslatorFactoryMaker.newInstance().newBrailleTranslator(FilterLocale.parse("sv-SE"), BrailleTranslatorFactory.MODE_UNCONTRACTED);
+			t = BrailleTranslatorFactoryMaker.newInstance().newTranslator(FilterLocale.parse("sv-SE"), BrailleTranslatorFactory.MODE_UNCONTRACTED);
 		} catch (UnsupportedSpecificationException e) {
 			throw new RuntimeException("Cannot translate");
 		}
