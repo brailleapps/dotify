@@ -1,9 +1,9 @@
 package org.daisy.dotify.config;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -41,10 +41,10 @@ class DefaultConfigurationsCatalog extends ConfigurationsCatalog {
 		return map.keySet();
 	}
 
-	public URL getConfigurationURL(String identifier) throws ResourceLocatorException {
+	public Properties getConfiguration(String identifier) throws ResourceLocatorException {
 		ConfigurationsProvider provider = map.get(identifier);
 		if (provider!=null) {
-			return provider.getConfigurationURL(identifier);
+			return provider.getConfiguration(identifier);
 		} else {
 			throw new ResourceLocatorException("Failed to locate resource with identifier: " + identifier);
 		}

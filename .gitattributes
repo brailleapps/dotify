@@ -94,14 +94,7 @@ Dotify/src/org/daisy/dotify/book/VolumeImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/config/ConfigurationsCatalog.java -text
 Dotify/src/org/daisy/dotify/config/ConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/config/DefaultConfigurationsCatalog.java -text
-Dotify/src/org/daisy/dotify/config/DefaultConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/config/package.html -text
-Dotify/src/org/daisy/dotify/config/presets_catalog.xml -text
-Dotify/src/org/daisy/dotify/config/resource-files/A4_w32.xml -text
-Dotify/src/org/daisy/dotify/config/resource-files/A4_w35.xml -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/config/resource-files/FA44_w42.xml -text
-Dotify/src/org/daisy/dotify/config/resource-files/FA44_w43.xml -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/config/resource-files/w50.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/BlockPosition.java -text
 Dotify/src/org/daisy/dotify/formatter/BlockProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/CompoundField.java -text svneol=unset#text/plain
@@ -129,6 +122,13 @@ Dotify/src/org/daisy/dotify/formatter/utils/TabStopString.java -text svneol=unse
 Dotify/src/org/daisy/dotify/formatter/utils/TextBorder.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/FormatterProxyImpl.java -text
 Dotify/src/org/daisy/dotify/impl/PaginatorProxyImpl.java -text
+Dotify/src/org/daisy/dotify/impl/config/DefaultConfigurationsProvider.java -text
+Dotify/src/org/daisy/dotify/impl/config/presets_catalog.xml -text
+Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w32.xml -text
+Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w35.xml -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w42.xml -text
+Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w43.xml -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/config/resource-files/w50.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/AnchorSegment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/BlockHandler.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/BlockImpl.java -text svneol=unset#text/plain
@@ -165,6 +165,7 @@ Dotify/src/org/daisy/dotify/obfl/LeaderEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/LineBreak.java -text
 Dotify/src/org/daisy/dotify/obfl/MarkerEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/ObflParser.java -text
+Dotify/src/org/daisy/dotify/obfl/ObflQName.java -text
 Dotify/src/org/daisy/dotify/obfl/PageNumberReference.java -text
 Dotify/src/org/daisy/dotify/obfl/PageNumberReferenceEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text

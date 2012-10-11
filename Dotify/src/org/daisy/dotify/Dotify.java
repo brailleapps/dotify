@@ -2,6 +2,7 @@ package org.daisy.dotify;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -54,11 +56,10 @@ public class Dotify {
 			TEMP_DIR = System.getProperty("user.home");
 		}
 	}
-	private final Map<String, String> params;
+	
 	private final boolean writeTempFiles;
 	// hide default constructor to disable instantiation.
 	private Dotify(Map<String, String> params) { 
-		this.params = params;
 		// get parameters
 		writeTempFiles = "true".equals(params.get(SystemKeys.WRITE_TEMP_FILES));
 	}
@@ -191,19 +192,29 @@ public class Dotify {
 		ArrayList<InternalTask> tasks = new ArrayList<InternalTask>();
 		TaskSystem ts = null;
 
-		RunParameters rp = null;
-		try {
-			ConfigurationsCatalog cm = ConfigurationsCatalog.newInstance();
-			URL url = null;
-			try {
-				url = cm.getConfigurationURL(setup);
-			} catch (ResourceLocatorException e) {
-				//try as file
-				url = new URL(setup);
-			}
-			rp = RunParameters.load(url, map);
 
-			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
+		ConfigurationsCatalog cm = ConfigurationsCatalog.newInstance();
+		Properties p;
+		try {
+			p = cm.getConfiguration(setup);
+		} catch (ResourceLocatorException e) {
+			//try as file
+			p = new Properties();
+			URL configURL = new URL(setup);
+			try {
+				p.loadFromXML(configURL.openStream());
+			} catch (FileNotFoundException e2) {
+				throw new RuntimeException("Configuration file not found: " + configURL, e2);
+			} catch (InvalidPropertiesFormatException e2) {
+				throw new RuntimeException("Configuration file could not be parsed: " + configURL, e2);
+			} catch (IOException e2) {
+				throw new RuntimeException("IOException while reading configuration file: " + configURL, e2);
+			}
+		}
+		RunParameters rp = RunParameters.load(p, map);
+
+		try {
+			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);	
 			sendMessage("Adding tasks from TaskSystem: " + ts.getName());
 			tasks.addAll(ts.compile(rp));
 		} catch (TaskSystemException e) {

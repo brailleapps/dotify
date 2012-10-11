@@ -1,8 +1,10 @@
-package org.daisy.dotify.config;
+package org.daisy.dotify.impl.config;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -10,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.config.ConfigurationsProvider;
 import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocatorException;
 
@@ -50,8 +53,23 @@ public class DefaultConfigurationsProvider extends AbstractResourceLocator imple
 		return urls.keySet();
 	}
 
-	public URL getConfigurationURL(String identifier) throws ResourceLocatorException {
+	private URL getConfigurationURL(String identifier) throws ResourceLocatorException {
 		return this.getResource(urls.get(identifier));
+	}
+
+	public Properties getConfiguration(String identifier) throws ResourceLocatorException {
+		Properties p = new Properties();
+		URL configURL = getConfigurationURL(identifier);
+		try {
+			p.loadFromXML(configURL.openStream());
+		} catch (FileNotFoundException e) {
+			throw new ResourceLocatorException("Configuration file not found: " + configURL, e);
+		} catch (InvalidPropertiesFormatException e) {
+			throw new ResourceLocatorException("Configuration file could not be parsed: " + configURL, e);
+		} catch (IOException e) {
+			throw new ResourceLocatorException("IOException while reading configuration file: " + configURL, e);
+		}
+		return p;
 	}
 
 }

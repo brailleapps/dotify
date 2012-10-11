@@ -1,6 +1,6 @@
 package org.daisy.dotify.config;
 
-import java.net.URL;
+import java.util.Properties;
 import java.util.Set;
 
 import org.daisy.dotify.system.ResourceLocatorException;
@@ -26,6 +26,8 @@ public interface ConfigurationsProvider {
 	 * @return returns a URL to the configuration
 	 * @throws ResourceLocatorException if identifier is unknown.
 	 */
-	public URL getConfigurationURL(String identifier) throws ResourceLocatorException;
+	//public URL getConfigurationURL(String identifier) throws ResourceLocatorException;
+	
+	public Properties getConfiguration(String identifier) throws ResourceLocatorException;
 	
 }

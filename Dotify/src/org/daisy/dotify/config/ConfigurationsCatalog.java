@@ -1,7 +1,7 @@
 package org.daisy.dotify.config;
 
-import java.net.URL;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.imageio.spi.ServiceRegistry;
@@ -9,12 +9,15 @@ import javax.imageio.spi.ServiceRegistry;
 import org.daisy.dotify.system.ResourceLocatorException;
 
 /**
- * Provides an abstract base for ConfigurationsCatalogs. This can be
- * overridden if a behavior that is different from the default configurations 
- * is desired. In most cases, the default configuration catalog should suffice.
+ * Provides a catalog of configurations available to the input system. The catalog 
+ * implementation can be overridden if a different behavior is desired. In most cases, 
+ * the default configuration catalog should suffice. To override this class, extend it
+ * and add a reference to the implementation to the java service registry.
  * @author Joel Håkansson
  */
 public abstract class ConfigurationsCatalog {
+	
+	protected ConfigurationsCatalog() {}
 
 	/**
 	 * Creates a new instance of a configurations catalog. First, the service
@@ -39,11 +42,11 @@ public abstract class ConfigurationsCatalog {
 	public abstract Set<String> getKeys();
 	
 	/**
-	 * Returns a URL to the configuration specified by the identifier.
+	 * Returns configuration properties associated with the identifier.
 	 * @param identifier the configuration key
-	 * @return returns a URL to the configuration
+	 * @return returns properties for the configuration
 	 * @throws ResourceLocatorException if identifier is unknown.
 	 */
-	public abstract URL getConfigurationURL(String identifier) throws ResourceLocatorException;
+	public abstract Properties getConfiguration(String identifier) throws ResourceLocatorException;
 
 }

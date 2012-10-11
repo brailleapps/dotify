@@ -1,9 +1,5 @@
 package org.daisy.dotify.system;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -28,18 +24,10 @@ public class RunParameters {
 		this.p.put("row-spacing", (rowgap/4)+1);
 	}
 	
-	public static RunParameters load(URL configURL, Map<String, String> guiParams) {
+	public static RunParameters load(Properties p0, Map<String, String> guiParams) {
 		Properties p = new Properties();
+		p.putAll(p0);
 
-		try {
-			p.loadFromXML(configURL.openStream());
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Configuration file not found: " + configURL, e);
-		} catch (InvalidPropertiesFormatException e) {
-			throw new RuntimeException("Configuration file could not be parsed: " + configURL, e);
-		} catch (IOException e) {
-			throw new RuntimeException("IOException while reading configuration file: " + configURL, e);
-		}
 		// GUI parameters should take precedence
 		p.putAll(guiParams);
 
