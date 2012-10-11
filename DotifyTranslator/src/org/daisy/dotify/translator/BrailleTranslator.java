@@ -23,8 +23,7 @@ public interface BrailleTranslator {
 	/**
 	 * Translate the string using the translator's default language.
 	 * @param text
-	 * @param limit
-	 * @return
+	 * @return returns the translator result
 	 */
 	public BrailleTranslatorResult translate(String text);
 	

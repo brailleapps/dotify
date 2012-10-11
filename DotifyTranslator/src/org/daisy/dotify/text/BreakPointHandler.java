@@ -47,8 +47,8 @@ public class BreakPointHandler {
 	
 	/**
 	 * Tries to break the row at the breakpoint but does not modify the buffer.
-	 * @param breakPoint
-	 * @return
+	 * @param breakPoint the row length limit
+	 * @return returns the break point
 	 */
 	public BreakPoint tryNextRow(int breakPoint) {
 		return doNextRow(breakPoint, false, true);

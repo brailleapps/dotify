@@ -1,4 +1,4 @@
-package org.daisy.dotify.translator.sv_SE;
+package org.daisy.dotify.impl.translator.sv_SE;
 
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;

@@ -1,4 +1,4 @@
-package org.daisy.dotify.hyphenator.latex;
+package org.daisy.dotify.impl.hyphenator.latex;
 
 import org.daisy.dotify.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.hyphenator.HyphenatorFactory;

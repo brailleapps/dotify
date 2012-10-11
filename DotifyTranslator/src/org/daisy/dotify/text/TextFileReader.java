@@ -146,7 +146,7 @@ public class TextFileReader implements Closeable {
 
 		/**
 		 * Gets the fields
-		 * @return
+		 * @return returns the fields
 		 */
 		public String[] getFields() {
 			return fields;

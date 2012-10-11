@@ -3,7 +3,7 @@ package org.daisy.dotify.translator;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.text.StringFilter;
 
-public class DefaultBrailleTranslatorResult implements BrailleTranslatorResult {
+class DefaultBrailleTranslatorResult implements BrailleTranslatorResult {
 	private final BreakPointHandler bph;
 	private final UncontractedBrailleFilter filter;
 

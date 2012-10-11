@@ -1,7 +1,8 @@
-package org.daisy.dotify.translator.sv_SE;
+package org.daisy.dotify.impl.translator.sv_SE;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.impl.translator.sv_SE.SwedishBrailleTranslatorFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;

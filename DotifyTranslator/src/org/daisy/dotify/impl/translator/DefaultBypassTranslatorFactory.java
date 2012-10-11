@@ -1,7 +1,11 @@
-package org.daisy.dotify.translator;
+package org.daisy.dotify.impl.translator;
 
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.IdentityFilter;
+import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.translator.SimpleBrailleTranslator;
+import org.daisy.dotify.translator.UnsupportedSpecificationException;
 
 public class DefaultBypassTranslatorFactory implements BrailleTranslatorFactory {
 

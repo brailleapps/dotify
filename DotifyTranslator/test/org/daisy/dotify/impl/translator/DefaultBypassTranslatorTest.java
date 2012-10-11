@@ -1,7 +1,12 @@
-package org.daisy.dotify.translator;
+package org.daisy.dotify.impl.translator;
 import static org.junit.Assert.assertEquals;
 
+import org.daisy.dotify.impl.translator.DefaultBypassTranslatorFactory;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.translator.BrailleTranslatorResult;
+import org.daisy.dotify.translator.UnsupportedSpecificationException;
 import org.junit.Test;
 
 public class DefaultBypassTranslatorTest {

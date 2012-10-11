@@ -1,4 +1,4 @@
-package org.daisy.dotify.hyphenator.latex;
+package org.daisy.dotify.impl.hyphenator.latex;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

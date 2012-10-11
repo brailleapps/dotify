@@ -1,2 +1,2 @@
-org.daisy.dotify.translator.sv_SE.SwedishBrailleTranslatorFactory
-org.daisy.dotify.translator.DefaultBypassTranslatorFactory
+org.daisy.dotify.impl.translator.sv_SE.SwedishBrailleTranslatorFactory
+org.daisy.dotify.impl.translator.DefaultBypassTranslatorFactory

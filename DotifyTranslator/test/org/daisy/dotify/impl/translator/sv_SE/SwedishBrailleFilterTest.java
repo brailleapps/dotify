@@ -1,10 +1,11 @@
-package org.daisy.dotify.translator.sv_SE;
+package org.daisy.dotify.impl.translator.sv_SE;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 
+import org.daisy.dotify.impl.translator.sv_SE.SwedishBrailleFilter;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 

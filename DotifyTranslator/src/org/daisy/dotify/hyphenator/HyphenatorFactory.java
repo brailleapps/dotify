@@ -7,7 +7,7 @@ public interface HyphenatorFactory {
 	/**
 	 * Returns true if this instance can create instances for the specified locale.
 	 * @param locale
-	 * @return
+	 * @return returns true if the specified locale is supported, false otherwise
 	 */
 	public boolean supportsLocale(FilterLocale locale);
 	
