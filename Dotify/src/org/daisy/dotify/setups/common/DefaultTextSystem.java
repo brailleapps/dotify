@@ -61,7 +61,7 @@ public class DefaultTextSystem implements TaskSystem {
 		// Layout FLOW as text
 		BrailleTranslator bt;
 		try {
-			bt = BrailleTranslatorFactoryMaker.newInstance().newBrailleTranslator(context, BrailleTranslatorFactory.MODE_BYPASS);
+			bt = BrailleTranslatorFactoryMaker.newInstance().newTranslator(context, BrailleTranslatorFactory.MODE_BYPASS);
 		} catch (UnsupportedSpecificationException e) {
 			throw new TaskSystemException(e);
 		}

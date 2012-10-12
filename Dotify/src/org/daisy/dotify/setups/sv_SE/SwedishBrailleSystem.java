@@ -136,7 +136,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		
 		BrailleTranslator bt;
 		try {
-			bt = BrailleTranslatorFactoryMaker.newInstance().newBrailleTranslator(sv_SE, BrailleTranslatorFactory.MODE_UNCONTRACTED);
+			bt = BrailleTranslatorFactoryMaker.newInstance().newTranslator(sv_SE, BrailleTranslatorFactory.MODE_UNCONTRACTED);
 		} catch (UnsupportedSpecificationException e1) {
 			throw new TaskSystemException(e1);
 		}
