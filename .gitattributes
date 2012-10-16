@@ -144,6 +144,31 @@ Dotify/src/org/daisy/dotify/impl/formatter/RowDataManagerImpl.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/RowDataProperties.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/Segment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/TextSegment.java -text
+Dotify/src/org/daisy/dotify/impl/input/DefaultInputUrlResourceLocator.java -text
+Dotify/src/org/daisy/dotify/impl/input/XMLInputManager.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/XMLInputManagerFactory.java -text
+Dotify/src/org/daisy/dotify/impl/input/common/config-files/braille/xml.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/common/config-files/output_mode_catalog.xml -text
+Dotify/src/org/daisy/dotify/impl/input/common/config-files/text/dtbook.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/common/config-files/text/xml.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/common/validation-files/dtbook.sch -text
+Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/doc-files/dtb2obfl.xml -text
+Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_base.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_layout.xsl -text
+Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_text.xsl -text
+Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/xml2flow.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/input_format_catalog.xml -text
+Dotify/src/org/daisy/dotify/impl/input/localization_catalog.xml -text
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/braille/dtbook.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/output_mode_catalog.xml -text
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/text/dtbook.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/validation-files/dtbook.sch -text
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/doc-files/dtb2obfl.xml -text
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/doc-files/dtb2obfl_braille.xml -text
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow.xsl -text
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE_braille.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE_text.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/paginator/PageImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/paginator/PageSequenceImpl.java -text svneol=unset#text/plain
@@ -203,37 +228,20 @@ Dotify/src/org/daisy/dotify/paginator/PaginatorProxy.java -text
 Dotify/src/org/daisy/dotify/paginator/RowDataManager.java -text
 Dotify/src/org/daisy/dotify/paginator/SectionProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/paginator/package-info.java -text
-Dotify/src/org/daisy/dotify/setups/DefaultInputUrlResourceLocator.java -text
 Dotify/src/org/daisy/dotify/setups/LocalizationManager.java -text
 Dotify/src/org/daisy/dotify/setups/LocalizationResourceLocator.java -text
-Dotify/src/org/daisy/dotify/setups/XMLInputManager.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/XMLInputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/setups/common/CommonResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/DefaultTextSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/DefaultTextSystemFactory.java -text
-Dotify/src/org/daisy/dotify/setups/common/config/braille/xml.properties -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/common/config/output_mode_catalog.xml -text
-Dotify/src/org/daisy/dotify/setups/common/config/text/dtbook.properties -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/common/config/text/xml.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/doc-files/DefaultTextSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/package-info.java -text
-Dotify/src/org/daisy/dotify/setups/common/validation/dtbook.sch -text
 Dotify/src/org/daisy/dotify/setups/common/xslt/braille-finalizer.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/common/xslt/doc-files/dtb2obfl.xml -text
-Dotify/src/org/daisy/dotify/setups/common/xslt/dtbook2obfl_base.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/common/xslt/dtbook2obfl_layout.xsl -text
-Dotify/src/org/daisy/dotify/setups/common/xslt/dtbook2obfl_text.xsl -text
 Dotify/src/org/daisy/dotify/setups/common/xslt/meta-finalizer.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/xslt/simple-splitter.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/common/xslt/xml2flow.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/input_format_catalog.xml -text
 Dotify/src/org/daisy/dotify/setups/localization_catalog.xml -text
 Dotify/src/org/daisy/dotify/setups/package-info.java -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishTaskSystemFactory.java -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/config/braille/dtbook.properties -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/sv_SE/config/output_mode_catalog.xml -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/config/text/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishTextSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/localization.xml -text
@@ -243,13 +251,6 @@ Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/SwedishVolumeCoverPage.java -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/VolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/VolumeCoverPageFilter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/VolumeCoverPageTask.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/sv_SE/validation/dtbook.sch -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/doc-files/dtb2obfl.xml -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/doc-files/dtb2obfl_braille.xml -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/dtbook2flow.xsl -text
-Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/dtbook2flow_sv_SE.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/dtbook2flow_sv_SE_braille.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/sv_SE/xslt/dtbook2flow_sv_SE_text.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/AbstractResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/DebugTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/InternalTask.java -text svneol=unset#text/plain
@@ -287,13 +288,13 @@ Dotify/src/org/daisy/dotify/writer/package-info.java -text
 Dotify/test/org/daisy/dotify/book/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/formatter/FormatterFactoryTest.java -text
 Dotify/test/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain
+Dotify/test/org/daisy/dotify/impl/input/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-expected.xml -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-input.xml -text
 Dotify/test/org/daisy/dotify/paginator/PaginatorFactoryTest.java -text
-Dotify/test/org/daisy/dotify/setups/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/tools/StringToolsTest.java -text
 DotifyDevtools/.classpath -text

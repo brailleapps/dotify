@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups;
+package org.daisy.dotify.impl.input;
 
 import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;

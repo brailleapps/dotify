@@ -20,7 +20,7 @@ import org.daisy.dotify.text.FilterLocale;
  * @author Joel Håkansson
  */
 class LocalizationResourceLocator extends AbstractResourceLocator {
-	private final Properties tables;
+	private final Properties locales;
 	
 	/**
 	 * Creates a new instance.
@@ -28,11 +28,11 @@ class LocalizationResourceLocator extends AbstractResourceLocator {
 	LocalizationResourceLocator() {
 		super();
 		Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
-		tables = new Properties();
+		locales = new Properties();
 		try {
 	        URL tablesURL = getResource("localization_catalog.xml");
 	        if(tablesURL!=null){
-	        	tables.loadFromXML(tablesURL.openStream());
+	        	locales.loadFromXML(tablesURL.openStream());
 	        } else {
 	        	logger.warning("Cannot locate catalog file");
 	        }
@@ -43,7 +43,7 @@ class LocalizationResourceLocator extends AbstractResourceLocator {
 
 	private LocalizationResourceLocator(String basePath) {
 		super(basePath);
-		tables = new Properties();
+		locales = new Properties();
 	}
 
 	/**
@@ -53,7 +53,7 @@ class LocalizationResourceLocator extends AbstractResourceLocator {
 	 * @return returns true if the locale is supported, false otherwise
 	 */
 	public boolean supportsLocale(FilterLocale locale) {
-		return tables.getProperty(locale.toString())!=null;
+		return locales.getProperty(locale.toString())!=null;
 	}
 	
 	/**
@@ -63,7 +63,7 @@ class LocalizationResourceLocator extends AbstractResourceLocator {
 	 */
 	public Set<String> listSupportedLocales() {
 		HashSet<String> ret = new HashSet<String>();
-		for (Object key : tables.keySet()) {
+		for (Object key : locales.keySet()) {
 			ret.add(key.toString());
 		}
 		return ret;
@@ -76,7 +76,7 @@ class LocalizationResourceLocator extends AbstractResourceLocator {
 	 * @throws IllegalArgumentException if the locale is not supported
 	 */
 	public ResourceLocator getResourceLocator(FilterLocale locale) {
-		String languageFileRelativePath = tables.getProperty(locale.toString());
+		String languageFileRelativePath = locales.getProperty(locale.toString());
         if(languageFileRelativePath==null) {
         	throw new IllegalArgumentException("Locale not supported: " + locale.toString());
         } else {

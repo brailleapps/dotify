@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups;
+package org.daisy.dotify.impl.input;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,7 +56,7 @@ import org.xml.sax.SAXException;
  *
  */
 class XMLInputManager implements InputManager {
-	private final static String CONFIG_PATH = "config/";
+	private final static String CONFIG_PATH = "config-files/";
 	private final ResourceLocator localLocator;
 	private final ResourceLocator commonLocator;
 	private final String name;
