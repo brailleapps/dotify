@@ -3,6 +3,7 @@ package org.daisy.dotify.setups.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.obfl.ObflResourceLocator;
@@ -44,15 +45,16 @@ public class DefaultTextSystem implements TaskSystem {
 	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
 
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
-		//InputDetector
-		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context);
-		setup.addAll(idts.compile(p));
 		{
-			// Whitespace normalizer TransformerFactoryConstants.SAXON8
 			HashMap<String, Object> h = new HashMap<String, Object>();
 			for (Object key : p.getKeys()) {
 				h.put(key.toString(), p.getProperty(key));
 			}
+			//InputDetector
+			InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context, h.get(SystemKeys.INPUT_FORMAT).toString());
+			setup.addAll(idts.compile(p));
+			
+			// Whitespace normalizer TransformerFactoryConstants.SAXON8
 			setup.add(new XsltTask("OBFL whitespace normalizer",
 									ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
 									null,

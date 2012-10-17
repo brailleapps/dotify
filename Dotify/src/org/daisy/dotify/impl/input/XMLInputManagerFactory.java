@@ -21,7 +21,8 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 		this.locator = new InputLocalizationResourceLocator();
 	}
 
-	public boolean supportsLocale(FilterLocale locale) {
+	public boolean supportsSpecification(FilterLocale locale, String fileFormat) {
+		//TODO: add file format condition
 		return locator.supportsLocale(locale);
 	}
 	
@@ -29,7 +30,7 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 		return locator.listSupportedLocales();
 	}
 
-	public InputManager newInputManager(FilterLocale locale) {
+	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
         return new XMLInputManager(locator.getResourceLocator(locale), new CommonResourceLocator("common"));
 	}
 

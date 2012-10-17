@@ -15,7 +15,7 @@ import org.daisy.dotify.text.FilterLocale;
 
 class DefaultInputManagerFactoryMaker extends InputManagerFactoryMaker {
 	private final List<InputManagerFactory> filters;
-	private final Map<FilterLocale, InputManagerFactory> map;
+	private final Map<String, InputManagerFactory> map;
 	private final Logger logger;
 	
 	public DefaultInputManagerFactoryMaker() {
@@ -25,16 +25,20 @@ class DefaultInputManagerFactoryMaker extends InputManagerFactoryMaker {
 		while (i.hasNext()) {
 			filters.add(i.next());
 		}
-		this.map = new HashMap<FilterLocale, InputManagerFactory>();
+		this.map = new HashMap<String, InputManagerFactory>();
 	}
 	
-	public InputManagerFactory getFactory(FilterLocale locale) {
-		InputManagerFactory template = map.get(locale);
+	private static String toKey(FilterLocale context, String fileFormat) {
+		return context.toString() + "(" + fileFormat + ")";
+	}
+	
+	public InputManagerFactory getFactory(FilterLocale locale, String fileFormat) {
+		InputManagerFactory template = map.get(toKey(locale, fileFormat));
 		if (template==null) {
 			for (InputManagerFactory h : filters) {
-				if (h.supportsLocale(locale)) {
+				if (h.supportsSpecification(locale, fileFormat)) {
 					logger.fine("Found a factory for " + locale + " (" + h.getClass() + ")");
-					map.put(locale, h);
+					map.put(toKey(locale, fileFormat), h);
 					template = h;
 					break;
 				}

@@ -21,6 +21,8 @@ public interface SystemKeys {
 	 * Defines a key for the input file path 
 	 */
 	public final static String INPUT = "input";
+	
+	public final static String INPUT_FORMAT = "inputFormat";
 	/**
 	 * Defines a key for the input uri 
 	 */

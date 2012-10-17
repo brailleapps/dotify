@@ -25,7 +25,7 @@ public class InputManagerFactoryMakerTest {
 		FilterLocale locale = FilterLocale.parse("en-US");
 		
 		//Test
-		assertTrue(factory.getFactory(locale)!=null);
+		assertTrue(factory.getFactory(locale, "xml")!=null);
 	}
 
 }

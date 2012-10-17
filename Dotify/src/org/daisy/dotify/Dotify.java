@@ -90,6 +90,14 @@ public class Dotify {
 		map.putAll(params);
 
 		map.put(SystemKeys.INPUT, input.getAbsolutePath());
+		String inp = input.getName();
+		int inx = inp.lastIndexOf('.');
+		if (inx>-1) {
+			map.put(SystemKeys.INPUT_FORMAT, inp.substring(inx+1));
+		} else {
+			map.put(SystemKeys.INPUT_FORMAT, "");
+		}
+		
 		String outputformat = params.get(SystemKeys.OUTPUT_FORMAT);
 		if (outputformat==null || "".equals(outputformat)) {
 			int indx = output.getName().lastIndexOf('.');

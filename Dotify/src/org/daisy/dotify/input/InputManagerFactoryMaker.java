@@ -2,6 +2,7 @@ package org.daisy.dotify.input;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
 
@@ -24,12 +25,13 @@ public abstract class InputManagerFactoryMaker {
 		return new DefaultInputManagerFactoryMaker();
 	}
 
-	public abstract InputManagerFactory getFactory(FilterLocale locale);
+	public abstract InputManagerFactory getFactory(FilterLocale locale, String fileFormat);
 	
 	public abstract Set<String> listSupportedLocales();
 
-	public InputManager newInputManager(FilterLocale locale) {
-		return getFactory(locale).newInputManager(locale);
+	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
+		Logger.getLogger(this.getClass().getCanonicalName()).fine("Attempt to locate an input manager for " + locale + "/" + fileFormat);
+		return getFactory(locale, fileFormat).newInputManager(locale, fileFormat);
 	}
 
 }

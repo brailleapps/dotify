@@ -107,7 +107,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 		//InputDetector
-		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context);
+		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context, p2.get(SystemKeys.INPUT_FORMAT).toString());
 		setup.addAll(idts.compile(p));
 		
 		// Whitespace normalizer TransformerFactoryConstants.SAXON8

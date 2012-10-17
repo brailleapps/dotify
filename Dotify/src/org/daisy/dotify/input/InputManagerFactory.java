@@ -11,14 +11,14 @@ public interface InputManagerFactory {
 	 * @param locale the locale to test
 	 * @return true if this factory can create instances for the specified locale, false otherwise
 	 */
-	public boolean supportsLocale(FilterLocale locale);
+	public boolean supportsSpecification(FilterLocale locale, String fileFormat);
 	
 	/**
 	 * Returns a new input manager configured for the specified locale.
 	 * @param locale the locale for the new input manager
 	 * @return returns a new input manager
 	 */
-	public InputManager newInputManager(FilterLocale locale);
+	public InputManager newInputManager(FilterLocale locale, String fileFormat);
 	
 	/**
 	 * Lists the supported locales.
