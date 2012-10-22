@@ -159,6 +159,7 @@ Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_text.xsl -t
 Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/xml2flow.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/input_format_catalog.xml -text
 Dotify/src/org/daisy/dotify/impl/input/localization_catalog.xml -text
+Dotify/src/org/daisy/dotify/impl/input/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/braille/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/output_mode_catalog.xml -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/text/dtbook.properties -text svneol=unset#text/plain
