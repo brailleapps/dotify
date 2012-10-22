@@ -18,7 +18,7 @@ class PageSequenceImpl implements PageSequence {
 		private final FormatterFactory formatterFactory;
 		private Formatter formatter;
 		private int keepNextSheets;
-		private boolean newPageOnRow;
+		private PageImpl nextPage;
 		
 		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterFactory formatterFactory) {
 			this.pages = new Stack<PageImpl>();
@@ -28,18 +28,22 @@ class PageSequenceImpl implements PageSequence {
 			this.formatterFactory = formatterFactory;
 			this.formatter = null;
 			this.keepNextSheets = 0;
-			this.newPageOnRow = false;
+			this.nextPage = null;
 		}
 
 		int rowsOnCurrentPage() {
-			return ((PageImpl)currentPage()).rowsOnPage();
+			return currentPage().rowsOnPage();
 		}
 		
 		void newPage() {
-			newPageOnRow = false;
-			pages.push(new PageImpl(this, pages.size()+pagesOffset));
+			if (nextPage!=null) {
+				pages.push(nextPage);
+				nextPage = null;
+			} else {
+				pages.push(new PageImpl(this, pages.size()+pagesOffset));
+			}
 			if (keepNextSheets>0) {
-				((PageImpl)currentPage()).setAllowsVolumeBreak(false);
+				currentPage().setAllowsVolumeBreak(false);
 			}
 			if (!getLayoutMaster().duplex() || getPageCount()%2==0) {
 				if (keepNextSheets>0) {
@@ -49,17 +53,17 @@ class PageSequenceImpl implements PageSequence {
 		}
 		
 		void newPageOnRow() {
-			newPageOnRow = true;
+			nextPage = new PageImpl(this, pages.size()+pagesOffset);
 		}
 		
 		void setKeepWithPreviousSheets(int value) {
-			((PageImpl)currentPage()).setKeepWithPreviousSheets(value);
+			currentPage().setKeepWithPreviousSheets(value);
 		}
 		
 		void setKeepWithNextSheets(int value) {
 			keepNextSheets = Math.max(value, keepNextSheets);
 			if (keepNextSheets>0) {
-				((PageImpl)currentPage()).setAllowsVolumeBreak(false);
+				currentPage().setAllowsVolumeBreak(false);
 			}
 		}
 		
@@ -76,14 +80,18 @@ class PageSequenceImpl implements PageSequence {
 		}
 		
 		PageImpl currentPage() {
-			return pages.peek();
+			if (nextPage!=null) {
+				return nextPage;
+			} else {
+				return pages.peek();
+			}
 		}
 		
 		void newRow(Row row) {
-			if (((PageImpl)currentPage()).rowsOnPage()>=((PageImpl)currentPage()).getFlowHeight() || newPageOnRow) {
+			if (currentPage().rowsOnPage()>=currentPage().getFlowHeight() || nextPage!=null) {
 				newPage();
 			}
-			((PageImpl)currentPage()).newRow(row);
+			currentPage().newRow(row);
 		}
 		
 		void newRow(Row row, String id) {
