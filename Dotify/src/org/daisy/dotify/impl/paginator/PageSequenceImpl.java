@@ -18,6 +18,7 @@ class PageSequenceImpl implements PageSequence {
 		private final FormatterFactory formatterFactory;
 		private Formatter formatter;
 		private int keepNextSheets;
+		private boolean newPageOnRow;
 		
 		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterFactory formatterFactory) {
 			this.pages = new Stack<PageImpl>();
@@ -27,6 +28,7 @@ class PageSequenceImpl implements PageSequence {
 			this.formatterFactory = formatterFactory;
 			this.formatter = null;
 			this.keepNextSheets = 0;
+			this.newPageOnRow = false;
 		}
 
 		int rowsOnCurrentPage() {
@@ -34,6 +36,7 @@ class PageSequenceImpl implements PageSequence {
 		}
 		
 		void newPage() {
+			newPageOnRow = false;
 			pages.push(new PageImpl(this, pages.size()+pagesOffset));
 			if (keepNextSheets>0) {
 				((PageImpl)currentPage()).setAllowsVolumeBreak(false);
@@ -43,6 +46,10 @@ class PageSequenceImpl implements PageSequence {
 					keepNextSheets--;
 				}
 			}
+		}
+		
+		void newPageOnRow() {
+			newPageOnRow = true;
 		}
 		
 		void setKeepWithPreviousSheets(int value) {
@@ -73,7 +80,7 @@ class PageSequenceImpl implements PageSequence {
 		}
 		
 		void newRow(Row row) {
-			if (((PageImpl)currentPage()).rowsOnPage()>=((PageImpl)currentPage()).getFlowHeight()) {
+			if (((PageImpl)currentPage()).rowsOnPage()>=((PageImpl)currentPage()).getFlowHeight() || newPageOnRow) {
 				newPage();
 			}
 			((PageImpl)currentPage()).newRow(row);

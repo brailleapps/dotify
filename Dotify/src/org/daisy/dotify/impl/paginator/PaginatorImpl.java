@@ -94,7 +94,7 @@ public class PaginatorImpl implements Paginator {
 					ex.initCause(new FormatterException("Group margins too large to fit on an empty page."));
 					throw ex;
 				} else if (g.getSpaceBefore()+1>pageStruct.getFlowHeight()-pageStruct.countRows()) {
-					pageStruct.newPage();
+					pageStruct.currentSequence().newPageOnRow();
 				}
 				for (int i=0; i<g.getSpaceBefore();i++) {
 					pageStruct.newRow(new Row(""));
@@ -121,7 +121,7 @@ public class PaginatorImpl implements Paginator {
 				}
 				pageStruct.currentSequence().setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
 				if (g.getSpaceAfter()>=pageStruct.getFlowHeight()-pageStruct.countRows()) {
-					pageStruct.newPage();
+					pageStruct.currentSequence().newPageOnRow();
 				} else {
 					for (int i=0; i<g.getSpaceAfter();i++) {
 						pageStruct.newRow(new Row(""));
