@@ -28,6 +28,19 @@ public interface ConfigurationsProvider {
 	 */
 	//public URL getConfigurationURL(String identifier) throws ResourceLocatorException;
 	
+	/**
+	 * Returns the properties associated with the specified by the identifier.
+	 * @param identifier the configuration key
+	 * @return returns the configuration properties
+	 * @throws ResourceLocatorException if identifier is unknown.
+	 */
 	public Properties getConfiguration(String identifier) throws ResourceLocatorException;
+	
+	/**
+	 * Gets the description for a specified configuration.
+	 * @param identifier the configuration key
+	 * @return returns the description, or null
+	 */
+	public String getConfigurationDescription(String identifier);
 	
 }

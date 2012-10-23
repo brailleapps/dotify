@@ -25,6 +25,7 @@ public class DefaultConfigurationsProvider extends AbstractResourceLocator imple
 	private final static String PRESETS_PATH = "resource-files/";
 	private final Logger logger;
 	private final Properties props = new Properties();
+	private Properties descs = null;
 	private final Map<String, String> urls;
 	
 	/**
@@ -70,6 +71,24 @@ public class DefaultConfigurationsProvider extends AbstractResourceLocator imple
 			throw new ResourceLocatorException("IOException while reading configuration file: " + configURL, e);
 		}
 		return p;
+	}
+
+	public String getConfigurationDescription(String identifier) {
+		if (descs == null) {
+			descs = new Properties();
+			try {
+				URL url = getResource("presets_descriptions.xml");
+				descs.loadFromXML(url.openStream());
+			} catch (ResourceLocatorException e) {
+				logger.log(Level.FINE, "Problem reading catalog descriptions", e);
+			} catch (InvalidPropertiesFormatException e) {
+				logger.log(Level.FINE, "Problem reading catalog descriptions", e);
+			} catch (IOException e) {
+				logger.log(Level.FINE, "Problem reading catalog descriptions", e);
+			}
+			
+		}
+		return descs.getProperty(identifier);
 	}
 
 }

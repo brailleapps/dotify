@@ -48,5 +48,12 @@ public abstract class ConfigurationsCatalog {
 	 * @throws ResourceLocatorException if identifier is unknown.
 	 */
 	public abstract Properties getConfiguration(String identifier) throws ResourceLocatorException;
+	
+	/**
+	 * Gets the description for a specified configuration.
+	 * @param identifier the configuration key
+	 * @return returns the description, or null
+	 */
+	public abstract String getConfigurationDescription(String identifier);
 
 }

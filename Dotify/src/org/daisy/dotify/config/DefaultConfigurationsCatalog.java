@@ -50,4 +50,14 @@ class DefaultConfigurationsCatalog extends ConfigurationsCatalog {
 		}
 	}
 
+	@Override
+	public String getConfigurationDescription(String identifier) {
+		ConfigurationsProvider provider = map.get(identifier);
+		if (provider!=null) {
+			return provider.getConfigurationDescription(identifier);
+		} else {
+			return "";
+		}
+	}
+
 }

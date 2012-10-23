@@ -35,8 +35,8 @@ public class Main extends AbstractUI {
 		{
 			ArrayList<Definition> vals = new ArrayList<Definition>();
 			ConfigurationsCatalog c = ConfigurationsCatalog.newInstance();
-			for (Object o : c.getKeys()) {
-				vals.add(new Definition(o.toString(), "A setup"));
+			for (String o : c.getKeys()) {
+				vals.add(new Definition(o, c.getConfigurationDescription(o)));
 			}
 			vals.add(new Definition("[other]", "Path to setup file"));
 			reqArgs.add(new Argument("setup", "The formatting setup to use", vals));

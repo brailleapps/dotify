@@ -125,6 +125,7 @@ Dotify/src/org/daisy/dotify/impl/FormatterProxyImpl.java -text
 Dotify/src/org/daisy/dotify/impl/PaginatorProxyImpl.java -text
 Dotify/src/org/daisy/dotify/impl/config/DefaultConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/impl/config/presets_catalog.xml -text
+Dotify/src/org/daisy/dotify/impl/config/presets_descriptions.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w32.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w35.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w42.xml -text
