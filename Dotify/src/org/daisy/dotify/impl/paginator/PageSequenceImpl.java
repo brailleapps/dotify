@@ -53,6 +53,10 @@ class PageSequenceImpl implements PageSequence {
 		}
 		
 		void newPageOnRow() {
+			if (nextPage!=null) {
+				//if new page is already in buffer, flush it.
+				newPage();
+			}
 			nextPage = new PageImpl(this, pages.size()+pagesOffset);
 		}
 		
