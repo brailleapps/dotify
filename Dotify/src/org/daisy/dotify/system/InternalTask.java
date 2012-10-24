@@ -17,22 +17,17 @@
  */
 package org.daisy.dotify.system;
 
-import java.io.File;
 
 /**
- * <p>Abstract base class for internal tasks.</p>
+ * <p>Abstract base class for internal tasks. Refer the direct subclasses of this class for more information.</p>
  * 
- * <p>InternalTask is an interface designed for a transformer internal 
- * conversion pipeline. Tasks are chained by file exchange.</p>
- * 
- * <p>The design is based on se_tpb_dtbookFix.Executor by Markus Gylling</p>
  * @author Joel Håkansson
  */
 public abstract class InternalTask {
 	protected String name = null;
 
 	/**
-	 * Constructor.
+	 * Creates a new internal task with the specfied name.
 	 * @param name a descriptive name for the task
 	 */
 	protected InternalTask(String name) {
@@ -46,13 +41,5 @@ public abstract class InternalTask {
 	public String getName() {
 		return name;
 	}
-
-	/**
-	 * Apply the task to <code>input</code> and place the result in <code>output</code>.
-	 * @param input input file
-	 * @param output output file
-	 * @throws InternalTaskException throws InternalTaskException if something goes wrong.
-	 */
-	public abstract void execute(File input, File output) throws InternalTaskException;
 
 }

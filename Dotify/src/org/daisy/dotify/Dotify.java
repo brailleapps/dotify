@@ -6,14 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -21,18 +18,15 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.setups.LocalizationManager;
-import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
+import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.system.TaskSystemFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.tools.Progress;
-import org.daisy.util.file.FileJuggler;
-import org.daisy.util.file.FileUtils;
 
 /**
  * Provides an entry point for simple embedding of Dotify. To run, call <tt>Dotify.run</tt>.
@@ -41,20 +35,12 @@ import org.daisy.util.file.FileUtils;
  *
  */
 public class Dotify {
-	final static String TEMP_DIR;// = System.getProperty("java.io.tmpdir");
 	private final static HashMap<String, String> extensionBindings;
 	static {
 		extensionBindings = new HashMap<String, String>();
 		extensionBindings.put(".pef", SystemKeys.PEF_FORMAT);
 		extensionBindings.put(".txt", SystemKeys.TEXT_FORMAT);
 		extensionBindings.put(".obfl", SystemKeys.OBFL_FORMAT);
-		String path = System.getProperty("java.io.tmpdir");
-		if (path!=null && !"".equals(path) && new File(path).isDirectory()) {
-			TEMP_DIR = path;
-		} else {
-			// user.home is guaranteed to be defined
-			TEMP_DIR = System.getProperty("user.home");
-		}
 	}
 	
 	private final boolean writeTempFiles;
@@ -75,12 +61,9 @@ public class Dotify {
 	 * @throws InternalTaskException
 	 */
 	public static void run(File input, File output, String setup, FilterLocale context, Map<String, String> params) throws IOException, InternalTaskException {
-		Progress progress = new Progress();
-		Dotify d = new Dotify(params);
 		
-		sendMessage(SystemProperties.SYSTEM_NAME + " started on " + progress.getStart());
+		Dotify d = new Dotify(params);
 
-		File debug = new File(TEMP_DIR);
 		String cols = params.get("cols");
 		if (cols==null || "".equals(cols)) {
 			params.remove("cols");
@@ -123,13 +106,8 @@ public class Dotify {
 			dateFormat = SystemProperties.DEFAULT_DATE_FORMAT;
 			map.put(SystemKeys.DATE_FORMAT, dateFormat);
 		}
-		String tempFilesDirectory = params.get(SystemKeys.TEMP_FILES_DIRECTORY);
-		if (tempFilesDirectory!=null && !"".equals(tempFilesDirectory)) {
-			File f = new File(tempFilesDirectory);
-			if (f.isDirectory()) {
-				debug = f;
-			}
-		}
+		final String tempFilesDirectory = params.get(SystemKeys.TEMP_FILES_DIRECTORY);
+
 		if (map.get(SystemKeys.DATE)==null || "".equals(map.get(SystemKeys.DATE))) {
 			map.put(SystemKeys.DATE, getDefaultDate(dateFormat));
 		}
@@ -160,47 +138,32 @@ public class Dotify {
 			}
 		}
 		
+		TaskRunner tr = new TaskRunner();
+		tr.setWriteTempFiles(d.writeTempFiles);
+		if (tempFilesDirectory!=null && !"".equals(tempFilesDirectory)) {
+			tr.setTempFilesFolder(new File(tempFilesDirectory));
+		}
+		System.out.println(System.currentTimeMillis());
+
+		tr.setIdentifier("Dotify@" + Integer.toHexString((int)(System.currentTimeMillis()-1261440000000l)));
+
 		// Load setup
-		List<InternalTask> tasks = d.loadSetup(map, setup, outputformat, context);
+		RunParameters rp = d.loadSetup(map, setup, outputformat, context);
 
 		// Run tasks
-		FileJuggler fj = new FileJuggler(input, output);
-		
-		d.runTasks(tasks, fj, progress, debug);
-		
-		fj.close();
-		
-		sendMessage(SystemProperties.SYSTEM_NAME + " finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
-	}
-	
-	private void runTasks(List<InternalTask> tasks, FileJuggler fj, Progress progress, File debug) throws InternalTaskException, IOException {
-		double i = 0;
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		for (InternalTask task : tasks) {
-			sendMessage("Running " + task.getName());
-			task.execute(fj.getInput(), fj.getOutput());
-			if (writeTempFiles) {
-				String it = ""+((int)i+1);
-				while (it.length()<3) {
-					it = "0" + it; 
-				}
-				File f = new File(debug, "debug_dotify_" + it + "_" + task.getName().replaceAll("[\\s:]+", "_"));
-				Logger.getLogger(Dotify.class.getCanonicalName()).fine("Writing debug file: " + f);
-				FileUtils.copy(fj.getOutput(), f);
+		try {
+			TaskSystem ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
+			try {
+				tr.runTasks(input, output, ts, rp);
+			} catch (TaskSystemException e) {
+				throw new RuntimeException("Unable to run '" +ts.getName() + "' with parameters " + rp, e);
 			}
-			fj.swap();
-			i++;
-			progress.updateProgress(i/tasks.size());
-			sendMessage(nf.format(progress.getProgress()) + " done. ETA " + progress.getETA());
-			//progress(i/tasks.size());
+		} catch (TaskSystemFactoryException e) {
+			throw new RuntimeException("Unable to retrieve a TaskSystem", e);
 		}
 	}
 	
-	private List<InternalTask> loadSetup(Map<String, String> map, String setup, String outputformat, FilterLocale context) throws MalformedURLException {
-		ArrayList<InternalTask> tasks = new ArrayList<InternalTask>();
-		TaskSystem ts = null;
-
-
+	private RunParameters loadSetup(Map<String, String> map, String setup, String outputformat, FilterLocale context) throws MalformedURLException {
 		ConfigurationsCatalog cm = ConfigurationsCatalog.newInstance();
 		Properties p;
 		try {
@@ -219,19 +182,7 @@ public class Dotify {
 				throw new RuntimeException("IOException while reading configuration file: " + configURL, e2);
 			}
 		}
-		RunParameters rp = RunParameters.load(p, map);
-
-		try {
-			ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);	
-			sendMessage("Adding tasks from TaskSystem: " + ts.getName());
-			tasks.addAll(ts.compile(rp));
-		} catch (TaskSystemException e) {
-			throw new RuntimeException("Unable to load '" + (ts!=null?ts.getName():"") + "' with parameters " + rp, e);
-		} catch (TaskSystemFactoryException e) {
-			throw new RuntimeException("Unable to retrieve a TaskSystem", e);
-		}
-		sendMessage("About to run TaskSystem \"" + (ts!=null?ts.getName():"") + "\" with parameters " + rp);
-		return tasks;
+		return RunParameters.load(p, map);
 	}
 	
 	static String getDefaultDate(String dateFormat) {
@@ -241,7 +192,4 @@ public class Dotify {
 		return sdf.format(c.getTime());
 	}
 
-	private static void sendMessage(String msg) {
-		Logger.getLogger(Dotify.class.getCanonicalName()).log(Level.INFO, msg);
-	}
 }

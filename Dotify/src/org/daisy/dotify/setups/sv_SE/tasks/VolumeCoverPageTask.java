@@ -16,8 +16,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.InternalTaskException;
+import org.daisy.dotify.system.ReadWriteTask;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;
 import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
 import org.daisy.util.xml.stax.StaxEntityResolver;
@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
  * @author Joel Håkansson, TPB
  * @deprecated replaced by the volume-template feature in OBFL
  */
-public class VolumeCoverPageTask extends InternalTask {
+public class VolumeCoverPageTask extends ReadWriteTask {
 	private final VolumeCoverPage frontCover;
 	private final VolumeCoverPage rearCover;
 

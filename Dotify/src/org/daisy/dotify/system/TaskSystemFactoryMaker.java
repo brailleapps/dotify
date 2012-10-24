@@ -13,9 +13,11 @@ import org.daisy.dotify.text.FilterLocale;
 
 
 /**
- * Entry point for retrieving a TaskSystem implementation. Modify this file to 
- * add new TaskSystems.
- * @author Joel Håkansson, TPB
+ * Entry point for retrieving a TaskSystem implementation. This class will
+ * locate all TaskSystemFactory implementations available to the java
+ * services API.
+ * 
+ * @author Joel Håkansson
  *
  */
 public class TaskSystemFactoryMaker {

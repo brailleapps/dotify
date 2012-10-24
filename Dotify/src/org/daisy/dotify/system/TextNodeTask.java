@@ -18,11 +18,11 @@ import org.daisy.util.xml.stax.StaxEntityResolver;
  * <p>Task that runs a list of StringFilters on the character data of the input file.</p>
  * <p>Input file type requirement: XML</p>
  * 
- * @author  Joel Håkansson, TPB
+ * @author  Joel Håkansson
  * @version 4 maj 2009
  * @since 1.0
  */
-public class TextNodeTask extends InternalTask {
+public class TextNodeTask extends ReadWriteTask {
 	private StringFilter filters;
 
 	/**

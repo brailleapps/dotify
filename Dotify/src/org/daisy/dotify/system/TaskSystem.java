@@ -10,7 +10,7 @@ import java.util.List;
  * constructor arguments.
  * 
  * Implement this interface to create a new TaskSystem.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 public interface TaskSystem {

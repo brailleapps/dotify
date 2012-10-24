@@ -1,7 +1,6 @@
 package org.daisy.dotify.system;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -9,7 +8,6 @@ import java.util.logging.Logger;
 
 import javax.xml.transform.TransformerException;
 
-import org.daisy.util.file.FileUtils;
 import org.daisy.util.xml.validation.SimpleValidator;
 import org.daisy.util.xml.validation.ValidationException;
 import org.xml.sax.ErrorHandler;
@@ -21,10 +19,10 @@ import org.xml.sax.SAXParseException;
  * the output file, to conform with the contract of an {@link InternalTask}.</p>
  * <p>The tasks throws an exception if anything goes wrong.</p>
  * <p>Input file type requirement: XML</p>
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
-public class ValidatorTask extends InternalTask {
+public class ValidatorTask extends ReadOnlyTask {
 	final static String SCHEMATRON_PROPERTY_KEY = "javax.xml.validation.SchemaFactory:http://www.ascc.net/xml/schematron";
 	final static String SCHEMATRON_PROPERTY_VALUE = "org.daisy.util.xml.validation.jaxp.SchematronSchemaFactory";
 	private URL schema;
@@ -58,16 +56,16 @@ public class ValidatorTask extends InternalTask {
 	}
 
 	@Override
-	public void execute(File input, File output) throws InternalTaskException {
+	public void execute(File input) throws InternalTaskException {
 		try {
 			boolean ret = validate(input, schema);
-			FileUtils.copy(input, output);
+			//FileUtils.copy(input, output);
 			if (ret) {
 				return;
 			}
-		} catch (IOException e) {
+		} /*catch (IOException e) {
 			throw new InternalTaskException("Failed to copy file.", e);
-		} catch (ValidatorException e) {
+		} */catch (ValidatorException e) {
 			throw new InternalTaskException("Validation failed.", e);
 		}
 		throw new InternalTaskException("Validation failed.");

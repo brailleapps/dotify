@@ -15,7 +15,7 @@ class StaticVolumeCoverPage implements VolumeCoverPage {
 		this.rows = rows;
 	}
 
-	public List<Row> buildPage(int volumeNo, int volumeCount) {
+	public List<Row> buildPage(int volumeNo, int volumeCount, int pageHeight) {
 		return rows;
 	}
 

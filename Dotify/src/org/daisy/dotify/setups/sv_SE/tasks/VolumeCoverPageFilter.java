@@ -24,6 +24,7 @@ class VolumeCoverPageFilter extends StaxFilter2 {
 	private final VolumeCoverPage cover;
 	private final VolumeCoverPage rearCover;
 	private final int vols;
+	private int rows;
 	private boolean firstSection;
 	private int volumeNo;
 
@@ -40,18 +41,19 @@ class VolumeCoverPageFilter extends StaxFilter2 {
 		this.cover = cover;
 		this.rearCover = rearCover;
 		this.vols = vols;
+		this.rows = 0;
 		firstSection = true;
 		volumeNo = 0;
 	}
 
     protected StartElement startElement(StartElement event) {
     	if (event.getName().equals(section) && firstSection) {
-    		writeSection(cover.buildPage(volumeNo, vols));
+    		writeSection(cover.buildPage(volumeNo, vols, rows));
 			firstSection = false;
     	} else if (event.getName().equals(volume)) {
     		volumeNo++;
     		firstSection = true;
-    		//rows = Integer.parseInt(event.getAttributeByName(new QName("rows")).getValue());
+    		rows = Integer.parseInt(event.getAttributeByName(new QName("rows")).getValue());
     		//cols = Integer.parseInt(event.getAttributeByName(new QName("cols")).getValue());
     	}
         return event;
@@ -59,7 +61,7 @@ class VolumeCoverPageFilter extends StaxFilter2 {
     
     protected EndElement endElement(EndElement event) {
     	if (rearCover != null && event.getName().equals(volume)) {
-    		writeSection(rearCover.buildPage(volumeNo, vols));
+    		writeSection(rearCover.buildPage(volumeNo, vols, rows));
     	}
         return event;
     }

@@ -6,7 +6,6 @@ import java.util.Properties;
 public class RunParameters {
 	private final Properties p;
 	private final int flowWidth;
-	private final int pageHeight;
 	private final int innerMargin;
 	private final int outerMargin;
 	private final float rowgap;
@@ -14,7 +13,7 @@ public class RunParameters {
 	private RunParameters(Properties p) {
 		this.p = p;
 		this.flowWidth = Integer.parseInt(p.getProperty("cols", "28"));
-		this.pageHeight = Integer.parseInt(p.getProperty("rows", "29"));
+		int pageHeight = Integer.parseInt(p.getProperty("rows", "29"));
 		this.innerMargin = Integer.parseInt(p.getProperty("inner-margin", "5"));
 		this.outerMargin = Integer.parseInt(p.getProperty("outer-margin", "2"));
 		this.rowgap = Float.parseFloat(p.getProperty("rowgap", "0"));
@@ -51,10 +50,10 @@ public class RunParameters {
 
 	/**
 	 * @return the pageHeight
-	 */
+	 *//*
 	public int getPageHeight() {
 		return pageHeight;
-	}
+	}*/
 
 	/**
 	 * @return the innerMargin

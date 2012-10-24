@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-/*import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;*/
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,8 +12,12 @@ import org.daisy.braille.ui.AbstractUI;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTaskException;
+import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.text.FilterLocale;
+/*import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;*/
 
 /**
  * Provides a command line entry point to Dotify.
@@ -66,7 +67,7 @@ public class Main extends AbstractUI {
 			vals.add(new Definition("false", "does not output temp files"));
 			optionalArgs.add(new OptionalArgument(SystemKeys.WRITE_TEMP_FILES, "Writes temp files", vals, "true"));
 		}
-		optionalArgs.add(new OptionalArgument(SystemKeys.TEMP_FILES_DIRECTORY, "Path to temp files directory", Dotify.TEMP_DIR));
+		optionalArgs.add(new OptionalArgument(SystemKeys.TEMP_FILES_DIRECTORY, "Path to temp files directory", TaskRunner.TEMP_DIR));
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE, "Sets date in meta data (if available)", Dotify.getDefaultDate(SystemProperties.DEFAULT_DATE_FORMAT)));
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE_FORMAT, "Date format in meta data (if available and date is not specified)", SystemProperties.DEFAULT_DATE_FORMAT));
 	}

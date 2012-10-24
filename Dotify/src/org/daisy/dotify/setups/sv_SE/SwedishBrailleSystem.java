@@ -37,28 +37,15 @@ import org.xml.sax.SAXException;
 
 
 /**
- * <p>Transforms a DTBook 2005-3 into Swedish braille in PEF 2008-1 format.
- * The input DTBook should be hyphenated (using SOFT HYPHEN U+00AD) at all
- * breakpoints prior to conversion.</p>
+ * <p>Transforms XML into Swedish braille in PEF 2008-1 format.</p>
  * 
  * <p>This TaskSystem consists of the following steps:</p>
  * <ol>
-	 * <li>Conformance checker.
-	 * 		Checks that the input meets some basic requirements.</li>
-	 * <li>DTBook to FLOW converter.
-	 * 		Inserts braille characters preceding
-	 * 		numbers and capital letters, inserts braille markers where inline structural
-	 * 		markup such as <tt>em</tt> and <tt>strong</tt> occur and converts the DTBook
-	 * 		structure into a flow definition, similar to XSL-FO.</li>
-	 * <li>FLOW whitespace normalizer</li>
-	 * <li>FLOW to PEF converter.
+	 * <li>Input Manager. Validates and converts input to OBFL.</li>
+	 * <li>Whitespace normalizer. Normalizes OBFL whitespace.</li>
+	 * <li>OBFL to PEF converter.
 	 * 		Translates all characters into braille, and puts the text flow onto pages.</li>
-	 * <li>Volume splitter.
-	 * 		The output from the preceding step is a single volume that is split into volumes.</li>
 	 * <li>Cover page adder</li>
-	 * <li>Braille finalizer.
-	 * 		Replaces any remaining non-braille characters, e.g. spaces and hyphens, with
-	 * 		braille characters.</li>
 	 * <li>Meta data finalizer</li>
 
  * </ol>
@@ -161,7 +148,7 @@ public class SwedishBrailleSystem implements TaskSystem {
     						build();
     	SwedishVolumeCoverPage cover;
 		try {
-			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, bt, p.getPageHeight());
+			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, bt);
 		} catch (XPathExpressionException e) {
 			throw new TaskSystemException(e);
 		} catch (ParserConfigurationException e) {

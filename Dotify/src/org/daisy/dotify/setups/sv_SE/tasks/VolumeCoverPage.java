@@ -17,6 +17,6 @@ interface VolumeCoverPage {
 	 * @param volumeCount
 	 * @return returns the page as an ArrayList of Rows
 	 */
-	List<Row> buildPage(int volumeNo, int volumeCount);
+	List<Row> buildPage(int volumeNo, int volumeCount, int height);
 
 }

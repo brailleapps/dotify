@@ -29,9 +29,9 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
 	//private int rows;
 	//private int cols;
 	private TextBorder tb;
-	private int height;
+	//private int height;
 
-	public SwedishVolumeCoverPage(File dtbook, TextBorder tb, BrailleTranslator filters, int height) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+	public SwedishVolumeCoverPage(File dtbook, TextBorder tb, BrailleTranslator filters) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		DocumentBuilder docBuilder = initDocumentBuilder();
 		Document d = docBuilder.parse(dtbook);
 		XPath xp = XPathFactory.newInstance().newXPath();
@@ -43,7 +43,7 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
 		}
 		this.tb = tb;
 		this.filters = filters;
-		this.height = height;
+		//this.height = height;
 	}
 	
 	protected DocumentBuilder initDocumentBuilder() throws ParserConfigurationException {
@@ -59,7 +59,7 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
 		return db;
 	}
 	
-	public ArrayList<Row> buildPage(int volumeNo, int volumeCount) {
+	public ArrayList<Row> buildPage(int volumeNo, int volumeCount, int pageHeight) {
 
     	ArrayList<Row> ret = new ArrayList<Row>();
     	ret.add(new Row(tb.getTopBorder()));
@@ -100,14 +100,14 @@ public class SwedishVolumeCoverPage implements VolumeCoverPage {
     	filters.setHyphenating(false);
     	ArrayList<String> vol = tb.addBorderToParagraph(filters.translate(voltext));
     	filters.setHyphenating(true);
-    	while (ret.size()<height-vol.size()-1) {
+    	while (ret.size()<pageHeight-vol.size()-1) {
     		ret.add(new Row(tb.addBorderToRow("")));
     	}
     	for (String s : vol) {
     		ret.add(new Row(s));
     	}
     	ret.add(new Row(tb.getBottomBorder()));
-    	if (ret.size()>height) {
+    	if (ret.size()>pageHeight) {
     		throw new RuntimeException("Unable to perform layout. Title page contains too many rows.");
     	}
     	return ret;

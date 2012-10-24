@@ -25,19 +25,16 @@ import org.daisy.dotify.writer.WriterHandler;
 
 /**
  * <p>
- * The LayoutEngineTask converts a FLOW-file into a file format defined by the
+ * The LayoutEngineTask converts an OBFL-file into a file format defined by the
  * supplied {@link PagedMediaWriter}.</p>
  * 
  * <p>The LayoutEngineTask is an advanced text-only layout system.</p>
- * <p>Input file must be of type FLOW.</p>
- * <p>The rendering is done in two steps:</p>
- * <ol>
- * 	<li></li>
- * </ol>
- * @author Joel Håkansson, TPB
+ * <p>Input file must be of type OBFL.</p>
+ * 
+ * @author Joel Håkansson
  *
  */
-public class LayoutEngineTask extends InternalTask  {
+public class LayoutEngineTask extends ReadWriteTask  {
 	private final BrailleTranslator translator;
 	//private final FilterLocale locale;
 	private final PagedMediaWriter writer;

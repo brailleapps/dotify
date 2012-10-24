@@ -15,7 +15,7 @@ import org.daisy.util.xml.xslt.XSLTException;
  * @version 4 maj 2009
  * @since 1.0
  */
-public class XsltTask extends InternalTask {
+public class XsltTask extends ReadWriteTask {
 	final URL url;
 	final String factory;
 	final Map<String, Object> options;
