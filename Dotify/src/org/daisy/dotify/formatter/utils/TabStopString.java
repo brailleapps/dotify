@@ -1,8 +1,18 @@
 package org.daisy.dotify.formatter.utils;
 
-import java.util.TreeSet;
 
+/**
+ * Provides a tab stop string. A tab stop string is a data object
+ * containg a string, a position, an alignment and a fill pattern.
+ * This information can be used to place the string at the appropriate 
+ * position on a row with the specified formatting. 
+ * 
+ * @author Joel Håkansson
+ */
 public class TabStopString implements Comparable<TabStopString> {
+	/**
+	 * Provides alignment options for a tab stop
+	 */
 	public enum Alignment {
 		/**
 		 * Text run to the right of the specified position
@@ -144,20 +154,5 @@ public class TabStopString implements Comparable<TabStopString> {
 			return false;
 		return true;
 	}
-
-    public static void main(String args[]) {
-    	TreeSet<TabStopString> ts = new TreeSet<TabStopString>();
-    	ts.add(new TabStopString("Text1", 15));
-    	ts.add(new TabStopString("Text2", 13));
-    	ts.add(new TabStopString("Text3", 3));
-    	ts.add(new TabStopString("Text4", 27));
-    	ts.add(new TabStopString("Text", 11, Alignment.CENTER));
-    	ts.add(new TabStopString("Text", 11));
-    	ts.add(new TabStopString("Text", 11,  Alignment.LEFT, "1"));
-    	for (TabStopString tss : ts) {
-    		System.out.println(tss.toString());
-    	}
-    	System.out.println(new TabStopString("Text", 1).equals(new TabStopString("Text", 1)));
-    }
 	
 }

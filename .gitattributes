@@ -190,7 +190,6 @@ Dotify/src/org/daisy/dotify/impl/system/common/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/system/common/resource-files/braille-finalizer.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/resource-files/meta-finalizer.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/resource-files/simple-splitter.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/StaticVolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishTaskSystemFactory.java -text
@@ -199,7 +198,6 @@ Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPage.java -text svneol=
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPageFilter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPageTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/doc-files/SwedishTextSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/package-info.java -text
 Dotify/src/org/daisy/dotify/input/DefaultInputManagerFactoryMaker.java -text
 Dotify/src/org/daisy/dotify/input/InputManager.java -text svneol=unset#text/plain
@@ -298,6 +296,7 @@ Dotify/src/org/daisy/dotify/writer/package-info.java -text
 Dotify/test/org/daisy/dotify/book/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/formatter/FormatterFactoryTest.java -text
 Dotify/test/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain
+Dotify/test/org/daisy/dotify/formatter/utils/TabStopStringTest.java -text
 Dotify/test/org/daisy/dotify/impl/input/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain

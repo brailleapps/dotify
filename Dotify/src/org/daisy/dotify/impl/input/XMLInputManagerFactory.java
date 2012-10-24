@@ -14,6 +14,16 @@ import org.daisy.dotify.system.AbstractResourceLocator;
 import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.text.FilterLocale;
 
+/**
+ * Provides an XML input manager factory. This can be used when implementing
+ * XML-formats in this package. It is specifically designed to inject the 
+ * correct validation rules and XSLT stylesheet for any XML-format and locale
+ * combination into the task chain. See the package documentation for information
+ * on how to extend it.
+ * 
+ * @author Joel Håkansson
+ *
+ */
 public class XMLInputManagerFactory implements InputManagerFactory {
 	private final InputLocalizationResourceLocator locator;
 	

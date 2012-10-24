@@ -6,8 +6,6 @@
  * <ul>
  * <li><a href="doc-files/SwedishBrailleSystem.html">Configuration Overview -
  * Swedish Braille System</a></li>
- * <li><a href="doc-files/SwedishTextSystem.html">Configuration Overview -
- * Swedish Text System</a></li>
  * </ul>
  * 
  * <p><b>IMPORTANT: This package contains implementations that should only be 

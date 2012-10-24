@@ -5,7 +5,11 @@ import java.util.List;
 import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.Marker;
 
-
+/**
+ * Provides a manager for a number of rows.
+ * 
+ * @author Joel Håkansson
+ */
 public interface RowDataManager extends Iterable<Row> {
 
 	public List<Marker> getGroupMarkers(); 

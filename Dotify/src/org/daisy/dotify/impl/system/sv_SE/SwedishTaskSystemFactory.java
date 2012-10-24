@@ -6,6 +6,11 @@ import org.daisy.dotify.system.TaskSystemFactory;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.text.FilterLocale;
 
+/**
+ * Provides a Swedish task system factory for PEF and OBFL output.
+ * 
+ * @author Joel Håkansson
+ */
 public class SwedishTaskSystemFactory implements TaskSystemFactory {
 
 	public boolean supportsSpecification(FilterLocale locale, String outputFormat) {

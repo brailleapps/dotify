@@ -2,6 +2,13 @@ package org.daisy.dotify.system;
 
 import org.daisy.dotify.text.FilterLocale;
 
+/**
+ * Provides an interface for task system factories. A
+ * task system factory implementation can provide
+ * task system instances for any number of specifications.
+ * 
+ * @author Joel Håkansson
+ */
 public interface TaskSystemFactory {
 	
 	/**

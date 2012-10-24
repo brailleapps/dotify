@@ -23,11 +23,9 @@ import org.daisy.dotify.writer.TextMediaWriter;
 
 
 /**
- * <p>Transforms a DTBook 2005-3 into text format.
- * The input DTBook should be hyphenated (using SOFT HYPHEN U+00AD) at all
- * breakpoints prior to conversion.</p>
- * @author Joel Håkansson, TPB
- *
+ * <p>Transforms documents into text format.</p>
+ * 
+ * @author Joel Håkansson
  */
 public class DefaultTextSystem implements TaskSystem {
 	private final String name;

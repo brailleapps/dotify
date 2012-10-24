@@ -15,12 +15,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * <p>This tasks validates the input file against the given schema and copies the original file to 
- * the output file, to conform with the contract of an {@link InternalTask}.</p>
- * <p>The tasks throws an exception if anything goes wrong.</p>
+ * <p>This task validates the input file against the given schema. The 
+ * task throws an exception if anything goes wrong.</p>
+ * 
  * <p>Input file type requirement: XML</p>
+ * 
  * @author Joel Håkansson
- *
  */
 public class ValidatorTask extends ReadOnlyTask {
 	final static String SCHEMATRON_PROPERTY_KEY = "javax.xml.validation.SchemaFactory:http://www.ascc.net/xml/schematron";

@@ -3,6 +3,15 @@ package org.daisy.dotify.system;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Provides parameters needed when running a Task system.
+ * NOTE: some default properties are set in this class.
+ * This behavior is misplaced and will be removed in future
+ * versions. Users of this class are advised not to rely 
+ * on the existence of these properties.
+ * 
+ * @author Joel Håkansson
+ */
 public class RunParameters {
 	private final Properties p;
 	private final int flowWidth;

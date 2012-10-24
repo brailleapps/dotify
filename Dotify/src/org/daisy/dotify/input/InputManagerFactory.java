@@ -4,6 +4,13 @@ import java.util.Set;
 
 import org.daisy.dotify.text.FilterLocale;
 
+/**
+ * Provides an interface for input manager factories. An input manager
+ * factory implementation provides input managers for a any number of 
+ * supported specifications.
+ * 
+ * @author Joel Håkansson
+ */
 public interface InputManagerFactory {
 	
 	/**

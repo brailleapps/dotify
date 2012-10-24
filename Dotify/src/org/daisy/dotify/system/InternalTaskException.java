@@ -4,7 +4,7 @@ package org.daisy.dotify.system;
  * An InternalTaskException is an exception that indicates 
  * conditions in an {@link InternalTask} that a reasonable 
  * application might want to catch.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class InternalTaskException extends TaskSystemException {
 

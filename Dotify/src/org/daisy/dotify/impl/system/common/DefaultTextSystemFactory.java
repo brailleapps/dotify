@@ -6,6 +6,11 @@ import org.daisy.dotify.system.TaskSystemFactory;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.text.FilterLocale;
 
+/**
+ * Provides a default text system factory.
+ * 
+ * @author Joel Håkansson
+ */
 public class DefaultTextSystemFactory implements TaskSystemFactory {
 
 	public boolean supportsSpecification(FilterLocale locale, String outputFormat) {

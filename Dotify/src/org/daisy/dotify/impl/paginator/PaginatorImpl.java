@@ -13,7 +13,12 @@ import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.RowDataManager;
 import org.daisy.dotify.tools.StateObject;
 
-
+/**
+ * Provides an implementation of the paginator interface. This class should
+ * not be used directly, use the corresponding factory methods instead.
+ * 
+ * @author Joel Håkansson
+ */
 public class PaginatorImpl implements Paginator {
 	private StateObject state;
 	private FormatterFactory formatterFactory;
