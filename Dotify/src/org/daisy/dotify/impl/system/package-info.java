@@ -6,4 +6,4 @@
  * 
  * @author Joel Håkansson
  */
-package org.daisy.dotify.setups;
+package org.daisy.dotify.impl.system;

@@ -18,8 +18,6 @@ import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
 import org.daisy.dotify.setups.common.CommonResourceLocator.CommonResourceIdentifier;
-import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
-import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.RunParameters;

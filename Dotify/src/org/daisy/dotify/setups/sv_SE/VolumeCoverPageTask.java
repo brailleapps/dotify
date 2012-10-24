@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups.sv_SE.tasks;
+package org.daisy.dotify.setups.sv_SE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
  * @author Joel Håkansson, TPB
  * @deprecated replaced by the volume-template feature in OBFL
  */
-public class VolumeCoverPageTask extends ReadWriteTask {
+class VolumeCoverPageTask extends ReadWriteTask {
 	private final VolumeCoverPage frontCover;
 	private final VolumeCoverPage rearCover;
 

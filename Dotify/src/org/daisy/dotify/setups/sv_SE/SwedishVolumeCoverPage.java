@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups.sv_SE.tasks;
+package org.daisy.dotify.setups.sv_SE;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
 
 
 @SuppressWarnings("deprecation")
-public class SwedishVolumeCoverPage implements VolumeCoverPage {
+class SwedishVolumeCoverPage implements VolumeCoverPage {
 	private BrailleTranslator filters;
 	private String title;
 	private ArrayList<String> creator;

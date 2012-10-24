@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups.sv_SE.tasks;
+package org.daisy.dotify.setups.sv_SE;
 
 import java.util.List;
 

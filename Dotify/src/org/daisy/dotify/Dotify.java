@@ -141,7 +141,6 @@ public class Dotify {
 		if (tempFilesDirectory!=null && !"".equals(tempFilesDirectory)) {
 			tr.setTempFilesFolder(new File(tempFilesDirectory));
 		}
-		System.out.println(System.currentTimeMillis());
 
 		tr.setIdentifier("Dotify@" + Integer.toHexString((int)(System.currentTimeMillis()-1261440000000l)));
 
