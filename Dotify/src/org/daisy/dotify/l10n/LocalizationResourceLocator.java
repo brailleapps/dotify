@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.system.AbstractResourceLocator;
-import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.tools.AbstractResourceLocator;
+import org.daisy.dotify.tools.ResourceLocator;
 
 /**
  * Provides a resource locator for localized resources. Using this

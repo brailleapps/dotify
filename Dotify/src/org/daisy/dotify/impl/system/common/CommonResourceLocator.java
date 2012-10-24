@@ -2,8 +2,8 @@ package org.daisy.dotify.impl.system.common;
 
 import java.net.URL;
 
-import org.daisy.dotify.system.AbstractResourceLocator;
-import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.tools.AbstractResourceLocator;
+import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
  * Provides a method to find resources relative to this class 

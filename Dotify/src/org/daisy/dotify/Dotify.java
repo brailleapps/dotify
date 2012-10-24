@@ -17,7 +17,6 @@ import java.util.Properties;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.l10n.LocalizationManager;
 import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystem;
@@ -25,6 +24,7 @@ import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.system.TaskSystemFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
  * Provides an entry point for simple embedding of Dotify. To run, call <tt>Dotify.run</tt>.

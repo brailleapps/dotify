@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactory;
-import org.daisy.dotify.system.AbstractResourceLocator;
-import org.daisy.dotify.system.ResourceLocator;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.tools.AbstractResourceLocator;
+import org.daisy.dotify.tools.ResourceLocator;
 
 /**
  * Provides an XML input manager factory. This can be used when implementing

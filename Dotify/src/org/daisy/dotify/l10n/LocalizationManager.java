@@ -9,8 +9,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
  * Provides localized parameters.

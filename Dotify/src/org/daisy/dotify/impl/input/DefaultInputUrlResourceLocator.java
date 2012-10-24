@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
-import org.daisy.dotify.system.AbstractResourceLocator;
-import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.tools.AbstractResourceLocator;
+import org.daisy.dotify.tools.ResourceLocatorException;
 
 class DefaultInputUrlResourceLocator extends AbstractResourceLocator {
 	private static DefaultInputUrlResourceLocator instance;

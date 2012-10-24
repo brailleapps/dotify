@@ -256,7 +256,6 @@ Dotify/src/org/daisy/dotify/paginator/PaginatorProxy.java -text
 Dotify/src/org/daisy/dotify/paginator/RowDataManager.java -text
 Dotify/src/org/daisy/dotify/paginator/SectionProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/paginator/package-info.java -text
-Dotify/src/org/daisy/dotify/system/AbstractResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/DuplicatorTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/InternalTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/InternalTaskException.java -text svneol=unset#text/plain
@@ -264,8 +263,6 @@ Dotify/src/org/daisy/dotify/system/LayoutEngineTask.java -text svneol=unset#text
 Dotify/src/org/daisy/dotify/system/Progress.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/ReadOnlyTask.java -text
 Dotify/src/org/daisy/dotify/system/ReadWriteTask.java -text
-Dotify/src/org/daisy/dotify/system/ResourceLocator.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/system/ResourceLocatorException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/RunParameters.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TaskRunner.java -text
 Dotify/src/org/daisy/dotify/system/TaskSystem.java -text svneol=unset#text/plain
@@ -279,8 +276,11 @@ Dotify/src/org/daisy/dotify/system/ValidatorException.java -text
 Dotify/src/org/daisy/dotify/system/ValidatorTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/XsltTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/package-info.java -text
+Dotify/src/org/daisy/dotify/tools/AbstractResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/tools/ResourceLocator.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/tools/ResourceLocatorException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/RomanNumeral.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain

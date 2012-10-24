@@ -1,9 +1,9 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.tools;
 
 import java.net.URL;
 
 /**
- * Provides esay access to package resources. Simply extend AbstractResourceLocator in the package where
+ * Provides easy access to package resources. Simply extend AbstractResourceLocator in the package where
  * the resources are located. Your implementation can then be used to locate the resources by
  * specifying a location relative to the implementation.
  * @author Joel Håkansson

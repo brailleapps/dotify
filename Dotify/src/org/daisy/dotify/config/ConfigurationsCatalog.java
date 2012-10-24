@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javax.imageio.spi.ServiceRegistry;
 
-import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
  * Provides a catalog of configurations available to the input system. The catalog 

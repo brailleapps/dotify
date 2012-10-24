@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
 
-import org.daisy.dotify.system.ResourceLocatorException;
+import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
  * Provides a default configurations catalog. The default configurations catalog
