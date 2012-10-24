@@ -91,6 +91,7 @@ Dotify/src/org/daisy/dotify/book/Row.java -text
 Dotify/src/org/daisy/dotify/book/VolData.java -text
 Dotify/src/org/daisy/dotify/book/VolumeContentFormatter.java -text
 Dotify/src/org/daisy/dotify/book/VolumeImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/book/package-info.java -text
 Dotify/src/org/daisy/dotify/config/ConfigurationsCatalog.java -text
 Dotify/src/org/daisy/dotify/config/ConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/config/DefaultConfigurationsCatalog.java -text
@@ -124,6 +125,7 @@ Dotify/src/org/daisy/dotify/formatter/utils/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/FormatterProxyImpl.java -text
 Dotify/src/org/daisy/dotify/impl/PaginatorProxyImpl.java -text
 Dotify/src/org/daisy/dotify/impl/config/DefaultConfigurationsProvider.java -text
+Dotify/src/org/daisy/dotify/impl/config/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/config/presets_catalog.xml -text
 Dotify/src/org/daisy/dotify/impl/config/presets_descriptions.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w32.xml -text
@@ -145,6 +147,7 @@ Dotify/src/org/daisy/dotify/impl/formatter/RowDataManagerImpl.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/RowDataProperties.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/Segment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/TextSegment.java -text
+Dotify/src/org/daisy/dotify/impl/formatter/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/input/DefaultInputUrlResourceLocator.java -text
 Dotify/src/org/daisy/dotify/impl/input/XMLInputManager.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/XMLInputManagerFactory.java -text
@@ -178,6 +181,7 @@ Dotify/src/org/daisy/dotify/impl/paginator/PageStructImpl.java -text svneol=unse
 Dotify/src/org/daisy/dotify/impl/paginator/PaginatorImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/paginator/PaginatorTools.java -text
 Dotify/src/org/daisy/dotify/impl/paginator/PaginatorToolsException.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/paginator/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/system/common/CommonResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/DefaultTextSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/DefaultTextSystemFactory.java -text
@@ -205,6 +209,7 @@ Dotify/src/org/daisy/dotify/input/package-info.java -text
 Dotify/src/org/daisy/dotify/l10n/LocalizationManager.java -text
 Dotify/src/org/daisy/dotify/l10n/LocalizationResourceLocator.java -text
 Dotify/src/org/daisy/dotify/l10n/localization_catalog.xml -text
+Dotify/src/org/daisy/dotify/l10n/package-info.java -text
 Dotify/src/org/daisy/dotify/l10n/sv-SE/localization.xml -text
 Dotify/src/org/daisy/dotify/obfl/BlockContents.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEvent.java -text
