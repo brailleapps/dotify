@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups.sv_SE;
+package org.daisy.dotify.impl.system.sv_SE;
 
 import java.io.File;
 import java.io.FileInputStream;

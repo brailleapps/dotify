@@ -11,4 +11,4 @@
  * </ul>
  * @author Joel Håkansson
  */
-package org.daisy.dotify.setups.sv_SE;
+package org.daisy.dotify.impl.system.sv_SE;

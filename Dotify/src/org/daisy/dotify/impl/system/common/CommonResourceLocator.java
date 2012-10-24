@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups.common;
+package org.daisy.dotify.impl.system.common;
 
 import java.net.URL;
 

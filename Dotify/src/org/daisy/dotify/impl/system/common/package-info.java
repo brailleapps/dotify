@@ -25,4 +25,4 @@
  * 
  * @author Joel Håkansson
  */
-package org.daisy.dotify.setups.common;
+package org.daisy.dotify.impl.system.common;
