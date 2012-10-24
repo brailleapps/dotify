@@ -13,11 +13,9 @@ import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.daisy.dotify.config.ConfigurationsCatalog;
-import org.daisy.dotify.setups.LocalizationManager;
+import org.daisy.dotify.l10n.LocalizationManager;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
@@ -119,7 +117,7 @@ public class Dotify {
 		}
 		
 		{
-			Properties p = new LocalizationManager().getLocalizationProperties(context);
+			Properties p = new LocalizationManager().getContentLocalization(context);
 			for (Object key : p.keySet()) {
 				map.put(key.toString(), p.get(key).toString());
 			}

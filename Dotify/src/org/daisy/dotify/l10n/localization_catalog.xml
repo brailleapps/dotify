@@ -5,7 +5,7 @@
 		Localization entry point. Maps a locale to a folder root relative to the location of this file.
 	</comment>
 
-	<entry key="sv-SE">sv_SE</entry>
-	<entry key="en-US">en_US</entry>
+	<entry key="sv-SE">sv-SE</entry>
+	<entry key="en-US">en-US</entry>
 
 </properties>

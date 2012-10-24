@@ -53,9 +53,12 @@ public class ObflResourceLocator extends AbstractResourceLocator {
 	public URL getResourceByIdentifier(ObflResourceIdentifier identifier) {
 		try {
 			switch (identifier) {
-				case OBFL_XML_SCHEMA: return getResource("resource-files/obfl.xsd");
-				case OBFL_WHITESPACE_NORMALIZER_XSLT: return getResource("resource-files/obfl-ws-normalizer.xsl");
-				default: return null;
+				case OBFL_XML_SCHEMA:
+					return getResource("resource-files/obfl.xsd");
+				case OBFL_WHITESPACE_NORMALIZER_XSLT:
+					return getResource("resource-files/obfl-ws-normalizer.xsl");
+				default:
+					throw new RuntimeException("Enum identifier not implemented. This is a coding error.");
 			}
 		} catch (ResourceLocatorException e) {
 			throw new RuntimeException("Could not locate resource by enum identifier. This is a coding error.", e);

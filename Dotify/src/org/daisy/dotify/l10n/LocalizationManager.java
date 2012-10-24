@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups;
+package org.daisy.dotify.l10n;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,7 +38,7 @@ public class LocalizationManager {
 	 * @param locale the locale to get localized parameters for
 	 * @return returns localized parameters
 	 */
-	public Properties getLocalizationProperties(FilterLocale locale) {
+	public Properties getContentLocalization(FilterLocale locale) {
 		Properties props = propsCatalog.get(locale);
 		if (props==null) {
 			props = new Properties();

@@ -1,4 +1,4 @@
-package org.daisy.dotify.setups;
+package org.daisy.dotify.l10n;
 
 import java.io.IOException;
 import java.net.URL;

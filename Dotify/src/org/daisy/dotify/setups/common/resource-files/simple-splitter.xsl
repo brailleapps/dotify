@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Simple splitter
+	Simple splitter (DEPRECATED)
 
 	Splits a PEF file with a single volume into several volumes.
 	The splitter will distribute pages into volumes equally with a

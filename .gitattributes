@@ -183,6 +183,10 @@ Dotify/src/org/daisy/dotify/input/InputManager.java -text svneol=unset#text/plai
 Dotify/src/org/daisy/dotify/input/InputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/input/InputManagerFactoryMaker.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/package-info.java -text
+Dotify/src/org/daisy/dotify/l10n/LocalizationManager.java -text
+Dotify/src/org/daisy/dotify/l10n/LocalizationResourceLocator.java -text
+Dotify/src/org/daisy/dotify/l10n/localization_catalog.xml -text
+Dotify/src/org/daisy/dotify/l10n/sv-SE/localization.xml -text
 Dotify/src/org/daisy/dotify/obfl/BlockContents.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEvent.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEventHandler.java -text
@@ -230,23 +234,19 @@ Dotify/src/org/daisy/dotify/paginator/PaginatorProxy.java -text
 Dotify/src/org/daisy/dotify/paginator/RowDataManager.java -text
 Dotify/src/org/daisy/dotify/paginator/SectionProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/paginator/package-info.java -text
-Dotify/src/org/daisy/dotify/setups/LocalizationManager.java -text
-Dotify/src/org/daisy/dotify/setups/LocalizationResourceLocator.java -text
 Dotify/src/org/daisy/dotify/setups/common/CommonResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/DefaultTextSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/DefaultTextSystemFactory.java -text
 Dotify/src/org/daisy/dotify/setups/common/doc-files/DefaultTextSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/common/package-info.java -text
-Dotify/src/org/daisy/dotify/setups/common/xslt/braille-finalizer.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/common/xslt/meta-finalizer.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/common/xslt/simple-splitter.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/localization_catalog.xml -text
+Dotify/src/org/daisy/dotify/setups/common/resource-files/braille-finalizer.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/common/resource-files/meta-finalizer.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/setups/common/resource-files/simple-splitter.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/package-info.java -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/SwedishTaskSystemFactory.java -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/doc-files/SwedishTextSystem.html -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/setups/sv_SE/localization.xml -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/package-info.java -text
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/StaticVolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/setups/sv_SE/tasks/SwedishVolumeCoverPage.java -text svneol=unset#text/plain

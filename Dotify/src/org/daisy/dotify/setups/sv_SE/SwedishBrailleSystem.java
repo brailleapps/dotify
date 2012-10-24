@@ -17,11 +17,11 @@ import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.setups.common.CommonResourceLocator;
+import org.daisy.dotify.setups.common.CommonResourceLocator.CommonResourceIdentifier;
 import org.daisy.dotify.setups.sv_SE.tasks.SwedishVolumeCoverPage;
 import org.daisy.dotify.setups.sv_SE.tasks.VolumeCoverPageTask;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
-import org.daisy.dotify.system.ResourceLocatorException;
 import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
@@ -54,13 +54,11 @@ import org.xml.sax.SAXException;
  */
 @SuppressWarnings("deprecation")
 public class SwedishBrailleSystem implements TaskSystem {
-	private final CommonResourceLocator commonResourceLocator;
 	private final String outputFormat;
 	private final FilterLocale context;
 	private final String name;
 	
 	public SwedishBrailleSystem(String name, String outputFormat, FilterLocale context) {
-		this.commonResourceLocator = new CommonResourceLocator();
 		this.context = context;
 		this.outputFormat = outputFormat;
 		this.name = name;
@@ -74,16 +72,9 @@ public class SwedishBrailleSystem implements TaskSystem {
 		if (SystemKeys.OBFL_FORMAT.equals(outputFormat)) {
 			return new ArrayList<InternalTask>();
 		}
-		
-		//URL brailleFinalizer;
-		URL metaFinalizer;
 
-		try {
-			//brailleFinalizer = commonResourceLocator.getResource("xslt/braille-finalizer.xsl");
-			metaFinalizer = commonResourceLocator.getResource("xslt/meta-finalizer.xsl");
-		} catch (ResourceLocatorException e) {
-			throw new TaskSystemException("Could not locate resource.", e);
-		}
+		URL metaFinalizer = CommonResourceLocator.getInstance().getResourceByIdentifier(CommonResourceIdentifier.META_FINALIZER_XSLT);
+
 		//configURL = new URL(resourceBase, config);
 		Properties p2 = new Properties();
 		HashMap<String, Object> h = new HashMap<String, Object>();
