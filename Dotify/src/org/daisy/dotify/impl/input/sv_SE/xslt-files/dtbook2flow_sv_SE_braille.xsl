@@ -89,10 +89,10 @@
 							<block margin-bottom="1">Sid­hän­vis­ning­ar till svart­skrifts­bo­ken står in­om pa­ren­tes.</block>
 						</on-toc-start>
 						<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
-							<block keep="all" keep-with-next="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+							<block keep="all" keep-with-next="1" margin-bottom="0">Volym <evaluate expression="(round $started-volume-number)"/></block>
 						</on-volume-start>
 						<on-volume-start use-when="(&amp; (> $volumes 1) (> $started-volume-number 1))">
-							<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="1">Volym <evaluate expression="(round $started-volume-number)"/></block>
+							<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="0">Volym <evaluate expression="(round $started-volume-number)"/></block>
 						</on-volume-start>
 					</toc-sequence>
 					<xsl:apply-templates select="//dtb:frontmatter" mode="pre-volume-mode"/>
@@ -166,27 +166,30 @@
 	
 	<xsl:template match="dtb:level1|dtb:level2" mode="toc">
 		<xsl:if test="dtb:h1|dtb:h2">
+<!--
 			<xsl:choose>
 				<xsl:when test="self::dtb:level1 and @class='part'"><toc-entry ref-id="{generate-id(.)}" margin-bottom="1" keep="all"><xsl:apply-templates select="dtb:h1" mode="toc-hd"/></toc-entry><xsl:apply-templates mode="toc"/></xsl:when>
-				<xsl:otherwise><toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{2*$toc-indent-multiplier}" keep="all"><xsl:call-template name="addBottomMarginIfPart"/><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry></xsl:otherwise>
-			</xsl:choose>
+				<xsl:otherwise>--><toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{2*$toc-indent-multiplier}" keep="all"><xsl:apply-templates select="dtb:h1|dtb:h2" mode="toc-hd"/><xsl:apply-templates mode="toc"/></toc-entry><!--</xsl:otherwise>
+			</xsl:choose>-->
 		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="dtb:level3|dtb:level4|dtb:level5|dtb:level6" mode="toc">
 		<xsl:if test="dtb:h3|dtb:h4|dtb:h5|dtb:h6">
-			<toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{$toc-indent-multiplier}" keep="all"><xsl:call-template name="addBottomMarginIfPart"/><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
+			<toc-entry ref-id="{generate-id(.)}" block-indent="{$toc-indent-multiplier}" text-indent="{$toc-indent-multiplier}" keep="all"><xsl:apply-templates select="dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd"/>
 			<xsl:if test="dtb:level3 and ancestor::dtb:level1[@class='part']"><xsl:apply-templates mode="toc"/></xsl:if>
 			</toc-entry>
 			<xsl:if test="not(dtb:level3 and ancestor::dtb:level1[@class='part'])"><xsl:apply-templates mode="toc"/></xsl:if>
 		</xsl:if>
 	</xsl:template>
-	
+	<!--
 	<xsl:template name="addBottomMarginIfPart">
+	
 		<xsl:if test="(following::*[self::dtb:level1|self::dtb:level2|self::dtb:level3|self::dtb:level4|self::dtb:level5|self::dtb:level6][1])[self::dtb:level1[@class='part']]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
 	</xsl:template>
+-->
 	
 	<xsl:template match="dtb:h1|dtb:h2|dtb:h3|dtb:h4|dtb:h5|dtb:h6" mode="toc-hd">
 <!--		<xsl:value-of select="descendant::text()"/>-->
