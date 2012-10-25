@@ -529,8 +529,8 @@ DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactor
 DotifyTranslator/src/org/daisy/dotify/translator/UnsupportedSpecificationException.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/package-info.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
+DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenation2Test.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
-DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest2.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text

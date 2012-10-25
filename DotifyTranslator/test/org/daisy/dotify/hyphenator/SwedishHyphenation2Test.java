@@ -9,9 +9,9 @@ import org.daisy.dotify.text.FilterLocale;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class SwedishHyphenationTest2 {
+public class SwedishHyphenation2Test {
 	private final HyphenatorInterface hyph_sv_SE;
-	public SwedishHyphenationTest2() {
+	public SwedishHyphenation2Test() {
 		HyphenatorInterface h2;
 		try {
 			h2 = HyphenatorFactoryMaker.newInstance().newHyphenator(FilterLocale.parse("sv-SE"));
