@@ -351,6 +351,7 @@ DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedB
 DotifyTranslator/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/package-info.java -text
@@ -510,7 +511,6 @@ DotifyTranslator/src/org/daisy/dotify/text/CharFilter.java -text svneol=unset#te
 DotifyTranslator/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/FilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
-DotifyTranslator/src/org/daisy/dotify/text/HyphenatorFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/text/IdentityFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
@@ -530,6 +530,7 @@ DotifyTranslator/src/org/daisy/dotify/translator/UnsupportedSpecificationExcepti
 DotifyTranslator/src/org/daisy/dotify/translator/package-info.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
+DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest2.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text

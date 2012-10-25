@@ -59,98 +59,100 @@ public class BreakPointHandler {
 			// pretty simple...
 			return new BreakPoint("", "", false);
 		}
-		String head;
-		boolean hard = false;
-		String tail;
+
 		assert charsStr.length()==charsStr.codePointCount(0, charsStr.length());
 		if (charsStr.length()<=breakPoint) {
-			head = charsStr;
-			tail = "";
+			return finalizeBreakpointTrimTail(charsStr, "", test, false);
 		} else if (breakPoint<=0) {
-			head = "";
-			tail = charsStr;
+			return finalizeBreakpointTrimTail("", charsStr, test, false);
 		} else {
-			int strPos = -1;
-			int len = 0;
-			for (char c : charsStr.toCharArray()) {
-				strPos++;
-				switch (c) {
-					case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
-						break;
-					default:
-						len++;
-				}
-				if (len>=breakPoint) {
-					break;
-				}
-			}
-			assert strPos<charsStr.length();
-			
-			int tailStart;
-			
-			/*if (strPos>=charsStr.length()-1) {
-				head = charsStr.substring(0, strPos);
-				System.out.println(head);
-				tailStart = strPos;
-			} else */
-			// check next character to see if it can be removed.
-			if (strPos==charsStr.length()-1) {
+			return findBreakpoint(breakPoint, force, test);
+		}
+	}
+	
+	private BreakPoint findBreakpoint(int breakPoint, boolean force, boolean test) {
+		int strPos = findBreakpointPosition(charsStr, breakPoint);
+		assert strPos<charsStr.length();
+
+		/*if (strPos>=charsStr.length()-1) {
+			head = charsStr.substring(0, strPos);
+			System.out.println(head);
+			tailStart = strPos;
+		} else */
+		// check next character to see if it can be removed.
+		if (strPos==charsStr.length()-1) {
+			String head = charsStr.substring(0, strPos+1);
+			int tailStart = strPos+1;
+			return finalizeBreakpointFull(head, tailStart, test, false);
+		} else if (charsStr.charAt(strPos+1)==SPACE) {
+			String head = charsStr.substring(0, strPos+2); // strPos+1
+			int tailStart = strPos+2;
+			return finalizeBreakpointFull(head, tailStart, test, false);
+		} else {
+			return newBreakpointFromPosition(strPos, breakPoint, force, test);
+		}
+	}
+	
+	private BreakPoint newBreakpointFromPosition(int strPos, int breakPoint, boolean force, boolean test) {
+		// back up
+		int i=findBreakpointBefore(charsStr, strPos);
+		String head;
+		boolean hard = false;
+		int tailStart;
+		if (i<0) { // no breakpoint found, break hard 
+			if (force) {
+				hard = true;
 				head = charsStr.substring(0, strPos+1);
 				tailStart = strPos+1;
-			} else if (charsStr.charAt(strPos+1)==SPACE) {
-				head = charsStr.substring(0, strPos+2); // strPos+1
-				tailStart = strPos+2;
-			} else { // back up
-				int i=strPos;
-whileLoop:		while (i>=0) {
-					switch (charsStr.charAt(i)) {
-						case SPACE: case DASH: case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
-							break whileLoop;
-					}
-					i--;
-				}
-				if (i<0) { // no breakpoint found, break hard 
-					if (force) {
-						hard = true;
-						head = charsStr.substring(0, strPos+1);
-						tailStart = strPos+1;
-					} else {
-						head = "";
-						tailStart = 0;
-					}
-				} else if (charsStr.charAt(i)==SPACE) { // don't ignore space at breakpoint
-					head = charsStr.substring(0, i+1); //i
-					tailStart = i+1;
-				} else if (charsStr.charAt(i)==SOFT_HYPHEN) { // convert soft hyphen to hard hyphen 
-					head = charsStr.substring(0, i) + DASH;
-					tailStart = i+1;
-				}  else if (charsStr.charAt(i)==ZERO_WIDTH_SPACE) { // ignore zero width space 
-					head = charsStr.substring(0, i);
-					tailStart = i+1;
-				} else if (charsStr.charAt(i)==DASH && charsStr.length()>1 && charsStr.charAt(i-1)==SPACE) {
-					// if hyphen is preceded by space, back up one more
-					head = charsStr.substring(0, i);
-					tailStart = i;
-				} else {
-					head = charsStr.substring(0, i+1);
-					tailStart = i+1;
-				}
-			}
-			if (charsStr.length()>tailStart) {
-				tail = charsStr.substring(tailStart);
 			} else {
-				tail = "";
+				head = "";
+				tailStart = 0;
 			}
-			head = trailingWhitespace.matcher(head).replaceAll("");
+		} else if (charsStr.charAt(i)==SPACE) { // don't ignore space at breakpoint
+			head = charsStr.substring(0, i+1); //i
+			tailStart = i+1;
+		} else if (charsStr.charAt(i)==SOFT_HYPHEN) { // convert soft hyphen to hard hyphen 
+			head = charsStr.substring(0, i) + DASH;
+			tailStart = i+1;
+		}  else if (charsStr.charAt(i)==ZERO_WIDTH_SPACE) { // ignore zero width space 
+			head = charsStr.substring(0, i);
+			tailStart = i+1;
+		} else if (charsStr.charAt(i)==DASH && charsStr.length()>1 && charsStr.charAt(i-1)==SPACE) {
+			// if hyphen is preceded by space, back up one more
+			head = charsStr.substring(0, i);
+			tailStart = i;
+		} else {
+			head = charsStr.substring(0, i+1);
+			tailStart = i+1;
 		}
-		assert (tail.length()<=charsStr.length());
+		return finalizeBreakpointFull(head, tailStart, test, hard);
+	}
+	
+	private BreakPoint finalizeBreakpointFull(String head, int tailStart, boolean test, boolean hard) {
+		String tail = getTail(tailStart);
+
+		head = trailingWhitespace.matcher(head).replaceAll("");
+		
+		return finalizeBreakpointTrimTail(head, tail, test, hard);
+	}
+	
+	private String getTail(int tailStart) {
+		if (charsStr.length()>tailStart) {
+			String tail = charsStr.substring(tailStart);
+			assert (tail.length()<=charsStr.length());
+			return tail;
+		} else {
+			return "";
+		}
+	}
+	
+	private BreakPoint finalizeBreakpointTrimTail(String head, String tail, boolean test, boolean hard) {
 		//trim leading whitespace in tail
 		tail = leadingWhitespace.matcher(tail).replaceAll("");
 		head = finalize(head);
 		if (!test) {
 			charsStr = tail;
 		}
-		
 		return new BreakPoint(head, tail, hard);
 	}
 
@@ -163,6 +165,50 @@ whileLoop:		while (i>=0) {
 	
 	public String getRemaining() {
 		return finalize(charsStr);
+	}
+	
+	/**
+	 * Finds the breakpoint position in the input string by counting
+	 * all characters, excluding soft hyphen and zero width space.
+	 *  
+	 * @param charsStr
+	 * @param breakPoint
+	 * @return returns the breakpoint poisition
+	 */
+	private static int findBreakpointPosition(String charsStr, int breakPoint) {
+		int strPos = -1;
+		int len = 0;
+		for (char c : charsStr.toCharArray()) {
+			strPos++;
+			switch (c) {
+				case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
+					break;
+				default:
+					len++;
+			}
+			if (len>=breakPoint) {
+				break;
+			}
+		}
+		return strPos;
+	}
+	
+	/**
+	 * Finds the break point closest before the starting position.
+	 * @param charsStr
+	 * @param strPos
+	 * @return returns the break point, or -1 if none is found
+	 */
+	private static int findBreakpointBefore(String charsStr, int strPos) {
+		int i = strPos;
+whileLoop: while (i>=0) {
+			switch (charsStr.charAt(i)) {
+				case SPACE: case DASH: case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
+					break whileLoop;
+			}
+			i--;
+		}
+		return i;
 	}
 	
 	private String finalize(String str) {

@@ -1,8 +1,7 @@
-package org.daisy.dotify.text;
+package org.daisy.dotify.hyphenator;
 
-import org.daisy.dotify.hyphenator.HyphenatorFactoryMaker;
-import org.daisy.dotify.hyphenator.HyphenatorInterface;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.StringFilter;
 
 public class HyphenatorFilter implements StringFilter {
 	private final HyphenatorInterface hyphenator;
