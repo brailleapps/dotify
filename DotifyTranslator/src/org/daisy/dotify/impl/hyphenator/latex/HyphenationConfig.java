@@ -91,11 +91,11 @@ class HyphenationConfig {
 		return encoding;
 	}
 
-	public int getBeginLimit() {
+	public int getDefaultBeginLimit() {
 		return beginLimit;
 	}
 
-	public int getEndLimit() {
+	public int getDefaultEndLimit() {
 		return endLimit;
 	}
 

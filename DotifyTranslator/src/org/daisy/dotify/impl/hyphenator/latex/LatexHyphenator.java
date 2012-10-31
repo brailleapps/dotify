@@ -8,10 +8,9 @@ class LatexHyphenator extends AbstractHyphenator {
 	private final HyphenationConfig hyphenator;
 	
 	LatexHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
-		LatexHyphenatorCore core = LatexHyphenatorCore.getInstance();
-		this.hyphenator = core.getHyphenator(locale);
-		this.beginLimit = hyphenator.getBeginLimit();
-		this.endLimit = hyphenator.getEndLimit();
+		this.hyphenator = LatexHyphenatorCore.getInstance().getHyphenator(locale);
+		this.beginLimit = hyphenator.getDefaultBeginLimit();
+		this.endLimit = hyphenator.getDefaultEndLimit();
 	}
 	
 	static boolean supportsLocale(FilterLocale locale) {
