@@ -355,6 +355,12 @@ DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWDecompounder.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenationUnit.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenator.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenatorAtom.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenatorCore.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/HyphenationConfig.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenator.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorCore.java -text
