@@ -18,4 +18,8 @@ public interface HyphenatorFactory {
 	 * @throws UnsupportedLocaleException
 	 */
 	public HyphenatorInterface newHyphenator(FilterLocale locale) throws UnsupportedLocaleException;
+	
+	public Object getFeature(String key);
+	
+	public void setFeature(String key, Object value) throws FeatureNotSupportedException;
 }

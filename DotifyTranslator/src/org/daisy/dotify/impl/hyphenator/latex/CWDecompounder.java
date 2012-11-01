@@ -44,9 +44,9 @@ public class CWDecompounder {
 			int len = data.getFields()[0].length();
 			if (len < lowerLimit || data.getFields().length < 2) { continue; }
 			if (data.getFields().length>2) {
-				stems.put(data.getFields()[0], new CWHyphenationUnit(Integer.parseInt(data.getFields()[1]), data.getFields()[2]));
+				stems.put(data.getFields()[0], new CWHyphenationUnit(Integer.parseInt(data.getFields()[1])+1, data.getFields()[2]));
 			} else {
-				stems.put(data.getFields()[0], new CWHyphenationUnit(Integer.parseInt(data.getFields()[1])));
+				stems.put(data.getFields()[0], new CWHyphenationUnit(Integer.parseInt(data.getFields()[1])+1));
 			}
 		}
 		tfr.close();
@@ -91,7 +91,7 @@ public class CWDecompounder {
 	 * @param evaluate if true, return the most likely solution based on its frequency
 	 * @return returns the word, hyphenated at compound boundaries
 	 */
-	public String findCompounds(String word, int beginLimit, int endLimit, boolean evaluate) {
+	public String findCompounds(String word, int beginLimit, int endLimit, double threshold) {
 		if (word.length()<decompoundLimit) {
 			return word;
 		}
@@ -107,19 +107,19 @@ public class CWDecompounder {
 			}
 			points = ret.getFreq();
 		}
-
 		for (int i=beginLimit; i<=word.length()-endLimit; i++) {
 			CWHyphenationUnit val1 = lookup(word.substring(0, i));
 			if (val1 != null) {
 				CWHyphenationUnit val2 = lookup(word.substring(i, word.length()));
 				if (val2 != null) {
-					if (!evaluate && breakPoint!=-1) {
-						// if there are several possible solutions, fail and return as is
+					// Let the least likely part define the likelihood of the combination
+					int cval = (int)Math.sqrt(val1.getFreq() * val2.getFreq());
+					if (Math.abs(cval-points)/(double)(cval+points)<threshold) {
+						// if there are several possible close solutions, fail and return as is
 						return word;
 					}
-					// Let the least likely part define the likelihood of the combination
-					int cval = Math.min(val1.getFreq(), val2.getFreq());
-					if (!evaluate || points < cval) {
+					//use this breakpoint if it is more frequent than the previous breakpoint (or the whole word)
+					if (points < cval) {
 						points = cval;
 						breakPoint = i;
 						bp1 = val1;
@@ -134,8 +134,9 @@ public class CWDecompounder {
 			r.append(SOFT_HYPHEN);
 			r.append(bp2.hyphenate(word.substring(breakPoint, word.length())));
 			return r.toString();
+		} else {
+			return word;
 		}
-		return word;
 	}
 	
 	/**

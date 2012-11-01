@@ -6,11 +6,13 @@ import org.daisy.dotify.text.FilterLocale;
 
 class CWHyphenator extends AbstractHyphenator {
 	private final CWHyphenatorAtom hyphenator;
+	private final int accuracy;
 
-	public CWHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
+	public CWHyphenator(FilterLocale locale, int accuracy) throws UnsupportedLocaleException {
 		this.hyphenator = CWHyphenatorCore.getInstance().getHyphenator(locale);
 		this.beginLimit = hyphenator.getDefaultBeginLimit();
 		this.endLimit = hyphenator.getDefaultEndLimit();
+		this.accuracy = accuracy;
 	}
 
 	static boolean supportsLocale(FilterLocale locale) {
@@ -18,7 +20,7 @@ class CWHyphenator extends AbstractHyphenator {
 	}
 
 	public String hyphenate(String phrase) {
-		return hyphenator.hyphenate(phrase, getBeginLimit(), getEndLimit());
+		return hyphenator.hyphenate(phrase, getBeginLimit(), getEndLimit(), accuracy);
 	}
 
 }

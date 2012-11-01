@@ -17,13 +17,23 @@ public class CWHyphenatorAtom {
 	public final static String DECOMPOUND_LIMIT_KEY = "decompound-limit";
 	public final static String MINIMUM_WORD_LENGTH_KEY = "minimum-word-length";
 	public final static String PATTERN_PROPERTIES_KEY = "pattern-properties";
+	public final static String EVALUATE_THRESHOLD_KEY = "evaluate-threshold";
 	private final static int DEFAULT_DECOMPOUND_LIMIT = 6;
 	private final static int DEFAULT_MINIMUM_WORD_LENGTH = 2;
+	private final static double DEFAULT_EVALUATE_THRESHOLD = 0.5;
 	
 	private final Logger logger;
 	private final HyphenationConfig base;
 	private final Properties exceptions;
-	private final CWDecompounder decompounder;
+	private final String dictionaryPath;
+	
+	private CWDecompounder decompounder;
+	private double threshold;
+	
+	private int decompLimit;
+	private int minWord;
+	
+	
 	
 	public CWHyphenatorAtom(String subPath, FilterLocale locale) throws UnsupportedLocaleException {
 		logger = Logger.getLogger(this.getClass().getCanonicalName());
@@ -52,28 +62,29 @@ public class CWHyphenatorAtom {
 			exceptions = new Properties();
 		}
 
-		int decompLimit = DEFAULT_DECOMPOUND_LIMIT;
+		decompLimit = DEFAULT_DECOMPOUND_LIMIT;
 		try {
 			decompLimit = Integer.parseInt(imp.getProperty(DECOMPOUND_LIMIT_KEY));
 		} catch (Exception e) {
 			logger.log(Level.FINE, "Could not parse decompound limit", e);
 		}
-		
-		decompounder = new CWDecompounder(decompLimit);
-		
-		int minWord = DEFAULT_MINIMUM_WORD_LENGTH;
+
+		minWord = DEFAULT_MINIMUM_WORD_LENGTH;
 		try {
 			minWord = Integer.parseInt(imp.getProperty(MINIMUM_WORD_LENGTH_KEY));
 		} catch (Exception e) {
 			logger.log(Level.FINE, "Could not parse minimum word length", e);
 		}
-
-		String url = imp.getProperty(DICTIONARY_KEY);
+		
+		threshold = DEFAULT_EVALUATE_THRESHOLD;
 		try {
-			decompounder.loadDictionary(url, minWord);
-		} catch (IOException e) {
-			logger.log(Level.WARNING, "Failed to read frequency file: " + url, e);
+			threshold = Double.parseDouble(imp.getProperty(EVALUATE_THRESHOLD_KEY));
+		} catch (Exception e) {
+			logger.log(Level.FINE, "Could not parse evaluate threshold, using default: " + threshold, e);
 		}
+		
+		dictionaryPath = imp.getProperty(DICTIONARY_KEY);
+
 	}
 	
 	private Properties loadProperties(String path) {
@@ -99,20 +110,33 @@ public class CWHyphenatorAtom {
 		return base.getDefaultEndLimit();
 	}
 
-	public String hyphenate(String input, int beginLimit, int endLimit) {
-		StringBuffer output = new StringBuffer();
-		for (SplitResult sr : StringSplitter.split(input, "\\p{L}+")) {
-			if (sr.isMatch()) {
-				String word = sr.getText();
-				if (exceptions.containsKey(word)) {
-					output.append((String)exceptions.get(word));
-				} else {
-					output.append(decompounder.findCompounds(word, beginLimit, endLimit, false));
+	public String hyphenate(String input, int beginLimit, int endLimit, int accuracy) {
+		if (accuracy<5) {
+			return base.getHyphenator().hyphenate(input, beginLimit, endLimit);
+		} else {
+			if (decompounder==null) {
+				//lazy load
+				decompounder = new CWDecompounder(decompLimit);
+				try {
+					decompounder.loadDictionary(dictionaryPath, minWord);
+				} catch (IOException e) {
+					logger.log(Level.WARNING, "Failed to read dictionary: " + dictionaryPath, e);
 				}
-			} else {
-				output.append(sr.getText());
 			}
+			StringBuffer output = new StringBuffer();
+			for (SplitResult sr : StringSplitter.split(input, "\\p{L}+")) {
+				if (sr.isMatch()) {
+					String word = sr.getText();
+					if (exceptions.containsKey(word)) {
+						output.append((String)exceptions.get(word));
+					} else {
+						output.append(decompounder.findCompounds(word, beginLimit, endLimit, threshold));
+					}
+				} else {
+					output.append(sr.getText());
+				}
+			}
+			return base.getHyphenator().hyphenate(output.toString(), beginLimit, endLimit);
 		}
-		return base.getHyphenator().hyphenate(output.toString(), beginLimit, endLimit);
 	}
 }
