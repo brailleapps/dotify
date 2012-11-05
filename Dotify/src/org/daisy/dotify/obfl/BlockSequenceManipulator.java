@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.Block;
+import org.daisy.dotify.formatter.BlockSequence;
+import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.paginator.Block;
-import org.daisy.dotify.paginator.BlockSequence;
-import org.daisy.dotify.paginator.BlockStruct;
 
 /**
  * Provides methods for manipulating a flow sequence.

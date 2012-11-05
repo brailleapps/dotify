@@ -3,16 +3,16 @@ package org.daisy.dotify.impl.paginator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.book.Page;
-import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.CompoundField;
 import org.daisy.dotify.formatter.CurrentPageField;
 import org.daisy.dotify.formatter.Field;
-import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.MarkerReferenceField;
 import org.daisy.dotify.formatter.PageTemplate;
+import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.paginator.Page;
+import org.daisy.dotify.paginator.PaginatorException;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -99,7 +99,7 @@ class PageImpl implements Page {
 				ret.addAll(renderFields(lm, t.getFooter(), filter));
 			}
 			return ret;
-		} catch (FormatterException e) {
+		} catch (PaginatorException e) {
 			throw new RuntimeException("Cannot render header/footer", e);
 		}
 	}
@@ -133,13 +133,13 @@ class PageImpl implements Page {
 	}
 	
 	
-	private List<Row> renderFields(LayoutMaster lm, List<List<Field>> fields, BrailleTranslator translator) throws FormatterException {
+	private List<Row> renderFields(LayoutMaster lm, List<List<Field>> fields, BrailleTranslator translator) throws PaginatorException {
 		ArrayList<Row> ret = new ArrayList<Row>();
 		for (List<Field> row : fields) {
 			try {
 				ret.add(new Row(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator)));
 			} catch (PaginatorToolsException e) {
-				throw new FormatterException("Error while rendering header", e);
+				throw new PaginatorException("Error while rendering header", e);
 			}
 		}
 		return ret;

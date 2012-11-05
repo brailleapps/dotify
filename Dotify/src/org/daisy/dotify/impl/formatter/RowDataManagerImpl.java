@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
-import org.daisy.dotify.book.Page;
-import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.RowDataManager;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.paginator.RowDataManager;
+import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.RomanNumeral;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
@@ -86,21 +86,20 @@ class RowDataManagerImpl implements RowDataManager {
 				{
 					isVolatile = true;
 					PageNumberReferenceSegment rs = (PageNumberReferenceSegment)s;
-					Page page = null;
+					Integer page = null;
 					if (refs!=null) {
-						page = refs.getPage(rs.getRefId());
+						page = refs.getPageNumber(rs.getRefId());
 					}
 					//TODO: translate references using custom language?
 					if (page==null) {
 						layout("??", bh, ret, rdp, null);
 					} else {
-						int p = page.getPageIndex()+1;
 						switch (rs.getNumeralStyle()) {
 							case ROMAN:
-								layout(""+RomanNumeral.int2roman(p), bh, ret, rdp, null);
+								layout(""+RomanNumeral.int2roman(page), bh, ret, rdp, null);
 								break;
 							case DEFAULT:default:
-								layout(""+p, bh, ret, rdp, null);
+								layout(""+page, bh, ret, rdp, null);
 						}
 					}
 					break;

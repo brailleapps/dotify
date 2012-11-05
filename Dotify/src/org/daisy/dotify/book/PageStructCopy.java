@@ -3,6 +3,9 @@ package org.daisy.dotify.book;
 import java.util.Iterator;
 import java.util.Stack;
 
+import org.daisy.dotify.paginator.Page;
+import org.daisy.dotify.paginator.PageSequence;
+
 
 class PageStructCopy implements Iterable<PageSequence> {
 	private final Stack<PageSequence> seq;

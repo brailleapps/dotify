@@ -11,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.formatter.utils.TextBorder;
 import org.daisy.dotify.impl.system.common.CommonResourceLocator;
 import org.daisy.dotify.impl.system.common.CommonResourceLocator.CommonResourceIdentifier;
 import org.daisy.dotify.input.InputManager;

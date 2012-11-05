@@ -3,8 +3,8 @@ package org.daisy.dotify.book;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.dotify.paginator.PageSequence;
 import org.daisy.dotify.tools.CompoundIterable;
-import org.daisy.dotify.writer.Volume;
 
 class VolumeImpl implements Volume {
 	private final CompoundIterable<PageSequence> ret;

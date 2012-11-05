@@ -1,4 +1,4 @@
-package org.daisy.dotify.paginator;
+package org.daisy.dotify.formatter;
 
 
 

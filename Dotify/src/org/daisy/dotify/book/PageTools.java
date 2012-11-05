@@ -1,6 +1,7 @@
 package org.daisy.dotify.book;
 
 import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.paginator.PageSequence;
 
 /**
  * PageTools is a utility class for simple operations related to pages.

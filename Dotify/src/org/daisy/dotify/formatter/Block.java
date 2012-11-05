@@ -1,6 +1,5 @@
-package org.daisy.dotify.paginator;
+package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.formatter.FormattingTypes.Keep;
 /**

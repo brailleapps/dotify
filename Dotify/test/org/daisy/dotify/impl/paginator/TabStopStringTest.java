@@ -1,9 +1,10 @@
-package org.daisy.dotify.formatter.utils;
+package org.daisy.dotify.impl.paginator;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.TreeSet;
 
-import static org.junit.Assert.assertEquals;
-import org.daisy.dotify.formatter.utils.TabStopString.Alignment;
+import org.daisy.dotify.impl.paginator.TabStopString.Alignment;
 import org.junit.Test;
 
 public class TabStopStringTest {

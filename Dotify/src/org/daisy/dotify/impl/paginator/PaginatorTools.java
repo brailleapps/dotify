@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
-import org.daisy.dotify.formatter.utils.TabStopString;
 import org.daisy.dotify.tools.StringTools;
 
 class PaginatorTools {

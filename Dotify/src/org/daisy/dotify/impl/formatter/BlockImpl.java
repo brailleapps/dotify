@@ -2,15 +2,15 @@ package org.daisy.dotify.impl.formatter;
 
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.Block;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.RowDataManager;
 import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
-import org.daisy.dotify.paginator.Block;
-import org.daisy.dotify.paginator.RowDataManager;
 
 
 class BlockImpl implements Block {

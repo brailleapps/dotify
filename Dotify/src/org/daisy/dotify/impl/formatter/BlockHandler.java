@@ -3,12 +3,12 @@ package org.daisy.dotify.impl.formatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;

@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.book.Page;
 
 /**
  * Provides an interface for cross references, that is to say
@@ -11,11 +10,11 @@ import org.daisy.dotify.book.Page;
 public interface CrossReferences {
 	
 	/**
-	 * Gets the page for the specified identifier.
+	 * Gets the page number for the specified identifier.
 	 * @param refid the identifier to get the page for
 	 * @return returns the page number, one-based
 	 */
-	public Page getPage(String refid);
+	public Integer getPageNumber(String refid);
 	
 	/**
 	 * Gets the volume for the specified identifier.

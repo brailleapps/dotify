@@ -1,6 +1,8 @@
-package org.daisy.dotify.book;
+package org.daisy.dotify.paginator;
 
 import java.util.List;
+
+import org.daisy.dotify.formatter.Row;
 
 
 

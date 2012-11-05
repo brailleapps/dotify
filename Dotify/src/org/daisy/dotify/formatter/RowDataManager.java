@@ -1,9 +1,7 @@
-package org.daisy.dotify.paginator;
+package org.daisy.dotify.formatter;
 
 import java.util.List;
 
-import org.daisy.dotify.book.Row;
-import org.daisy.dotify.formatter.Marker;
 
 /**
  * Provides a manager for a number of rows.

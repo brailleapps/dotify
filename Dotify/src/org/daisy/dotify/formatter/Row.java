@@ -1,9 +1,8 @@
-package org.daisy.dotify.book;
+package org.daisy.dotify.formatter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.formatter.Marker;
 
 
 

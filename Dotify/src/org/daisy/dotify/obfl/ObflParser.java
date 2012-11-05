@@ -17,6 +17,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.daisy.dotify.book.VolumeContentFormatter;
 import org.daisy.dotify.formatter.BlockProperties;
+import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.CompoundField;
 import org.daisy.dotify.formatter.CurrentPageField;
 import org.daisy.dotify.formatter.Field;
@@ -36,7 +37,6 @@ import org.daisy.dotify.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.formatter.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
-import org.daisy.dotify.paginator.BlockStruct;
 import org.daisy.dotify.text.FilterLocale;
 
 /**
@@ -67,7 +67,7 @@ public class ObflParser {
 		this.formatterFactory = formatterFactory;
 	}
 	
-	public void parse(InputStream stream) throws XMLStreamException, FormatterException {
+	public void parse(InputStream stream) throws XMLStreamException, OBFLParserException {
         XMLInputFactory inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
         inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
@@ -76,7 +76,7 @@ public class ObflParser {
         parse(inFactory.createXMLEventReader(stream));
 	}
 	
-	public void parse(XMLEventReader input) throws XMLStreamException, FormatterException {
+	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
 		this.formatter = formatterFactory.newFormatter();
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
@@ -90,7 +90,7 @@ public class ObflParser {
 			if (equalsStart(event, ObflQName.OBFL)) {
 				String loc = getAttr(event, ObflQName.ATTR_XML_LANG);
 				if (loc==null) {
-					throw new FormatterException("Missing xml:lang on root element");
+					throw new OBFLParserException("Missing xml:lang on root element");
 				} else {
 					locale = FilterLocale.parse(loc);
 				}
@@ -109,7 +109,7 @@ public class ObflParser {
 			input.close();
 			formatter.close();
 		} catch (IOException e) {
-			throw new FormatterException(e);
+			throw new OBFLParserException(e);
 		}
 	}
 

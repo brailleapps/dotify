@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.BlockProperties;
+import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.LayoutMaster;
@@ -14,7 +15,6 @@ import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.formatter.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.impl.formatter.BlockHandler.ListItem;
-import org.daisy.dotify.paginator.BlockStruct;
 import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.translator.BrailleTranslator;
 

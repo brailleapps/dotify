@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.utils;
+package org.daisy.dotify.impl.system.sv_SE;
 
 import java.util.ArrayList;
 
@@ -9,11 +9,11 @@ import org.daisy.dotify.translator.BrailleTranslatorResult;
  * Provides a way to add a border to a set of paragraphs.
  * @author Joel Håkansson, TPB
  */
-public class TextBorder {
+class TextBorder {
 	/**
 	 * Text alignment within the bordered box
 	 */
-	public enum Align {
+	enum Align {
 		/**
 		 * Align text to the left
 		 */

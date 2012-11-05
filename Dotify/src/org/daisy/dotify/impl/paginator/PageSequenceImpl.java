@@ -3,12 +3,12 @@ package org.daisy.dotify.impl.paginator;
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.daisy.dotify.book.Page;
-import org.daisy.dotify.book.PageSequence;
-import org.daisy.dotify.book.Row;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.paginator.Page;
+import org.daisy.dotify.paginator.PageSequence;
 
 class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;

@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 
-import org.daisy.dotify.paginator.SectionProperties;
+import org.daisy.dotify.formatter.SectionProperties;
 import org.daisy.dotify.tools.StateObject;
 
 

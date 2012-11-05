@@ -3,6 +3,8 @@ package org.daisy.dotify.book;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.paginator.Page;
+import org.daisy.dotify.paginator.PageSequence;
 
 /**
  * Provides a method for creating a shallow copy of a PageSequence. 

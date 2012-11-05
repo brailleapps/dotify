@@ -1,4 +1,4 @@
-package org.daisy.dotify.formatter.utils;
+package org.daisy.dotify.impl.paginator;
 
 
 /**
@@ -9,11 +9,11 @@ package org.daisy.dotify.formatter.utils;
  * 
  * @author Joel Håkansson
  */
-public class TabStopString implements Comparable<TabStopString> {
+class TabStopString implements Comparable<TabStopString> {
 	/**
 	 * Provides alignment options for a tab stop
 	 */
-	public enum Alignment {
+	enum Alignment {
 		/**
 		 * Text run to the right of the specified position
 		 */
@@ -33,19 +33,19 @@ public class TabStopString implements Comparable<TabStopString> {
 	private Alignment align;
 	private String pattern;
 
-	public TabStopString(String text) {
+	TabStopString(String text) {
 		init(text, 0, Alignment.LEFT, " ");
 	}
 	
-	public TabStopString(String text, int stop) {
+	TabStopString(String text, int stop) {
 		init(text, stop, Alignment.LEFT, " ");
 	}
 	
-	public TabStopString(String text, int stop, Alignment align) {
+	TabStopString(String text, int stop, Alignment align) {
 		init(text, stop, align, " ");
 	}
 	
-	public TabStopString(String text, int stop, Alignment align, String pattern) {
+	TabStopString(String text, int stop, Alignment align, String pattern) {
 		init(text, stop, align, pattern);
 	}
 	
@@ -56,43 +56,43 @@ public class TabStopString implements Comparable<TabStopString> {
 		setPattern(pattern);
 	}
 
-	public String getText() {
+	String getText() {
 		return text;
 	}
 	
-	public void setText(String text) {
+	void setText(String text) {
 		this.text = text;
 		this.length = text.codePointCount(0, text.length());
 	}
 	
-	public int getPosition() {
+	int getPosition() {
 		return position;
 	}
 	
-	public void setPosition(int stop) {
+	void setPosition(int stop) {
 		this.position = stop;
 	}
 	
-	public Alignment getAlignment() {
+	Alignment getAlignment() {
 		return align;
 	}
 	
-	public void setAlignment(Alignment align) {
+	void setAlignment(Alignment align) {
 		this.align = align;
 	}
 	
-	public String getPattern() {
+	String getPattern() {
 		return this.pattern;
 	}
 	
-	public void setPattern(String pattern) {
+	void setPattern(String pattern) {
 		if (pattern.length()==0) {
 			throw new IllegalArgumentException("Pattern cannot be empty string");
 		}
 		this.pattern = pattern;
 	}
 
-	public int length() {
+	int length() {
 		return length; 
 	}
 

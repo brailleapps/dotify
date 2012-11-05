@@ -1,5 +1,7 @@
 package org.daisy.dotify.book;
 
+import org.daisy.dotify.paginator.PageStruct;
+
 
 class VolData {
 	private PageStruct preVolData;

@@ -3,11 +3,11 @@ package org.daisy.dotify.paginator;
 import java.io.Closeable;
 import java.io.IOException;
 
-import org.daisy.dotify.book.PageStruct;
-import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.writer.PagedMediaWriter;
 
 
@@ -40,7 +40,7 @@ public interface Paginator extends Closeable {
 	 * @param refs cross references
 	 * @throws IOException
 	 */
-	public PageStruct paginate(CrossReferences refs) throws IOException;
+	public PageStruct paginate(CrossReferences refs) throws PaginatorException;
 	
 	//public PageStruct getPageStruct();
 }

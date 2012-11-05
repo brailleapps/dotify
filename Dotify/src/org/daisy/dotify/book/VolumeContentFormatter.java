@@ -2,8 +2,8 @@ package org.daisy.dotify.book;
 
 import java.util.List;
 
+import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.paginator.BlockSequence;
 
 /**
  * Provides an interface for formatting content that varies depending on the 

@@ -10,8 +10,9 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.book.BookStruct;
-import org.daisy.dotify.formatter.FormatterException;
+import org.daisy.dotify.book.Volume;
 import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.obfl.OBFLParserException;
 import org.daisy.dotify.obfl.ObflParser;
 import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
@@ -20,7 +21,7 @@ import org.daisy.dotify.paginator.PaginatorFactory;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.PagedMediaWriterException;
-import org.daisy.dotify.writer.Volume;
+import org.daisy.dotify.writer.WriterException;
 import org.daisy.dotify.writer.WriterHandler;
 
 /**
@@ -108,8 +109,10 @@ public class LayoutEngineTask extends ReadWriteTask  {
 			throw new InternalTaskException("Could not open media writer.", e);
 		} catch (XMLStreamException e) {
 			throw new InternalTaskException("XMLStreamException while running task.", e);
-		} catch (FormatterException e) {
+		} catch (OBFLParserException e) {
 			throw new InternalTaskException("FormatterException while running task.", e);
+		} catch (WriterException e) {
+			throw new InternalTaskException("WriterException while running task.", e);
 		}
 	}
 

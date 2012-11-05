@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.paginator.Page;
+import org.daisy.dotify.paginator.PageSequence;
+import org.daisy.dotify.paginator.PageStruct;
 
 class CrossReferenceHandler implements CrossReferences {
 	private final Map<String, Integer> volLocations;
@@ -125,7 +128,7 @@ class CrossReferenceHandler implements CrossReferences {
 		return null;
 	}
 
-	public Page getPage(String refid) {
+	private Page getPage(String refid) {
 		Page ret;
 		if (ps!=null && (ret=ps.getPage(refid))!=null) {
 			return updatePageLocation(refid, ret);
@@ -146,6 +149,14 @@ class CrossReferenceHandler implements CrossReferences {
 		return null;
 	}
 	
+	public Integer getPageNumber(String refid) {
+		Page p = getPage(refid);
+		if (p==null) {
+			return null;
+		} else {
+			return p.getPageIndex()+1;
+		}
+	}
 	
 	private int getVolumeForContentSheet(int sheetIndex) {
 		if (sheetIndex<1) {

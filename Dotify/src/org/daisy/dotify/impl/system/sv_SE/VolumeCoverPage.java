@@ -2,7 +2,7 @@ package org.daisy.dotify.impl.system.sv_SE;
 
 import java.util.List;
 
-import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.Row;
 
 /**
  * 

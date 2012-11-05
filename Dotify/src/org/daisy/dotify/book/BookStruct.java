@@ -5,16 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.formatter.FormatterException;
+import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.paginator.BlockSequence;
+import org.daisy.dotify.paginator.Page;
+import org.daisy.dotify.paginator.PageSequence;
+import org.daisy.dotify.paginator.PageStruct;
 import org.daisy.dotify.paginator.Paginator;
+import org.daisy.dotify.paginator.PaginatorException;
 import org.daisy.dotify.paginator.PaginatorFactory;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.tools.CompoundIterable;
-import org.daisy.dotify.writer.Volume;
 
 /**
  * Provides a default implementation of BookStruct
@@ -33,7 +35,7 @@ public class BookStruct {
 	private final CrossReferenceHandler crh;
 
 	public BookStruct(Paginator content, VolumeContentFormatter volumeFormatter,
-			FormatterFactory factory, PaginatorFactory paginatorFactory) throws FormatterException {
+			FormatterFactory factory, PaginatorFactory paginatorFactory) {
 		this.contentPaginator = content;
 		this.formatterFactory = factory;
 		this.paginatorFactory = paginatorFactory;
@@ -44,15 +46,9 @@ public class BookStruct {
 		this.crh = new CrossReferenceHandler();
 	}
 	
-	private void reformat() throws FormatterException {
-
-		try {
-			crh.setContents(contentPaginator.paginate(crh));
-			//paginator.close();
-		} catch (IOException e) {
-			throw new FormatterException(e);
-		}
-
+	private void reformat() throws PaginatorException {
+		crh.setContents(contentPaginator.paginate(crh));
+		//paginator.close();
 	}
 
 	private PageStruct getPreVolumeContents(int volumeNumber) {
@@ -93,6 +89,8 @@ public class BookStruct {
 			return ret;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} catch (PaginatorException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -115,7 +113,7 @@ public class BookStruct {
 	public Iterable<Volume> getVolumes() {
 		try {
 			reformat();
-		} catch (FormatterException e) {
+		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while reformatting.");
 		}
 		int j = 1;
@@ -241,8 +239,8 @@ public class BookStruct {
 				crh.setDirty(false);
 				try {
 					reformat();
-				} catch (FormatterException e) {
-					throw new RuntimeException("Error while reformatting.");
+				} catch (PaginatorException e) {
+					throw new RuntimeException("Error while reformatting.", e);
 				}
 				logger.info("Things didn't add up, running another iteration (" + j + ")");
 			}

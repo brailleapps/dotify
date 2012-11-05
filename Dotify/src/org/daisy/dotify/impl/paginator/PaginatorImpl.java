@@ -2,15 +2,15 @@ package org.daisy.dotify.impl.paginator;
 
 import java.io.IOException;
 
-import org.daisy.dotify.book.PageStruct;
-import org.daisy.dotify.book.Row;
+import org.daisy.dotify.formatter.Block;
+import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.formatter.FormatterException;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.paginator.Block;
-import org.daisy.dotify.paginator.BlockSequence;
+import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.RowDataManager;
+import org.daisy.dotify.paginator.PageStruct;
 import org.daisy.dotify.paginator.Paginator;
-import org.daisy.dotify.paginator.RowDataManager;
+import org.daisy.dotify.paginator.PaginatorException;
 import org.daisy.dotify.tools.StateObject;
 
 /**
@@ -59,7 +59,7 @@ public class PaginatorImpl implements Paginator {
 	 * @param refs the cross references to use
 	 * @throws IOException if IO fails
 	 */
-	public PageStruct paginate(CrossReferences refs) throws IOException {
+	public PageStruct paginate(CrossReferences refs) throws PaginatorException {
 		PageStructImpl pageStruct = new PageStructImpl();
 		for (BlockSequence seq : fs) {
 			if (seq.getInitialPageNumber()==null) {
@@ -95,9 +95,7 @@ public class PaginatorImpl implements Paginator {
 					default:;
 				}
 				if (g.getSpaceBefore()+g.getSpaceAfter()>=pageStruct.getFlowHeight()) {
-					IOException ex = new IOException("Layout exception");
-					ex.initCause(new FormatterException("Group margins too large to fit on an empty page."));
-					throw ex;
+					throw new PaginatorException("Group margins too large to fit on an empty page.");
 				} else if (g.getSpaceBefore()+1>pageStruct.getFlowHeight()-pageStruct.countRows()) {
 					pageStruct.currentSequence().newPageOnRow();
 				}
