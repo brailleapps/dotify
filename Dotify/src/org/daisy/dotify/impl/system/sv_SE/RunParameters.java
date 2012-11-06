@@ -1,6 +1,5 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.impl.system.sv_SE;
 
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -12,14 +11,14 @@ import java.util.Properties;
  * 
  * @author Joel Håkansson
  */
-public class RunParameters {
+class RunParameters {
 	private final Properties p;
 	private final int flowWidth;
 	private final int innerMargin;
 	private final int outerMargin;
 	private final float rowgap;
 	
-	private RunParameters(Properties p) {
+	RunParameters(Properties p) {
 		this.p = p;
 		this.flowWidth = Integer.parseInt(p.getProperty("cols", "28"));
 		int pageHeight = Integer.parseInt(p.getProperty("rows", "29"));
@@ -30,16 +29,6 @@ public class RunParameters {
 		this.p.put("page-height", pageHeight);
 		this.p.put("page-width", flowWidth+innerMargin+outerMargin);
 		this.p.put("row-spacing", (rowgap/4)+1);
-	}
-	
-	public static RunParameters load(Properties p0, Map<String, String> guiParams) {
-		Properties p = new Properties();
-		p.putAll(p0);
-
-		// GUI parameters should take precedence
-		p.putAll(guiParams);
-
-		return new RunParameters(p);
 	}
 
 	public String getProperty(Object key) {
@@ -53,7 +42,7 @@ public class RunParameters {
 	/**
 	 * @return the flowWidth
 	 */
-	public int getFlowWidth() {
+	int getFlowWidth() {
 		return flowWidth;
 	}
 
@@ -67,21 +56,21 @@ public class RunParameters {
 	/**
 	 * @return the innerMargin
 	 */
-	public int getInnerMargin() {
+	int getInnerMargin() {
 		return innerMargin;
 	}
 
 	/**
 	 * @return the outerMargin
 	 */
-	public int getOuterMargin() {
+	int getOuterMargin() {
 		return outerMargin;
 	}
 
 	/**
 	 * @return the rowgap
 	 */
-	public float getRowgap() {
+	float getRowgap() {
 		return rowgap;
 	}
 

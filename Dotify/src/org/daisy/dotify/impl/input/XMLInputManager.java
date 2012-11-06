@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.system.InternalTask;
-import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.ValidatorTask;
 import org.daisy.dotify.system.XsltTask;
@@ -83,10 +82,10 @@ class XMLInputManager implements InputManager {
 		return name;
 	}
 
-	public List<InternalTask> compile(RunParameters parameters)
+	public List<InternalTask> compile(Map<String, Object> parameters)
 			throws TaskSystemException {
 
-		String input = parameters.getProperty(SystemKeys.INPUT);
+		String input = parameters.get(SystemKeys.INPUT).toString();
 		String inputformat = null;
 		Peeker peeker = null;
 		FileInputStream is = null;
@@ -133,9 +132,9 @@ class XMLInputManager implements InputManager {
 		}
 		
 		String xmlformat = "xml.properties";
-		String outputMode = p.getProperty(parameters.getProperty(SystemKeys.OUTPUT_FORMAT).toLowerCase());
+		String outputMode = p.getProperty(parameters.get(SystemKeys.OUTPUT_FORMAT).toString().toLowerCase());
 		if (outputMode==null) {
-			logger.info("Failed to set output mode for '" +parameters.getProperty(SystemKeys.OUTPUT_FORMAT)+ "'. Using braille mode.");
+			logger.info("Failed to set output mode for '" +parameters.get(SystemKeys.OUTPUT_FORMAT)+ "'. Using braille mode.");
 		}
 
 		String basePath = CONFIG_PATH + outputMode + "/";
@@ -167,7 +166,7 @@ class XMLInputManager implements InputManager {
 		throw new TaskSystemException("Unable to open a configuration stream for the format.");
 	}
 	
-	private ArrayList<InternalTask> readConfiguration(ResourceLocator locator, String path, RunParameters parameters) throws TaskSystemException, ResourceLocatorException {
+	private ArrayList<InternalTask> readConfiguration(ResourceLocator locator, String path, Map<String, Object> parameters) throws TaskSystemException, ResourceLocatorException {
 		URL t = locator.getResource(path);
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 		try {
@@ -184,11 +183,11 @@ class XMLInputManager implements InputManager {
 				p.loadFromXML(propsStream);
 				propsStream.close();
 
-
+/*
 				HashMap<String, Object> xsltProps = new HashMap<String, Object>();
 				for (Object key : parameters.getKeys()) {
 					xsltProps.put(key.toString(), parameters.getProperty(key));
-				}
+				}*/
 				for (Object key : p.keySet()) {
 					String[] schemas = p.get(key).toString().split("\\s*,\\s*");
 					if ("validation".equals(key.toString())) {
@@ -200,7 +199,7 @@ class XMLInputManager implements InputManager {
 					} else if ("transformation".equals(key.toString())) {
 						for (String s : schemas) {
 							if (s!=null && s!="") {
-								setup.add(new XsltTask("Input to OBFL converter: " + s, locator.getResource(s), null, xsltProps));
+								setup.add(new XsltTask("Input to OBFL converter: " + s, locator.getResource(s), null, parameters));
 							}
 						}
 					} else {

@@ -1,7 +1,7 @@
 package org.daisy.dotify.impl.system.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.input.InputManager;
@@ -10,7 +10,6 @@ import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
-import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
@@ -40,23 +39,20 @@ public class DefaultTextSystem implements TaskSystem {
 		return name;
 	}
 
-	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
+	public ArrayList<InternalTask> compile(Map<String, Object> p) throws TaskSystemException {
 
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 		{
-			HashMap<String, Object> h = new HashMap<String, Object>();
-			for (Object key : p.getKeys()) {
-				h.put(key.toString(), p.getProperty(key));
-			}
+
 			//InputDetector
-			InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context, h.get(SystemKeys.INPUT_FORMAT).toString());
+			InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context, p.get(SystemKeys.INPUT_FORMAT).toString());
 			setup.addAll(idts.compile(p));
 			
 			// Whitespace normalizer TransformerFactoryConstants.SAXON8
 			setup.add(new XsltTask("OBFL whitespace normalizer",
 									ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
 									null,
-									h));
+									p));
 		}
 		// Layout FLOW as text
 		BrailleTranslator bt;

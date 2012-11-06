@@ -17,7 +17,6 @@ import java.util.Properties;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.l10n.LocalizationManager;
 import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
@@ -145,7 +144,7 @@ public class Dotify {
 		tr.setIdentifier("Dotify@" + Integer.toHexString((int)(System.currentTimeMillis()-1261440000000l)));
 
 		// Load setup
-		RunParameters rp = d.loadSetup(map, setup, outputformat, context);
+		Map<String, Object> rp = d.loadSetup(map, setup, outputformat, context);
 
 		// Run tasks
 		try {
@@ -160,17 +159,17 @@ public class Dotify {
 		}
 	}
 	
-	private RunParameters loadSetup(Map<String, String> map, String setup, String outputformat, FilterLocale context) throws MalformedURLException {
+	private Map<String, Object> loadSetup(Map<String, String> guiParams, String setup, String outputformat, FilterLocale context) throws MalformedURLException {
 		ConfigurationsCatalog cm = ConfigurationsCatalog.newInstance();
-		Properties p;
+		Properties p0;
 		try {
-			p = cm.getConfiguration(setup);
+			p0 = cm.getConfiguration(setup);
 		} catch (ResourceLocatorException e) {
 			//try as file
-			p = new Properties();
+			p0 = new Properties();
 			URL configURL = new URL(setup);
 			try {
-				p.loadFromXML(configURL.openStream());
+				p0.loadFromXML(configURL.openStream());
 			} catch (FileNotFoundException e2) {
 				throw new RuntimeException("Configuration file not found: " + configURL, e2);
 			} catch (InvalidPropertiesFormatException e2) {
@@ -179,9 +178,17 @@ public class Dotify {
 				throw new RuntimeException("IOException while reading configuration file: " + configURL, e2);
 			}
 		}
-		return RunParameters.load(p, map);
+		Map<String, Object> ret = new HashMap<String, Object>();
+		for (Object key : p0.keySet()) {
+			ret.put(key.toString(), p0.get(key));
+		}
+
+		// GUI parameters should take precedence
+		ret.putAll(guiParams);
+
+		return ret;
 	}
-	
+
 	static String getDefaultDate(String dateFormat) {
 	    Calendar c = Calendar.getInstance();
 	    c.setTime(new Date());

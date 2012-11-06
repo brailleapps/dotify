@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.daisy.util.file.FileJuggler;
@@ -64,7 +65,7 @@ public class TaskRunner {
 		this.identifier = identifier;
 	}
 
-	public void runTasks(File input, File output, TaskSystem taskSystem, RunParameters rp) throws IOException, TaskSystemException {
+	public void runTasks(File input, File output, TaskSystem taskSystem, Map<String, Object> rp) throws IOException, TaskSystemException {
 		Progress progress = new Progress();
 		logger.info("\"" + taskSystem.getName() + "\" started on " + progress.getStart() + " with parameters " + rp);
 		List<InternalTask> tasks = taskSystem.compile(rp);

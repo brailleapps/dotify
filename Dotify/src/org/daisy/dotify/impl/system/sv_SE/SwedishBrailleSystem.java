@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,7 +20,6 @@ import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
-import org.daisy.dotify.system.RunParameters;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
@@ -65,7 +65,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		return name;
 	}
 
-	public ArrayList<InternalTask> compile(RunParameters p) throws TaskSystemException {
+	public ArrayList<InternalTask> compile(Map<String, Object> pa) throws TaskSystemException {
 		if (SystemKeys.OBFL_FORMAT.equals(outputFormat)) {
 			return new ArrayList<InternalTask>();
 		}
@@ -73,6 +73,15 @@ public class SwedishBrailleSystem implements TaskSystem {
 		URL metaFinalizer = CommonResourceLocator.getInstance().getResourceByIdentifier(CommonResourceIdentifier.META_FINALIZER_XSLT);
 
 		//configURL = new URL(resourceBase, config);
+		
+		RunParameters p;
+		{
+			Properties p1 = new Properties();
+			for (String key : pa.keySet()) {
+				p1.put(key, pa.get(key));
+			}
+			p = new RunParameters(p1);
+		}
 		Properties p2 = new Properties();
 		HashMap<String, Object> h = new HashMap<String, Object>();
 		for (Object key : p.getKeys()) {
@@ -83,7 +92,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		ArrayList<InternalTask> setup = new ArrayList<InternalTask>();
 		//InputDetector
 		InputManager idts = InputManagerFactoryMaker.newInstance().newInputManager(context, p2.get(SystemKeys.INPUT_FORMAT).toString());
-		setup.addAll(idts.compile(p));
+		setup.addAll(idts.compile(h));
 		
 		// Whitespace normalizer TransformerFactoryConstants.SAXON8
 		setup.add(new XsltTask("OBFL whitespace normalizer",
