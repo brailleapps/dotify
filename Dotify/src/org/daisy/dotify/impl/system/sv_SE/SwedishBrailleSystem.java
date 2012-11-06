@@ -105,11 +105,6 @@ public class SwedishBrailleSystem implements TaskSystem {
 		//BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
 
 		// Customize which parameters are sent to the PEFMediaWriter, as it outputs all parameters for future reference
-		// Localization parameters are not that interesting in retrospect
-		p2.remove("l10nrearjacketcopy");
-		p2.remove("l10nimagedescription");
-		p2.remove("l10ncolophon");
-		p2.remove("l10ncaption");
 		// System file paths should be concealed for security reasons 
 		p2.remove(SystemKeys.INPUT);
 		p2.remove(SystemKeys.INPUT_URI);

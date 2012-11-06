@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ import org.xml.sax.SAXException;
  */
 class XMLInputManager implements InputManager {
 	private final static String CONFIG_PATH = "config-files/";
+	private final static String LOCALIZATION_PROPS = "localization.xml";
 	private final ResourceLocator localLocator;
 	private final ResourceLocator commonLocator;
 	private final String name;
@@ -197,9 +199,29 @@ class XMLInputManager implements InputManager {
 							}
 						}
 					} else if ("transformation".equals(key.toString())) {
+						Map<String, Object> xsltParams = new HashMap<String, Object>();
+						for (String key2 : parameters.keySet()) {
+							xsltParams.put(key2, parameters.get(key2));
+						}
+						{
+							Properties p2 = new Properties();
+							try {
+								p2.loadFromXML(localLocator.getResource(LOCALIZATION_PROPS).openStream());
+							} catch (InvalidPropertiesFormatException e) {
+								logger.log(Level.FINE, "", e);
+							} catch (ResourceLocatorException e) {
+								logger.log(Level.FINE, "", e);
+							} catch (IOException e) {
+								logger.log(Level.FINE, "", e);
+							}
+							
+							for (Object key3 : p2.keySet()) {
+								xsltParams.put(key3.toString(), p2.get(key3).toString());
+							}
+						}
 						for (String s : schemas) {
 							if (s!=null && s!="") {
-								setup.add(new XsltTask("Input to OBFL converter: " + s, locator.getResource(s), null, parameters));
+								setup.add(new XsltTask("Input to OBFL converter: " + s, locator.getResource(s), null, xsltParams));
 							}
 						}
 					} else {

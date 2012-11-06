@@ -166,6 +166,7 @@ Dotify/src/org/daisy/dotify/impl/input/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/braille/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/output_mode_catalog.xml -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/text/dtbook.properties -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/sv_SE/localization.xml -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/validation-files/dtbook.sch -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/doc-files/dtb2obfl.xml -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/doc-files/dtb2obfl_braille.xml -text
@@ -205,11 +206,6 @@ Dotify/src/org/daisy/dotify/input/InputManager.java -text svneol=unset#text/plai
 Dotify/src/org/daisy/dotify/input/InputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/input/InputManagerFactoryMaker.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/package-info.java -text
-Dotify/src/org/daisy/dotify/l10n/LocalizationManager.java -text
-Dotify/src/org/daisy/dotify/l10n/LocalizationResourceLocator.java -text
-Dotify/src/org/daisy/dotify/l10n/localization_catalog.xml -text
-Dotify/src/org/daisy/dotify/l10n/package-info.java -text
-Dotify/src/org/daisy/dotify/l10n/sv-SE/localization.xml -text
 Dotify/src/org/daisy/dotify/obfl/BlockContents.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEvent.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEventHandler.java -text

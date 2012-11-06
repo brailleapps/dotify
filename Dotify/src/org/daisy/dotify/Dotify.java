@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.daisy.dotify.config.ConfigurationsCatalog;
-import org.daisy.dotify.l10n.LocalizationManager;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystem;
@@ -113,13 +112,6 @@ public class Dotify {
 			id = id.substring(id.indexOf('.')+1);
 			id = id.substring(0, id.indexOf('p'));
 			map.put(SystemKeys.IDENTIFIER, "dummy-id-"+ id);
-		}
-		
-		{
-			Properties p = new LocalizationManager().getContentLocalization(context);
-			for (Object key : p.keySet()) {
-				map.put(key.toString(), p.get(key).toString());
-			}
 		}
 
 		// Load additional settings from file
