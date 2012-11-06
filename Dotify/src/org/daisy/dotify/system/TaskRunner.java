@@ -69,7 +69,7 @@ public class TaskRunner {
 		Progress progress = new Progress();
 		logger.info("\"" + taskSystem.getName() + "\" started on " + progress.getStart() + " with parameters " + rp);
 		List<InternalTask> tasks = taskSystem.compile(rp);
-		double i = 0;
+		int i = 0;
 		NumberFormat nf = NumberFormat.getPercentInstance();
 		FileJuggler fj = new FileJuggler(input, output);
 		for (InternalTask task : tasks) {
@@ -77,19 +77,7 @@ public class TaskRunner {
 				logger.info("Running (r/w) " + task.getName());
 				((ReadWriteTask)task).execute(fj.getInput(), fj.getOutput());
 				if (writeTempFiles) {
-					String it = ""+((int)i+1);
-					while (it.length()<3) {
-						it = "0" + it; 
-					}
-					String fileName = (identifier + "-"
-									+ truncate(taskSystem.getName(), 20) + "-" 
-									+ it + "-" 
-									+ truncate(task.getName(), 20)
-								).toLowerCase().replaceAll("[^a-zA-Z0-9@\\-]+", "_");
-					fileName += ".tmp";
-					File f = new File(tempFilesFolder, fileName);
-					logger.fine("Writing debug file: " + f);
-					FileUtils.copy(fj.getOutput(), f);
+					writeTempFile(fj.getOutput(), taskSystem.getName(), task.getName(), i);
 				}
 				fj.swap();
 			} else if (task instanceof ReadOnlyTask) {
@@ -99,12 +87,28 @@ public class TaskRunner {
 				logger.warning("Unknown task type, skipping.");
 			}
 			i++;
-			progress.updateProgress(i/tasks.size());
+			progress.updateProgress(i/(double)tasks.size());
 			logger.info(nf.format(progress.getProgress()) + " done. ETA " + progress.getETA());
 			//progress(i/tasks.size());
 		}
 		fj.close();
 		logger.info("\"" + taskSystem.getName() + "\" finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
+	}
+	
+	private void writeTempFile(File source, String taskSystemName, String taskName, int i) throws IOException {
+		String it = ""+(i+1);
+		while (it.length()<3) {
+			it = "0" + it; 
+		}
+		String fileName = (identifier + "-"
+						+ truncate(taskSystemName, 20) + "-" 
+						+ it + "-" 
+						+ truncate(taskName, 20)
+					).toLowerCase().replaceAll("[^a-zA-Z0-9@\\-]+", "_");
+		fileName += ".tmp";
+		File f = new File(tempFilesFolder, fileName);
+		logger.fine("Writing debug file: " + f);
+		FileUtils.copy(source, f);
 	}
 	
 	private String truncate(String str, int pos) {

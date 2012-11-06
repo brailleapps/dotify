@@ -10,7 +10,6 @@ import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.formatter.RowDataManager;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.RomanNumeral;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
