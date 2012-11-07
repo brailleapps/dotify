@@ -1,7 +1,42 @@
 /**
  * <p>
- * Provides input implementations.
- * </p>
+ * Provides input implementations. Dotify comes with a flexible input format system that 
+ * can be extended to support any xml-format (this package). The XML input format system 
+ * manages the conversion from any xml-format to OBFL.</p>
+ * 
+ * <p>The decision tree includes many configurable parts. When running Dotify, one of the 
+ * required parameters is context locale. The context locale is the locale in which the 
+ * output is to be consumed.</p>
+ * 
+ * <p>The first configurable part of the input system is the localization_catalog.xml
+ * which is scanned for supported locales, for example 'en-US'. It connects a locale 
+ * with a base folder for the input system. The base folder is relative to the 
+ * localization catalog (or rather ???).</p>
+ * 
+ * <p>In addition to the base folder supplied in the localization catalog, there is a 
+ * fallback base folder called "common" which is used whenever the input system fails
+ * to locate a resource in the supplied localization catalog.</p>
+ * 
+ * <p>Parameters of the input format conversion can be stored as presets, these 
+ * can be placed in the "config" implementation package. See this package for more
+ * information. Content localization should be stored independently of the
+ * presets. A mechanism for supplying content localization exists in this package.
+ * The localization data can therefore be stored separately from the input transformation
+ * data. Since each locale has its own input transformation, this may seem redundant,
+ * however it could be useful if there are a lot of formats to manage and the
+ * localization information must be updated or if a fallback input transformation is 
+ * used. Therefore, a great deal of care must be taken to ensure that the same keys 
+ * are used in all input transformations in this package.</p>
+ * 
+ * <p>The process of interpreting an input file format as OBFL is managed by a properties 
+ * file which must be named as indicated by the input_format_catalog.xml. The input format
+ * catalog connects a root element and namespace with a filename. The location of this 
+ * file is determined by the output_mode_catalog.xml where an output format maps to an
+ * output mode. In other words, the properties file should be located in the 
+ * "config-files/[output-mode]" folder of the localization base folder. The properties 
+ * file should contain two entries: transformation and validation, pointing to the xslt 
+ * and schema required by the input format.</p>
+ *  
  * <h3>English conversions of DTBook</h3>
  * <ul>
  * <li><a href=
