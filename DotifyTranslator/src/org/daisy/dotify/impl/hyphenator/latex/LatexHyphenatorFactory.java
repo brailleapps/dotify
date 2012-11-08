@@ -1,6 +1,6 @@
 package org.daisy.dotify.impl.hyphenator.latex;
 
-import org.daisy.dotify.hyphenator.FeatureNotSupportedException;
+import org.daisy.dotify.hyphenator.UnsupportedFeatureException;
 import org.daisy.dotify.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.hyphenator.HyphenatorFactory;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
@@ -26,8 +26,8 @@ public class LatexHyphenatorFactory implements HyphenatorFactory {
 		return null;
 	}
 
-	public void setFeature(String key, Object value) throws FeatureNotSupportedException {
-		throw new FeatureNotSupportedException();
+	public void setFeature(String key, Object value) throws UnsupportedFeatureException {
+		throw new UnsupportedFeatureException();
 	}
 
 }

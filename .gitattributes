@@ -345,12 +345,12 @@ DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFac
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.BrailleTranslatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedBrailleFilter -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/FeatureNotSupportedException.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenationFeatures.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactoryMaker.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedFeatureException.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/package-info.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWDecompounder.java -text

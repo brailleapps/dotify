@@ -11,6 +11,12 @@ import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.text.FilterLocale;
 
+/**
+ * Provides a hyphenator factory maker. This is the entry point for
+ * creating hyphenator instances.
+ * 
+ * @author Joel Håkansson
+ */
 public class HyphenatorFactoryMaker {
 	private final List<HyphenatorFactory> filters;
 	private final Map<FilterLocale, HyphenatorFactory> map;
@@ -60,10 +66,11 @@ public class HyphenatorFactoryMaker {
 	
 	/**
 	 * Gets a HyphenatorFactory that supports the specified locale
-	 * @param target
+	 * @param target the target locale
 	 * @return returns a hyphenator factory for the specified locale
+	 * @throws UnsupportedLocaleException if the locale is not supported
 	 */
-	public HyphenatorFactory getFactory(FilterLocale target) {
+	public HyphenatorFactory getFactory(FilterLocale target) throws UnsupportedLocaleException {
 		HyphenatorFactory template = map.get(target);
 		if (template==null) {
 			for (HyphenatorFactory h : filters) {
@@ -76,11 +83,19 @@ public class HyphenatorFactoryMaker {
 			}
 		}
 		if (template==null) {
-			throw new IllegalArgumentException("Cannot find hyphenator factory for " + target);
+			throw new UnsupportedLocaleException("Cannot find hyphenator factory for " + target);
 		}
 		return template;
 	}
 
+	/**
+	 * Creates a new hyphenator. This is a convenience method for getFactory(target).newHyphenator(target).
+	 * Using this method excludes the possibility of setting features of the hyphenator factory.
+	 * 
+	 * @param target the target locale
+	 * @return returns a new hyphenator
+	 * @throws UnsupportedLocaleException if the locale is not supported
+	 */
 	public HyphenatorInterface newHyphenator(FilterLocale target) throws UnsupportedLocaleException {
 		HyphenatorInterface ret = getFactory(target).newHyphenator(target);
 		if (beginLimit!=null) {

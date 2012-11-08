@@ -1,5 +1,12 @@
 package org.daisy.dotify.hyphenator;
 
+/**
+ * Provides a catalog of common hyphenation features. These can be used when getting or
+ * setting features of hyphenation factories.
+ * 
+ * @author Joel Håkansson
+ *
+ */
 public interface HyphenationFeatures {
 	
 	/**

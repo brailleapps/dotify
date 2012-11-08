@@ -2,7 +2,7 @@ package org.daisy.dotify.impl.hyphenator.latex;
 
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.FeatureNotSupportedException;
+import org.daisy.dotify.hyphenator.UnsupportedFeatureException;
 import org.daisy.dotify.hyphenator.HyphenationFeatures;
 import org.daisy.dotify.hyphenator.HyphenatorFactory;
 import org.daisy.dotify.hyphenator.HyphenatorInterface;
@@ -28,7 +28,7 @@ public class CWHyphenatorFactory implements HyphenatorFactory {
 		return null;
 	}
 
-	public void setFeature(String key, Object value) throws FeatureNotSupportedException {
+	public void setFeature(String key, Object value) throws UnsupportedFeatureException {
 		if (key.equals(HyphenationFeatures.HYPHENATION_ACCURACY)) {
 			accuracy = (Integer)value;
 			if (accuracy !=5 && accuracy != 3) {
@@ -36,7 +36,7 @@ public class CWHyphenatorFactory implements HyphenatorFactory {
 						"Feature " + HyphenationFeatures.HYPHENATION_ACCURACY + " set to an unsupported value: " + accuracy + ". Supported values are 3 and 5.");
 			}
 		} else {
-			throw new FeatureNotSupportedException();
+			throw new UnsupportedFeatureException();
 		}
 	}
 

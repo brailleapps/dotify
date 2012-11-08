@@ -1,5 +1,11 @@
 package org.daisy.dotify.hyphenator;
 
+/**
+ * Provides an exception that indicates that a locale is not supported.
+ * 
+ * @author joha
+ *
+ */
 public class UnsupportedLocaleException extends Exception {
 
 	/**

@@ -3,11 +3,22 @@ package org.daisy.dotify.hyphenator;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;
 
+/**
+ * Provides a hyphenating string filter. This filter will hyphenate the
+ * filter input using the supplied hyphenator.
+ * 
+ * @author Joel Håkansson
+ *
+ */
 public class HyphenatorFilter implements StringFilter {
 	private final HyphenatorInterface hyphenator;
 
 	public HyphenatorFilter(FilterLocale locale) throws UnsupportedLocaleException {
-		hyphenator = HyphenatorFactoryMaker.newInstance().newHyphenator(locale);
+		this(HyphenatorFactoryMaker.newInstance().newHyphenator(locale));
+	}
+	
+	public HyphenatorFilter(HyphenatorInterface hyphenator) {
+		this.hyphenator = hyphenator;
 	}
 
 	public int getBeginLimit() {

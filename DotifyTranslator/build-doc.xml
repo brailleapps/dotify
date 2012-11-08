@@ -24,6 +24,7 @@
         	noindex="false" 
         	nonavbar="false" 
         	notree="false" 
+        	windowtitle="Dotify Translator"
         	packagenames="org.daisy.dotify.*"
         	excludepackagenames="org.daisy.dotify.impl.*"
         	source="1.5" 
