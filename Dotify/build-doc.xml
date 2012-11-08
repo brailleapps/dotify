@@ -17,6 +17,7 @@
 	
     <target name="javadoc" description="Create javadoc">
     	<delete dir="${javadoc.dir}"/>
+    	<!--excludepackagenames="org.daisy.dotify.impl.*"-->
         <javadoc access="public" author="true"
         	classpathref="path.lib"
         	destdir="${javadoc.dir}" 
@@ -24,7 +25,8 @@
         	nodeprecatedlist="false" 
         	noindex="false" 
         	nonavbar="false" 
-        	notree="false" 
+        	notree="false"
+        	windowtitle="Dotify"
         	packagenames="
         		org.daisy.dotify.*"
         	source="1.5" 
