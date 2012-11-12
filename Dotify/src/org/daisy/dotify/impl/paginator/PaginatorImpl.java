@@ -71,7 +71,7 @@ public class PaginatorImpl implements Paginator {
 			//ArrayList<Block> tmp = new ArrayList<Block>();
 			//Block[] groupA = new Block[tmp.size()];
 			//groupA = tmp.toArray(groupA);
-			int gi = 0;
+			//int gi = 0;
 			for (Block g : seq) {
 				//int height = ps.getCurrentLayoutMaster().getFlowHeight();
 				switch (g.getBreakBeforeType()) {
@@ -85,7 +85,7 @@ public class PaginatorImpl implements Paginator {
 				//FIXME: se över recursiv hämtning
 				switch (g.getKeepType()) {
 					case ALL:
-						int keepHeight = getKeepHeight(seq, gi, refs);
+						int keepHeight = seq.getKeepHeight(g, refs);
 						if (pageStruct.countRows()>0 && keepHeight>pageStruct.getFlowHeight()-pageStruct.countRows() && keepHeight<=pageStruct.getFlowHeight()) {
 							pageStruct.newPage();
 						}
@@ -130,25 +130,10 @@ public class PaginatorImpl implements Paginator {
 						pageStruct.newRow(new Row(""));
 					}
 				}
-				gi++;
+				//gi++;
 			}
 		}
 		return pageStruct;
-	}
-	
-	private static int getKeepHeight(BlockSequence seq, int gi, CrossReferences refs) {
-		int keepHeight = seq.getBlock(gi).getSpaceBefore()+seq.getBlock(gi).getBlockContentManager(refs).getRowCount();
-		if (seq.getBlock(gi).getKeepWithNext()>0 && gi+1<seq.getBlockCount()) {
-			keepHeight += seq.getBlock(gi).getSpaceAfter()+seq.getBlock(gi+1).getSpaceBefore()+seq.getBlock(gi).getKeepWithNext();
-			switch (seq.getBlock(gi+1).getKeepType()) {
-				case ALL:
-					keepHeight += getKeepHeight(seq, gi+1, refs);
-					break;
-				case AUTO: break;
-				default:;
-			}
-		}
-		return keepHeight;
 	}
 
 }
