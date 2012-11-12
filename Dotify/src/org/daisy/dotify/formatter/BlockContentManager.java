@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Joel Håkansson
  */
-public interface RowDataManager extends Iterable<Row> {
+public interface BlockContentManager extends Iterable<Row> {
 
 	public List<Marker> getGroupMarkers(); 
 	public int getRowCount();

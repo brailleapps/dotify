@@ -93,6 +93,7 @@ Dotify/src/org/daisy/dotify/config/ConfigurationsCatalog.java -text
 Dotify/src/org/daisy/dotify/config/ConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/config/package-info.java -text
 Dotify/src/org/daisy/dotify/formatter/Block.java -text
+Dotify/src/org/daisy/dotify/formatter/BlockContentManager.java -text
 Dotify/src/org/daisy/dotify/formatter/BlockPosition.java -text
 Dotify/src/org/daisy/dotify/formatter/BlockProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/BlockSequence.java -text
@@ -115,7 +116,6 @@ Dotify/src/org/daisy/dotify/formatter/PageTemplate.java -text
 Dotify/src/org/daisy/dotify/formatter/PagenumField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Position.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Row.java -text
-Dotify/src/org/daisy/dotify/formatter/RowDataManager.java -text
 Dotify/src/org/daisy/dotify/formatter/SectionProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/StringField.java -text
@@ -133,6 +133,7 @@ Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w42.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w43.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/config/resource-files/w50.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/AnchorSegment.java -text
+Dotify/src/org/daisy/dotify/impl/formatter/BlockContentManagerImpl.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/BlockHandler.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/BlockImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/BlockSequenceImpl.java -text svneol=unset#text/plain
@@ -142,7 +143,6 @@ Dotify/src/org/daisy/dotify/impl/formatter/LeaderSegment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/MarkerSegment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/NewLineSegment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/PageNumberReferenceSegment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/RowDataManagerImpl.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/RowDataProperties.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/Segment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/TextSegment.java -text

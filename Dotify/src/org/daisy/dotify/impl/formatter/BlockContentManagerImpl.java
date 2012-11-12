@@ -8,20 +8,20 @@ import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.formatter.RowDataManager;
+import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.RomanNumeral;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
-class RowDataManagerImpl implements RowDataManager {
+class BlockContentManagerImpl implements BlockContentManager {
 	private boolean isVolatile;
 	private final ArrayList<Marker> groupMarkers;
 	private final ArrayList<String> groupAnchors;
 	private final Stack<Row> rows;
 	private final CrossReferences refs;
 	
-	RowDataManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
+	BlockContentManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
 		this.groupMarkers = new ArrayList<Marker>();
 		this.groupAnchors = new ArrayList<String>();
 		this.refs = refs;

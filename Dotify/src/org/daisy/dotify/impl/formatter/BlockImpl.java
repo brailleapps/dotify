@@ -8,7 +8,7 @@ import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.RowDataManager;
+import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 
@@ -25,7 +25,7 @@ class BlockImpl implements Block {
 	private String id;
 	private Stack<Segment> segments;
 	private final RowDataProperties rdp;
-	private RowDataManager rdm;
+	private BlockContentManager rdm;
 
 	
 	BlockImpl(String blockId, RowDataProperties rdp) {
@@ -139,9 +139,9 @@ class BlockImpl implements Block {
 		return blockId;
 	}
 	
-	public RowDataManager getRowDataManager(CrossReferences refs) {
+	public BlockContentManager getBlockContentManager(CrossReferences refs) {
 		if (rdm==null || rdm.isVolatile()) {
-			rdm = new RowDataManagerImpl(segments, rdp, refs);
+			rdm = new BlockContentManagerImpl(segments, rdp, refs);
 		}
 		return rdm;
 	}
