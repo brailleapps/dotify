@@ -2,19 +2,20 @@ package org.daisy.dotify.hyphenator;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.hyphenator.HyphenatorFactoryMaker;
-import org.daisy.dotify.hyphenator.HyphenatorInterface;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class SwedishHyphenationTest {
 	private final HyphenatorInterface hyph_sv_SE;
-	public SwedishHyphenationTest() {
+	public SwedishHyphenationTest() throws UnsupportedFeatureException {
 		HyphenatorInterface h2;
 		try {
-			h2 = HyphenatorFactoryMaker.newInstance().newHyphenator(FilterLocale.parse("sv-SE"));
+			FilterLocale locale = FilterLocale.parse("sv-SE");
+			HyphenatorFactory hf = HyphenatorFactoryMaker.newInstance().getFactory(locale);
+			//if this is set to 3 (using only patterns) several tests will fail 
+			//hf.setFeature(HyphenationFeatures.HYPHENATION_ACCURACY, 3);
+			h2 = hf.newHyphenator(locale);
 		} catch (UnsupportedLocaleException e) {
 			h2 = null;
 		}
