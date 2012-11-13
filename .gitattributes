@@ -84,7 +84,7 @@ Dotify/src/org/daisy/dotify/book/PageCopy.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/book/PageSequenceCopy.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/book/PageStructCopy.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/book/PageTools.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/book/VolData.java -text
+Dotify/src/org/daisy/dotify/book/VolDataInterface.java -text
 Dotify/src/org/daisy/dotify/book/Volume.java -text
 Dotify/src/org/daisy/dotify/book/VolumeContentFormatter.java -text
 Dotify/src/org/daisy/dotify/book/VolumeImpl.java -text svneol=unset#text/plain

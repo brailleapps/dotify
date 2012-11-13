@@ -23,7 +23,7 @@ class CrossReferenceHandler implements CrossReferences {
 	
 	private boolean isDirty;
 	private boolean volumeForContentSheetChanged;
-	private int maxKey;
+	//private int maxKey;
 	
 	public CrossReferenceHandler() {
 		this.volLocations = new HashMap<String, Integer>();
@@ -34,7 +34,7 @@ class CrossReferenceHandler implements CrossReferences {
 		this.targetVolSize = new Integer[0];
 		this.isDirty = false;
 		this.volumeForContentSheetChanged = false;
-		this.maxKey = 0;
+		//this.maxKey = 0;
 	}
 	
 	public PageStruct getContents() {
@@ -68,15 +68,40 @@ class CrossReferenceHandler implements CrossReferences {
 		return sdc.sheetsInVolume(volIndex);
 	}
 	
-	public void setVolData(int volumeNumber, VolData d) {
+	private void setVolData(int volumeNumber, VolData d) {
 		//update the highest observed volume number
-		maxKey = Math.max(maxKey, volumeNumber);
+		//maxKey = Math.max(maxKey, volumeNumber);
 		volData.put(volumeNumber, d);
 	}
 	
-	public VolData getVolData(int volumeNumber) {
+	public void setPreVolData(int volumeNumber, PageStruct preVolData) {
+		VolData d = (VolData)getVolData(volumeNumber);
+		/*if (d.preVolData!=preVolData) {
+			setDirty(true);
+		}*/
+		d.setPreVolData(preVolData);
+	}
+	
+	public void setPostVolData(int volumeNumber, PageStruct postVolData) {
+		VolData d = (VolData)getVolData(volumeNumber);
+		/*if (d.postVolData!=postVolData) {
+			setDirty(true);
+		}*/
+		d.setPostVolData(postVolData);
+	}
+	
+	public void setTargetVolSize(int volumeNumber, int targetVolSize) {
+		VolData d = (VolData)getVolData(volumeNumber);
+		if (d.getTargetVolSize()!=targetVolSize) {
+			setDirty(true);
+		}
+		d.setTargetVolSize(targetVolSize);
+	}
+	
+	public VolDataInterface getVolData(int volumeNumber) {
 		if (volData.get(volumeNumber)==null) {
 			setVolData(volumeNumber, new VolData());
+			setDirty(true);
 		}
 		return volData.get(volumeNumber);
 	}
@@ -168,7 +193,8 @@ class CrossReferenceHandler implements CrossReferences {
 		int lastSheetInCurrentVolume=0;
 		int retVolume=0;
 		while (lastSheetInCurrentVolume<sheetIndex) {
-			lastSheetInCurrentVolume -= getVolData(retVolume).getVolOverhead();
+			int overhead = getVolData(retVolume+1).getVolOverhead();
+			lastSheetInCurrentVolume -= overhead;
 			if (retVolume<targetVolSize.length && targetVolSize[retVolume]!=null) {
 				lastSheetInCurrentVolume += targetVolSize[retVolume];
 			} else {
@@ -186,6 +212,58 @@ class CrossReferenceHandler implements CrossReferences {
 	
 	public int getExpectedVolumeCount() {
 		return sdc.getVolumeCount();
+	}
+	
+	private class VolData implements VolDataInterface {
+		private PageStruct preVolData;
+		private PageStruct postVolData;
+		private int preVolSize;
+		private int postVolSize;
+		private int targetVolSize;
+		
+		private VolData() {
+			this.preVolSize = 0;
+			this.postVolSize = 0;
+			this.targetVolSize = 0;
+		}
+
+		public PageStruct getPreVolData() {
+			return preVolData;
+		}
+
+		public void setPreVolData(PageStruct preVolData) {
+			preVolSize = PageTools.countSheets(preVolData.getContents());
+			this.preVolData = preVolData;
+		}
+
+		public PageStruct getPostVolData() {
+			return postVolData;
+		}
+
+		public void setPostVolData(PageStruct postVolData) {
+			postVolSize = PageTools.countSheets(postVolData.getContents());
+			this.postVolData = postVolData;
+		}
+
+		public int getPreVolSize() {
+			return preVolSize;
+		}
+
+		public int getPostVolSize() {
+			return postVolSize;
+		}
+		
+		public int getVolOverhead() {
+			return preVolSize + postVolSize;
+		}
+
+		public int getTargetVolSize() {
+			return targetVolSize;
+		}
+
+		public void setTargetVolSize(int targetVolSize) {
+			this.targetVolSize = targetVolSize;
+		}
 	}
 
 }

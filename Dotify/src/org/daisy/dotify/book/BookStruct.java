@@ -72,19 +72,9 @@ public class BookStruct {
 			PageStruct ret = paginator2.paginate(crh);
 			paginator2.close();
 			if (pre) {
-				VolData d = crh.getVolData(volumeNumber);
-				if (d==null) {
-					d = new VolData();
-					crh.setVolData(volumeNumber, d);
-				}
-				d.setPreVolData(ret);
+				crh.setPreVolData(volumeNumber, ret);
 			} else {
-				VolData d = crh.getVolData(volumeNumber);
-				if (d==null) {
-					d = new VolData();
-					crh.setVolData(volumeNumber, d);
-				}
-				d.setPostVolData(ret);
+				crh.setPostVolData(volumeNumber, ret);
 			}
 			return ret;
 		} catch (IOException e) {
@@ -196,11 +186,13 @@ public class BookStruct {
 				} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<=splitterMax);
 				bp = volBreaks.nextRow(contentSheets + offset, true);
 				contentSheets = bp.getHead().length();
-				crh.getVolData(i).setTargetVolSize(contentSheets + crh.getVolData(i).getVolOverhead());
+				crh.setTargetVolSize(i, contentSheets + crh.getVolData(i).getVolOverhead());
 			}
 			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
 				int contentSheets = crh.getVolData(i).getTargetVolSize() - crh.getVolData(i).getVolOverhead();
-				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+crh.getVolData(i).getVolOverhead()));
+				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+crh.getVolData(i).getVolOverhead()) + 
+						", content:" + contentSheets +
+						", overhead:" + crh.getVolData(i).getVolOverhead());
 				PageStructCopy body = new PageStructCopy();
 				while (true) {
 					if (pageIndex>=pages.size()) {
