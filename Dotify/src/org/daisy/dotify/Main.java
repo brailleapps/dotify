@@ -159,6 +159,18 @@ public class Main extends AbstractUI {
 			Main.exitWithCode(ExitCode.MISSING_RESOURCE, "Cannot find input file: " + input);
 		}
 		Dotify.run(input, output, setup, FilterLocale.parse(context), props);
+		/*
+		int i = output.getName().lastIndexOf(".");
+		String format = "";
+		if (output.getName().length()>i) {
+			format = output.getName().substring(i+1);
+		}
+		if (format.equalsIgnoreCase(SystemKeys.PEF_FORMAT)) {
+			PEFValidator validator = new PEFValidator();
+			if (!validator.validate(output.toURI().toURL())) {
+				Logger.getLogger(Main.class.getCanonicalName()).warning("Validation failed: " + output);
+			}
+		}*/
 	}
 
 	@Override

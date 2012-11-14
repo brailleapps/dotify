@@ -232,7 +232,8 @@ class CrossReferenceHandler implements CrossReferences {
 		}
 
 		public void setPreVolData(PageStruct preVolData) {
-			preVolSize = PageTools.countSheets(preVolData.getContents());
+			//use the highest value to avoid oscillation
+			preVolSize = Math.max(preVolSize, PageTools.countSheets(preVolData.getContents()));
 			this.preVolData = preVolData;
 		}
 
@@ -241,7 +242,8 @@ class CrossReferenceHandler implements CrossReferences {
 		}
 
 		public void setPostVolData(PageStruct postVolData) {
-			postVolSize = PageTools.countSheets(postVolData.getContents());
+			//use the highest value to avoid oscillation
+			postVolSize = Math.max(postVolSize, PageTools.countSheets(postVolData.getContents()));
 			this.postVolData = postVolData;
 		}
 
