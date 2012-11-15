@@ -82,11 +82,18 @@ public class Main extends AbstractUI {
 	public static void main(String[] args) throws InternalTaskException, IOException, TaskSystemFactoryException {
 		Main m = new Main();
 		if (args.length<4) {
-			System.out.println("Expected at least four arguments");
-			
-			System.out.println();
-			m.displayHelp(System.out);
-			Main.exitWithCode(ExitCode.MISSING_ARGUMENT);
+			if (args.length==1 && args[0].equals("-version")) {
+				System.out.println("About " + SystemProperties.SYSTEM_NAME);
+				System.out.println("Version: "+ SystemProperties.SYSTEM_RELEASE);
+				System.out.println("Build: "+ SystemProperties.SYSTEM_BUILD);
+				Main.exitWithCode(ExitCode.OK);
+			} else {
+				System.out.println("Expected at least four arguments");
+				
+				System.out.println();
+				m.displayHelp(System.out);
+				Main.exitWithCode(ExitCode.MISSING_ARGUMENT);
+			}
 		}
 
 		List<String> p = m.getRequired(args);
