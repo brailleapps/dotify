@@ -56,6 +56,7 @@
     			<attribute name="Main-Class" value="org.daisy.dotify.Main"/>
     			<attribute name="Built-By" value="${user.name}"/>
     			<attribute name="Built-On" value="${ISO-TODAY}"/>
+    			<attribute name="Repository-Revision" value="${repository-revision}"/>
     			<attribute name="Implementation-Title" value="${release-name}"/>
     			<attribute name="Implementation-Version" value="${release-version}"/>
     			<attribute name="Implementation-URL" value="http://code.google.com/p/dotify/"/>
