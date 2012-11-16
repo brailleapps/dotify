@@ -340,7 +340,6 @@ DotifyTranslator/lib/junit-4.7.jar -text
 DotifyTranslator/lib/org.daisy.util.jar -text
 DotifyTranslator/lib/texhyphj.jar -text
 DotifyTranslator/logging.properties -text
-DotifyTranslator/run-tests.xml -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.BrailleTranslatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedBrailleFilter -text
