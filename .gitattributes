@@ -64,7 +64,6 @@ Dotify/lib/texhyphj.jar -text
 Dotify/lib/wstx-lgpl-3.2.8.jar -text
 Dotify/lib/xercesImpl.jar -text
 Dotify/logging.properties -text svneol=unset#text/plain
-Dotify/run-tests.xml -text svneol=unset#text/plain
 Dotify/src/META-INF/services/javax.xml.transform.TransformerFactory -text
 Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.config.ConfigurationsProvider -text
