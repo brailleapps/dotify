@@ -216,7 +216,12 @@ public class BookStruct {
 				ok2 = false;
 				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(pages.size()-pageIndex));
 				if (volumeOffset<1) {
-					volumeOffset++;
+					//First check to see if the page increase can will be handled automatically without increasing volume offset 
+					//in the next iteration (by supplying up-to-date overhead values)
+					EvenSizeVolumeSplitterCalculator esv = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset);
+					if (esv.getVolumeCount()==crh.getExpectedVolumeCount()) {
+						volumeOffset++;
+					}
 				} else {
 					logger.warning("Could not fit contents even when adding a new volume.");
 				}

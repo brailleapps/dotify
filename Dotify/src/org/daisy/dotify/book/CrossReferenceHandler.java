@@ -18,8 +18,6 @@ class CrossReferenceHandler implements CrossReferences {
 	private Map<Page, Integer> pageSheetMap;
 	private PageStruct ps;
 	private EvenSizeVolumeSplitterCalculator sdc;
-
-	private Integer[] targetVolSize;
 	
 	private boolean isDirty;
 	private boolean volumeForContentSheetChanged;
@@ -31,7 +29,6 @@ class CrossReferenceHandler implements CrossReferences {
 
 		this.volData = new HashMap<Integer, VolData>();
 		this.volSheet = new HashMap<Integer, Integer>();
-		this.targetVolSize = new Integer[0];
 		this.isDirty = false;
 		this.volumeForContentSheetChanged = false;
 		//this.maxKey = 0;
@@ -99,6 +96,9 @@ class CrossReferenceHandler implements CrossReferences {
 	}
 	
 	public VolDataInterface getVolData(int volumeNumber) {
+		if (volumeNumber<1) {
+			throw new IndexOutOfBoundsException("Volume must be greater than or equal to 1");
+		}
 		if (volData.get(volumeNumber)==null) {
 			setVolData(volumeNumber, new VolData());
 			setDirty(true);
@@ -192,16 +192,19 @@ class CrossReferenceHandler implements CrossReferences {
 		}
 		int lastSheetInCurrentVolume=0;
 		int retVolume=0;
-		while (lastSheetInCurrentVolume<sheetIndex) {
-			int overhead = getVolData(retVolume+1).getVolOverhead();
-			lastSheetInCurrentVolume -= overhead;
-			if (retVolume<targetVolSize.length && targetVolSize[retVolume]!=null) {
-				lastSheetInCurrentVolume += targetVolSize[retVolume];
-			} else {
-				lastSheetInCurrentVolume += sdc.sheetsInVolume(retVolume+1);
-			}
+		do {
 			retVolume++;
-		}
+			int prvVal = lastSheetInCurrentVolume;
+			int volSize = getVolData(retVolume).getTargetVolSize();
+			if (volSize==0) {
+				volSize = sdc.sheetsInVolume(retVolume);
+			}
+			lastSheetInCurrentVolume += volSize;
+			lastSheetInCurrentVolume -= getVolData(retVolume).getVolOverhead();
+			if (prvVal>=lastSheetInCurrentVolume) {
+				throw new RuntimeException("Negative volume size");
+			}
+		} while (sheetIndex>lastSheetInCurrentVolume);
 		Integer cv = volSheet.get(sheetIndex);
 		if (cv==null || cv!=retVolume) {
 			volumeForContentSheetChanged = true;
