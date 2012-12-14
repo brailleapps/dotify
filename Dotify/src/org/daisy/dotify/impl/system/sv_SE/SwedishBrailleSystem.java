@@ -66,12 +66,6 @@ public class SwedishBrailleSystem implements TaskSystem {
 	}
 
 	public ArrayList<InternalTask> compile(Map<String, Object> pa) throws TaskSystemException {
-		if (SystemKeys.OBFL_FORMAT.equals(outputFormat)) {
-			return new ArrayList<InternalTask>();
-		}
-
-		URL metaFinalizer = CommonResourceLocator.getInstance().getResourceByIdentifier(CommonResourceIdentifier.META_FINALIZER_XSLT);
-
 		//configURL = new URL(resourceBase, config);
 		
 		RunParameters p;
@@ -100,6 +94,10 @@ public class SwedishBrailleSystem implements TaskSystem {
 								null,
 								h));
 
+		if (SystemKeys.OBFL_FORMAT.equals(outputFormat)) {
+			return setup;
+		}
+		
 		// Layout FLOW as PEF
 		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
 		//BrailleFilterFactory factory = BrailleFilterFactory.newInstance();
@@ -159,6 +157,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 		//setup.add(new XsltTask("Braille finalizer", brailleFinalizer, null, finalizerOptions));
 
 		// Finalize meta data from input file
+		URL metaFinalizer = CommonResourceLocator.getInstance().getResourceByIdentifier(CommonResourceIdentifier.META_FINALIZER_XSLT);
 		setup.add(new XsltTask("Meta data finalizer", metaFinalizer, null, h));
 
 		return setup;

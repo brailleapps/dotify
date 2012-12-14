@@ -130,6 +130,16 @@
 		</xsl:if>
 	</xsl:template>
 	
+		<!-- Don't output a sequence if there is nothing left when level1@class='backCoverText', level1@class='rearjacketcopy' and level1@class='colophon' has been moved -->
+	<xsl:template match="dtb:rearmatter" mode="sequence-mode">
+		<xsl:if test="*[not(self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])]"><!--  -->
+			<sequence>
+				<xsl:apply-templates select="." mode="apply-sequence-attributes"/>
+				<xsl:apply-templates/>
+			</sequence>
+		</xsl:if>
+	</xsl:template>
+	
 		<!-- Don't output a sequence if there is nothing left when doctitle, docauthor and level1@class='backCoverText', level1@class='rearjacketcopy' and level1@class='colophon' has been moved -->
 	<xsl:template match="dtb:frontmatter" mode="pre-volume-mode">
 		<xsl:if test="*[not(self::dtb:doctitle or self::dtb:docauthor or self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])]">
