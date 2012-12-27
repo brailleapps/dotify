@@ -2,8 +2,6 @@ package org.daisy.dotify.text;
 
 import java.net.URL;
 
-import org.daisy.util.i18n.UCharReplacer;
-
 /**
  * Implements StringFilter using UCharReplacer.
  * 
@@ -12,19 +10,23 @@ import org.daisy.util.i18n.UCharReplacer;
  * @since 1.0
  */
 public class CharFilter implements StringFilter {
-	private UCharReplacer ucr;
+	private final SimpleCharReplacer ucr;
 	
 	/**
 	 * Create a new CharFilter
 	 * @param table relative path to replacement table, see UCharReplacement for more information
 	 */
 	public CharFilter(URL table) {
-		this.ucr = new UCharReplacer();
+		this.ucr = new SimpleCharReplacer();
 		try {
 			this.ucr.addSubstitutionTable(table);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public CharFilter(SimpleCharReplacer replacer) {
+		this.ucr = replacer;
 	}
 
 	public String filter(String str) {

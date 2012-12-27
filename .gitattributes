@@ -336,7 +336,6 @@ DotifyTranslator/build-properties.xml -text
 DotifyTranslator/build.xml -text
 DotifyTranslator/lib/icu4j-3_8.jar -text
 DotifyTranslator/lib/junit-4.7.jar -text
-DotifyTranslator/lib/org.daisy.util.jar -text
 DotifyTranslator/lib/texhyphj.jar -text
 DotifyTranslator/logging.properties -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
@@ -515,6 +514,7 @@ DotifyTranslator/src/org/daisy/dotify/text/FilterFactory.java -text svneol=unset
 DotifyTranslator/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/IdentityFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/text/SimpleCharReplacer.java -text
 DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringSplitter.java -text svneol=unset#text/plain
