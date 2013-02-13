@@ -108,7 +108,7 @@ public class TaskRunner {
 		fileName += ".tmp";
 		File f = new File(tempFilesFolder, fileName);
 		logger.fine("Writing debug file: " + f);
-		FileUtils.copy(source, f);
+		FileUtils.copyFile(source, f);
 	}
 	
 	private String truncate(String str, int pos) {

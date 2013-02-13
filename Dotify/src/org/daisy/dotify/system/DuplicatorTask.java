@@ -28,7 +28,7 @@ public class DuplicatorTask extends ReadOnlyTask {
 	@Override
 	public void execute(File input) throws InternalTaskException {
 		try {
-			FileUtils.copy(input, copy);
+			FileUtils.copyFile(input, copy);
 		} catch (IOException e) {
 			throw new InternalTaskException("Exception while copying file.", e);
 		}
