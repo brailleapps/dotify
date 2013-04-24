@@ -3,6 +3,7 @@ package org.daisy.dotify.system;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -29,12 +30,14 @@ public class TaskRunner {
 	private final Logger logger;
 	private File tempFilesFolder;
 	private boolean writeTempFiles;
+	private boolean keepTempFilesOnSuccess;
 	private String identifier;
 	
 	public TaskRunner() {
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 		this.tempFilesFolder = new File(TEMP_DIR);
 		this.writeTempFiles = false;
+		this.keepTempFilesOnSuccess = false;
 		this.identifier = "" + System.currentTimeMillis();
 	}
 
@@ -46,6 +49,13 @@ public class TaskRunner {
 		this.writeTempFiles = writeTempFiles;
 	}
 
+	public boolean isKeepTempFilesOnSuccess() {
+		return keepTempFilesOnSuccess;
+	}
+
+	public void setKeepTempFilesOnSuccess(boolean keepTempFilesOnSuccess) {
+		this.keepTempFilesOnSuccess = keepTempFilesOnSuccess;
+	}
 
 	public File getTempFilesFolder() {
 		return tempFilesFolder;
@@ -72,12 +82,13 @@ public class TaskRunner {
 		int i = 0;
 		NumberFormat nf = NumberFormat.getPercentInstance();
 		FileJuggler fj = new FileJuggler(input, output);
+		ArrayList<File> tempFiles = new ArrayList<File>();
 		for (InternalTask task : tasks) {
 			if (task instanceof ReadWriteTask) {
 				logger.info("Running (r/w) " + task.getName());
 				((ReadWriteTask)task).execute(fj.getInput(), fj.getOutput());
 				if (writeTempFiles) {
-					writeTempFile(fj.getOutput(), taskSystem.getName(), task.getName(), i);
+					tempFiles.add(writeTempFile(fj.getOutput(), taskSystem.getName(), task.getName(), i));
 				}
 				fj.swap();
 			} else if (task instanceof ReadOnlyTask) {
@@ -92,10 +103,18 @@ public class TaskRunner {
 			//progress(i/tasks.size());
 		}
 		fj.close();
+		if (!keepTempFilesOnSuccess) {
+			// Process were successful, delete temp files
+			for (File f : tempFiles) {
+				if (!f.delete()) {
+					f.deleteOnExit();
+				}
+			}
+		}
 		logger.info("\"" + taskSystem.getName() + "\" finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
 	}
 	
-	private void writeTempFile(File source, String taskSystemName, String taskName, int i) throws IOException {
+	private File writeTempFile(File source, String taskSystemName, String taskName, int i) throws IOException {
 		String it = ""+(i+1);
 		while (it.length()<3) {
 			it = "0" + it; 
@@ -109,6 +128,7 @@ public class TaskRunner {
 		File f = new File(tempFilesFolder, fileName);
 		logger.fine("Writing debug file: " + f);
 		FileUtils.copyFile(source, f);
+		return f;
 	}
 	
 	private String truncate(String str, int pos) {

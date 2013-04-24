@@ -50,8 +50,13 @@ public interface SystemKeys {
 	 */
 	public final static String WRITE_TEMP_FILES = "writeTempFiles";
 	/**
+	 * Defines a key for keeping temp files on success
+	 * Corresponding value should be the string "true" or "false"
+	 */
+	public final static String KEEP_TEMP_FILES_ON_SUCCESS = "keepTempFilesOnSuccess";
+	/**
 	 * Defines a key for the temp files directory.
-	 * Corresponding value should be a string containing a file path  
+	 * Corresponding value should be a string containing a file path
 	 */
 	public final static String TEMP_FILES_DIRECTORY = "tempFilesDirectory";
 }

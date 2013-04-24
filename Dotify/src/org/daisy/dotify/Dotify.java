@@ -40,10 +40,12 @@ public class Dotify {
 	}
 	
 	private final boolean writeTempFiles;
+	private final boolean keepTempFilesOnSuccess;
 	// hide default constructor to disable instantiation.
 	private Dotify(Map<String, String> params) { 
 		// get parameters
 		writeTempFiles = "true".equals(params.get(SystemKeys.WRITE_TEMP_FILES));
+		keepTempFilesOnSuccess = !("false".equals(params.get(SystemKeys.KEEP_TEMP_FILES_ON_SUCCESS)));
 	}
 
 	/**
@@ -129,6 +131,7 @@ public class Dotify {
 		
 		TaskRunner tr = new TaskRunner();
 		tr.setWriteTempFiles(d.writeTempFiles);
+		tr.setKeepTempFilesOnSuccess(d.keepTempFilesOnSuccess);
 		if (tempFilesDirectory!=null && !"".equals(tempFilesDirectory)) {
 			tr.setTempFilesFolder(new File(tempFilesDirectory));
 		}
