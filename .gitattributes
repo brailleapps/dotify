@@ -265,6 +265,8 @@ Dotify/src/org/daisy/dotify/system/TaskSystemException.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/system/TaskSystemFactory.java -text
 Dotify/src/org/daisy/dotify/system/TaskSystemFactoryException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TaskSystemFactoryMaker.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/system/Text2ObflTask.java -text
+Dotify/src/org/daisy/dotify/system/Text2ObflWriter.java -text
 Dotify/src/org/daisy/dotify/system/TextNodeFilter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TextNodeTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/ValidatorException.java -text
@@ -299,6 +301,11 @@ Dotify/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-expected.xml -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-input.xml -text
 Dotify/test/org/daisy/dotify/paginator/PaginatorFactoryTest.java -text
+Dotify/test/org/daisy/dotify/system/FileCompare.java -text
+Dotify/test/org/daisy/dotify/system/Text2ObflWriterTest.java -text
+Dotify/test/org/daisy/dotify/system/resource-files/expected.obfl -text
+Dotify/test/org/daisy/dotify/system/resource-files/input.txt -text
+Dotify/test/org/daisy/dotify/system/resource-files/normalize.xsl -text
 Dotify/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/tools/StringToolsTest.java -text
 DotifyDevtools/.classpath -text
