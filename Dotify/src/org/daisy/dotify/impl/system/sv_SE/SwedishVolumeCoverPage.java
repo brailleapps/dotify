@@ -13,6 +13,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.Integer2Text;
+import org.daisy.dotify.text.Integer2TextFactoryMaker;
+import org.daisy.dotify.text.IntegerOutOfRange;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;
 import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
@@ -29,6 +34,7 @@ class SwedishVolumeCoverPage implements VolumeCoverPage {
 	//private int cols;
 	private TextBorder tb;
 	//private int height;
+	private final Integer2Text i2t;
 
 	public SwedishVolumeCoverPage(File dtbook, TextBorder tb, BrailleTranslator filters) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		DocumentBuilder docBuilder = initDocumentBuilder();
@@ -43,6 +49,14 @@ class SwedishVolumeCoverPage implements VolumeCoverPage {
 		this.tb = tb;
 		this.filters = filters;
 		//this.height = height;
+		try {
+			i2t = Integer2TextFactoryMaker.newInstance().newInteger2Text(FilterLocale.parse("sv-SE"));
+		} catch (UnsupportedLocaleException e) {
+			// throw runtime exception here, this is okay because it's only
+			// temporary, the entire implementation is about to be retired. No
+			// use to clean up the throws clause
+			throw new RuntimeException(e);
+		}
 	}
 	
 	protected DocumentBuilder initDocumentBuilder() throws ParserConfigurationException {
@@ -94,7 +108,13 @@ class SwedishVolumeCoverPage implements VolumeCoverPage {
     	if (volumeCount==1) {
     		voltext = "En volym";
     	} else {
-    		voltext = "Volym "+intToText(volumeNo)+" av "+intToText(volumeCount);
+			try {
+				voltext = "Volym " + i2t.intToText(volumeNo) + " av " + i2t.intToText(volumeCount);
+			} catch (IntegerOutOfRange e) {
+				// throw runtime exception here, this is okay because it's only
+				// temporary, the entire implementation is about to be retired.
+				throw new RuntimeException(e);
+			}
     	}
     	filters.setHyphenating(false);
     	ArrayList<String> vol = tb.addBorderToParagraph(filters.translate(voltext));
@@ -111,84 +131,6 @@ class SwedishVolumeCoverPage implements VolumeCoverPage {
     	}
     	return ret;
 
-    }
-	/*
-    private String loc(int value) {
-    	switch (value) {
-    		case 0: return "noll"; 
-    		case 1: return "ett";
-    		case 2: return "två";
-    		case 3: return "tre";
-    		case 4: return "fyra";
-    		case 5: return "fem";
-    		case 6: return "sex";
-    		case 7: return "sju";
-    		case 8: return "åtta";
-    		case 9: return "nio";
-    		case 10: return "tio";
-    		case 11: return "elva";
-    		case 12: return "tolv";
-    		case 13: return "tretton";
-    		case 14: return "fjorton";
-    		case 15: return "femton";
-    		case 16: return "sexton";
-    		case 17: return "sjutton";
-    		case 18: return "arton";
-    		case 19: return "nitton";
-    		case 20: return "tjugo"; 
-    	}
-    	return ""+value;
-    }*/
-
-    public static String intToText(int value) {
-    	if (value<0) return "minus " + intToText(-value);
-    	switch (value) {
-			case 0: return "noll"; 
-			case 1: return "ett";
-			case 2: return "två";
-			case 3: return "tre";
-			case 4: return "fyra";
-			case 5: return "fem";
-			case 6: return "sex";
-			case 7: return "sju";
-			case 8: return "åtta";
-			case 9: return "nio";
-			case 10: return "tio";
-			case 11: return "elva";
-			case 12: return "tolv";
-			case 13: return "tretton";
-			case 14: return "fjorton";
-			case 15: return "femton";
-			case 16: return "sexton";
-			case 17: return "sjutton";
-			case 18: return "arton";
-			case 19: return "nitton";
-    		case 20: return "tjugo";
-    		case 30: return "trettio";
-    		case 40: return "fyrtio";
-    		case 50: return "femtio";
-    		case 60: return "sextio";
-    		case 70: return "sjuttio";
-    		case 80: return "åttio";
-    		case 90: return "nittio";
-    	}
-    	String pre = "";
-    	if (value>=1000) {
-    		pre = intToText(value / 1000) + "tusen";
-    		value = value % 1000;
-    	}
-    	if (value>=100) {
-    		pre = pre + (value>=200?intToText(value / 100):"") + "hundra";
-    		value = value % 100;
-    	}
-    	if (value==0) return pre;
-    	if (value<20) {
-    		return pre + intToText(value);
-    	} else {
-        	int t = value % 10;
-        	int r = (value / 10) * 10;
-    		return pre + intToText(r) + (t>0?intToText(t):"");
-    	}
     }
 
 }
