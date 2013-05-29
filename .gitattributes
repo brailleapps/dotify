@@ -346,6 +346,7 @@ DotifyTranslator/lib/junit-4.7.jar -text
 DotifyTranslator/lib/texhyphj.jar -text
 DotifyTranslator/logging.properties -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.text.Integer2TextFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.BrailleTranslatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedBrailleFilter -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
@@ -505,6 +506,8 @@ DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-uk.tex -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-zh-latn-pinyin.tex -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/zh-latn.xml -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2Text.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
@@ -520,6 +523,10 @@ DotifyTranslator/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=u
 DotifyTranslator/src/org/daisy/dotify/text/FilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/IdentityFilter.java -text
+DotifyTranslator/src/org/daisy/dotify/text/Integer2Text.java -text
+DotifyTranslator/src/org/daisy/dotify/text/Integer2TextFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/text/Integer2TextFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/text/IntegerOutOfRange.java -text
 DotifyTranslator/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/SimpleCharReplacer.java -text
 DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
@@ -541,10 +548,12 @@ DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.jav
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenation2Test.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
+DotifyTranslator/test/org/daisy/dotify/impl/text/SwedishInteger2TextTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
 DotifyTranslator/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
+DotifyTranslator/test/org/daisy/dotify/text/Integer2TextFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
