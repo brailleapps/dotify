@@ -190,12 +190,14 @@ Dotify/src/org/daisy/dotify/impl/system/common/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/system/common/resource-files/braille-finalizer.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/resource-files/meta-finalizer.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/resource-files/simple-splitter.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/system/sv_SE/BrailleTextBorderStyle.java -text
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/RunParameters.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/StaticVolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishTaskSystemFactory.java -text
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishVolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/TextBorder.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/system/sv_SE/TextBorderStyle.java -text
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPageFilter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPageTask.java -text svneol=unset#text/plain

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -126,29 +127,38 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		// Add a title page first in each volume
     	TextBorder tb = new TextBorder.Builder(p.getFlowWidth()+p.getInnerMargin(), space).
-    						topLeftCorner(StringTools.fill(space, p.getInnerMargin()) + "\u280F").
-    						topBorder("\u2809").
-    						topRightCorner("\u2839").
-    						leftBorder(StringTools.fill(space, p.getInnerMargin()) + "\u2807"+space+space).
-    						rightBorder(space+space+"\u2838").
-    						bottomLeftCorner(StringTools.fill(space, p.getInnerMargin()) + "\u2827").
-    						bottomBorder("\u2824").
-    						bottomRightCorner("\u283c").
+    						style(BrailleTextBorderStyle.SOLID_WIDE_INNER).
+    						outerLeftMargin(StringTools.fill(space, p.getInnerMargin())).
+    						innerLeftMargin(space+space).
+    						innerRightMargin(space+space).
+    						//topLeftCorner(StringTools.fill(space, p.getInnerMargin()) + "\u280F").
+    						//topBorder("\u2809").
+    						//topRightCorner("\u2839").
+    						//leftBorder(StringTools.fill(space, p.getInnerMargin()) + "\u2807"+space+space).
+    						//rightBorder(space+space+"\u2838").
+    						//bottomLeftCorner(StringTools.fill(space, p.getInnerMargin()) + "\u2827").
+    						//bottomBorder("\u2824").
+    						//bottomRightCorner("\u283c").
     						alignment(TextBorder.Align.CENTER).
     						build();
     	SwedishVolumeCoverPage cover;
 		try {
 			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, bt);
+			setup.add(new VolumeCoverPageTask("Cover page adder", cover));
 		} catch (XPathExpressionException e) {
-			throw new TaskSystemException(e);
+			Logger.getLogger(this.getClass().getCanonicalName()).warning("Unable to add cover. Perhaps input isn't DTBook");
+			// throw new TaskSystemException(e);
 		} catch (ParserConfigurationException e) {
-			throw new TaskSystemException(e);
+			Logger.getLogger(this.getClass().getCanonicalName()).warning("Unable to add cover. Perhaps input isn't DTBook");
+			// throw new TaskSystemException(e);
 		} catch (SAXException e) {
-			throw new TaskSystemException(e);
+			Logger.getLogger(this.getClass().getCanonicalName()).warning("Unable to add cover. Perhaps input isn't DTBook");
+			// throw new TaskSystemException(e);
 		} catch (IOException e) {
-			throw new TaskSystemException(e);
+			Logger.getLogger(this.getClass().getCanonicalName()).warning("Unable to add cover. Perhaps input isn't DTBook");
+			// throw new TaskSystemException(e);
 		}
-		setup.add(new VolumeCoverPageTask("Cover page adder", cover));
+
 
 		// Finalizes character data on rows
 		//HashMap<String, Object> finalizerOptions = new HashMap<String, Object>();

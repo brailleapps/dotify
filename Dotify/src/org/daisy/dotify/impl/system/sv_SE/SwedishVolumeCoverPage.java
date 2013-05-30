@@ -3,6 +3,7 @@ package org.daisy.dotify.impl.system.sv_SE;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -72,33 +73,41 @@ class SwedishVolumeCoverPage implements VolumeCoverPage {
 		return db;
 	}
 	
-	public ArrayList<Row> buildPage(int volumeNo, int volumeCount, int pageHeight) {
-
-    	ArrayList<Row> ret = new ArrayList<Row>();
-    	ret.add(new Row(tb.getTopBorder()));
+	public List<Row> buildPage(int volumeNo, int volumeCount, int pageHeight) {
+		// ret.add(new Row(tb.getTopBorder()));
     	for (int i=0; i<3; i++) {
-    		ret.add(new Row(tb.addBorderToRow("")));
+			// ret.add(new Row(tb.addBorderToRow("")));
+			tb.addRow("");
     	}
 
     	// add title
     	if (title!=null && title.length()>0) {
-	    	for (String s : tb.addBorderToParagraph(filters.translate(title))) {
-	    		ret.add(new Row(s));
-	    	}
-   			ret.add(new Row(tb.addBorderToRow("")));
+			tb.addParagraph(filters.translate(title));
+			/*
+			 * for (String s :
+			 * tb.addBorderToParagraph(filters.translate(title))) {
+			 * ret.add(new Row(s));
+			 * }
+			 */
+			// ret.add(new Row(tb.addBorderToRow("")));
+			tb.addRow("");
     	}
     	
     	// add authors
     	if (creator.size()>3) {
+			tb.addParagraph(filters.translate(creator.get(0) + " m.fl."));
+    		/*
     		for (String s : tb.addBorderToParagraph(filters.translate(creator.get(0) + " m.fl."))) {
     			ret.add(new Row(s));
-    		}
+    		}*/
     	} else {
 	    	for (String c : creator) {
 	    		if (c!=null && c.length()>0) {
+	    			tb.addParagraph(filters.translate(c));
+	    			/*
 		    		for (String s : tb.addBorderToParagraph(filters.translate(c))) {
 		    			ret.add(new Row(s));
-		    		}
+		    		}*/
 	    		}
 	    	}
     	}
@@ -117,17 +126,13 @@ class SwedishVolumeCoverPage implements VolumeCoverPage {
 			}
     	}
     	filters.setHyphenating(false);
-    	ArrayList<String> vol = tb.addBorderToParagraph(filters.translate(voltext));
+		tb.addParagraph(filters.translate(voltext), pageHeight);
     	filters.setHyphenating(true);
-    	while (ret.size()<pageHeight-vol.size()-1) {
-    		ret.add(new Row(tb.addBorderToRow("")));
-    	}
-    	for (String s : vol) {
-    		ret.add(new Row(s));
-    	}
-    	ret.add(new Row(tb.getBottomBorder()));
+
+		// ret.add(new Row(tb.getBottomBorder()));
+		List<Row> ret = tb.getResult();
     	if (ret.size()>pageHeight) {
-    		throw new RuntimeException("Unable to perform layout. Title page contains too many rows.");
+			throw new RuntimeException("Unable to perform layout. Title page contains too many rows: " + ret.size());
     	}
     	return ret;
 

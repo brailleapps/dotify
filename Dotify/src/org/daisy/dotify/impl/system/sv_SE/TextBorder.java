@@ -1,7 +1,9 @@
 package org.daisy.dotify.impl.system.sv_SE;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -27,23 +29,24 @@ class TextBorder {
 		 */
 		RIGHT};
 	private final int topFill, rowFill, bottomFill;
-	private final String 	topLeftCorner, topBorder, topRightCorner, 
-					leftBorder, rightBorder,
-					bottomLeftCorner, bottomBorder, bottomRightCorner,
-					fillCharacter;
+	private final String topLeftCorner, topBorder, topRightCorner, leftBorder,
+			rightBorder, bottomLeftCorner, bottomBorder, bottomRightCorner,
+			fillCharacter;
+
 	private Align align;
+
+	private final List<Row> ret;
 
 	/**
 	 * The Builder is used when creating a TextBorder instance.
 	 * @author Joel Håkansson, TPB
 	 */
 	public static class Builder {
-		int width;
-		String 	topLeftCorner, topBorder, topRightCorner, 
-				leftBorder, rightBorder,
-				bottomLeftCorner, bottomBorder, bottomRightCorner,
-				fillCharacter;
+		final int width;
+		final String fillCharacter;
 		Align align;
+		TextBorderStyle style;
+		String outerLeftMargin, innerLeftMargin, innerRightMargin;
 		
 		/**
 		 * Creates a new Builder
@@ -51,98 +54,26 @@ class TextBorder {
 		 */
 		public Builder(int width, String fillCharacter) {
 			this.width = width;
-			this.topLeftCorner = "";
-			this.topBorder = "";
-			this.topRightCorner = "";
-			this.leftBorder = "";
-			this.rightBorder = "";
-			this.bottomLeftCorner = "";
-			this.bottomBorder = "";
-			this.bottomRightCorner = "";
-			this.align = Align.LEFT;
 			this.fillCharacter = fillCharacter;
+			this.align = Align.LEFT;
+			this.style = TextBorderStyle.NONE;
+			this.outerLeftMargin = "";
+			this.innerLeftMargin = "";
+			this.innerRightMargin = "";
 		}
 		
 		/**
-		 * Sets the top left corner for the border
-		 * @param pattern top left corner pattern 
+		 * Sets the text border style
+		 * 
+		 * @param style
+		 *            the style
 		 * @return returns this Builder
 		 */
-		public Builder topLeftCorner(String pattern) {
-			this.topLeftCorner = pattern;
+		public Builder style(TextBorderStyle style) {
+			this.style = style;
 			return this;
 		}
 
-		/**
-		 * Sets the top of the border
-		 * @param pattern the top border pattern
-		 * @return returns this Builder
-		 */
-		public Builder topBorder(String pattern) {
-			this.topBorder = pattern;
-			return this;
-		}
-		
-		/**
-		 * Sets the top right corner for the border
-		 * @param pattern top right corner pattern
-		 * @return returns this Builder
-		 */
-		public Builder topRightCorner(String pattern) {
-			this.topRightCorner = pattern;
-			return this;
-		}
-		
-		/**
-		 * Sets the left border pattern
-		 * @param pattern the left border pattern
-		 * @return returns this Builder
-		 */
-		public Builder leftBorder(String pattern) {
-			this.leftBorder = pattern;
-			return this;
-		}
-		
-		/**
-		 * Sets the right border pattern
-		 * @param pattern the right border pattern
-		 * @return returns this Builder
-		 */
-		public Builder rightBorder(String pattern) {
-			this.rightBorder = pattern;
-			return this;
-		}
-		
-		/**
-		 * Sets the bottom left corner
-		 * @param pattern bottom left corner pattern
-		 * @return returns this Builder
-		 */
-		public Builder bottomLeftCorner(String pattern) {
-			this.bottomLeftCorner = pattern;
-			return this;
-		}
-
-		/**
-		 * Sets the bottom of the border
-		 * @param pattern bottom border pattern
-		 * @return returns this Builder
-		 */
-		public Builder bottomBorder(String pattern) {
-			this.bottomBorder = pattern;
-			return this;
-		}
-		
-		/**
-		 * Sets the bottom right corner
-		 * @param pattern bottom right corner pattern
-		 * @return returns this Builder
-		 */
-		public Builder bottomRightCorner(String pattern) {
-			this.bottomRightCorner = pattern;
-			return this;
-		}
-		
 		/**
 		 * Sets the text alignment
 		 * @param align the text alignment
@@ -153,6 +84,21 @@ class TextBorder {
 			return this;
 		}
 		
+		public Builder outerLeftMargin(String margin) {
+			this.outerLeftMargin = margin;
+			return this;
+		}
+
+		public Builder innerLeftMargin(String margin) {
+			this.innerLeftMargin = margin;
+			return this;
+		}
+
+		public Builder innerRightMargin(String margin) {
+			this.innerRightMargin = margin;
+			return this;
+		}
+
 		/**
 		 * Build TextBorder using the current state of the Builder
 		 * @return returns a new TextBorder instance
@@ -163,26 +109,29 @@ class TextBorder {
 	}
 
 	private TextBorder(Builder builder) {
-		this.topLeftCorner = builder.topLeftCorner;
-		this.topBorder = builder.topBorder;
-		this.topRightCorner = builder.topRightCorner;
-		this.leftBorder = builder.leftBorder;
-		this.rightBorder = builder.rightBorder;
-		this.bottomLeftCorner = builder.bottomLeftCorner;
-		this.bottomBorder = builder.bottomBorder;
-		this.bottomRightCorner = builder.bottomRightCorner;
 		this.align = builder.align;
+
+		this.topLeftCorner = builder.outerLeftMargin + builder.style.getTopLeftCorner();
+		this.topBorder = builder.style.getTopBorder();
+		this.topRightCorner = builder.style.getTopRightCorner();
+		this.leftBorder = builder.outerLeftMargin + builder.style.getLeftBorder() + builder.innerLeftMargin;
+		this.rightBorder = builder.innerRightMargin + builder.style.getRightBorder();
+		this.bottomLeftCorner = builder.outerLeftMargin + builder.style.getBottomLeftCorner();
+		this.bottomBorder = builder.style.getBottomBorder();
+		this.bottomRightCorner = builder.style.getBottomRightCorner();
+
 		this.topFill = builder.width - (topLeftCorner.length() + topRightCorner.length());
 		this.rowFill = builder.width - (leftBorder.length() + rightBorder.length());
 		this.bottomFill = builder.width - (bottomLeftCorner.length() + bottomRightCorner.length());
 		this.fillCharacter = builder.fillCharacter;
+		this.ret = new ArrayList<Row>();
 	}
 
 	/**
 	 * Gets the rendered top border
 	 * @return returns the rendered top border 
 	 */
-	public String getTopBorder() {
+	private String getTopBorder() {
 		return topLeftCorner + StringTools.fill(topBorder, topFill) + topRightCorner;
 	}
 
@@ -190,7 +139,7 @@ class TextBorder {
 	 * Gets the rendered bottom border
 	 * @return returns the rendered bottom border
 	 */
-	public String getBottomBorder() { 
+	private String getBottomBorder() {
 		return bottomLeftCorner + StringTools.fill(bottomBorder, bottomFill) + bottomRightCorner;
 	}
 
@@ -202,9 +151,27 @@ class TextBorder {
 	 * @param bph the translator result to add borders to
 	 * @return returns an ArrayList of String where each String is a row in the block.
 	 */
-	public ArrayList<String> addBorderToParagraph(BrailleTranslatorResult bph) {
+	public void addParagraph(BrailleTranslatorResult bph) {
+		for (String s : addBorderToParagraph(bph)) {
+			ret.add(new Row(s));
+		}
+	}
+
+	public void addParagraph(BrailleTranslatorResult bph, int fill) {
+		ArrayList<String> vol = addBorderToParagraph(bph);
+		while (ret.size() <= fill - vol.size() - 3) {
+			addRow("");
+		}
+		for (String s : vol) {
+			ret.add(new Row(s));
+		}
+	}
+
+	private ArrayList<String> addBorderToParagraph(BrailleTranslatorResult bph) {
 		ArrayList<String> ret = new ArrayList<String>();
     	while (bph.hasNext()) {
+			// .replaceAll("\\s*\\z", "") is probably not needed, as
+			// nextTranslatedRow must not exceed the row length
     		ret.add(addBorderToRow(bph.nextTranslatedRow(rowFill, true).replaceAll("\\s*\\z", "")));
     	}
     	return ret;
@@ -216,12 +183,16 @@ class TextBorder {
 	 * @return returns the text padded with space and surrounded with the left and right border patterns.
 	 * @throws IllegalArgumentException if the String does not fit within a single row.
 	 */
-	public String addBorderToRow(String text) {
+	public void addRow(String text) {
+		ret.add(new Row(addBorderToRow(text)));
+	}
+
+	private String addBorderToRow(String text) {
     	if (text.length()>rowFill) {
     		throw new IllegalArgumentException("String length must be <= width");
     	}
     	StringBuffer sb = new StringBuffer();
-    	sb.append(leftBorder);
+		sb.append(leftBorder);
     	switch (align) {
 	    	case LEFT: break;
 	    	case CENTER:
@@ -241,8 +212,17 @@ class TextBorder {
 	    		break;
 	    	case RIGHT: break;
     	}
-    	sb.append(rightBorder);
+		sb.append(rightBorder);
     	return sb.toString();
+	}
+
+	public List<Row> getResult() {
+		ArrayList<Row> result = new ArrayList<Row>();
+		result.add(new Row(getTopBorder()));
+		result.addAll(ret);
+		ret.clear();
+		result.add(new Row(getBottomBorder()));
+		return result;
 	}
 
 }
