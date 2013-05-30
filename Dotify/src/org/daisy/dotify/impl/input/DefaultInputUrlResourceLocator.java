@@ -1,8 +1,10 @@
 package org.daisy.dotify.impl.input;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
+import java.util.Set;
 
 import org.daisy.dotify.tools.AbstractResourceLocator;
 import org.daisy.dotify.tools.ResourceLocatorException;
@@ -48,6 +50,25 @@ class DefaultInputUrlResourceLocator extends AbstractResourceLocator {
 		} else {
 			return props.getProperty(rootElement);
 		}
+	}
+
+	Set<String> listFileFormats() {
+		Set<String> ret = new HashSet<String>();
+		try {
+			loadIfNotLoaded();
+		} catch (ResourceLocatorException e) {
+			return ret;
+		}
+		for (Object o : props.keySet()) {
+			String s = o.toString();
+			int inx;
+			if ((inx = s.indexOf('@')) > -1) {
+				ret.add(s.substring(0, inx));
+			} else {
+				ret.add(s);
+			}
+		}
+		return ret;
 	}
 
 }

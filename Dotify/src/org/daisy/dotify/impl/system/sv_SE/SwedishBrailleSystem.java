@@ -121,8 +121,9 @@ public class SwedishBrailleSystem implements TaskSystem {
 		PEFMediaWriter paged = new PEFMediaWriter(p2);
 		setup.add(new LayoutEngineTask("OBFL to PEF converter", bt, paged));
 
-		// Split result into volumes
-		//setup.add(new XsltTask("Volume splitter", volumeSplitter, null, h));
+		// TODO: the rest is DTBook specific, the requirements should be
+		// incorporated in the design instead
+
 		String space = bt.translate(" ").getTranslatedRemainder();
 
 		// Add a title page first in each volume
@@ -141,10 +142,15 @@ public class SwedishBrailleSystem implements TaskSystem {
     						//bottomRightCorner("\u283c").
     						alignment(TextBorder.Align.CENTER).
     						build();
-    	SwedishVolumeCoverPage cover;
+
 		try {
-			cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, bt);
+			SwedishVolumeCoverPage cover = new SwedishVolumeCoverPage(new File(p.getProperty(SystemKeys.INPUT)), tb, bt);
 			setup.add(new VolumeCoverPageTask("Cover page adder", cover));
+
+			// Finalize meta data from input file
+			URL metaFinalizer = CommonResourceLocator.getInstance().getResourceByIdentifier(CommonResourceIdentifier.META_FINALIZER_XSLT);
+			setup.add(new XsltTask("Meta data finalizer", metaFinalizer, null, h));
+
 		} catch (XPathExpressionException e) {
 			Logger.getLogger(this.getClass().getCanonicalName()).warning("Unable to add cover. Perhaps input isn't DTBook");
 			// throw new TaskSystemException(e);
@@ -158,17 +164,6 @@ public class SwedishBrailleSystem implements TaskSystem {
 			Logger.getLogger(this.getClass().getCanonicalName()).warning("Unable to add cover. Perhaps input isn't DTBook");
 			// throw new TaskSystemException(e);
 		}
-
-
-		// Finalizes character data on rows
-		//HashMap<String, Object> finalizerOptions = new HashMap<String, Object>();
-		//finalizerOptions.put("finalizer-input", " \u00a0-\u00ad");
-		//finalizerOptions.put("finalizer-output", "\u2800\u2800\u2824\u2824");
-		//setup.add(new XsltTask("Braille finalizer", brailleFinalizer, null, finalizerOptions));
-
-		// Finalize meta data from input file
-		URL metaFinalizer = CommonResourceLocator.getInstance().getResourceByIdentifier(CommonResourceIdentifier.META_FINALIZER_XSLT);
-		setup.add(new XsltTask("Meta data finalizer", metaFinalizer, null, h));
 
 		return setup;
 	}

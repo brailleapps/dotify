@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.impl.input.text;
 
 import static org.junit.Assert.assertTrue;
 

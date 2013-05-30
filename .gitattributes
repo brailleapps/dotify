@@ -173,6 +173,10 @@ Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow.xsl -text
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE_braille.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE_text.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/text/Text2ObflTask.java -text
+Dotify/src/org/daisy/dotify/impl/input/text/Text2ObflWriter.java -text
+Dotify/src/org/daisy/dotify/impl/input/text/TextInputManager.java -text
+Dotify/src/org/daisy/dotify/impl/input/text/TextInputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/impl/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/paginator/PageImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/paginator/PageSequenceImpl.java -text svneol=unset#text/plain
@@ -267,8 +271,6 @@ Dotify/src/org/daisy/dotify/system/TaskSystemException.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/system/TaskSystemFactory.java -text
 Dotify/src/org/daisy/dotify/system/TaskSystemFactoryException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TaskSystemFactoryMaker.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/system/Text2ObflTask.java -text
-Dotify/src/org/daisy/dotify/system/Text2ObflWriter.java -text
 Dotify/src/org/daisy/dotify/system/TextNodeFilter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TextNodeTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/ValidatorException.java -text
@@ -284,6 +286,8 @@ Dotify/src/org/daisy/dotify/tools/RomanNumeral.java -text svneol=unset#text/plai
 Dotify/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/tools/XMLTools.java -text
+Dotify/src/org/daisy/dotify/tools/XMLToolsException.java -text
 Dotify/src/org/daisy/dotify/tools/package-info.java -text
 Dotify/src/org/daisy/dotify/writer/PEFMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/writer/PagedMediaWriter.java -text svneol=unset#text/plain
@@ -296,6 +300,11 @@ Dotify/test/org/daisy/dotify/book/EvenSizeVolumeSplitterCalculatorTest.java -tex
 Dotify/test/org/daisy/dotify/formatter/FormatterFactoryTest.java -text
 Dotify/test/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/impl/input/XMLInputManagerFactoryTest.java -text
+Dotify/test/org/daisy/dotify/impl/input/text/FileCompare.java -text
+Dotify/test/org/daisy/dotify/impl/input/text/Text2ObflWriterTest.java -text
+Dotify/test/org/daisy/dotify/impl/input/text/resource-files/expected.obfl -text
+Dotify/test/org/daisy/dotify/impl/input/text/resource-files/input.txt -text
+Dotify/test/org/daisy/dotify/impl/input/text/resource-files/normalize.xsl -text
 Dotify/test/org/daisy/dotify/impl/paginator/TabStopStringTest.java -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain
@@ -303,11 +312,6 @@ Dotify/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-expected.xml -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-input.xml -text
 Dotify/test/org/daisy/dotify/paginator/PaginatorFactoryTest.java -text
-Dotify/test/org/daisy/dotify/system/FileCompare.java -text
-Dotify/test/org/daisy/dotify/system/Text2ObflWriterTest.java -text
-Dotify/test/org/daisy/dotify/system/resource-files/expected.obfl -text
-Dotify/test/org/daisy/dotify/system/resource-files/input.txt -text
-Dotify/test/org/daisy/dotify/system/resource-files/normalize.xsl -text
 Dotify/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/tools/StringToolsTest.java -text
 DotifyDevtools/.classpath -text

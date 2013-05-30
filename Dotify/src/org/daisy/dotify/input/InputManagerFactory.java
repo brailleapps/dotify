@@ -32,4 +32,10 @@ public interface InputManagerFactory {
 	 * @return returns a set of supported locales
 	 */
 	public Set<String> listSupportedLocales();
+
+	/**
+	 * Lists the supported file formats.
+	 * @return returns a set of supported formats
+	 */
+	public Set<String> listSupportedFileFormats();
 }

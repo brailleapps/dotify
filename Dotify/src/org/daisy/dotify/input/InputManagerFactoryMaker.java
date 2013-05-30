@@ -34,6 +34,8 @@ public abstract class InputManagerFactoryMaker {
 	
 	public abstract Set<String> listSupportedLocales();
 
+	public abstract Set<String> listSupportedFileFormats();
+
 	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
 		Logger.getLogger(this.getClass().getCanonicalName()).fine("Attempt to locate an input manager for " + locale + "/" + fileFormat);
 		return getFactory(locale, fileFormat).newInputManager(locale, fileFormat);
@@ -71,7 +73,7 @@ public abstract class InputManagerFactoryMaker {
 				}
 			}
 			if (template==null) {
-				throw new IllegalArgumentException("Cannot locate an InputManager for " + locale);
+				throw new IllegalArgumentException("Cannot locate an InputManager for " + locale + "/" + fileFormat);
 			}
 			return template;
 		}
@@ -80,6 +82,14 @@ public abstract class InputManagerFactoryMaker {
 			HashSet<String> ret = new HashSet<String>();
 			for (InputManagerFactory h : filters) {
 				ret.addAll(h.listSupportedLocales());
+			}
+			return ret;
+		}
+
+		public Set<String> listSupportedFileFormats() {
+			HashSet<String> ret = new HashSet<String>();
+			for (InputManagerFactory h : filters) {
+				ret.addAll(h.listSupportedFileFormats());
 			}
 			return ret;
 		}

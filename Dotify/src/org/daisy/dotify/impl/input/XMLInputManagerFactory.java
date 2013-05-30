@@ -26,18 +26,25 @@ import org.daisy.dotify.tools.ResourceLocator;
  */
 public class XMLInputManagerFactory implements InputManagerFactory {
 	private final InputLocalizationResourceLocator locator;
+	private final Set<String> supportedFormats;
 	
 	public XMLInputManagerFactory() {
 		this.locator = new InputLocalizationResourceLocator();
+		DefaultInputUrlResourceLocator p = DefaultInputUrlResourceLocator.getInstance();
+		supportedFormats = p.listFileFormats();
+		supportedFormats.add("xml");
 	}
 
 	public boolean supportsSpecification(FilterLocale locale, String fileFormat) {
-		//TODO: add file format condition
-		return locator.supportsLocale(locale);
+		return locator.supportsLocale(locale) && supportedFormats.contains(fileFormat);
 	}
 	
 	public Set<String> listSupportedLocales() {
 		return locator.listSupportedLocales();
+	}
+
+	public Set<String> listSupportedFileFormats() {
+		return supportedFormats;
 	}
 
 	public InputManager newInputManager(FilterLocale locale, String fileFormat) {

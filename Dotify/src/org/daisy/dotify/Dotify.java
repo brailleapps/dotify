@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.config.ConfigurationsCatalog;
+import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystem;
@@ -23,6 +25,8 @@ import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.system.TaskSystemFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.ResourceLocatorException;
+import org.daisy.dotify.tools.XMLTools;
+import org.daisy.dotify.tools.XMLToolsException;
 
 /**
  * Provides an entry point for simple embedding of Dotify. To run, call <tt>Dotify.run</tt>.
@@ -59,7 +63,7 @@ public class Dotify {
 	 * @throws InternalTaskException
 	 */
 	public static void run(File input, File output, String setup, FilterLocale context, Map<String, String> params) throws IOException, InternalTaskException {
-		
+		Logger logger = Logger.getLogger(Dotify.class.getCanonicalName());
 		Dotify d = new Dotify(params);
 
 		String cols = params.get("cols");
@@ -73,12 +77,28 @@ public class Dotify {
 		map.put(SystemKeys.INPUT, input.getAbsolutePath());
 		String inp = input.getName();
 		int inx = inp.lastIndexOf('.');
+		String inputFormat = "";
 		if (inx>-1) {
-			map.put(SystemKeys.INPUT_FORMAT, inp.substring(inx+1));
-		} else {
-			map.put(SystemKeys.INPUT_FORMAT, "");
+			inputFormat = inp.substring(inx + 1);
+			InputManagerFactoryMaker imfm = InputManagerFactoryMaker.newInstance();
+			if (!imfm.listSupportedFileFormats().contains(inputFormat)) {
+				logger.fine("No input factory for " + inputFormat);
+				// attempt to detect a supported type
+				try {
+					if (XMLTools.isWellformedXML(input)) {
+						inputFormat = "xml";
+						logger.info("Input is well-formed xml.");
+					}
+				} catch (XMLToolsException e) {
+					e.printStackTrace();
+				}
+			} else {
+				logger.info("Found an input factory for " + inputFormat);
+			}
 		}
 		
+		map.put(SystemKeys.INPUT_FORMAT, inputFormat);
+
 		String outputformat = params.get(SystemKeys.OUTPUT_FORMAT);
 		if (outputformat==null || "".equals(outputformat)) {
 			int indx = output.getName().lastIndexOf('.');
