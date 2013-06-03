@@ -128,7 +128,7 @@ public class SwedishBrailleSystem implements TaskSystem {
 
 		// Add a title page first in each volume
     	TextBorder tb = new TextBorder.Builder(p.getFlowWidth()+p.getInnerMargin(), space).
-    						style(BrailleTextBorderStyle.SOLID_WIDE_INNER).
+style(BrailleTextBorderStyle.SOLID_THIN_OUTER).
     						outerLeftMargin(StringTools.fill(space, p.getInnerMargin())).
     						innerLeftMargin(space+space).
     						innerRightMargin(space+space).
