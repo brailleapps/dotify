@@ -3,14 +3,15 @@ package org.daisy.dotify.impl.formatter;
 import java.util.Stack;
 
 import org.daisy.dotify.formatter.Block;
+import org.daisy.dotify.formatter.BlockContentManager;
+import org.daisy.dotify.formatter.BlockPosition;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.BlockContentManager;
-import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.TextProperties;
 
 
 class BlockImpl implements Block {
@@ -26,6 +27,7 @@ class BlockImpl implements Block {
 	private Stack<Segment> segments;
 	private final RowDataProperties rdp;
 	private BlockContentManager rdm;
+	private BlockPosition verticalPosition;
 
 	
 	BlockImpl(String blockId, RowDataProperties rdp) {
@@ -41,6 +43,7 @@ class BlockImpl implements Block {
 		this.segments = new Stack<Segment>();
 		this.rdp = rdp;
 		this.rdm = null;
+		this.verticalPosition = null;
 	}
 
 	public void addMarker(Marker m) {
@@ -102,6 +105,10 @@ class BlockImpl implements Block {
 	public String getIdentifier() {
 		return id;
 	}
+
+	public BlockPosition getVerticalPosition() {
+		return verticalPosition;
+	}
 	
 	public void addSpaceBefore(int spaceBefore) {
 		this.spaceBefore += spaceBefore;
@@ -133,6 +140,10 @@ class BlockImpl implements Block {
 	
 	public void setIdentifier(String id) {
 		this.id = id;
+	}
+
+	public void setVerticalPosition(BlockPosition vertical) {
+		this.verticalPosition = vertical;
 	}
 
 	public String getBlockIdentifier() {

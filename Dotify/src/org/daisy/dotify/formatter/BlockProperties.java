@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter;
 
+import org.daisy.dotify.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.formatter.FormattingTypes.Alignment;
 import org.daisy.dotify.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.formatter.FormattingTypes.Keep;
@@ -27,6 +28,7 @@ public class BlockProperties {
 	private final int keepWithNextSheets;
 	private final int blockIndent;
 	private final String identifier;
+	private final BlockPosition verticalPosition;
 
 	/**
 	 * The Builder is used when creating a BlockProperties instance.
@@ -49,6 +51,8 @@ public class BlockProperties {
 		int keepWithNextSheets = 0;
 		int blockIndent = 0;
 		String identifier = "";
+		Position verticalPosition = null;
+		VerticalAlignment verticalAlignment = VerticalAlignment.AFTER;
 		
 		/**
 		 * Create a new Builder
@@ -205,6 +209,16 @@ public class BlockProperties {
 			return this;
 		}
 		
+		public Builder verticalPosition(Position position) {
+			verticalPosition = position;
+			return this;
+		}
+
+		public Builder verticalAlignment(BlockPosition.VerticalAlignment alignment) {
+			verticalAlignment = alignment;
+			return this;
+		}
+
 		/**
 		 * Set the block indent for the block, in characters.
 		 * The block indent controls the indent of child blocks
@@ -248,6 +262,13 @@ public class BlockProperties {
 		keepWithNextSheets = builder.keepWithNextSheets;
 		blockIndent = builder.blockIndent;
 		identifier = builder.identifier;
+		if (builder.verticalPosition != null) {
+			verticalPosition = new BlockPosition.Builder().
+				position(builder.verticalPosition).
+				align(builder.verticalAlignment).build();
+		} else {
+			verticalPosition = null;
+		}
 	}
 	
 	/**
@@ -373,6 +394,10 @@ public class BlockProperties {
 	
 	public String getIdentifier() {
 		return identifier;
+	}
+
+	public BlockPosition getVerticalPosition() {
+		return verticalPosition;
 	}
 
 }

@@ -5,25 +5,26 @@ package org.daisy.dotify.formatter;
  * <p>Positions a block of text at a specified row.</p>
  * @author Joel Håkansson, TPB
  */
-class BlockPosition {
+public class BlockPosition {
 	/**
 	 * Block alignment
 	 */
-	public enum Alignment {
-		/**
-		 * Aligns the first row of the block at the given position
-		 */
-		TOP,
+	public enum VerticalAlignment {
 		/**
 		 * Aligns the last row of the block at the given position
 		 */
-		BOTTOM,
+		BEFORE,
 		/**
 		 * Centers the block at the given position (round off towards the top)
 		 */
-		CENTER};
+		CENTER,
+		/**
+		 * Aligns the first row of the block at the given position
+		 */
+		AFTER
+	};
 	private final Position position;
-	private final Alignment align;
+	private final VerticalAlignment align;
 	
 	/**
 	 * Used when creating BlockPosition instances.
@@ -32,14 +33,14 @@ class BlockPosition {
 	 */
 	public static class Builder {
 		// optional
-		private Alignment align;
+		private VerticalAlignment align;
 		private Position pos;
 		
 		/**
 		 * Creates a new Builder with TOP alignment at the absolute position of 0. 
 		 */
 		public Builder() {
-			this.align = Alignment.TOP;
+			this.align = VerticalAlignment.AFTER;
 			this.pos = new Position(0, false);
 		}
 
@@ -58,7 +59,7 @@ class BlockPosition {
 		 * @param align the alignment
 		 * @return returns this Builder
 		 */
-		public Builder align(Alignment align) {
+		public Builder align(VerticalAlignment align) {
 			this.align = align;
 			return this;
 		}
@@ -89,7 +90,7 @@ class BlockPosition {
 	 * Get the alignment center for the block that this object positions
 	 * @return returns the alignment center
 	 */
-	public Alignment getAlignment() {
+	public VerticalAlignment getAlignment() {
 		return align;
 	}
 

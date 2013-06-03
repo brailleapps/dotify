@@ -457,6 +457,16 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="vertical-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="before"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="after"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="vertical-position" type="xs:anySimpleType"/>
 	</xs:complexType>
 	<xs:element name="block" type="block"/>
 	<xs:complexType name="span" mixed="true">

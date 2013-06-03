@@ -16,6 +16,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
 import org.daisy.dotify.book.VolumeContentFormatter;
+import org.daisy.dotify.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.CompoundField;
@@ -327,6 +328,10 @@ public class ObflParser {
 				builder.identifier(att.getValue());
 			} else if (name.equals("align")) {
 				builder.align(FormattingTypes.Alignment.valueOf(att.getValue().toUpperCase()));
+			} else if (name.equals("vertical-position")) {
+				builder.verticalPosition(Position.parsePosition(att.getValue()));
+			} else if (name.equals("vertical-align")) {
+				builder.verticalAlignment(VerticalAlignment.valueOf(att.getValue().toUpperCase()));
 			}
 		}
 		return builder.build();

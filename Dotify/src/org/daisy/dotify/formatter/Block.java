@@ -22,6 +22,13 @@ public interface Block {
 	public BreakBefore getBreakBeforeType();
 	public BlockContentManager getBlockContentManager(CrossReferences refs);
 	public String getBlockIdentifier();
+
+	/**
+	 * Gets the vertical position of the block on page, or null if none is
+	 * specified
+	 */
+	public BlockPosition getVerticalPosition();
+
 	
 	public int getKeepWithPreviousSheets();
 	public int getKeepWithNextSheets();

@@ -3,11 +3,11 @@ package org.daisy.dotify.impl.paginator;
 import java.io.IOException;
 
 import org.daisy.dotify.formatter.Block;
+import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.paginator.PageStruct;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorException;
@@ -99,10 +99,33 @@ public class PaginatorImpl implements Paginator {
 				} else if (g.getSpaceBefore()+1>pageStruct.getFlowHeight()-pageStruct.countRows()) {
 					pageStruct.currentSequence().newPageOnRow();
 				}
+				BlockContentManager rdm = g.getBlockContentManager(refs);
+				if (g.getVerticalPosition() != null) {
+					int blockSpace = rdm.getRowCount() + g.getSpaceBefore() + g.getSpaceAfter();
+					int pos = g.getVerticalPosition().getPosition().makeAbsolute(seq.getLayoutMaster().getPageHeight());
+					int t = pos - pageStruct.currentPage().rowsOnPage() - 1;
+					if (t > 0) {
+						int advance = 0;
+						switch (g.getVerticalPosition().getAlignment()) {
+							case BEFORE:
+								advance = t - blockSpace;
+								break;
+							case CENTER:
+								advance = t - blockSpace / 2;
+								break;
+							case AFTER:
+								advance = t;
+								break;
+						}
+						for (int i = 0; i < advance; i++) {
+							pageStruct.newRow(new Row(""));
+						}
+					}
+				}
 				for (int i=0; i<g.getSpaceBefore();i++) {
 					pageStruct.newRow(new Row(""));
 				}
-				BlockContentManager rdm = g.getBlockContentManager(refs);
+
 				pageStruct.insertMarkers(rdm.getGroupMarkers());
 				boolean first = true;
 				
