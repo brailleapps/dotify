@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.dotify.formatter.FormattingTypes.Alignment;
 
 
 
@@ -15,6 +16,7 @@ public class Row {
 	private List<Marker> markers;
 	private List<String> anchors;
 	private int leftMargin;
+	private Alignment alignment;
 	/*
 	private int spaceBefore;
 	private int spaceAfter;
@@ -29,6 +31,7 @@ public class Row {
 		this.markers = new ArrayList<Marker>();
 		this.anchors = new ArrayList<String>();
 		this.leftMargin = 0;
+		this.alignment = Alignment.LEFT;
 		/*
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
@@ -109,6 +112,23 @@ public class Row {
 	public int getLeftMargin() {
 		return leftMargin;
 	}
+
+	/**
+	 * Gets the alignment value for the row
+	 * @return returns the alignment
+	 */
+	public Alignment getAlignment() {
+		return alignment;
+	}
+
+	/**
+	 * Sets the alignment value for the row
+	 * @param alignment the new value
+	 */
+	public void setAlignment(Alignment alignment) {
+		this.alignment = alignment;
+	}
+	
 /*
 	public int getSpaceBefore() {
 		return spaceBefore;

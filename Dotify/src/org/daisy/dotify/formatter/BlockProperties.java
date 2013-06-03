@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter;
 
+import org.daisy.dotify.formatter.FormattingTypes.Alignment;
 import org.daisy.dotify.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.formatter.FormattingTypes.Keep;
 import org.daisy.dotify.formatter.FormattingTypes.ListStyle;
@@ -20,6 +21,7 @@ public class BlockProperties {
 	private int listIterator;
 	private final BreakBefore breakBefore;
 	private final Keep keep;
+	private final Alignment align;
 	private final int keepWithNext;
 	private final int keepWithPreviousSheets;
 	private final int keepWithNextSheets;
@@ -41,6 +43,7 @@ public class BlockProperties {
 		ListStyle listType = ListStyle.NONE;
 		BreakBefore breakBefore = BreakBefore.AUTO;
 		Keep keep = Keep.AUTO;
+		Alignment align = Alignment.LEFT;
 		int keepWithNext = 0;
 		int keepWithPreviousSheets = 0;
 		int keepWithNextSheets = 0;
@@ -172,6 +175,16 @@ public class BlockProperties {
 		}
 		
 		/**
+		 * Sets the alignment property for the block.
+		 * @param align the alignment
+		 * @return returns "this" object
+		 */
+		public Builder align(FormattingTypes.Alignment align) {
+			this.align = align;
+			return this;
+		}
+		
+		/**
 		 * Set the keep with next property for the block.
 		 * @param keepWithNext the number of rows in the next 
 		 * block to keep together with this block
@@ -229,6 +242,7 @@ public class BlockProperties {
 		listIterator = 0;
 		breakBefore = builder.breakBefore;
 		keep = builder.keep;
+		align = builder.align;
 		keepWithNext = builder.keepWithNext;
 		keepWithPreviousSheets = builder.keepWithPreviousSheets;
 		keepWithNextSheets = builder.keepWithNextSheets;
@@ -331,6 +345,14 @@ public class BlockProperties {
 	 */
 	public FormattingTypes.Keep getKeepType() {
 		return keep;
+	}
+	
+	/**
+	 * Gets the alignment
+	 * @return returns the alignment
+	 */
+	public FormattingTypes.Alignment getAlignment() {
+		return align;
 	}
 
 	/**

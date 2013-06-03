@@ -5,10 +5,8 @@ package org.daisy.dotify.formatter;
  * 
  * @author Joel Håkansson
  */
-public class FormattingTypes {
+public interface FormattingTypes {
 	
-	//hide constructor
-	private FormattingTypes() { }
 	/**
 	 * Defines list styles.
 	 */ 
@@ -53,4 +51,19 @@ public class FormattingTypes {
 		 * Keep all rows in a block
 		 */
 		ALL}
+
+	public static enum Alignment {
+		/**
+		 * Align content to the left
+		 */
+		LEFT,
+		/**
+		 * Center content
+		 */
+		CENTER,
+		/**
+		 * Align content to the right
+		 */
+		RIGHT
+	}
 }

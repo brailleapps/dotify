@@ -245,6 +245,7 @@ class BlockHandler {
 			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
 				Row row = new Row(preContent + preTabText);
 				row.setLeftMargin(margin);
+				row.setAlignment(p.getAlignment());
 				if (r!=null) {
 					row.addMarkers(r);
 					r = null;
@@ -279,6 +280,7 @@ class BlockHandler {
 			nr.addMarkers(r);
 		}
 		nr.setLeftMargin(margin);
+		nr.setAlignment(p.getAlignment());
 		/*
 		if (nr.getChars().length()>master.getFlowWidth()) {
 			throw new RuntimeException("Row is too long (" + nr.getChars().length() + "/" + master.getFlowWidth() + ") '" + nr.getChars() + "'");

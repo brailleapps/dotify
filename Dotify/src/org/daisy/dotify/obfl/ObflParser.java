@@ -325,6 +325,8 @@ public class ObflParser {
 				builder.blockIndent(Integer.parseInt(att.getValue()));
 			} else if (name.equals("id")) {
 				builder.identifier(att.getValue());
+			} else if (name.equals("align")) {
+				builder.align(FormattingTypes.Alignment.valueOf(att.getValue().toUpperCase()));
 			}
 		}
 		return builder.build();

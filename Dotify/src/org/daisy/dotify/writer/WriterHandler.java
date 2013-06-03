@@ -49,11 +49,26 @@ public class WriterHandler {
 		List<Row> rows = p.getRows();
 		for (Row row : rows) {
 			if (row.getChars().length()>0) {
-				int margin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin()) + row.getLeftMargin();
 				// remove trailing whitespace
 				String chars = row.getChars().replaceAll("\\s*\\z", "");
+
+				int align;
+				switch (row.getAlignment()) {
+					case RIGHT:
+						align = lm.getFlowWidth() - (StringTools.length(chars) + row.getLeftMargin());
+						break;
+					case CENTER:
+						align = (lm.getFlowWidth() - (StringTools.length(chars) + row.getLeftMargin())) / 2;
+						break;
+					case LEFT:
+					default:
+						align = 0;
+						break;
+				}
+
+				int margin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin()) + row.getLeftMargin() + align;
 				// add left margin
-				int rowWidth = StringTools.length(chars)+row.getLeftMargin();
+				int rowWidth = StringTools.length(chars) + row.getLeftMargin() + align;
 				String r = 	StringTools.fill(marginCharacter, margin) + chars;
 				if (rowWidth>lm.getFlowWidth()) {
 					throw new WriterException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
