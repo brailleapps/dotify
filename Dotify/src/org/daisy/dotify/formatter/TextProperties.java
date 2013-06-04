@@ -6,7 +6,7 @@ import org.daisy.dotify.text.FilterLocale;
  * <p>SpanProperties defines properties specific for a span of text</p>
  * <p>Note that no span properties have been implemented yet</p>
  * 
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class TextProperties {
 	private final FilterLocale locale;

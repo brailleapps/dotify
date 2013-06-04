@@ -9,7 +9,7 @@ import org.daisy.dotify.formatter.FormattingTypes.ListStyle;
 
 /**
  * BlockProperties defines properties specific for a block of text
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class BlockProperties {
 	private final int leftMargin;
@@ -32,7 +32,7 @@ public class BlockProperties {
 
 	/**
 	 * The Builder is used when creating a BlockProperties instance.
-	 * @author Joel Håkansson, TPB
+	 * @author Joel Håkansson
 	 */
 	public static class Builder {
 		// Optional parameters

@@ -20,7 +20,7 @@ import java.util.Map;
  * <li>set: (set key value) where key is the key that will be replaced by value in any subsequent expressions (within the same evaluation).</li>
  * </ul>
  * <p>Quotes must surround arguments containing whitespace.</p>
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class Expression {
 	private HashMap<String, Object> vars;

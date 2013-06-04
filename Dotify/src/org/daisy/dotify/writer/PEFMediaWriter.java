@@ -14,7 +14,7 @@ import org.daisy.dotify.tools.StateObject;
 
 /**
  * PagedMediaWriter implementation that outputs PEF 2008-1.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 public class PEFMediaWriter implements PagedMediaWriter {

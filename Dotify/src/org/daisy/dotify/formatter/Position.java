@@ -2,7 +2,7 @@ package org.daisy.dotify.formatter;
 
 /**
  * Position is a data object for an integer position.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 public class Position {

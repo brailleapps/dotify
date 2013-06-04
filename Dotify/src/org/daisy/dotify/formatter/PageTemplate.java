@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Specifies page objects such as header and footer
  * for the pages to which it applies.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public interface PageTemplate {
 	

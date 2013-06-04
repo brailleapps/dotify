@@ -5,7 +5,7 @@ package org.daisy.dotify.system;
  * A TaskSystemFactoryException is an exception that indicates 
  * conditions in a {@link TaskSystemFactoryMaker} that a reasonable 
  * application might want to catch.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 public class TaskSystemFactoryException extends Exception {

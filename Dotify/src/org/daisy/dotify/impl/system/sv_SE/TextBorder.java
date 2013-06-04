@@ -9,7 +9,7 @@ import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 /**
  * Provides a way to add a border to a set of paragraphs.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 class TextBorder {
 	/**
@@ -39,7 +39,7 @@ class TextBorder {
 
 	/**
 	 * The Builder is used when creating a TextBorder instance.
-	 * @author Joel Håkansson, TPB
+	 * @author Joel Håkansson
 	 */
 	public static class Builder {
 		final int width;

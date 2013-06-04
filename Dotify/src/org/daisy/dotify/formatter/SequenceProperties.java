@@ -7,7 +7,7 @@ package org.daisy.dotify.formatter;
  * <p>The constructor is private, use SequenceProperties.Builder
  * to create new instances.</p>
  * 
- * @author Joel Håkansson, TPB 
+ * @author Joel Håkansson 
  */
 public class SequenceProperties {
 	private String masterName;
@@ -15,7 +15,7 @@ public class SequenceProperties {
 	
 	/**
 	 * The Builder is used when creating a SequenceProperites instance 
-	 * @author Joel Håkansson, TPB
+	 * @author Joel Håkansson
 	 */
 	public static class Builder {
 		//Required parameters

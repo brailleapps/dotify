@@ -21,7 +21,7 @@ import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
  * Breaks flow into rows, page related block properties are left to next step
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class FormatterImpl implements Formatter {
 	private int leftMargin;

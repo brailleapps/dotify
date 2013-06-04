@@ -12,7 +12,7 @@ import org.daisy.dotify.translator.BrailleTranslator;
  * <p>The result can be passed on to a Paginator or used for displaying
  * on a refreshable braille display.</p>
  *  
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public interface Formatter extends Closeable {
 	/*

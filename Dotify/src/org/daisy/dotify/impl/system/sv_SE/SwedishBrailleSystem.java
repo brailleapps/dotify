@@ -48,7 +48,7 @@ import org.xml.sax.SAXException;
 
  * </ol>
  * <p>The result should be validated against the PEF Relax NG schema using int_daisy_validator.</p>
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 @SuppressWarnings("deprecation")
 public class SwedishBrailleSystem implements TaskSystem {

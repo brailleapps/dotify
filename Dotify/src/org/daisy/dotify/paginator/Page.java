@@ -9,7 +9,7 @@ import org.daisy.dotify.formatter.Row;
 
 /**
  * A page object
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public interface Page {
 	

@@ -8,7 +8,7 @@ package org.daisy.dotify.tools;
  * the programmer can get proper feedback whenever the object 
  * is in the wrong state for a particular request.
  * 
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class StateObject {
 	/**

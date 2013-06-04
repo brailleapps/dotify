@@ -4,7 +4,7 @@ package org.daisy.dotify.formatter;
 /**
  * Specifies the configuration properties for a section of pages
  * in a paged media.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public interface SectionProperties {
 

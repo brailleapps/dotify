@@ -18,7 +18,7 @@
 	Format (input -> output)
 		PEF -> PEF
 
-	Author: Joel Håkansson, TPB
+	Author: Joel Håkansson
 	Version: 2009-10-26
 -->
 

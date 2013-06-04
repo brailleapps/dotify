@@ -18,7 +18,7 @@
 	Nodes
 		text()
     
-	Author: Joel Håkansson, TPB
+	Author: Joel Håkansson
 	Version: 2012-09-03
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

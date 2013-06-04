@@ -16,7 +16,7 @@
 	Format (input -> output)
 		XML -> Flow
    
-	Author: Joel Håkansson, TPB
+	Author: Joel Håkansson
 	Version: 2010-03-11
  -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema">

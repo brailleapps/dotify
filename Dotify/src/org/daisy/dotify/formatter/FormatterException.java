@@ -4,7 +4,7 @@ package org.daisy.dotify.formatter;
  * A LayoutException is an exception that indicates 
  * conditions in the layout process that a reasonable 
  * application might want to catch.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class FormatterException extends Exception {
 

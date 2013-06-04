@@ -23,7 +23,7 @@ import org.daisy.dotify.writer.PagedMediaWriter;
  * 
  * <p>The final result is passed on to the {@link PagedMediaWriter}.</p>
  * 
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 public interface Paginator extends Closeable {

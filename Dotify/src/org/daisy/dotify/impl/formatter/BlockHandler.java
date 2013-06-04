@@ -20,7 +20,7 @@ import org.daisy.dotify.translator.BrailleTranslatorResult;
  * text is filtered using the supplied StringFilter before breaking into rows, since
  * the length of the text could change.
  * 
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 class BlockHandler {
 	private final BrailleTranslator translator;

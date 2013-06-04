@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 /**
  * <p>Add a Volume Cover to each volume.</p>
  * <p>Input file type requirement: PEF</p>
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  * @deprecated replaced by the volume-template feature in OBFL
  */
 class VolumeCoverPageTask extends ReadWriteTask {

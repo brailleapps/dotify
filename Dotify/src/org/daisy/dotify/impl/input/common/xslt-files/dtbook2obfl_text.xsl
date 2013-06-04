@@ -16,7 +16,7 @@
 	Format (input -> output)
 		DTBook -> Flow
 
-	Author: Joel Håkansson, TPB
+	Author: Joel Håkansson
 -->
 <!--
 	TODO:

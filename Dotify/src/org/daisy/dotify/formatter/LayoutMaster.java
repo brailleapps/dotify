@@ -6,7 +6,7 @@ package org.daisy.dotify.formatter;
 
 /**
  * Specifies the layout of a paged media.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public interface LayoutMaster extends SectionProperties {
 

@@ -5,7 +5,7 @@ package org.daisy.dotify.writer;
  * A PagedMediaWriterException is an exception that indicates 
  * conditions in a {@link PagedMediaWriter} that a reasonable 
  * application might want to catch.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class PagedMediaWriterException extends Exception {
 

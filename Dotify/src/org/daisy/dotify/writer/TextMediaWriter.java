@@ -10,7 +10,7 @@ import org.daisy.dotify.tools.StateObject;
 
 /**
  * PagedMediaWriter implementation that outputs plain text.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 public class TextMediaWriter implements PagedMediaWriter {

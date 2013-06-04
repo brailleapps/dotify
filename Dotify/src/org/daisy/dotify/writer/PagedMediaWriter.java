@@ -21,7 +21,7 @@ import org.daisy.dotify.paginator.Paginator;
  * For example, an implementation of PagedMediaWriter must not break
  * a page unless instructed via {@link #newPage()}.</p>
  * 
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public interface PagedMediaWriter extends Closeable {
 	

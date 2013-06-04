@@ -4,7 +4,7 @@ package org.daisy.dotify.system;
  * A TaskSystemException is an exception that indicates 
  * conditions in a {@link TaskSystem} that a reasonable 
  * application might want to catch.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class TaskSystemException extends Exception {
 

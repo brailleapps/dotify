@@ -18,7 +18,7 @@
 	Format (input -> output)
 		PEF -> PEF
 
-	Author: Joel Håkansson, TPB
+	Author: Joel Håkansson
 	Version: 2010-02-02
  -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pef="http://www.daisy.org/ns/2008/pef" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions">

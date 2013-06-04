@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
  * <p>Paths in the properties file are relative to the resource base url.</p>
  * <p>Whitespace normalization of the OBFL file is added last in the chain.</p>
  * 
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 class XMLInputManager implements InputManager {

@@ -9,7 +9,7 @@ package org.daisy.dotify.formatter;
  * <p>The constructor is private, use Leader.Builder
  * to create new instances.</p>
  * 
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class Leader {
 	/**
@@ -36,7 +36,7 @@ public class Leader {
 
 	/**
 	 * The Builder is used when creating a Leader instance 
-	 * @author Joel Håkansson, TPB
+	 * @author Joel Håkansson
 	 */
 	public static class Builder {
 		// optional

@@ -9,7 +9,7 @@ import org.daisy.dotify.formatter.FormattingTypes.Alignment;
 
 /**
  * Row represents a single row of text
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class Row {
 	private String chars;

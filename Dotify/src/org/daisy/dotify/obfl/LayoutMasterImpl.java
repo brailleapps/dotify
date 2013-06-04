@@ -7,7 +7,7 @@ import org.daisy.dotify.formatter.PageTemplate;
 
 /**
  * ConfigurableLayoutMaster will ensure that the LayoutMaster measurements adds up.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 class LayoutMasterImpl implements LayoutMaster {
 	protected final int headerHeight;
@@ -24,7 +24,7 @@ class LayoutMasterImpl implements LayoutMaster {
 	
 	/**
 	 * Configuration class for a ConfigurableLayoutMaster
-	 * @author Joel Håkansson, TPB
+	 * @author Joel Håkansson
 	 *
 	 */
 	public static class Builder {

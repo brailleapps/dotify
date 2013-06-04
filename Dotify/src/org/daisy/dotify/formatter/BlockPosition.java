@@ -3,7 +3,7 @@ package org.daisy.dotify.formatter;
 
 /**
  * <p>Positions a block of text at a specified row.</p>
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  */
 public class BlockPosition {
 	/**
@@ -28,7 +28,7 @@ public class BlockPosition {
 	
 	/**
 	 * Used when creating BlockPosition instances.
-	 * @author Joel Håkansson, TPB
+	 * @author Joel Håkansson
 	 *
 	 */
 	public static class Builder {

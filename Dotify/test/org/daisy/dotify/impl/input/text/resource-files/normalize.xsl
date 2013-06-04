@@ -5,7 +5,7 @@
 		Intended to be included in other stylesheets.
 -->
 <!--
-		Joel Håkansson, TPB
+		Joel Håkansson
 		Version 2006-03-24
  -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
