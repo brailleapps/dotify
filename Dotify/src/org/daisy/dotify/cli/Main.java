@@ -87,7 +87,7 @@ public class Main extends AbstractUI {
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE_FORMAT, "Date format in meta data (if available and date is not specified)", SystemProperties.DEFAULT_DATE_FORMAT));
 		TableCatalog tableCatalog = TableCatalog.newInstance();
 		tableSF = new ShortFormResolver(tableCatalog.list());
-		optionalArgs.add(new OptionalArgument(PEFConverterFacade.KEY_TABLE, "braille code table", getDefinitionList(tableCatalog, tableSF), ""));
+		optionalArgs.add(new OptionalArgument(PEFConverterFacade.KEY_TABLE, "If specified, an ASCII-braille file (.brl) is generated in addition to the PEF-file using the specified braille code table", getDefinitionList(tableCatalog, tableSF), ""));
 	}
 
 	/**
