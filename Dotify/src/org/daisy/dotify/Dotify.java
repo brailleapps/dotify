@@ -204,10 +204,10 @@ public class Dotify {
 		return ret;
 	}
 
-	static String getDefaultDate(String dateFormat) {
-	    Calendar c = Calendar.getInstance();
-	    c.setTime(new Date());
-	    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+	public static String getDefaultDate(String dateFormat) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 		return sdf.format(c.getTime());
 	}
 

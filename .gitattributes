@@ -51,10 +51,13 @@ Dotify/build-doc.xml -text svneol=unset#text/plain
 Dotify/build-properties.xml -text
 Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
 Dotify/build.xml -text svneol=unset#text/plain
+Dotify/lib/brailleUtils-catalog.jar -text
+Dotify/lib/brailleUtils-core.jar -text
 Dotify/lib/dotify-translator.jar -text
 Dotify/lib/icu4j-3_8.jar -text
+Dotify/lib/isorelax.jar -text
+Dotify/lib/jing.jar -text
 Dotify/lib/junit-4.7.jar -text
-Dotify/lib/onvdl.jar -text
 Dotify/lib/org.daisy.util.jar -text
 Dotify/lib/saxon.jar -text
 Dotify/lib/saxon8-dom.jar -text
@@ -63,6 +66,7 @@ Dotify/lib/stax-api-1.0.1.jar -text
 Dotify/lib/texhyphj.jar -text
 Dotify/lib/wstx-lgpl-3.2.8.jar -text
 Dotify/lib/xercesImpl.jar -text
+Dotify/lib/xml-apis.jar -text
 Dotify/logging.properties -text svneol=unset#text/plain
 Dotify/src/META-INF/services/javax.xml.transform.TransformerFactory -text
 Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
@@ -71,9 +75,7 @@ Dotify/src/META-INF/services/org.daisy.dotify.formatter.FormatterProxy -text
 Dotify/src/META-INF/services/org.daisy.dotify.input.InputManagerFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.paginator.PaginatorProxy -text
 Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
-Dotify/src/org/daisy/braille/ui/AbstractUI.java -text
 Dotify/src/org/daisy/dotify/Dotify.java -text
-Dotify/src/org/daisy/dotify/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/book/BookStruct.java -text
@@ -88,6 +90,7 @@ Dotify/src/org/daisy/dotify/book/Volume.java -text
 Dotify/src/org/daisy/dotify/book/VolumeContentFormatter.java -text
 Dotify/src/org/daisy/dotify/book/VolumeImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/book/package-info.java -text
+Dotify/src/org/daisy/dotify/cli/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/config/ConfigurationsCatalog.java -text
 Dotify/src/org/daisy/dotify/config/ConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/config/package-info.java -text
