@@ -518,6 +518,14 @@ DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/zh-la
 DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2Text.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/JavascriptBrailleTranslator.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/ScriptableBrailleFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/ScriptableBrailleTranslator.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/StreamFetcher.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/script-catalog.xml -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/sv/sv.js -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/sv/sv.xml -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/sv/test.xhtml -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactory.java -text
@@ -559,6 +567,7 @@ DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -t
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/text/SwedishInteger2TextTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
+DotifyTranslator/test/org/daisy/dotify/impl/translator/ScriptableBrailleFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
