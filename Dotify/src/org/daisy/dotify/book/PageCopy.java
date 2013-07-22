@@ -2,7 +2,6 @@ package org.daisy.dotify.book;
 
 import java.util.List;
 
-import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PageSequence;
 
@@ -30,7 +29,7 @@ class PageCopy implements Page {
 		return p.getContentMarkers();
 	}
 */
-	public List<Row> getRows() {
+	public List<String> getRows() {
 		return p.getRows();
 	}
 

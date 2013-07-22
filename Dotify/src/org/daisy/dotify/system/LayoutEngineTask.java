@@ -21,7 +21,6 @@ import org.daisy.dotify.paginator.PaginatorFactory;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.PagedMediaWriterException;
-import org.daisy.dotify.writer.WriterException;
 import org.daisy.dotify.writer.WriterHandler;
 
 /**
@@ -95,9 +94,8 @@ public class LayoutEngineTask extends ReadWriteTask  {
 			logger.info("Rendering output...");
 			writer.open(new FileOutputStream(output));
 			//splitterFactory.newSplitter().split(bookStruct)
-			String ms = translator.translate(" ").getTranslatedRemainder();
 
-			WriterHandler wh = new WriterHandler(ms);
+			WriterHandler wh = new WriterHandler();
 			wh.write(volumes, writer);
 			writer.close();
 
@@ -111,8 +109,6 @@ public class LayoutEngineTask extends ReadWriteTask  {
 			throw new InternalTaskException("XMLStreamException while running task.", e);
 		} catch (OBFLParserException e) {
 			throw new InternalTaskException("FormatterException while running task.", e);
-		} catch (WriterException e) {
-			throw new InternalTaskException("WriterException while running task.", e);
 		}
 	}
 

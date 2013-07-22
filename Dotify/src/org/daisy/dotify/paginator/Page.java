@@ -2,8 +2,6 @@ package org.daisy.dotify.paginator;
 
 import java.util.List;
 
-import org.daisy.dotify.formatter.Row;
-
 
 
 
@@ -29,7 +27,7 @@ public interface Page {
 	 * Gets the rows on this page
 	 * @return returns the rows on this page
 	 */
-	public List<Row> getRows();
+	public List<String> getRows();
 
 	/**
 	 * Gets the page index for this page

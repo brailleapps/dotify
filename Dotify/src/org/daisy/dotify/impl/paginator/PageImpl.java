@@ -13,6 +13,7 @@ import org.daisy.dotify.formatter.PageTemplate;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PaginatorException;
+import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -24,6 +25,7 @@ import org.daisy.dotify.translator.BrailleTranslatorResult;
  * @author Joel Håkansson
  */
 class PageImpl implements Page {
+	private String marginCharacter = null;
 	private PageSequenceImpl parent;
 	private ArrayList<Row> rows;
 	private ArrayList<Marker> markers;
@@ -83,22 +85,70 @@ class PageImpl implements Page {
 		return markers.subList(contentMarkersBegin, markers.size());
 	}
 	
-	public ArrayList<Row> getRows() {
+	private String getMarginCharacter() {
+		// lazy init
+		if (marginCharacter == null) {
+			marginCharacter = getParent().getFormatter().getTranslator().translate(" ").getTranslatedRemainder();
+		}
+		return marginCharacter;
+	}
+
+	public ArrayList<String> getRows() {
+
 		try {
+
 			ArrayList<Row> ret = new ArrayList<Row>();
-			LayoutMaster lm = getParent().getLayoutMaster();
-			int pagenum = getPageIndex()+1;
-			PageTemplate t = lm.getTemplate(pagenum);
-			BrailleTranslator filter = getParent().getFormatter().getTranslator();
-			ret.addAll(renderFields(lm, t.getHeader(), filter));
-			ret.addAll(rows);
-			if (t.getFooterHeight()>0) {
-				while (ret.size()<lm.getPageHeight()-t.getFooterHeight()) {
-					ret.add(new Row());
+			{
+				LayoutMaster lm = getParent().getLayoutMaster();
+				int pagenum = getPageIndex() + 1;
+				PageTemplate t = lm.getTemplate(pagenum);
+				BrailleTranslator filter = getParent().getFormatter().getTranslator();
+				ret.addAll(renderFields(lm, t.getHeader(), filter));
+				ret.addAll(rows);
+				if (t.getFooterHeight() > 0) {
+					while (ret.size() < lm.getPageHeight() - t.getFooterHeight()) {
+						ret.add(new Row());
+					}
+					ret.addAll(renderFields(lm, t.getFooter(), filter));
 				}
-				ret.addAll(renderFields(lm, t.getFooter(), filter));
 			}
-			return ret;
+			ArrayList<String> ret2 = new ArrayList<String>();
+			{
+				final int pagenum = getPageIndex() + 1;
+				LayoutMaster lm = getParent().getLayoutMaster();
+				for (Row row : ret) {
+					if (row.getChars().length() > 0) {
+						// remove trailing whitespace
+						String chars = row.getChars().replaceAll("\\s*\\z", "");
+
+						int align;
+						switch (row.getAlignment()) {
+							case RIGHT:
+								align = lm.getFlowWidth() - (StringTools.length(chars) + row.getLeftMargin());
+								break;
+							case CENTER:
+								align = (lm.getFlowWidth() - (StringTools.length(chars) + row.getLeftMargin())) / 2;
+								break;
+							case LEFT:
+							default:
+								align = 0;
+								break;
+						}
+
+						int margin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin()) + row.getLeftMargin() + align;
+						// add left margin
+						int rowWidth = StringTools.length(chars) + row.getLeftMargin() + align;
+						String r = StringTools.fill(getMarginCharacter(), margin) + chars;
+						if (rowWidth > lm.getFlowWidth()) {
+							throw new PaginatorException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
+						}
+						ret2.add(r);
+					} else {
+						ret2.add("");
+					}
+				}
+			}
+			return ret2;
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Cannot render header/footer", e);
 		}
