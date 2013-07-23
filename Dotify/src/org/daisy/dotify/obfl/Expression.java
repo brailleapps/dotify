@@ -6,6 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.Integer2Text;
+import org.daisy.dotify.text.Integer2TextFactoryMaker;
+import org.daisy.dotify.text.IntegerOutOfRange;
+
 /**
  * <p>Expression is a small expressions language interpreter. The language 
  * uses prefix notation with arguments separated by whitespace. The entire expression must 
@@ -18,6 +24,7 @@ import java.util.Map;
  * <li>now: (now date_format) where date_format is as defined by {@link SimpleDateFormat}</li> 
  * <li>round: (round value)</li>
  * <li>set: (set key value) where key is the key that will be replaced by value in any subsequent expressions (within the same evaluation).</li>
+ * <li>int2text: (int2text number language-code) where number is an integer number to be converted into text using the language specified by language-code.</li>
  * </ul>
  * <p>Quotes must surround arguments containing whitespace.</p>
  * @author Joel Håkansson
@@ -121,6 +128,8 @@ public class Expression {
 			return round(args);
 		} else if ("set".equals(operator)) {
 			return set(args);
+		} else if ("int2text".equals(operator)) {
+			return int2text(args);
 		}
 		else {
 			throw new IllegalArgumentException("Unknown operator: '" + operator + "'");
@@ -280,6 +289,34 @@ public class Expression {
 		}
 		vars.put("$"+input[0].toString(), input[1]);
 		return input[1];
+	}
+
+	private static String int2text(Object[] input) {
+		if (input.length > 2) {
+			throw new IllegalArgumentException("Wrong number of arguments: (int2text integer language-code)");
+		}
+		Integer2Text t;
+		try {
+			t = Integer2TextFactoryMaker.newInstance().newInteger2Text(FilterLocale.parse(input[1].toString()));
+		} catch (UnsupportedLocaleException e) {
+			throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
+		}
+		try {
+			if (input[0] instanceof Integer) {
+				return t.intToText((Integer) input[0]);
+			} else {
+				double d = toNumber(input[0]);
+				if (Math.round(d) == d) {
+					return t.intToText((int) Math.round(d));
+				} else {
+					throw new IllegalArgumentException("First argument must be an integer: " + input[0]);
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("First argument must be an integer: " + input[0], e);
+		} catch (IntegerOutOfRange e) {
+			throw new IllegalArgumentException("Integer out of range: " + input[0], e);
+		}
 	}
 
 	private static String[] getArgs(String expr) {

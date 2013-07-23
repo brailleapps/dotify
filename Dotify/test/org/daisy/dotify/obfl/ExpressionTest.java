@@ -1,7 +1,6 @@
 package org.daisy.dotify.obfl;
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.obfl.Expression;
 import org.junit.Test;
 
 
@@ -108,6 +107,31 @@ public class ExpressionTest {
 	@Test
 	public void testExpression_var_02() {
 		assertEquals(144, e.evaluate("(set var 3) (set var 12) (round (* $var $var))"));
+	}
+
+	@Test
+	public void testExpression_int2text_01() {
+		assertEquals("ett", e.evaluate("(int2text 1 sv-se)"));
+	}
+
+	@Test
+	public void testExpression_int2text_02() {
+		assertEquals("två", e.evaluate("(int2text (round 2.3) sv-se)"));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExpression_int2text_03() {
+		e.evaluate("(int2text (round 2.3) en)");
+	}
+
+	@Test
+	public void testExpression_int2text_04() {
+		assertEquals("ett", e.evaluate("(int2text 1.0 sv-se)"));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExpression_int2text_05() {
+		e.evaluate("(int2text 2.3 sv-se)");
 	}
 
 	/*
