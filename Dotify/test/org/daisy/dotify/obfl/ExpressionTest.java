@@ -134,6 +134,16 @@ public class ExpressionTest {
 		e.evaluate("(int2text 2.3 sv-se)");
 	}
 
+	@Test
+	public void testExpression_concat_01() {
+		assertEquals("just do it", e.evaluate("(concat just \" do \" it)"));
+	}
+
+	@Test
+	public void testExpression_concat_02() {
+		assertEquals("value is 1", e.evaluate("(concat \"value is \" (round 1))"));
+	}
+
 	/*
 		input + " -> " + ret + " (" +ret.getClass() + ")";
 	 */

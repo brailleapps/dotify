@@ -13,20 +13,37 @@ import org.daisy.dotify.text.Integer2TextFactoryMaker;
 import org.daisy.dotify.text.IntegerOutOfRange;
 
 /**
- * <p>Expression is a small expressions language interpreter. The language 
- * uses prefix notation with arguments separated by whitespace. The entire expression must 
- * be surrounded with parentheses.</p>
- * <p>The following operators are defined: +, -, *, /, %, =, &lt;, &lt;=, >, >=, &amp;, |</p>
- * <p>All operators require at least two arguments. E.g. (+ 5 7 9) evaluates to 21.</p>
- * <p>Special keywords:</p>
+ * <p>
+ * Expression is a small expressions language interpreter. The language uses
+ * prefix notation with arguments separated by whitespace. The entire expression
+ * must be surrounded with parentheses.
+ * </p>
+ * <p>
+ * The following operators are defined: +, -, *, /, %, =, &lt;, &lt;=, >, >=,
+ * &amp;, |
+ * </p>
+ * <p>
+ * All operators require at least two arguments. E.g. (+ 5 7 9) evaluates to 21.
+ * </p>
+ * <p>
+ * Special keywords:
+ * </p>
  * <ul>
  * <li>if: (if (boolean_expression) value_when_true value_when_false)</li>
- * <li>now: (now date_format) where date_format is as defined by {@link SimpleDateFormat}</li> 
+ * <li>now: (now date_format) where date_format is as defined by
+ * {@link SimpleDateFormat}</li>
  * <li>round: (round value)</li>
- * <li>set: (set key value) where key is the key that will be replaced by value in any subsequent expressions (within the same evaluation).</li>
- * <li>int2text: (int2text number language-code) where number is an integer number to be converted into text using the language specified by language-code.</li>
+ * <li>set: (set key value) where key is the key that will be replaced by value
+ * in any subsequent expressions (within the same evaluation).</li>
+ * <li>int2text: (int2text number language-code) where number is an integer
+ * number to be converted into text using the language specified by
+ * language-code.</li>
+ * <li>concat: (concat ...) all arguments are concatenated to a single string</li>
  * </ul>
- * <p>Quotes must surround arguments containing whitespace.</p>
+ * <p>
+ * Quotes must surround arguments containing whitespace.
+ * </p>
+ * 
  * @author Joel Håkansson
  */
 public class Expression {
@@ -130,6 +147,8 @@ public class Expression {
 			return set(args);
 		} else if ("int2text".equals(operator)) {
 			return int2text(args);
+		} else if ("concat".equals(operator)) {
+			return concat(args);
 		}
 		else {
 			throw new IllegalArgumentException("Unknown operator: '" + operator + "'");
@@ -317,6 +336,14 @@ public class Expression {
 		} catch (IntegerOutOfRange e) {
 			throw new IllegalArgumentException("Integer out of range: " + input[0], e);
 		}
+	}
+
+	private Object concat(Object[] input) {
+		StringBuilder sb = new StringBuilder();
+		for (Object o : input) {
+			sb.append(o);
+		}
+		return sb.toString();
 	}
 
 	private static String[] getArgs(String expr) {
