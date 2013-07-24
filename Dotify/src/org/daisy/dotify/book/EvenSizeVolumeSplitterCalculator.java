@@ -108,5 +108,31 @@ class EvenSizeVolumeSplitterCalculator {
 			return 1+((sheetsPerVolumeBreakpoint) / breakpoint)+((sheetIndex - sheetsPerVolumeBreakpoint) / (breakpoint - 1));
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + breakpoint;
+		result = prime * result + sheets;
+		result = prime * result + sheetsPerVolumeBreakpoint;
+		result = prime * result + volsWithBpSheets;
+		result = prime * result + volumes;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		EvenSizeVolumeSplitterCalculator other = (EvenSizeVolumeSplitterCalculator) obj;
+		if (breakpoint != other.breakpoint) return false;
+		if (sheets != other.sheets) return false;
+		if (sheetsPerVolumeBreakpoint != other.sheetsPerVolumeBreakpoint) return false;
+		if (volsWithBpSheets != other.volsWithBpSheets) return false;
+		if (volumes != other.volumes) return false;
+		return true;
+	}
 	
 }
