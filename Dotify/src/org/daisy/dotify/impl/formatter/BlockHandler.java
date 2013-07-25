@@ -31,8 +31,8 @@ class BlockHandler {
 	private ArrayList<Row> ret;
 	private BlockProperties p;
 	private final int available;
+	private final int rightMargin;
 	private ListItem item;
-	private final LayoutMaster master;
 	
 	public static class ListItem {
 		private String label;
@@ -54,13 +54,13 @@ class BlockHandler {
 	
 	public static class Builder {
 		private final BrailleTranslator translator;
-		private final LayoutMaster master;
 		private final int available;
+		private final int rightMargin;
 		
-		public Builder(BrailleTranslator translator, LayoutMaster master, int width) {
+		public Builder(BrailleTranslator translator, LayoutMaster master, int width, int rightMargin) {
 			this.translator = translator;
-			this.master = master;
 			this.available = width;
+			this.rightMargin = rightMargin;
 		}
 		
 		public BlockHandler build() {
@@ -76,8 +76,8 @@ class BlockHandler {
 		this.ret = new ArrayList<Row>();
 		this.p = new BlockProperties.Builder().build();
 		this.available = builder.available;
+		this.rightMargin = builder.rightMargin;
 		this.item = null;
-		this.master = builder.master;
 		this.spaceChar = translator.translate(" ").getTranslatedRemainder();
 		
 	}
@@ -225,7 +225,7 @@ class BlockHandler {
 			throw new RuntimeException("Cannot continue layout: No space left for characters.");
 		}
 
-		int width = master.getFlowWidth();
+		int width = available;
 		String tabSpace = "";
 		if (currentLeader!=null) {
 			int leaderPos = currentLeader.getPosition().makeAbsolute(width);
@@ -245,6 +245,7 @@ class BlockHandler {
 			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
 				Row row = new Row(preContent + preTabText);
 				row.setLeftMargin(margin);
+				row.setRightMargin(rightMargin);
 				row.setAlignment(p.getAlignment());
 				if (r!=null) {
 					row.addMarkers(r);
@@ -280,6 +281,7 @@ class BlockHandler {
 			nr.addMarkers(r);
 		}
 		nr.setLeftMargin(margin);
+		nr.setRightMargin(rightMargin);
 		nr.setAlignment(p.getAlignment());
 		/*
 		if (nr.getChars().length()>master.getFlowWidth()) {

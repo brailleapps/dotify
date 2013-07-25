@@ -11,6 +11,7 @@ import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.MarkerReferenceField;
 import org.daisy.dotify.formatter.PageTemplate;
 import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.TextBorderStyle;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PaginatorException;
 import org.daisy.dotify.tools.StringTools;
@@ -43,7 +44,7 @@ class PageImpl implements Page {
 		contentMarkersBegin = 0;
 		this.parent = parent;
 		PageTemplate template = parent.getLayoutMaster().getTemplate(pageIndex+1);
-		this.flowHeight = parent.getLayoutMaster().getPageHeight()-template.getHeaderHeight()-template.getFooterHeight();
+		this.flowHeight = parent.getLayoutMaster().getPageHeight() - template.getHeaderHeight() - template.getFooterHeight() - (parent.getLayoutMaster().getFrame() != null ? 2 : 0);
 		this.isVolBreak = false;
 		this.isVolBreakAllowed = true;
 		this.keepPreviousSheets = 0;
@@ -93,10 +94,13 @@ class PageImpl implements Page {
 		return marginCharacter;
 	}
 
-	public ArrayList<String> getRows() {
+	public List<String> getRows() {
 
 		try {
-
+			TextBorderStyle frame = getParent().getLayoutMaster().getFrame();
+			if (frame == null) {
+				frame = TextBorderStyle.NONE;
+			}
 			ArrayList<Row> ret = new ArrayList<Row>();
 			{
 				LayoutMaster lm = getParent().getLayoutMaster();
@@ -105,8 +109,8 @@ class PageImpl implements Page {
 				BrailleTranslator filter = getParent().getFormatter().getTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
 				ret.addAll(rows);
-				if (t.getFooterHeight() > 0) {
-					while (ret.size() < lm.getPageHeight() - t.getFooterHeight()) {
+				if (t.getFooterHeight() > 0 || frame != TextBorderStyle.NONE) {
+					while (ret.size() < getFlowHeight() + t.getHeaderHeight()) {
 						ret.add(new Row());
 					}
 					ret.addAll(renderFields(lm, t.getFooter(), filter));
@@ -116,36 +120,54 @@ class PageImpl implements Page {
 			{
 				final int pagenum = getPageIndex() + 1;
 				LayoutMaster lm = getParent().getLayoutMaster();
+				TextBorder tb = null;
+
+				int fsize = frame.getLeftBorder().length() + frame.getRightBorder().length();
+				final int pageMargin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin());
+				int w = getParent().getLayoutMaster().getFlowWidth() + fsize + pageMargin;
+
+				tb = new TextBorder.Builder(w, getMarginCharacter())
+						.style(frame)
+						.outerLeftMargin(StringTools.fill(getMarginCharacter(), pageMargin))
+						.build();
+				if (!TextBorderStyle.NONE.equals(frame)) {
+					ret2.add(tb.getTopBorder());
+				}
+				String res;
+
 				for (Row row : ret) {
+					res = "";
 					if (row.getChars().length() > 0) {
 						// remove trailing whitespace
 						String chars = row.getChars().replaceAll("\\s*\\z", "");
-
-						int align;
-						switch (row.getAlignment()) {
-							case RIGHT:
-								align = lm.getFlowWidth() - (StringTools.length(chars) + row.getLeftMargin());
-								break;
-							case CENTER:
-								align = (lm.getFlowWidth() - (StringTools.length(chars) + row.getLeftMargin())) / 2;
-								break;
-							case LEFT:
-							default:
-								align = 0;
-								break;
-						}
-
-						int margin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin()) + row.getLeftMargin() + align;
-						// add left margin
-						int rowWidth = StringTools.length(chars) + row.getLeftMargin() + align;
-						String r = StringTools.fill(getMarginCharacter(), margin) + chars;
-						if (rowWidth > lm.getFlowWidth()) {
-							throw new PaginatorException("Row is too long (" + rowWidth + "/" + lm.getFlowWidth() + ") '" + chars + "'");
-						}
-						ret2.add(r);
+						//if (!TextBorderStyle.NONE.equals(frame)) {
+							res = tb.addBorderToRow(chars, 
+									TextBorder.Align.valueOf(row.getAlignment().toString()), 
+									StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
+									StringTools.fill(getMarginCharacter(), row.getRightMargin()),
+									TextBorderStyle.NONE.equals(frame));
+						//} else {
+						//	res = StringTools.fill(getMarginCharacter(), pageMargin + row.getLeftMargin()) + chars;
+						//}
 					} else {
-						ret2.add("");
+						if (!TextBorderStyle.NONE.equals(frame)) {
+							res = tb.addBorderToRow("", 
+									TextBorder.Align.valueOf(row.getAlignment().toString()),
+									StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
+									StringTools.fill(getMarginCharacter(), row.getRightMargin()), false);
+						} else {
+							res = "";
+						}
 					}
+					int rowWidth = StringTools.length(res) + pageMargin;
+					String r = res;
+					if (rowWidth > getParent().getLayoutMaster().getPageWidth()) {
+						throw new PaginatorException("Row is too long (" + rowWidth + "/" + getParent().getLayoutMaster().getPageWidth() + ") '" + res + "'");
+					}
+					ret2.add(r);
+				}
+				if (!TextBorderStyle.NONE.equals(frame)) {
+					ret2.add(tb.getBottomBorder());
 				}
 			}
 			return ret2;

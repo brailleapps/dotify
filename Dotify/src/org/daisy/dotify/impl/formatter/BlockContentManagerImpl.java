@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
+import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.RomanNumeral;
@@ -47,7 +47,8 @@ class BlockContentManagerImpl implements BlockContentManager {
 		BlockHandler bh = new BlockHandler.Builder(
 				rdp.getTranslator(),
 				rdp.getMaster(),
-				rdp.getMaster().getFlowWidth() - rdp.getRightMargin()).build();
+				rdp.getMaster().getFlowWidth() - rdp.getRightMargin(),
+				rdp.getRightMargin()).build();
 		
 		if (rdp.isList()) {
 			bh.setListItem(rdp.getListLabel(), rdp.getListStyle());
@@ -60,6 +61,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 					layout("", bh, ret, rdp, null);
 					Row r = new Row("");
 					r.setLeftMargin(((NewLineSegment)s).getLeftIndent());
+					r.setRightMargin(rdp.getRightMargin());
 					ret.add(r);
 					break;
 				}

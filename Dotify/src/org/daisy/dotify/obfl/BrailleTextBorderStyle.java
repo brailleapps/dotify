@@ -1,6 +1,7 @@
-package org.daisy.dotify.impl.system.sv_SE;
+package org.daisy.dotify.obfl;
 
-import org.daisy.dotify.impl.system.sv_SE.TextBorderStyle.Builder;
+import org.daisy.dotify.formatter.TextBorderStyle;
+import org.daisy.dotify.formatter.TextBorderStyle.Builder;
 
 /**
  * Provides 6-dot braille border styles.

@@ -121,6 +121,7 @@ Dotify/src/org/daisy/dotify/formatter/Row.java -text
 Dotify/src/org/daisy/dotify/formatter/SectionProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/StringField.java -text
+Dotify/src/org/daisy/dotify/formatter/TextBorderStyle.java -text
 Dotify/src/org/daisy/dotify/formatter/TextProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/FormatterProxyImpl.java -text
@@ -188,26 +189,16 @@ Dotify/src/org/daisy/dotify/impl/paginator/PaginatorImpl.java -text svneol=unset
 Dotify/src/org/daisy/dotify/impl/paginator/PaginatorTools.java -text
 Dotify/src/org/daisy/dotify/impl/paginator/PaginatorToolsException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/paginator/TabStopString.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/paginator/TextBorder.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/paginator/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/system/common/CommonResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/DefaultTextSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/DefaultTextSystemFactory.java -text
 Dotify/src/org/daisy/dotify/impl/system/common/doc-files/DefaultTextSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/package-info.java -text
-Dotify/src/org/daisy/dotify/impl/system/common/resource-files/braille-finalizer.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/common/resource-files/meta-finalizer.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/common/resource-files/simple-splitter.xsl -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/BrailleTextBorderStyle.java -text
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/RunParameters.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/StaticVolumeCoverPage.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishTaskSystemFactory.java -text
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishVolumeCoverPage.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/TextBorder.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/TextBorderStyle.java -text
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPage.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPageFilter.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/VolumeCoverPageTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/sv_SE/package-info.java -text
 Dotify/src/org/daisy/dotify/input/InputManager.java -text svneol=unset#text/plain
@@ -220,6 +211,7 @@ Dotify/src/org/daisy/dotify/obfl/BlockEventHandler.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEventHandlerRunner.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEventImpl.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockSequenceManipulator.java -text
+Dotify/src/org/daisy/dotify/obfl/BrailleTextBorderStyle.java -text
 Dotify/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
 Dotify/src/org/daisy/dotify/obfl/Evaluate.java -text
 Dotify/src/org/daisy/dotify/obfl/EventContents.java -text
@@ -292,6 +284,7 @@ Dotify/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/XMLTools.java -text
 Dotify/src/org/daisy/dotify/tools/XMLToolsException.java -text
 Dotify/src/org/daisy/dotify/tools/package-info.java -text
+Dotify/src/org/daisy/dotify/writer/MetaDataItem.java -text
 Dotify/src/org/daisy/dotify/writer/PEFMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/writer/PagedMediaWriter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/writer/PagedMediaWriterException.java -text svneol=unset#text/plain

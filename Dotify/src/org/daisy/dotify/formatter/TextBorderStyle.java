@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.system.sv_SE;
+package org.daisy.dotify.formatter;
 
 
 public class TextBorderStyle {

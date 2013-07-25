@@ -3,6 +3,7 @@ package org.daisy.dotify.writer;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -18,6 +19,7 @@ import org.daisy.dotify.tools.StateObject;
  *
  */
 public class PEFMediaWriter implements PagedMediaWriter {
+	private final static String DC_NAMESPACE_URI = "http://purl.org/dc/elements/1.1/";
 	private final Pattern nonBraillePattern;
 	private PrintStream pst;
 	private Properties p;
@@ -49,7 +51,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		this.nonBraillePattern = Pattern.compile("[^\u2800-\u28FF]+");
 	}
 
-	public void open(OutputStream os) throws PagedMediaWriterException {
+	public void open(OutputStream os, List<MetaDataItem> meta) throws PagedMediaWriterException {
 		state.assertUnopened();
 		state.open();
 		try {
@@ -64,12 +66,24 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		pst.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		pst.println("<pef version=\"2008-1\" xmlns=\"http://www.daisy.org/ns/2008/pef\">");
 		pst.println("<head>");
-		pst.println("<meta xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " +
+		pst.println("<meta xmlns:dc=\"" + DC_NAMESPACE_URI + "\" " +
 				    "xmlns:generator=\"http://daisymfc.svn.sourceforge.net/viewvc/daisymfc/trunk/dmfc/transformers/org_pef_dtbook2pef/\"" +
 				">");
 		pst.println("<dc:format>application/x-pef+xml</dc:format>");
+		// these could be moved to OBFL-input
 		pst.println("<dc:identifier>" + p.getProperty(SystemKeys.IDENTIFIER, "identifier?") + "</dc:identifier>");
 		pst.println("<dc:date>" + p.getProperty(SystemKeys.DATE, "date?") + "</dc:date>");
+
+		if (meta!=null) {
+			for (MetaDataItem item : meta) {
+				if (item.getKey().getNamespaceURI().equals(DC_NAMESPACE_URI)) {
+					if (!(item.getKey().getLocalPart().equals("format") && item.getKey().getLocalPart().equals("identifier") && item.getKey().getLocalPart().equals("date"))) {
+						Logger.getLogger(this.getClass().getCanonicalName()).fine("adding metadata " + item.getKey() + " " + item.getValue());
+						pst.println("<dc:" + item.getKey().getLocalPart() + ">" + escape(item.getValue()) + "</dc:" + item.getKey().getLocalPart() + ">");
+					}
+				}
+			}
+		}
 		for (Object key : p.keySet()) {
 			pst.println("<generator:entry key=\"" + key + "\">" + p.get(key) + "</generator:entry>" );
 		}
@@ -146,6 +160,13 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		hasOpenSection = true;
 	}
 	
+	private String escape(String text) {
+		if (text == null) {
+			return "";
+		}
+		return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll("\"", "&quot;");
+	}
+
 	private void closeOpenVolume() {
 		state.assertOpen();
 		closeOpenSection();

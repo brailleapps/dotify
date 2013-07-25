@@ -1,9 +1,10 @@
-package org.daisy.dotify.impl.system.sv_SE;
+package org.daisy.dotify.impl.paginator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.formatter.TextBorderStyle;
 import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
@@ -15,7 +16,7 @@ class TextBorder {
 	/**
 	 * Text alignment within the bordered box
 	 */
-	enum Align {
+	public enum Align {
 		/**
 		 * Align text to the left
 		 */
@@ -131,7 +132,7 @@ class TextBorder {
 	 * Gets the rendered top border
 	 * @return returns the rendered top border 
 	 */
-	private String getTopBorder() {
+	public String getTopBorder() {
 		return topLeftCorner + StringTools.fill(topBorder, topFill) + topRightCorner;
 	}
 
@@ -139,7 +140,7 @@ class TextBorder {
 	 * Gets the rendered bottom border
 	 * @return returns the rendered bottom border
 	 */
-	private String getBottomBorder() {
+	public String getBottomBorder() {
 		return bottomLeftCorner + StringTools.fill(bottomBorder, bottomFill) + bottomRightCorner;
 	}
 
@@ -172,7 +173,7 @@ class TextBorder {
     	while (bph.hasNext()) {
 			// .replaceAll("\\s*\\z", "") is probably not needed, as
 			// nextTranslatedRow must not exceed the row length
-    		ret.add(addBorderToRow(bph.nextTranslatedRow(rowFill, true).replaceAll("\\s*\\z", "")));
+			ret.add(addBorderToRow(bph.nextTranslatedRow(rowFill, true).replaceAll("\\s*\\z", ""), align, "", "", false));
     	}
     	return ret;
 	}
@@ -183,36 +184,48 @@ class TextBorder {
 	 * @return returns the text padded with space and surrounded with the left and right border patterns.
 	 * @throws IllegalArgumentException if the String does not fit within a single row.
 	 */
-	public void addRow(String text) {
-		ret.add(new Row(addBorderToRow(text)));
+	public Row addRow(String text) {
+		Row row = new Row(addBorderToRow(text, align, "", "", false));
+		ret.add(row);
+		return row;
 	}
 
-	private String addBorderToRow(String text) {
-    	if (text.length()>rowFill) {
-    		throw new IllegalArgumentException("String length must be <= width");
+	// Note: this is a transitional implementation (supporting both old code and
+	// the replacement code), therefore
+	// it might look a bit odd. It should be cleaned up, once the old code has
+	// been removed.
+	public String addBorderToRow(String text, Align align, String innerLeftBorder, String innerRightBorder, boolean bypass) {
+		int tRowFill = rowFill - innerLeftBorder.length() - innerRightBorder.length();
+		if (text.length() > tRowFill) {
+			throw new IllegalArgumentException("String (" + text + ") length (" + text.length() + ") must be <= width (" + tRowFill + ")");
     	}
     	StringBuffer sb = new StringBuffer();
 		sb.append(leftBorder);
+		sb.append(innerLeftBorder);
     	switch (align) {
 	    	case LEFT: break;
 	    	case CENTER:
-	    		sb.append(StringTools.fill(fillCharacter, (int)Math.floor( (rowFill - text.length())/2d) ));
+				sb.append(StringTools.fill(fillCharacter, (int) Math.floor((tRowFill - text.length()) / 2d)));
 	    		break;
 	    	case RIGHT:
-	    		sb.append(StringTools.fill(fillCharacter, rowFill - text.length()));
+				sb.append(StringTools.fill(fillCharacter, tRowFill - text.length()));
 	    		break;
     	}
     	sb.append(text);
-    	switch (align) {
-	    	case LEFT:
-	    		sb.append(StringTools.fill(fillCharacter, rowFill - text.length()));
-	    		break;
-	    	case CENTER:
-	    		sb.append(StringTools.fill(fillCharacter, (int)Math.ceil( (rowFill - text.length())/2d) ));
-	    		break;
-	    	case RIGHT: break;
+		if (!bypass) {
+			switch (align) {
+				case LEFT:
+					sb.append(StringTools.fill(fillCharacter, tRowFill - text.length()));
+					break;
+				case CENTER:
+					sb.append(StringTools.fill(fillCharacter, (int) Math.ceil((tRowFill - text.length()) / 2d)));
+					break;
+				case RIGHT:
+					break;
+			}
+			sb.append(innerRightBorder);
+			sb.append(rightBorder);
     	}
-		sb.append(rightBorder);
     	return sb.toString();
 	}
 
@@ -222,6 +235,18 @@ class TextBorder {
 		result.addAll(ret);
 		ret.clear();
 		result.add(new Row(getBottomBorder()));
+		return result;
+	}
+
+	public List<String> getStringResult() {
+		ArrayList<String> result = new ArrayList<String>();
+		result.add(getTopBorder());
+		// TODO: remove row from this class, unless really needed...
+		for (Row r : ret) {
+			result.add(r.getChars());
+		}
+		ret.clear();
+		result.add(getBottomBorder());
 		return result;
 	}
 

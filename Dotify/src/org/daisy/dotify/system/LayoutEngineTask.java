@@ -92,7 +92,7 @@ public class LayoutEngineTask extends ReadWriteTask  {
 			Iterable<Volume> volumes = bookStruct.getVolumes();
 
 			logger.info("Rendering output...");
-			writer.open(new FileOutputStream(output));
+			writer.open(new FileOutputStream(output), obflParser.getMetaData());
 			//splitterFactory.newSplitter().split(bookStruct)
 
 			WriterHandler wh = new WriterHandler();

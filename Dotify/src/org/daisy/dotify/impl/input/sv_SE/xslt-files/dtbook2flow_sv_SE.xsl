@@ -38,6 +38,45 @@
 	<xsl:param name="l10nimagedescription" select="'Image description'"/>
 	<xsl:param name="l10ncolophon" select="'Colophon'"/>
 	<xsl:param name="l10ncaption" select="'Caption'"/>
+	
+	<xsl:template name="insertMetadata">
+		<meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Title'"/>
+				<xsl:with-param name="outName" select="'dc:title'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Creator'"/>
+				<xsl:with-param name="outName" select="'dc:creator'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Language'"/>
+				<xsl:with-param name="outName" select="'dc:language'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Description'"/>
+				<xsl:with-param name="outName" select="'dc:description'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Publisher'"/>
+				<xsl:with-param name="outName" select="'dc:publisher'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dtb:uid'"/>
+				<xsl:with-param name="outName" select="'dc:source'"/>
+			</xsl:call-template>
+		</meta>
+	</xsl:template>
+	
+	<xsl:template name="addMetaElement">
+		<xsl:param name="inName"/>
+		<xsl:param name="outName"/>
+		<xsl:for-each select="/dtb:dtbook/dtb:head/dtb:meta[@name=$inName]">
+			<xsl:element name="{$outName}" namespace="http://purl.org/dc/elements/1.1/">
+				<xsl:value-of select="@content"/>
+			</xsl:element>
+		</xsl:for-each>
+	</xsl:template>
 
 	<xsl:template match="dtb:frontmatter" mode="apply-sequence-attributes">
 		<xsl:attribute name="master">front</xsl:attribute>

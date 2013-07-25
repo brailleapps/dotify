@@ -3,6 +3,7 @@ package org.daisy.dotify.writer;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.daisy.dotify.formatter.SectionProperties;
 import org.daisy.dotify.tools.StateObject;
@@ -44,7 +45,7 @@ public class TextMediaWriter implements PagedMediaWriter {
 		this.state = new StateObject("Writer");
 	}
 
-	public void open(OutputStream os) throws PagedMediaWriterException {
+	public void open(OutputStream os, List<MetaDataItem> meta) throws PagedMediaWriterException {
 		state.assertUnopened();
 		state.open();
 		try {

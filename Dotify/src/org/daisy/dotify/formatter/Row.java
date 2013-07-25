@@ -16,6 +16,7 @@ public class Row {
 	private List<Marker> markers;
 	private List<String> anchors;
 	private int leftMargin;
+	private int rightMargin;
 	private Alignment alignment;
 	/*
 	private int spaceBefore;
@@ -31,6 +32,7 @@ public class Row {
 		this.markers = new ArrayList<Marker>();
 		this.anchors = new ArrayList<String>();
 		this.leftMargin = 0;
+		this.rightMargin = 0;
 		this.alignment = Alignment.LEFT;
 		/*
 		this.spaceBefore = 0;
@@ -73,6 +75,10 @@ public class Row {
 		anchors.add(ref);
 	}
 	
+	public void addAnchors(List<String> refs) {
+		anchors.addAll(refs);
+	}
+
 	/**
 	 * Add a collection of markers to the Row
 	 * @param m
@@ -111,6 +117,14 @@ public class Row {
 	 */
 	public int getLeftMargin() {
 		return leftMargin;
+	}
+
+	public int getRightMargin() {
+		return rightMargin;
+	}
+
+	public void setRightMargin(int rightMargin) {
+		this.rightMargin = rightMargin;
 	}
 
 	/**

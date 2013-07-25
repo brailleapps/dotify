@@ -41,6 +41,8 @@ public interface SectionProperties {
 	 */
 	public int getFlowWidth();
 
+	public TextBorderStyle getFrame();
+
 	/**
 	 * Gets inner margin
 	 * @return returns the inner margin

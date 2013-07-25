@@ -3,12 +3,14 @@ package org.daisy.dotify.impl.system.common;
 import java.net.URL;
 
 import org.daisy.dotify.tools.AbstractResourceLocator;
-import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
- * Provides a method to find resources relative to this class 
+ * Provides a method to find resources relative to this class. No common
+ * resources are
+ * avaliable at this moment.
+ * 
  * @author Joel Håkansson
- *
+ * 
  */
 public class CommonResourceLocator extends AbstractResourceLocator {
 	/**
@@ -16,11 +18,7 @@ public class CommonResourceLocator extends AbstractResourceLocator {
 	 * maintained by this class.
 	 */
 	public enum CommonResourceIdentifier {
-		/**
-		 * An XSLT that adds meta data from a DTBook source to a PEF-file input.
-		 * The URI to the DTBook should be in a parameter named 'input-uri'
-		 */
-		META_FINALIZER_XSLT
+
 	}
 	private static CommonResourceLocator instance;
 	
@@ -48,16 +46,9 @@ public class CommonResourceLocator extends AbstractResourceLocator {
 	 * @return returns the URL to the resource
 	 */
 	public URL getResourceByIdentifier(CommonResourceIdentifier identifier) {
-		try {
-			switch (identifier) {
-				case META_FINALIZER_XSLT:
-					return getResource("resource-files/meta-finalizer.xsl");
-				default:
-					throw new RuntimeException("Enum identifier not implemented. This is a coding error.");
-			}
-		} catch (ResourceLocatorException e) {
-			throw new RuntimeException("Could not locate resource by enum identifier. This is a coding error.", e);
+		switch (identifier) {
+			default:
+				throw new RuntimeException("Enum identifier not implemented. This is a coding error.");
 		}
-		
 	}
 }

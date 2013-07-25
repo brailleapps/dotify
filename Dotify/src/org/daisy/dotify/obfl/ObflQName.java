@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 
 interface ObflQName {
 	 final static QName OBFL = new QName("obfl");
+	final static QName META = new QName("meta");
 	 final static QName LAYOUT_MASTER = new QName("layout-master");
 	 final static QName TEMPLATE = new QName("template");
 	 final static QName DEFAULT_TEMPLATE = new QName("default-template");

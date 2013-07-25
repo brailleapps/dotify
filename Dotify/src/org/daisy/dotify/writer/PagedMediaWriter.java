@@ -2,6 +2,7 @@ package org.daisy.dotify.writer;
 
 import java.io.Closeable;
 import java.io.OutputStream;
+import java.util.List;
 
 import org.daisy.dotify.formatter.SectionProperties;
 import org.daisy.dotify.paginator.Paginator;
@@ -60,6 +61,6 @@ public interface PagedMediaWriter extends Closeable {
 	 * @param os The underlying OutputStream for the PagedMediaWriter
 	 * @throws PagedMediaWriterException throws an PagedMediaWriterException if the PagedMediaWriter could not be opened
 	 */
-	public void open(OutputStream os) throws PagedMediaWriterException;
+	public void open(OutputStream os, List<MetaDataItem> meta) throws PagedMediaWriterException;
 
 }

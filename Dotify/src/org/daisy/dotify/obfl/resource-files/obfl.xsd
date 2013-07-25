@@ -5,6 +5,7 @@
 	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
 	<xs:complexType name="obfl">
 		<xs:sequence>
+			<xs:element ref="meta" minOccurs="0"/>
 			<xs:element ref="layout-master" maxOccurs="unbounded"/>
 			<xs:element ref="table-of-contents" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="volume-template" minOccurs="0" maxOccurs="unbounded"/>
@@ -28,6 +29,12 @@
 		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="obfl" type="obfl"/>
+	<xs:complexType name="meta">
+		<xs:sequence>
+			<xs:any minOccurs="0" namespace="##any" processContents="lax" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="meta" type="meta"/>
 	<xs:complexType name="layout-master">
 		<xs:sequence>
 			<xs:element ref="template" minOccurs="0" maxOccurs="unbounded"/>
@@ -48,6 +55,27 @@
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="page-number-variable" type="xs:anySimpleType"/>
+		<xs:attribute name="frame">
+			<xs:simpleType>
+				<xs:restriction>
+					<xs:simpleType>
+						<xs:list>
+							<xs:simpleType>
+								<xs:restriction base="xs:NMTOKEN">
+									<xs:enumeration value="solid"/>
+									<xs:enumeration value="thin"/>
+									<xs:enumeration value="wide"/>
+									<xs:enumeration value="inner"/>
+									<xs:enumeration value="outer"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:list>
+					</xs:simpleType>
+					<xs:maxLength value="3"/>
+					<xs:minLength value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="layout-master" type="layout-master"/>
 	<xs:complexType name="template">

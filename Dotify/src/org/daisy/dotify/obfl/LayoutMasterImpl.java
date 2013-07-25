@@ -1,19 +1,23 @@
 package org.daisy.dotify.obfl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.PageTemplate;
+import org.daisy.dotify.formatter.TextBorderStyle;
 
 /**
  * ConfigurableLayoutMaster will ensure that the LayoutMaster measurements adds up.
  * @author Joel Håkansson
  */
 class LayoutMasterImpl implements LayoutMaster {
-	protected final int headerHeight;
-	protected final int footerHeight;
+//	protected final int headerHeight;
+//	protected final int footerHeight;
 	protected final int flowWidth;
-	//protected final int flowHeight;
+	// protected final int flowHeight;
 	protected final int pageWidth;
 	protected final int pageHeight;
 	protected final int innerMargin;
@@ -21,6 +25,7 @@ class LayoutMasterImpl implements LayoutMaster {
 	protected final float rowSpacing;
 	protected final boolean duplex;
 	protected final ArrayList<PageTemplate> templates;
+	protected final TextBorderStyle frame;
 	
 	/**
 	 * Configuration class for a ConfigurableLayoutMaster
@@ -31,20 +36,22 @@ class LayoutMasterImpl implements LayoutMaster {
 		int pageWidth;
 		int pageHeight;
 		// optional
-		int headerHeight = 0; 
-		int footerHeight = 0;
+//		int headerHeight = 0; 
+//		int footerHeight = 0;
 		int innerMargin = 0;
 		int outerMargin = 0;
 		float rowSpacing = 1;
 		boolean duplex = true;
 		ArrayList<PageTemplate> templates;
+		TextBorderStyle frame;
 
 		public Builder(int pageWidth, int pageHeight) {
 			this.pageWidth = pageWidth;
 			this.pageHeight = pageHeight;
 			this.templates = new ArrayList<PageTemplate>();
+			frame = null;
 		}
-		
+		/*
 		public Builder headerHeight(int value) {
 			this.headerHeight = value;
 			return this;
@@ -53,7 +60,7 @@ class LayoutMasterImpl implements LayoutMaster {
 		public Builder footerHeight(int value) {
 			this.footerHeight = value;
 			return this;
-		}
+		}*/
 
 		public Builder innerMargin(int value) {
 			this.innerMargin = value;
@@ -75,6 +82,36 @@ class LayoutMasterImpl implements LayoutMaster {
 			return this;
 		}
 		
+		public Builder parseFrame(String frame) {
+			HashSet<String> set = new HashSet<String>();
+
+			set.addAll(Arrays.asList(frame.split(" ")));
+
+			// this is pretty stupid
+			if (set.contains("solid")) {
+				if (set.contains("wide")) {
+					if (set.contains("inner")) {
+						this.frame = BrailleTextBorderStyle.SOLID_WIDE_INNER;
+					} else if (set.contains("outer")) {
+						this.frame = BrailleTextBorderStyle.SOLID_WIDE_OUTER;
+					} else {
+						Logger.getLogger(this.getClass().getCanonicalName()).warning("Ignoring unknown frame " + frame);
+					}
+				} else if (set.contains("thin")) {
+					if (set.contains("inner")) {
+						this.frame = BrailleTextBorderStyle.SOLID_THIN_INNER;
+					} else if (set.contains("outer")) {
+						this.frame = BrailleTextBorderStyle.SOLID_THIN_OUTER;
+					} else {
+						Logger.getLogger(this.getClass().getCanonicalName()).warning("Ignoring unknown frame " + frame);
+					}
+				} else {
+					Logger.getLogger(this.getClass().getCanonicalName()).warning("Ignoring unknown frame " + frame);
+				}
+			}
+			return this;
+		}
+
 		public Builder addTemplate(PageTemplate value) {
 			this.templates.add(value);
 			return this;
@@ -87,9 +124,13 @@ class LayoutMasterImpl implements LayoutMaster {
 
 	private LayoutMasterImpl(Builder config) {
 		// int flowWidth, int flowHeight, int headerHeight, int footerHeight, int innerMargin, int outerMargin, float rowSpacing
-		this.headerHeight = config.headerHeight;
-		this.footerHeight = config.footerHeight;
-		this.flowWidth = config.pageWidth-config.innerMargin-config.outerMargin;
+//		this.headerHeight = config.headerHeight;
+//		this.footerHeight = config.footerHeight;
+		int fsize = 0;
+		if (config.frame != null) {
+			fsize = config.frame.getLeftBorder().length() + config.frame.getRightBorder().length();
+		}
+		this.flowWidth = config.pageWidth - config.innerMargin - config.outerMargin - fsize;
 		//this.flowHeight = config.pageHeight-config.headerHeight-config.footerHeight;
 		this.pageWidth = config.pageWidth;
 		this.pageHeight = config.pageHeight;
@@ -98,6 +139,7 @@ class LayoutMasterImpl implements LayoutMaster {
 		this.rowSpacing = config.rowSpacing;
 		this.duplex = config.duplex;
 		this.templates = config.templates;
+		this.frame = config.frame;
 	}
 	
 	public int getPageWidth() {
@@ -115,14 +157,14 @@ class LayoutMasterImpl implements LayoutMaster {
 	public int getFlowHeight() {
 		return flowHeight;
 	}*/
-
+/*
 	public int getHeaderHeight() {
 		return headerHeight;
 	}
 
 	public int getFooterHeight() {
 		return footerHeight;
-	}
+	}*/
 
 	public int getInnerMargin() {
 		return innerMargin;
@@ -139,7 +181,11 @@ class LayoutMasterImpl implements LayoutMaster {
 	public boolean duplex() {
 		return duplex;
 	}
-	
+
+	public TextBorderStyle getFrame() {
+		return frame;
+	}
+
 	public PageTemplate getTemplate(int pagenum) {
 		for (PageTemplate t : templates) {
 			if (t.appliesTo(pagenum)) { return t; }

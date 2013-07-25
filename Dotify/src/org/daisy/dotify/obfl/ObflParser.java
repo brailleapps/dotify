@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -38,6 +40,7 @@ import org.daisy.dotify.formatter.StringField;
 import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.writer.MetaDataItem;
 
 /**
  * Provides a parser for OBFL. The parser accepts OBFL input, either
@@ -51,6 +54,7 @@ public class ObflParser {
 	private HashMap<String, TableOfContents> tocs;
 	private HashMap<String, LayoutMaster> masters;
 	private Stack<VolumeTemplate> volumeTemplates;
+	private List<MetaDataItem> meta;
 
 	private FormatterFactory formatterFactory;
 	private Formatter formatter;
@@ -81,6 +85,7 @@ public class ObflParser {
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
+		this.meta = new ArrayList<MetaDataItem>();
 		formatter.open();
 		XMLEvent event;
 		FilterLocale locale = null;
@@ -95,6 +100,8 @@ public class ObflParser {
 					locale = FilterLocale.parse(loc);
 				}
 				hyphenate = getHyphenate(event, hyphenate);
+			} else if (equalsStart(event, ObflQName.META)) {
+				parseMeta(event, input);
 			} else if (equalsStart(event, ObflQName.LAYOUT_MASTER)) {
 				parseLayoutMaster(event, input);
 			} else if (equalsStart(event, ObflQName.SEQUENCE)) {
@@ -111,6 +118,51 @@ public class ObflParser {
 		} catch (IOException e) {
 			throw new OBFLParserException(e);
 		}
+	}
+
+	private void parseMeta(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		int level = 0;
+		while (input.hasNext()) {
+			event = input.nextEvent();
+			if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
+				level++;
+				if (level == 1) {
+					StringBuilder sb = new StringBuilder();
+					QName name = event.asStartElement().getName();
+					while (input.hasNext()) {
+						event = input.nextEvent();
+						if (event.getEventType() == XMLStreamConstants.START_ELEMENT) {
+							level++;
+							warning(event, "Nested meta data not supported.");
+						} else if (event.getEventType() == XMLStreamConstants.END_ELEMENT) {
+							level--;
+						} else if (event.getEventType() == XMLStreamConstants.CHARACTERS) {
+							sb.append(event.asCharacters().getData());
+						}
+						if (level < 2) {
+							break;
+						}
+					}
+					meta.add(new MetaDataItem(name, sb.toString()));
+				} else {
+					warning(event, "Nested meta data not supported.");
+				}
+			} else if (equalsEnd(event, ObflQName.META)) {
+				break;
+			} else if (event.getEventType() == XMLStreamConstants.END_ELEMENT) {
+				level--;
+			}
+		}
+	}
+
+	private void warning(XMLEvent event, String msg) {
+		int line = -1;
+		int col = -1;
+		if (event.getLocation() != null) {
+			line = event.getLocation().getLineNumber();
+			col = event.getLocation().getColumnNumber();
+		}
+		Logger.getLogger(this.getClass().getCanonicalName()).warning(msg + (line > -1 ? " (at line: " + line + (col > -1 ? ", column: " + col : "") + ") " : ""));
 	}
 
 	//TODO: parse page-number-variable
@@ -133,6 +185,8 @@ public class ObflParser {
 				masterConfig.rowSpacing(Float.parseFloat(value));
 			} else if (name.equals("duplex")) {
 				masterConfig.duplex(value.equals("true"));
+			} else if (name.equals("frame")) {
+				masterConfig.parseFrame(value);
 			}
 		}
 		while (input.hasNext()) {
@@ -407,7 +461,7 @@ public class ObflParser {
 				//TODO: implement
 				throw new UnsupportedOperationException("Not implemented");
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
-				ret.add(parseEvaluate(event, input));
+				ret.add(parseEvaluate(event, input, locale, hyph));
 			}
 			else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
 				break;
@@ -429,10 +483,10 @@ public class ObflParser {
 		return new PageNumberReferenceEventContents(refId, style);
 	}
 	
-	private Evaluate parseEvaluate(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private Evaluate parseEvaluate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		String expr = getAttr(event, "expression");
 		scanEmptyElement(input, ObflQName.EVALUATE);
-		return new Evaluate(expr);
+		return new Evaluate(expr, new TextProperties.Builder(locale).hyphenate(hyph).build());
 	}
 	
 	private void parseVolumeTemplate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
@@ -571,7 +625,7 @@ public class ObflParser {
 				ret.add(new LineBreak());
 				scanEmptyElement(input, ObflQName.BR);
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
-				ret.add(parseEvaluate(event, input));
+				ret.add(parseEvaluate(event, input, locale, hyph));
 			}
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
 				break;
@@ -641,6 +695,10 @@ public class ObflParser {
 	
 	public VolumeContentFormatter getVolumeContentFormatter() {
 		return new BlockEventHandlerRunner(formatterFactory, masters, tocs, volumeTemplates);
+	}
+
+	public List<MetaDataItem> getMetaData() {
+		return meta;
 	}
 
 }

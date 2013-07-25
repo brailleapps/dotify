@@ -33,7 +33,7 @@ class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
 				((BlockContents)e).setEvaluateContext(vars);
 			} else if (e.getContentType()==ContentType.EVALUATE) {
 				Evaluate x = ((Evaluate)e);
-				this.set(i, new Evaluate(x.getExpression(), vars));
+				this.set(i, new Evaluate(x.getExpression(), vars, x.getTextProperties()));
 			}
 		}
 	}

@@ -9,7 +9,6 @@ import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.obfl.EventContents.ContentType;
 
 /**
@@ -58,7 +57,7 @@ class BlockEventHandler {
 					break; }
 				case EVALUATE: {
 					Evaluate e = ((Evaluate)bc);
-					formatter.addChars((new Expression().evaluate(e.getExpression(), e.getVariables())).toString(), new TextProperties.Builder(null).build());
+					formatter.addChars((new Expression().evaluate(e.getExpression(), e.getVariables())).toString(), e.getTextProperties());
 					break; }
 				case MARKER: {
 					Marker m = ((Marker)bc);

@@ -21,6 +21,7 @@
 	<xsl:template match="/" mode="obfl">
 		<obfl version="2011-1">
 			<xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute>
+			<xsl:call-template name="insertMetadata"/>
 			<xsl:call-template name="insertLayoutMaster"/>
 			<xsl:apply-templates/>
 		</obfl>
@@ -76,6 +77,14 @@
 				<footer></footer>
 			</default-template>
 		</layout-master>
+		<layout-master name="cover" page-width="{$page-width}" 
+							page-height="{$page-height}" inner-margin="{$inner-margin}"
+							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}" frame="solid thin outer">
+			<default-template>
+				<header></header>
+				<footer></footer>
+			</default-template>
+		</layout-master>
 		<xsl:choose>
 			<xsl:when test="//dtb:level1[@class='toc'] or //dtb:level1[dtb:list[@class='toc']]">
 			<table-of-contents name="full-toc">
@@ -83,6 +92,7 @@
 			</table-of-contents>
 			<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(= $volume 1)" sheets-in-volume-max="{$splitterMax}">
 				<pre-content>
+					<xsl:call-template name="coverPage"/>
 					<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
 						<on-toc-start>
 							<block margin-bottom="1">Innehåll</block>
@@ -101,6 +111,7 @@
 			</volume-template>
 			<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(> $volume 1)" sheets-in-volume-max="{$splitterMax}">
 				<pre-content>
+					<xsl:call-template name="coverPage"/>
 					<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
 						<on-toc-start>
 							<block margin-bottom="1">Innehåll volym <evaluate expression="(round $volume)"/></block>
@@ -112,11 +123,40 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<volume-template sheets-in-volume-max="{$splitterMax}">
-					<pre-content/>
+					<pre-content>
+						<xsl:call-template name="coverPage"/>
+					</pre-content>
 					<post-content/>
 				</volume-template>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="coverPage">
+		<sequence master="cover">
+			<xsl:choose>
+				<xsl:when test="/dtb:dtbook/dtb:book/dtb:frontmatter/dtb:doctitle">
+					<block align="center" margin-top="3" margin-bottom="1" margin-left="2" margin-right="2"><xsl:value-of select="/dtb:dtbook/dtb:book/dtb:frontmatter/dtb:doctitle"/></block>
+				</xsl:when>
+				<xsl:otherwise>
+					<block align="center" margin-top="3"  margin-left="2" margin-right="2">&#x00a0;</block>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:choose>
+				<xsl:when test="count(/dtb:dtbook/dtb:book/dtb:frontmatter/dtb:docauthor)>3">
+					<block align="center"  margin-left="2" margin-right="2"><xsl:value-of select="/dtb:dtbook/dtb:book/dtb:frontmatter/dtb:docauthor[0]"/></block>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:for-each select="/dtb:dtbook/dtb:book/dtb:frontmatter/dtb:docauthor">
+						<block align="center" margin-left="2" margin-right="2"><xsl:value-of select="."/></block>
+					</xsl:for-each>
+				</xsl:otherwise>
+			</xsl:choose>
+			<block align="center" margin-left="2" margin-right="2" vertical-align="before" vertical-position="100%" hyphenate="false"><evaluate expression="
+			(if (&gt; $volumes 1) 
+				(concat &quot;Volym &quot; (int2text (round $volume) sv-se) &quot; av &quot; (int2text (round $volumes) sv-se))
+				&quot;En volym&quot;)"/></block>
+		</sequence>
 	</xsl:template>
 
 	<!-- Don't output a sequence if there is nothing left when doctitle, docauthor and level1@class='backCoverText', level1@class='rearjacketcopy' and level1@class='colophon' has been moved -->
