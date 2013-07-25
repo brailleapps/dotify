@@ -46,8 +46,8 @@ public class BookStruct {
 		this.crh = new CrossReferenceHandler();
 	}
 	
-	private void reformat() throws PaginatorException {
-		crh.setContents(contentPaginator.paginate(crh));
+	private void reformat(int splitterMax) throws PaginatorException {
+		crh.setContents(contentPaginator.paginate(crh), splitterMax);
 		//paginator.close();
 	}
 
@@ -102,7 +102,7 @@ public class BookStruct {
 	@SuppressWarnings("unchecked")
 	public Iterable<Volume> getVolumes() {
 		try {
-			reformat();
+			reformat(50);
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while reformatting.");
 		}
@@ -112,6 +112,7 @@ public class BookStruct {
 		int totalPostCount = 0;
 		int prvVolCount = 0;
 		int volumeOffset = 0;
+		int volsMin = Integer.MAX_VALUE;
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
@@ -148,7 +149,19 @@ public class BookStruct {
 			BreakPointHandler volBreaks = new BreakPointHandler(res.toString());
 			int splitterMax = volumeFormatter.getVolumeMaxSize(1, crh.getExpectedVolumeCount());
 
-			crh.setSDC(new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset));
+			EvenSizeVolumeSplitterCalculator esc;
+			esc = new EvenSizeVolumeSplitterCalculator(contents + totalPreCount + totalPostCount, splitterMax, volumeOffset);
+			// this fixes a problem where the volume overhead pushes the
+			// volume count up once the volume offset has been set
+			if (volumeOffset == 1 && esc.getVolumeCount() > volsMin + 1) {
+				volumeOffset = 0;
+				esc = new EvenSizeVolumeSplitterCalculator(contents + totalPreCount + totalPostCount, splitterMax, volumeOffset);
+			}
+
+			volsMin = Math.min(esc.getVolumeCount(), volsMin);
+			
+			crh.setSDC(esc);
+
 			if (crh.getExpectedVolumeCount()!=prvVolCount) {
 				prvVolCount = crh.getExpectedVolumeCount();
 			}
@@ -215,15 +228,17 @@ public class BookStruct {
 			if (volBreaks.hasNext()) {
 				ok2 = false;
 				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(pages.size()-pageIndex));
-				if (volumeOffset<1) {
-					//First check to see if the page increase can will be handled automatically without increasing volume offset 
-					//in the next iteration (by supplying up-to-date overhead values)
-					EvenSizeVolumeSplitterCalculator esv = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset);
-					if (esv.getVolumeCount()==crh.getExpectedVolumeCount()) {
-						volumeOffset++;
+				if (!crh.isDirty()) {
+					if (volumeOffset < 1) {
+						//First check to see if the page increase can will be handled automatically without increasing volume offset 
+						//in the next iteration (by supplying up-to-date overhead values)
+						EvenSizeVolumeSplitterCalculator esv = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset);
+						if (esv.equals(crh.getSdc())) {
+							volumeOffset++;
+						}
+					} else {
+						logger.warning("Could not fit contents even when adding a new volume.");
 					}
-				} else {
-					logger.warning("Could not fit contents even when adding a new volume.");
 				}
 			}
 			if (!crh.isDirty() && pageIndex==pages.size() && ok2) {
@@ -235,7 +250,7 @@ public class BookStruct {
 				j++;
 				crh.setDirty(false);
 				try {
-					reformat();
+					reformat(volumeFormatter.getVolumeMaxSize(1, crh.getExpectedVolumeCount()));
 				} catch (PaginatorException e) {
 					throw new RuntimeException("Error while reformatting.", e);
 				}

@@ -38,9 +38,9 @@ class CrossReferenceHandler implements CrossReferences {
 		return ps;
 	}
 	
-	public void setContents(PageStruct contents) {
+	public void setContents(PageStruct contents, int splitterMax) {
 		this.ps = contents;
-		this.sdc = new EvenSizeVolumeSplitterCalculator(PageTools.countSheets(ps.getContents()), 50);
+		this.sdc = new EvenSizeVolumeSplitterCalculator(PageTools.countSheets(ps.getContents()), splitterMax);
 		int sheetIndex=0;
 		this.pageSheetMap = new HashMap<Page, Integer>();
 		for (PageSequence s : ps.getContents()) {
@@ -56,6 +56,10 @@ class CrossReferenceHandler implements CrossReferences {
 		}
 	}
 	
+	public EvenSizeVolumeSplitterCalculator getSdc() {
+		return sdc;
+	}
+
 	public void setSDC(EvenSizeVolumeSplitterCalculator sdc) {
 		volumeForContentSheetChanged = false;
 		this.sdc = sdc;
