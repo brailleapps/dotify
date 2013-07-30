@@ -545,6 +545,16 @@ DotifyTranslator/src/org/daisy/dotify/translator/SimpleBrailleTranslator.java -t
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UnsupportedSpecificationException.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/DefaultMarkerProcessor.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/DefaultTextAttribute.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/Marker.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerDictionary.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerNotFoundException.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessor.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/RegexMarkerDictionary.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/TestTextAtts.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttribute.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/package-info.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/package-info.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenation2Test.java -text
@@ -559,3 +569,5 @@ DotifyTranslator/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svn
 DotifyTranslator/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 DotifyTranslator/test/org/daisy/dotify/text/Integer2TextFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
+DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultMarkerProcessorTest.java -text
+DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultTextAttributeTest.java -text
