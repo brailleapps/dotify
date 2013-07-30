@@ -25,11 +25,11 @@ public interface TextAttribute extends Iterable<TextAttribute> {
 	public String getDictionaryIdentifier();
 
 	/**
-	 * Returns true if this object has a list of attributes.
+	 * Returns true if this object has text attribute children.
 	 * 
-	 * @return returns true if this object has a list of attributes, false
+	 * @return returns true if this object has a text attribute children, false
 	 *         otherwise
 	 */
-	public boolean hasAttributes();
+	public boolean hasChildren();
 
 }

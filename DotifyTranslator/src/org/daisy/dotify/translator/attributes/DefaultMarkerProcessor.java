@@ -39,13 +39,13 @@ public class DefaultMarkerProcessor implements MarkerProcessor {
 			}
 			StringBuilder sb = new StringBuilder();
 
-			Marker m = getMarker(atts.getDictionaryIdentifier(), text);
+			Marker m = getMarker(text, atts);
 
 			if (m != null) {
 				sb.append(m.getPrefix());
 			}
 			int startInx = 0;
-			if (atts.hasAttributes()) {
+			if (atts.hasChildren()) {
 				for (TextAttribute d : atts) {
 					sb.append(process(text.substring(startInx, startInx + d.getWidth()), d));
 					startInx += d.getWidth();
@@ -60,14 +60,17 @@ public class DefaultMarkerProcessor implements MarkerProcessor {
 		}
 	}
 
-	private Marker getMarker(String specKey, String text) {
+	private Marker getMarker(String text, TextAttribute atts) {
+		String specKey = atts.getDictionaryIdentifier();
 		if (specKey != null) {
 			MarkerDictionary def = specs.get(specKey);
 			if (def != null) {
 				try {
-					return def.getMarkersFor(text);
+					return def.getMarkersFor(text, atts);
 				} catch (MarkerNotFoundException e) {
-					Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, specKey + " has no marker information for " + text, e);
+					Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, specKey + " markers cannot be applied to the text: " + text, e);
+				} catch (MarkerNotCompatibleException e) {
+					Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, specKey + " markers cannot be applied to this structure.", e);
 				}
 			} else {
 				Logger.getLogger(this.getClass().getCanonicalName()).warning("Undefined attribute: " + specKey);

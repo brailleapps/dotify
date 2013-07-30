@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  */
 public class RegexMarkerDictionary implements MarkerDictionary {
 	private final Map<Pattern, MarkerPair> patterns;
+	private final TextAttributeFilter filter;
 
 	private static class MarkerPair {
 		private final Marker matching, nonMatching;
@@ -42,6 +43,11 @@ public class RegexMarkerDictionary implements MarkerDictionary {
 	 */
 	public static class Builder {
 		private final Map<Pattern, MarkerPair> patterns;
+		private TextAttributeFilter filter = new TextAttributeFilter() {
+			public boolean appliesTo(TextAttribute atts) {
+				return true;
+			}
+		};
 
 		/**
 		 * Creates a new builder. Note that, for the resulting object
@@ -90,6 +96,11 @@ public class RegexMarkerDictionary implements MarkerDictionary {
 			return this;
 		}
 
+		public Builder filter(TextAttributeFilter filter) {
+			this.filter = filter;
+			return this;
+		}
+
 		/**
 		 * Builds this builder.
 		 * 
@@ -102,9 +113,13 @@ public class RegexMarkerDictionary implements MarkerDictionary {
 
 	private RegexMarkerDictionary(Builder builder) {
 		this.patterns = builder.patterns;
+		this.filter = builder.filter;
 	}
 
-	public Marker getMarkersFor(String str) throws MarkerNotFoundException {
+	public Marker getMarkersFor(String str, TextAttribute attribute) throws MarkerNotFoundException, MarkerNotCompatibleException {
+		if (!filter.appliesTo(attribute)) {
+			throw new MarkerNotCompatibleException("Cannot apply marker to " + attribute);
+		}
 		for (Pattern p : patterns.keySet()) {
 			if (p.matcher(str).find()) {
 				return patterns.get(p).getMatching();

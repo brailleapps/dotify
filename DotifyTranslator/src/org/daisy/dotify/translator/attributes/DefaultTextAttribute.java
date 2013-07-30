@@ -30,6 +30,11 @@ public class DefaultTextAttribute implements TextAttribute {
 			return this;
 		}
 
+		public Builder add(int val) {
+			attributes.add(new DefaultTextAttribute.Builder(val).build());
+			return this;
+		}
+
 		public DefaultTextAttribute build() {
 			return new DefaultTextAttribute(this);
 		}
@@ -52,7 +57,7 @@ public class DefaultTextAttribute implements TextAttribute {
 		return length;
 	}
 
-	public boolean hasAttributes() {
+	public boolean hasChildren() {
 		return attributes.size() > 0;
 	}
 
