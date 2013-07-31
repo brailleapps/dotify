@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.formatter.TextBorderStyle;
+import org.daisy.dotify.text.TextBorderStyle;
 import org.daisy.dotify.tools.StringTools;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 

@@ -121,7 +121,6 @@ Dotify/src/org/daisy/dotify/formatter/Row.java -text
 Dotify/src/org/daisy/dotify/formatter/SectionProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/StringField.java -text
-Dotify/src/org/daisy/dotify/formatter/TextBorderStyle.java -text
 Dotify/src/org/daisy/dotify/formatter/TextProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/FormatterProxyImpl.java -text
@@ -207,7 +206,6 @@ Dotify/src/org/daisy/dotify/obfl/BlockEventHandler.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEventHandlerRunner.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockEventImpl.java -text
 Dotify/src/org/daisy/dotify/obfl/BlockSequenceManipulator.java -text
-Dotify/src/org/daisy/dotify/obfl/BrailleTextBorderStyle.java -text
 Dotify/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
 Dotify/src/org/daisy/dotify/obfl/Evaluate.java -text
 Dotify/src/org/daisy/dotify/obfl/EventContents.java -text

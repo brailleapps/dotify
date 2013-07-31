@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter;
 
+import org.daisy.dotify.text.TextBorderStyle;
+
 
 /**
  * Specifies the configuration properties for a section of pages

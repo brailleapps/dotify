@@ -1,13 +1,10 @@
 package org.daisy.dotify.obfl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.logging.Logger;
 
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.PageTemplate;
-import org.daisy.dotify.formatter.TextBorderStyle;
+import org.daisy.dotify.text.TextBorderStyle;
 
 /**
  * ConfigurableLayoutMaster will ensure that the LayoutMaster measurements adds up.
@@ -82,33 +79,8 @@ class LayoutMasterImpl implements LayoutMaster {
 			return this;
 		}
 		
-		public Builder parseFrame(String frame) {
-			HashSet<String> set = new HashSet<String>();
-
-			set.addAll(Arrays.asList(frame.split(" ")));
-
-			// this is pretty stupid
-			if (set.contains("solid")) {
-				if (set.contains("wide")) {
-					if (set.contains("inner")) {
-						this.frame = BrailleTextBorderStyle.SOLID_WIDE_INNER;
-					} else if (set.contains("outer")) {
-						this.frame = BrailleTextBorderStyle.SOLID_WIDE_OUTER;
-					} else {
-						Logger.getLogger(this.getClass().getCanonicalName()).warning("Ignoring unknown frame " + frame);
-					}
-				} else if (set.contains("thin")) {
-					if (set.contains("inner")) {
-						this.frame = BrailleTextBorderStyle.SOLID_THIN_INNER;
-					} else if (set.contains("outer")) {
-						this.frame = BrailleTextBorderStyle.SOLID_THIN_OUTER;
-					} else {
-						Logger.getLogger(this.getClass().getCanonicalName()).warning("Ignoring unknown frame " + frame);
-					}
-				} else {
-					Logger.getLogger(this.getClass().getCanonicalName()).warning("Ignoring unknown frame " + frame);
-				}
-			}
+		public Builder frame(TextBorderStyle frame) {
+			this.frame = frame;
 			return this;
 		}
 

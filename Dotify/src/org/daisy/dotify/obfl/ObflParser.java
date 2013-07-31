@@ -3,7 +3,9 @@ package org.daisy.dotify.obfl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -40,6 +42,8 @@ import org.daisy.dotify.formatter.StringField;
 import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.text.TextBorderStyle;
+import org.daisy.dotify.translator.TextBorderFactory;
 import org.daisy.dotify.writer.MetaDataItem;
 
 /**
@@ -186,7 +190,9 @@ public class ObflParser {
 			} else if (name.equals("duplex")) {
 				masterConfig.duplex(value.equals("true"));
 			} else if (name.equals("frame")) {
-				masterConfig.parseFrame(value);
+				HashSet<String> set = new HashSet<String>(Arrays.asList(value.split(" ")));
+				TextBorderStyle style = TextBorderFactory.newInstance().newTextBorderStyle(formatter.getTranslator().getTranslatorMode(), set);
+				masterConfig.frame(style);
 			}
 		}
 		while (input.hasNext()) {
