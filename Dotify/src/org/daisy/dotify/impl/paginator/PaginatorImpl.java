@@ -102,8 +102,8 @@ public class PaginatorImpl implements Paginator {
 				BlockContentManager rdm = g.getBlockContentManager(refs);
 				if (g.getVerticalPosition() != null) {
 					int blockSpace = rdm.getRowCount() + g.getSpaceBefore() + g.getSpaceAfter();
-					int pos = g.getVerticalPosition().getPosition().makeAbsolute(seq.getLayoutMaster().getPageHeight());
-					int t = pos - pageStruct.currentPage().rowsOnPage() - 1;
+					int pos = g.getVerticalPosition().getPosition().makeAbsolute(pageStruct.currentPage().getFlowHeight());
+					int t = pos - pageStruct.currentPage().rowsOnPage();
 					if (t > 0) {
 						int advance = 0;
 						switch (g.getVerticalPosition().getAlignment()) {
