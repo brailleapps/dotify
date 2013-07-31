@@ -526,6 +526,7 @@ DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators
 DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/sv/sv.js -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/sv/sv.xml -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/sv/test.xhtml -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/resource-files/translators/template.js -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactory.java -text
