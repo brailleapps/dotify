@@ -7,8 +7,8 @@ package org.daisy.dotify.formatter;
  */
 public class Position {
 
-	boolean isRelative;
-	double value;
+	final boolean isRelative;
+	final double value;
 	
 	/**
 	 * Create a new Position with the supplied value

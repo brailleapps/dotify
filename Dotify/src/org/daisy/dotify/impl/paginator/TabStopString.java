@@ -27,69 +27,50 @@ class TabStopString implements Comparable<TabStopString> {
 		 */
 		RIGHT
 	};
-	private String text;
-	private int position;
-	private int length;
-	private Alignment align;
-	private String pattern;
+
+	private final String text;
+	private final int position;
+	private final int length;
+	private final Alignment align;
+	private final String pattern;
 
 	TabStopString(String text) {
-		init(text, 0, Alignment.LEFT, " ");
+		this(text, 0, Alignment.LEFT, " ");
 	}
 	
 	TabStopString(String text, int stop) {
-		init(text, stop, Alignment.LEFT, " ");
+		this(text, stop, Alignment.LEFT, " ");
 	}
 	
 	TabStopString(String text, int stop, Alignment align) {
-		init(text, stop, align, " ");
+		this(text, stop, align, " ");
 	}
 	
 	TabStopString(String text, int stop, Alignment align, String pattern) {
-		init(text, stop, align, pattern);
-	}
-	
-	private void init(String text, int stop, Alignment align, String pattern) {
-		setText(text);
-		setPosition(stop);
-		setAlignment(align);
-		setPattern(pattern);
+		this.text = text;
+		this.length = text.codePointCount(0, text.length());
+		this.position = stop;
+		this.align = align;
+		if (pattern.length() == 0) {
+			throw new IllegalArgumentException("Pattern cannot be empty string");
+		}
+		this.pattern = pattern;
 	}
 
 	String getText() {
 		return text;
 	}
 	
-	void setText(String text) {
-		this.text = text;
-		this.length = text.codePointCount(0, text.length());
-	}
-	
 	int getPosition() {
 		return position;
-	}
-	
-	void setPosition(int stop) {
-		this.position = stop;
 	}
 	
 	Alignment getAlignment() {
 		return align;
 	}
 	
-	void setAlignment(Alignment align) {
-		this.align = align;
-	}
-	
 	String getPattern() {
 		return this.pattern;
-	}
-	
-	void setPattern(String pattern) {
-		if (pattern.length()==0) {
-			throw new IllegalArgumentException("Pattern cannot be empty string");
-		}
-		this.pattern = pattern;
 	}
 
 	int length() {
