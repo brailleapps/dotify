@@ -4,8 +4,8 @@
  * </p>
  * <h2>Related Documentation</h2>
  * <ul>
- * <li><a href="doc-files/DefaultTextSystem.html">Configuration Overview -
- * Default Text System</a></li>
+ * <li><a href="doc-files/DotifyTaskSystem.html">Configuration Overview - Dotify
+ * Task System</a></li>
  * </ul>
  * <p>
  * <b>IMPORTANT: This package contains implementations that should only be

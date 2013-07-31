@@ -7,19 +7,22 @@ import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.text.FilterLocale;
 
 /**
- * Provides a default text system factory.
+ * Provides a default task system factory for PEF, OBFL and text output.
  * 
  * @author Joel Håkansson
  */
-public class DefaultTextSystemFactory implements TaskSystemFactory {
+public class DotifyTaskSystemFactory implements TaskSystemFactory {
 
 	public boolean supportsSpecification(FilterLocale locale, String outputFormat) {
-		return SystemKeys.TEXT_FORMAT.equals(outputFormat);
+		//TODO: remove conditions guard once possible 
+		return locale.equals(FilterLocale.parse("sv-SE")) && 
+				(SystemKeys.PEF_FORMAT.equals(outputFormat) || SystemKeys.OBFL_FORMAT.equals(outputFormat))
+				|| SystemKeys.TEXT_FORMAT.equals(outputFormat);
 	}
 
 	public TaskSystem newTaskSystem(FilterLocale locale, String outputFormat) throws TaskSystemFactoryException {
-		if (SystemKeys.TEXT_FORMAT.equals(outputFormat)) {
-			return new DefaultTextSystem("DefaultTextSystem", locale);			
+		if (supportsSpecification(locale, outputFormat)) {
+			return new DotifyTaskSystem("Dotify Task System", outputFormat, locale);
 		}
 		throw new TaskSystemFactoryException("Unsupported specification: " + locale + "/" + outputFormat);
 	}

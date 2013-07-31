@@ -1,2 +1,1 @@
-org.daisy.dotify.impl.system.sv_SE.SwedishTaskSystemFactory
-org.daisy.dotify.impl.system.common.DefaultTextSystemFactory
+org.daisy.dotify.impl.system.common.DotifyTaskSystemFactory
