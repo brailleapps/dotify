@@ -82,4 +82,6 @@ public interface BrailleTranslator {
 	 */
 	public boolean isHyphenating();
 	
+	public String getTranslatorMode();
+
 }

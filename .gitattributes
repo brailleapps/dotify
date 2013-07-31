@@ -530,14 +530,17 @@ DotifyTranslator/src/org/daisy/dotify/text/SimpleCharReplacer.java -text
 DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringSplitter.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/text/TextBorderStyle.java -text
 DotifyTranslator/src/org/daisy/dotify/text/TextFileReader.java -text
 DotifyTranslator/src/org/daisy/dotify/text/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/BrailleTextBorderStyle.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslator.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactoryMaker.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorResult.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/DefaultBrailleTranslatorResult.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/SimpleBrailleTranslator.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/TextBorderFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/translator/UnsupportedSpecificationException.java -text

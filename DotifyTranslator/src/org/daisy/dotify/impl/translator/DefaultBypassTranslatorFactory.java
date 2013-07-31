@@ -15,7 +15,7 @@ public class DefaultBypassTranslatorFactory implements BrailleTranslatorFactory 
 
 	public BrailleTranslator newTranslator(FilterLocale locale, String mode) throws UnsupportedSpecificationException {
 		if (mode.equals(MODE_BYPASS)) {
-			return new SimpleBrailleTranslator(new IdentityFilter(), locale);
+			return new SimpleBrailleTranslator(new IdentityFilter(), locale, mode);
 		}
 		throw new UnsupportedSpecificationException("Factory does not support " + locale + "/" + mode);
 	}

@@ -9,8 +9,8 @@ import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;
-import org.daisy.dotify.translator.attributes.TextAttribute;
 import org.daisy.dotify.translator.attributes.MarkerProcessor;
+import org.daisy.dotify.translator.attributes.TextAttribute;
 
 /**
  * Provides a simple braille translator that translates
@@ -24,6 +24,7 @@ import org.daisy.dotify.translator.attributes.MarkerProcessor;
  */
 public class SimpleBrailleTranslator implements BrailleTranslator {
 	private final FilterLocale locale;
+	private final String translatorMode;
 	private final StringFilter filter;
 	private final MarkerProcessor tap;
 	private final HyphenatorFactoryMaker hyphenatorFactoryMaker;
@@ -31,17 +32,18 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 	
 	private boolean hyphenating;
 	
-	public SimpleBrailleTranslator(StringFilter filter, FilterLocale locale, MarkerProcessor tap) {
+	public SimpleBrailleTranslator(StringFilter filter, FilterLocale locale, String translatorMode, MarkerProcessor tap) {
 		this.filter = filter;
 		this.locale = locale;
+		this.translatorMode = translatorMode;
 		this.tap = tap;
 		this.hyphenating = true;
 		this.hyphenators = new HashMap<FilterLocale, HyphenatorInterface>();
 		this.hyphenatorFactoryMaker = HyphenatorFactoryMaker.newInstance();
 	}
 
-	public SimpleBrailleTranslator(StringFilter filter, FilterLocale locale) {
-		this(filter, locale, null);
+	public SimpleBrailleTranslator(StringFilter filter, FilterLocale locale, String translatorMode) {
+		this(filter, locale, translatorMode, null);
 	}
 
 	public BrailleTranslatorResult translate(String text, FilterLocale locale, TextAttribute atts) throws UnsupportedLocaleException {
@@ -87,6 +89,10 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 
 	public boolean isHyphenating() {
 		return hyphenating;
+	}
+
+	public String getTranslatorMode() {
+		return translatorMode;
 	}
 
 }

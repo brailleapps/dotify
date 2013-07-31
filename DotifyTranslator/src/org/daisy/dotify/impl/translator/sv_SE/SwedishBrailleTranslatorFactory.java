@@ -59,7 +59,7 @@ public class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory
 					addDictionary(StyleConstants.SUP, sup).build();
 					
 
-			return new SimpleBrailleTranslator(new SwedishBrailleFilter(), sv_SE, sap);
+			return new SimpleBrailleTranslator(new SwedishBrailleFilter(), sv_SE, mode, sap);
 		} 
 		throw new UnsupportedSpecificationException("Factory does not support " + locale + "/" + mode);
 	}
