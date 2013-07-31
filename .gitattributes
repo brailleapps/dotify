@@ -197,11 +197,6 @@ Dotify/src/org/daisy/dotify/impl/system/common/DotifyTaskSystemFactory.java -tex
 Dotify/src/org/daisy/dotify/impl/system/common/RunParameters.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/doc-files/DotifyTaskSystem.html -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/package-info.java -text
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/RunParameters.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishBrailleSystem.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/SwedishTaskSystemFactory.java -text
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/doc-files/SwedishBrailleSystem.html -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/system/sv_SE/package-info.java -text
 Dotify/src/org/daisy/dotify/input/InputManager.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/input/InputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/input/InputManagerFactoryMaker.java -text svneol=unset#text/plain
