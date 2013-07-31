@@ -80,7 +80,7 @@ public class Main extends AbstractUI {
 			ArrayList<Definition> vals = new ArrayList<Definition>();
 			vals.add(new Definition("true", "outputs temp files"));
 			vals.add(new Definition("false", "does not output temp files"));
-			optionalArgs.add(new OptionalArgument(SystemKeys.WRITE_TEMP_FILES, "Writes temp files", vals, "true"));
+			optionalArgs.add(new OptionalArgument(SystemKeys.WRITE_TEMP_FILES, "Writes temp files", vals, "false"));
 		}
 		optionalArgs.add(new OptionalArgument(SystemKeys.TEMP_FILES_DIRECTORY, "Path to temp files directory", TaskRunner.TEMP_DIR));
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE, "Sets date in meta data (if available)", Dotify.getDefaultDate(SystemProperties.DEFAULT_DATE_FORMAT)));
