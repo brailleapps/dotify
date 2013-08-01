@@ -5,7 +5,7 @@
 
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 
-	<xsl:template match="/"><obfl version="2011-1"><xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute><xsl:call-template name="insertLayoutMaster"/><xsl:apply-templates/></obfl></xsl:template>
+	<xsl:template match="/"><obfl version="2011-1"><xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute><xsl:call-template name="insertMetadata"/><xsl:call-template name="insertLayoutMaster"/><xsl:apply-templates/></obfl></xsl:template>
 	<xsl:template match="dtb:dtbook | dtb:book"><xsl:apply-templates/></xsl:template>
 	<xsl:template match="dtb:head | dtb:meta | dtb:link"></xsl:template>
 	

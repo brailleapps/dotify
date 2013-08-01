@@ -38,6 +38,45 @@
 	<xsl:param name="l10nimagedescription" select="'Image description'"/>
 	<xsl:param name="l10ncolophon" select="'Colophon'"/>
 	<xsl:param name="l10ncaption" select="'Caption'"/>
+	
+	<xsl:template name="insertMetadata">
+		<meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Title'"/>
+				<xsl:with-param name="outName" select="'dc:title'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Creator'"/>
+				<xsl:with-param name="outName" select="'dc:creator'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Language'"/>
+				<xsl:with-param name="outName" select="'dc:language'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Description'"/>
+				<xsl:with-param name="outName" select="'dc:description'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dc:Publisher'"/>
+				<xsl:with-param name="outName" select="'dc:publisher'"/>
+			</xsl:call-template>
+			<xsl:call-template name="addMetaElement">
+				<xsl:with-param name="inName" select="'dtb:uid'"/>
+				<xsl:with-param name="outName" select="'dc:source'"/>
+			</xsl:call-template>
+		</meta>
+	</xsl:template>
+	
+	<xsl:template name="addMetaElement">
+		<xsl:param name="inName"/>
+		<xsl:param name="outName"/>
+		<xsl:for-each select="/dtb:dtbook/dtb:head/dtb:meta[@name=$inName]">
+			<xsl:element name="{$outName}" namespace="http://purl.org/dc/elements/1.1/">
+				<xsl:value-of select="@content"/>
+			</xsl:element>
+		</xsl:for-each>
+	</xsl:template>
 
 	<xsl:template match="dtb:frontmatter" mode="apply-sequence-attributes">
 		<xsl:attribute name="master">front</xsl:attribute>
@@ -66,9 +105,29 @@
 			<xsl:attribute name="break-before">page</xsl:attribute>
 		</xsl:if>-->
 	</xsl:template>
+	<!-- If level1 has part, format h2 as h1 -->
+	<xsl:template match="dtb:h2[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:attribute name="margin-top">3</xsl:attribute>
+		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
+			<xsl:attribute name="margin-bottom">1</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="keep">all</xsl:attribute>
+		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
 	<xsl:template match="dtb:h2" mode="apply-block-attributes">
 		<xsl:attribute name="margin-top">2</xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
+			<xsl:attribute name="margin-bottom">1</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="keep">all</xsl:attribute>
+		<xsl:attribute name="keep-with-next">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
+	<!-- If level1 has part, format h3 as h2 -->
+	<xsl:template match="dtb:h3[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:attribute name="margin-top">2</xsl:attribute>
+		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level4)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
@@ -114,10 +173,26 @@
 		<xsl:if test="not(dtb:h1)">
 			<xsl:attribute name="margin-top">3</xsl:attribute>
 		</xsl:if>
+		<xsl:attribute name="keep-with-previous-sheets">1</xsl:attribute>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
+	<!-- If level1 has part, format level2 as level1 -->
+	<xsl:template match="dtb:level2[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:attribute name="break-before">page</xsl:attribute>
+		<xsl:if test="not(dtb:h2)">
+			<xsl:attribute name="margin-top">3</xsl:attribute>
+		</xsl:if>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level2" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h2)">
+			<xsl:attribute name="margin-top">2</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
+	</xsl:template>
+	<!-- If level1 has part, format level3 as level2 -->
+	<xsl:template match="dtb:level3[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
+		<xsl:if test="not(dtb:h3)">
 			<xsl:attribute name="margin-top">2</xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
@@ -314,6 +389,16 @@
 		<xsl:apply-templates select="." mode="block-mode"/>
 	</xsl:template>
 
+	<!-- Override default processing -->
+	<xsl:template match="dtb:h1[parent::dtb:level1/@class='part']">
+		<block><xsl:apply-templates select="." mode="apply-block-attributes"/>
+			<xsl:attribute name="keep-with-next-sheets">1</xsl:attribute>
+			<block><leader position="100%" align="right" pattern=":"/></block>
+			<block margin-left="2" margin-right="2" text-indent="2"><xsl:apply-templates/></block>
+			<block><leader position="100%" align="right" pattern=":"/></block>
+		</block>
+	</xsl:template>
+	
 	<xsl:template match="dtb:dd" mode="apply-block-attributes">
 		<xsl:attribute name="text-indent">3</xsl:attribute>
 	</xsl:template>
