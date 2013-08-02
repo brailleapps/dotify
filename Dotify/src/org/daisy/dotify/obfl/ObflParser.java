@@ -12,6 +12,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -114,6 +115,8 @@ public class ObflParser {
 				parseTableOfContents(event, input, locale, hyphenate);
 			} else if (equalsStart(event, ObflQName.VOLUME_TEMPLATE)) {
 				parseVolumeTemplate(event, input, locale, hyphenate);
+			} else {
+				report(event);
 			}
 		}
 		try {
@@ -142,6 +145,8 @@ public class ObflParser {
 							level--;
 						} else if (event.getEventType() == XMLStreamConstants.CHARACTERS) {
 							sb.append(event.asCharacters().getData());
+						} else {
+							report(event);
 						}
 						if (level < 2) {
 							break;
@@ -155,18 +160,38 @@ public class ObflParser {
 				break;
 			} else if (event.getEventType() == XMLStreamConstants.END_ELEMENT) {
 				level--;
+			} else {
+				report(event);
 			}
 		}
 	}
 
+	private void report(XMLEvent event) {
+		if (event.isEndElement()) {
+			// ok
+		} else if (event.isStartElement()) {
+			String msg = "Unsupported context for element: " + event.asStartElement().getName() + buildLocationMsg(event.getLocation());
+			//throw new UnsupportedOperationException(msg);
+			Logger.getLogger(this.getClass().getCanonicalName()).warning(msg);
+		} else if (event.isStartDocument() || event.isEndDocument()) {
+			// ok
+		} else {
+			Logger.getLogger(this.getClass().getCanonicalName()).warning(event.toString());
+		}
+	}
+
 	private void warning(XMLEvent event, String msg) {
+		Logger.getLogger(this.getClass().getCanonicalName()).warning(msg + buildLocationMsg(event.getLocation()));
+	}
+
+	public String buildLocationMsg(Location location) {
 		int line = -1;
 		int col = -1;
-		if (event.getLocation() != null) {
-			line = event.getLocation().getLineNumber();
-			col = event.getLocation().getColumnNumber();
+		if (location != null) {
+			line = location.getLineNumber();
+			col = location.getColumnNumber();
 		}
-		Logger.getLogger(this.getClass().getCanonicalName()).warning(msg + (line > -1 ? " (at line: " + line + (col > -1 ? ", column: " + col : "") + ") " : ""));
+		return (line > -1 ? " (at line: " + line + (col > -1 ? ", column: " + col : "") + ") " : "");
 	}
 
 	//TODO: parse page-number-variable
@@ -203,6 +228,8 @@ public class ObflParser {
 				masterConfig.addTemplate(parseTemplate(event, input));
 			} else if (equalsEnd(event, ObflQName.LAYOUT_MASTER)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		formatter.addLayoutMaster(masterName, masterConfig.build());
@@ -230,6 +257,8 @@ public class ObflParser {
 				}
 			} else if (equalsEnd(event, ObflQName.TEMPLATE) || equalsEnd(event, ObflQName.DEFAULT_TEMPLATE)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return template;
@@ -250,6 +279,8 @@ public class ObflParser {
 				}
 			} else if (equalsEnd(event, ObflQName.HEADER) || equalsEnd(event, ObflQName.FOOTER)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return fields;
@@ -276,6 +307,8 @@ public class ObflParser {
 				);
 			} else if (equalsEnd(event, ObflQName.FIELD)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return compound;
@@ -300,6 +333,8 @@ public class ObflParser {
 			}*/
 			else if (equalsEnd(event, ObflQName.SEQUENCE)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 	}
@@ -327,6 +362,8 @@ public class ObflParser {
 			}
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		formatter.endBlock();
@@ -349,6 +386,8 @@ public class ObflParser {
 			}
 			else if (equalsEnd(event, ObflQName.SPAN)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 	}
@@ -410,6 +449,8 @@ public class ObflParser {
 				builder.position(Position.parsePosition(att.getValue()));
 			} else if (name.equals("pattern")) {
 				builder.pattern(att.getValue());
+			} else {
+				report(event);
 			}
 		}
 		scanEmptyElement(input, ObflQName.LEADER);
@@ -433,6 +474,8 @@ public class ObflParser {
 				toc.add(parseTocEntry(event, input, toc, locale, hyph));
 			} else if (equalsEnd(event, ObflQName.TABLE_OF_CONTENTS)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		tocs.put(tocName, toc);
@@ -471,6 +514,8 @@ public class ObflParser {
 			}
 			else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return ret;
@@ -509,6 +554,8 @@ public class ObflParser {
 				template.setPostVolumeContent(parsePostVolumeContent(event, input, locale, hyph));
 			} else if (equalsEnd(event, ObflQName.VOLUME_TEMPLATE)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		volumeTemplates.push(template);
@@ -524,6 +571,8 @@ public class ObflParser {
 				ret.add(parseTocSequence(event, input, template, locale, hyph));
 			} else if (equalsEnd(event, ObflQName.PRE_CONTENT)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return ret;
@@ -537,6 +586,8 @@ public class ObflParser {
 				ret.add(parseVolumeSequence(event, input, locale, hyph));
 			} else if (equalsEnd(event, ObflQName.POST_CONTENT)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return ret;
@@ -558,6 +609,8 @@ public class ObflParser {
 				volSeq.add(parseBlockEvent(event, input, locale, hyph));
 			} else if (equalsEnd(event, ObflQName.SEQUENCE)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return volSeq;
@@ -594,6 +647,8 @@ public class ObflParser {
 			}
 			else if (equalsEnd(event, ObflQName.TOC_SEQUENCE)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return tocSequence;
@@ -607,6 +662,8 @@ public class ObflParser {
 				ret.add(parseBlockEvent(event, input, locale, hyph));
 			} else if (equalsEnd(event, end)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return ret;
@@ -635,6 +692,8 @@ public class ObflParser {
 			}
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
 				break;
+			} else {
+				report(event);
 			}
 		}
 		return ret;
