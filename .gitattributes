@@ -345,6 +345,7 @@ DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFac
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.text.Integer2TextFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.BrailleTranslatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedBrailleFilter -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.attributes.MarkerProcessorFactory -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenationFeatures.java -text
 DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
@@ -508,6 +509,7 @@ DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFac
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/package.html -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas1.xml -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas2.xml -text svneol=unset#text/plain
@@ -549,6 +551,8 @@ DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerDictionary.jav
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerNotCompatibleException.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerNotFoundException.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessor.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryMaker.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/RegexMarkerDictionary.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/StyleConstants.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttribute.java -text

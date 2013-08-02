@@ -56,7 +56,7 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 			hyphenators.put(locale, h);
 		}
 		if (tap != null) {
-			text = tap.process(text, atts);
+			text = tap.processAttributes(atts, text);
 		}
 		//translate braille using the same filter, regardless of language
 		BreakPointHandler bph = new BreakPointHandler(filter.filter(isHyphenating()?h.hyphenate(text):text));

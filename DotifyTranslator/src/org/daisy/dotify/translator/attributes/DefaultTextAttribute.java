@@ -11,16 +11,14 @@ public class DefaultTextAttribute implements TextAttribute {
 	private final List<TextAttribute> attributes;
 
 	public static class Builder {
-		private final int length;
 		private final String identifier;
 		private final List<TextAttribute> attributes;
 
-		public Builder(int length) {
-			this(length, null);
+		public Builder() {
+			this(null);
 		}
 
-		public Builder(int length, String attribute) {
-			this.length = length;
+		public Builder(String attribute) {
 			this.attributes = new ArrayList<TextAttribute>();
 			this.identifier = attribute;
 		}
@@ -31,17 +29,17 @@ public class DefaultTextAttribute implements TextAttribute {
 		}
 
 		public Builder add(int val) {
-			attributes.add(new DefaultTextAttribute.Builder(val).build());
+			attributes.add(new DefaultTextAttribute.Builder().build(val));
 			return this;
 		}
 
-		public DefaultTextAttribute build() {
-			return new DefaultTextAttribute(this);
+		public DefaultTextAttribute build(int length) {
+			return new DefaultTextAttribute(length, this);
 		}
 	}
 
-	protected DefaultTextAttribute(Builder builder) {
-		this.length = builder.length;
+	protected DefaultTextAttribute(int length, Builder builder) {
+		this.length = length;
 		this.identifier = builder.identifier;
 		this.attributes = builder.attributes;
 		int s = 0;
@@ -49,7 +47,7 @@ public class DefaultTextAttribute implements TextAttribute {
 			s += a.getWidth();
 		}
 		if (s > 0 && s != getWidth()) {
-			throw new IllegalArgumentException("Text attribute size (" + s + ") does not match specified length (" + builder.length + ").");
+			throw new IllegalArgumentException("Text attribute size (" + s + ") does not match specified length (" + length + ").");
 		}
 	}
 
