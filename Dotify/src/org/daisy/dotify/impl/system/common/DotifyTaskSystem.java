@@ -16,10 +16,7 @@ import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
 import org.daisy.dotify.writer.PEFMediaWriter;
 import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.TextMediaWriter;
@@ -102,24 +99,21 @@ public class DotifyTaskSystem implements TaskSystem {
 			p2.remove("output");
 			p2.remove(SystemKeys.TEMP_FILES_DIRECTORY);
 
-			try {
-				String translatorMode;
-				PagedMediaWriter paged;
+			String translatorMode;
+			PagedMediaWriter paged;
 
-				if (SystemKeys.PEF_FORMAT.equals(outputFormat)) {
-					// additional braille modes here...
-					translatorMode = BrailleTranslatorFactory.MODE_UNCONTRACTED;
-					paged = new PEFMediaWriter(p2);
-				} else {
-					translatorMode = BrailleTranslatorFactory.MODE_BYPASS;
-					paged = new TextMediaWriter("UTF-8");
-				}
-				BrailleTranslator bt = BrailleTranslatorFactoryMaker.newInstance().newTranslator(context, translatorMode);
-				setup.add(new LayoutEngineTask("OBFL to " + outputFormat.toUpperCase() + " converter", bt, paged));
-
-			} catch (UnsupportedSpecificationException e) {
-				throw new TaskSystemException(e);
+			if (SystemKeys.PEF_FORMAT.equals(outputFormat)) {
+				// additional braille modes here...
+				translatorMode = BrailleTranslatorFactory.MODE_UNCONTRACTED;
+				paged = new PEFMediaWriter(p2);
+			} else {
+				translatorMode = BrailleTranslatorFactory.MODE_BYPASS;
+				paged = new TextMediaWriter("UTF-8");
 			}
+			// BrailleTranslator bt =
+			// BrailleTranslatorFactoryMaker.newInstance().newTranslator(context,
+			// translatorMode);
+			setup.add(new LayoutEngineTask("OBFL to " + outputFormat.toUpperCase() + " converter", context, translatorMode, paged));
 
 			return setup;
 		}

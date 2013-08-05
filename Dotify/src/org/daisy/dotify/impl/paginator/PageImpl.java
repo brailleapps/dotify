@@ -89,7 +89,7 @@ class PageImpl implements Page {
 	private String getMarginCharacter() {
 		// lazy init
 		if (marginCharacter == null) {
-			marginCharacter = getParent().getFormatter().getTranslator().translate(" ").getTranslatedRemainder();
+			marginCharacter = getParent().getTranslator().translate(" ").getTranslatedRemainder();
 		}
 		return marginCharacter;
 	}
@@ -106,7 +106,7 @@ class PageImpl implements Page {
 				LayoutMaster lm = getParent().getLayoutMaster();
 				int pagenum = getPageIndex() + 1;
 				PageTemplate t = lm.getTemplate(pagenum);
-				BrailleTranslator filter = getParent().getFormatter().getTranslator();
+				BrailleTranslator filter = getParent().getTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
 				ret.addAll(rows);
 				if (t.getFooterHeight() > 0 || frame != TextBorderStyle.NONE) {

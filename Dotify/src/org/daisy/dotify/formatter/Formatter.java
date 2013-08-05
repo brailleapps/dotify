@@ -19,7 +19,6 @@ public interface Formatter extends Closeable {
 	public FilterFactory getFilterFactory();
 	*/
 	public BrailleTranslator getTranslator();
-	public void setBrailleTranslator(BrailleTranslator translator);
 	
 	/*
 	public StringFilter getDefaultFilter();

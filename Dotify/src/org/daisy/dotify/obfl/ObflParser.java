@@ -28,7 +28,7 @@ import org.daisy.dotify.formatter.CompoundField;
 import org.daisy.dotify.formatter.CurrentPageField;
 import org.daisy.dotify.formatter.Field;
 import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.formatter.FormatterFactoryMaker;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
@@ -61,19 +61,13 @@ public class ObflParser {
 	private Stack<VolumeTemplate> volumeTemplates;
 	private List<MetaDataItem> meta;
 
-	private FormatterFactory formatterFactory;
 	private Formatter formatter;
-	
-	public ObflParser() {
-		this(FormatterFactory.newInstance());
-	}
-	
-	public ObflParser(FormatterFactory formatterFactory) {
-		this.formatterFactory = formatterFactory;
-	}
-	
-	public void setFormatterFactory(FormatterFactory formatterFactory) {
-		this.formatterFactory = formatterFactory;
+	private final FilterLocale locale;
+	private final String mode;
+
+	public ObflParser(FilterLocale locale, String mode) {
+		this.locale = locale;
+		this.mode = mode;
 	}
 	
 	public void parse(InputStream stream) throws XMLStreamException, OBFLParserException {
@@ -86,7 +80,7 @@ public class ObflParser {
 	}
 	
 	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
-		this.formatter = formatterFactory.newFormatter();
+		this.formatter = FormatterFactoryMaker.newInstance().newFormatter(locale, mode);
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
@@ -759,7 +753,7 @@ public class ObflParser {
 	}
 	
 	public VolumeContentFormatter getVolumeContentFormatter() {
-		return new BlockEventHandlerRunner(formatterFactory, masters, tocs, volumeTemplates);
+		return new BlockEventHandlerRunner(locale, mode, masters, tocs, volumeTemplates);
 	}
 
 	public List<MetaDataItem> getMetaData() {

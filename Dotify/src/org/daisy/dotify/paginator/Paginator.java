@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Row;
+import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.writer.PagedMediaWriter;
 
 
@@ -33,7 +33,7 @@ public interface Paginator extends Closeable {
 	 * @param formatterFactory the factory
 	 * @param fs The BlockSequences to paginate 
 	 */
-	public void open(FormatterFactory formatterFactory, Iterable<BlockSequence> fs);
+	public void open(BrailleTranslator translator, Iterable<BlockSequence> fs);
 
 	/**
 	 * Paginates the block sequence

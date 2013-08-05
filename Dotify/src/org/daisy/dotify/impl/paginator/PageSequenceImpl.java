@@ -3,30 +3,27 @@ package org.daisy.dotify.impl.paginator;
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PageSequence;
+import org.daisy.dotify.translator.BrailleTranslator;
 
 class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;
 		private final LayoutMaster master;
 		private final int pagesOffset;
 		private final HashMap<String, Page> pageReferences;
-		private final FormatterFactory formatterFactory;
-		private Formatter formatter;
+		private final BrailleTranslator translator;
 		private int keepNextSheets;
 		private PageImpl nextPage;
 		
-		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterFactory formatterFactory) {
+		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, BrailleTranslator translator) {
 			this.pages = new Stack<PageImpl>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
 			this.pageReferences = pageReferences;
-			this.formatterFactory = formatterFactory;
-			this.formatter = null;
+			this.translator = translator;
 			this.keepNextSheets = 0;
 			this.nextPage = null;
 		}
@@ -121,15 +118,8 @@ class PageSequenceImpl implements PageSequence {
 			}
 		}
 		
-		public FormatterFactory getFormatterFactory() {
-			return formatterFactory;
-		}
-
-		public Formatter getFormatter() {
-			if (formatter == null) {
-				formatter = formatterFactory.newFormatter();
-			}
-			return formatter;
+		public BrailleTranslator getTranslator() {
+			return translator;
 		}
 
 }

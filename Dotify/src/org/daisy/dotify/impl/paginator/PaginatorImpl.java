@@ -6,12 +6,12 @@ import org.daisy.dotify.formatter.Block;
 import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.paginator.PageStruct;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorException;
 import org.daisy.dotify.tools.StateObject;
+import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
  * Provides an implementation of the paginator interface. This class should
@@ -21,7 +21,7 @@ import org.daisy.dotify.tools.StateObject;
  */
 public class PaginatorImpl implements Paginator {
 	private StateObject state;
-	private FormatterFactory formatterFactory;
+	private BrailleTranslator translator;
 	private Iterable<BlockSequence> fs;
 	//private HashMap<String, LayoutMaster> templates;
 
@@ -31,9 +31,9 @@ public class PaginatorImpl implements Paginator {
 		//this.templates = templates;
 	}
 	
-	public void open(FormatterFactory formatterFactory, Iterable<BlockSequence> fs) {
+	public void open(BrailleTranslator translator, Iterable<BlockSequence> fs) {
 		state.assertUnopened();
-		this.formatterFactory = formatterFactory;
+		this.translator = translator;
 		this.fs = fs;
 		state.open();
 	}
@@ -63,9 +63,9 @@ public class PaginatorImpl implements Paginator {
 		PageStructImpl pageStruct = new PageStructImpl();
 		for (BlockSequence seq : fs) {
 			if (seq.getInitialPageNumber()==null) {
-				pageStruct.newSequence(seq.getLayoutMaster(), formatterFactory);
+				pageStruct.newSequence(seq.getLayoutMaster(), translator);
 			} else {
-				pageStruct.newSequence(seq.getLayoutMaster(), seq.getInitialPageNumber()-1, formatterFactory);
+				pageStruct.newSequence(seq.getLayoutMaster(), seq.getInitialPageNumber() - 1, translator);
 			}
 			pageStruct.newPage();
 			//ArrayList<Block> tmp = new ArrayList<Block>();

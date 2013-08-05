@@ -12,20 +12,22 @@ import org.daisy.dotify.book.VolumeContentFormatter;
 import org.daisy.dotify.formatter.Block;
 import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
+import org.daisy.dotify.text.FilterLocale;
 
 class BlockEventHandlerRunner implements VolumeContentFormatter {
 	private final Iterable<VolumeTemplate> volumeTemplates;
-	private final FormatterFactory formatterFactory;
+	private final FilterLocale locale;
+	private final String mode;
 	private final Map<String, LayoutMaster> masters;
 	private final Map<String, TableOfContents> tocs;
 	private final Logger logger;
 	
-	BlockEventHandlerRunner(FormatterFactory formatterFactory, Map<String, LayoutMaster> masters, Map<String, TableOfContents> tocs, Iterable<VolumeTemplate> volumeTemplates) {
+	BlockEventHandlerRunner(FilterLocale locale, String mode, Map<String, LayoutMaster> masters, Map<String, TableOfContents> tocs, Iterable<VolumeTemplate> volumeTemplates) {
 		this.volumeTemplates = volumeTemplates;
-		this.formatterFactory = formatterFactory;
+		this.locale = locale;
+		this.mode = mode;
 		this.masters = masters;
 		this.tocs = tocs;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
@@ -34,7 +36,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 	private void appendToc(VolumeSequenceEvent seq, CrossReferences crh, int volumeNumber, int volumeCount, List<Iterable<BlockSequence>> ib) throws IOException {
 		TocSequenceEvent toc = (TocSequenceEvent)seq;
 		if (toc.appliesTo(volumeNumber, volumeCount)) {
-			BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
+			BlockEventHandler beh = new BlockEventHandler(locale, mode, masters);
 			TableOfContents data = tocs.get(toc.getTocName());
 			TocEvents events = toc.getTocEvents(volumeNumber, volumeCount);
 			StaticSequenceEventImpl evs = new StaticSequenceEventImpl(toc.getSequenceProperties());
@@ -78,7 +80,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 						ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 						fsm.removeRange(data.getTocIdList().iterator().next(), start);
 						fsm.removeTail(stop);
-						BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
+						BlockEventHandler beh2 = new BlockEventHandler(locale, mode, masters);
 						StaticSequenceEventImpl evs2 = new StaticSequenceEventImpl(toc.getSequenceProperties());
 						for (BlockEvent e : events.getTocEndEvents()) {
 							evs2.add(e);
@@ -102,7 +104,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 						Integer vol = crh.getVolumeNumber(ref);
 						if (vol!=null) {
 							if (nv!=vol) {
-								BlockEventHandler beh2 = new BlockEventHandler(formatterFactory, masters);
+								BlockEventHandler beh2 = new BlockEventHandler(locale, mode, masters);
 								StaticSequenceEventImpl evs2 = new StaticSequenceEventImpl(toc.getSequenceProperties());
 								if (nv>0) {
 									for (BlockEvent e : events.getVolumeEndEvents(nv)) {
@@ -167,7 +169,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 					if (seq instanceof TocSequenceEvent) {
 						appendToc(seq, crh, volumeNumber, volumeCount, ib);
 					} else if (seq instanceof SequenceEvent) {
-						BlockEventHandler beh = new BlockEventHandler(formatterFactory, masters);
+						BlockEventHandler beh = new BlockEventHandler(locale, mode, masters);
 						SequenceEvent seqEv = ((SequenceEvent)seq);
 						HashMap<String, String> vars = new HashMap<String, String>();
 						vars.put(t.getVolumeCountVariableName(), volumeCount+"");

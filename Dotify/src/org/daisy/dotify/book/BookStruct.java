@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.formatter.BlockSequence;
-import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PageSequence;
@@ -17,6 +16,7 @@ import org.daisy.dotify.paginator.PaginatorFactory;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.tools.CompoundIterable;
+import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
  * Provides a default implementation of BookStruct
@@ -29,15 +29,15 @@ public class BookStruct {
 	private final Paginator contentPaginator;
 	
 	private final VolumeContentFormatter volumeFormatter;
-	private final FormatterFactory formatterFactory;
+	private final BrailleTranslator translator;
 	private final PaginatorFactory paginatorFactory;
 
 	private final CrossReferenceHandler crh;
 
 	public BookStruct(Paginator content, VolumeContentFormatter volumeFormatter,
-			FormatterFactory factory, PaginatorFactory paginatorFactory) {
+ BrailleTranslator translator, PaginatorFactory paginatorFactory) {
 		this.contentPaginator = content;
-		this.formatterFactory = factory;
+		this.translator = translator;
 		this.paginatorFactory = paginatorFactory;
 		this.volumeFormatter = volumeFormatter;
 		
@@ -68,7 +68,7 @@ public class BookStruct {
 				ib = volumeFormatter.formatPostVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
 			}
 			Paginator paginator2 = paginatorFactory.newPaginator();
-			paginator2.open(formatterFactory, new CompoundIterable<BlockSequence>(ib));
+			paginator2.open(translator, new CompoundIterable<BlockSequence>(ib));
 			PageStruct ret = paginator2.paginate(crh);
 			paginator2.close();
 			if (pre) {

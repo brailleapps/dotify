@@ -11,14 +11,16 @@ import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.book.BookStruct;
 import org.daisy.dotify.book.Volume;
-import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.obfl.OBFLParserException;
 import org.daisy.dotify.obfl.ObflParser;
 import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorFactory;
+import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
+import org.daisy.dotify.translator.UnsupportedSpecificationException;
 import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.PagedMediaWriterException;
 import org.daisy.dotify.writer.WriterHandler;
@@ -36,7 +38,8 @@ import org.daisy.dotify.writer.WriterHandler;
  */
 public class LayoutEngineTask extends ReadWriteTask  {
 	private final BrailleTranslator translator;
-	//private final FilterLocale locale;
+	private final FilterLocale locale;
+	private final String mode;
 	private final PagedMediaWriter writer;
 	private final Logger logger;
 	
@@ -46,12 +49,22 @@ public class LayoutEngineTask extends ReadWriteTask  {
 	 * @param translator the translator to use
 	 * @param writer the output writer
 	 */
-	public LayoutEngineTask(String name, BrailleTranslator translator, PagedMediaWriter writer) {
+	public LayoutEngineTask(String name, FilterLocale locale, String mode, PagedMediaWriter writer) {
 		super(name);
-		this.translator = translator;
+		this.locale = locale;
+		this.mode = mode;
+		this.translator = getTranslator(locale, mode);
 		//this.locale = locale;
 		this.writer = writer;
 		this.logger = Logger.getLogger(LayoutEngineTask.class.getCanonicalName());
+	}
+
+	private BrailleTranslator getTranslator(FilterLocale locale, String mode) {
+		try {
+			return BrailleTranslatorFactoryMaker.newInstance().newTranslator(locale, mode);
+		} catch (UnsupportedSpecificationException e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -68,11 +81,9 @@ public class LayoutEngineTask extends ReadWriteTask  {
 
 			logger.info("Parsing input...");
 
-			FormatterFactory formatterFactory = FormatterFactory.newInstance();
-			formatterFactory.setTranslator(translator);
 			//formatterFactory.setLocale(locale);
 
-	        ObflParser obflParser = new ObflParser(formatterFactory);
+			ObflParser obflParser = new ObflParser(locale, mode);
 	        //obflParser.setPaginatorFactory(PaginatorFactory.newInstance());
 			//VolumeSplitterFactory splitterFactory = VolumeSplitterFactory.newInstance();
 			//obflParser.setVolumeSplitterFactory(splitterFactory);
@@ -81,12 +92,12 @@ public class LayoutEngineTask extends ReadWriteTask  {
 			logger.info("Working...");
 			PaginatorFactory paginatorFactory = PaginatorFactory.newInstance();
 			Paginator paginator = paginatorFactory.newPaginator();
-			paginator.open(formatterFactory, obflParser.getBlockStruct().getBlockSequenceIterable());
+			paginator.open(translator, obflParser.getBlockStruct().getBlockSequenceIterable());
 			
 			BookStruct bookStruct = new BookStruct(
 					paginator,
 					obflParser.getVolumeContentFormatter(),
-					formatterFactory,
+					translator,
 					paginatorFactory
 				);
 			Iterable<Volume> volumes = bookStruct.getVolumes();

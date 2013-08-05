@@ -15,15 +15,18 @@ import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.impl.formatter.BlockHandler.ListItem;
+import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.translator.BrailleTranslator;
+import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
+import org.daisy.dotify.translator.UnsupportedSpecificationException;
 
 
 /**
  * Breaks flow into rows, page related block properties are left to next step
  * @author Joel Håkansson
  */
-public class FormatterImpl implements Formatter {
+class FormatterImpl implements Formatter {
 	private int leftMargin;
 	private int rightMargin;
 	private final BlockStructImpl flowStruct;
@@ -33,7 +36,7 @@ public class FormatterImpl implements Formatter {
 	//private CrossReferences refs;
 	//private StringFilter filter;
 
-	private BrailleTranslator translator;
+	private final BrailleTranslator translator;
 	//private FilterLocale locale;
 	//private BlockHandler bh;
 	
@@ -47,7 +50,7 @@ public class FormatterImpl implements Formatter {
 	/**
 	 * Creates a new formatter
 	 */
-	public FormatterImpl() {
+	public FormatterImpl(FilterLocale locale, String mode) {
 		//this.filters = builder.filtersFactory.getDefault();
 		this.context = new Stack<BlockProperties>();
 		this.leftMargin = 0;
@@ -57,14 +60,18 @@ public class FormatterImpl implements Formatter {
 		//this.filter = null;
 		//this.refs = null;
 		this.listItem = null;
+		this.translator = getTranslator(locale, mode);
 	}
 
-
-	public void setBrailleTranslator(BrailleTranslator translator) {
-		state.assertUnopened();
-		this.translator = translator;
+	private BrailleTranslator getTranslator(FilterLocale locale, String mode) {
+		try {
+			return BrailleTranslatorFactoryMaker.newInstance().newTranslator(locale, mode);
+		} catch (UnsupportedSpecificationException e) {
+			return null;
+		}
 	}
-/*
+
+	/*
 	public void setLocale(FilterLocale locale) {
 		state.assertUnopened();
 		this.locale = locale;

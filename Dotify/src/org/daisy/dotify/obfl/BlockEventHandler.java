@@ -5,11 +5,12 @@ import java.util.Map;
 
 import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.formatter.FormatterFactoryMaker;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.obfl.EventContents.ContentType;
+import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a method to send events to a formatter.
@@ -19,8 +20,8 @@ import org.daisy.dotify.obfl.EventContents.ContentType;
 class BlockEventHandler {
 	private final Formatter formatter;
 
-	public BlockEventHandler(FormatterFactory factory, Map<String, LayoutMaster> masters) {
-		this.formatter = factory.newFormatter();
+	public BlockEventHandler(FilterLocale locale, String mode, Map<String, LayoutMaster> masters) {
+		this.formatter = FormatterFactoryMaker.newInstance().newFormatter(locale, mode);
 		this.formatter.open();
 		for (String name : masters.keySet()) {
 			this.formatter.addLayoutMaster(name, masters.get(name));

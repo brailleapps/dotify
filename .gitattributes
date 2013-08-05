@@ -71,7 +71,7 @@ Dotify/logging.properties -text svneol=unset#text/plain
 Dotify/src/META-INF/services/javax.xml.transform.TransformerFactory -text
 Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.config.ConfigurationsProvider -text
-Dotify/src/META-INF/services/org.daisy.dotify.formatter.FormatterProxy -text
+Dotify/src/META-INF/services/org.daisy.dotify.formatter.FormatterFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.input.InputManagerFactory -text
 Dotify/src/META-INF/services/org.daisy.dotify.paginator.PaginatorProxy -text
 Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
@@ -106,8 +106,8 @@ Dotify/src/org/daisy/dotify/formatter/CurrentPageField.java -text svneol=unset#t
 Dotify/src/org/daisy/dotify/formatter/Field.java -text
 Dotify/src/org/daisy/dotify/formatter/Formatter.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/FormatterException.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/FormatterFactory.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/formatter/FormatterProxy.java -text
+Dotify/src/org/daisy/dotify/formatter/FormatterFactory.java -text
+Dotify/src/org/daisy/dotify/formatter/FormatterFactoryMaker.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/FormattingTypes.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/LayoutMaster.java -text
 Dotify/src/org/daisy/dotify/formatter/Leader.java -text
@@ -123,7 +123,6 @@ Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/StringField.java -text
 Dotify/src/org/daisy/dotify/formatter/TextProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/package-info.java -text
-Dotify/src/org/daisy/dotify/impl/FormatterProxyImpl.java -text
 Dotify/src/org/daisy/dotify/impl/PaginatorProxyImpl.java -text
 Dotify/src/org/daisy/dotify/impl/config/DefaultConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/impl/config/package-info.java -text
@@ -140,6 +139,7 @@ Dotify/src/org/daisy/dotify/impl/formatter/BlockHandler.java -text svneol=unset#
 Dotify/src/org/daisy/dotify/impl/formatter/BlockImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/BlockSequenceImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/BlockStructImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/formatter/FormatterFactoryImpl.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/FormatterImpl.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/formatter/LeaderSegment.java -text
 Dotify/src/org/daisy/dotify/impl/formatter/MarkerSegment.java -text
