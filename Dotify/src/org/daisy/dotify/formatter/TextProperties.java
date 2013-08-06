@@ -67,4 +67,26 @@ public class TextProperties {
 		return hyphenate;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (hyphenate ? 1231 : 1237);
+		result = prime * result + ((locale == null) ? 0 : locale.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		TextProperties other = (TextProperties) obj;
+		if (hyphenate != other.hyphenate) return false;
+		if (locale == null) {
+			if (other.locale != null) return false;
+		} else if (!locale.equals(other.locale)) return false;
+		return true;
+	}
+
 }
