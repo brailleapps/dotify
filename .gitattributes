@@ -568,6 +568,7 @@ DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTe
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
+DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
 DotifyTranslator/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 DotifyTranslator/test/org/daisy/dotify/text/Integer2TextFactoryTest.java -text

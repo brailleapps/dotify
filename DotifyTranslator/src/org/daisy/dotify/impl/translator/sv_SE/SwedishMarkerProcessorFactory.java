@@ -37,8 +37,24 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 
 			// Svenska skrivregler för punktskrift 2009, page 32
 			TextAttributeFilter subnodeFilter = new TextAttributeFilter() {
+
+				private boolean checkChildren(TextAttribute atts) {
+					if (atts.hasChildren()) {
+						for (TextAttribute t : atts) {
+							if (t.getDictionaryIdentifier() != null) {
+								return false;
+							} else {
+								if (!checkChildren(t)) {
+									return false;
+								}
+							}
+						}
+					}
+					return true;
+				}
+
 				public boolean appliesTo(TextAttribute atts) {
-					return !atts.hasChildren();
+					return checkChildren(atts);
 				}
 			};
 			RegexMarkerDictionary sub = new RegexMarkerDictionary.Builder().
