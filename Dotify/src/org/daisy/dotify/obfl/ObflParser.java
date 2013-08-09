@@ -41,10 +41,16 @@ import org.daisy.dotify.formatter.Position;
 import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.StringField;
 import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.obfl.EventContents.ContentType;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.TextBorderStyle;
 import org.daisy.dotify.translator.TextBorderFactory;
+import org.daisy.dotify.translator.UnsupportedSpecificationException;
+import org.daisy.dotify.translator.attributes.DefaultTextAttribute;
+import org.daisy.dotify.translator.attributes.MarkerProcessor;
+import org.daisy.dotify.translator.attributes.MarkerProcessorFactoryMaker;
+import org.daisy.dotify.translator.attributes.TextAttribute;
 import org.daisy.dotify.writer.MetaDataItem;
 
 /**
@@ -64,10 +70,16 @@ public class ObflParser {
 	private Formatter formatter;
 	private final FilterLocale locale;
 	private final String mode;
+	private final MarkerProcessor mp;
 
 	public ObflParser(FilterLocale locale, String mode) {
 		this.locale = locale;
 		this.mode = mode;
+		try {
+			mp = MarkerProcessorFactoryMaker.newInstance().newMarkerProcessor(locale, mode);
+		} catch (UnsupportedSpecificationException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 	
 	public void parse(InputStream stream) throws XMLStreamException, OBFLParserException {
@@ -346,6 +358,8 @@ public class ObflParser {
 				parseBlock(event, input, locale, hyph);
 			} else if (equalsStart(event, ObflQName.SPAN)) {
 				parseSpan(event, input, locale, hyph);
+			} else if (equalsStart(event, ObflQName.STYLE)) {
+				parseStyle(event, input, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
 				formatter.insertLeader(parseLeader(event, input));
 			} else if (equalsStart(event, ObflQName.MARKER)) {
@@ -354,6 +368,7 @@ public class ObflParser {
 				formatter.newLine();
 				scanEmptyElement(input, ObflQName.BR);
 			}
+			// TODO:anchor, evaluate, page-number
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
 				break;
 			} else {
@@ -370,6 +385,8 @@ public class ObflParser {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
 				formatter.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale).hyphenate(hyph).build());
+			} else if (equalsStart(event, ObflQName.STYLE)) {
+				parseStyle(event, input, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
 				formatter.insertLeader(parseLeader(event, input));
 			} else if (equalsStart(event, ObflQName.MARKER)) {
@@ -385,7 +402,89 @@ public class ObflParser {
 			}
 		}
 	}
-	
+
+	private void parseStyle(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+		TextProperties tp = new TextProperties.Builder(locale).hyphenate(hyph).build();
+
+		BlockEventHandler eh = new BlockEventHandler(formatter);
+		eh.insertEventContents(parseStyleEvent(event, input, tp));
+	}
+
+	private StyleEvent parseStyleEvent(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
+
+		StyleEvent ev = parseStyleEventInner(event, input, tp);
+		{
+			TextAttribute t = processTextAttributes(ev);
+			List<String> chunks = TextContents.getTextSegments(ev);
+			TextContents.updateTextContents(ev, mp.processAttributesRetain(t, chunks.toArray(new String[] {})));
+		}
+		return ev;
+	}
+
+	/**
+	 * Builds a DOM over the style sub tree.
+	 * 
+	 * @param event
+	 * @param input
+	 * @param evr
+	 * @param tp
+	 * @return
+	 * @throws XMLStreamException
+	 */
+	private StyleEvent parseStyleEventInner(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
+		StyleEvent ev = new StyleEvent(getAttr(event, "name"));
+		while (input.hasNext()) {
+			event = input.nextEvent();
+			if (event.isCharacters()) {
+				String sr = event.asCharacters().getData();
+				ev.add(new TextContents(sr, tp));
+			} else if (equalsStart(event, ObflQName.STYLE)) {
+				ev.add(parseStyleEventInner(event, input, tp));
+			} else if (equalsStart(event, ObflQName.MARKER)) {
+				ev.add(parseMarker(event, input));
+			} else if (equalsStart(event, ObflQName.BR)) {
+				ev.add(new LineBreak());
+			} else if (equalsEnd(event, ObflQName.STYLE)) {
+				return ev;
+			} else {
+				report(event);
+			}
+		}
+		return null;
+	}
+
+	private TextAttribute processTextAttributes(StyleEvent ev) throws XMLStreamException {
+		// StringBuilder sb = new StringBuilder();
+		int len = 0;
+		DefaultTextAttribute.Builder ret = new DefaultTextAttribute.Builder(ev.getName());
+		if (ev.size() == 1 && ev.get(0).getContentType() == ContentType.PCDATA) {
+			return ret.build(((TextContents) ev.get(0)).getText().length());
+		} else {
+			for (EventContents c : ev) {
+				switch (c.getContentType()) {
+					case PCDATA:
+						String sr = ((TextContents) c).getText();
+						ret.add(new DefaultTextAttribute.Builder().build(sr.length()));
+						len += sr.length();
+						// sb.append(sr);
+						break;
+					case STYLE:
+						TextAttribute t = processTextAttributes((StyleEvent) c);
+						ret.add(t);
+						len += t.getWidth();
+						break;
+					case MARKER:
+					case BR:
+						// ignore
+						break;
+					default:
+						throw new UnsupportedOperationException("Unknown element: " + ev);
+				}
+			}
+			return ret.build(len);
+		}
+	}
+
 	private BlockProperties blockBuilder(Iterator<Attribute> atts) {
 		BlockProperties.Builder builder = new BlockProperties.Builder();
 		while (atts.hasNext()) {
@@ -503,6 +602,7 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.ANCHOR)) {
 				//TODO: implement
 				throw new UnsupportedOperationException("Not implemented");
+				// TODO: span, style
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
 				ret.add(parseEvaluate(event, input, locale, hyph));
 			}
@@ -683,6 +783,10 @@ public class ObflParser {
 				scanEmptyElement(input, ObflQName.BR);
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
 				ret.add(parseEvaluate(event, input, locale, hyph));
+			} else if (equalsStart(event, ObflQName.STYLE)) {
+				ret.add(parseStyleEvent(event, input, new TextProperties.Builder(locale).hyphenate(hyph).build()));
+			} else if (equalsStart(event, ObflQName.SPAN)) {
+				// FIXME: implement span support. See DTB05532
 			}
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
 				break;

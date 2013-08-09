@@ -8,13 +8,11 @@ import java.util.Properties;
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
-import org.daisy.dotify.obfl.ObflResourceLocator;
-import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
+import org.daisy.dotify.system.OBFLWhitespaceNormalizerTask;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.writer.PEFMediaWriter;
@@ -79,10 +77,14 @@ public class DotifyTaskSystem implements TaskSystem {
 			setup.addAll(idts.compile(h));
 			
 			// Whitespace normalizer TransformerFactoryConstants.SAXON8
-			setup.add(new XsltTask("OBFL whitespace normalizer",
-									ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
-									null,
-									h));
+			/*
+			 * setup.add(new XsltTask("OBFL whitespace normalizer",
+			 * ObflResourceLocator.getInstance().getResourceByIdentifier(
+			 * ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT),
+			 * null,
+			 * h));
+			 */
+			setup.add(new OBFLWhitespaceNormalizerTask("OBFL whitespace normalizer"));
 		}
 
 		if (SystemKeys.OBFL_FORMAT.equals(outputFormat)) {

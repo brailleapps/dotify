@@ -12,6 +12,7 @@ import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.impl.formatter.Segment.SegmentType;
 
 
 class BlockImpl implements Block {
@@ -59,6 +60,14 @@ class BlockImpl implements Block {
 	}
 	
 	public void addChars(CharSequence c, TextProperties tp, BlockProperties p) {
+		if (segments.size() > 0 && segments.peek().getSegmentType() == SegmentType.Text) {
+			TextSegment ts = ((TextSegment) segments.peek());
+			if (ts.getBlockProperties().equals(p) && ts.getTextProperties().equals(tp)) {
+				// Logger.getLogger(this.getClass().getCanonicalName()).finer("Appending chars to existing text segment.");
+				ts.setChars(ts.getChars() + "" + c);
+				return;
+			}
+		}
 		segments.push(new TextSegment(c, tp, p));
 	}
 	

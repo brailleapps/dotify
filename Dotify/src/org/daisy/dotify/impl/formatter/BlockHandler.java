@@ -271,7 +271,14 @@ class BlockHandler {
 		maxLenText -= StringTools.length(tabSpace);
 		maxLenText -= StringTools.length(preTabText);
 
-		Row nr = new Row(preContent + preTabText + tabSpace + btr.nextTranslatedRow(maxLenText, maxLenText>=available-(preContentPos)));
+		boolean force = maxLenText >= available - (preContentPos);
+		String next = btr.nextTranslatedRow(maxLenText, force);
+		Row nr;
+		if ("".equals(next) && "".equals(tabSpace)) {
+			nr = new Row(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""));
+		} else {
+			nr = new Row(preContent + preTabText + tabSpace + next);
+		}
 		
 		// discard leader
 		currentLeader = null;

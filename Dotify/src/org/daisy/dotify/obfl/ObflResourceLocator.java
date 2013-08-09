@@ -23,7 +23,7 @@ public class ObflResourceLocator extends AbstractResourceLocator {
 		/**
 		 * An XSLT that normalizes whitespace in an OBFL file.
 		 */
-		OBFL_WHITESPACE_NORMALIZER_XSLT
+		// OBFL_WHITESPACE_NORMALIZER_XSLT
 	}
 	private static ObflResourceLocator instance;
 	
@@ -55,8 +55,9 @@ public class ObflResourceLocator extends AbstractResourceLocator {
 			switch (identifier) {
 				case OBFL_XML_SCHEMA:
 					return getResource("resource-files/obfl.xsd");
-				case OBFL_WHITESPACE_NORMALIZER_XSLT:
-					return getResource("resource-files/obfl-ws-normalizer.xsl");
+					// case OBFL_WHITESPACE_NORMALIZER_XSLT:
+					// return
+					// getResource("resource-files/obfl-ws-normalizer.xsl");
 				default:
 					throw new RuntimeException("Enum identifier not implemented. This is a coding error.");
 			}

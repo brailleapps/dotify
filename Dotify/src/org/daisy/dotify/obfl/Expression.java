@@ -48,6 +48,7 @@ import org.daisy.dotify.text.IntegerOutOfRange;
  */
 public class Expression {
 	private HashMap<String, Object> vars;
+	private final static Integer2TextFactoryMaker integer2textFactoryMaker = Integer2TextFactoryMaker.newInstance();
 	
 	/**
 	 * Evaluate is the method to use when evaluating an expression.
@@ -316,7 +317,7 @@ public class Expression {
 		}
 		Integer2Text t;
 		try {
-			t = Integer2TextFactoryMaker.newInstance().newInteger2Text(FilterLocale.parse(input[1].toString()));
+			t = integer2textFactoryMaker.newInteger2Text(FilterLocale.parse(input[1].toString()));
 		} catch (UnsupportedLocaleException e) {
 			throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
 		}

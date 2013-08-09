@@ -28,7 +28,11 @@ class BlockEventHandler {
 		}
 	}
 	
-	private void runBlockContents(BlockEvent b) {
+	public BlockEventHandler(Formatter formatter) {
+		this.formatter = formatter;
+	}
+
+	public void insertEventContents(IterableEventContents b) {
 		for (EventContents bc : b) {
 			switch (bc.getContentType()) {
 				case PCDATA: {
@@ -44,13 +48,13 @@ class BlockEventHandler {
 				case BLOCK: {
 					BlockEvent ev = (BlockEvent)bc;
 					formatter.startBlock(ev.getProperties());
-					runBlockContents(ev);
+					insertEventContents(ev);
 					formatter.endBlock();
 					break; }
 				case TOC_ENTRY: {
 					TocBlockEvent ev = (TocBlockEvent)bc;
 					formatter.startBlock(ev.getProperties(), ev.getTocId());
-					runBlockContents(ev);
+					insertEventContents(ev);
 					formatter.endBlock();
 					break; }
 				case BR: {
@@ -63,6 +67,11 @@ class BlockEventHandler {
 				case MARKER: {
 					Marker m = ((Marker)bc);
 					formatter.insertMarker(m);
+					break;
+				}
+				case STYLE: {
+					StyleEvent ev = (StyleEvent) bc;
+					insertEventContents(ev);
 					break;
 				}
 				default:
@@ -87,7 +96,7 @@ class BlockEventHandler {
 			} else {
 				throw new RuntimeException("Coding error");
 			}
-			runBlockContents(e);
+			insertEventContents(e);
 			formatter.endBlock();
 		}
 	}

@@ -11,19 +11,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.daisy.dotify.obfl.ObflResourceLocator;
-import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.XsltTask;
+import org.daisy.dotify.system.OBFLWhitespaceNormalizerTask;
+import org.daisy.dotify.system.ReadWriteTask;
 import org.junit.Test;
 public class ObflWsXsltTest {
 
 	@Test
 	public void testWsNormalizer() throws IOException, InternalTaskException {
 		
-		XsltTask t = new XsltTask("WS", 
-				ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT), 
-				null, null);
+		ReadWriteTask t = new OBFLWhitespaceNormalizerTask("WS");
+		// new XsltTask("WS",
+		// ObflResourceLocator.getInstance().getResourceByIdentifier(ObflResourceIdentifier.OBFL_WHITESPACE_NORMALIZER_XSLT),
+		// null, null);
 		
 		File in = File.createTempFile("TestInput", ".tmp");
 		copy(this.getClass().getResourceAsStream("resource-files/ws-test-input.xml"), new FileOutputStream(in));

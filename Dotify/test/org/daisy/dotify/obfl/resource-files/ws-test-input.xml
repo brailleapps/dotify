@@ -32,7 +32,20 @@
 			<block>Untidy<span>mixed </span>content is<span> also possible</span></block>
 			<block> Double spaced <span> content </span> could be  problematic. </block>
 			<block> Significant whitespace <span>between span nodes</span> <span>could be</span> problematic. </block>
-			
+			<block><span>Only span </span><span>plus</span><span> whitespace</span></block>
+			<block><span>span</span>
+<marker/><marker/>
+<span>span</span></block>
+<block first-line-indent="2">Ends with <style name="em">style.</style>
+<marker class="pagenum" value="322"/><marker class="pagenum-turn" value="321–"/>
+Following paragraph.</block>
+<block margin-top="1" first-line-indent="2">När vi kom hem igen tänkte jag:
+<marker class="pagenum" value="35"/><marker class="pagenum-turn" value="34–"/>
+<style name="em">Okej, han är inte pappa. Men han duger.</style></block>
+<block first-line-indent="2"><style name="em">Hugo och Ariadne satt tillsammans, de höll varandra i händerna, och jag kan svära på – för det gick inte att se det</style> <marker class="pagenum" value="139"/><marker class="pagenum-turn" value="138–"/><style name="em">i mörkret – att de blundade och hade sina öron någon annanstans.</style></block>
+			<block>
+					<style name="em">ögonblick kan jag inte läsa vidare.</style>
+				</block>
 			<block>Line breaks</block>
 			<block>Line break had space <br/>before.</block>
 			<block>Line break had space<br/> after.</block>
@@ -67,6 +80,13 @@
 			<block>Anchor had space <anchor float-item="h-2-2"/>before.</block>
 			<block>Anchor had space <anchor float-item="h-2-2"/> before and after.</block>
 			<block>Anchor has no spa<anchor float-item="h-2-2"/>ce.</block>
+			
+			<block>Style</block>
+			<block><span><style>style </style>in span</span></block>
+			<block><span><style> style</style><style> plus style</style></span> <style>plus style</style></block>
+			<block><span><style>style </style><style>plus style</style></span></block>
+			<block><span><style> deep<style> nested </style></style>span</span></block>
+			<block><span><style> style</style> <marker/><marker/> <style>with pagenum</style></span></block>
 			
 		</sequence>
 </obfl>

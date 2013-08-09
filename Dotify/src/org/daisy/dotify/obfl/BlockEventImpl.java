@@ -29,7 +29,7 @@ class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
 	public void setEvaluateContext(Map<String, String> vars) {
 		for (int i=0; i<this.size(); i++) {
 			EventContents e = this.get(i);
-			if (e.canContainEventObjects()) {
+			if (e instanceof BlockContents) {
 				((BlockContents)e).setEvaluateContext(vars);
 			} else if (e.getContentType()==ContentType.EVALUATE) {
 				Evaluate x = ((Evaluate)e);

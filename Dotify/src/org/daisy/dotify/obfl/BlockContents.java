@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Joel Håkansson
  *
  */
-interface BlockContents extends EventContents {
+interface BlockContents extends IterableEventContents {
 
 	/**
 	 * Sets the evaluate context using the supplied map where <tt>key</tt>

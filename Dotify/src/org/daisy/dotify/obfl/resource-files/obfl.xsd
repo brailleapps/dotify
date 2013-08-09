@@ -31,7 +31,7 @@
 	<xs:element name="obfl" type="obfl"/>
 	<xs:complexType name="meta">
 		<xs:sequence>
-			<xs:any minOccurs="0" namespace="##any" processContents="lax" maxOccurs="unbounded"/>
+			<xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="meta" type="meta"/>
@@ -170,6 +170,7 @@
 			<xs:element ref="evaluate"/>
 			<xs:element ref="page-number"/>
 			<xs:element ref="span"/>
+			<xs:element ref="style"/>
 			<xs:element ref="toc-entry"/>
 		</xs:choice>
 		<xs:attribute name="ref-id" type="xs:IDREF" use="required"/>
@@ -383,6 +384,7 @@
 			<xs:element ref="evaluate"/>
 			<xs:element ref="page-number"/>
 			<xs:element ref="span"/>
+			<xs:element ref="style"/>
 			<xs:element ref="block"/>
 		</xs:choice>
 		<xs:attribute name="break-before">
@@ -498,6 +500,9 @@
 	</xs:complexType>
 	<xs:element name="block" type="block"/>
 	<xs:complexType name="span" mixed="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="style"/>
+		</xs:choice>
 		<xs:attribute ref="xml:lang"/>
 		<xs:attribute name="hyphenate">
 			<xs:simpleType>
@@ -509,6 +514,15 @@
 		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="span" type="span"/>
+	<xs:complexType name="style" mixed="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="style"/>
+			<xs:element ref="marker"/>
+			<xs:element ref="br"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+	</xs:complexType>
+	<xs:element name="style" type="style"/>
 	<xs:complexType name="marker">
 		<xs:attribute name="class" type="xs:anySimpleType" use="required"/>
 		<xs:attribute name="value" type="xs:anySimpleType" use="required"/>

@@ -406,10 +406,60 @@
 	<xsl:template match="text()">
 		<xsl:choose>
 			<xsl:when test="ancestor::dtb:*[@xml:lang][1][not(self::dtb:dtbook)]">
-				<span><xsl:attribute name="xml:lang"><xsl:value-of select="ancestor::dtb:*[@xml:lang][1]/@xml:lang"/></xsl:attribute><xsl:value-of select="."/></span>
+				<xsl:choose>
+					<!-- span is handled when style is applied -->
+					<xsl:when test="ancestor::dtb:em or ancestor::dtb:strong"><xsl:value-of select="."/></xsl:when>
+					<xsl:otherwise><span><xsl:attribute name="xml:lang"><xsl:value-of select="ancestor::dtb:*[@xml:lang][1]/@xml:lang"/></xsl:attribute><xsl:value-of select="."/></span></xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="dtb:em" mode="inline-mode">
+		<xsl:call-template name="applyStyle"/>
+	</xsl:template>
+	
+	<xsl:template match="dtb:strong" mode="inline-mode">
+		<xsl:call-template name="applyStyle"/>
+	</xsl:template>
+	
+	<xsl:template match="dtb:sub" mode="inline-mode">
+		<xsl:call-template name="applyFlatStyle"/>
+	</xsl:template>
+	
+	<xsl:template match="dtb:sup" mode="inline-mode">
+		<xsl:call-template name="applyFlatStyle"/>
+	</xsl:template>
+	
+	<xsl:template name="applyStyle">
+		<xsl:choose>
+			<xsl:when test="count(node())=0">
+				<xsl:text> </xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+					<xsl:choose>
+						<xsl:when test="ancestor-or-self::dtb:*[@xml:lang][1][not(self::dtb:dtbook)] and not(ancestor::dtb:em or ancestor::dtb:strong)">
+								<span><xsl:attribute name="xml:lang"><xsl:value-of select="ancestor::dtb:*[@xml:lang][1]/@xml:lang"/></xsl:attribute><style name="{name()}"><xsl:apply-templates/></style></span>
+						</xsl:when>
+						<xsl:otherwise><style name="{name()}"><xsl:apply-templates/></style></xsl:otherwise>
+					</xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="applyFlatStyle">
+			<xsl:choose>
+				<!-- text contains a single string -->
+				<xsl:when test="count(node())=1 and text()">
+					<style name="{name()}"><xsl:apply-templates/></style>
+				</xsl:when>
+				<!-- Otherwise -->
+				<xsl:otherwise>
+					<xsl:message terminate="no">Error: sub/sub contains a complex expression for which there is no specified formatting.</xsl:message>
+					<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>

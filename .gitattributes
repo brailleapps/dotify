@@ -210,11 +210,13 @@ Dotify/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
 Dotify/src/org/daisy/dotify/obfl/Evaluate.java -text
 Dotify/src/org/daisy/dotify/obfl/EventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/Expression.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/obfl/IterableEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
 Dotify/src/org/daisy/dotify/obfl/LeaderEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/LineBreak.java -text
 Dotify/src/org/daisy/dotify/obfl/MarkerEventContents.java -text
 Dotify/src/org/daisy/dotify/obfl/OBFLParserException.java -text
+Dotify/src/org/daisy/dotify/obfl/OBFLWsNormalizer.java -text
 Dotify/src/org/daisy/dotify/obfl/ObflParser.java -text
 Dotify/src/org/daisy/dotify/obfl/ObflQName.java -text
 Dotify/src/org/daisy/dotify/obfl/ObflResourceLocator.java -text
@@ -224,6 +226,7 @@ Dotify/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text
 Dotify/src/org/daisy/dotify/obfl/SequenceEvent.java -text
 Dotify/src/org/daisy/dotify/obfl/StaticSequenceEvent.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/obfl/StaticSequenceEventImpl.java -text
+Dotify/src/org/daisy/dotify/obfl/StyleEvent.java -text
 Dotify/src/org/daisy/dotify/obfl/TableOfContents.java -text
 Dotify/src/org/daisy/dotify/obfl/TableOfContentsImpl.java -text
 Dotify/src/org/daisy/dotify/obfl/TextContents.java -text
@@ -251,6 +254,7 @@ Dotify/src/org/daisy/dotify/system/DuplicatorTask.java -text svneol=unset#text/p
 Dotify/src/org/daisy/dotify/system/InternalTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/InternalTaskException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/LayoutEngineTask.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/system/OBFLWhitespaceNormalizerTask.java -text
 Dotify/src/org/daisy/dotify/system/Progress.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/ReadOnlyTask.java -text
 Dotify/src/org/daisy/dotify/system/ReadWriteTask.java -text
