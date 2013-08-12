@@ -238,6 +238,7 @@ Dotify/src/org/daisy/dotify/obfl/VolumeSequenceEvent.java -text
 Dotify/src/org/daisy/dotify/obfl/VolumeTemplate.java -text
 Dotify/src/org/daisy/dotify/obfl/VolumeTemplateImpl.java -text
 Dotify/src/org/daisy/dotify/obfl/package-info.java -text
+Dotify/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer-2.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/obfl/resource-files/obfl.xsd -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/obfl/resource-files/xml.xsd -text
