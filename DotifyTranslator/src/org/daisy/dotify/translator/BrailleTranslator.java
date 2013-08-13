@@ -2,6 +2,7 @@ package org.daisy.dotify.translator;
 
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.translator.attributes.TextAttribute;
 
 /**
  * Provides an interface for braille translation and hyphenation for a particular
@@ -12,14 +13,56 @@ import org.daisy.dotify.text.FilterLocale;
 public interface BrailleTranslator {
 	
 	/**
-	 * Translates the string in the specified language.
-	 * @param text the text to translate
-	 * @param locale the language/region of the text
+	 * Translates the string in the specified language and the specified text
+	 * attributes.
+	 * 
+	 * @param text
+	 *            the text to translate
+	 * @param locale
+	 *            the language/region of the text
+	 * @param attributes
+	 *            the attributes of the text, or null if none applies. The
+	 *            length of all attributes must be equal to the length of the
+	 *            text.
 	 * @return returns the translator result
-	 * @throws UnsupportedLocaleException if the locale is not supported by the implementation
+	 * @throws UnsupportedLocaleException
+	 *             if the locale is not supported by the implementation
+	 * @throws IllegalArgumentException
+	 *             if the sum of all attributes length is not equal to the
+	 *             length of the text
+	 */
+	public BrailleTranslatorResult translate(String text, FilterLocale locale, TextAttribute attributes) throws UnsupportedLocaleException;
+
+	/**
+	 * Translates the string in the specified language and the specified text
+	 * attributes.
+	 * 
+	 * @param text
+	 *            the text to translate
+	 * @param attributes
+	 *            the attributes of the text. The
+	 *            length of all attributes must be equal to the length of the
+	 *            text.
+	 * @return returns the translator result
+	 * @throws IllegalArgumentException
+	 *             if the sum of all attributes length is not equal to the
+	 *             length of the text
+	 */
+	public BrailleTranslatorResult translate(String text, TextAttribute attributes);
+
+	/**
+	 * Translates the string in the specified language.
+	 * 
+	 * @param text
+	 *            the text to translate
+	 * @param locale
+	 *            the language/region of the text
+	 * @return returns the translator result
+	 * @throws UnsupportedLocaleException
+	 *             if the locale is not supported by the implementation
 	 */
 	public BrailleTranslatorResult translate(String text, FilterLocale locale) throws UnsupportedLocaleException;
-	
+
 	/**
 	 * Translate the string using the translator's default language.
 	 * @param text
@@ -39,4 +82,6 @@ public interface BrailleTranslator {
 	 */
 	public boolean isHyphenating();
 	
+	public String getTranslatorMode();
+
 }

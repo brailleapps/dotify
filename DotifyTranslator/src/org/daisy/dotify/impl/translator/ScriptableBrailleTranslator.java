@@ -15,6 +15,7 @@ import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
+import org.daisy.dotify.translator.attributes.TextAttribute;
 
 public class ScriptableBrailleTranslator implements BrailleTranslator {
 	private final Invocable inv;
@@ -78,6 +79,26 @@ public class ScriptableBrailleTranslator implements BrailleTranslator {
 	@Override
 	public boolean isHyphenating() {
 		return inner.isHyphenating();
+	}
+
+	@Override
+	public BrailleTranslatorResult translate(String text, FilterLocale locale,
+			TextAttribute attributes) throws UnsupportedLocaleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BrailleTranslatorResult translate(String text,
+			TextAttribute attributes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTranslatorMode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

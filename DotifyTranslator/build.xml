@@ -113,7 +113,6 @@
     		</fileset>
     		<manifest>
     			<attribute name="Class-Path" value="icu4j-3_8.jar texhyphj.jar"/>
-    			<attribute name="Main-Class" value="org.daisy.dotify.Main"/>
     			<attribute name="Built-By" value="${user.name}"/>
     			<attribute name="Built-On" value="${ISO-TODAY}"/>
     			<attribute name="Repository-Revision" value="${repository-revision}"/>
