@@ -226,6 +226,6 @@ public class SwedishBrailleFilterTest {
 
 	@Test
 	public void testFractions_001() {
-		assertEquals("⠼⠃ ⠼⠁⠌⠼⠙⠂ ⠼⠁ ⠼⠁⠌⠼⠃⠂ ⠼⠉ ⠼⠉⠌⠼⠙", filter.filter("2¼, 1½, 3¾"));
+		assertEquals("⠼⠃⠼⠁⠌⠼⠙⠂ ⠼⠁⠼⠁⠌⠼⠃⠂ ⠼⠉⠼⠉⠌⠼⠙", filter.filter("2¼, 1½, 3¾"));
 	}
 }
