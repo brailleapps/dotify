@@ -190,8 +190,11 @@
 	<entry key="©">&#x2826;&#x2809;&#x2834;</entry>					<!-- COPYRIGHT SIGN, 00a9 -->
 	<entry key="™">&#x2826;&#x281E;&#x280D;&#x2834;</entry>	<!-- TRADE MARK SIGN, 2122 -->
 	<entry key="®">&#x2826;&#x2817;&#x2834;</entry>					<!-- REGISTERED SIGN, 00ae -->
-	<entry key="½">&#x283c;&#x2801;&#x280C;&#x283c;&#x2803;</entry>
-																						<!-- VULGAR FRACTION ONE HALF, 00bd -->
+	
+	<entry key="¼">&#x283c;&#x2801;&#x280c;&#x283c;&#x2819;</entry>	<!-- VULGAR FRACTION ONE QUARTER, 00bc -->
+	<entry key="½">&#x283c;&#x2801;&#x280c;&#x283c;&#x2803;</entry>	<!-- VULGAR FRACTION ONE HALF, 00bd -->
+	<entry key="¾">&#x283c;&#x2809;&#x280c;&#x283c;&#x2819;</entry>	<!-- VULGAR FRACTION THREE QUARTERS, 00be -->
+	
 	<entry key="×">&#x283b;&#x282d;</entry>							<!-- MULTIPLICATION SIGN, 00D7 -->
 	<entry key="¹">&#x282c;&#x283c;&#x2801;</entry>					<!-- SUPERSCRIPT ONE, 00b9 -->
 	<entry key="²">&#x282c;&#x283c;&#x2803;</entry>					<!-- SUPERSCRIPT TWO, 00b2 -->

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 
-import org.daisy.dotify.impl.translator.sv_SE.SwedishBrailleFilter;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
@@ -223,5 +222,10 @@ public class SwedishBrailleFilterTest {
 		}
 		long actualTime = System.currentTimeMillis()-d;
 		assertTrue("Time exceeded threshold ("+threshold+" ms), was " + actualTime + " ms.", (actualTime<threshold));
+	}
+
+	@Test
+	public void testFractions_001() {
+		assertEquals("⠼⠃ ⠼⠁⠌⠼⠙⠂ ⠼⠁ ⠼⠁⠌⠼⠃⠂ ⠼⠉ ⠼⠉⠌⠼⠙", filter.filter("2¼, 1½, 3¾"));
 	}
 }

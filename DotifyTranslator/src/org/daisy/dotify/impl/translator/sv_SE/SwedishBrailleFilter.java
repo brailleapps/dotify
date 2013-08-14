@@ -48,6 +48,8 @@ public class SwedishBrailleFilter implements UncontractedBrailleFilter {
 		filters = new CombinationFilter();
 		// Remove zero width space
 		filters.add(new RegexFilter("\\u200B", ""));
+		// vulgar fraction preceded by a digit must be separated by a space
+		filters.add(new RegexFilter("([\\d]+)([¼½¾])", "$1 $2"));
 		// One or more digit followed by zero or more digits, commas or periods
 		filters.add(new RegexFilter("([\\d]+[\\d,\\.]*)", "\u283c$1"));
 		// Insert a "reset character" between a digit and lower case a-j
