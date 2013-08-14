@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>		
+	<comment>Maps a format to a processing mode.</comment>
+
+	<entry key="pef">braille</entry>
+	<entry key="text">text</entry>
+	<entry key="obfl">braille</entry>
+
+</properties>

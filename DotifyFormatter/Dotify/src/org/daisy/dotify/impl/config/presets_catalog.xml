@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>		
+	<comment>
+	  The presets catalog is used to load formatter settings.
+	</comment>
+
+	<!-- Preset for A4 paper: 32 character wide (29 rows) -->
+	<entry key="A4-w32">A4_w32.xml</entry>
+	
+	<!-- Preset for FA44 paper: 42 character wide (29 rows) -->
+	<entry key="FA44-w42">FA44_w42.xml</entry>
+	
+	<!-- 50 character wide -->
+	<entry key="w50">w50.xml</entry>
+
+</properties>

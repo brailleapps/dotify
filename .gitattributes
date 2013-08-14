@@ -335,6 +335,587 @@ DotifyDevtools/src/org/daisy/dotify/devtools/views/StringFormatterResult.java -t
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedEvent.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedListener.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextConvertPanel.java -text
+DotifyFormatter/Dotify/.classpath -text svneol=unset#text/plain
+DotifyFormatter/Dotify/.project -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic-table.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-form.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/index.html -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/applet.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/attribs.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/base.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/basic-form.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/basic-table.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/bdo.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/csismap.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/datatypes-xhtml.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/edit.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/events.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/form.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/frames.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/hypertext.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/iframe.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/image.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/inlstyle.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/legacy.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/link.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/list.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/meta.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/nameident.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/object.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/param.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/pres.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/ruby.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/script.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/ssismap.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/struct.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/style.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/table.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/target.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/modules/text.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml-basic.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml-lat1.ent -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml-special.ent -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml-strict.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml-symbol.ent -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml.rng -text
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml1-strict.dtd -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml1-transitional-bodyref.dtd -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/dtd/xhtml10/xhtml1-transitional.dtd -text svneol=unset#text/plain
+DotifyFormatter/Dotify/ant-build/resources/javase-6/package-list -text
+DotifyFormatter/Dotify/build-doc.xml -text svneol=unset#text/plain
+DotifyFormatter/Dotify/build-properties.xml -text
+DotifyFormatter/Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/build.xml -text svneol=unset#text/plain
+DotifyFormatter/Dotify/lib/brailleUtils-catalog.jar -text
+DotifyFormatter/Dotify/lib/brailleUtils-core.jar -text
+DotifyFormatter/Dotify/lib/dotify-translator.jar -text
+DotifyFormatter/Dotify/lib/icu4j-3_8.jar -text
+DotifyFormatter/Dotify/lib/isorelax.jar -text
+DotifyFormatter/Dotify/lib/jing.jar -text
+DotifyFormatter/Dotify/lib/junit-4.7.jar -text
+DotifyFormatter/Dotify/lib/org.daisy.util.jar -text
+DotifyFormatter/Dotify/lib/saxon.jar -text
+DotifyFormatter/Dotify/lib/saxon8-dom.jar -text
+DotifyFormatter/Dotify/lib/saxon8.jar -text
+DotifyFormatter/Dotify/lib/stax-api-1.0.1.jar -text
+DotifyFormatter/Dotify/lib/texhyphj.jar -text
+DotifyFormatter/Dotify/lib/wstx-lgpl-3.2.8.jar -text
+DotifyFormatter/Dotify/lib/xercesImpl.jar -text
+DotifyFormatter/Dotify/lib/xml-apis.jar -text
+DotifyFormatter/Dotify/logging.properties -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/META-INF/services/javax.xml.transform.TransformerFactory -text
+DotifyFormatter/Dotify/src/META-INF/services/javax.xml.validation.SchemaFactory -text
+DotifyFormatter/Dotify/src/META-INF/services/org.daisy.dotify.config.ConfigurationsProvider -text
+DotifyFormatter/Dotify/src/META-INF/services/org.daisy.dotify.formatter.FormatterFactory -text
+DotifyFormatter/Dotify/src/META-INF/services/org.daisy.dotify.input.InputManagerFactory -text
+DotifyFormatter/Dotify/src/META-INF/services/org.daisy.dotify.paginator.PaginatorProxy -text
+DotifyFormatter/Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/Dotify.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/SystemProperties.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/BookStruct.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/CrossReferenceHandler.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/PageCopy.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/PageSequenceCopy.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/PageStructCopy.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/PageTools.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/VolDataInterface.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/Volume.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/VolumeContentFormatter.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/VolumeImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/book/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/cli/Main.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/config/ConfigurationsCatalog.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/config/ConfigurationsProvider.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/config/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/Block.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/BlockContentManager.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/BlockPosition.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/BlockProperties.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/BlockSequence.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/BlockStruct.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/CompoundField.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/CrossReferences.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/CurrentPageField.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/Field.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/Formatter.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/FormatterException.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/FormatterFactory.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/FormatterFactoryMaker.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/FormattingTypes.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/LayoutMaster.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/Leader.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/Marker.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/MarkerReferenceField.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/NumeralField.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/PageTemplate.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/PagenumField.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/Position.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/Row.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/SectionProperties.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/StringField.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/TextProperties.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/formatter/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/PaginatorProxyImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/DefaultConfigurationsProvider.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/presets_catalog.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/presets_descriptions.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w32.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w35.xml -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w42.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w43.xml -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/config/resource-files/w50.xml -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/AnchorSegment.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/BlockContentManagerImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/BlockHandler.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/BlockImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/BlockSequenceImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/BlockStructImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/FormatterFactoryImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/FormatterImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/LeaderSegment.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/MarkerSegment.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/NewLineSegment.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/PageNumberReferenceSegment.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/RowDataProperties.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/Segment.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/TextSegment.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/formatter/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/DefaultInputUrlResourceLocator.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/XMLInputManager.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/XMLInputManagerFactory.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/config-files/braille/xml.properties -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/config-files/output_mode_catalog.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/config-files/text/dtbook.properties -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/config-files/text/xml.properties -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/validation-files/dtbook.sch -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/doc-files/dtb2obfl.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_base.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_layout.xsl -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_text.xsl -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/xml2flow.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/input_format_catalog.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/localization_catalog.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/braille/dtbook.properties -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/output_mode_catalog.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/config-files/text/dtbook.properties -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/localization.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/validation-files/dtbook.sch -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/doc-files/dtb2obfl.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/doc-files/dtb2obfl_braille.xml -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow.xsl -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE_braille.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/sv_SE/xslt-files/dtbook2flow_sv_SE_text.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/text/Text2ObflTask.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/text/Text2ObflWriter.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/text/TextInputManager.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/input/text/TextInputManagerFactory.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/PageImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/PageSequenceImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/PageStructImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/PaginatorImpl.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/PaginatorTools.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/PaginatorToolsException.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/TabStopString.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/TextBorder.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/paginator/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/system/common/CommonResourceLocator.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/system/common/DotifyTaskSystem.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/system/common/DotifyTaskSystemFactory.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/system/common/RunParameters.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/system/common/doc-files/DotifyTaskSystem.html -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/impl/system/common/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/input/InputManager.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/input/InputManagerFactory.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/input/InputManagerFactoryMaker.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/input/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/BlockContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/BlockEvent.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/BlockEventHandler.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/BlockEventHandlerRunner.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/BlockEventImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/BlockSequenceManipulator.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/Evaluate.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/EventContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/Expression.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/IterableEventContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/LeaderEventContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/LineBreak.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/MarkerEventContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/OBFLParserException.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/OBFLWsNormalizer.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/ObflParser.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/ObflQName.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/ObflResourceLocator.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/PageNumberReference.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/PageNumberReferenceEventContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/SequenceEvent.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/StaticSequenceEvent.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/StaticSequenceEventImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/StyleEvent.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/TableOfContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/TableOfContentsImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/TextContents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/TocBlockEvent.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/TocEvents.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/TocSequenceEvent.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/TocSequenceEventImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/VolumeSequenceEvent.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/VolumeTemplate.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/VolumeTemplateImpl.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer-2.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer.xsl -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/resource-files/obfl.xsd -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/obfl/resource-files/xml.xsd -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/Page.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/PageSequence.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/PageStruct.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/Paginator.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/PaginatorException.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/PaginatorFactory.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/PaginatorProxy.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/paginator/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/DuplicatorTask.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/InternalTask.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/InternalTaskException.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/LayoutEngineTask.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/OBFLWhitespaceNormalizerTask.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/Progress.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/ReadOnlyTask.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/ReadWriteTask.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TaskRunner.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TaskSystem.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TaskSystemException.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TaskSystemFactory.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TaskSystemFactoryException.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TaskSystemFactoryMaker.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TextNodeFilter.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/TextNodeTask.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/ValidatorException.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/ValidatorTask.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/XsltTask.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/system/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/AbstractResourceLocator.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/ResourceLocator.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/ResourceLocatorException.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/RomanNumeral.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/XMLTools.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/XMLToolsException.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/tools/package-info.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/MetaDataItem.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/PEFMediaWriter.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/PagedMediaWriter.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/PagedMediaWriterException.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/TextMediaWriter.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/WriterException.java -text
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/WriterHandler.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/src/org/daisy/dotify/writer/package-info.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/book/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/test/org/daisy/dotify/formatter/FormatterFactoryTest.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/test/org/daisy/dotify/impl/input/XMLInputManagerFactoryTest.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/impl/input/text/FileCompare.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/impl/input/text/Text2ObflWriterTest.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/impl/input/text/resource-files/expected.obfl -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/impl/input/text/resource-files/input.txt -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/impl/input/text/resource-files/normalize.xsl -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/impl/paginator/TabStopStringTest.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-expected.xml -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-input.xml -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/paginator/PaginatorFactoryTest.java -text
+DotifyFormatter/Dotify/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
+DotifyFormatter/Dotify/test/org/daisy/dotify/tools/StringToolsTest.java -text
+DotifyFormatter/DotifyDevtools/.classpath -text
+DotifyFormatter/DotifyDevtools/.project -text
+DotifyFormatter/DotifyDevtools/.settings/org.eclipse.jdt.core.prefs -text
+DotifyFormatter/DotifyDevtools/lib/brailleUtils-catalog-1.2b.jar -text
+DotifyFormatter/DotifyDevtools/lib/brailleUtils-core-1.2b.jar -text
+DotifyFormatter/DotifyDevtools/lib/icu4j-3_8.jar -text
+DotifyFormatter/DotifyDevtools/lib/saxon8.jar -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/CodePointUtility.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/GenerateTableEntries.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/PEFFileCompare.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/PEFFileCompareUI.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/SchematronRulesGenerator.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/TranslatorDemo.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/UnbrailleFilter.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/Unbrailler.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/converters/BrailleNotationConverter.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/converters/CodePointHelper.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/package.html -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/resource-files/odt2braille6.ttf -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/resource-files/strip-meta.xsl -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/views/BrailleConvertPanel.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/views/CodePointPanel.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/views/StringFormatterResult.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedEvent.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedListener.java -text
+DotifyFormatter/DotifyDevtools/src/org/daisy/dotify/devtools/views/TextConvertPanel.java -text
+DotifyFormatter/DotifyTranslator/.classpath -text
+DotifyFormatter/DotifyTranslator/.project -text
+DotifyFormatter/DotifyTranslator/.settings/org.eclipse.jdt.core.prefs -text
+DotifyFormatter/DotifyTranslator/ant-build/resources/javase-6/package-list -text
+DotifyFormatter/DotifyTranslator/build-doc.xml -text
+DotifyFormatter/DotifyTranslator/build-properties.xml -text
+DotifyFormatter/DotifyTranslator/build.xml -text
+DotifyFormatter/DotifyTranslator/lib/icu4j-3_8.jar -text
+DotifyFormatter/DotifyTranslator/lib/junit-4.7.jar -text
+DotifyFormatter/DotifyTranslator/lib/texhyphj.jar -text
+DotifyFormatter/DotifyTranslator/logging.properties -text
+DotifyFormatter/DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
+DotifyFormatter/DotifyTranslator/src/META-INF/services/org.daisy.dotify.text.Integer2TextFactory -text
+DotifyFormatter/DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.BrailleTranslatorFactory -text
+DotifyFormatter/DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedBrailleFilter -text
+DotifyFormatter/DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.attributes.MarkerProcessorFactory -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenationFeatures.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactoryMaker.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFilter.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedFeatureException.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/UnsupportedLocaleException.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/hyphenator/package-info.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWDecompounder.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenationUnit.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenator.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenatorAtom.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenatorCore.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenatorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/HyphenationConfig.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenator.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorCore.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/LatexRulesLocator.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/hyphenation-catalog.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/af.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/aoo/README_sv_SE.txt -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/aoo/hyph_sv_SE.dic -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/as.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/bg.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/bn.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/ca.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/cs.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/cy.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/da.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/de.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/en-GB.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/en-US.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/eo.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/es.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/et.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/eu.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/fi.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/fr.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/ga.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/gl.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/gu.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/hi.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/hr.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/hu.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/hy.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/ia.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/id.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/is.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/it.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/kn.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/la.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/lo.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/lt.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/lv.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/ml.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/mr.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/nb.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/nl.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/nn.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/no.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/or.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/pa.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/pl.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/pt.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/ro.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/ru.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/sa.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/sl.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/sr-latn.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/sv.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/ta.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/te.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/dehyph_x.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/fihyph.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/frhyph_x.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/nohyphbx.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/sehyph.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/ukhyph.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/ushyph.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tex/ushyphmax.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tk.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/tr.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/uk.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/README -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-af.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-as.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-bg.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-bn.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-ca.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-cop.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-cs.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-cy.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-da.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-de-1901.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-de-1996.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-de-ch-1901.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-el-monoton.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-el-polyton.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-en-gb.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-en-us.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-eo.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-es.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-et.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-eu.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-fi.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-fr.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-fur.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-ga.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-gl.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-grc.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-gu.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-hi.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-hr.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-hsb.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-hu.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-hy.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-ia.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-id.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-is.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-it.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-kmr.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-kn.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-la.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-lt.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-lv.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-ml.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-mn-cyrl-x-lmc.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-mn-cyrl.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-mr.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-mul-ethi.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-nb.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-nl.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-nn.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-no.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-or.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-pa.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-pl.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-pt.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-rm.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-ro.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-ru.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-sa.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-sh-cyrl.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-sh-latn.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-sk.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-sl.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-sr-cyrl.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-sv.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-ta.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-te.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-tk.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-tr.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-uk.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-zh-latn-pinyin.tex -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/zh-latn.xml -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2Text.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/package.html -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas1.xml -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas2.xml -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/BreakPoint.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/BreakPointHandler.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/CaseFilter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/CharFilter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/FilterFactory.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/IdentityFilter.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/Integer2Text.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/Integer2TextFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/Integer2TextFactoryMaker.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/IntegerOutOfRange.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/SimpleCharReplacer.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/StringSplitter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/TextBorderStyle.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/TextFileReader.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/text/package-info.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/BrailleTextBorderStyle.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslator.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactoryMaker.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorResult.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/DefaultBrailleTranslatorResult.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/SimpleBrailleTranslator.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/TextBorderFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/UnsupportedSpecificationException.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/DefaultMarkerProcessor.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/DefaultTextAttribute.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/Marker.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerDictionary.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerNotCompatibleException.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerNotFoundException.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessor.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactory.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryMaker.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/RegexMarkerDictionary.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/StyleConstants.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttribute.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttributeFilter.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/attributes/package-info.java -text
+DotifyFormatter/DotifyTranslator/src/org/daisy/dotify/translator/package-info.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenation2Test.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/impl/text/SwedishInteger2TextTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/text/Integer2TextFactoryTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultMarkerProcessorTest.java -text
+DotifyFormatter/DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultTextAttributeTest.java -text
 DotifyTranslator/.classpath -text
 DotifyTranslator/.project -text
 DotifyTranslator/.settings/org.eclipse.jdt.core.prefs -text

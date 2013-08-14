@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Localization keys for Swedish</comment>
+	
+	<entry key="l10nrearjacketcopy">Baksidestext</entry>
+	<entry key="l10nimagedescription">Bildbeskrivning</entry>
+	<entry key="l10ncolophon">Tryckuppgifter</entry>
+	<entry key="l10ncaption">Bildtext</entry>
+
+</properties>
