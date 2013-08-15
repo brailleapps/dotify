@@ -19,7 +19,7 @@ import org.daisy.dotify.translator.BrailleTranslator;
  * 
  * @author Joel Håkansson
  */
-public class PaginatorImpl implements Paginator {
+class PaginatorImpl implements Paginator {
 	private StateObject state;
 	private BrailleTranslator translator;
 	private Iterable<BlockSequence> fs;
