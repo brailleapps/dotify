@@ -8,7 +8,6 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.formatter.SectionProperties;
 import org.daisy.dotify.tools.StateObject;
 
@@ -19,6 +18,15 @@ import org.daisy.dotify.tools.StateObject;
  *
  */
 public class PEFMediaWriter implements PagedMediaWriter {
+	/**
+	 * Defines a key to set the date in the PEF-file.
+	 */
+	public final static String PROPERTY_DATE = "date";
+	/**
+	 * Defines a key to set the identifier in the PEF-file.
+	 */
+	public final static String PROPERTY_IDENTIFIER = "identifier";
+
 	private final static String DC_NAMESPACE_URI = "http://purl.org/dc/elements/1.1/";
 	private final Pattern nonBraillePattern;
 	private PrintStream pst;
@@ -71,8 +79,8 @@ public class PEFMediaWriter implements PagedMediaWriter {
 				">");
 		pst.println("<dc:format>application/x-pef+xml</dc:format>");
 		// these could be moved to OBFL-input
-		pst.println("<dc:identifier>" + p.getProperty(SystemKeys.IDENTIFIER, "identifier?") + "</dc:identifier>");
-		pst.println("<dc:date>" + p.getProperty(SystemKeys.DATE, "date?") + "</dc:date>");
+		pst.println("<dc:identifier>" + p.getProperty(PROPERTY_IDENTIFIER, "identifier?") + "</dc:identifier>");
+		pst.println("<dc:date>" + p.getProperty(PROPERTY_DATE, "date?") + "</dc:date>");
 
 		if (meta!=null) {
 			for (MetaDataItem item : meta) {
