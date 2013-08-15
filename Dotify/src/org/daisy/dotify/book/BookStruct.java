@@ -12,7 +12,7 @@ import org.daisy.dotify.paginator.PageSequence;
 import org.daisy.dotify.paginator.PageStruct;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorException;
-import org.daisy.dotify.paginator.PaginatorFactory;
+import org.daisy.dotify.paginator.PaginatorFactoryMaker;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.tools.CompoundIterable;
@@ -30,12 +30,12 @@ public class BookStruct {
 	
 	private final VolumeContentFormatter volumeFormatter;
 	private final BrailleTranslator translator;
-	private final PaginatorFactory paginatorFactory;
+	private final PaginatorFactoryMaker paginatorFactory;
 
 	private final CrossReferenceHandler crh;
 
 	public BookStruct(Paginator content, VolumeContentFormatter volumeFormatter,
- BrailleTranslator translator, PaginatorFactory paginatorFactory) {
+ BrailleTranslator translator, PaginatorFactoryMaker paginatorFactory) {
 		this.contentPaginator = content;
 		this.translator = translator;
 		this.paginatorFactory = paginatorFactory;

@@ -16,7 +16,7 @@ import org.daisy.dotify.obfl.ObflParser;
 import org.daisy.dotify.obfl.ObflResourceLocator;
 import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.paginator.Paginator;
-import org.daisy.dotify.paginator.PaginatorFactory;
+import org.daisy.dotify.paginator.PaginatorFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
@@ -90,7 +90,7 @@ public class LayoutEngineTask extends ReadWriteTask  {
 			obflParser.parse(new FileInputStream(input));
 
 			logger.info("Working...");
-			PaginatorFactory paginatorFactory = PaginatorFactory.newInstance();
+			PaginatorFactoryMaker paginatorFactory = PaginatorFactoryMaker.newInstance();
 			Paginator paginator = paginatorFactory.newPaginator();
 			paginator.open(translator, obflParser.getBlockStruct().getBlockSequenceIterable());
 			
