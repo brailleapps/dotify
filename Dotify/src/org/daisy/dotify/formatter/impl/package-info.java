@@ -1,5 +1,5 @@
 /**
- * <p>Provides a paginator implementation.</p>
+ * <p>Provides a formatter implementation.</p>
  * 
  * <p><b>IMPORTANT: This package contains implementations that should only be 
  * accessed using the Java Services API. Additional classes in this package 
@@ -8,4 +8,4 @@
  * </p>
  * @author Joel Håkansson
  */
-package org.daisy.dotify.impl.paginator;
+package org.daisy.dotify.formatter.impl;

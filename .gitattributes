@@ -122,6 +122,22 @@ Dotify/src/org/daisy/dotify/formatter/SectionProperties.java -text svneol=unset#
 Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
 Dotify/src/org/daisy/dotify/formatter/StringField.java -text
 Dotify/src/org/daisy/dotify/formatter/TextProperties.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/BlockContentManagerImpl.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/BlockHandler.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/BlockStructImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/MarkerSegment.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/NewLineSegment.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/PageNumberReferenceSegment.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/Segment.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
+Dotify/src/org/daisy/dotify/formatter/impl/package-info.java -text
 Dotify/src/org/daisy/dotify/formatter/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/config/DefaultConfigurationsProvider.java -text
 Dotify/src/org/daisy/dotify/impl/config/package-info.java -text
@@ -132,22 +148,6 @@ Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w35.xml -text svneol=u
 Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w42.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w43.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/config/resource-files/w50.xml -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/formatter/AnchorSegment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/BlockContentManagerImpl.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/BlockHandler.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/formatter/BlockImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/formatter/BlockSequenceImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/formatter/BlockStructImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/formatter/FormatterFactoryImpl.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/FormatterImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/formatter/LeaderSegment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/MarkerSegment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/NewLineSegment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/PageNumberReferenceSegment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/RowDataProperties.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/Segment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/TextSegment.java -text
-Dotify/src/org/daisy/dotify/impl/formatter/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/input/DefaultInputUrlResourceLocator.java -text
 Dotify/src/org/daisy/dotify/impl/input/XMLInputManager.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/XMLInputManagerFactory.java -text
@@ -180,16 +180,6 @@ Dotify/src/org/daisy/dotify/impl/input/text/Text2ObflWriter.java -text
 Dotify/src/org/daisy/dotify/impl/input/text/TextInputManager.java -text
 Dotify/src/org/daisy/dotify/impl/input/text/TextInputManagerFactory.java -text
 Dotify/src/org/daisy/dotify/impl/package-info.java -text
-Dotify/src/org/daisy/dotify/impl/paginator/PageImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/paginator/PageSequenceImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/paginator/PageStructImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/paginator/PaginatorFactoryImpl.java -text
-Dotify/src/org/daisy/dotify/impl/paginator/PaginatorImpl.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/paginator/PaginatorTools.java -text
-Dotify/src/org/daisy/dotify/impl/paginator/PaginatorToolsException.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/paginator/TabStopString.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/paginator/TextBorder.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/impl/paginator/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/system/common/CommonResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/DotifyTaskSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/DotifyTaskSystemFactory.java -text
@@ -250,6 +240,16 @@ Dotify/src/org/daisy/dotify/paginator/Paginator.java -text svneol=unset#text/pla
 Dotify/src/org/daisy/dotify/paginator/PaginatorException.java -text
 Dotify/src/org/daisy/dotify/paginator/PaginatorFactory.java -text
 Dotify/src/org/daisy/dotify/paginator/PaginatorFactoryMaker.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/PageImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/PageSequenceImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/PageStructImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/PaginatorFactoryImpl.java -text
+Dotify/src/org/daisy/dotify/paginator/impl/PaginatorImpl.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/PaginatorTools.java -text
+Dotify/src/org/daisy/dotify/paginator/impl/PaginatorToolsException.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/TabStopString.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/TextBorder.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/paginator/impl/package-info.java -text
 Dotify/src/org/daisy/dotify/paginator/package-info.java -text
 Dotify/src/org/daisy/dotify/system/DuplicatorTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/InternalTask.java -text svneol=unset#text/plain
@@ -300,13 +300,13 @@ Dotify/test/org/daisy/dotify/impl/input/text/Text2ObflWriterTest.java -text
 Dotify/test/org/daisy/dotify/impl/input/text/resource-files/expected.obfl -text
 Dotify/test/org/daisy/dotify/impl/input/text/resource-files/input.txt -text
 Dotify/test/org/daisy/dotify/impl/input/text/resource-files/normalize.xsl -text
-Dotify/test/org/daisy/dotify/impl/paginator/TabStopStringTest.java -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-expected.xml -text
 Dotify/test/org/daisy/dotify/obfl/resource-files/ws-test-input.xml -text
 Dotify/test/org/daisy/dotify/paginator/PaginatorFactoryMakerTest.java -text
+Dotify/test/org/daisy/dotify/paginator/impl/TabStopStringTest.java -text
 Dotify/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/tools/StringToolsTest.java -text
 DotifyDevtools/.classpath -text

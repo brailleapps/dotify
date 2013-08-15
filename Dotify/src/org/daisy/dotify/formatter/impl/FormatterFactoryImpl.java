@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.formatter;
+package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;

@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.paginator;
+package org.daisy.dotify.paginator.impl;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.formatter;
+package org.daisy.dotify.formatter.impl;
 
 import java.util.Stack;
 
@@ -11,8 +11,8 @@ import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
+import org.daisy.dotify.formatter.impl.Segment.SegmentType;
 import org.daisy.dotify.formatter.TextProperties;
-import org.daisy.dotify.impl.formatter.Segment.SegmentType;
 
 
 class BlockImpl implements Block {

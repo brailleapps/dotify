@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.paginator;
+package org.daisy.dotify.paginator.impl;
 
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorFactory;

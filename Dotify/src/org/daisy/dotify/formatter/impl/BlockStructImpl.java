@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.formatter;
+package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
 import java.util.Stack;

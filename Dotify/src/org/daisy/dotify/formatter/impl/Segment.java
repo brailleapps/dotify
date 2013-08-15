@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.formatter;
+package org.daisy.dotify.formatter.impl;
 
 interface Segment {
 	enum SegmentType {Text, NewLine, Leader, Reference, Marker, Anchor};
