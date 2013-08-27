@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.tools.RomanNumeral;
 
 /**
  * Provides a numeral field.
@@ -19,7 +18,25 @@ public class NumeralField implements Field {
 		/**
 		 * Defines roman numeral style
 		 */
-		ROMAN};
+		ROMAN;
+
+		/**
+		 * Formats the numeral with the given style
+		 * 
+		 * @param i
+		 *            the number
+		 * @return returns the formatted number
+		 */
+		public String format(int i) {
+			switch (this) {
+				case ROMAN:
+					return RomanNumeral.int2roman(i);
+				case DEFAULT:
+				default:
+					return "" + i;
+			}
+		}
+	};
 
 	private NumeralStyle style;
 	
@@ -38,19 +55,6 @@ public class NumeralField implements Field {
 	public NumeralStyle getStyle() {
 		return style;
 	}
-	
-	/**
-	 * Formats the numeral with the given style
-	 * @param i the style
-	 * @return returns the numeral formatted using the supplied style
-	 */
-	public String style(int i) {
-		switch (style) {
-			case ROMAN:
-				return RomanNumeral.int2roman(i);
-			case DEFAULT:default:
-				return "" + i;
-		}
-	}
+
 
 }

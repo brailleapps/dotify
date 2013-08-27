@@ -11,7 +11,6 @@ import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.tools.RomanNumeral;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 class BlockContentManagerImpl implements BlockContentManager {
@@ -95,13 +94,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 					if (page==null) {
 						layout("??", bh, ret, rdp, null);
 					} else {
-						switch (rs.getNumeralStyle()) {
-							case ROMAN:
-								layout(""+RomanNumeral.int2roman(page), bh, ret, rdp, null);
-								break;
-							case DEFAULT:default:
-								layout(""+page, bh, ret, rdp, null);
-						}
+						layout("" + rs.getNumeralStyle().format(page), bh, ret, rdp, null);
 					}
 					break;
 				}

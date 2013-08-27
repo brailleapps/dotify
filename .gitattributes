@@ -117,6 +117,7 @@ Dotify/src/org/daisy/dotify/formatter/NumeralField.java -text svneol=unset#text/
 Dotify/src/org/daisy/dotify/formatter/PageTemplate.java -text
 Dotify/src/org/daisy/dotify/formatter/PagenumField.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Position.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/formatter/RomanNumeral.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/Row.java -text
 Dotify/src/org/daisy/dotify/formatter/SectionProperties.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/formatter/SequenceProperties.java -text
@@ -276,7 +277,6 @@ Dotify/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/
 Dotify/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/ResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/ResourceLocatorException.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/tools/RomanNumeral.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
@@ -293,6 +293,7 @@ Dotify/src/org/daisy/dotify/writer/WriterHandler.java -text svneol=unset#text/pl
 Dotify/src/org/daisy/dotify/writer/package-info.java -text
 Dotify/test/org/daisy/dotify/book/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/formatter/FormatterFactoryTest.java -text
+Dotify/test/org/daisy/dotify/formatter/NumeralFieldTest.java -text
 Dotify/test/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/impl/input/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/impl/input/text/FileCompare.java -text

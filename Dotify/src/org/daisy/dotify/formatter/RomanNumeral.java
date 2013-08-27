@@ -1,4 +1,4 @@
-package org.daisy.dotify.tools;
+package org.daisy.dotify.formatter;
 
 /**
  * Provides a static method for converting binary integers to Roman numbers.
@@ -8,7 +8,7 @@ package org.daisy.dotify.tools;
  * @author Fred Swartz
  *
  */
-public class RomanNumeral {
+class RomanNumeral {
  //================================================================ constant
  // This could be alternatively be done with parallel arrays.
  // Another alternative would be Pair<Integer, String>

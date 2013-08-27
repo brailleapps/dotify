@@ -283,7 +283,7 @@ class PageImpl implements Page {
 	private static String resolveCurrentPageField(CurrentPageField f, Page p) {
 		//TODO: include page number offset?
 		int pagenum = p.getPageIndex() + 1;
-		return f.style(pagenum);
+		return f.getStyle().format(pagenum);
 	}
 	
 	void setKeepWithPreviousSheets(int value) {
