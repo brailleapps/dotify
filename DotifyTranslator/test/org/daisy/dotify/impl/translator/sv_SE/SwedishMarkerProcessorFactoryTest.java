@@ -11,9 +11,11 @@ import org.junit.Test;
 
 public class SwedishMarkerProcessorFactoryTest {
 	private final MarkerProcessor processor;
+	private final MarkerProcessor tp;
 
 	public SwedishMarkerProcessorFactoryTest() throws UnsupportedSpecificationException {
 		processor = new SwedishMarkerProcessorFactory().newMarkerProcessor(FilterLocale.parse("sv-se"), BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		tp = new SwedishMarkerProcessorFactory().newMarkerProcessor(FilterLocale.parse("sv-se"), BrailleTranslatorFactory.MODE_BYPASS);
 	}
 
 	@Test
@@ -67,6 +69,24 @@ public class SwedishMarkerProcessorFactoryTest {
 		atts.add(new DefaultTextAttribute.Builder("dd").build(3));
 		String actual = processor.processAttributes(atts.build(3), text);
 		assertEquals("", "\u2820\u2804\u28003rd", actual);
+	}
+
+	@Test
+	public void testDD_Text() {
+		String text = "3rd";
+		DefaultTextAttribute.Builder atts = new DefaultTextAttribute.Builder();
+		atts.add(new DefaultTextAttribute.Builder("dd").build(3));
+		String actual = tp.processAttributes(atts.build(3), text);
+		assertEquals("", "* 3rd", actual);
+	}
+
+	@Test
+	public void testEm_Text() {
+		String text = "3rd";
+		DefaultTextAttribute.Builder atts = new DefaultTextAttribute.Builder();
+		atts.add(new DefaultTextAttribute.Builder("em").build(3));
+		String actual = tp.processAttributes(atts.build(3), text);
+		assertEquals("", "3rd", actual);
 	}
 
 }

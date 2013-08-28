@@ -20,66 +20,75 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 	
 
 	public boolean supportsSpecification(FilterLocale locale, String mode) {
-		return locale.equals(sv_SE) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		return locale.equals(sv_SE) && (mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED) || mode.equals(BrailleTranslatorFactory.MODE_BYPASS));
 	}
 
 	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String mode) throws UnsupportedSpecificationException {
-		if (locale.equals(sv_SE) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED)) {
-
-			// Svenska skrivregler för punktskrift 2009, page 34
-			RegexMarkerDictionary strong = new RegexMarkerDictionary.Builder().
-					addPattern(WHITESPACE_REGEX, new Marker("\u2828\u2828", "\u2831"), new Marker("\u2828", "")).
-					build();
-			
-			// Svenska skrivregler för punktskrift 2009, page 34
-			RegexMarkerDictionary em = new RegexMarkerDictionary.Builder().
-					addPattern(WHITESPACE_REGEX, new Marker("\u2820\u2824", "\u2831"), new Marker("\u2820\u2804", "")).
-					build();
-
-			// Svenska skrivregler för punktskrift 2009, page 32
-			TextAttributeFilter subnodeFilter = new TextAttributeFilter() {
-
-				private boolean checkChildren(TextAttribute atts) {
-					if (atts.hasChildren()) {
-						for (TextAttribute t : atts) {
-							if (t.getDictionaryIdentifier() != null) {
-								return false;
-							} else {
-								if (!checkChildren(t)) {
+		if (locale.equals(sv_SE)) {
+			if (mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED)) {
+	
+				// Svenska skrivregler för punktskrift 2009, page 34
+				RegexMarkerDictionary strong = new RegexMarkerDictionary.Builder().
+						addPattern(WHITESPACE_REGEX, new Marker("\u2828\u2828", "\u2831"), new Marker("\u2828", "")).
+						build();
+				
+				// Svenska skrivregler för punktskrift 2009, page 34
+				RegexMarkerDictionary em = new RegexMarkerDictionary.Builder().
+						addPattern(WHITESPACE_REGEX, new Marker("\u2820\u2824", "\u2831"), new Marker("\u2820\u2804", "")).
+						build();
+	
+				// Svenska skrivregler för punktskrift 2009, page 32
+				TextAttributeFilter subnodeFilter = new TextAttributeFilter() {
+	
+					private boolean checkChildren(TextAttribute atts) {
+						if (atts.hasChildren()) {
+							for (TextAttribute t : atts) {
+								if (t.getDictionaryIdentifier() != null) {
 									return false;
+								} else {
+									if (!checkChildren(t)) {
+										return false;
+									}
 								}
 							}
 						}
+						return true;
 					}
-					return true;
-				}
-
-				public boolean appliesTo(TextAttribute atts) {
-					return checkChildren(atts);
-				}
-			};
-			RegexMarkerDictionary sub = new RegexMarkerDictionary.Builder().
-					addPattern(ALPHANUM_REGEX, new Marker("\u2823", "")).
-					filter(subnodeFilter).
-					build();
-
-			// Svenska skrivregler för punktskrift 2009, page 32
-			RegexMarkerDictionary sup = new RegexMarkerDictionary.Builder().
-					addPattern(ALPHANUM_REGEX, new Marker("\u282c", "")).
-					filter(subnodeFilter).
-					build();
-			
-			SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("\u2820\u2804\u2800", ""));
-
-			DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
-					addDictionary(StyleConstants.STRONG, strong).
-					addDictionary(StyleConstants.EM, em).
-					addDictionary(StyleConstants.SUB, sub).
-					addDictionary(StyleConstants.SUP, sup).
-					addDictionary(StyleConstants.DD, dd).
-					build();
-
-			return sap;
+	
+					public boolean appliesTo(TextAttribute atts) {
+						return checkChildren(atts);
+					}
+				};
+				RegexMarkerDictionary sub = new RegexMarkerDictionary.Builder().
+						addPattern(ALPHANUM_REGEX, new Marker("\u2823", "")).
+						filter(subnodeFilter).
+						build();
+	
+				// Svenska skrivregler för punktskrift 2009, page 32
+				RegexMarkerDictionary sup = new RegexMarkerDictionary.Builder().
+						addPattern(ALPHANUM_REGEX, new Marker("\u282c", "")).
+						filter(subnodeFilter).
+						build();
+				
+				SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("\u2820\u2804\u2800", ""));
+	
+				DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
+						addDictionary(StyleConstants.STRONG, strong).
+						addDictionary(StyleConstants.EM, em).
+						addDictionary(StyleConstants.SUB, sub).
+						addDictionary(StyleConstants.SUP, sup).
+						addDictionary(StyleConstants.DD, dd).
+						build();
+	
+				return sap;
+			} else if (mode.equals(BrailleTranslatorFactory.MODE_BYPASS)) {
+				SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("* ", ""));
+				
+				DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
+						addDictionary(StyleConstants.DD, dd).
+						build();
+				return sap;
+			}
 		} 
 		throw new UnsupportedSpecificationException("Factory does not support " + locale + "/" + mode);
 	}
