@@ -142,6 +142,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 				return t.getVolumeMaxSize();
 			}
 		}
+		//TODO: don't return a fixed value
 		return 50;
 	}
 	

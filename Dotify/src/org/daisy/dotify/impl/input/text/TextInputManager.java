@@ -8,7 +8,7 @@ import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.TaskSystemException;
 
-public class TextInputManager implements InputManager {
+class TextInputManager implements InputManager {
 	private final String rootLang;
 
 	TextInputManager(String rootLang) {

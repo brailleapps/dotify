@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.daisy.util.file.FileJuggler;
+import org.daisy.dotify.tools.TempFileHandler;
 import org.daisy.util.file.FileUtils;
 
 /**
@@ -81,7 +81,8 @@ public class TaskRunner {
 		List<InternalTask> tasks = taskSystem.compile(rp);
 		int i = 0;
 		NumberFormat nf = NumberFormat.getPercentInstance();
-		FileJuggler fj = new FileJuggler(input, output);
+		//FIXME: implement temp file handling as per issue #47
+		TempFileHandler fj = new TempFileHandler(input, output);
 		ArrayList<File> tempFiles = new ArrayList<File>();
 		for (InternalTask task : tasks) {
 			if (task instanceof ReadWriteTask) {
@@ -90,7 +91,7 @@ public class TaskRunner {
 				if (writeTempFiles) {
 					tempFiles.add(writeTempFile(fj.getOutput(), taskSystem.getName(), task.getName(), i));
 				}
-				fj.swap();
+				fj.reset();
 			} else if (task instanceof ReadOnlyTask) {
 				logger.info("Running (r) " + task.getName());
 				((ReadOnlyTask)task).execute(fj.getInput());
