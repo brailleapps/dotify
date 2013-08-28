@@ -512,6 +512,7 @@ DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/zh-latn.xml -text
 DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2Text.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
@@ -572,6 +573,7 @@ DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenation2Test.java -
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/text/SwedishInteger2TextTest.java -text
+DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
@@ -583,3 +585,4 @@ DotifyTranslator/test/org/daisy/dotify/text/Integer2TextFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
 DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultMarkerProcessorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultTextAttributeTest.java -text
+DotifyTranslator/test/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryTest.java -text

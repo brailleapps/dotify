@@ -20,7 +20,7 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 	
 
 	public boolean supportsSpecification(FilterLocale locale, String mode) {
-		return locale.equals(sv_SE) && (mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED) || mode.equals(BrailleTranslatorFactory.MODE_BYPASS));
+		return locale.equals(sv_SE) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
 	}
 
 	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String mode) throws UnsupportedSpecificationException {
@@ -70,6 +70,7 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 						filter(subnodeFilter).
 						build();
 				
+				// Redigering och avskrivning, page 148
 				SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("\u2820\u2804\u2800", ""));
 	
 				DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
@@ -80,13 +81,6 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 						addDictionary(StyleConstants.DD, dd).
 						build();
 	
-				return sap;
-			} else if (mode.equals(BrailleTranslatorFactory.MODE_BYPASS)) {
-				SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("* ", ""));
-				
-				DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
-						addDictionary(StyleConstants.DD, dd).
-						build();
 				return sap;
 			}
 		} 
