@@ -403,6 +403,13 @@
 		<xsl:attribute name="text-indent">3</xsl:attribute>
 	</xsl:template>
 	
+	<xsl:template match="dtb:dd" mode="block-mode">
+		<block>
+			<xsl:apply-templates select="." mode="apply-block-attributes"/>
+			<style name="dd"><xsl:apply-templates/></style>
+		</block>
+	</xsl:template>
+	
 	<xsl:template match="text()">
 		<xsl:choose>
 			<xsl:when test="ancestor::dtb:*[@xml:lang][1][not(self::dtb:dtbook)]">

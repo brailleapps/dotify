@@ -254,13 +254,5 @@
 	</xsl:template>
 	
 	<xsl:template match="node()" mode="toc"/>
-	
-	<!-- Redigering och avskrivning, page 148 -->
-	<xsl:template match="dtb:dd" mode="block-mode">
-		<block>
-			<xsl:apply-templates select="." mode="apply-block-attributes"/>
-			<xsl:text>&#x2820;&#x2804; </xsl:text><xsl:apply-templates/>
-		</block>
-	</xsl:template>
 
 </xsl:stylesheet>
