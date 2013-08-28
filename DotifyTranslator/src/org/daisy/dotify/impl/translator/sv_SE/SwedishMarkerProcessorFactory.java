@@ -8,6 +8,7 @@ import org.daisy.dotify.translator.attributes.Marker;
 import org.daisy.dotify.translator.attributes.MarkerProcessor;
 import org.daisy.dotify.translator.attributes.MarkerProcessorFactory;
 import org.daisy.dotify.translator.attributes.RegexMarkerDictionary;
+import org.daisy.dotify.translator.attributes.SimpleMarkerDictionary;
 import org.daisy.dotify.translator.attributes.StyleConstants;
 import org.daisy.dotify.translator.attributes.TextAttribute;
 import org.daisy.dotify.translator.attributes.TextAttributeFilter;
@@ -67,12 +68,16 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 					addPattern(ALPHANUM_REGEX, new Marker("\u282c", "")).
 					filter(subnodeFilter).
 					build();
+			
+			SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("\u2820\u2804\u2800", ""));
 
 			DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
 					addDictionary(StyleConstants.STRONG, strong).
 					addDictionary(StyleConstants.EM, em).
 					addDictionary(StyleConstants.SUB, sub).
-					addDictionary(StyleConstants.SUP, sup).build();
+					addDictionary(StyleConstants.SUP, sup).
+					addDictionary(StyleConstants.DD, dd).
+					build();
 
 			return sap;
 		} 

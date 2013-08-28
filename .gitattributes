@@ -561,6 +561,7 @@ DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessor.java
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryMaker.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/RegexMarkerDictionary.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/attributes/SimpleMarkerDictionary.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/StyleConstants.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttribute.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttributeFilter.java -text

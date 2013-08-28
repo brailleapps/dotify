@@ -60,4 +60,13 @@ public class SwedishMarkerProcessorFactoryTest {
 		assertEquals("", "3\u282crd", actual);
 	}
 
+	@Test
+	public void testDD() {
+		String text = "3rd";
+		DefaultTextAttribute.Builder atts = new DefaultTextAttribute.Builder();
+		atts.add(new DefaultTextAttribute.Builder("dd").build(3));
+		String actual = processor.processAttributes(atts.build(3), text);
+		assertEquals("", "\u2820\u2804\u28003rd", actual);
+	}
+
 }

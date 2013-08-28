@@ -13,5 +13,9 @@ public interface StyleConstants {
 	public final static String EM = "em";
 	public final static String SUB = "sub";
 	public final static String SUP = "sup";
+	/**
+	 * Definition description
+	 */
+	public final static String DD = "dd";
 
 }
