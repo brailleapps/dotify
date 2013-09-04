@@ -593,3 +593,17 @@ DotifyTranslator/test/org/daisy/dotify/translator/UncontractedBrailleFilterFacto
 DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultMarkerProcessorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultTextAttributeTest.java -text
 DotifyTranslator/test/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryTest.java -text
+EpubTools/.classpath -text
+EpubTools/.project -text
+EpubTools/.settings/org.eclipse.jdt.core.prefs -text
+EpubTools/lib/dotify-common.jar -text
+EpubTools/src/se/mtm/epub/AbstractContainerReader.java -text
+EpubTools/src/se/mtm/epub/ContainerReader.java -text
+EpubTools/src/se/mtm/epub/ContentExtractor.java -text
+EpubTools/src/se/mtm/epub/ContentMerger.java -text
+EpubTools/src/se/mtm/epub/EPUB3ReaderException.java -text
+EpubTools/src/se/mtm/epub/Main.java -text
+EpubTools/src/se/mtm/epub/OPF.java -text
+EpubTools/src/se/mtm/epub/OPFReader.java -text
+EpubTools/src/se/mtm/epub/resource-files/opf-merge-content-docs.xslt -text
+EpubTools/src/se/mtm/epub/resource-files/opf-merge-spine.xslt -text
