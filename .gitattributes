@@ -317,6 +317,8 @@ DotifyCommon/.settings/org.eclipse.jdt.core.prefs -text
 DotifyCommon/build-properties.xml -text
 DotifyCommon/build.xml -text
 DotifyCommon/src/se/mtm/common/io/FileIO.java -text
+DotifyCommon/src/se/mtm/common/io/TempFileHandler.java -text
+DotifyCommon/src/se/mtm/common/xml/XMLToolsException.java -text
 DotifyCommon/src/se/mtm/common/xml/XmlTools.java -text
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text
