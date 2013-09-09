@@ -112,4 +112,37 @@ public class FileIO {
 			f.deleteOnExit();
 		}
 	}
+
+	/**
+	 * Compares the input streams binary.
+	 * 
+	 * @param f1
+	 *            the first input stream
+	 * @param f2
+	 *            the second input stream
+	 * @return returns -1 if the streams are equal, byte position where first
+	 *         difference occurred otherwise
+	 * @throws IOException
+	 *             if IO fails
+	 */
+	public static long diff(InputStream f1, InputStream f2) throws IOException {
+		InputStream bf1 = new BufferedInputStream(f1);
+		InputStream bf2 = new BufferedInputStream(f2);
+		try {
+			int b1;
+			int b2;
+			long pos = 0;
+			while ((b1 = bf1.read()) != -1 & b1 == (b2 = bf2.read())) {
+				pos++;
+				// continue
+			}
+			if (b1 != -1 || b2 != -1) {
+				return pos;
+			}
+			return -1;
+		} finally {
+			bf1.close();
+			bf2.close();
+		}
+	}
 }
