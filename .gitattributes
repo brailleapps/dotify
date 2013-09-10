@@ -353,7 +353,12 @@ DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedEvent.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedListener.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextConvertPanel.java -text
 DotifyShared/.project -text
+DotifyShared/brailleUtils-catalog.jar -text
+DotifyShared/brailleUtils-core.jar -text
 DotifyShared/dotify-common.jar -text
+DotifyShared/dotify-translator.jar -text
+DotifyShared/icu4j-3_8.jar -text
+DotifyShared/texhyphj.jar -text
 DotifyTranslator/.classpath -text
 DotifyTranslator/.project -text
 DotifyTranslator/.settings/org.eclipse.jdt.core.prefs -text
