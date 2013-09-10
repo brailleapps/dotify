@@ -162,6 +162,11 @@ Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_base.xsl -t
 Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_layout.xsl -text
 Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/dtbook2obfl_text.xsl -text
 Dotify/src/org/daisy/dotify/impl/input/common/xslt-files/xml2flow.xsl -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/impl/input/epub/Epub3InputManager.java -text
+Dotify/src/org/daisy/dotify/impl/input/epub/Epub3InputManagerFactory.java -text
+Dotify/src/org/daisy/dotify/impl/input/epub/Epub3Task.java -text
+Dotify/src/org/daisy/dotify/impl/input/epub/package-info.java -text
+Dotify/src/org/daisy/dotify/impl/input/epub/resource-files/opf2obfl.xslt -text
 Dotify/src/org/daisy/dotify/impl/input/input_format_catalog.xml -text
 Dotify/src/org/daisy/dotify/impl/input/localization_catalog.xml -text
 Dotify/src/org/daisy/dotify/impl/input/package-info.java -text
@@ -180,6 +185,7 @@ Dotify/src/org/daisy/dotify/impl/input/text/Text2ObflTask.java -text
 Dotify/src/org/daisy/dotify/impl/input/text/Text2ObflWriter.java -text
 Dotify/src/org/daisy/dotify/impl/input/text/TextInputManager.java -text
 Dotify/src/org/daisy/dotify/impl/input/text/TextInputManagerFactory.java -text
+Dotify/src/org/daisy/dotify/impl/input/text/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/system/common/CommonResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/system/common/DotifyTaskSystem.java -text svneol=unset#text/plain
