@@ -606,7 +606,6 @@ DotifyTranslator/test/org/daisy/dotify/translator/attributes/MarkerProcessorFact
 EpubTools/.classpath -text
 EpubTools/.project -text
 EpubTools/.settings/org.eclipse.jdt.core.prefs -text
-EpubTools/lib/dotify-common.jar -text
 EpubTools/src/se/mtm/epub/AbstractContainerReader.java -text
 EpubTools/src/se/mtm/epub/ContainerReader.java -text
 EpubTools/src/se/mtm/epub/ContentExtractor.java -text
