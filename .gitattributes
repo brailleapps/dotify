@@ -367,9 +367,6 @@ DotifyTranslator/ant-build/resources/javase-6/package-list -text
 DotifyTranslator/build-doc.xml -text
 DotifyTranslator/build-properties.xml -text
 DotifyTranslator/build.xml -text
-DotifyTranslator/lib/icu4j-3_8.jar -text
-DotifyTranslator/lib/junit-4.7.jar -text
-DotifyTranslator/lib/texhyphj.jar -text
 DotifyTranslator/logging.properties -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.text.Integer2TextFactory -text

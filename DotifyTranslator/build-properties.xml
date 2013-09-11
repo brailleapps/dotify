@@ -14,6 +14,7 @@
 
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="shared-lib.dir" value="../DotifyShared"/>
 	<property name="dist.dir" value="${ant-output.dir}/dist"/>
 
 	<property name="distribution.zip" value="${dist.dir}/dotify-translator-${release-version}.zip"/>

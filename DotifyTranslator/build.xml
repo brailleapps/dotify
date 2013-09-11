@@ -21,6 +21,11 @@
 		<include name="**/*.*"/>
 		<exclude name="**/package.html"/>
 	</patternset>
+	
+	<patternset id="shared-jar.patternset">
+		<include name="icu4j-*.jar"/>
+		<include name="texhyphj*.jar"/>
+	</patternset>
 
 	<!-- Testing paths -->
 	<path id="test.classpath">
@@ -31,7 +36,7 @@
 		<fileset dir="${dist-root.dir}">
 			<include name="*.jar"/>
 		</fileset>
-		<fileset dir="${lib.dir}">
+		<fileset dir="${shared-lib.dir}">
 			<include name="junit*.jar"/>
 		</fileset>
 		<fileset dir="${ant-output.dir}">
@@ -68,8 +73,8 @@
     	<!-- Compile core files -->
         <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" encoding="UTF-8" debug="true">
 			<classpath>
-				<fileset dir="${lib.dir}">
-					<include name="*.jar"/>
+				<fileset dir="${shared-lib.dir}">
+					<patternset refid="shared-jar.patternset"/>
 				</fileset>
 			</classpath>
         </javac>
@@ -92,7 +97,7 @@
 				<fileset dir="${dist-root.dir}">
 					<include name="*.jar"/>
 				</fileset>
-				<fileset dir="${lib.dir}">
+				<fileset dir="${shared-lib.dir}">
 					<include name="junit*.jar"/>
 				</fileset>
 			</classpath>
@@ -130,9 +135,8 @@
 	<target name="buildZip" depends="buildJar" description="Builds distribution zip including all required jars">
     	<zip destfile="${distribution.zip}">
     		<zipfileset file="${dist.jar}" prefix="${zip-foler-prefix}/"/>
-    		<zipfileset dir="${lib.dir}" prefix="${zip-foler-prefix}">
-    			<include name="*.jar"/>
-    			<exclude name="junit*.jar"/>
+    		<zipfileset dir="${shared-lib.dir}" prefix="${zip-foler-prefix}">
+    			<patternset refid="shared-jar.patternset"/>
     		</zipfileset>
     	</zip>
 		<delete file="${dist.jar}"/>
