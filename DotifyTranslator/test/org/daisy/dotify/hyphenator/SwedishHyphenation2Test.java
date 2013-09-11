@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class SwedishHyphenation2Test {
 	private final HyphenatorInterface hyph_sv_SE;
-	public SwedishHyphenation2Test() throws UnsupportedFeatureException {
+	public SwedishHyphenation2Test() throws HyphenatorConfigurationException {
 		HyphenatorInterface h2;
 		try {
 			FilterLocale locale = FilterLocale.parse("sv-SE");
@@ -16,141 +16,141 @@ public class SwedishHyphenation2Test {
 			//if this is set to 3 (using only patterns) several tests will fail 
 			//hf.setFeature(HyphenationFeatures.HYPHENATION_ACCURACY, 3);
 			h2 = hf.newHyphenator(locale);
-		} catch (UnsupportedLocaleException e) {
+		} catch (HyphenatorConfigurationException e) {
 			h2 = null;
 		}
 		hyph_sv_SE = h2;
 	}
 	@Test
-	public void testCompoundWord_Sv_027() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_027() throws HyphenatorConfigurationException {
 		assertEquals("olycks­falls­för­säk­ring­ar­nas", hyph_sv_SE.hyphenate("olycksfallsförsäkringarnas"));
 	}
 	@Test
-	public void testWord_Sv_028() throws UnsupportedLocaleException {
+	public void testWord_Sv_028() throws HyphenatorConfigurationException {
 		assertEquals("ox­hu­vud", hyph_sv_SE.hyphenate("oxhuvud"));
 	}
 	@Test
-	public void testCompoundWord_Sv_029() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_029() throws HyphenatorConfigurationException {
 		assertEquals("chat­pro­gram­met", hyph_sv_SE.hyphenate("chatprogrammet"));
 	}
 	@Test
-	public void testWord_Sv_030() throws UnsupportedLocaleException {
+	public void testWord_Sv_030() throws HyphenatorConfigurationException {
 		assertEquals("pap­pers­ark", hyph_sv_SE.hyphenate("pappersark"));
 	}
 	@Test
 	@Ignore
-	public void testWord_Sv_031() throws UnsupportedLocaleException {
+	public void testWord_Sv_031() throws HyphenatorConfigurationException {
 		assertEquals("skol­orkes­terns", hyph_sv_SE.hyphenate("skolorkesterns"));
 	}
 	@Test
-	public void testWord_Sv_032() throws UnsupportedLocaleException {
+	public void testWord_Sv_032() throws HyphenatorConfigurationException {
 		assertEquals("nit­ton­åring­ens", hyph_sv_SE.hyphenate("nittonåringens"));
 	}
 	@Test
 	@Ignore
-	public void testCompoundWord_Sv_033() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_033() throws HyphenatorConfigurationException {
 		assertEquals("blom­odlingspurt­seger", hyph_sv_SE.hyphenate("blomodlingspurtseger"));
 	}
 	@Test
-	public void testWord_Sv_034() throws UnsupportedLocaleException {
+	public void testWord_Sv_034() throws HyphenatorConfigurationException {
 		assertEquals("Un­der­sö­ka", hyph_sv_SE.hyphenate("Undersöka"));
 	}
 	@Test
-	public void testWord_Sv_035() throws UnsupportedLocaleException {
+	public void testWord_Sv_035() throws HyphenatorConfigurationException {
 		assertEquals("kam­rat­skap", hyph_sv_SE.hyphenate("kamratskap"));
 	}
 	@Test
-	public void testWord_Sv_036() throws UnsupportedLocaleException {
+	public void testWord_Sv_036() throws HyphenatorConfigurationException {
 		assertEquals("trap­pan", hyph_sv_SE.hyphenate("trappan"));
 	}
 	@Test
 	@Ignore
-	public void testCompoundWord_Sv_037() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_037() throws HyphenatorConfigurationException {
 		//compound possibilities: sprita-uran, sprit-auran
 		assertEquals("sprit­au­ran", hyph_sv_SE.hyphenate("spritauran"));
 	}
 	@Test
 	@Ignore
-	public void testCompoundWord_Sv_038() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_038() throws HyphenatorConfigurationException {
 		assertEquals("Stu­dent­åren", hyph_sv_SE.hyphenate("Studentåren"));
 	}
 	@Test
 	@Ignore
-	public void testCompoundWord_Sv_039() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_039() throws HyphenatorConfigurationException {
 		assertEquals("ba­ry­ton­smatt­ran­det", hyph_sv_SE.hyphenate("barytonsmattrandet"));
 	}
 	@Test
-	public void testCompoundWord_Sv_040() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_040() throws HyphenatorConfigurationException {
 		assertEquals("maj­stång", hyph_sv_SE.hyphenate("majstång"));
 	}
 	@Test
-	public void testWord_Sv_041() throws UnsupportedLocaleException {
+	public void testWord_Sv_041() throws HyphenatorConfigurationException {
 		assertEquals("av­sli­ten", hyph_sv_SE.hyphenate("avsliten"));
 	}
 	@Test
-	public void testWord_Sv_042() throws UnsupportedLocaleException {
+	public void testWord_Sv_042() throws HyphenatorConfigurationException {
 		assertEquals("ho­nom", hyph_sv_SE.hyphenate("honom"));
 	}
 	@Test
-	public void testCompoundWord_Sv_043() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_043() throws HyphenatorConfigurationException {
 		assertEquals("Upp­hovs­rätts­la­gen", hyph_sv_SE.hyphenate("Upphovsrättslagen"));
 	}
 	@Test
-	public void testWord_Sv_044() throws UnsupportedLocaleException {
+	public void testWord_Sv_044() throws HyphenatorConfigurationException {
 		assertEquals("Trans­port", hyph_sv_SE.hyphenate("Transport"));
 	}
 	@Test
-	public void testWord_Sv_045() throws UnsupportedLocaleException {
+	public void testWord_Sv_045() throws HyphenatorConfigurationException {
 		assertEquals("eds­brotts", hyph_sv_SE.hyphenate("edsbrotts"));
 	}
 	@Test
-	public void testWord_Sv_046() throws UnsupportedLocaleException {
+	public void testWord_Sv_046() throws HyphenatorConfigurationException {
 		assertEquals("för­fal­lo­tid", hyph_sv_SE.hyphenate("förfallotid"));
 	}
 	@Test
-	public void testWord_Sv_047() throws UnsupportedLocaleException {
+	public void testWord_Sv_047() throws HyphenatorConfigurationException {
 		assertEquals("dår­skap", hyph_sv_SE.hyphenate("dårskap"));
 	}
 	@Test
-	public void testCompoundWord_Sv_048() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_048() throws HyphenatorConfigurationException {
 		assertEquals("upp­hovs­rätts­la­gar", hyph_sv_SE.hyphenate("upphovsrättslagar"));
 	}
 	@Test
-	public void testWord_Sv_049() throws UnsupportedLocaleException {
+	public void testWord_Sv_049() throws HyphenatorConfigurationException {
 		assertEquals("runt­om", hyph_sv_SE.hyphenate("runtom"));
 	}
 	@Test
-	public void testCompoundWord_Sv_050() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_050() throws HyphenatorConfigurationException {
 		assertEquals("ori­gi­nal­för­lag", hyph_sv_SE.hyphenate("originalförlag"));
 	}
 	@Test
-	public void testWord_Sv_051() throws UnsupportedLocaleException {
+	public void testWord_Sv_051() throws HyphenatorConfigurationException {
 		assertEquals("för­sla­va", hyph_sv_SE.hyphenate("förslava"));
 	}
 	@Test
-	public void testCompoundWord_Sv_052() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_052() throws HyphenatorConfigurationException {
 		assertEquals("sam­hälls­ste­gen", hyph_sv_SE.hyphenate("samhällsstegen"));
 	}
 	@Test
 	@Ignore
-	public void testCompoundWord_Sv_053() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_053() throws HyphenatorConfigurationException {
 		assertEquals("kan­vas­tält", hyph_sv_SE.hyphenate("kanvastält"));
 	}
 	@Test
-	public void testWord_Sv_054() throws UnsupportedLocaleException {
+	public void testWord_Sv_054() throws HyphenatorConfigurationException {
 		assertEquals("för­strött", hyph_sv_SE.hyphenate("förstrött"));
 	}
 	@Test
-	public void testCompoundWord_Sv_055() throws UnsupportedLocaleException {
+	public void testCompoundWord_Sv_055() throws HyphenatorConfigurationException {
 		//compound possibilities: as-kungen, ask-ungen
 		assertEquals("ask­ung­en", hyph_sv_SE.hyphenate("askungen"));
 	}
 	@Test
-	public void testWord_Sv_056() throws UnsupportedLocaleException {
+	public void testWord_Sv_056() throws HyphenatorConfigurationException {
 		assertEquals("önska­des", hyph_sv_SE.hyphenate("önskades"));
 	}
 	@Test
-	public void testWord_Sv_057() throws UnsupportedLocaleException {
+	public void testWord_Sv_057() throws HyphenatorConfigurationException {
 		assertEquals("han­nahs", hyph_sv_SE.hyphenate("hannahs"));
 	}
 	@Test

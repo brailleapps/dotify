@@ -1,14 +1,14 @@
 package org.daisy.dotify.impl.hyphenator.latex;
 
 import org.daisy.dotify.hyphenator.AbstractHyphenator;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 
 class CWHyphenator extends AbstractHyphenator {
 	private final CWHyphenatorAtom hyphenator;
 	private final int accuracy;
 
-	public CWHyphenator(FilterLocale locale, int accuracy) throws UnsupportedLocaleException {
+	public CWHyphenator(FilterLocale locale, int accuracy) throws HyphenatorConfigurationException {
 		this.hyphenator = CWHyphenatorCore.getInstance().getHyphenator(locale);
 		this.beginLimit = hyphenator.getDefaultBeginLimit();
 		this.endLimit = hyphenator.getDefaultEndLimit();

@@ -13,7 +13,7 @@ import org.daisy.dotify.text.StringFilter;
 public class HyphenatorFilter implements StringFilter {
 	private final HyphenatorInterface hyphenator;
 
-	public HyphenatorFilter(FilterLocale locale) throws UnsupportedLocaleException {
+	public HyphenatorFilter(FilterLocale locale) throws HyphenatorConfigurationException {
 		this(HyphenatorFactoryMaker.newInstance().newHyphenator(locale));
 	}
 	

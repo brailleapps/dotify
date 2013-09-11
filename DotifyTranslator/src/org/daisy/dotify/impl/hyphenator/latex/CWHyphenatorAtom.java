@@ -6,7 +6,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.SplitResult;
 import org.daisy.dotify.text.StringSplitter;
@@ -35,12 +35,12 @@ public class CWHyphenatorAtom {
 	
 	
 	
-	public CWHyphenatorAtom(String subPath, FilterLocale locale) throws UnsupportedLocaleException {
+	public CWHyphenatorAtom(String subPath, FilterLocale locale) throws HyphenatorConfigurationException {
 		logger = Logger.getLogger(this.getClass().getCanonicalName());
 
         Properties imp;
         if(subPath==null) {
-        	throw new UnsupportedLocaleException("Locale not supported: " + locale.toString());
+			throw new LatexHyphenatorConfigurationException("Locale not supported: " + locale.toString());
         } else {
     		logger.fine("Loading implementation: " + subPath);
     		imp = loadProperties(subPath);

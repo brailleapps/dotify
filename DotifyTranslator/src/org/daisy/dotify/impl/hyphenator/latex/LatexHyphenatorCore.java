@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 
 class LatexHyphenatorCore {
@@ -42,14 +42,14 @@ class LatexHyphenatorCore {
 		return null;
 	}
 	
-	HyphenationConfig getHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
+	HyphenationConfig getHyphenator(FilterLocale locale) throws HyphenatorConfigurationException {
 		HyphenationConfig hyph = map.get(locale);
 		if (hyph!=null) {
 			return hyph;
 		} else {
 	        HyphenationConfig props = getConfiguration(locale);
 	        if(props==null) {
-	        	throw new UnsupportedLocaleException("Locale not supported: " + locale.toString());
+				throw new LatexHyphenatorConfigurationException("Locale not supported: " + locale.toString());
 	        } else {
         		logger.fine("Loading hyphenation for " + locale + " with properties " + props);
         		map.put(locale, props);

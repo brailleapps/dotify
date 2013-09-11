@@ -2,11 +2,11 @@ package org.daisy.dotify.impl.translator.sv_SE;
 
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
 import org.daisy.dotify.translator.attributes.DefaultMarkerProcessor;
 import org.daisy.dotify.translator.attributes.Marker;
 import org.daisy.dotify.translator.attributes.MarkerProcessor;
 import org.daisy.dotify.translator.attributes.MarkerProcessorFactory;
+import org.daisy.dotify.translator.attributes.MarkerProcessorConfigurationException;
 import org.daisy.dotify.translator.attributes.RegexMarkerDictionary;
 import org.daisy.dotify.translator.attributes.SimpleMarkerDictionary;
 import org.daisy.dotify.translator.attributes.StyleConstants;
@@ -23,7 +23,7 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 		return locale.equals(sv_SE) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
 	}
 
-	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String mode) throws UnsupportedSpecificationException {
+	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String mode) throws MarkerProcessorConfigurationException {
 		if (locale.equals(sv_SE)) {
 			if (mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED)) {
 	
@@ -84,7 +84,20 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 				return sap;
 			}
 		} 
-		throw new UnsupportedSpecificationException("Factory does not support " + locale + "/" + mode);
+		throw new SwedishMarkerProcessorConfigurationException("Factory does not support " + locale + "/" + mode);
+	}
+	
+	private class SwedishMarkerProcessorConfigurationException extends MarkerProcessorConfigurationException {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1435286045359670613L;
+
+		private SwedishMarkerProcessorConfigurationException(String message) {
+			super(message);
+		}
+		
 	}
 
 }

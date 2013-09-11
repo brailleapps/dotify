@@ -4,15 +4,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
 import org.daisy.dotify.translator.attributes.DefaultTextAttribute;
 import org.daisy.dotify.translator.attributes.MarkerProcessor;
+import org.daisy.dotify.translator.attributes.MarkerProcessorConfigurationException;
 import org.junit.Test;
 
 public class DefaultBypassMarkerProcessorFactoryTest {
 	private final MarkerProcessor tp;
 
-	public DefaultBypassMarkerProcessorFactoryTest() throws UnsupportedSpecificationException {
+	public DefaultBypassMarkerProcessorFactoryTest() throws MarkerProcessorConfigurationException {
 		tp = new DefaultBypassMarkerProcessorFactory().newMarkerProcessor(FilterLocale.parse("sv-se"), BrailleTranslatorFactory.MODE_BYPASS);
 	}
 

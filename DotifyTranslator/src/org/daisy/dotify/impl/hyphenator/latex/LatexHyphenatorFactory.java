@@ -1,9 +1,8 @@
 package org.daisy.dotify.impl.hyphenator.latex;
 
-import org.daisy.dotify.hyphenator.UnsupportedFeatureException;
-import org.daisy.dotify.hyphenator.HyphenatorInterface;
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.hyphenator.HyphenatorFactory;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.text.FilterLocale;
 
 public class LatexHyphenatorFactory implements HyphenatorFactory {
@@ -18,7 +17,7 @@ public class LatexHyphenatorFactory implements HyphenatorFactory {
 		return LatexHyphenator.supportsLocale(locale);
 	}
 
-	public HyphenatorInterface newHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
+	public HyphenatorInterface newHyphenator(FilterLocale locale) throws HyphenatorConfigurationException {
 		return new LatexHyphenator(locale);
 	}
 
@@ -26,8 +25,8 @@ public class LatexHyphenatorFactory implements HyphenatorFactory {
 		return null;
 	}
 
-	public void setFeature(String key, Object value) throws UnsupportedFeatureException {
-		throw new UnsupportedFeatureException();
+	public void setFeature(String key, Object value) throws HyphenatorConfigurationException {
+		throw new LatexHyphenatorConfigurationException();
 	}
 
 }

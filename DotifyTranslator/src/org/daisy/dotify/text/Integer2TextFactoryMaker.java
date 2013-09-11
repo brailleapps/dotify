@@ -9,8 +9,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
 
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-
 /**
  * Provides a integer2text factory maker. This is the entry point for
  * creating integer2text instances.
@@ -51,10 +49,10 @@ public class Integer2TextFactoryMaker {
 	 * @param target
 	 *            the target locale
 	 * @return returns a integer2text factory for the specified locale
-	 * @throws UnsupportedLocaleException
+	 * @throws Integer2TextFactoryMakerException
 	 *             if the locale is not supported
 	 */
-	public Integer2TextFactory getFactory(FilterLocale target) throws UnsupportedLocaleException {
+	public Integer2TextFactory getFactory(FilterLocale target) throws Integer2TextConfigurationException {
 		Integer2TextFactory template = map.get(target);
 		if (template==null) {
 			for (Integer2TextFactory h : filters) {
@@ -67,7 +65,7 @@ public class Integer2TextFactoryMaker {
 			}
 		}
 		if (template==null) {
-			throw new UnsupportedLocaleException("Cannot find integer2text factory for " + target);
+			throw new Integer2TextConfigurationException("Cannot find integer2text factory for " + target);
 		}
 		return template;
 	}
@@ -84,7 +82,7 @@ public class Integer2TextFactoryMaker {
 	 * @throws UnsupportedLocaleException
 	 *             if the locale is not supported
 	 */
-	public Integer2Text newInteger2Text(FilterLocale target) throws UnsupportedLocaleException {
+	public Integer2Text newInteger2Text(FilterLocale target) throws Integer2TextConfigurationException {
 		return getFactory(target).newInteger2Text(target);
 	}
 

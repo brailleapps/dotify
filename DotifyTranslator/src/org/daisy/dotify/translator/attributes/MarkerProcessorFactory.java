@@ -1,7 +1,7 @@
 package org.daisy.dotify.translator.attributes;
 
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
+import org.daisy.dotify.translator.TranslatorConfigurationException;
 
 /**
  * Provides a factory for braille markers.
@@ -24,8 +24,8 @@ public interface MarkerProcessorFactory {
 	 * @param locale the marker processor locale
 	 * @param mode the marker processor grade
 	 * @return returns a new marker processor
-	 * @throws UnsupportedSpecificationException if the specification is not supported
+	 * @throws TranslatorConfigurationException if the specification is not supported
 	 */
-	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String mode) throws UnsupportedSpecificationException;
+	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String mode) throws MarkerProcessorConfigurationException;
 
 }

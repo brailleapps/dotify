@@ -66,11 +66,14 @@ public class HyphenatorFactoryMaker {
 	
 	/**
 	 * Gets a HyphenatorFactory that supports the specified locale
-	 * @param target the target locale
+	 * 
+	 * @param target
+	 *            the target locale
 	 * @return returns a hyphenator factory for the specified locale
-	 * @throws UnsupportedLocaleException if the locale is not supported
+	 * @throws HyphenatorConfigurationException
+	 *             if the locale is not supported
 	 */
-	public HyphenatorFactory getFactory(FilterLocale target) throws UnsupportedLocaleException {
+	public HyphenatorFactory getFactory(FilterLocale target) throws HyphenatorConfigurationException {
 		HyphenatorFactory template = map.get(target);
 		if (template==null) {
 			for (HyphenatorFactory h : filters) {
@@ -83,20 +86,24 @@ public class HyphenatorFactoryMaker {
 			}
 		}
 		if (template==null) {
-			throw new UnsupportedLocaleException("Cannot find hyphenator factory for " + target);
+			throw new HyphenatorConfigurationException("Cannot find hyphenator factory for " + target);
 		}
 		return template;
 	}
 
 	/**
-	 * Creates a new hyphenator. This is a convenience method for getFactory(target).newHyphenator(target).
-	 * Using this method excludes the possibility of setting features of the hyphenator factory.
+	 * Creates a new hyphenator. This is a convenience method for
+	 * getFactory(target).newHyphenator(target).
+	 * Using this method excludes the possibility of setting features of the
+	 * hyphenator factory.
 	 * 
-	 * @param target the target locale
+	 * @param target
+	 *            the target locale
 	 * @return returns a new hyphenator
-	 * @throws UnsupportedLocaleException if the locale is not supported
+	 * @throws HyphenatorConfigurationException
+	 *             if the locale is not supported
 	 */
-	public HyphenatorInterface newHyphenator(FilterLocale target) throws UnsupportedLocaleException {
+	public HyphenatorInterface newHyphenator(FilterLocale target) throws HyphenatorConfigurationException {
 		HyphenatorInterface ret = getFactory(target).newHyphenator(target);
 		if (beginLimit!=null) {
 			ret.setBeginLimit(beginLimit);

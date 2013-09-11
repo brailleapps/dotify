@@ -1,7 +1,5 @@
 package org.daisy.dotify.text;
 
-import org.daisy.dotify.hyphenator.UnsupportedFeatureException;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 
 /**
  * Provides a integer2text factory interface. This interface is used to retreive
@@ -25,10 +23,10 @@ public interface Integer2TextFactory {
 	 * @param locale
 	 *            the locale for the new integer2text
 	 * @return returns a new integer2text
-	 * @throws UnsupportedLocaleException
+	 * @throws Integer2TextConfigurationException
 	 *             if the locale is not supported
 	 */
-	public Integer2Text newInteger2Text(FilterLocale locale) throws UnsupportedLocaleException;
+	public Integer2Text newInteger2Text(FilterLocale locale) throws Integer2TextConfigurationException;
 	
 	/**
 	 * Gets the value of a integer2text feature.
@@ -46,8 +44,8 @@ public interface Integer2TextFactory {
 	 *            the feature to set the value for
 	 * @param value
 	 *            the value for the feature
-	 * @throws UnsupportedFeatureException
+	 * @throws Integer2TextConfigurationException
 	 *             if the feature is not supported
 	 */
-	public void setFeature(String key, Object value) throws UnsupportedFeatureException;
+	public void setFeature(String key, Object value) throws Integer2TextConfigurationException;
 }

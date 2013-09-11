@@ -30,8 +30,8 @@ public interface BrailleTranslatorFactory {
 	 * @param locale the translator locale
 	 * @param mode the translator grade
 	 * @return returns a new translator
-	 * @throws UnsupportedSpecificationException if the specification is not supported
+	 * @throws TranslatorConfigurationException if the specification is not supported
 	 */
-	public BrailleTranslator newTranslator(FilterLocale locale, String mode) throws UnsupportedSpecificationException;
+	public BrailleTranslator newTranslator(FilterLocale locale, String mode) throws TranslatorConfigurationException;
 
 }

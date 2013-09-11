@@ -1,13 +1,13 @@
 package org.daisy.dotify.impl.hyphenator.latex;
 
 import org.daisy.dotify.hyphenator.AbstractHyphenator;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 
 class LatexHyphenator extends AbstractHyphenator {
 	private final HyphenationConfig hyphenator;
 	
-	LatexHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
+	LatexHyphenator(FilterLocale locale) throws HyphenatorConfigurationException {
 		this.hyphenator = LatexHyphenatorCore.getInstance().getHyphenator(locale);
 		this.beginLimit = hyphenator.getDefaultBeginLimit();
 		this.endLimit = hyphenator.getDefaultEndLimit();

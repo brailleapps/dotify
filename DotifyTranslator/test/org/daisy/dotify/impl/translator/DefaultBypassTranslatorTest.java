@@ -6,13 +6,13 @@ import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.translator.BrailleTranslatorResult;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
+import org.daisy.dotify.translator.TranslatorConfigurationException;
 import org.junit.Test;
 
 public class DefaultBypassTranslatorTest {
 	private final BrailleTranslator bypass;
 	
-	public DefaultBypassTranslatorTest() throws UnsupportedSpecificationException {
+	public DefaultBypassTranslatorTest() throws TranslatorConfigurationException {
 		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
 		this.bypass = new DefaultBypassTranslatorFactory().newTranslator(sv_SE, BrailleTranslatorFactory.MODE_BYPASS);
 	}

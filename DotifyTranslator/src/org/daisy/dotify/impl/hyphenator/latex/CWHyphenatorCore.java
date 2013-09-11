@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 
 public class CWHyphenatorCore {
@@ -48,12 +48,12 @@ public class CWHyphenatorCore {
 		return ret;
 	}
 	
-	public CWHyphenatorAtom getHyphenator(FilterLocale locale) throws UnsupportedLocaleException {
+	public CWHyphenatorAtom getHyphenator(FilterLocale locale) throws HyphenatorConfigurationException {
 		CWHyphenatorAtom hyph = map.get(locale);
 		if (hyph==null) {
 			String subPath = tables.getProperty(locale.toString());
 			if (subPath==null) {
-				throw new UnsupportedLocaleException("No definition for locale: " + locale.toString());
+				throw new LatexHyphenatorConfigurationException("No definition for locale: " + locale.toString());
 			}
 			logger.fine("Loading hyphenation definition: " + subPath);
     		hyph = new CWHyphenatorAtom(subPath, locale);

@@ -3,16 +3,15 @@ package org.daisy.dotify.impl.hyphenator.latex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.hyphenator.HyphenatorInterface;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.impl.hyphenator.latex.LatexHyphenatorFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
 public class LatexHyphenatorFactoryTest {
 
 	@Test
-	public void testEnglishHyphenator() throws UnsupportedLocaleException {
+	public void testEnglishHyphenator() throws HyphenatorConfigurationException {
 		FilterLocale locale = FilterLocale.parse("en");
 		HyphenatorInterface h = new LatexHyphenatorFactory().newHyphenator(locale);
 		

@@ -20,11 +20,14 @@ public interface HyphenatorFactory {
 	
 	/**
 	 * Returns a new hyphenator configured for the specified locale.
-	 * @param locale the locale for the new hyphenator
+	 * 
+	 * @param locale
+	 *            the locale for the new hyphenator
 	 * @return returns a new hyphenator
-	 * @throws UnsupportedLocaleException if the locale is not supported
+	 * @throws HyphenatorConfigurationException
+	 *             if the locale is not supported
 	 */
-	public HyphenatorInterface newHyphenator(FilterLocale locale) throws UnsupportedLocaleException;
+	public HyphenatorInterface newHyphenator(FilterLocale locale) throws HyphenatorConfigurationException;
 	
 	/**
 	 * Gets the value of a hyphenation feature.
@@ -37,7 +40,7 @@ public interface HyphenatorFactory {
 	 * Sets the value of a hyphenation feature.
 	 * @param key the feature to set the value for
 	 * @param value the value for the feature
-	 * @throws UnsupportedFeatureException if the feature is not supported
+	 * @throws HyphenatorConfigurationException if the feature is not supported
 	 */
-	public void setFeature(String key, Object value) throws UnsupportedFeatureException;
+	public void setFeature(String key, Object value) throws HyphenatorConfigurationException;
 }

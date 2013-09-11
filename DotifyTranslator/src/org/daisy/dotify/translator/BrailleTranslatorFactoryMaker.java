@@ -65,9 +65,9 @@ public class BrailleTranslatorFactoryMaker implements BrailleTranslatorFactory {
 	 * @param locale the locale for the factory
 	 * @param grade the grade for the factory
 	 * @return returns a braille translator factory
-	 * @throws UnsupportedSpecificationException if the specification is not supported
+	 * @throws TranslatorConfigurationException if the specification is not supported
 	 */
-	public BrailleTranslatorFactory getFactory(FilterLocale locale, String grade) throws UnsupportedSpecificationException {
+	public BrailleTranslatorFactory getFactory(FilterLocale locale, String grade) throws TranslatorConfigurationException {
 		BrailleTranslatorFactory template = map.get(toKey(locale, grade));
 		if (template==null) {
 			for (BrailleTranslatorFactory h : factories) {
@@ -80,12 +80,12 @@ public class BrailleTranslatorFactoryMaker implements BrailleTranslatorFactory {
 			}
 		}
 		if (template==null) {
-			throw new UnsupportedSpecificationException("Cannot locate a factory for " + toKey(locale, grade));
+			throw new TranslatorConfigurationException("Cannot locate a factory for " + toKey(locale, grade));
 		}
 		return template;
 	}
 	
-	public BrailleTranslator newTranslator(FilterLocale locale, String grade) throws UnsupportedSpecificationException {
+	public BrailleTranslator newTranslator(FilterLocale locale, String grade) throws TranslatorConfigurationException {
 		return getFactory(locale, grade).newTranslator(locale, grade);
 	}
 }

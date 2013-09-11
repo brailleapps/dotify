@@ -6,26 +6,26 @@ package org.daisy.dotify.hyphenator;
  * @author Joel Håkansson
  *
  */
-public class UnsupportedFeatureException extends Exception {
+public class HyphenatorConfigurationException extends Exception {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7784339351020337103L;
 
-	public UnsupportedFeatureException() {
+	protected HyphenatorConfigurationException() {
 		super();
 	}
 
-	public UnsupportedFeatureException(String message) {
+	protected HyphenatorConfigurationException(String message) {
 		super(message);
 	}
 
-	public UnsupportedFeatureException(Throwable cause) {
+	protected HyphenatorConfigurationException(Throwable cause) {
 		super(cause);
 	}
 
-	public UnsupportedFeatureException(String message, Throwable cause) {
+	protected HyphenatorConfigurationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

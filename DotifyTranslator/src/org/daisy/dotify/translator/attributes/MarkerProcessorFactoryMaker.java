@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
+import org.daisy.dotify.translator.TranslatorConfigurationException;
 
 /**
  * Provides a marker processor factory maker. This class will look for
@@ -68,9 +68,9 @@ public class MarkerProcessorFactoryMaker implements MarkerProcessorFactory {
 	 * @param locale the locale for the factory
 	 * @param grade the grade for the factory
 	 * @return returns a marker processor factory
-	 * @throws UnsupportedSpecificationException if the specification is not supported
+	 * @throws TranslatorConfigurationException if the specification is not supported
 	 */
-	public MarkerProcessorFactory getFactory(FilterLocale locale, String grade) throws UnsupportedSpecificationException {
+	public MarkerProcessorFactory getFactory(FilterLocale locale, String grade) throws MarkerProcessorFactoryMakerException {
 		MarkerProcessorFactory template = map.get(toKey(locale, grade));
 		if (template==null) {
 			for (MarkerProcessorFactory h : factories) {
@@ -83,12 +83,12 @@ public class MarkerProcessorFactoryMaker implements MarkerProcessorFactory {
 			}
 		}
 		if (template==null) {
-			throw new UnsupportedSpecificationException("Cannot locate a factory for " + toKey(locale, grade));
+			throw new MarkerProcessorFactoryMakerException("Cannot locate a factory for " + toKey(locale, grade));
 		}
 		return template;
 	}
 	
-	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String grade) throws UnsupportedSpecificationException {
+	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String grade) throws MarkerProcessorConfigurationException {
 		return getFactory(locale, grade).newMarkerProcessor(locale, grade);
 	}
 }

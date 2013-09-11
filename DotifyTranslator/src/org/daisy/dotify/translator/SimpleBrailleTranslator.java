@@ -3,9 +3,9 @@ package org.daisy.dotify.translator;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.hyphenator.HyphenatorInterface;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;
@@ -46,13 +46,17 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 		this(filter, locale, translatorMode, null);
 	}
 
-	public BrailleTranslatorResult translate(String text, FilterLocale locale, TextAttribute atts) throws UnsupportedLocaleException {
+	public BrailleTranslatorResult translate(String text, FilterLocale locale, TextAttribute atts) throws TranslationException {
 		HyphenatorInterface h = hyphenators.get(locale);
 		if (h == null && isHyphenating()) {
 			// if we're not hyphenating the language in question, we do not
 			// need to
 			// add it, nor throw an exception if it cannot be found.
-			h = hyphenatorFactoryMaker.newHyphenator(locale);
+			try {
+				h = hyphenatorFactoryMaker.newHyphenator(locale);
+			} catch (HyphenatorConfigurationException e) {
+				throw new TranslationException(e);
+			}
 			hyphenators.put(locale, h);
 		}
 		if (tap != null) {
@@ -66,19 +70,19 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 	public BrailleTranslatorResult translate(String text, TextAttribute atts) {
 		try {
 			return translate(text, this.locale, atts);
-		} catch (UnsupportedLocaleException e) {
+		} catch (TranslationException e) {
 			throw new RuntimeException("Coding error. This translator does not support the language it claims to support.");
 		}
 	}
 
-	public BrailleTranslatorResult translate(String text, FilterLocale locale) throws UnsupportedLocaleException {
+	public BrailleTranslatorResult translate(String text, FilterLocale locale) throws TranslationException {
 		return translate(text, locale, null);
 	}
 
 	public BrailleTranslatorResult translate(String text) {
 		try {
 			return translate(text, this.locale);
-		} catch (UnsupportedLocaleException e) {
+		} catch (TranslationException e) {
 			throw new RuntimeException("Coding error. This translator does not support the language it claims to support.");
 		}
 	}
