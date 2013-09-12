@@ -5,15 +5,15 @@ import org.daisy.dotify.text.Integer2Text;
 import org.daisy.dotify.text.Integer2TextConfigurationException;
 import org.daisy.dotify.text.Integer2TextFactory;
 
-public class SwedishInteger2TextFactory implements Integer2TextFactory {
-	private final static FilterLocale sv_SE = FilterLocale.parse("sv-SE");
+public class EnglishInteger2TextFactory implements Integer2TextFactory {
+	private final static FilterLocale en = FilterLocale.parse("en");
 
 	public boolean supportsLocale(FilterLocale locale) {
-		return locale.equals(sv_SE);
+		return locale.equals(en);
 	}
 
 	public Integer2Text newInteger2Text(FilterLocale locale) throws Integer2TextConfigurationException {
-		return new BasicInteger2Text(new SvInt2TextLocalization());
+		return new BasicInteger2Text(new EnInt2TextLocalization());
 	}
 
 	public Object getFeature(String key) {
@@ -21,10 +21,11 @@ public class SwedishInteger2TextFactory implements Integer2TextFactory {
 	}
 
 	public void setFeature(String key, Object value) throws Integer2TextConfigurationException {
-		throw new SwedishInteger2TextConfigurationException();
+		throw new EnglishInteger2TextConfigurationException();
 	}
 	
-	private class SwedishInteger2TextConfigurationException extends Integer2TextConfigurationException {
+	private class EnglishInteger2TextConfigurationException extends
+			Integer2TextConfigurationException {
 
 		/**
 		 * 

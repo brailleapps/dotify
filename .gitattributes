@@ -530,8 +530,13 @@ DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-uk.tex -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-zh-latn-pinyin.tex -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/zh-latn.xml -text
-DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2Text.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/BasicInt2TextLocalization.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/BasicInteger2Text.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/EnInt2TextLocalization.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/EnglishInteger2TextFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/SvInt2TextLocalization.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/text/UndefinedNumberException.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
@@ -596,7 +601,7 @@ DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.jav
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenation2Test.java -text
 DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
-DotifyTranslator/test/org/daisy/dotify/impl/text/SwedishInteger2TextTest.java -text
+DotifyTranslator/test/org/daisy/dotify/impl/text/BasicInteger2TextTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text

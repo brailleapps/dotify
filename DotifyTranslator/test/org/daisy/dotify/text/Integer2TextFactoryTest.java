@@ -10,4 +10,9 @@ public class Integer2TextFactoryTest {
 	public void testSwedishFactoryMaker() throws Integer2TextConfigurationException {
 		assertNotNull(Integer2TextFactoryMaker.newInstance().newInteger2Text(FilterLocale.parse("sv-SE")));
 	}
+
+	@Test
+	public void testEnglishFactoryMaker() throws Integer2TextConfigurationException {
+		assertNotNull(Integer2TextFactoryMaker.newInstance().newInteger2Text(FilterLocale.parse("en")));
+	}
 }
