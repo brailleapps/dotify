@@ -9,7 +9,7 @@
 	<property name="javadoc.dir" value="${ant-output.dir}/docs/javadoc"/>
 
 	<path id="path.lib">
-		<fileset dir="${basedir}/lib">
+		<fileset dir="../DotifyShared">
 			<include name="*.jar"/>
 		</fileset>
 	</path>
