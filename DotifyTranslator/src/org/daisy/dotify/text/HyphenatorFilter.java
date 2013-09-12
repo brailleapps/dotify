@@ -1,7 +1,8 @@
-package org.daisy.dotify.hyphenator;
+package org.daisy.dotify.text;
 
-import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
+import org.daisy.dotify.hyphenator.spi.HyphenatorFactoryMaker;
 
 /**
  * Provides a hyphenating string filter. This filter will hyphenate the

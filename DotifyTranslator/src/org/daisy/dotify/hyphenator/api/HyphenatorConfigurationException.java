@@ -1,4 +1,4 @@
-package org.daisy.dotify.hyphenator;
+package org.daisy.dotify.hyphenator.api;
 
 /**
  * Provides an exception that indicates that a feature is not supported.

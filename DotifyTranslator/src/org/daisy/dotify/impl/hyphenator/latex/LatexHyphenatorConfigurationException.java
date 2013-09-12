@@ -1,6 +1,6 @@
 package org.daisy.dotify.impl.hyphenator.latex;
 
-import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
 
 class LatexHyphenatorConfigurationException extends
 		HyphenatorConfigurationException {

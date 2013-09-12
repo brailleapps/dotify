@@ -1,6 +1,4 @@
-package org.daisy.dotify.hyphenator;
-
-import org.daisy.dotify.text.FilterLocale;
+package org.daisy.dotify.hyphenator.api;
 
 /**
  * Provides a hyphenation factory interface. This interface is used to retreive
@@ -12,22 +10,27 @@ import org.daisy.dotify.text.FilterLocale;
 public interface HyphenatorFactory {
 
 	/**
-	 * Returns true if this instance can create instances for the specified locale.
+	 * Returns true if this instance can create instances for the specified
+	 * locale.
+	 * 
 	 * @param locale
-	 * @return returns true if the specified locale is supported, false otherwise
+	 *            a valid locale as defined by IETF RFC 3066
+	 * @return returns true if the specified locale is supported, false
+	 *         otherwise
 	 */
-	public boolean supportsLocale(FilterLocale locale);
+	public boolean supportsLocale(String locale);
 	
 	/**
 	 * Returns a new hyphenator configured for the specified locale.
 	 * 
 	 * @param locale
-	 *            the locale for the new hyphenator
+	 *            a valid locale for the new hyphenator, as defined by IETF RFC
+	 *            3066
 	 * @return returns a new hyphenator
 	 * @throws HyphenatorConfigurationException
 	 *             if the locale is not supported
 	 */
-	public HyphenatorInterface newHyphenator(FilterLocale locale) throws HyphenatorConfigurationException;
+	public HyphenatorInterface newHyphenator(String locale) throws HyphenatorConfigurationException;
 	
 	/**
 	 * Gets the value of a hyphenation feature.

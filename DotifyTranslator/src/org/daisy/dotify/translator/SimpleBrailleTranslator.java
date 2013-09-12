@@ -3,9 +3,9 @@ package org.daisy.dotify.translator;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
-import org.daisy.dotify.hyphenator.HyphenatorFactoryMaker;
-import org.daisy.dotify.hyphenator.HyphenatorInterface;
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
+import org.daisy.dotify.hyphenator.spi.HyphenatorFactoryMaker;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.StringFilter;

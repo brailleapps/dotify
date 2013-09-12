@@ -1,4 +1,4 @@
-package org.daisy.dotify.hyphenator;
+package org.daisy.dotify.hyphenator.api;
 
 /**
  * Provides a catalog of common hyphenation features. These can be used when getting or

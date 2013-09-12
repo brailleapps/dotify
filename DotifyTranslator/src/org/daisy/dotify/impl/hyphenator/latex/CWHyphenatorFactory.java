@@ -2,21 +2,21 @@ package org.daisy.dotify.impl.hyphenator.latex;
 
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.HyphenationFeatures;
-import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
-import org.daisy.dotify.hyphenator.HyphenatorFactory;
-import org.daisy.dotify.hyphenator.HyphenatorInterface;
+import org.daisy.dotify.hyphenator.api.HyphenationFeatures;
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorFactory;
+import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
 import org.daisy.dotify.text.FilterLocale;
 
 public class CWHyphenatorFactory implements HyphenatorFactory {
 	private int accuracy = 5;
 
-	public boolean supportsLocale(FilterLocale locale) {
-		return CWHyphenator.supportsLocale(locale);
+	public boolean supportsLocale(String locale) {
+		return CWHyphenator.supportsLocale(FilterLocale.parse(locale));
 	}
 
-	public HyphenatorInterface newHyphenator(FilterLocale locale) throws HyphenatorConfigurationException {
-		return new CWHyphenator(locale, accuracy);
+	public HyphenatorInterface newHyphenator(String locale) throws HyphenatorConfigurationException {
+		return new CWHyphenator(FilterLocale.parse(locale), accuracy);
 	}
 
 	public Object getFeature(String key) {

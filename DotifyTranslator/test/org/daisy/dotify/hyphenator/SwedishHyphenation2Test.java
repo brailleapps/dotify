@@ -2,6 +2,10 @@ package org.daisy.dotify.hyphenator;
 
 import static org.junit.Assert.assertEquals;
 
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorFactory;
+import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
+import org.daisy.dotify.hyphenator.spi.HyphenatorFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,7 +19,7 @@ public class SwedishHyphenation2Test {
 			HyphenatorFactory hf = HyphenatorFactoryMaker.newInstance().getFactory(locale);
 			//if this is set to 3 (using only patterns) several tests will fail 
 			//hf.setFeature(HyphenationFeatures.HYPHENATION_ACCURACY, 3);
-			h2 = hf.newHyphenator(locale);
+			h2 = hf.newHyphenator(locale.toString());
 		} catch (HyphenatorConfigurationException e) {
 			h2 = null;
 		}

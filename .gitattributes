@@ -368,19 +368,18 @@ DotifyTranslator/build-doc.xml -text
 DotifyTranslator/build-properties.xml -text
 DotifyTranslator/build.xml -text
 DotifyTranslator/logging.properties -text
-DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.HyphenatorFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.api.HyphenatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.text.Integer2TextFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.BrailleTranslatorFactory -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedBrailleFilter -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.attributes.MarkerProcessorFactory -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/AbstractHyphenator.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenationFeatures.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorConfigurationException.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactory.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFactoryMaker.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorFilter.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/HyphenatorInterface.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenationFeatures.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenatorConfigurationException.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenatorFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenatorInterface.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/api/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/hyphenator/spi/HyphenatorFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/AbstractHyphenator.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWDecompounder.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenationUnit.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenator.java -text
@@ -553,6 +552,7 @@ DotifyTranslator/src/org/daisy/dotify/text/CharFilter.java -text svneol=unset#te
 DotifyTranslator/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/FilterFactory.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/text/HyphenatorFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/text/IdentityFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/text/Integer2Text.java -text
 DotifyTranslator/src/org/daisy/dotify/text/Integer2TextConfigurationException.java -text

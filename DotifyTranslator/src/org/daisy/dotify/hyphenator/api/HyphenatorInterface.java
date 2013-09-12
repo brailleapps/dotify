@@ -1,4 +1,4 @@
-package org.daisy.dotify.hyphenator;
+package org.daisy.dotify.hyphenator.api;
 
 
 /**

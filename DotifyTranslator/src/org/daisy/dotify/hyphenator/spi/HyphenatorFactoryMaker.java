@@ -1,4 +1,4 @@
-package org.daisy.dotify.hyphenator;
+package org.daisy.dotify.hyphenator.spi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,9 @@ import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
 
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorFactory;
+import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
 import org.daisy.dotify.text.FilterLocale;
 
 /**
@@ -77,7 +80,7 @@ public class HyphenatorFactoryMaker {
 		HyphenatorFactory template = map.get(target);
 		if (template==null) {
 			for (HyphenatorFactory h : filters) {
-				if (h.supportsLocale(target)) {
+				if (h.supportsLocale(target.toString())) {
 					logger.fine("Found a hyphenator factory for " + target + " (" + h.getClass() + ")");
 					map.put(target, h);
 					template = h;
@@ -86,7 +89,7 @@ public class HyphenatorFactoryMaker {
 			}
 		}
 		if (template==null) {
-			throw new HyphenatorConfigurationException("Cannot find hyphenator factory for " + target);
+			throw new HyphenatorFactoryMakerConfigurationException("Cannot find hyphenator factory for " + target);
 		}
 		return template;
 	}
@@ -104,7 +107,7 @@ public class HyphenatorFactoryMaker {
 	 *             if the locale is not supported
 	 */
 	public HyphenatorInterface newHyphenator(FilterLocale target) throws HyphenatorConfigurationException {
-		HyphenatorInterface ret = getFactory(target).newHyphenator(target);
+		HyphenatorInterface ret = getFactory(target).newHyphenator(target.toString());
 		if (beginLimit!=null) {
 			ret.setBeginLimit(beginLimit);
 		}
@@ -112,6 +115,20 @@ public class HyphenatorFactoryMaker {
 			ret.setEndLimit(endLimit);
 		}
 		return ret;
+	}
+	
+	private class HyphenatorFactoryMakerConfigurationException extends HyphenatorConfigurationException {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8869650439082769112L;
+
+		HyphenatorFactoryMakerConfigurationException(String message) {
+			super(message);
+			// TODO Auto-generated constructor stub
+		}
+		
 	}
 
 }

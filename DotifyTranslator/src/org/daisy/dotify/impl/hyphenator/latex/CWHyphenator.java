@@ -1,7 +1,6 @@
 package org.daisy.dotify.impl.hyphenator.latex;
 
-import org.daisy.dotify.hyphenator.AbstractHyphenator;
-import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 
 class CWHyphenator extends AbstractHyphenator {

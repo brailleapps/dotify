@@ -2,6 +2,8 @@ package org.daisy.dotify.hyphenator;
 
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.spi.HyphenatorFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 

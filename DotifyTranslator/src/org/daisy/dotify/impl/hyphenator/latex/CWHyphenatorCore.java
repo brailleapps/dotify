@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 
 public class CWHyphenatorCore {
