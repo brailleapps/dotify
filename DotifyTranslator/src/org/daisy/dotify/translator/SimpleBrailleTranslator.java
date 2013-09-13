@@ -12,8 +12,6 @@ import org.daisy.dotify.api.translator.StringFilter;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
-import org.daisy.dotify.text.BreakPointHandler;
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a simple braille translator that translates
@@ -26,26 +24,26 @@ import org.daisy.dotify.text.FilterLocale;
  *
  */
 public class SimpleBrailleTranslator implements BrailleTranslator {
-	private final FilterLocale locale;
+	private final String locale;
 	private final String translatorMode;
 	private final StringFilter filter;
 	private final MarkerProcessor tap;
 	private final HyphenatorFactoryMaker hyphenatorFactoryMaker;
-	private final Map<FilterLocale, HyphenatorInterface> hyphenators;
+	private final Map<String, HyphenatorInterface> hyphenators;
 	
 	private boolean hyphenating;
 	
-	public SimpleBrailleTranslator(StringFilter filter, FilterLocale locale, String translatorMode, MarkerProcessor tap) {
+	public SimpleBrailleTranslator(StringFilter filter, String locale, String translatorMode, MarkerProcessor tap) {
 		this.filter = filter;
 		this.locale = locale;
 		this.translatorMode = translatorMode;
 		this.tap = tap;
 		this.hyphenating = true;
-		this.hyphenators = new HashMap<FilterLocale, HyphenatorInterface>();
+		this.hyphenators = new HashMap<String, HyphenatorInterface>();
 		this.hyphenatorFactoryMaker = HyphenatorFactoryMaker.newInstance();
 	}
 
-	public SimpleBrailleTranslator(StringFilter filter, FilterLocale locale, String translatorMode) {
+	public SimpleBrailleTranslator(StringFilter filter, String locale, String translatorMode) {
 		this(filter, locale, translatorMode, null);
 	}
 
@@ -60,7 +58,7 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 			} catch (HyphenatorConfigurationException e) {
 				throw new SimpleBrailleTranslationException(e);
 			}
-			hyphenators.put(FilterLocale.parse(locale), h);
+			hyphenators.put(locale, h);
 		}
 		if (tap != null) {
 			text = tap.processAttributes(atts, text);

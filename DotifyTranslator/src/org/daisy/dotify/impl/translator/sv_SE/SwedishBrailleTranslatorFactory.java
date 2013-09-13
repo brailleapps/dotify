@@ -5,18 +5,17 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.SimpleBrailleTranslator;
 
 public class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
-	private final static FilterLocale sv_SE = FilterLocale.parse("sv-SE");
+	private final static String sv_SE = "sv-SE";
 	
 	public boolean supportsSpecification(String locale, String mode) {
-		return FilterLocale.parse(locale).equals(sv_SE) && mode.equals(MODE_UNCONTRACTED);
+		return locale.equals(sv_SE) && mode.equals(MODE_UNCONTRACTED);
 	}
 
 	public BrailleTranslator newTranslator(String locale, String mode) throws TranslatorConfigurationException {
-		if (FilterLocale.parse(locale).equals(sv_SE) && mode.equals(MODE_UNCONTRACTED)) {
+		if (locale.equals(sv_SE) && mode.equals(MODE_UNCONTRACTED)) {
 
 			MarkerProcessor sap;
 			try {
@@ -25,7 +24,7 @@ public class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory
 				throw new SwedishTranslatorConfigurationException(e);
 			}
 
-			return new SimpleBrailleTranslator(new SwedishBrailleFilter(), sv_SE, mode, sap);
+			return new SimpleBrailleTranslator(new SwedishBrailleFilter(), sv_SE.toString(), mode, sap);
 		} 
 		throw new SwedishTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);
 	}
