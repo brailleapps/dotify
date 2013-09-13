@@ -2,8 +2,6 @@ package org.daisy.dotify.impl.input;
 
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.impl.input.XMLInputManagerFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
@@ -19,7 +17,7 @@ public class XMLInputManagerFactoryTest {
 	}
 	
 	@Test
-	public void testLocateInputManagerForEnglish() throws UnsupportedLocaleException {
+	public void testLocateInputManagerForEnglish() {
 		//Setup
 		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		FilterLocale filter = FilterLocale.parse("en-US");
@@ -30,7 +28,7 @@ public class XMLInputManagerFactoryTest {
 
 	
 	@Test
-	public void testLocateInputManagerForSwedish() throws UnsupportedLocaleException {
+	public void testLocateInputManagerForSwedish() {
 		//Setup
 		XMLInputManagerFactory factory = new XMLInputManagerFactory();
 		FilterLocale filter = FilterLocale.parse("sv-SE");

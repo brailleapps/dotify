@@ -3,11 +3,11 @@ package org.daisy.dotify.paginator;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.translator.BrailleTranslator;
 import org.daisy.dotify.writer.PagedMediaWriter;
 
 

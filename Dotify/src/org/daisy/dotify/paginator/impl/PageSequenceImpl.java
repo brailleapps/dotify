@@ -3,11 +3,11 @@ package org.daisy.dotify.paginator.impl;
 import java.util.HashMap;
 import java.util.Stack;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PageSequence;
-import org.daisy.dotify.translator.BrailleTranslator;
 
 class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;

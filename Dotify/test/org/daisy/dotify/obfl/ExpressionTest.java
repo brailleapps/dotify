@@ -119,9 +119,9 @@ public class ExpressionTest {
 		assertEquals("två", e.evaluate("(int2text (round 2.3) sv-se)"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testExpression_int2text_03() {
-		e.evaluate("(int2text (round 2.3) en)");
+		assertEquals("two", e.evaluate("(int2text (round 2.3) en)"));
 	}
 
 	@Test
@@ -132,6 +132,11 @@ public class ExpressionTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testExpression_int2text_05() {
 		e.evaluate("(int2text 2.3 sv-se)");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExpression_int2text_06() {
+		e.evaluate("(int2text 1.0 fi)");
 	}
 
 	@Test

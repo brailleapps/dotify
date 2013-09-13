@@ -3,10 +3,10 @@ package org.daisy.dotify.paginator.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.text.TextBorderStyle;
 import org.daisy.dotify.tools.StringTools;
-import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 /**
  * Provides a way to add a border to a set of paragraphs.

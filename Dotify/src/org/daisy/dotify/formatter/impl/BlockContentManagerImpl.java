@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
+import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 class BlockContentManagerImpl implements BlockContentManager {
 	private boolean isVolatile;
@@ -131,8 +131,8 @@ class BlockContentManagerImpl implements BlockContentManager {
 		BrailleTranslatorResult btr;
 		if (locale!=null) {
 			try {
-				btr = rdp.getTranslator().translate(c.toString(), locale);
-			} catch (UnsupportedLocaleException e) {
+				btr = rdp.getTranslator().translate(c.toString(), locale.toString());
+			} catch (TranslationException e) {
 				e.printStackTrace();
 				btr = rdp.getTranslator().translate(c.toString());
 			}

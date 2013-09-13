@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PageSequence;
 import org.daisy.dotify.paginator.PageStruct;
-import org.daisy.dotify.translator.BrailleTranslator;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	//private final StringFilter filters;

@@ -9,8 +9,11 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.book.BookStruct;
 import org.daisy.dotify.book.Volume;
+import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 import org.daisy.dotify.obfl.OBFLParserException;
 import org.daisy.dotify.obfl.ObflParser;
 import org.daisy.dotify.obfl.ObflResourceLocator;
@@ -18,9 +21,6 @@ import org.daisy.dotify.obfl.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.BrailleTranslator;
-import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
 import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.PagedMediaWriterException;
 import org.daisy.dotify.writer.WriterHandler;
@@ -61,8 +61,8 @@ public class LayoutEngineTask extends ReadWriteTask  {
 
 	private BrailleTranslator getTranslator(FilterLocale locale, String mode) {
 		try {
-			return BrailleTranslatorFactoryMaker.newInstance().newTranslator(locale, mode);
-		} catch (UnsupportedSpecificationException e) {
+			return BrailleTranslatorFactoryMaker.newInstance().newTranslator(locale.toString(), mode);
+		} catch (TranslatorConfigurationException e) {
 			return null;
 		}
 	}

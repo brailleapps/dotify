@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.paginator.Page;
@@ -16,7 +17,6 @@ import org.daisy.dotify.paginator.PaginatorFactoryMaker;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.tools.CompoundIterable;
-import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
  * Provides a default implementation of BookStruct

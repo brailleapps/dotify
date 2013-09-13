@@ -3,6 +3,9 @@ package org.daisy.dotify.paginator.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.formatter.CompoundField;
 import org.daisy.dotify.formatter.CurrentPageField;
 import org.daisy.dotify.formatter.Field;
@@ -13,10 +16,7 @@ import org.daisy.dotify.formatter.PageTemplate;
 import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.paginator.Page;
 import org.daisy.dotify.paginator.PaginatorException;
-import org.daisy.dotify.text.TextBorderStyle;
 import org.daisy.dotify.tools.StringTools;
-import org.daisy.dotify.translator.BrailleTranslator;
-import org.daisy.dotify.translator.BrailleTranslatorResult;
 
 
 

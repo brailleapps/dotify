@@ -3,6 +3,9 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.Stack;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.TranslatorConfigurationException;
+import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.Formatter;
@@ -12,14 +15,11 @@ import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
-import org.daisy.dotify.formatter.impl.BlockHandler.ListItem;
 import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.formatter.impl.BlockHandler.ListItem;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.StateObject;
-import org.daisy.dotify.translator.BrailleTranslator;
-import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
 
 
 /**
@@ -65,8 +65,8 @@ class FormatterImpl implements Formatter {
 
 	private BrailleTranslator getTranslator(FilterLocale locale, String mode) {
 		try {
-			return BrailleTranslatorFactoryMaker.newInstance().newTranslator(locale, mode);
-		} catch (UnsupportedSpecificationException e) {
+			return BrailleTranslatorFactoryMaker.newInstance().newTranslator(locale.toString(), mode);
+		} catch (TranslatorConfigurationException e) {
 			return null;
 		}
 	}

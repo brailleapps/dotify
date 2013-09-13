@@ -6,11 +6,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.Integer2Text;
-import org.daisy.dotify.text.Integer2TextFactoryMaker;
-import org.daisy.dotify.text.IntegerOutOfRange;
+import org.daisy.dotify.api.text.Integer2Text;
+import org.daisy.dotify.api.text.Integer2TextConfigurationException;
+import org.daisy.dotify.api.text.IntegerOutOfRange;
+import org.daisy.dotify.consumer.text.Integer2TextFactoryMaker;
 
 /**
  * <p>
@@ -317,8 +316,8 @@ public class Expression {
 		}
 		Integer2Text t;
 		try {
-			t = integer2textFactoryMaker.newInteger2Text(FilterLocale.parse(input[1].toString()));
-		} catch (UnsupportedLocaleException e) {
+			t = integer2textFactoryMaker.newInteger2Text(input[1].toString());
+		} catch (Integer2TextConfigurationException e) {
 			throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
 		}
 		try {

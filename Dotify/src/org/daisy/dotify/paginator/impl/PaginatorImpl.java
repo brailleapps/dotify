@@ -2,6 +2,7 @@ package org.daisy.dotify.paginator.impl;
 
 import java.io.IOException;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.Block;
 import org.daisy.dotify.formatter.BlockContentManager;
 import org.daisy.dotify.formatter.BlockSequence;
@@ -11,7 +12,6 @@ import org.daisy.dotify.paginator.PageStruct;
 import org.daisy.dotify.paginator.Paginator;
 import org.daisy.dotify.paginator.PaginatorException;
 import org.daisy.dotify.tools.StateObject;
-import org.daisy.dotify.translator.BrailleTranslator;
 
 /**
  * Provides an implementation of the paginator interface. This class should

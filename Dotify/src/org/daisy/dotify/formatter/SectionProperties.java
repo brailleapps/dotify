@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.text.TextBorderStyle;
+import org.daisy.dotify.api.translator.TextBorderStyle;
 
 
 /**

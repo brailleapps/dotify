@@ -1,8 +1,8 @@
 package org.daisy.dotify.formatter.impl;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.translator.BrailleTranslator;
 
 class RowDataProperties {
 	private final int blockIndent, blockIndentParent;

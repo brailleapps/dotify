@@ -2,9 +2,9 @@ package org.daisy.dotify.obfl;
 
 import java.util.ArrayList;
 
+import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.PageTemplate;
-import org.daisy.dotify.text.TextBorderStyle;
 
 /**
  * ConfigurableLayoutMaster will ensure that the LayoutMaster measurements adds up.

@@ -20,7 +20,15 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
+import org.daisy.dotify.api.translator.MarkerProcessor;
+import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
+import org.daisy.dotify.api.translator.TextAttribute;
+import org.daisy.dotify.api.translator.TextBorderConfigurationException;
+import org.daisy.dotify.api.translator.TextBorderFactory;
+import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.book.VolumeContentFormatter;
+import org.daisy.dotify.consumer.translator.MarkerProcessorFactoryMaker;
+import org.daisy.dotify.consumer.translator.TextBorderFactoryMaker;
 import org.daisy.dotify.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.BlockStruct;
@@ -44,13 +52,7 @@ import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.obfl.EventContents.ContentType;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.TextBorderStyle;
-import org.daisy.dotify.translator.TextBorderFactory;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
-import org.daisy.dotify.translator.attributes.DefaultTextAttribute;
-import org.daisy.dotify.translator.attributes.MarkerProcessor;
-import org.daisy.dotify.translator.attributes.MarkerProcessorFactoryMaker;
-import org.daisy.dotify.translator.attributes.TextAttribute;
+import org.daisy.dotify.translator.DefaultTextAttribute;
 import org.daisy.dotify.writer.MetaDataItem;
 
 /**
@@ -76,8 +78,8 @@ public class ObflParser {
 		this.locale = locale;
 		this.mode = mode;
 		try {
-			mp = MarkerProcessorFactoryMaker.newInstance().newMarkerProcessor(locale, mode);
-		} catch (UnsupportedSpecificationException e) {
+			mp = MarkerProcessorFactoryMaker.newInstance().newMarkerProcessor(locale.toString(), mode);
+		} catch (MarkerProcessorConfigurationException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
@@ -222,7 +224,14 @@ public class ObflParser {
 				masterConfig.duplex(value.equals("true"));
 			} else if (name.equals("frame")) {
 				HashSet<String> set = new HashSet<String>(Arrays.asList(value.split(" ")));
-				TextBorderStyle style = TextBorderFactory.newInstance().newTextBorderStyle(formatter.getTranslator().getTranslatorMode(), set);
+				TextBorderFactoryMaker maker = TextBorderFactoryMaker.newInstance();
+				maker.setFeature(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
+				maker.setFeature(TextBorderFactory.FEATURE_STYLE, set);
+				TextBorderStyle style = null;
+				try {
+					style = maker.newTextBorderStyle();
+				} catch (TextBorderConfigurationException e) {
+				}
 				masterConfig.frame(style);
 			}
 		}

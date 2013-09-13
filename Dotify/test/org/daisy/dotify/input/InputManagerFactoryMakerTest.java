@@ -2,8 +2,6 @@ package org.daisy.dotify.input;
 
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.hyphenator.UnsupportedLocaleException;
-import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
@@ -19,7 +17,7 @@ public class InputManagerFactoryMakerTest {
 	}
 	
 	@Test
-	public void testGetFactoryForEnglish() throws UnsupportedLocaleException {
+	public void testGetFactoryForEnglish() {
 		//Setup
 		InputManagerFactoryMaker factory = InputManagerFactoryMaker.newInstance();
 		FilterLocale locale = FilterLocale.parse("en-US");
