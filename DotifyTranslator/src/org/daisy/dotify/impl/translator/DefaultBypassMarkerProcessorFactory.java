@@ -1,11 +1,11 @@
 package org.daisy.dotify.impl.translator;
 
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.api.translator.Marker;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.MarkerProcessorFactory;
 import org.daisy.dotify.translator.DefaultMarkerProcessor;
+import org.daisy.dotify.translator.Marker;
 import org.daisy.dotify.translator.MarkerStyleConstants;
 import org.daisy.dotify.translator.SimpleMarkerDictionary;
 

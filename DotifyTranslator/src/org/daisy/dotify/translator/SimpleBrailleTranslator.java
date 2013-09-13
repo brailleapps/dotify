@@ -8,10 +8,11 @@ import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.MarkerProcessor;
-import org.daisy.dotify.api.translator.StringFilter;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
+import org.daisy.dotify.text.BreakPointHandler;
+import org.daisy.dotify.text.StringFilter;
 
 /**
  * Provides a simple braille translator that translates

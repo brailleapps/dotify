@@ -2,7 +2,6 @@ package org.daisy.dotify.text;
 
 import java.net.URL;
 
-import org.daisy.dotify.api.translator.StringFilter;
 
 
 /**

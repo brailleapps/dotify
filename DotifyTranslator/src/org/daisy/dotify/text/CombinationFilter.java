@@ -2,7 +2,6 @@ package org.daisy.dotify.text;
 
 import java.util.ArrayList;
 
-import org.daisy.dotify.api.translator.StringFilter;
 
 
 /**

@@ -1,4 +1,6 @@
-package org.daisy.dotify.api.translator;
+package org.daisy.dotify.translator;
+
+import org.daisy.dotify.text.StringFilter;
 
 
 

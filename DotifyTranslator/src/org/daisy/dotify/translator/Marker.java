@@ -1,4 +1,4 @@
-package org.daisy.dotify.api.translator;
+package org.daisy.dotify.translator;
 
 /**
  * Provides a marker definition that can be used when applying markers to a

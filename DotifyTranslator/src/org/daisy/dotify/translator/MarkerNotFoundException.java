@@ -1,4 +1,4 @@
-package org.daisy.dotify.api.translator;
+package org.daisy.dotify.translator;
 
 public class MarkerNotFoundException extends Exception {
 

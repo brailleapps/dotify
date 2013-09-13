@@ -1,4 +1,4 @@
-package org.daisy.dotify.api.translator;
+package org.daisy.dotify.text;
 
 /**
  * StringFilter is in interface used when replacing a string with another string.

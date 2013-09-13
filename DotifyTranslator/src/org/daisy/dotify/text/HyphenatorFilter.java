@@ -2,7 +2,6 @@ package org.daisy.dotify.text;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
-import org.daisy.dotify.api.translator.StringFilter;
 import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 
 /**

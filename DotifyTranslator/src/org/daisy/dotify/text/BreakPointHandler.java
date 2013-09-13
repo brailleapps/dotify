@@ -1,4 +1,4 @@
-package org.daisy.dotify.translator;
+package org.daisy.dotify.text;
 
 import java.util.regex.Pattern;
 

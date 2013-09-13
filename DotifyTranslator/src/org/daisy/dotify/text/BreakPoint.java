@@ -1,4 +1,4 @@
-package org.daisy.dotify.translator;
+package org.daisy.dotify.text;
 
 /**
  * <p>A BreakPoint is a data object to keep the information about a break point result.

@@ -1,9 +1,5 @@
 package org.daisy.dotify.translator;
 
-import org.daisy.dotify.api.translator.Marker;
-import org.daisy.dotify.api.translator.MarkerDictionary;
-import org.daisy.dotify.api.translator.MarkerNotCompatibleException;
-import org.daisy.dotify.api.translator.MarkerNotFoundException;
 import org.daisy.dotify.api.translator.TextAttribute;
 
 

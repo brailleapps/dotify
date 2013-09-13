@@ -1,9 +1,9 @@
-package org.daisy.dotify.translator;
+package org.daisy.dotify.text;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.translator.BreakPoint;
-import org.daisy.dotify.translator.BreakPointHandler;
+import org.daisy.dotify.text.BreakPoint;
+import org.daisy.dotify.text.BreakPointHandler;
 import org.junit.Test;
 
 public class BreakPointHandlerTest {

@@ -2,8 +2,8 @@ package org.daisy.dotify.impl.translator.sv_SE;
 
 import java.util.regex.Pattern;
 
-import org.daisy.dotify.api.translator.StringFilter;
 import org.daisy.dotify.text.SplitResult;
+import org.daisy.dotify.text.StringFilter;
 import org.daisy.dotify.text.StringSplitter;
 
 
