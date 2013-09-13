@@ -12,7 +12,6 @@ import javax.imageio.spi.ServiceRegistry;
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactory;
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a hyphenator factory maker. This is the entry point for
@@ -22,7 +21,7 @@ import org.daisy.dotify.text.FilterLocale;
  */
 public class HyphenatorFactoryMaker {
 	private final List<HyphenatorFactory> filters;
-	private final Map<FilterLocale, HyphenatorFactory> map;
+	private final Map<String, HyphenatorFactory> map;
 	private final Logger logger;
 	
 	private Integer beginLimit, endLimit;
@@ -34,7 +33,7 @@ public class HyphenatorFactoryMaker {
 		while (i.hasNext()) {
 			filters.add(i.next());
 		}
-		this.map = new HashMap<FilterLocale, HyphenatorFactory>();
+		this.map = new HashMap<String, HyphenatorFactory>();
 		beginLimit = null;
 		endLimit = null;
 	}
@@ -76,11 +75,11 @@ public class HyphenatorFactoryMaker {
 	 * @throws HyphenatorConfigurationException
 	 *             if the locale is not supported
 	 */
-	public HyphenatorFactory getFactory(FilterLocale target) throws HyphenatorConfigurationException {
+	public HyphenatorFactory getFactory(String target) throws HyphenatorConfigurationException {
 		HyphenatorFactory template = map.get(target);
 		if (template==null) {
 			for (HyphenatorFactory h : filters) {
-				if (h.supportsLocale(target.toString())) {
+				if (h.supportsLocale(target)) {
 					logger.fine("Found a hyphenator factory for " + target + " (" + h.getClass() + ")");
 					map.put(target, h);
 					template = h;
@@ -106,8 +105,8 @@ public class HyphenatorFactoryMaker {
 	 * @throws HyphenatorConfigurationException
 	 *             if the locale is not supported
 	 */
-	public HyphenatorInterface newHyphenator(FilterLocale target) throws HyphenatorConfigurationException {
-		HyphenatorInterface ret = getFactory(target).newHyphenator(target.toString());
+	public HyphenatorInterface newHyphenator(String target) throws HyphenatorConfigurationException {
+		HyphenatorInterface ret = getFactory(target).newHyphenator(target);
 		if (beginLimit!=null) {
 			ret.setBeginLimit(beginLimit);
 		}

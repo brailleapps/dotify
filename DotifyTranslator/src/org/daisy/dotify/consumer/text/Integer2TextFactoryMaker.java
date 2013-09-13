@@ -12,7 +12,6 @@ import javax.imageio.spi.ServiceRegistry;
 import org.daisy.dotify.api.text.Integer2Text;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
 import org.daisy.dotify.api.text.Integer2TextFactory;
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a integer2text factory maker. This is the entry point for
@@ -22,7 +21,7 @@ import org.daisy.dotify.text.FilterLocale;
  */
 public class Integer2TextFactoryMaker {
 	private final List<Integer2TextFactory> filters;
-	private final Map<FilterLocale, Integer2TextFactory> map;
+	private final Map<String, Integer2TextFactory> map;
 	private final Logger logger;
 
 	protected Integer2TextFactoryMaker() {
@@ -32,7 +31,7 @@ public class Integer2TextFactoryMaker {
 		while (i.hasNext()) {
 			filters.add(i.next());
 		}
-		this.map = new HashMap<FilterLocale, Integer2TextFactory>();
+		this.map = new HashMap<String, Integer2TextFactory>();
 	}
 	
 	/**
@@ -57,11 +56,11 @@ public class Integer2TextFactoryMaker {
 	 * @throws Integer2TextFactoryMakerException
 	 *             if the locale is not supported
 	 */
-	public Integer2TextFactory getFactory(FilterLocale target) throws Integer2TextConfigurationException {
+	public Integer2TextFactory getFactory(String target) throws Integer2TextConfigurationException {
 		Integer2TextFactory template = map.get(target);
 		if (template==null) {
 			for (Integer2TextFactory h : filters) {
-				if (h.supportsLocale(target.toString())) {
+				if (h.supportsLocale(target)) {
 					logger.fine("Found an integer2text factory for " + target + " (" + h.getClass() + ")");
 					map.put(target, h);
 					template = h;
@@ -87,8 +86,8 @@ public class Integer2TextFactoryMaker {
 	 * @throws UnsupportedLocaleException
 	 *             if the locale is not supported
 	 */
-	public Integer2Text newInteger2Text(FilterLocale target) throws Integer2TextConfigurationException {
-		return getFactory(target).newInteger2Text(target.toString());
+	public Integer2Text newInteger2Text(String target) throws Integer2TextConfigurationException {
+		return getFactory(target).newInteger2Text(target);
 	}
 	
 	private class Integer2TextFactoryMakerConfigurationException extends Integer2TextConfigurationException {

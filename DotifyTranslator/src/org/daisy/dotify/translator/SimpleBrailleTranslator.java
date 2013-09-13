@@ -56,7 +56,7 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 			// need to
 			// add it, nor throw an exception if it cannot be found.
 			try {
-				h = hyphenatorFactoryMaker.newHyphenator(FilterLocale.parse(locale));
+				h = hyphenatorFactoryMaker.newHyphenator(locale);
 			} catch (HyphenatorConfigurationException e) {
 				throw new SimpleBrailleTranslationException(e);
 			}

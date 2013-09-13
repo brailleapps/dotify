@@ -6,7 +6,6 @@ import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactory;
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
-import org.daisy.dotify.text.FilterLocale;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -15,11 +14,11 @@ public class SwedishHyphenationTest {
 	public SwedishHyphenationTest() throws HyphenatorConfigurationException {
 		HyphenatorInterface h2;
 		try {
-			FilterLocale locale = FilterLocale.parse("sv-SE");
+			String locale = "sv-SE";
 			HyphenatorFactory hf = HyphenatorFactoryMaker.newInstance().getFactory(locale);
 			//if this is set to 3 (using only patterns) several tests will fail 
 			//hf.setFeature(HyphenationFeatures.HYPHENATION_ACCURACY, 3);
-			h2 = hf.newHyphenator(locale.toString());
+			h2 = hf.newHyphenator(locale);
 		} catch (HyphenatorConfigurationException e) {
 			h2 = null;
 		}

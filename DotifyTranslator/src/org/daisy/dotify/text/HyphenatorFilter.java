@@ -15,7 +15,7 @@ import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 public class HyphenatorFilter implements StringFilter {
 	private final HyphenatorInterface hyphenator;
 
-	public HyphenatorFilter(FilterLocale locale) throws HyphenatorConfigurationException {
+	public HyphenatorFilter(String locale) throws HyphenatorConfigurationException {
 		this(HyphenatorFactoryMaker.newInstance().newHyphenator(locale));
 	}
 	

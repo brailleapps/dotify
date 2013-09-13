@@ -12,7 +12,6 @@ import javax.imageio.spi.ServiceRegistry;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a braille translator factory maker. This class will look for 
@@ -54,12 +53,12 @@ public class BrailleTranslatorFactoryMaker implements BrailleTranslatorFactory {
 		return new BrailleTranslatorFactoryMaker();
 	}
 	
-	private static String toKey(FilterLocale locale, String grade) {
-		return locale.toString() + "(" + grade + ")";
+	private static String toKey(String locale, String grade) {
+		return locale + "(" + grade + ")";
 	}
 	
 	public boolean supportsSpecification(String locale, String grade) {
-		return map.get(toKey(FilterLocale.parse(locale), grade)) != null;
+		return map.get(toKey(locale, grade)) != null;
 	}
 	
 	/**
@@ -70,11 +69,11 @@ public class BrailleTranslatorFactoryMaker implements BrailleTranslatorFactory {
 	 * @return returns a braille translator factory
 	 * @throws TranslatorConfigurationException if the specification is not supported
 	 */
-	public BrailleTranslatorFactory getFactory(FilterLocale locale, String grade) throws TranslatorConfigurationException {
+	public BrailleTranslatorFactory getFactory(String locale, String grade) throws TranslatorConfigurationException {
 		BrailleTranslatorFactory template = map.get(toKey(locale, grade));
 		if (template==null) {
 			for (BrailleTranslatorFactory h : factories) {
-				if (h.supportsSpecification(locale.toString(), grade)) {
+				if (h.supportsSpecification(locale, grade)) {
 					logger.fine("Found a factory for " + locale + " (" + h.getClass() + ")");
 					map.put(toKey(locale, grade), h);
 					template = h;
@@ -89,7 +88,7 @@ public class BrailleTranslatorFactoryMaker implements BrailleTranslatorFactory {
 	}
 	
 	public BrailleTranslator newTranslator(String locale, String grade) throws TranslatorConfigurationException {
-		return getFactory(FilterLocale.parse(locale), grade).newTranslator(locale, grade);
+		return getFactory(locale, grade).newTranslator(locale, grade);
 	}
 	
 	private class BrailleTranslatorFactoryMakerConfigurationException extends TranslatorConfigurationException {

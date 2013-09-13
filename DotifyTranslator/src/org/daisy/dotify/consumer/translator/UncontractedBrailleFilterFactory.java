@@ -8,9 +8,8 @@ import java.util.logging.Logger;
 import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.api.translator.StringFilter;
+import org.daisy.dotify.api.translator.StringFilterFactory;
 import org.daisy.dotify.api.translator.UncontractedBrailleFilter;
-import org.daisy.dotify.text.FilterFactory;
-import org.daisy.dotify.text.FilterLocale;
 
 
 /**
@@ -18,9 +17,9 @@ import org.daisy.dotify.text.FilterLocale;
  * depending on the requested locale. Allow access to all locale rules and optionally output braille using that locale.
  * @author Joel Håkansson, TPB
  */
-public class UncontractedBrailleFilterFactory implements FilterFactory {
+public class UncontractedBrailleFilterFactory implements StringFilterFactory {
 	private final ArrayList<UncontractedBrailleFilter> filters;
-	private final HashMap<FilterLocale, UncontractedBrailleFilter> cache;
+	private final HashMap<String, UncontractedBrailleFilter> cache;
 	private final Logger logger;
 
 	protected UncontractedBrailleFilterFactory() {
@@ -32,7 +31,7 @@ public class UncontractedBrailleFilterFactory implements FilterFactory {
 			f = i.next();
 			filters.add(f);
 		}
-		this.cache = new HashMap<FilterLocale, UncontractedBrailleFilter>();
+		this.cache = new HashMap<String, UncontractedBrailleFilter>();
 	}
 
 	/**
@@ -53,15 +52,14 @@ public class UncontractedBrailleFilterFactory implements FilterFactory {
 	 * @return returns a StringFilter for the given locale
 	 * @throws IllegalArgumentException if no match is found
 	 */
-	public StringFilter newStringFilter(String t) {
-		FilterLocale target = FilterLocale.parse(t);
+	public StringFilter newStringFilter(String target) {
 		if (cache.containsKey(target)) {
 			return cache.get(target);
 		}
 		for (UncontractedBrailleFilter ret : filters) {
-			if (ret.supportsLocale(t)) {
+			if (ret.supportsLocale(target)) {
 				logger.fine("Found a StringFilter for " + target + " (" + ret.getClass() + ")");
-				ret.setLocale(t);
+				ret.setLocale(target);
 				cache.put(target, ret);
 				return ret;
 			}

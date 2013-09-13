@@ -13,7 +13,6 @@ import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.MarkerProcessorFactory;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a marker processor factory maker. This class will look for
@@ -57,12 +56,12 @@ public class MarkerProcessorFactoryMaker implements MarkerProcessorFactory {
 		return new MarkerProcessorFactoryMaker();
 	}
 	
-	private static String toKey(FilterLocale locale, String grade) {
-		return locale.toString() + "(" + grade + ")";
+	private static String toKey(String locale, String grade) {
+		return locale + "(" + grade + ")";
 	}
 	
 	public boolean supportsSpecification(String locale, String grade) {
-		return map.get(toKey(FilterLocale.parse(locale), grade)) != null;
+		return map.get(toKey(locale, grade)) != null;
 	}
 	
 	/**
@@ -73,7 +72,7 @@ public class MarkerProcessorFactoryMaker implements MarkerProcessorFactory {
 	 * @return returns a marker processor factory
 	 * @throws TranslatorConfigurationException if the specification is not supported
 	 */
-	public MarkerProcessorFactory getFactory(FilterLocale locale, String grade) throws MarkerProcessorFactoryMakerException {
+	public MarkerProcessorFactory getFactory(String locale, String grade) throws MarkerProcessorFactoryMakerException {
 		MarkerProcessorFactory template = map.get(toKey(locale, grade));
 		if (template==null) {
 			for (MarkerProcessorFactory h : factories) {
@@ -92,7 +91,7 @@ public class MarkerProcessorFactoryMaker implements MarkerProcessorFactory {
 	}
 	
 	public MarkerProcessor newMarkerProcessor(String locale, String grade) throws MarkerProcessorConfigurationException {
-		return getFactory(FilterLocale.parse(locale), grade).newMarkerProcessor(locale, grade);
+		return getFactory(locale, grade).newMarkerProcessor(locale, grade);
 	}
 
 	private class MarkerProcessorFactoryMakerException extends
