@@ -23,7 +23,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XmlTools {
+public class XMLTools {
 
 	public static void transform(Object source, Object result, Object xslt, Map<String, Object> params) throws XMLToolsException {
 		transform(toSource(source), toResult(result), toSource(xslt), params);
