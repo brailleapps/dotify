@@ -1,12 +1,11 @@
 package org.daisy.dotify.impl.translator.sv_SE;
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.BrailleTranslator;
-import org.daisy.dotify.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.translator.BrailleTranslatorResult;
-import org.daisy.dotify.translator.TranslationException;
-import org.daisy.dotify.translator.TranslatorConfigurationException;
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.TranslationException;
+import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.junit.Test;
 
 public class SwedishBrailleTranslatorTest {
@@ -14,8 +13,7 @@ public class SwedishBrailleTranslatorTest {
 	private final BrailleTranslator translator;
 	
 	public SwedishBrailleTranslatorTest() throws TranslatorConfigurationException {
-		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
-		this.translator = new SwedishBrailleTranslatorFactory().newTranslator(sv_SE, BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		this.translator = new SwedishBrailleTranslatorFactory().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
 		this.translator.setHyphenating(true);
 	}
 
@@ -43,8 +41,7 @@ public class SwedishBrailleTranslatorTest {
 	@Test
 	public void testTranslatorWithAnotherLanguage() throws TranslationException {
 		//Setup
-		FilterLocale en = FilterLocale.parse("en");
-		BrailleTranslatorResult btr = translator.translate(TEST_INPUT_STRING_1, en);
+		BrailleTranslatorResult btr = translator.translate(TEST_INPUT_STRING_1, "en");
 		//Test
 		assertEquals("Assert that the output is translated.", 
 				"⠠⠎⠅⠊⠇⠇⠝⠁⠙⠑⠝\u2800⠍⠑⠇⠇⠁⠝\u2800⠁⠗⠃⠑⠞⠎\u2824\u2800⠕⠉⠓\u2800⠧⠊⠇⠕⠙⠁⠛⠁⠗\u2800⠃⠇⠑⠧\u2800⠍⠊⠝⠙⠗⠑\u2800⠎⠅⠁⠗⠏⠆\u2800⠓⠕⠝\u2800⠅⠥⠝⠙⠑\u2800⠞⠊⠇⠇⠡⠞⠁\u2800⠎⠊⠛\u2800⠧⠊⠇⠕⠙⠁⠛⠁⠗\u2800⠍⠊⠞⠞\u2800⠊\u2800⠧⠑⠉⠅⠁⠝⠄",

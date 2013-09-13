@@ -3,12 +3,12 @@ package org.daisy.dotify.impl.translator.sv_SE;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.daisy.dotify.api.translator.UncontractedBrailleFilter;
 import org.daisy.dotify.text.CaseFilter;
 import org.daisy.dotify.text.CharFilter;
 import org.daisy.dotify.text.CombinationFilter;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.RegexFilter;
-import org.daisy.dotify.translator.UncontractedBrailleFilter;
 
 public class SwedishBrailleFilter implements UncontractedBrailleFilter {
 	private final static String sv_SE = "sv-SE";
@@ -28,23 +28,23 @@ public class SwedishBrailleFilter implements UncontractedBrailleFilter {
 	
 	public SwedishBrailleFilter() { 
 		filters = null;
-		setLocale(locales.get(sv_SE));
+		setLocale(sv_SE);
 	}
 
 	public String filter(String str) {
 		return filters.filter(str);
 	}
 
-	public boolean supportsLocale(FilterLocale target) {
+	public boolean supportsLocale(String target) {
 		for (FilterLocale loc : locales.values()) {
-			if (target.equals(loc)) {
+			if (FilterLocale.parse(target).equals(loc)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void setLocale(FilterLocale target) {
+	public void setLocale(String t) {
 		filters = new CombinationFilter();
 		// Remove zero width space
 		filters.add(new RegexFilter("\\u200B", ""));
@@ -59,7 +59,7 @@ public class SwedishBrailleFilter implements UncontractedBrailleFilter {
 		filters.add(new CapitalizationMarkers());
 		// Change case to lower case
 		filters.add(new CaseFilter(CaseFilter.Mode.LOWER_CASE));
-		if (target.equals(locales.get(sv_SE))) {
+		if (t.equals(sv_SE)) {
 			// Text to braille, Pas 1
 			filters.add(new CharFilter(getResource("sv_SE-pas1.xml")));
 			// Text to braille, Pas 2

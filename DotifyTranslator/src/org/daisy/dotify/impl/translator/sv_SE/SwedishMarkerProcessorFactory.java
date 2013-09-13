@@ -1,17 +1,17 @@
 package org.daisy.dotify.impl.translator.sv_SE;
 
+import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.Marker;
+import org.daisy.dotify.api.translator.MarkerProcessor;
+import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
+import org.daisy.dotify.api.translator.MarkerProcessorFactory;
+import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.translator.attributes.DefaultMarkerProcessor;
-import org.daisy.dotify.translator.attributes.Marker;
-import org.daisy.dotify.translator.attributes.MarkerProcessor;
-import org.daisy.dotify.translator.attributes.MarkerProcessorFactory;
-import org.daisy.dotify.translator.attributes.MarkerProcessorConfigurationException;
-import org.daisy.dotify.translator.attributes.RegexMarkerDictionary;
-import org.daisy.dotify.translator.attributes.SimpleMarkerDictionary;
-import org.daisy.dotify.translator.attributes.StyleConstants;
-import org.daisy.dotify.translator.attributes.TextAttribute;
-import org.daisy.dotify.translator.attributes.TextAttributeFilter;
+import org.daisy.dotify.translator.DefaultMarkerProcessor;
+import org.daisy.dotify.translator.MarkerStyleConstants;
+import org.daisy.dotify.translator.RegexMarkerDictionary;
+import org.daisy.dotify.translator.SimpleMarkerDictionary;
+import org.daisy.dotify.translator.TextAttributeFilter;
 
 public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 	private final static String WHITESPACE_REGEX = "\\s+";
@@ -19,12 +19,12 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 	private final static FilterLocale sv_SE = FilterLocale.parse("sv-SE");
 	
 
-	public boolean supportsSpecification(FilterLocale locale, String mode) {
-		return locale.equals(sv_SE) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
+	public boolean supportsSpecification(String locale, String mode) {
+		return FilterLocale.parse(locale).equals(sv_SE) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
 	}
 
-	public MarkerProcessor newMarkerProcessor(FilterLocale locale, String mode) throws MarkerProcessorConfigurationException {
-		if (locale.equals(sv_SE)) {
+	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {
+		if (FilterLocale.parse(locale).equals(sv_SE)) {
 			if (mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED)) {
 	
 				// Svenska skrivregler för punktskrift 2009, page 34
@@ -74,11 +74,11 @@ public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 				SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("\u2820\u2804\u2800", ""));
 	
 				DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
-						addDictionary(StyleConstants.STRONG, strong).
-						addDictionary(StyleConstants.EM, em).
-						addDictionary(StyleConstants.SUB, sub).
-						addDictionary(StyleConstants.SUP, sup).
-						addDictionary(StyleConstants.DD, dd).
+						addDictionary(MarkerStyleConstants.STRONG, strong).
+						addDictionary(MarkerStyleConstants.EM, em).
+						addDictionary(MarkerStyleConstants.SUB, sub).
+						addDictionary(MarkerStyleConstants.SUP, sup).
+						addDictionary(MarkerStyleConstants.DD, dd).
 						build();
 	
 				return sap;

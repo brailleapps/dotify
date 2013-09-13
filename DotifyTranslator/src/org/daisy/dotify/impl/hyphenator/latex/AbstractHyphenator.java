@@ -1,6 +1,6 @@
 package org.daisy.dotify.impl.hyphenator.latex;
 
-import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
+import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 
 /**
  * Provides an abstract base for hyphenators. The abstract implementation

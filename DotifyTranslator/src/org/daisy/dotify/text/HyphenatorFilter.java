@@ -1,8 +1,9 @@
 package org.daisy.dotify.text;
 
-import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
-import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
-import org.daisy.dotify.hyphenator.spi.HyphenatorFactoryMaker;
+import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
+import org.daisy.dotify.api.translator.StringFilter;
+import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 
 /**
  * Provides a hyphenating string filter. This filter will hyphenate the

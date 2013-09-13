@@ -3,6 +3,9 @@ package org.daisy.dotify.text;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.daisy.dotify.api.translator.StringFilter;
+
+
 
 /**
  * Implements StringFilter using a regex pattern.

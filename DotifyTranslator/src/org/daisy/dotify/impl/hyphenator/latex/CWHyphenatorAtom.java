@@ -6,7 +6,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
+import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.SplitResult;
 import org.daisy.dotify.text.StringSplitter;

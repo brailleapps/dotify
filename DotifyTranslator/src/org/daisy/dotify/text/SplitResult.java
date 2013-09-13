@@ -1,9 +1,10 @@
 package org.daisy.dotify.text;
 
 /**
- * Data object returned by StringSplitter containing a sub sequence along with 
+ * Data object returned by StringSplitter containing a sub sequence along with
  * match status for the sub sequence.
- * @author Joel Håkansson, TPB
+ * 
+ * @author Joel Håkansson
  */
 public class SplitResult {
 	private final String text;
@@ -14,7 +15,7 @@ public class SplitResult {
 	 * @param text the result text
 	 * @param match set to true if the text matched the regular expression used to extract the text, false otherwise
 	 */
-	public SplitResult(String text, boolean match) {
+	SplitResult(String text, boolean match) {
 		this.text = text;
 		this.match = match;
 	}

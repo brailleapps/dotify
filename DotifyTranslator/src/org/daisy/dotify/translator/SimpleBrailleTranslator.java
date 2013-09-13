@@ -3,14 +3,17 @@ package org.daisy.dotify.translator;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
-import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
-import org.daisy.dotify.hyphenator.spi.HyphenatorFactoryMaker;
+import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.MarkerProcessor;
+import org.daisy.dotify.api.translator.StringFilter;
+import org.daisy.dotify.api.translator.TextAttribute;
+import org.daisy.dotify.api.translator.TranslationException;
+import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.text.StringFilter;
-import org.daisy.dotify.translator.attributes.MarkerProcessor;
-import org.daisy.dotify.translator.attributes.TextAttribute;
 
 /**
  * Provides a simple braille translator that translates
@@ -46,18 +49,18 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 		this(filter, locale, translatorMode, null);
 	}
 
-	public BrailleTranslatorResult translate(String text, FilterLocale locale, TextAttribute atts) throws TranslationException {
+	public BrailleTranslatorResult translate(String text, String locale, TextAttribute atts) throws TranslationException {
 		HyphenatorInterface h = hyphenators.get(locale);
 		if (h == null && isHyphenating()) {
 			// if we're not hyphenating the language in question, we do not
 			// need to
 			// add it, nor throw an exception if it cannot be found.
 			try {
-				h = hyphenatorFactoryMaker.newHyphenator(locale);
+				h = hyphenatorFactoryMaker.newHyphenator(FilterLocale.parse(locale));
 			} catch (HyphenatorConfigurationException e) {
-				throw new TranslationException(e);
+				throw new SimpleBrailleTranslationException(e);
 			}
-			hyphenators.put(locale, h);
+			hyphenators.put(FilterLocale.parse(locale), h);
 		}
 		if (tap != null) {
 			text = tap.processAttributes(atts, text);
@@ -69,19 +72,19 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 
 	public BrailleTranslatorResult translate(String text, TextAttribute atts) {
 		try {
-			return translate(text, this.locale, atts);
+			return translate(text, this.locale.toString(), atts);
 		} catch (TranslationException e) {
 			throw new RuntimeException("Coding error. This translator does not support the language it claims to support.");
 		}
 	}
 
-	public BrailleTranslatorResult translate(String text, FilterLocale locale) throws TranslationException {
+	public BrailleTranslatorResult translate(String text, String locale) throws TranslationException {
 		return translate(text, locale, null);
 	}
 
 	public BrailleTranslatorResult translate(String text) {
 		try {
-			return translate(text, this.locale);
+			return translate(text, this.locale.toString());
 		} catch (TranslationException e) {
 			throw new RuntimeException("Coding error. This translator does not support the language it claims to support.");
 		}
@@ -97,6 +100,19 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 
 	public String getTranslatorMode() {
 		return translatorMode;
+	}
+	
+	private class SimpleBrailleTranslationException extends TranslationException {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6102686243949860112L;
+
+		SimpleBrailleTranslationException(Throwable cause) {
+			super(cause);
+		}
+		
 	}
 
 }

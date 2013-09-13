@@ -2,10 +2,10 @@ package org.daisy.dotify.impl.hyphenator.latex;
 
 import java.util.logging.Logger;
 
-import org.daisy.dotify.hyphenator.api.HyphenationFeatures;
-import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
-import org.daisy.dotify.hyphenator.api.HyphenatorFactory;
-import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
+import org.daisy.dotify.api.hyphenator.HyphenationFeatures;
+import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.api.hyphenator.HyphenatorFactory;
+import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.text.FilterLocale;
 
 public class CWHyphenatorFactory implements HyphenatorFactory {

@@ -368,17 +368,50 @@ DotifyTranslator/build-doc.xml -text
 DotifyTranslator/build-properties.xml -text
 DotifyTranslator/build.xml -text
 DotifyTranslator/logging.properties -text
-DotifyTranslator/src/META-INF/services/org.daisy.dotify.hyphenator.api.HyphenatorFactory -text
-DotifyTranslator/src/META-INF/services/org.daisy.dotify.text.Integer2TextFactory -text
-DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.BrailleTranslatorFactory -text
-DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.UncontractedBrailleFilter -text
-DotifyTranslator/src/META-INF/services/org.daisy.dotify.translator.attributes.MarkerProcessorFactory -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenationFeatures.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenatorConfigurationException.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenatorFactory.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/api/HyphenatorInterface.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/api/package-info.java -text
-DotifyTranslator/src/org/daisy/dotify/hyphenator/spi/HyphenatorFactoryMaker.java -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.hyphenator.HyphenatorFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.text.Integer2TextFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.BrailleTranslatorFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.MarkerProcessorFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.TextBorderFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.UncontractedBrailleFilter -text
+DotifyTranslator/src/org/daisy/dotify/api/hyphenator/HyphenationFeatures.java -text
+DotifyTranslator/src/org/daisy/dotify/api/hyphenator/HyphenatorConfigurationException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/hyphenator/HyphenatorFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/api/hyphenator/HyphenatorInterface.java -text
+DotifyTranslator/src/org/daisy/dotify/api/hyphenator/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/api/text/Integer2Text.java -text
+DotifyTranslator/src/org/daisy/dotify/api/text/Integer2TextConfigurationException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/text/Integer2TextFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/api/text/IntegerOutOfRange.java -text
+DotifyTranslator/src/org/daisy/dotify/api/text/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/BrailleTranslator.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/BrailleTranslatorFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/BrailleTranslatorResult.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/Marker.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/MarkerDictionary.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/MarkerNotCompatibleException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/MarkerNotFoundException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/MarkerProcessor.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/MarkerProcessorConfigurationException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/MarkerProcessorFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/StringFilter.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/api/translator/TextAttribute.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderConfigurationException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderStyle.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/TranslationException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/TranslatorConfigurationException.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/api/translator/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/hyphenator/HyphenatorFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/hyphenator/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/text/Integer2TextFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/text/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/translator/BrailleTranslatorFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/translator/TextBorderFactoryMaker.java -text
+DotifyTranslator/src/org/daisy/dotify/consumer/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
+DotifyTranslator/src/org/daisy/dotify/consumer/translator/package-info.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/AbstractHyphenator.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWDecompounder.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenationUnit.java -text
@@ -536,6 +569,8 @@ DotifyTranslator/src/org/daisy/dotify/impl/text/EnglishInteger2TextFactory.java 
 DotifyTranslator/src/org/daisy/dotify/impl/text/SvInt2TextLocalization.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/text/UndefinedNumberException.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/BrailleTextBorderStyle.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
@@ -554,52 +589,28 @@ DotifyTranslator/src/org/daisy/dotify/text/FilterFactory.java -text svneol=unset
 DotifyTranslator/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/HyphenatorFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/text/IdentityFilter.java -text
-DotifyTranslator/src/org/daisy/dotify/text/Integer2Text.java -text
-DotifyTranslator/src/org/daisy/dotify/text/Integer2TextConfigurationException.java -text
-DotifyTranslator/src/org/daisy/dotify/text/Integer2TextFactory.java -text
-DotifyTranslator/src/org/daisy/dotify/text/Integer2TextFactoryMaker.java -text
-DotifyTranslator/src/org/daisy/dotify/text/IntegerOutOfRange.java -text
 DotifyTranslator/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/SimpleCharReplacer.java -text
 DotifyTranslator/src/org/daisy/dotify/text/SplitResult.java -text svneol=unset#text/plain
-DotifyTranslator/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
 DotifyTranslator/src/org/daisy/dotify/text/StringSplitter.java -text svneol=unset#text/plain
-DotifyTranslator/src/org/daisy/dotify/text/TextBorderStyle.java -text
 DotifyTranslator/src/org/daisy/dotify/text/TextFileReader.java -text
 DotifyTranslator/src/org/daisy/dotify/text/package-info.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/BrailleTextBorderStyle.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslator.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactory.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorFactoryMaker.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/BrailleTranslatorResult.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/DefaultBrailleTranslatorResult.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/DefaultMarkerProcessor.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/DefaultTextAttribute.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/MarkerStyleConstants.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/RegexMarkerDictionary.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/SimpleBrailleTranslator.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/TextBorderFactory.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/TranslationException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/TranslatorConfigurationException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
-DotifyTranslator/src/org/daisy/dotify/translator/UncontractedBrailleFilterFactory.java -text svneol=unset#text/plain
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/DefaultMarkerProcessor.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/DefaultTextAttribute.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/Marker.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerDictionary.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerNotCompatibleException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerNotFoundException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessor.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorConfigurationException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactory.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryMaker.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryMakerException.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/RegexMarkerDictionary.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/SimpleMarkerDictionary.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/StyleConstants.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttribute.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/TextAttributeFilter.java -text
-DotifyTranslator/src/org/daisy/dotify/translator/attributes/package-info.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/SimpleMarkerDictionary.java -text
+DotifyTranslator/src/org/daisy/dotify/translator/TextAttributeFilter.java -text
 DotifyTranslator/src/org/daisy/dotify/translator/package-info.java -text
-DotifyTranslator/test/org/daisy/dotify/hyphenator/HyphenatorFactoryMakerTest.java -text
-DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenation2Test.java -text
-DotifyTranslator/test/org/daisy/dotify/hyphenator/SwedishHyphenationTest.java -text
+DotifyTranslator/test/org/daisy/dotify/consumer/hyphenator/HyphenatorFactoryMakerTest.java -text
+DotifyTranslator/test/org/daisy/dotify/consumer/text/Integer2TextFactoryTest.java -text
+DotifyTranslator/test/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryTest.java -text
+DotifyTranslator/test/org/daisy/dotify/consumer/translator/SwedishHyphenation2Test.java -text
+DotifyTranslator/test/org/daisy/dotify/consumer/translator/SwedishHyphenationTest.java -text
+DotifyTranslator/test/org/daisy/dotify/consumer/translator/TextBorderFactoryTest.java -text
+DotifyTranslator/test/org/daisy/dotify/consumer/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
 DotifyTranslator/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/text/BasicInteger2TextTest.java -text
 DotifyTranslator/test/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryTest.java -text
@@ -610,11 +621,8 @@ DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTrans
 DotifyTranslator/test/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
 DotifyTranslator/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
-DotifyTranslator/test/org/daisy/dotify/text/Integer2TextFactoryTest.java -text
-DotifyTranslator/test/org/daisy/dotify/translator/UncontractedBrailleFilterFactoryTest.java -text svneol=unset#text/plain
-DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultMarkerProcessorTest.java -text
-DotifyTranslator/test/org/daisy/dotify/translator/attributes/DefaultTextAttributeTest.java -text
-DotifyTranslator/test/org/daisy/dotify/translator/attributes/MarkerProcessorFactoryTest.java -text
+DotifyTranslator/test/org/daisy/dotify/translator/DefaultMarkerProcessorTest.java -text
+DotifyTranslator/test/org/daisy/dotify/translator/DefaultTextAttributeTest.java -text
 EpubTools/.classpath -text
 EpubTools/.project -text
 EpubTools/.settings/org.eclipse.jdt.core.prefs -text

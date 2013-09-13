@@ -2,7 +2,7 @@ package org.daisy.dotify.impl.text;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.text.IntegerOutOfRange;
+import org.daisy.dotify.api.text.IntegerOutOfRange;
 import org.junit.Test;
 
 public class BasicInteger2TextTest {

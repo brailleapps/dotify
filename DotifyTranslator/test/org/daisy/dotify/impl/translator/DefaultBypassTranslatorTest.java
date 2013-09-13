@@ -1,20 +1,17 @@
 package org.daisy.dotify.impl.translator;
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.impl.translator.DefaultBypassTranslatorFactory;
-import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.BrailleTranslator;
-import org.daisy.dotify.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.translator.BrailleTranslatorResult;
-import org.daisy.dotify.translator.TranslatorConfigurationException;
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.junit.Test;
 
 public class DefaultBypassTranslatorTest {
 	private final BrailleTranslator bypass;
 	
 	public DefaultBypassTranslatorTest() throws TranslatorConfigurationException {
-		FilterLocale sv_SE = FilterLocale.parse("sv-SE");
-		this.bypass = new DefaultBypassTranslatorFactory().newTranslator(sv_SE, BrailleTranslatorFactory.MODE_BYPASS);
+		this.bypass = new DefaultBypassTranslatorFactory().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_BYPASS);
 	}
 	
 	@Test

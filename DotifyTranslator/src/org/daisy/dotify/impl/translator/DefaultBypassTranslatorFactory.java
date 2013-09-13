@@ -1,21 +1,21 @@
 package org.daisy.dotify.impl.translator;
 
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.text.IdentityFilter;
-import org.daisy.dotify.translator.BrailleTranslator;
-import org.daisy.dotify.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.translator.SimpleBrailleTranslator;
-import org.daisy.dotify.translator.TranslatorConfigurationException;
 
 public class DefaultBypassTranslatorFactory implements BrailleTranslatorFactory {
 
-	public boolean supportsSpecification(FilterLocale locale, String mode) {
+	public boolean supportsSpecification(String locale, String mode) {
 		return mode.equals(MODE_BYPASS);
 	}
 
-	public BrailleTranslator newTranslator(FilterLocale locale, String mode) throws TranslatorConfigurationException {
+	public BrailleTranslator newTranslator(String locale, String mode) throws TranslatorConfigurationException {
 		if (mode.equals(MODE_BYPASS)) {
-			return new SimpleBrailleTranslator(new IdentityFilter(), locale, mode);
+			return new SimpleBrailleTranslator(new IdentityFilter(), FilterLocale.parse(locale), mode);
 		}
 		throw new DefaultBypassTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);
 	}

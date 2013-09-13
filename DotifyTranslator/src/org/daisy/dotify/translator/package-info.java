@@ -14,7 +14,7 @@
  * org.daisy.dotify.impl.translator package or in a sub package thereof.</li>
  * <li>Add the name of your implementation to the org.daisy.dotify.translator.BrailleFilter
  *  file in META-INF/services</li>
- *  <li>If your implementation uses a grade not defined in {@link org.daisy.dotify.translator.BrailleTranslatorFactory},
+ *  <li>If your implementation uses a grade not defined in {@link org.daisy.dotify.api.translator.BrailleTranslatorFactory},
  *  please add it to the API so that others may know about it.</li>
  * </ul>
  * @author Joel Håkansson

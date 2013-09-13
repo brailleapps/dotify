@@ -3,8 +3,8 @@ package org.daisy.dotify.impl.hyphenator.latex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.hyphenator.api.HyphenatorConfigurationException;
-import org.daisy.dotify.hyphenator.api.HyphenatorInterface;
+import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 

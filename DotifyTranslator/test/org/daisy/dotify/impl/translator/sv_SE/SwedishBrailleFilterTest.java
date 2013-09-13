@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 
-import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
 public class SwedishBrailleFilterTest {
@@ -13,7 +12,7 @@ public class SwedishBrailleFilterTest {
 	
 	public SwedishBrailleFilterTest() {
 		filter = new SwedishBrailleFilter();
-		filter.setLocale(FilterLocale.parse("sv-SE"));
+		filter.setLocale("sv-SE");
 	}
 	// 1.2 - Numbers	
 	@Test
