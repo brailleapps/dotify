@@ -214,6 +214,8 @@ DotifyDevtools/src/org/daisy/dotify/devtools/views/TextConvertPanel.java -text
 DotifyFormatter/.classpath -text
 DotifyFormatter/.project -text
 DotifyFormatter/.settings/org.eclipse.jdt.core.prefs -text
+DotifyFormatter/ant-build/resources/javase-6/package-list -text
+DotifyFormatter/build-doc.xml -text
 DotifyFormatter/build-properties.xml -text
 DotifyFormatter/build.xml -text
 DotifyFormatter/src/META-INF/services/org.daisy.dotify.formatter.FormatterFactory -text
