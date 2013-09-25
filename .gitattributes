@@ -364,6 +364,7 @@ DotifyShared/icu4j-3_8.jar -text
 DotifyShared/junit-4.7.jar -text
 DotifyShared/stax-api-1.0.1.jar -text
 DotifyShared/texhyphj.jar -text
+DotifyShared/wstx-lgpl-3.2.8.jar -text
 DotifyTranslator/.classpath -text
 DotifyTranslator/.project -text
 DotifyTranslator/.settings/org.eclipse.jdt.core.prefs -text
