@@ -352,6 +352,9 @@ DotifyDevtools/src/org/daisy/dotify/devtools/views/StringFormatterResult.java -t
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedEvent.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedListener.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextConvertPanel.java -text
+DotifyFormatter/.classpath -text
+DotifyFormatter/.project -text
+DotifyFormatter/.settings/org.eclipse.jdt.core.prefs -text
 DotifyShared/.project -text
 DotifyShared/brailleUtils-catalog.jar -text
 DotifyShared/brailleUtils-core.jar -text
