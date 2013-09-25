@@ -77,6 +77,9 @@
 				<fileset dir="${lib.dir}">
 					<include name="*.jar"/>
 				</fileset>
+				<fileset dir="../DotifyShared">
+					<include name="dotify-formatter*.jar"/>
+        		</fileset>
 			</classpath>
         </javac>
     </target>
@@ -126,6 +129,8 @@
     			<attribute name="Implementation-Version" value="${release-version}"/>
     			<attribute name="Implementation-URL" value="http://code.google.com/p/dotify/"/>
     		</manifest>
+    		<!-- Merge dotify-formatter.jar into this jar, for backwards compatibility -->
+    		<zipgroupfileset dir="../DotifyShared" includes="dotify-formatter*.jar"></zipgroupfileset>
     	</jar>
     	<jar destfile="${cli.jar}">
     		<fileset dir="${build.dir}">
