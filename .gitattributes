@@ -507,6 +507,7 @@ DotifyShared/.project -text
 DotifyShared/brailleUtils-catalog.jar -text
 DotifyShared/brailleUtils-core.jar -text
 DotifyShared/dotify-common.jar -text
+DotifyShared/dotify-formatter.jar -text
 DotifyShared/dotify-translator.jar -text
 DotifyShared/icu4j-3_8.jar -text
 DotifyShared/junit-4.7.jar -text
