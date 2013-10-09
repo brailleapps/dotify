@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.book.VolumeContentFormatter;
 import org.daisy.dotify.formatter.Block;
 import org.daisy.dotify.formatter.BlockSequence;
 import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.LayoutMaster;
+import org.daisy.dotify.formatter.VolumeContentFormatter;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.text.FilterLocale;
 

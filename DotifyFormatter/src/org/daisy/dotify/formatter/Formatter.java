@@ -107,4 +107,6 @@ public interface Formatter extends Closeable {
 	public void insertReference(String identifier, NumeralStyle numeralStyle);
 	
 	public BlockStruct getFlowStruct();
+
+	public Iterable<Volume> getVolumes(VolumeContentFormatter vcf);
 }

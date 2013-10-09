@@ -26,12 +26,10 @@ import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.book.VolumeContentFormatter;
 import org.daisy.dotify.consumer.translator.MarkerProcessorFactoryMaker;
 import org.daisy.dotify.consumer.translator.TextBorderFactoryMaker;
 import org.daisy.dotify.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.formatter.BlockProperties;
-import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.CompoundField;
 import org.daisy.dotify.formatter.CurrentPageField;
 import org.daisy.dotify.formatter.Field;
@@ -41,6 +39,8 @@ import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.MarkerReferenceField;
+import org.daisy.dotify.formatter.Volume;
+import org.daisy.dotify.formatter.VolumeContentFormatter;
 import org.daisy.dotify.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.formatter.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
@@ -861,8 +861,8 @@ public class ObflParser {
 				&& event.asEndElement().getName().equals(element);
 	}
 	
-	public BlockStruct getBlockStruct() {
-		return formatter.getFlowStruct();
+	public Iterable<Volume> getFormattedResult() {
+		return formatter.getVolumes(getVolumeContentFormatter());
 	}
 	
 	public VolumeContentFormatter getVolumeContentFormatter() {

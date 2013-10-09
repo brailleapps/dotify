@@ -17,6 +17,8 @@ import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.formatter.Volume;
+import org.daisy.dotify.formatter.VolumeContentFormatter;
 import org.daisy.dotify.formatter.impl.BlockHandler.ListItem;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.StateObject;
@@ -272,6 +274,14 @@ class FormatterImpl implements Formatter {
 
 	public BrailleTranslator getTranslator() {
 		return translator;
+	}
+
+	public Iterable<Volume> getVolumes(VolumeContentFormatter vcf) {
+		PaginatorImpl paginator = new PaginatorImpl();
+		paginator.open(getTranslator(), getFlowStruct().getBlockSequenceIterable());
+
+		BookStruct bookStruct = new BookStruct(paginator, vcf, getTranslator());
+		return bookStruct.getVolumes();
 	}
 
 }

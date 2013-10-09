@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.util.List;
 
 import org.daisy.dotify.formatter.SectionProperties;
-import org.daisy.dotify.paginator.Paginator;
 
 
 

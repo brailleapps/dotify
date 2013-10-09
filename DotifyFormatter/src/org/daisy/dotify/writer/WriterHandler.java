@@ -3,10 +3,10 @@ package org.daisy.dotify.writer;
 import java.io.IOException;
 import java.util.List;
 
-import org.daisy.dotify.book.Volume;
 import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.paginator.Page;
-import org.daisy.dotify.paginator.PageSequence;
+import org.daisy.dotify.formatter.Page;
+import org.daisy.dotify.formatter.PageSequence;
+import org.daisy.dotify.formatter.Volume;
 
 /**
  * Provides a method for writing pages to a PagedMediaWriter,
