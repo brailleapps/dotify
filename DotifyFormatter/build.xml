@@ -6,8 +6,8 @@
 
 	<property name="dist.name" value="dotify-formatter.jar"/>
 	<property name="dist.jar" value="${dist.dir}/${dist.name}"/>
+	<property name="cli.jar" value="${dist.dir}/dotify-formatter-cli.jar"/>
 	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
-	<property name="formatter-build.dir" value="${ant-output.dir}/build.temp"/>
 
 	<!-- Testing properties -->
 	<property name="test-src.dir" value="${basedir}/test"/>
@@ -21,6 +21,11 @@
 
 	<patternset id="compile-jar.patternset">
 		<include name="**/*.*"/>
+		<exclude name="org/daisy/dotify/cli/**/*.*"/>
+	</patternset>
+	
+	<patternset id="cli-jar.patternset">
+		<include name="org/daisy/dotify/cli/**/*.*"/>
 	</patternset>
 	
 	<patternset id="build-jar.patternset">
@@ -144,6 +149,26 @@
     			<attribute name="Implementation-Version" value="${release-version}"/>
     			<attribute name="Implementation-URL" value="http://code.google.com/p/dotify/"/>
     		</manifest>
+    		
+    		
+    	</jar>
+    	<jar destfile="${cli.jar}">
+    		<fileset dir="${build.dir}">
+    			<patternset refid="cli-jar.patternset"/>
+    		</fileset>
+    		<fileset dir="${src.dir}">
+    			<patternset refid="cli-jar.patternset"/>  			
+    		</fileset>
+    		<manifest>
+    			<attribute name="Class-Path" value="lib/${dist.name}"/>
+    			<attribute name="Main-Class" value="org.daisy.dotify.cli.FormatterCLI"/>
+    			<attribute name="Built-By" value="${user.name}"/>
+    			<attribute name="Built-On" value="${ISO-TODAY}"/>
+    			<attribute name="Repository-Revision" value="${repository-revision}"/>
+    			<attribute name="Implementation-Title" value="${release-name} CLI"/>
+    			<attribute name="Implementation-Version" value="${release-version}"/>
+    			<attribute name="Implementation-URL" value="http://code.google.com/p/dotify/"/>
+    		</manifest>
     	</jar>
     	<delete dir="${build.dir}"/>
     </target>
@@ -153,12 +178,14 @@
 	         ================================= -->
 	<target name="buildZip" depends="buildJar" description="Builds distribution zip including all required jars">
     	<zip destfile="${distribution.zip}">
-    		<zipfileset file="${dist.jar}" prefix="${zip-foler-prefix}"/>
-    		<zipfileset dir="${lib.dir}" prefix="${zip-foler-prefix}">
+    		<zipfileset file="${cli.jar}" prefix="${zip-foler-prefix}"/>
+    		<zipfileset file="${dist.jar}" prefix="${zip-foler-prefix}/lib"/>
+    		<zipfileset dir="${lib.dir}" prefix="${zip-foler-prefix}/lib">
     			<patternset refid="runtime.patternset"/>
     		</zipfileset>
     	</zip>
 		<delete file="${dist.jar}"/>
+		<delete file="${cli.jar}"/>
 	</target>
 
 	<!-- ================================= 

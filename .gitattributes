@@ -221,6 +221,7 @@ DotifyFormatter/build.xml -text
 DotifyFormatter/src/META-INF/services/org.daisy.dotify.formatter.FormatterFactory -text
 DotifyFormatter/src/org/daisy/dotify/LayoutEngine.java -text
 DotifyFormatter/src/org/daisy/dotify/LayoutEngineException.java -text
+DotifyFormatter/src/org/daisy/dotify/cli/FormatterCLI.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/Block.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/BlockContentManager.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/BlockPosition.java -text
