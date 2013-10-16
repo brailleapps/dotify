@@ -350,8 +350,28 @@ DotifyFormatter/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalcu
 DotifyFormatter/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
 DotifyFormatter/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain
 DotifyFormatter/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-01.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-02.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-03.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-04.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-05.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-06.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-07.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-08.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-09.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-10.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-11.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-01.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-02.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-03.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-04.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-05.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-06.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-07.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-08.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-09.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-10.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-11.xml -text
 DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
 DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
 DotifyFormatter/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
