@@ -12,7 +12,7 @@ public class SwedishBrailleTranslatorFactoryService implements
 	private HyphenatorFactoryMakerService hyphenator = null;
 
 	public boolean supportsSpecification(String locale, String mode) {
-		return "sv-SE".equals(locale) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		return "sv-SE".equalsIgnoreCase(locale) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
 	}
 
 	public BrailleTranslatorFactory newFactory() {

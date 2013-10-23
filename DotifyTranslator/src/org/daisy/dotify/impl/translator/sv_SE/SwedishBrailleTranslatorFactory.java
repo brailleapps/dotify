@@ -19,7 +19,7 @@ class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 	public BrailleTranslator newTranslator(String locale, String mode) throws TranslatorConfigurationException {
 		if (hyphenatorService == null) {
 			throw new SwedishTranslatorConfigurationException("HyphenatorFactoryMakerService not set.");
-		} else if (locale.equals(sv_SE) && mode.equals(MODE_UNCONTRACTED)) {
+		} else if (sv_SE.equalsIgnoreCase(locale) && mode.equals(MODE_UNCONTRACTED)) {
 
 			MarkerProcessor sap;
 			try {

@@ -10,7 +10,7 @@ public class SwedishInteger2TextFactoryService implements
 		Integer2TextFactoryService {
 
 	public boolean supportsLocale(String locale) {
-		return "sv-SE".equals(locale);
+		return "sv-SE".equalsIgnoreCase(locale);
 	}
 
 	public Integer2TextFactory newFactory() {
