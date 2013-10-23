@@ -377,6 +377,7 @@ DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
 DotifyFormatter/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 DotifyFormatter/test/org/daisy/dotify/tools/StringToolsTest.java -text
 DotifyShared/.project -text
+DotifyShared/bnd.jar -text
 DotifyShared/brailleUtils-catalog.jar -text
 DotifyShared/brailleUtils-core.jar -text
 DotifyShared/dotify-common.jar -text
