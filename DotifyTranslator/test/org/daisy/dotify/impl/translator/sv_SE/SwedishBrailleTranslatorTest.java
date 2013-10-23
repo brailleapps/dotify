@@ -6,6 +6,7 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
+import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 import org.junit.Test;
 
 public class SwedishBrailleTranslatorTest {
@@ -13,7 +14,7 @@ public class SwedishBrailleTranslatorTest {
 	private final BrailleTranslator translator;
 	
 	public SwedishBrailleTranslatorTest() throws TranslatorConfigurationException {
-		this.translator = new SwedishBrailleTranslatorFactory().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		this.translator = new SwedishBrailleTranslatorFactory(HyphenatorFactoryMaker.newInstance()).newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
 		this.translator.setHyphenating(true);
 	}
 

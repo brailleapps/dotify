@@ -5,13 +5,14 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
+import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 import org.junit.Test;
 
 public class DefaultBypassTranslatorTest {
 	private final BrailleTranslator bypass;
 	
 	public DefaultBypassTranslatorTest() throws TranslatorConfigurationException {
-		this.bypass = new DefaultBypassTranslatorFactory().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_BYPASS);
+		this.bypass = new DefaultBypassTranslatorFactory(HyphenatorFactoryMaker.newInstance()).newTranslator("sv-SE", BrailleTranslatorFactory.MODE_BYPASS);
 	}
 	
 	@Test

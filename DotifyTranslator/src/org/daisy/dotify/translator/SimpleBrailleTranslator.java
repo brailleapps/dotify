@@ -11,7 +11,6 @@ import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TranslationException;
-import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.text.BreakPointHandler;
 import org.daisy.dotify.text.StringFilter;
 
@@ -35,18 +34,18 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 	
 	private boolean hyphenating;
 	
-	public SimpleBrailleTranslator(StringFilter filter, String locale, String translatorMode, MarkerProcessor tap) {
+	public SimpleBrailleTranslator(StringFilter filter, String locale, String translatorMode, MarkerProcessor tap, HyphenatorFactoryMakerService hyphenatorFactoryMaker) {
 		this.filter = filter;
 		this.locale = locale;
 		this.translatorMode = translatorMode;
 		this.tap = tap;
 		this.hyphenating = true;
 		this.hyphenators = new HashMap<String, HyphenatorInterface>();
-		this.hyphenatorFactoryMaker = HyphenatorFactoryMaker.newInstance();
+		this.hyphenatorFactoryMaker = hyphenatorFactoryMaker;
 	}
 
-	public SimpleBrailleTranslator(StringFilter filter, String locale, String translatorMode) {
-		this(filter, locale, translatorMode, null);
+	public SimpleBrailleTranslator(StringFilter filter, String locale, String translatorMode, HyphenatorFactoryMakerService hyphenatorFactoryMaker) {
+		this(filter, locale, translatorMode, null, hyphenatorFactoryMaker);
 	}
 
 	public BrailleTranslatorResult translate(String text, String locale, TextAttribute atts) throws TranslationException {

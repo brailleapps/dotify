@@ -1,5 +1,6 @@
 package org.daisy.dotify.impl.translator.sv_SE;
 
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessor;
@@ -7,15 +8,18 @@ import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.translator.SimpleBrailleTranslator;
 
-public class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
+class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 	private final static String sv_SE = "sv-SE";
-	
-	public boolean supportsSpecification(String locale, String mode) {
-		return locale.equals(sv_SE) && mode.equals(MODE_UNCONTRACTED);
+	private final HyphenatorFactoryMakerService hyphenatorService;
+
+	public SwedishBrailleTranslatorFactory(HyphenatorFactoryMakerService hyphenatorService) {
+		this.hyphenatorService = hyphenatorService;
 	}
 
 	public BrailleTranslator newTranslator(String locale, String mode) throws TranslatorConfigurationException {
-		if (locale.equals(sv_SE) && mode.equals(MODE_UNCONTRACTED)) {
+		if (hyphenatorService == null) {
+			throw new SwedishTranslatorConfigurationException("HyphenatorFactoryMakerService not set.");
+		} else if (locale.equals(sv_SE) && mode.equals(MODE_UNCONTRACTED)) {
 
 			MarkerProcessor sap;
 			try {
@@ -24,7 +28,7 @@ public class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory
 				throw new SwedishTranslatorConfigurationException(e);
 			}
 
-			return new SimpleBrailleTranslator(new SwedishBrailleFilter(), sv_SE.toString(), mode, sap);
+			return new SimpleBrailleTranslator(new SwedishBrailleFilter(), sv_SE, mode, sap, hyphenatorService);
 		} 
 		throw new SwedishTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);
 	}
