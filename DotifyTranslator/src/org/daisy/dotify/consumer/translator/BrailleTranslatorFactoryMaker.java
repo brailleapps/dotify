@@ -49,8 +49,8 @@ public class BrailleTranslatorFactoryMaker implements
 
 	/**
 	 * <p>
-	 * Creates a new BrailleTranslatorFactoryMaker using the SPI (java service
-	 * provider interface).
+	 * Creates a new BrailleTranslatorFactoryMaker and populates it using the
+	 * SPI (java service provider interface).
 	 * </p>
 	 * 
 	 * <p>
@@ -62,12 +62,6 @@ public class BrailleTranslatorFactoryMaker implements
 	 * @return returns a new braille translator factory maker.
 	 */
 	public static BrailleTranslatorFactoryMaker newInstance() {
-		{
-			Iterator<BrailleTranslatorFactoryMaker> i = ServiceRegistry.lookupProviders(BrailleTranslatorFactoryMaker.class);
-			while (i.hasNext()) {
-				return i.next();
-			}
-		}
 		BrailleTranslatorFactoryMaker ret = new BrailleTranslatorFactoryMaker();
 		{
 			HyphenatorFactoryMakerService hyph = HyphenatorFactoryMaker.newInstance();

@@ -1,15 +1,21 @@
 package org.daisy.dotify.consumer.translator;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
+import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
+import org.daisy.dotify.api.translator.TextBorderFactoryService;
 import org.daisy.dotify.api.translator.TextBorderStyle;
+
+import aQute.bnd.annotation.component.Component;
+import aQute.bnd.annotation.component.Reference;
 
 /**
  * Provides a text border factory maker. This class will look for
@@ -26,60 +32,69 @@ import org.daisy.dotify.api.translator.TextBorderStyle;
  * @author Joel Håkansson
  * 
  */
-public class TextBorderFactoryMaker implements TextBorderFactory {
+@Component
+public class TextBorderFactoryMaker implements TextBorderFactoryMakerService {
+	private final List<TextBorderFactoryService> factories;
 	private final Logger logger;
-	private final Map<String, Object> features;
-	private TextBorderFactory last;
 
 	private TextBorderFactoryMaker() {
 		logger = Logger.getLogger(TextBorderFactoryMaker.class.getCanonicalName());
-		this.features = new HashMap<String, Object>();
-		this.last = null;
+		factories = new CopyOnWriteArrayList<TextBorderFactoryService>();
 	}
 
 	/**
-	 * Creates a new instance of braille translator factory maker.
-	 * @return returns a new braille translator factory maker.
+	 * <p>
+	 * Creates a new TextBorderFactoryMaker and populates it using the SPI (java
+	 * service provider interface).
+	 * </p>
+	 * 
+	 * <p>
+	 * In an OSGi context, an instance should be retrieved using the service
+	 * registry. It will be registered under the TextBorderFactoryMakerService
+	 * interface.
+	 * </p>
+	 * 
+	 * @return returns a new marker processor factory maker.
 	 */
 	public static TextBorderFactoryMaker newInstance() {
-		Iterator<TextBorderFactoryMaker> i = ServiceRegistry.lookupProviders(TextBorderFactoryMaker.class);
-		while (i.hasNext()) {
-			return i.next();
+		TextBorderFactoryMaker ret = new TextBorderFactoryMaker();
+		{
+			Iterator<TextBorderFactoryService> i = ServiceRegistry.lookupProviders(TextBorderFactoryService.class);
+			while (i.hasNext()) {
+				ret.addFactory(i.next());
+			}
 		}
-		return new TextBorderFactoryMaker();
+		return ret;
 	}
 	
-	public TextBorderStyle newTextBorderStyle() throws TextBorderConfigurationException {
-		if (last != null) {
-			return last.newTextBorderStyle();
-		} else {
-			TextBorderStyle ret;
-			Iterator<TextBorderFactory> i = ServiceRegistry.lookupProviders(TextBorderFactory.class);
-			while (i.hasNext()) {
-				TextBorderFactory h = i.next();
-				for (String key : features.keySet()) {
-					h.setFeature(key, features.get(key));
-				}
-				try {
-					ret = h.newTextBorderStyle();
-					last = h;
-					return ret;
-				} catch (TextBorderConfigurationException e) {
-					// try another one
-				}
+	@Reference(type = '*')
+	public void addFactory(TextBorderFactoryService factory) {
+		logger.finer("Adding factory: " + factory);
+		factories.add(factory);
+	}
+
+	// Unbind reference added automatically from addFactory annotation
+	public void removeFactory(TextBorderFactoryService factory) {
+		logger.finer("Removing factory: " + factory);
+		// this is to avoid adding items to the cache that were removed while
+		// iterating
+		factories.remove(factory);
+	}
+
+	public TextBorderStyle newTextBorderStyle(Map<String, Object> features) throws TextBorderConfigurationException {
+		// TODO: this could be optimized
+		for (TextBorderFactoryService s : factories) {
+			TextBorderFactory h = s.newFactory();
+			for (String key : features.keySet()) {
+				h.setFeature(key, features.get(key));
 			}
-			last = null;
-			throw new TextBorderFactoryMakerException();
+			try {
+				return h.newTextBorderStyle();
+			} catch (TextBorderConfigurationException e) {
+				// try another one
+			}
 		}
-	}
-
-	public void setFeature(String key, Object value) {
-		last = null;
-		features.put(key, value);
-	}
-
-	public Object getFeature(String key) {
-		return features.get(key);
+		throw new TextBorderFactoryMakerException();
 	}
 	
 	private class TextBorderFactoryMakerException extends TextBorderConfigurationException {

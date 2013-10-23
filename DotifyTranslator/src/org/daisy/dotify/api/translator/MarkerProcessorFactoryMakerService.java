@@ -34,7 +34,7 @@ public interface MarkerProcessorFactoryMakerService {
 	 * @throws TranslatorConfigurationException
 	 *             if the specification is not supported
 	 */
-	public MarkerProcessorFactory getFactory(String locale, String grade) throws MarkerProcessorConfigurationException;
+	public MarkerProcessorFactory newFactory(String locale, String grade) throws MarkerProcessorConfigurationException;
 
 	public MarkerProcessor newMarkerProcessor(String locale, String grade) throws MarkerProcessorConfigurationException;
 }

@@ -49,8 +49,8 @@ public class MarkerProcessorFactoryMaker implements
 
 	/**
 	 * <p>
-	 * Creates a new MarkerProcessorFactoryMaker using the SPI (java service
-	 * provider interface).
+	 * Creates a new MarkerProcessorFactoryMaker and populates it using the SPI
+	 * (java service provider interface).
 	 * </p>
 	 * 
 	 * <p>
@@ -61,13 +61,7 @@ public class MarkerProcessorFactoryMaker implements
 	 * 
 	 * @return returns a new marker processor factory maker.
 	 */
-	public static MarkerProcessorFactoryMakerService newInstance() {
-		{
-			Iterator<MarkerProcessorFactoryMaker> i = ServiceRegistry.lookupProviders(MarkerProcessorFactoryMaker.class);
-			while (i.hasNext()) {
-				return i.next();
-			}
-		}
+	public static MarkerProcessorFactoryMaker newInstance() {
 		MarkerProcessorFactoryMaker ret = new MarkerProcessorFactoryMaker();
 		{
 			Iterator<MarkerProcessorFactoryService> i = ServiceRegistry.lookupProviders(MarkerProcessorFactoryService.class);
@@ -103,7 +97,7 @@ public class MarkerProcessorFactoryMaker implements
 		return map.get(toKey(locale, grade)) != null;
 	}
 	
-	public MarkerProcessorFactory getFactory(String locale, String grade) throws MarkerProcessorFactoryMakerException {
+	public MarkerProcessorFactory newFactory(String locale, String grade) throws MarkerProcessorFactoryMakerException {
 		MarkerProcessorFactoryService template = map.get(toKey(locale, grade));
 		if (template==null) {
 			// this is to avoid adding items to the cache that were removed
@@ -126,7 +120,7 @@ public class MarkerProcessorFactoryMaker implements
 	}
 	
 	public MarkerProcessor newMarkerProcessor(String locale, String grade) throws MarkerProcessorConfigurationException {
-		return getFactory(locale, grade).newMarkerProcessor(locale, grade);
+		return newFactory(locale, grade).newMarkerProcessor(locale, grade);
 	}
 
 	private class MarkerProcessorFactoryMakerException extends

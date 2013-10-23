@@ -11,7 +11,7 @@ import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 
-public class BrailleTextBorderFactory implements TextBorderFactory {
+class BrailleTextBorderFactory implements TextBorderFactory {
 	/**
 	 * Mode feature. The corresponding value should be
 	 * a string.

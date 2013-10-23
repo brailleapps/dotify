@@ -39,8 +39,8 @@ public class HyphenatorFactoryMaker implements HyphenatorFactoryMakerService {
 	
 	/**
 	 * <p>
-	 * Creates a new HyphenatorFactoryMaker using the SPI (java service provider
-	 * interface).
+	 * Creates a new HyphenatorFactoryMaker and populates it using the SPI (java
+	 * service provider interface).
 	 * </p>
 	 * 
 	 * <p>
@@ -51,13 +51,7 @@ public class HyphenatorFactoryMaker implements HyphenatorFactoryMakerService {
 	 * 
 	 * @return returns a new HyphenatorFactoryMakerService
 	 */
-	public static HyphenatorFactoryMakerService newInstance() {
-		{
-			Iterator<HyphenatorFactoryMakerService> i = ServiceRegistry.lookupProviders(HyphenatorFactoryMakerService.class);
-			while (i.hasNext()) {
-				return i.next();
-			}
-		}
+	public static HyphenatorFactoryMaker newInstance() {
 		HyphenatorFactoryMaker ret = new HyphenatorFactoryMaker();
 		{
 			Iterator<HyphenatorFactoryService> i = ServiceRegistry.lookupProviders(HyphenatorFactoryService.class);

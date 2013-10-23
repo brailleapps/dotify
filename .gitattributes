@@ -400,7 +400,7 @@ DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.hyphenator.Hyphenato
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.text.Integer2TextFactoryService -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.BrailleTranslatorFactoryService -text
 DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.MarkerProcessorFactoryService -text
-DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.TextBorderFactory -text
+DotifyTranslator/src/META-INF/services/org.daisy.dotify.api.translator.TextBorderFactoryService -text
 DotifyTranslator/src/org/daisy/dotify/api/hyphenator/HyphenatorConfigurationException.java -text
 DotifyTranslator/src/org/daisy/dotify/api/hyphenator/HyphenatorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/api/hyphenator/HyphenatorFactoryMakerService.java -text
@@ -427,6 +427,8 @@ DotifyTranslator/src/org/daisy/dotify/api/translator/MarkerProcessorFactoryServi
 DotifyTranslator/src/org/daisy/dotify/api/translator/TextAttribute.java -text
 DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderConfigurationException.java -text
 DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderFactoryMakerService.java -text
+DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderFactoryService.java -text
 DotifyTranslator/src/org/daisy/dotify/api/translator/TextBorderStyle.java -text
 DotifyTranslator/src/org/daisy/dotify/api/translator/TranslationException.java -text
 DotifyTranslator/src/org/daisy/dotify/api/translator/TranslatorConfigurationException.java -text
@@ -600,6 +602,7 @@ DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java 
 DotifyTranslator/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactoryService.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/text/UndefinedNumberException.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactory.java -text
+DotifyTranslator/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactoryService.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/BrailleTextBorderStyle.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactory.java -text
 DotifyTranslator/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryService.java -text

@@ -40,8 +40,8 @@ public class Integer2TextFactoryMaker implements
 	
 	/**
 	 * <p>
-	 * Creates a new Integer2TextFactoryMaker using the SPI (java service
-	 * provider interface).
+	 * Creates a new Integer2TextFactoryMaker and populates it using the SPI
+	 * (java service provider interface).
 	 * </p>
 	 * 
 	 * <p>
@@ -52,13 +52,7 @@ public class Integer2TextFactoryMaker implements
 	 * 
 	 * @return returns a new Integer2TextFactoryMaker
 	 */
-	public static Integer2TextFactoryMakerService newInstance() {
-		{
-			Iterator<Integer2TextFactoryMakerService> i = ServiceRegistry.lookupProviders(Integer2TextFactoryMakerService.class);
-			while (i.hasNext()) {
-				return i.next();
-			}
-		}
+	public static Integer2TextFactoryMaker newInstance() {
 		Integer2TextFactoryMaker ret = new Integer2TextFactoryMaker();
 		{
 			Iterator<Integer2TextFactoryService> i = ServiceRegistry.lookupProviders(Integer2TextFactoryService.class);
