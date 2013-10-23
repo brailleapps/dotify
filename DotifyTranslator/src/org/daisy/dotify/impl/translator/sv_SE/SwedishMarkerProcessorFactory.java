@@ -13,15 +13,10 @@ import org.daisy.dotify.translator.RegexMarkerDictionary;
 import org.daisy.dotify.translator.SimpleMarkerDictionary;
 import org.daisy.dotify.translator.TextAttributeFilter;
 
-public class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
+class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 	private final static String WHITESPACE_REGEX = "\\s+";
 	private final static String ALPHANUM_REGEX = "\\A[a-zA-Z0-9]+\\z";
 	private final static FilterLocale sv_SE = FilterLocale.parse("sv-SE");
-	
-
-	public boolean supportsSpecification(String locale, String mode) {
-		return FilterLocale.parse(locale).equals(sv_SE) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
-	}
 
 	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {
 		if (FilterLocale.parse(locale).equals(sv_SE)) {

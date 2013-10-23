@@ -75,6 +75,7 @@
 			<classpath>
 				<fileset dir="${shared-lib.dir}">
 					<patternset refid="shared-jar.patternset"/>
+					<include name="bnd.jar"/>
 				</fileset>
 			</classpath>
         </javac>
@@ -99,6 +100,7 @@
 				</fileset>
 				<fileset dir="${shared-lib.dir}">
 					<include name="junit*.jar"/>
+					<include name="bnd.jar"/>
 				</fileset>
 			</classpath>
 	    </javac>

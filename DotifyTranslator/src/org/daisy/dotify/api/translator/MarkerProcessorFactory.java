@@ -9,14 +9,6 @@ package org.daisy.dotify.api.translator;
 public interface MarkerProcessorFactory {
 
 	/**
-	 * Returns true if the marker processor factory supports the given specification.
-	 * @param locale the marker processor locale
-	 * @param mode the marker processor grade
-	 * @return returns true if the marker processor factory supports the specification
-	 */
-	public boolean supportsSpecification(String locale, String mode);
-	
-	/**
 	 * Creates a new marker processor with the given specification
 	 * @param locale the marker processor locale
 	 * @param mode the marker processor grade

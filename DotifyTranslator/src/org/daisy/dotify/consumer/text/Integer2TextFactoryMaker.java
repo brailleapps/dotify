@@ -1,10 +1,11 @@
 package org.daisy.dotify.consumer.text;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
@@ -12,6 +13,11 @@ import javax.imageio.spi.ServiceRegistry;
 import org.daisy.dotify.api.text.Integer2Text;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
 import org.daisy.dotify.api.text.Integer2TextFactory;
+import org.daisy.dotify.api.text.Integer2TextFactoryMakerService;
+import org.daisy.dotify.api.text.Integer2TextFactoryService;
+
+import aQute.bnd.annotation.component.Component;
+import aQute.bnd.annotation.component.Reference;
 
 /**
  * Provides a integer2text factory maker. This is the entry point for
@@ -19,73 +25,89 @@ import org.daisy.dotify.api.text.Integer2TextFactory;
  * 
  * @author Joel Håkansson
  */
-public class Integer2TextFactoryMaker {
-	private final List<Integer2TextFactory> filters;
-	private final Map<String, Integer2TextFactory> map;
+@Component
+public class Integer2TextFactoryMaker implements
+		Integer2TextFactoryMakerService {
+	private final List<Integer2TextFactoryService> filters;
+	private final Map<String, Integer2TextFactoryService> map;
 	private final Logger logger;
 
-	protected Integer2TextFactoryMaker() {
-		logger = Logger.getLogger(Integer2TextFactoryMaker.class.getCanonicalName());
-		filters = new ArrayList<Integer2TextFactory>();
-		Iterator<Integer2TextFactory> i = ServiceRegistry.lookupProviders(Integer2TextFactory.class);
-		while (i.hasNext()) {
-			filters.add(i.next());
-		}
-		this.map = new HashMap<String, Integer2TextFactory>();
+	public Integer2TextFactoryMaker() {
+		logger = Logger.getLogger(this.getClass().getCanonicalName());
+		filters = new CopyOnWriteArrayList<Integer2TextFactoryService>();
+		this.map = Collections.synchronizedMap(new HashMap<String, Integer2TextFactoryService>());
 	}
 	
 	/**
-	 * Creates a new integer2text factory maker.
+	 * <p>
+	 * Creates a new Integer2TextFactoryMaker using the SPI (java service
+	 * provider interface).
+	 * </p>
 	 * 
-	 * @return returns a new integer2text factory maker
+	 * <p>
+	 * In an OSGi context, an instance should be retrieved using the service
+	 * registry. It will be registered under the Integer2TextFactoryMakerService
+	 * interface.
+	 * </p>
+	 * 
+	 * @return returns a new Integer2TextFactoryMaker
 	 */
-	public static Integer2TextFactoryMaker newInstance() {
-		Iterator<Integer2TextFactoryMaker> i = ServiceRegistry.lookupProviders(Integer2TextFactoryMaker.class);
-		while (i.hasNext()) {
-			return i.next();
+	public static Integer2TextFactoryMakerService newInstance() {
+		{
+			Iterator<Integer2TextFactoryMakerService> i = ServiceRegistry.lookupProviders(Integer2TextFactoryMakerService.class);
+			while (i.hasNext()) {
+				return i.next();
+			}
 		}
-		return new Integer2TextFactoryMaker();
+		Integer2TextFactoryMaker ret = new Integer2TextFactoryMaker();
+		{
+			Iterator<Integer2TextFactoryService> i = ServiceRegistry.lookupProviders(Integer2TextFactoryService.class);
+			while (i.hasNext()) {
+				ret.addFactory(i.next());
+			}
+		}
+		return ret;
 	}
 	
-	/**
-	 * Gets a Integer2TextFactory that supports the specified locale
-	 * 
-	 * @param target
-	 *            the target locale
-	 * @return returns a integer2text factory for the specified locale
-	 * @throws Integer2TextFactoryMakerException
-	 *             if the locale is not supported
-	 */
+	@Reference(type = '*')
+	public void addFactory(Integer2TextFactoryService factory) {
+		logger.finer("Adding factory: " + factory);
+		filters.add(factory);
+	}
+
+	// Unbind reference added automatically from addFactory annotation
+	public void removeFactory(Integer2TextFactoryService factory) {
+		logger.finer("Removing factory: " + factory);
+		// this is to avoid adding items to the cache that were removed while
+		// iterating
+		synchronized (map) {
+			filters.remove(factory);
+			map.clear();
+		}
+	}
+
 	public Integer2TextFactory getFactory(String target) throws Integer2TextConfigurationException {
-		Integer2TextFactory template = map.get(target);
+		Integer2TextFactoryService template = map.get(target);
 		if (template==null) {
-			for (Integer2TextFactory h : filters) {
-				if (h.supportsLocale(target)) {
-					logger.fine("Found an integer2text factory for " + target + " (" + h.getClass() + ")");
-					map.put(target, h);
-					template = h;
-					break;
+			// this is to avoid adding items to the cache that were removed
+			// while iterating
+			synchronized (map) {
+				for (Integer2TextFactoryService h : filters) {
+					if (h.supportsLocale(target)) {
+						logger.fine("Found an integer2text factory for " + target + " (" + h.getClass() + ")");
+						map.put(target, h);
+						template = h;
+						break;
+					}
 				}
 			}
 		}
 		if (template==null) {
 			throw new Integer2TextFactoryMakerConfigurationException("Cannot find integer2text factory for " + target);
 		}
-		return template;
+		return template.newFactory();
 	}
 
-	/**
-	 * Creates a new integer2text. This is a convenience method for
-	 * getFactory(target).newInteger2Text(target).
-	 * Using this method excludes the possibility of setting features of the
-	 * integer2text factory.
-	 * 
-	 * @param target
-	 *            the target locale
-	 * @return returns a new integer2text
-	 * @throws UnsupportedLocaleException
-	 *             if the locale is not supported
-	 */
 	public Integer2Text newInteger2Text(String target) throws Integer2TextConfigurationException {
 		return getFactory(target).newInteger2Text(target);
 	}

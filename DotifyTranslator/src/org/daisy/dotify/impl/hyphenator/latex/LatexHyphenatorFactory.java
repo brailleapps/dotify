@@ -13,10 +13,6 @@ public class LatexHyphenatorFactory implements HyphenatorFactory {
 	public LatexHyphenatorFactory() {
 	}
 
-	public boolean supportsLocale(String locale) {
-		return LatexHyphenator.supportsLocale(FilterLocale.parse(locale));
-	}
-
 	public HyphenatorInterface newHyphenator(String locale) throws HyphenatorConfigurationException {
 		return new LatexHyphenator(FilterLocale.parse(locale));
 	}

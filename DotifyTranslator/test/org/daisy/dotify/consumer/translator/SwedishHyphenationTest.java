@@ -15,7 +15,7 @@ public class SwedishHyphenationTest {
 		HyphenatorInterface h2;
 		try {
 			String locale = "sv-SE";
-			HyphenatorFactory hf = HyphenatorFactoryMaker.newInstance().getFactory(locale);
+			HyphenatorFactory hf = HyphenatorFactoryMaker.newInstance().newFactory(locale);
 			//if this is set to 3 (using only patterns) several tests will fail 
 			//hf.setFeature(HyphenationFeatures.HYPHENATION_ACCURACY, 3);
 			h2 = hf.newHyphenator(locale);

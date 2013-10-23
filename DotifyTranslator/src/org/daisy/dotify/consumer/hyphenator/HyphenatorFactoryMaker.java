@@ -1,17 +1,23 @@
 package org.daisy.dotify.consumer.hyphenator;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactory;
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryService;
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
+
+import aQute.bnd.annotation.component.Component;
+import aQute.bnd.annotation.component.Reference;
 
 /**
  * Provides a hyphenator factory maker. This is the entry point for
@@ -19,100 +25,90 @@ import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
  * 
  * @author Joel Håkansson
  */
-public class HyphenatorFactoryMaker {
-	private final List<HyphenatorFactory> filters;
-	private final Map<String, HyphenatorFactory> map;
+@Component
+public class HyphenatorFactoryMaker implements HyphenatorFactoryMakerService {
+	private final List<HyphenatorFactoryService> filters;
+	private final Map<String, HyphenatorFactoryService> map;
 	private final Logger logger;
 	
-	private Integer beginLimit, endLimit;
-	
-	protected HyphenatorFactoryMaker() {
-		logger = Logger.getLogger(HyphenatorFactoryMaker.class.getCanonicalName());
-		filters = new ArrayList<HyphenatorFactory>();
-		Iterator<HyphenatorFactory> i = ServiceRegistry.lookupProviders(HyphenatorFactory.class);
-		while (i.hasNext()) {
-			filters.add(i.next());
-		}
-		this.map = new HashMap<String, HyphenatorFactory>();
-		beginLimit = null;
-		endLimit = null;
+	public HyphenatorFactoryMaker() {
+		logger = Logger.getLogger(this.getClass().getCanonicalName());
+		filters = new CopyOnWriteArrayList<HyphenatorFactoryService>();
+		this.map = Collections.synchronizedMap(new HashMap<String, HyphenatorFactoryService>());
 	}
 	
 	/**
-	 * Creates a new hyphenator factory maker.
-	 * @return returns a new hyphenator factory maker
-	 */
-	public static HyphenatorFactoryMaker newInstance() {
-		Iterator<HyphenatorFactoryMaker> i = ServiceRegistry.lookupProviders(HyphenatorFactoryMaker.class);
-		while (i.hasNext()) {
-			return i.next();
-		}
-		return new HyphenatorFactoryMaker();
-	}
-
-	public Integer getBeginLimit() {
-		return beginLimit;
-	}
-
-	public void setBeginLimit(Integer beginLimit) {
-		this.beginLimit = beginLimit;
-	}
-
-	public Integer getEndLimit() {
-		return endLimit;
-	}
-
-	public void setEndLimit(Integer endLimit) {
-		this.endLimit = endLimit;
-	}
-	
-	/**
-	 * Gets a HyphenatorFactory that supports the specified locale
+	 * <p>
+	 * Creates a new HyphenatorFactoryMaker using the SPI (java service provider
+	 * interface).
+	 * </p>
 	 * 
-	 * @param target
-	 *            the target locale
-	 * @return returns a hyphenator factory for the specified locale
-	 * @throws HyphenatorConfigurationException
-	 *             if the locale is not supported
+	 * <p>
+	 * In an OSGi context, an instance should be retrieved using the service
+	 * registry. It will be registered under the HyphenatorFactoryMakerService
+	 * interface.
+	 * </p>
+	 * 
+	 * @return returns a new HyphenatorFactoryMakerService
 	 */
-	public HyphenatorFactory getFactory(String target) throws HyphenatorConfigurationException {
-		HyphenatorFactory template = map.get(target);
+	public static HyphenatorFactoryMakerService newInstance() {
+		{
+			Iterator<HyphenatorFactoryMakerService> i = ServiceRegistry.lookupProviders(HyphenatorFactoryMakerService.class);
+			while (i.hasNext()) {
+				return i.next();
+			}
+		}
+		HyphenatorFactoryMaker ret = new HyphenatorFactoryMaker();
+		{
+			Iterator<HyphenatorFactoryService> i = ServiceRegistry.lookupProviders(HyphenatorFactoryService.class);
+			while (i.hasNext()) {
+				ret.addFactory(i.next());
+			}
+		}
+		return ret;
+	}
+
+	@Reference(type = '*')
+	public void addFactory(HyphenatorFactoryService factory) {
+		logger.finer("Adding factory: " + factory);
+		filters.add(factory);
+	}
+
+	// Unbind reference added automatically from addFactory annotation
+	public void removeFactory(HyphenatorFactoryService factory) {
+		logger.finer("Removing factory: " + factory);
+		// this is to avoid adding items to the cache that were removed while
+		// iterating
+		synchronized (map) {
+			filters.remove(factory);
+			map.clear();
+		}
+	}
+
+	public HyphenatorFactory newFactory(String target) throws HyphenatorConfigurationException {
+		HyphenatorFactoryService template = map.get(target);
 		if (template==null) {
-			for (HyphenatorFactory h : filters) {
-				if (h.supportsLocale(target)) {
-					logger.fine("Found a hyphenator factory for " + target + " (" + h.getClass() + ")");
-					map.put(target, h);
-					template = h;
-					break;
+			// this is to avoid adding items to the cache that were removed
+			// while iterating
+			synchronized (map) {
+				for (HyphenatorFactoryService h : filters) {
+					if (h.supportsLocale(target)) {
+						logger.fine("Found a hyphenator factory for " + target + " (" + h.getClass() + ")");
+						map.put(target, h);
+						template = h;
+						break;
+					}
 				}
 			}
 		}
 		if (template==null) {
 			throw new HyphenatorFactoryMakerConfigurationException("Cannot find hyphenator factory for " + target);
 		}
-		return template;
+		return template.newFactory();
 	}
 
-	/**
-	 * Creates a new hyphenator. This is a convenience method for
-	 * getFactory(target).newHyphenator(target).
-	 * Using this method excludes the possibility of setting features of the
-	 * hyphenator factory.
-	 * 
-	 * @param target
-	 *            the target locale
-	 * @return returns a new hyphenator
-	 * @throws HyphenatorConfigurationException
-	 *             if the locale is not supported
-	 */
 	public HyphenatorInterface newHyphenator(String target) throws HyphenatorConfigurationException {
-		HyphenatorInterface ret = getFactory(target).newHyphenator(target);
-		if (beginLimit!=null) {
-			ret.setBeginLimit(beginLimit);
-		}
-		if (endLimit!=null) {
-			ret.setEndLimit(endLimit);
-		}
+		HyphenatorInterface ret = newFactory(target).newHyphenator(target);
 		return ret;
 	}
 	
@@ -127,7 +123,6 @@ public class HyphenatorFactoryMaker {
 			super(message);
 			// TODO Auto-generated constructor stub
 		}
-		
 	}
 
 }

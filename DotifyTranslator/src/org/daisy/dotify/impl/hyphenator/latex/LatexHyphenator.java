@@ -12,7 +12,7 @@ class LatexHyphenator extends AbstractHyphenator {
 		this.endLimit = hyphenator.getDefaultEndLimit();
 	}
 	
-	static boolean supportsLocale(FilterLocale locale) {
+	static boolean supportsLocale(String locale) {
 		return LatexHyphenatorCore.getInstance().supportsLocale(locale);
 	}
 

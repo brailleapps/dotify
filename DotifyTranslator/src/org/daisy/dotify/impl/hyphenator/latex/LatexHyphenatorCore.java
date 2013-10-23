@@ -30,7 +30,7 @@ class LatexHyphenatorCore {
 		return instance;
 	}
 	
-	boolean supportsLocale(FilterLocale locale) {
+	boolean supportsLocale(String locale) {
 		return locator.supportsLocale(locale);
 	}
 	

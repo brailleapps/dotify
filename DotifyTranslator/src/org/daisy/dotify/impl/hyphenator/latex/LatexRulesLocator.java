@@ -31,8 +31,8 @@ public class LatexRulesLocator {
 		return getResource("hyphenation-catalog.xml");
 	}
 	
-	public boolean supportsLocale(FilterLocale locale) {
-		return locales.getProperty(locale.toString())!=null;
+	public boolean supportsLocale(String locale) {
+		return locales.getProperty(locale) != null;
 	}
 	
 	public Properties getProperties(FilterLocale locale) {

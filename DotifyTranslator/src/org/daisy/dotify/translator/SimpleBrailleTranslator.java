@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
@@ -29,7 +30,7 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 	private final String translatorMode;
 	private final StringFilter filter;
 	private final MarkerProcessor tap;
-	private final HyphenatorFactoryMaker hyphenatorFactoryMaker;
+	private final HyphenatorFactoryMakerService hyphenatorFactoryMaker;
 	private final Map<String, HyphenatorInterface> hyphenators;
 	
 	private boolean hyphenating;

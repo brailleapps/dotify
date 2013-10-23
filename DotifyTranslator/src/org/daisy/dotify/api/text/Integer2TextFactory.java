@@ -8,13 +8,6 @@ package org.daisy.dotify.api.text;
  * 
  */
 public interface Integer2TextFactory {
-
-	/**
-	 * Returns true if this instance can create instances for the specified locale.
-	 * @param locale
-	 * @return returns true if the specified locale is supported, false otherwise
-	 */
-	public boolean supportsLocale(String locale);
 	
 	/**
 	 * Returns a new integer2text configured for the specified locale.

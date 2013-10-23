@@ -9,12 +9,8 @@ import org.daisy.dotify.translator.Marker;
 import org.daisy.dotify.translator.MarkerStyleConstants;
 import org.daisy.dotify.translator.SimpleMarkerDictionary;
 
-public class DefaultBypassMarkerProcessorFactory implements
+class DefaultBypassMarkerProcessorFactory implements
 		MarkerProcessorFactory {
-
-	public boolean supportsSpecification(String locale, String mode) {
-		return mode.equals(BrailleTranslatorFactory.MODE_BYPASS);
-	}
 
 	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {
 		if (mode.equals(BrailleTranslatorFactory.MODE_BYPASS)) {

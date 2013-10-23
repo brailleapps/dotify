@@ -26,17 +26,6 @@ public interface HyphenatorFactory {
 	 * </p>
 	 */
 	public String FEATURE_HYPHENATION_ACCURACY = "hyphenation-accuracy";
-
-	/**
-	 * Returns true if this instance can create instances for the specified
-	 * locale.
-	 * 
-	 * @param locale
-	 *            a valid locale as defined by IETF RFC 3066
-	 * @return returns true if the specified locale is supported, false
-	 *         otherwise
-	 */
-	public boolean supportsLocale(String locale);
 	
 	/**
 	 * Returns a new hyphenator configured for the specified locale.
