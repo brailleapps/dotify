@@ -81,7 +81,7 @@ public class Integer2TextFactoryMaker implements
 	}
 
 	public Integer2TextFactory getFactory(String target) throws Integer2TextConfigurationException {
-		Integer2TextFactoryService template = map.get(target);
+		Integer2TextFactoryService template = map.get(target.toLowerCase());
 		if (template==null) {
 			// this is to avoid adding items to the cache that were removed
 			// while iterating
@@ -89,7 +89,7 @@ public class Integer2TextFactoryMaker implements
 				for (Integer2TextFactoryService h : filters) {
 					if (h.supportsLocale(target)) {
 						logger.fine("Found an integer2text factory for " + target + " (" + h.getClass() + ")");
-						map.put(target, h);
+						map.put(target.toLowerCase(), h);
 						template = h;
 						break;
 					}

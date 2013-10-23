@@ -90,7 +90,7 @@ public class MarkerProcessorFactoryMaker implements
 	}
 
 	private static String toKey(String locale, String grade) {
-		return locale + "(" + grade + ")";
+		return locale.toLowerCase() + "(" + grade.toUpperCase() + ")";
 	}
 	
 	public boolean supportsSpecification(String locale, String grade) {
