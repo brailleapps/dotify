@@ -26,7 +26,7 @@ public class DefaultBypassTranslatorFactoryService implements
 		this.hyphenator = hyphenator;
 	}
 
-	public void unsetHyphenator() {
+	public void unsetHyphenator(HyphenatorFactoryMakerService hyphenator) {
 		this.hyphenator = null;
 	}
 

@@ -61,7 +61,7 @@ public class MarkerProcessorFactoryMaker implements
 	 * 
 	 * @return returns a new marker processor factory maker.
 	 */
-	public static MarkerProcessorFactoryMaker newInstance() {
+	public static MarkerProcessorFactoryMakerService newInstance() {
 		MarkerProcessorFactoryMaker ret = new MarkerProcessorFactoryMaker();
 		{
 			Iterator<MarkerProcessorFactoryService> i = ServiceRegistry.lookupProviders(MarkerProcessorFactoryService.class);
