@@ -84,7 +84,7 @@ public class BreakPointHandler {
 			String head = charsStr.substring(0, strPos+1);
 			int tailStart = strPos+1;
 			return finalizeBreakpointFull(head, tailStart, test, false);
-		} else if (charsStr.charAt(strPos+1)==SPACE) {
+		} else if (charsStr.charAt(strPos + 1) == SPACE || charsStr.charAt(strPos + 1) == ZERO_WIDTH_SPACE) {
 			String head = charsStr.substring(0, strPos+2); // strPos+1
 			int tailStart = strPos+2;
 			return finalizeBreakpointFull(head, tailStart, test, false);

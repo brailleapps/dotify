@@ -2,8 +2,6 @@ package org.daisy.dotify.text;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.text.BreakPoint;
-import org.daisy.dotify.text.BreakPointHandler;
 import org.junit.Test;
 
 public class BreakPointHandlerTest {
@@ -123,4 +121,31 @@ public class BreakPointHandlerTest {
 		assertTrue("Time exceeded threshold ("+threshold+" ms), was " + actualTime + " ms.", (actualTime<threshold));
 	}
 	
+	@Test
+	public void testZWSP_01() {
+		BreakPointHandler bph = new BreakPointHandler("citat\u200bblockcitat20");
+		BreakPoint bp = bph.nextRow(12, false);
+		assertEquals("citat", bp.getHead());
+		assertEquals("blockcitat20", bp.getTail());
+		assertTrue(!bp.isHardBreak());
+	}
+
+	@Test
+	public void testZWSP_02() {
+		BreakPointHandler bph = new BreakPointHandler("citat\u200bblockcitat20");
+		BreakPoint bp = bph.nextRow(5, false);
+		assertEquals("citat", bp.getHead());
+		assertEquals("blockcitat20", bp.getTail());
+		assertTrue(!bp.isHardBreak());
+	}
+
+	@Test
+	public void testZWSP_03() {
+		BreakPointHandler bph = new BreakPointHandler("citat\u200bblockcitat20");
+		BreakPoint bp = bph.nextRow(6, false);
+		assertEquals("citat", bp.getHead());
+		assertEquals("blockcitat20", bp.getTail());
+		assertTrue(!bp.isHardBreak());
+	}
+
 }
