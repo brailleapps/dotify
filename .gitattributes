@@ -702,7 +702,6 @@ dotify.hyphenator.impl/.settings/org.eclipse.jdt.core.prefs -text
 dotify.hyphenator.impl/bnd.bnd -text
 dotify.hyphenator.impl/build.xml -text
 dotify.hyphenator.impl/launch.bndrun -text
-dotify.hyphenator.impl/src/META-INF/services/org.daisy.dotify.api.hyphenator.HyphenatorFactoryService -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/AbstractHyphenator.java -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/CWDecompounder.java -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenationUnit.java -text
