@@ -681,6 +681,21 @@ EpubTools/src/se/mtm/epub/OPF.java -text
 EpubTools/src/se/mtm/epub/OPFReader.java -text
 EpubTools/src/se/mtm/epub/resource-files/opf-merge-content-docs.xslt -text
 EpubTools/src/se/mtm/epub/resource-files/opf-merge-spine.xslt -text
+dotify.common/.classpath -text
+dotify.common/.project -text
+dotify.common/.settings/org.eclipse.jdt.core.prefs -text
+dotify.common/bnd.bnd -text
+dotify.common/build.xml -text
+dotify.common/launch.bndrun -text
+dotify.common/src/se/mtm/common/io/FileIO.java -text
+dotify.common/src/se/mtm/common/io/TempFileHandler.java -text
+dotify.common/src/se/mtm/common/io/packageinfo -text
+dotify.common/src/se/mtm/common/text/SplitResult.java -text svneol=unset#text/plain
+dotify.common/src/se/mtm/common/text/StringSplitter.java -text svneol=unset#text/plain
+dotify.common/src/se/mtm/common/text/packageinfo -text
+dotify.common/src/se/mtm/common/xml/XMLTools.java -text
+dotify.common/src/se/mtm/common/xml/XMLToolsException.java -text
+dotify.common/src/se/mtm/common/xml/packageinfo -text
 dotify.translator.api/.classpath -text
 dotify.translator.api/.project -text
 dotify.translator.api/.settings/org.eclipse.jdt.core.prefs -text
