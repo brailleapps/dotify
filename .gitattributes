@@ -222,6 +222,7 @@ DotifyFormatter/src/META-INF/services/org.daisy.dotify.formatter.FormatterFactor
 DotifyFormatter/src/org/daisy/dotify/LayoutEngine.java -text
 DotifyFormatter/src/org/daisy/dotify/LayoutEngineException.java -text
 DotifyFormatter/src/org/daisy/dotify/cli/FormatterCLI.java -text
+DotifyFormatter/src/org/daisy/dotify/formatter/AlphaNumeral.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/Block.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/BlockContentManager.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/BlockPosition.java -text
@@ -343,6 +344,7 @@ DotifyFormatter/src/org/daisy/dotify/writer/WriterException.java -text
 DotifyFormatter/src/org/daisy/dotify/writer/WriterHandler.java -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/writer/package-info.java -text
 DotifyFormatter/test/org/daisy/dotify/LayoutEngineTest.java -text
+DotifyFormatter/test/org/daisy/dotify/formatter/AlphaNumeralTest.java -text
 DotifyFormatter/test/org/daisy/dotify/formatter/FormatterFactoryTest.java -text
 DotifyFormatter/test/org/daisy/dotify/formatter/NumeralFieldTest.java -text
 DotifyFormatter/test/org/daisy/dotify/formatter/PositionTest.java -text svneol=unset#text/plain

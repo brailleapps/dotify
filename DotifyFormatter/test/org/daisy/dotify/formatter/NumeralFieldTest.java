@@ -16,4 +16,9 @@ public class NumeralFieldTest {
 	public void testNumeralStyleRoman() {
 		assertEquals("III", NumeralStyle.ROMAN.format(3));
 	}
+
+	@Test
+	public void testNumeralStyleAlpha() {
+		assertEquals("C", NumeralStyle.ALPHA.format(3));
+	}
 }

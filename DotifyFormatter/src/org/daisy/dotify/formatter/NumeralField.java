@@ -18,7 +18,11 @@ public class NumeralField implements Field {
 		/**
 		 * Defines roman numeral style
 		 */
-		ROMAN;
+		ROMAN, UPPER_ROMAN, LOWER_ROMAN,
+		/**
+		 * Defines alpha numeral style
+		 */
+		ALPHA, UPPER_ALPHA, LOWER_ALPHA;
 
 		/**
 		 * Formats the numeral with the given style
@@ -30,7 +34,15 @@ public class NumeralField implements Field {
 		public String format(int i) {
 			switch (this) {
 				case ROMAN:
+				case UPPER_ROMAN:
 					return RomanNumeral.int2roman(i);
+				case LOWER_ROMAN:
+					return RomanNumeral.int2roman(i).toLowerCase();
+				case ALPHA:
+				case UPPER_ALPHA:
+					return AlphaNumeral.int2alpha(i);
+				case LOWER_ALPHA:
+					return AlphaNumeral.int2alpha(i).toLowerCase();
 				case DEFAULT:
 				default:
 					return "" + i;

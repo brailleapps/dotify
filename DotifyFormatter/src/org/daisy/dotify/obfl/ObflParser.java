@@ -39,8 +39,6 @@ import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.MarkerReferenceField;
-import org.daisy.dotify.formatter.Volume;
-import org.daisy.dotify.formatter.VolumeContentFormatter;
 import org.daisy.dotify.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.formatter.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
@@ -49,6 +47,8 @@ import org.daisy.dotify.formatter.Position;
 import org.daisy.dotify.formatter.SequenceProperties;
 import org.daisy.dotify.formatter.StringField;
 import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.formatter.Volume;
+import org.daisy.dotify.formatter.VolumeContentFormatter;
 import org.daisy.dotify.obfl.EventContents.ContentType;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.text.FilterLocale;
@@ -311,7 +311,7 @@ public class ObflParser {
 				//FIXME: add variables...
 				compound.add(new StringField(new Expression().evaluate(getAttr(event, "expression"))));
 			} else if (equalsStart(event, ObflQName.CURRENT_PAGE)) {
-				compound.add(new CurrentPageField(NumeralStyle.valueOf(getAttr(event, "style").toUpperCase())));
+				compound.add(new CurrentPageField(NumeralStyle.valueOf(getAttr(event, "style").replace('-', '_').toUpperCase())));
 			} else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
 				compound.add(
 					new MarkerReferenceField(
@@ -630,7 +630,7 @@ public class ObflParser {
 		String styleStr = getAttr(event, "style");
 		if (styleStr!=null) {
 			try {
-				style = NumeralStyle.valueOf(styleStr.toUpperCase());
+				style = NumeralStyle.valueOf(styleStr.replace('-', '_').toUpperCase());
 			} catch (Exception e) { }
 		}
 		scanEmptyElement(input, ObflQName.PAGE_NUMBER);
