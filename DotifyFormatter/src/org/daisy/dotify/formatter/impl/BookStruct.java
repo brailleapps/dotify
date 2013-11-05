@@ -193,7 +193,7 @@ class BookStruct {
 				do {
 					offset++;
 					bp = volBreaks.tryNextRow(contentSheets+offset);
-				} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<=splitterMax);
+				} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitterMax);
 				bp = volBreaks.nextRow(contentSheets + offset, true);
 				contentSheets = bp.getHead().length();
 				crh.setTargetVolSize(i, contentSheets + crh.getVolData(i).getVolOverhead());
