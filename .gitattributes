@@ -176,15 +176,6 @@ Dotify/test/org/daisy/dotify/impl/input/text/resource-files/expected.obfl -text
 Dotify/test/org/daisy/dotify/impl/input/text/resource-files/input.txt -text
 Dotify/test/org/daisy/dotify/impl/input/text/resource-files/normalize.xsl -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
-DotifyCommon/.classpath -text
-DotifyCommon/.project -text
-DotifyCommon/.settings/org.eclipse.jdt.core.prefs -text
-DotifyCommon/build-properties.xml -text
-DotifyCommon/build.xml -text
-DotifyCommon/src/se/mtm/common/io/FileIO.java -text
-DotifyCommon/src/se/mtm/common/io/TempFileHandler.java -text
-DotifyCommon/src/se/mtm/common/xml/XMLTools.java -text
-DotifyCommon/src/se/mtm/common/xml/XMLToolsException.java -text
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text
 DotifyDevtools/.settings/org.eclipse.jdt.core.prefs -text
