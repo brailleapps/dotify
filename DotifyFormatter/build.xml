@@ -99,6 +99,7 @@
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<patternset refid="build-jar.patternset"/>
+					<include name="bnd.jar"/>
 				</fileset>
 			</classpath>
         </javac>
@@ -123,6 +124,7 @@
 				</fileset>
 				<fileset dir="${lib.dir}">
 					<include name="junit*.jar"/>
+					<include name="bnd.jar"/>
 				</fileset>
 			</classpath>
 	    </javac>

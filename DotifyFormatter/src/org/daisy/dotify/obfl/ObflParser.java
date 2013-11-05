@@ -225,11 +225,12 @@ public class ObflParser {
 			} else if (name.equals("frame")) {
 				HashSet<String> set = new HashSet<String>(Arrays.asList(value.split(" ")));
 				TextBorderFactoryMaker maker = TextBorderFactoryMaker.newInstance();
-				maker.setFeature(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
-				maker.setFeature(TextBorderFactory.FEATURE_STYLE, set);
+				HashMap<String, Object> features = new HashMap<String, Object>();
+				features.put(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
+				features.put(TextBorderFactory.FEATURE_STYLE, set);
 				TextBorderStyle style = null;
 				try {
-					style = maker.newTextBorderStyle();
+					style = maker.newTextBorderStyle(features);
 				} catch (TextBorderConfigurationException e) {
 				}
 				masterConfig.frame(style);
