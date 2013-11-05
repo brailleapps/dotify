@@ -92,8 +92,7 @@
     	<delete dir="${test-temp.dir}"/>
 		<mkdir dir="${test-temp.dir}"/>
     	<copy todir="${test-temp.dir}">
-    		<!--
-    		<fileset dir="${test-src.dir}"/> -->
+    		<fileset dir="${test-src.dir}"/>
     		<fileset dir="../dotify.common/test"/>
     		<fileset dir="../dotify.hyphenator.impl/test" />
     		<fileset dir="../dotify.text.impl/test"/>

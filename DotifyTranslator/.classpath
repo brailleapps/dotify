@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="/DotifyShared/junit-4.7.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/texhyphj.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/bnd.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/dotify.translator.api"/>
 	<classpathentry kind="output" path="bin/src"/>
 </classpath>
