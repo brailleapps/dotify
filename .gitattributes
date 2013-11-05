@@ -921,6 +921,9 @@ dotify.translator.impl/.settings/org.eclipse.jdt.core.prefs -text
 dotify.translator.impl/bnd.bnd -text
 dotify.translator.impl/build.xml -text
 dotify.translator.impl/launch.bndrun -text
+dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.BrailleTranslatorFactoryService -text
+dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.MarkerProcessorFactoryService -text
+dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.TextBorderFactoryService -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactory.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactoryService.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderStyle.java -text
