@@ -685,7 +685,9 @@ dotify.common/.classpath -text
 dotify.common/.project -text
 dotify.common/.settings/org.eclipse.jdt.core.prefs -text
 dotify.common/bnd.bnd -text
+dotify.common/build-properties.xml -text
 dotify.common/build.xml -text
+dotify.common/build2.xml -text
 dotify.common/launch.bndrun -text
 dotify.common/src/se/mtm/common/io/FileIO.java -text
 dotify.common/src/se/mtm/common/io/TempFileHandler.java -text
