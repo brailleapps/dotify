@@ -79,6 +79,7 @@
 				</fileset>
 				<fileset dir="../DotifyShared">
 					<include name="dotify-formatter*.jar"/>
+					<include name="dotify-translator*.jar"/>
         		</fileset>
 			</classpath>
         </javac>
@@ -163,6 +164,9 @@
     		<zipfileset dir="${lib.dir}" prefix="${zip-foler-prefix}/lib">
     			<include name="*.jar"/>
     			<exclude name="junit*.jar"/>
+    		</zipfileset>
+			<zipfileset dir="../DotifyShared" prefix="${zip-foler-prefix}/lib">
+				<include name="dotify-translator*.jar"/>
     		</zipfileset>
     	</zip>
 		<delete file="${dist.jar}"/>

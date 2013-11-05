@@ -53,7 +53,6 @@ Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
 Dotify/build.xml -text svneol=unset#text/plain
 Dotify/lib/brailleUtils-catalog.jar -text
 Dotify/lib/brailleUtils-core.jar -text
-Dotify/lib/dotify-translator.jar -text
 Dotify/lib/icu4j-3_8.jar -text
 Dotify/lib/isorelax.jar -text
 Dotify/lib/jing.jar -text
