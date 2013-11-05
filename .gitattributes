@@ -937,7 +937,6 @@ dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBraille
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactoryService.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactory.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryService.java -text
-dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/package.html -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas1.xml -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas2.xml -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/text/BreakPoint.java -text svneol=unset#text/plain
