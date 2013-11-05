@@ -1,6 +1,7 @@
-Private-Package: org.example
+Private-Package: org.daisy.dotify.impl.text
 Service-Component: *
 -buildpath: osgi.core,\
 	osgi.cmpn,\
 	biz.aQute.bnd.annotation,\
-	junit.osgi
+	junit.osgi,\
+	dotify.translator.api;version=latest

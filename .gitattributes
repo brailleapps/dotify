@@ -864,6 +864,7 @@ dotify.text.impl/src/org/daisy/dotify/impl/text/SvInt2TextLocalization.java -tex
 dotify.text.impl/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactory.java -text
 dotify.text.impl/src/org/daisy/dotify/impl/text/SwedishInteger2TextFactoryService.java -text
 dotify.text.impl/src/org/daisy/dotify/impl/text/UndefinedNumberException.java -text
+dotify.text.impl/test/org/daisy/dotify/impl/text/BasicInteger2TextTest.java -text
 dotify.translator.api/.classpath -text
 dotify.translator.api/.project -text
 dotify.translator.api/.settings/org.eclipse.jdt.core.prefs -text
