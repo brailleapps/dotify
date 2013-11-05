@@ -856,6 +856,7 @@ dotify.text.impl/.settings/org.eclipse.jdt.core.prefs -text
 dotify.text.impl/bnd.bnd -text
 dotify.text.impl/build.xml -text
 dotify.text.impl/launch.bndrun -text
+dotify.text.impl/src/META-INF/services/org.daisy.dotify.api.text.Integer2TextFactoryService -text
 dotify.text.impl/src/org/daisy/dotify/impl/text/BasicInt2TextLocalization.java -text
 dotify.text.impl/src/org/daisy/dotify/impl/text/BasicInteger2Text.java -text
 dotify.text.impl/src/org/daisy/dotify/impl/text/EnInt2TextLocalization.java -text
