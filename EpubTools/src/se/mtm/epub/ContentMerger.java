@@ -9,7 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import se.mtm.common.io.FileIO;
-import se.mtm.common.xml.XmlTools;
+import se.mtm.common.xml.XMLTools;
+import se.mtm.common.xml.XMLToolsException;
 
 public class ContentMerger {
 	private final File epub;
@@ -67,12 +68,20 @@ public class ContentMerger {
 		{
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("content", contentName);
-			XmlTools.transform(opfFile, resultFile, this.getClass().getResourceAsStream("resource-files/opf-merge-spine.xslt"), params);
+			try {
+				XMLTools.transform(opfFile, resultFile, this.getClass().getResourceAsStream("resource-files/opf-merge-spine.xslt"), params);
+			} catch (XMLToolsException e) {
+				throw new EPUB3ReaderException(e);
+			}
 		}
 
 		{
 			Map<String, Object> params = new HashMap<String, Object>();
-			XmlTools.transform(opfFile, contentFile, this.getClass().getResourceAsStream("resource-files/opf-merge-content-docs.xslt"), params);
+			try {
+				XMLTools.transform(opfFile, contentFile, this.getClass().getResourceAsStream("resource-files/opf-merge-content-docs.xslt"), params);
+			} catch (XMLToolsException e) {
+				throw new EPUB3ReaderException(e);
+			}
 		}
 
 		logger.info("Copying resources...");
