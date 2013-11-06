@@ -27,7 +27,6 @@ import org.daisy.dotify.api.writer.PagedMediaWriterException;
 import org.daisy.dotify.obfl.OBFLParserException;
 import org.daisy.dotify.obfl.OBFLWsNormalizer;
 import org.daisy.dotify.obfl.ObflParser;
-import org.daisy.dotify.writer.WriterHandler;
 
 /**
  * <p>

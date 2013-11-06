@@ -214,6 +214,7 @@ DotifyFormatter/src/META-INF/services/org.daisy.dotify.api.obfl.ExpressionFactor
 DotifyFormatter/src/org/daisy/dotify/cli/FormatterCLI.java -text
 DotifyFormatter/src/org/daisy/dotify/engine/impl/LayoutEngineFactoryImpl.java -text
 DotifyFormatter/src/org/daisy/dotify/engine/impl/LayoutEngineImpl.java -text
+DotifyFormatter/src/org/daisy/dotify/engine/impl/WriterHandler.java -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/impl/BlockContentManagerImpl.java -text
 DotifyFormatter/src/org/daisy/dotify/formatter/impl/BlockHandler.java -text svneol=unset#text/plain
@@ -257,8 +258,6 @@ DotifyFormatter/src/org/daisy/dotify/obfl/BlockSequenceManipulator.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/Evaluate.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/EventContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/ExpressionFactoryImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/ExpressionImpl.java -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/obfl/IterableEventContents.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/LeaderEventContents.java -text
@@ -285,6 +284,8 @@ DotifyFormatter/src/org/daisy/dotify/obfl/TocSequenceEventImpl.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/VolumeSequenceEvent.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/VolumeTemplate.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/VolumeTemplateImpl.java -text
+DotifyFormatter/src/org/daisy/dotify/obfl/impl/ExpressionFactoryImpl.java -text
+DotifyFormatter/src/org/daisy/dotify/obfl/impl/ExpressionImpl.java -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/obfl/package-info.java -text
 DotifyFormatter/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer-2.xsl -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer.xsl -text svneol=unset#text/plain
@@ -294,8 +295,6 @@ DotifyFormatter/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#t
 DotifyFormatter/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/writer/PEFMediaWriter.java -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/writer/TextMediaWriter.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/writer/WriterException.java -text
-DotifyFormatter/src/org/daisy/dotify/writer/WriterHandler.java -text svneol=unset#text/plain
 DotifyFormatter/src/org/daisy/dotify/writer/package-info.java -text
 DotifyFormatter/test/org/daisy/dotify/LayoutEngineTest.java -text
 DotifyFormatter/test/org/daisy/dotify/api/formatter/AlphaNumeralTest.java -text

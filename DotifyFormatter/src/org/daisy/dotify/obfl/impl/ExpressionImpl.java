@@ -1,4 +1,4 @@
-package org.daisy.dotify.obfl;
+package org.daisy.dotify.obfl.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

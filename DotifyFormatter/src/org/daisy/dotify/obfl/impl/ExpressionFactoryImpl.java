@@ -1,4 +1,4 @@
-package org.daisy.dotify.obfl;
+package org.daisy.dotify.obfl.impl;
 
 import org.daisy.dotify.api.obfl.Expression;
 import org.daisy.dotify.api.obfl.ExpressionFactory;

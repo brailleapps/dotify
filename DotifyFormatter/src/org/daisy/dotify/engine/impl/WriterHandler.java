@@ -1,4 +1,4 @@
-package org.daisy.dotify.writer;
+package org.daisy.dotify.engine.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.daisy.dotify.api.writer.PagedMediaWriter;
  * adding headers and footers as required by the layout.
  * @author Joel Håkansson
  */
-public class WriterHandler {
+class WriterHandler {
 	
 	public WriterHandler() {
 	}
