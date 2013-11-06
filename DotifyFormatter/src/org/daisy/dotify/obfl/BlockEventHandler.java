@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactoryMaker;
+import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
@@ -19,17 +19,20 @@ import org.daisy.dotify.text.FilterLocale;
  */
 class BlockEventHandler {
 	private final Formatter formatter;
+	private final ExpressionFactory ef;
 
-	public BlockEventHandler(FilterLocale locale, String mode, Map<String, LayoutMaster> masters) {
-		this.formatter = FormatterFactoryMaker.newInstance().newFormatter(locale, mode);
+	public BlockEventHandler(FilterLocale locale, String mode, Map<String, LayoutMaster> masters, FormatterFactory ff, ExpressionFactory ef) {
+		this.formatter = ff.newFormatter(locale, mode);
 		this.formatter.open();
 		for (String name : masters.keySet()) {
 			this.formatter.addLayoutMaster(name, masters.get(name));
 		}
+		this.ef = ef;
 	}
 	
-	public BlockEventHandler(Formatter formatter) {
+	public BlockEventHandler(Formatter formatter, ExpressionFactory ef) {
 		this.formatter = formatter;
+		this.ef = ef;
 	}
 
 	public void insertEventContents(IterableEventContents b) {
@@ -62,7 +65,7 @@ class BlockEventHandler {
 					break; }
 				case EVALUATE: {
 					Evaluate e = ((Evaluate)bc);
-					formatter.addChars((new Expression().evaluate(e.getExpression(), e.getVariables())).toString(), e.getTextProperties());
+					formatter.addChars((ef.newExpression().evaluate(e.getExpression(), e.getVariables())).toString(), e.getTextProperties());
 					break; }
 				case MARKER: {
 					Marker m = ((Marker)bc);

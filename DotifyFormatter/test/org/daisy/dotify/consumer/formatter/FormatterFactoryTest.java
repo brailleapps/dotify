@@ -1,8 +1,10 @@
-package org.daisy.dotify.formatter;
+package org.daisy.dotify.consumer.formatter;
 
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.consumer.formatter.FormatterFactoryMaker;
+import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Stack;
 
 import org.daisy.dotify.api.translator.BrailleTranslator;
-import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.BlockStruct;
 import org.daisy.dotify.formatter.Formatter;
@@ -20,7 +18,6 @@ import org.daisy.dotify.formatter.TextProperties;
 import org.daisy.dotify.formatter.Volume;
 import org.daisy.dotify.formatter.VolumeContentFormatter;
 import org.daisy.dotify.formatter.impl.BlockHandler.ListItem;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.StateObject;
 
 
@@ -52,7 +49,7 @@ class FormatterImpl implements Formatter {
 	/**
 	 * Creates a new formatter
 	 */
-	public FormatterImpl(FilterLocale locale, String mode) {
+	public FormatterImpl(BrailleTranslator translator) {
 		//this.filters = builder.filtersFactory.getDefault();
 		this.context = new Stack<BlockProperties>();
 		this.leftMargin = 0;
@@ -62,15 +59,7 @@ class FormatterImpl implements Formatter {
 		//this.filter = null;
 		//this.refs = null;
 		this.listItem = null;
-		this.translator = getTranslator(locale, mode);
-	}
-
-	private BrailleTranslator getTranslator(FilterLocale locale, String mode) {
-		try {
-			return BrailleTranslatorFactoryMaker.newInstance().newTranslator(locale.toString(), mode);
-		} catch (TranslatorConfigurationException e) {
-			return null;
-		}
+		this.translator = translator;
 	}
 
 	/*

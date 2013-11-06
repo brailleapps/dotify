@@ -1,11 +1,12 @@
 package org.daisy.dotify.obfl;
 import static org.junit.Assert.assertEquals;
 
+import org.daisy.dotify.consumer.obfl.ExpressionFactoryMaker;
 import org.junit.Test;
 
 
 public class ExpressionTest {
-	private final Expression e = new Expression();
+	private final Expression e = ExpressionFactoryMaker.newInstance().getFactory().newExpression();
 	
 	@Test
 	public void testExpression_add_01() {

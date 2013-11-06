@@ -17,6 +17,7 @@ class LayoutMasterImpl implements LayoutMaster {
 	// protected final int flowHeight;
 	protected final int pageWidth;
 	protected final int pageHeight;
+	protected final ExpressionFactory ef;
 	protected final int innerMargin;
 	protected final int outerMargin;
 	protected final float rowSpacing;
@@ -30,8 +31,9 @@ class LayoutMasterImpl implements LayoutMaster {
 	 *
 	 */
 	public static class Builder {
-		int pageWidth;
-		int pageHeight;
+		final int pageWidth;
+		final int pageHeight;
+		final ExpressionFactory ef;
 		// optional
 //		int headerHeight = 0; 
 //		int footerHeight = 0;
@@ -42,10 +44,12 @@ class LayoutMasterImpl implements LayoutMaster {
 		ArrayList<PageTemplate> templates;
 		TextBorderStyle frame;
 
-		public Builder(int pageWidth, int pageHeight) {
+
+		public Builder(int pageWidth, int pageHeight, ExpressionFactory ef) {
 			this.pageWidth = pageWidth;
 			this.pageHeight = pageHeight;
 			this.templates = new ArrayList<PageTemplate>();
+			this.ef = ef;
 			frame = null;
 		}
 		/*
@@ -112,6 +116,7 @@ class LayoutMasterImpl implements LayoutMaster {
 		this.duplex = config.duplex;
 		this.templates = config.templates;
 		this.frame = config.frame;
+		this.ef = config.ef;
 	}
 	
 	public int getPageWidth() {
@@ -164,7 +169,7 @@ class LayoutMasterImpl implements LayoutMaster {
 		}
 		// if no template applies, an empty template should be returned
 		// since adding templates is optional in Builder
-		return new PageTemplateImpl();
+		return new PageTemplateImpl(ef);
 	}
 
 }

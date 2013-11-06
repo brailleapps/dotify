@@ -2,7 +2,7 @@ package org.daisy.dotify.obfl;
 
 import java.util.Stack;
 
-public class StyleEvent extends Stack<EventContents> implements IterableEventContents {
+class StyleEvent extends Stack<EventContents> implements IterableEventContents {
 
 	/**
 	 * 

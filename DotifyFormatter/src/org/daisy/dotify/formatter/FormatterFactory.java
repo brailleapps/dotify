@@ -1,6 +1,8 @@
 package org.daisy.dotify.formatter;
 
+import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.text.FilterLocale;
+
 
 /**
  * Provides a proxy for creating a formatter implementation. Objects of this class
@@ -16,4 +18,15 @@ public interface FormatterFactory {
 	 */
 	public Formatter newFormatter(FilterLocale locale, String mode);
 
+	/**
+	 * Provides a method to set the BrailleTranslatorFactoryMaker directly. This
+	 * is included in the interface as a compromise between OSGi visibility and
+	 * SPI compatibility.
+	 * 
+	 * In an OSGi context, the implementation should not set the implementation
+	 * directly, but attach it to the service using DS.
+	 * 
+	 * @param translatorFactory
+	 */
+	public void setTranslator(BrailleTranslatorFactoryMakerService translatorFactory);
 }

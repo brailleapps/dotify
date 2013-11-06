@@ -13,9 +13,10 @@ class PageTemplateImpl implements PageTemplate {
 	private final List<List<Field>> header;
 	private final List<List<Field>> footer;
 	private final HashMap<Integer, Boolean> appliesTo;
+	private final ExpressionFactory ef;
 	
-	public PageTemplateImpl() {
-		this(null);
+	public PageTemplateImpl(ExpressionFactory ef) {
+		this(null, ef);
 	}
 
 	/**
@@ -23,11 +24,12 @@ class PageTemplateImpl implements PageTemplate {
 	 * @param useWhen string to evaluate. In addition to the syntax of {@link Expression}, the value $page can be
 	 * used. This will be replaced by the current page number before the expression is evaluated.
 	 */
-	public PageTemplateImpl(String useWhen) {
+	public PageTemplateImpl(String useWhen, ExpressionFactory ef) {
 		this.condition = useWhen;
 		this.header = new ArrayList<List<Field>>();
 		this.footer = new ArrayList<List<Field>>();
-		this.appliesTo = new HashMap<Integer, Boolean>();		
+		this.appliesTo = new HashMap<Integer, Boolean>();
+		this.ef = ef;
 	}
 
 	public void addToHeader(List<Field> obj) {
@@ -58,7 +60,7 @@ class PageTemplateImpl implements PageTemplate {
 		if (appliesTo.containsKey(pagenum)) {
 			return appliesTo.get(pagenum);
 		}
-		boolean applies = new Expression().evaluate(condition.replaceAll("\\$page(?=\\W)", ""+pagenum)).equals(true);
+		boolean applies = ef.newExpression().evaluate(condition.replaceAll("\\$page(?=\\W)", "" + pagenum)).equals(true);
 		appliesTo.put(pagenum, applies);
 		return applies;
 	}

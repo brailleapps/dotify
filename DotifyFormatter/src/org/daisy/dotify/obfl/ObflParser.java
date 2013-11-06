@@ -1,7 +1,6 @@
 package org.daisy.dotify.obfl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,27 +13,24 @@ import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
 import org.daisy.dotify.api.translator.MarkerProcessor;
-import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
+import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.consumer.translator.MarkerProcessorFactoryMaker;
-import org.daisy.dotify.consumer.translator.TextBorderFactoryMaker;
 import org.daisy.dotify.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.formatter.BlockProperties;
 import org.daisy.dotify.formatter.CompoundField;
 import org.daisy.dotify.formatter.CurrentPageField;
 import org.daisy.dotify.formatter.Field;
 import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactoryMaker;
+import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.formatter.FormattingTypes;
 import org.daisy.dotify.formatter.LayoutMaster;
 import org.daisy.dotify.formatter.Leader;
@@ -72,29 +68,22 @@ public class ObflParser {
 	private Formatter formatter;
 	private final FilterLocale locale;
 	private final String mode;
+	private final FormatterFactory formatterFactory;
 	private final MarkerProcessor mp;
+	private final TextBorderFactoryMakerService maker;
+	private final ExpressionFactory ef;
 
-	public ObflParser(FilterLocale locale, String mode) {
+	public ObflParser(FilterLocale locale, String mode, MarkerProcessor mp, FormatterFactory formatterFactory, TextBorderFactoryMakerService maker, ExpressionFactory ef) {
 		this.locale = locale;
 		this.mode = mode;
-		try {
-			mp = MarkerProcessorFactoryMaker.newInstance().newMarkerProcessor(locale.toString(), mode);
-		} catch (MarkerProcessorConfigurationException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
-	
-	public void parse(InputStream stream) throws XMLStreamException, OBFLParserException {
-        XMLInputFactory inFactory = XMLInputFactory.newInstance();
-		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
-        inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-        inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-        inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        parse(inFactory.createXMLEventReader(stream));
+		this.formatterFactory = formatterFactory;
+		this.mp = mp;
+		this.maker = maker;
+		this.ef = ef;
 	}
 	
 	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
-		this.formatter = FormatterFactoryMaker.newInstance().newFormatter(locale, mode);
+		this.formatter = formatterFactory.newFormatter(locale, mode);
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
@@ -209,7 +198,7 @@ public class ObflParser {
 		int width = Integer.parseInt(getAttr(event, ObflQName.ATTR_PAGE_WIDTH));
 		int height = Integer.parseInt(getAttr(event, ObflQName.ATTR_PAGE_HEIGHT));
 		String masterName = getAttr(event, ObflQName.ATTR_NAME);
-		LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height);
+		LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height, ef);
 		while (i.hasNext()) {
 			Attribute atts = i.next();
 			String name = atts.getName().getLocalPart();
@@ -224,7 +213,6 @@ public class ObflParser {
 				masterConfig.duplex(value.equals("true"));
 			} else if (name.equals("frame")) {
 				HashSet<String> set = new HashSet<String>(Arrays.asList(value.split(" ")));
-				TextBorderFactoryMaker maker = TextBorderFactoryMaker.newInstance();
 				HashMap<String, Object> features = new HashMap<String, Object>();
 				features.put(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
 				features.put(TextBorderFactory.FEATURE_STYLE, set);
@@ -255,9 +243,9 @@ public class ObflParser {
 	private PageTemplate parseTemplate(XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		PageTemplateImpl template;
 		if (equalsStart(event, ObflQName.TEMPLATE)) {
-			template = new PageTemplateImpl(getAttr(event, ObflQName.ATTR_USE_WHEN));
+			template = new PageTemplateImpl(getAttr(event, ObflQName.ATTR_USE_WHEN), ef);
 		} else {
-			template = new PageTemplateImpl();
+			template = new PageTemplateImpl(ef);
 		}
 		while (input.hasNext()) {
 			event=input.nextEvent();
@@ -310,7 +298,7 @@ public class ObflParser {
 				compound.add(new StringField(getAttr(event, "value")));
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
 				//FIXME: add variables...
-				compound.add(new StringField(new Expression().evaluate(getAttr(event, "expression"))));
+				compound.add(new StringField(ef.newExpression().evaluate(getAttr(event, "expression"))));
 			} else if (equalsStart(event, ObflQName.CURRENT_PAGE)) {
 				compound.add(new CurrentPageField(NumeralStyle.valueOf(getAttr(event, "style").replace('-', '_').toUpperCase())));
 			} else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
@@ -416,7 +404,7 @@ public class ObflParser {
 	private void parseStyle(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		TextProperties tp = new TextProperties.Builder(locale).hyphenate(hyph).build();
 
-		BlockEventHandler eh = new BlockEventHandler(formatter);
+		BlockEventHandler eh = new BlockEventHandler(formatter, ef);
 		eh.insertEventContents(parseStyleEvent(event, input, tp));
 	}
 
@@ -649,7 +637,7 @@ public class ObflParser {
 		String volumeCountVar = getAttr(event, "volume-count-variable");
 		String useWhen = getAttr(event, ObflQName.ATTR_USE_WHEN);
 		String splitterMax = getAttr(event, "sheets-in-volume-max");
-		VolumeTemplateImpl template = new VolumeTemplateImpl(volumeVar, volumeCountVar, useWhen, Integer.parseInt(splitterMax));
+		VolumeTemplateImpl template = new VolumeTemplateImpl(volumeVar, volumeCountVar, useWhen, Integer.parseInt(splitterMax), ef);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.PRE_CONTENT)) {
@@ -733,7 +721,7 @@ public class ObflParser {
 		TocRange range = TocRange.valueOf(getAttr(event, "range").toUpperCase());
 		String condition = getAttr(event, ObflQName.ATTR_USE_WHEN);
 		String volEventVar = getAttr(event, "toc-event-volume-number-variable");
-		TocSequenceEventImpl tocSequence = new TocSequenceEventImpl(builder.build(), tocName, range, condition, volEventVar, template);
+		TocSequenceEventImpl tocSequence = new TocSequenceEventImpl(builder.build(), tocName, range, condition, volEventVar, template, ef);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.ON_TOC_START)) {
@@ -867,7 +855,7 @@ public class ObflParser {
 	}
 	
 	public VolumeContentFormatter getVolumeContentFormatter() {
-		return new BlockEventHandlerRunner(locale, mode, masters, tocs, volumeTemplates);
+		return new BlockEventHandlerRunner(locale, mode, masters, tocs, volumeTemplates, formatterFactory, ef);
 	}
 
 	public List<MetaDataItem> getMetaData() {

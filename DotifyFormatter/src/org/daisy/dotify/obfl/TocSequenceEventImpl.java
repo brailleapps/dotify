@@ -20,8 +20,9 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 	private final ArrayList<ConditionalEvents> tocEndEvents;
 	private final VolumeTemplate template;
 	private final String volEventVariable;
+	private final ExpressionFactory ef;
 	
-	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocRange range, String condition, String volEventVar, VolumeTemplate template) {
+	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocRange range, String condition, String volEventVar, VolumeTemplate template, ExpressionFactory ef) {
 		this.props = props;
 		this.tocName = tocName;
 		this.range = range;
@@ -32,22 +33,23 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		this.tocEndEvents = new ArrayList<ConditionalEvents>();
 		this.template = template;
 		this.volEventVariable = (volEventVar!=null?volEventVar:DEFAULT_EVENT_VOLUME_NUMBER);
+		this.ef = ef;
 	}
 	
 	void addTocStartEvents(Iterable<BlockEvent> events, String condition) {
-		tocStartEvents.add(new ConditionalEvents(events, condition));
+		tocStartEvents.add(new ConditionalEvents(events, condition, ef));
 	}
 
 	void addVolumeStartEvents(Iterable<BlockEvent> events, String condition) {
-		volumeStartEvents.add(new ConditionalEvents(events, condition));
+		volumeStartEvents.add(new ConditionalEvents(events, condition, ef));
 	}
 	
 	void addVolumeEndEvents(Iterable<BlockEvent> events, String condition) {
-		volumeEndEvents.add(new ConditionalEvents(events, condition));
+		volumeEndEvents.add(new ConditionalEvents(events, condition, ef));
 	}
 	
 	void addTocEndEvents(Iterable<BlockEvent> events, String condition) {
-		tocEndEvents.add(new ConditionalEvents(events, condition));
+		tocEndEvents.add(new ConditionalEvents(events, condition, ef));
 	}
 
 	public VolumeSequenceType getVolumeSequenceType() {
@@ -76,7 +78,7 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 				template.getVolumeNumberVariableName()+"="+volume,
 				template.getVolumeCountVariableName()+"="+volumeCount
 			};
-		return new Expression().evaluate(condition, vars).equals(true);
+		return ef.newExpression().evaluate(condition, vars).equals(true);
 	}
 
 	/**

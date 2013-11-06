@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.xml.stream.XMLEventFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.junit.Test;
@@ -89,8 +92,13 @@ public class ObflWsXsltTest {
 		copy(this.getClass().getResourceAsStream(input), new FileOutputStream(in));
 		
 		File normalizedFile = File.createTempFile("TestResult", ".tmp");
-		OBFLWsNormalizer t = new OBFLWsNormalizer(new FileInputStream(in), new FileOutputStream(normalizedFile));
-		t.parse();
+		XMLInputFactory inFactory = XMLInputFactory.newInstance();
+		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+		inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+		OBFLWsNormalizer t = new OBFLWsNormalizer(inFactory.createXMLEventReader(new FileInputStream(in)), XMLEventFactory.newInstance(), new FileOutputStream(normalizedFile));
+		t.parse(XMLOutputFactory.newInstance());
 		int ret = compareBinary(new FileInputStream(normalizedFile), this.getClass().getResourceAsStream(expected));
 		
 		if (!normalizedFile.delete()) {

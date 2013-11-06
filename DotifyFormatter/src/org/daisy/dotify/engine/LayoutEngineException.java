@@ -1,4 +1,4 @@
-package org.daisy.dotify;
+package org.daisy.dotify.engine;
 
 public class LayoutEngineException extends Exception {
 

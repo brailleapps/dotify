@@ -1,0 +1,78 @@
+package org.daisy.dotify.engine;
+
+import javax.xml.stream.XMLEventFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+
+import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
+import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
+import org.daisy.dotify.formatter.FormatterFactory;
+import org.daisy.dotify.obfl.ExpressionFactory;
+import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.writer.PagedMediaWriter;
+
+public interface FormatterEngineFactoryService {
+
+	public FormatterEngine newFormatterEngine(FilterLocale locale, String mode, PagedMediaWriter writer);
+
+	/**
+	 * Provides a method to set the FormatterFactory directly. This
+	 * is included in the interface as a compromise between OSGi visibility and
+	 * SPI compatibility.
+	 * 
+	 * In an OSGi context, the implementation should not set the implementation
+	 * directly, but attach it to the service using DS.
+	 * 
+	 * @param formatterFactory
+	 */
+	public void setFormatterFactory(FormatterFactory formatterFactory); 	// note
+																						// that
+																						// there
+																						// isn't
+																						// a
+																						// service
+																						// for
+																						// this...
+
+	/**
+	 * Provides a method to set the MarkerProcessorFactoryService directly. This
+	 * is included in the interface as a compromise between OSGi visibility and
+	 * SPI compatibility.
+	 * 
+	 * In an OSGi context, the implementation should not set the implementation
+	 * directly, but attach it to the service using DS.
+	 * 
+	 * @param mp
+	 */
+	public void setMarkerProcessor(MarkerProcessorFactoryMakerService mp);
+
+	/**
+	 * Provides a method to set the TextBorderFactoryMakerService directly. This
+	 * is included in the interface as a compromise between OSGi visibility and
+	 * SPI compatibility.
+	 * 
+	 * In an OSGi context, the implementation should not set the implementation
+	 * directly, but attach it to the service using DS.
+	 * 
+	 * @param tbf
+	 */
+	public void setTextBorderFactoryMaker(TextBorderFactoryMakerService tbf);
+
+	/**
+	 * Provides a method to set the ExpressionFactory directly. This
+	 * is included in the interface as a compromise between OSGi visibility and
+	 * SPI compatibility.
+	 * 
+	 * In an OSGi context, the implementation should not set the implementation
+	 * directly, but attach it to the service using DS.
+	 * 
+	 * @param ef
+	 */
+	public void setExpressionFactory(ExpressionFactory ef);
+
+	public void setXMLInputFactory(XMLInputFactory in);
+
+	public void setXMLEventFactory(XMLEventFactory xef);
+
+	public void setXMLOutputFactory(XMLOutputFactory of);
+}

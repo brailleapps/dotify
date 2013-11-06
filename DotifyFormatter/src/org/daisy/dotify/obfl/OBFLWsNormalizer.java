@@ -3,7 +3,6 @@ package org.daisy.dotify.obfl;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,23 +27,17 @@ public class OBFLWsNormalizer {
 	private final Pattern beginWS;
 	private final Pattern endWS;
 
-	public OBFLWsNormalizer(InputStream stream, OutputStream out) throws XMLStreamException {
-		XMLInputFactory inFactory = XMLInputFactory.newInstance();
-		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-		inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-		inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-		inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-		this.input = inFactory.createXMLEventReader(stream);
+	public OBFLWsNormalizer(XMLEventReader input, XMLEventFactory eventFactory, OutputStream out) throws XMLStreamException {
+		this.input = input;
 		this.writer = null;
 		this.out = out;
-		this.eventFactory = XMLEventFactory.newInstance();
+		this.eventFactory = eventFactory;
 		beginWS = Pattern.compile("\\A\\s+");
 		endWS = Pattern.compile("\\s+\\z");
 	}
 
-	public void parse() {
+	public void parse(XMLOutputFactory outputFactory) {
 		XMLEvent event;
-		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		while (input.hasNext()) {
 			try {
 				event = input.nextEvent();
@@ -277,8 +270,13 @@ public class OBFLWsNormalizer {
 	 */
 	public static void main(String[] args) {
 		try {
-			OBFLWsNormalizer p = new OBFLWsNormalizer(new FileInputStream("ws-test-input.xml"), new FileOutputStream("out.xml"));
-			p.parse();
+			XMLInputFactory inFactory = XMLInputFactory.newInstance();
+			inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+			inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
+			inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+			inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+			OBFLWsNormalizer p = new OBFLWsNormalizer(inFactory.createXMLEventReader(new FileInputStream("ws-test-input.xml")), XMLEventFactory.newInstance(), new FileOutputStream("out.xml"));
+			p.parse(XMLOutputFactory.newInstance());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

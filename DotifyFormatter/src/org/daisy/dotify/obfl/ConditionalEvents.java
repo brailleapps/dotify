@@ -6,10 +6,12 @@ import java.util.Map;
 class ConditionalEvents {
 	private final String condition;
 	private final Iterable<BlockEvent> events;
+	private final ExpressionFactory ef;
 	
-	public ConditionalEvents(Iterable<BlockEvent> events, String condition) {
+	public ConditionalEvents(Iterable<BlockEvent> events, String condition, ExpressionFactory ef) {
 		this.events = events;
 		this.condition = condition;
+		this.ef = ef;
 	}
 	
 	public Iterable<BlockEvent> getEvents() {
@@ -20,7 +22,7 @@ class ConditionalEvents {
 		if (condition==null) {
 			return true;
 		}
-		return new Expression().evaluate(condition, variables).equals(true);
+		return ef.newExpression().evaluate(condition, variables).equals(true);
 	}
 
 }

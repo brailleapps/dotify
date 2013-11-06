@@ -8,8 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
-import org.daisy.dotify.LayoutEngine;
-import org.daisy.dotify.LayoutEngineException;
+import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
+import org.daisy.dotify.engine.FormatterEngine;
+import org.daisy.dotify.engine.LayoutEngineException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.PEFMediaWriter;
 
@@ -29,7 +30,7 @@ public class FormatterCLI {
 		Properties p = new Properties();
 		p.put("identifier", generateIdentifier());
 		p.put("date", getDefaultDate("yyyy-MM-dd"));
-		LayoutEngine formatter = new LayoutEngine(FilterLocale.parse(args[2]), args[3], new PEFMediaWriter(p));
+		FormatterEngine formatter = FormatterEngineMaker.newInstance().newFormatterEngine(FilterLocale.parse(args[2]), args[3], new PEFMediaWriter(p));
 		formatter.convert(new FileInputStream(args[0]), new FileOutputStream(args[1]));
 	}
 

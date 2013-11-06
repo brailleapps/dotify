@@ -1,9 +1,10 @@
-package org.daisy.dotify.formatter;
-
-import java.util.Iterator;
+package org.daisy.dotify.consumer.formatter;
 
 import javax.imageio.spi.ServiceRegistry;
 
+import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
+import org.daisy.dotify.formatter.Formatter;
+import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.text.FilterLocale;
 
 /**
@@ -15,24 +16,21 @@ import org.daisy.dotify.text.FilterLocale;
 public class FormatterFactoryMaker {
 	private final FormatterFactory proxy;
 	
-	protected FormatterFactoryMaker() {
+	public FormatterFactoryMaker() {
 		//Gets the first formatter (assumes there is at least one).
 		proxy = ServiceRegistry.lookupProviders(FormatterFactory.class).next();
+		proxy.setTranslator(BrailleTranslatorFactoryMaker.newInstance());
 	}
 
 	public static FormatterFactoryMaker newInstance() {
-		Iterator<FormatterFactoryMaker> i = ServiceRegistry.lookupProviders(FormatterFactoryMaker.class);
-		while (i.hasNext()) {
-			return i.next();
-		}
 		return new FormatterFactoryMaker();
 	}
 	
-	public FormatterFactory getFactory(FilterLocale locale, String mode) {
+	public FormatterFactory getFactory() {
 		return proxy;
 	}
 	
 	public Formatter newFormatter(FilterLocale locale, String mode) {
-		return getFactory(locale, mode).newFormatter(locale, mode);
+		return proxy.newFormatter(locale, mode);
 	}
 }
