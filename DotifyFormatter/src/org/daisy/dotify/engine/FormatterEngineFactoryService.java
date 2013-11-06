@@ -8,12 +8,11 @@ import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.obfl.ExpressionFactory;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.PagedMediaWriter;
 
 public interface FormatterEngineFactoryService {
 
-	public FormatterEngine newFormatterEngine(FilterLocale locale, String mode, PagedMediaWriter writer);
+	public FormatterEngine newFormatterEngine(String locale, String mode, PagedMediaWriter writer);
 
 	/**
 	 * Provides a method to set the FormatterFactory directly. This

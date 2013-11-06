@@ -12,7 +12,6 @@ import org.daisy.dotify.consumer.translator.TextBorderFactoryMaker;
 import org.daisy.dotify.engine.FormatterEngine;
 import org.daisy.dotify.engine.FormatterEngineFactoryMakerService;
 import org.daisy.dotify.engine.FormatterEngineFactoryService;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.PagedMediaWriter;
 
 public class FormatterEngineMaker implements FormatterEngineFactoryMakerService {
@@ -41,7 +40,7 @@ public class FormatterEngineMaker implements FormatterEngineFactoryMakerService 
 		return new FormatterEngineMaker();
 	}
 
-	public FormatterEngine newFormatterEngine(FilterLocale locale, String mode, PagedMediaWriter writer) {
+	public FormatterEngine newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
 		return proxy.newFormatterEngine(locale, mode, writer);
 	}
 

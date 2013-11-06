@@ -14,14 +14,13 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
 import org.daisy.dotify.engine.FormatterEngine;
 import org.daisy.dotify.engine.LayoutEngineException;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.TextMediaWriter;
 import org.junit.Test;
 public class LayoutEngineTest {
 	
 	@Test
 	public void testLayoutEnginge() throws LayoutEngineException, IOException {
-		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine(FilterLocale.parse("en"),
+		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("en",
 				BrailleTranslatorFactory.MODE_BYPASS,
 				new TextMediaWriter("utf-8"));
 		File res = File.createTempFile("TestResult", ".tmp");

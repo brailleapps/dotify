@@ -5,7 +5,6 @@ import javax.imageio.spi.ServiceRegistry;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a factory for formatters. The factory will instantiate 
@@ -30,7 +29,7 @@ public class FormatterFactoryMaker {
 		return proxy;
 	}
 	
-	public Formatter newFormatter(FilterLocale locale, String mode) {
+	public Formatter newFormatter(String locale, String mode) {
 		return proxy.newFormatter(locale, mode);
 	}
 }

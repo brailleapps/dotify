@@ -22,7 +22,7 @@ class BlockEventHandler {
 	private final ExpressionFactory ef;
 
 	public BlockEventHandler(FilterLocale locale, String mode, Map<String, LayoutMaster> masters, FormatterFactory ff, ExpressionFactory ef) {
-		this.formatter = ff.newFormatter(locale, mode);
+		this.formatter = ff.newFormatter(locale.toString(), mode);
 		this.formatter.open();
 		for (String name : masters.keySet()) {
 			this.formatter.addLayoutMaster(name, masters.get(name));

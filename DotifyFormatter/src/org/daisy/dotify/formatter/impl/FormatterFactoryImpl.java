@@ -5,7 +5,6 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.formatter.Formatter;
 import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.text.FilterLocale;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
@@ -19,10 +18,10 @@ import aQute.bnd.annotation.component.Reference;
 public class FormatterFactoryImpl implements FormatterFactory {
 	private BrailleTranslatorFactoryMakerService translatorFactory;
 
-	public Formatter newFormatter(FilterLocale locale, String mode) {
+	public Formatter newFormatter(String locale, String mode) {
 		BrailleTranslator t;
 		try {
-			t = translatorFactory.newFactory(locale.toString(), mode).newTranslator(locale.toString(), mode);
+			t = translatorFactory.newFactory(locale, mode).newTranslator(locale, mode);
 		} catch (TranslatorConfigurationException e) {
 			t = null;
 		}

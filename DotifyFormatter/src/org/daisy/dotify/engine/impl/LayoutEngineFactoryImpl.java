@@ -9,7 +9,6 @@ import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.engine.FormatterEngineFactoryService;
 import org.daisy.dotify.formatter.FormatterFactory;
 import org.daisy.dotify.obfl.ExpressionFactory;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.PagedMediaWriter;
 
 import aQute.bnd.annotation.component.Component;
@@ -25,7 +24,7 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 	private XMLEventFactory xef;
 	private XMLOutputFactory of;
 
-	public LayoutEngineImpl newFormatterEngine(FilterLocale locale, String mode, PagedMediaWriter writer) {
+	public LayoutEngineImpl newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
 		return new LayoutEngineImpl(locale, mode, writer, ff, mpf, tbf, ef, in, xef, of);
 	}
 

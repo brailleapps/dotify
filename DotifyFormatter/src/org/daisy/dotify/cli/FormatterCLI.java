@@ -11,7 +11,6 @@ import java.util.Properties;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
 import org.daisy.dotify.engine.FormatterEngine;
 import org.daisy.dotify.engine.LayoutEngineException;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.PEFMediaWriter;
 
 public class FormatterCLI {
@@ -30,7 +29,7 @@ public class FormatterCLI {
 		Properties p = new Properties();
 		p.put("identifier", generateIdentifier());
 		p.put("date", getDefaultDate("yyyy-MM-dd"));
-		FormatterEngine formatter = FormatterEngineMaker.newInstance().newFormatterEngine(FilterLocale.parse(args[2]), args[3], new PEFMediaWriter(p));
+		FormatterEngine formatter = FormatterEngineMaker.newInstance().newFormatterEngine(args[2], args[3], new PEFMediaWriter(p));
 		formatter.convert(new FileInputStream(args[0]), new FileOutputStream(args[1]));
 	}
 

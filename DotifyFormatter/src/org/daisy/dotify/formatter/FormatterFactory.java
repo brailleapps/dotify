@@ -1,7 +1,6 @@
 package org.daisy.dotify.formatter;
 
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
-import org.daisy.dotify.text.FilterLocale;
 
 
 /**
@@ -16,7 +15,7 @@ public interface FormatterFactory {
 	 * Creates a new formatter.
 	 * @return returns the new formatter.
 	 */
-	public Formatter newFormatter(FilterLocale locale, String mode);
+	public Formatter newFormatter(String locale, String mode);
 
 	/**
 	 * Provides a method to set the BrailleTranslatorFactoryMaker directly. This

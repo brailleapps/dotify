@@ -25,7 +25,6 @@ import org.daisy.dotify.obfl.ExpressionFactory;
 import org.daisy.dotify.obfl.OBFLParserException;
 import org.daisy.dotify.obfl.OBFLWsNormalizer;
 import org.daisy.dotify.obfl.ObflParser;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.PagedMediaWriterException;
 import org.daisy.dotify.writer.WriterHandler;
@@ -42,7 +41,7 @@ import org.daisy.dotify.writer.WriterHandler;
  *
  */
 class LayoutEngineImpl implements FormatterEngine {
-	private final FilterLocale locale;
+	private final String locale;
 	private final String mode;
 	private final PagedMediaWriter writer;
 	private final Logger logger;
@@ -61,7 +60,7 @@ class LayoutEngineImpl implements FormatterEngine {
 	 * @param translator the translator to use
 	 * @param writer the output writer
 	 */
-	public LayoutEngineImpl(FilterLocale locale, String mode, PagedMediaWriter writer, FormatterFactory ff, MarkerProcessorFactoryMakerService mpf, TextBorderFactoryMakerService tbf, ExpressionFactory ef, XMLInputFactory in, XMLEventFactory xef, XMLOutputFactory of) {
+	public LayoutEngineImpl(String locale, String mode, PagedMediaWriter writer, FormatterFactory ff, MarkerProcessorFactoryMakerService mpf, TextBorderFactoryMakerService tbf, ExpressionFactory ef, XMLInputFactory in, XMLEventFactory xef, XMLOutputFactory of) {
 		this.locale = locale;
 		this.mode = mode;
 		//this.locale = locale;
@@ -105,7 +104,7 @@ class LayoutEngineImpl implements FormatterEngine {
 
 				MarkerProcessor mp;
 				try {
-					mp = mpf.newMarkerProcessor(locale.toString(), mode);
+					mp = mpf.newMarkerProcessor(locale, mode);
 				} catch (MarkerProcessorConfigurationException e) {
 					throw new IllegalArgumentException(e);
 				}

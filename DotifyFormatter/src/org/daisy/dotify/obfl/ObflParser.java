@@ -73,8 +73,8 @@ public class ObflParser {
 	private final TextBorderFactoryMakerService maker;
 	private final ExpressionFactory ef;
 
-	public ObflParser(FilterLocale locale, String mode, MarkerProcessor mp, FormatterFactory formatterFactory, TextBorderFactoryMakerService maker, ExpressionFactory ef) {
-		this.locale = locale;
+	public ObflParser(String locale, String mode, MarkerProcessor mp, FormatterFactory formatterFactory, TextBorderFactoryMakerService maker, ExpressionFactory ef) {
+		this.locale = FilterLocale.parse(locale);
 		this.mode = mode;
 		this.formatterFactory = formatterFactory;
 		this.mp = mp;
@@ -83,7 +83,7 @@ public class ObflParser {
 	}
 	
 	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
-		this.formatter = formatterFactory.newFormatter(locale, mode);
+		this.formatter = formatterFactory.newFormatter(locale.toString(), mode);
 		this.tocs = new HashMap<String, TableOfContents>();
 		this.masters = new HashMap<String, LayoutMaster>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
