@@ -620,6 +620,48 @@ dotify.translator.api/.project -text
 dotify.translator.api/.settings/org.eclipse.jdt.core.prefs -text
 dotify.translator.api/bnd.bnd -text
 dotify.translator.api/build.xml -text
+dotify.translator.api/src/org/daisy/dotify/api/engine/FormatterEngine.java -text
+dotify.translator.api/src/org/daisy/dotify/api/engine/FormatterEngineFactoryMakerService.java -text
+dotify.translator.api/src/org/daisy/dotify/api/engine/FormatterEngineFactoryService.java -text
+dotify.translator.api/src/org/daisy/dotify/api/engine/LayoutEngineException.java -text
+dotify.translator.api/src/org/daisy/dotify/api/engine/packageinfo -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/AlphaNumeral.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Block.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/BlockContentManager.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/BlockPosition.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/BlockProperties.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/BlockSequence.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/BlockStruct.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/CompoundField.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/CrossReferences.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/CurrentPageField.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Field.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Formatted.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Formatter.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/FormatterException.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/FormatterFactory.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/FormattingTypes.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/LayoutMaster.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Leader.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Marker.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/MarkerReferenceField.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/NumeralField.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Page.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/PageSequence.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/PageStruct.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/PageTemplate.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/PagenumField.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Position.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/RomanNumeral.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Row.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/SectionProperties.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/formatter/SequenceProperties.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/StringField.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/TextProperties.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/Volume.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/VolumeContentFormatter.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/package-info.java -text
+dotify.translator.api/src/org/daisy/dotify/api/formatter/packageinfo -text
 dotify.translator.api/src/org/daisy/dotify/api/hyphenator/HyphenatorConfigurationException.java -text
 dotify.translator.api/src/org/daisy/dotify/api/hyphenator/HyphenatorFactory.java -text
 dotify.translator.api/src/org/daisy/dotify/api/hyphenator/HyphenatorFactoryMakerService.java -text
@@ -627,6 +669,9 @@ dotify.translator.api/src/org/daisy/dotify/api/hyphenator/HyphenatorFactoryServi
 dotify.translator.api/src/org/daisy/dotify/api/hyphenator/HyphenatorInterface.java -text
 dotify.translator.api/src/org/daisy/dotify/api/hyphenator/package-info.java -text
 dotify.translator.api/src/org/daisy/dotify/api/hyphenator/packageinfo -text
+dotify.translator.api/src/org/daisy/dotify/api/obfl/Expression.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/obfl/ExpressionFactory.java -text
+dotify.translator.api/src/org/daisy/dotify/api/obfl/packageinfo -text
 dotify.translator.api/src/org/daisy/dotify/api/text/Integer2Text.java -text
 dotify.translator.api/src/org/daisy/dotify/api/text/Integer2TextConfigurationException.java -text
 dotify.translator.api/src/org/daisy/dotify/api/text/Integer2TextFactory.java -text
@@ -655,8 +700,15 @@ dotify.translator.api/src/org/daisy/dotify/api/translator/TranslationException.j
 dotify.translator.api/src/org/daisy/dotify/api/translator/TranslatorConfigurationException.java -text
 dotify.translator.api/src/org/daisy/dotify/api/translator/package-info.java -text
 dotify.translator.api/src/org/daisy/dotify/api/translator/packageinfo -text
+dotify.translator.api/src/org/daisy/dotify/api/writer/MetaDataItem.java -text
+dotify.translator.api/src/org/daisy/dotify/api/writer/PagedMediaWriter.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/writer/PagedMediaWriterException.java -text svneol=unset#text/plain
+dotify.translator.api/src/org/daisy/dotify/api/writer/packageinfo -text
+dotify.translator.api/src/org/daisy/dotify/consumer/engine/FormatterEngineMaker.java -text
+dotify.translator.api/src/org/daisy/dotify/consumer/formatter/FormatterFactoryMaker.java -text svneol=unset#text/plain
 dotify.translator.api/src/org/daisy/dotify/consumer/hyphenator/HyphenatorFactoryMaker.java -text
 dotify.translator.api/src/org/daisy/dotify/consumer/hyphenator/package-info.java -text
+dotify.translator.api/src/org/daisy/dotify/consumer/obfl/ExpressionFactoryMaker.java -text
 dotify.translator.api/src/org/daisy/dotify/consumer/text/Integer2TextFactoryMaker.java -text
 dotify.translator.api/src/org/daisy/dotify/consumer/text/package-info.java -text
 dotify.translator.api/src/org/daisy/dotify/consumer/translator/BrailleTranslatorFactoryMaker.java -text
