@@ -3,7 +3,7 @@ package org.daisy.dotify.obfl;
 import java.util.Map;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.SequenceProperties;
+import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class StaticSequenceEventImpl extends Stack<BlockEvent> implements StaticSequenceEvent {
 	private final SequenceProperties props;

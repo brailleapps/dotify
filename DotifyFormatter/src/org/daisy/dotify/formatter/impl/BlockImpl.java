@@ -2,17 +2,17 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.Block;
-import org.daisy.dotify.formatter.BlockContentManager;
-import org.daisy.dotify.formatter.BlockPosition;
-import org.daisy.dotify.formatter.BlockProperties;
-import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.formatter.FormattingTypes;
-import org.daisy.dotify.formatter.Leader;
-import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
+import org.daisy.dotify.api.formatter.Block;
+import org.daisy.dotify.api.formatter.BlockContentManager;
+import org.daisy.dotify.api.formatter.BlockPosition;
+import org.daisy.dotify.api.formatter.BlockProperties;
+import org.daisy.dotify.api.formatter.CrossReferences;
+import org.daisy.dotify.api.formatter.FormattingTypes;
+import org.daisy.dotify.api.formatter.Leader;
+import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.TextProperties;
+import org.daisy.dotify.api.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.formatter.impl.Segment.SegmentType;
-import org.daisy.dotify.formatter.TextProperties;
 
 
 class BlockImpl implements Block {

@@ -1,6 +1,6 @@
 package org.daisy.dotify.obfl;
 
-import org.daisy.dotify.formatter.Leader;
+import org.daisy.dotify.api.formatter.Leader;
 
 class LeaderEventContents extends Leader implements EventContents {
 	

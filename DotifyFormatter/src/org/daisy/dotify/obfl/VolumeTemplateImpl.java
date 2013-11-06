@@ -1,5 +1,7 @@
 package org.daisy.dotify.obfl;
 
+import org.daisy.dotify.api.obfl.ExpressionFactory;
+
 
 class VolumeTemplateImpl implements VolumeTemplate {
 	public final static String DEFAULT_VOLUME_NUMBER_VARIABLE_NAME = "volume";

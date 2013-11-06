@@ -4,12 +4,12 @@ import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 
+import org.daisy.dotify.api.engine.FormatterEngineFactoryService;
+import org.daisy.dotify.api.formatter.FormatterFactory;
+import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
-import org.daisy.dotify.engine.FormatterEngineFactoryService;
-import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.obfl.ExpressionFactory;
-import org.daisy.dotify.writer.PagedMediaWriter;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;

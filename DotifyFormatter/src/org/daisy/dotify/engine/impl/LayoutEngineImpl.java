@@ -14,19 +14,19 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
+import org.daisy.dotify.api.engine.FormatterEngine;
+import org.daisy.dotify.api.engine.LayoutEngineException;
+import org.daisy.dotify.api.formatter.FormatterFactory;
+import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
-import org.daisy.dotify.engine.FormatterEngine;
-import org.daisy.dotify.engine.LayoutEngineException;
-import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.obfl.ExpressionFactory;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
+import org.daisy.dotify.api.writer.PagedMediaWriterException;
 import org.daisy.dotify.obfl.OBFLParserException;
 import org.daisy.dotify.obfl.OBFLWsNormalizer;
 import org.daisy.dotify.obfl.ObflParser;
-import org.daisy.dotify.writer.PagedMediaWriter;
-import org.daisy.dotify.writer.PagedMediaWriterException;
 import org.daisy.dotify.writer.WriterHandler;
 
 /**

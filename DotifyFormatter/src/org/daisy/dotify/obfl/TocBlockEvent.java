@@ -1,6 +1,6 @@
 package org.daisy.dotify.obfl;
 
-import org.daisy.dotify.formatter.BlockProperties;
+import org.daisy.dotify.api.formatter.BlockProperties;
 
 /**
  * Provides an interface for TOC block event.

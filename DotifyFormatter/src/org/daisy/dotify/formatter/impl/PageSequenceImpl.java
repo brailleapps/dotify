@@ -3,11 +3,11 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Stack;
 
+import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.Page;
+import org.daisy.dotify.api.formatter.PageSequence;
+import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslator;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageSequence;
-import org.daisy.dotify.formatter.Row;
 
 class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;

@@ -3,11 +3,11 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageSequence;
-import org.daisy.dotify.formatter.PageStruct;
+import org.daisy.dotify.api.formatter.CrossReferences;
+import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.Page;
+import org.daisy.dotify.api.formatter.PageSequence;
+import org.daisy.dotify.api.formatter.PageStruct;
 
 class CrossReferenceHandler implements CrossReferences {
 	private final Map<String, Integer> volLocations;

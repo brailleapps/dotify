@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.formatter.BlockProperties;
-import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.api.formatter.BlockProperties;
+import org.daisy.dotify.api.formatter.TextProperties;
 
 
 

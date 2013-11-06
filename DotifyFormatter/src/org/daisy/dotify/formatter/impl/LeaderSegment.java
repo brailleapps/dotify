@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.formatter.Leader;
+import org.daisy.dotify.api.formatter.Leader;
 
 class LeaderSegment extends Leader implements Segment {
 	

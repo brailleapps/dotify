@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.formatter.PageStruct;
+import org.daisy.dotify.api.formatter.PageStruct;
 
 interface VolDataInterface {
 

@@ -3,12 +3,13 @@ package org.daisy.dotify.obfl;
 import java.io.IOException;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.BlockStruct;
-import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactory;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Leader;
-import org.daisy.dotify.formatter.Marker;
+import org.daisy.dotify.api.formatter.BlockStruct;
+import org.daisy.dotify.api.formatter.Formatter;
+import org.daisy.dotify.api.formatter.FormatterFactory;
+import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.Leader;
+import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.obfl.EventContents.ContentType;
 import org.daisy.dotify.text.FilterLocale;
 

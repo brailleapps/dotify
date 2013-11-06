@@ -1,6 +1,6 @@
 package org.daisy.dotify.obfl;
 
-import org.daisy.dotify.formatter.NumeralField.NumeralStyle;
+import org.daisy.dotify.api.formatter.NumeralField.NumeralStyle;
 
 
 /**

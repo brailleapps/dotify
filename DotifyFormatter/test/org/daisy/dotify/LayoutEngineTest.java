@@ -10,10 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.daisy.dotify.api.engine.FormatterEngine;
+import org.daisy.dotify.api.engine.LayoutEngineException;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
-import org.daisy.dotify.engine.FormatterEngine;
-import org.daisy.dotify.engine.LayoutEngineException;
 import org.daisy.dotify.writer.TextMediaWriter;
 import org.junit.Test;
 public class LayoutEngineTest {

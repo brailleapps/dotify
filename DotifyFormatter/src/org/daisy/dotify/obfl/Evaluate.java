@@ -3,7 +3,7 @@ package org.daisy.dotify.obfl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.api.formatter.TextProperties;
 
 
 /**

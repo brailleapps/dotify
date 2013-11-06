@@ -3,8 +3,8 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.formatter.PageSequence;
-import org.daisy.dotify.formatter.Volume;
+import org.daisy.dotify.api.formatter.PageSequence;
+import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.tools.CompoundIterable;
 
 class VolumeImpl implements Volume {

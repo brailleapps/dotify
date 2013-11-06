@@ -8,9 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+import org.daisy.dotify.api.engine.FormatterEngine;
+import org.daisy.dotify.api.engine.LayoutEngineException;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
-import org.daisy.dotify.engine.FormatterEngine;
-import org.daisy.dotify.engine.LayoutEngineException;
 import org.daisy.dotify.writer.PEFMediaWriter;
 
 public class FormatterCLI {

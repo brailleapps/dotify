@@ -2,6 +2,8 @@ package org.daisy.dotify.obfl;
 
 import java.util.Map;
 
+import org.daisy.dotify.api.obfl.ExpressionFactory;
+
 
 class ConditionalEvents {
 	private final String condition;

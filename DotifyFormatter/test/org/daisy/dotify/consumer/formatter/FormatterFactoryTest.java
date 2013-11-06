@@ -2,8 +2,8 @@ package org.daisy.dotify.consumer.formatter;
 
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.formatter.Formatter;
 import org.junit.Test;
 
 

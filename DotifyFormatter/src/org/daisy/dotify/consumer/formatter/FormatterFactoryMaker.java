@@ -2,9 +2,9 @@ package org.daisy.dotify.consumer.formatter;
 
 import javax.imageio.spi.ServiceRegistry;
 
+import org.daisy.dotify.api.formatter.Formatter;
+import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.formatter.Formatter;
-import org.daisy.dotify.formatter.FormatterFactory;
 
 /**
  * Provides a factory for formatters. The factory will instantiate 

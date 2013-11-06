@@ -5,14 +5,14 @@ import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 
+import org.daisy.dotify.api.engine.FormatterEngine;
+import org.daisy.dotify.api.engine.FormatterEngineFactoryMakerService;
+import org.daisy.dotify.api.engine.FormatterEngineFactoryService;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.consumer.formatter.FormatterFactoryMaker;
 import org.daisy.dotify.consumer.obfl.ExpressionFactoryMaker;
 import org.daisy.dotify.consumer.translator.MarkerProcessorFactoryMaker;
 import org.daisy.dotify.consumer.translator.TextBorderFactoryMaker;
-import org.daisy.dotify.engine.FormatterEngine;
-import org.daisy.dotify.engine.FormatterEngineFactoryMakerService;
-import org.daisy.dotify.engine.FormatterEngineFactoryService;
-import org.daisy.dotify.writer.PagedMediaWriter;
 
 public class FormatterEngineMaker implements FormatterEngineFactoryMakerService {
 	private final FormatterEngineFactoryService proxy;

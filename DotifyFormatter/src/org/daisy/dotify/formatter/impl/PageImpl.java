@@ -3,18 +3,18 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.dotify.api.formatter.CompoundField;
+import org.daisy.dotify.api.formatter.CurrentPageField;
+import org.daisy.dotify.api.formatter.Field;
+import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.MarkerReferenceField;
+import org.daisy.dotify.api.formatter.Page;
+import org.daisy.dotify.api.formatter.PageTemplate;
+import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.formatter.CompoundField;
-import org.daisy.dotify.formatter.CurrentPageField;
-import org.daisy.dotify.formatter.Field;
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Marker;
-import org.daisy.dotify.formatter.MarkerReferenceField;
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageTemplate;
-import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.tools.StringTools;
 
 

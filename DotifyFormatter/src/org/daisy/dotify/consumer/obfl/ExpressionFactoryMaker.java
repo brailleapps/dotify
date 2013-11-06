@@ -2,8 +2,8 @@ package org.daisy.dotify.consumer.obfl;
 
 import javax.imageio.spi.ServiceRegistry;
 
+import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.consumer.text.Integer2TextFactoryMaker;
-import org.daisy.dotify.obfl.ExpressionFactory;
 
 public class ExpressionFactoryMaker {
 	private final ExpressionFactory proxy;

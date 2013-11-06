@@ -2,9 +2,9 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageSequence;
+import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.Page;
+import org.daisy.dotify.api.formatter.PageSequence;
 
 /**
  * Provides a method for creating a shallow copy of a PageSequence. 

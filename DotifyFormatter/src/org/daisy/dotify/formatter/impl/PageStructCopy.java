@@ -3,8 +3,8 @@ package org.daisy.dotify.formatter.impl;
 import java.util.Iterator;
 import java.util.Stack;
 
-import org.daisy.dotify.formatter.Page;
-import org.daisy.dotify.formatter.PageSequence;
+import org.daisy.dotify.api.formatter.Page;
+import org.daisy.dotify.api.formatter.PageSequence;
 
 
 class PageStructCopy implements Iterable<PageSequence> {

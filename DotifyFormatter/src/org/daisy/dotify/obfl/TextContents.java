@@ -3,7 +3,7 @@ package org.daisy.dotify.obfl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.formatter.TextProperties;
+import org.daisy.dotify.api.formatter.TextProperties;
 
 /**
  * Provides a text event object.

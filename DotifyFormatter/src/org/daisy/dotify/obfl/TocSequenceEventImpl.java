@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.formatter.SequenceProperties;
+import org.daisy.dotify.api.formatter.SequenceProperties;
+import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.tools.CompoundIterable;
 
 class TocSequenceEventImpl implements TocSequenceEvent {

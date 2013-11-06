@@ -2,13 +2,13 @@ package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 
+import org.daisy.dotify.api.formatter.Block;
+import org.daisy.dotify.api.formatter.BlockContentManager;
+import org.daisy.dotify.api.formatter.BlockSequence;
+import org.daisy.dotify.api.formatter.CrossReferences;
+import org.daisy.dotify.api.formatter.PageStruct;
+import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslator;
-import org.daisy.dotify.formatter.Block;
-import org.daisy.dotify.formatter.BlockContentManager;
-import org.daisy.dotify.formatter.BlockSequence;
-import org.daisy.dotify.formatter.CrossReferences;
-import org.daisy.dotify.formatter.PageStruct;
-import org.daisy.dotify.formatter.Row;
 import org.daisy.dotify.tools.StateObject;
 
 /**

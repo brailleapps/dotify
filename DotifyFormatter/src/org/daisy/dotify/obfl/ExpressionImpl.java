@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.daisy.dotify.api.obfl.Expression;
 import org.daisy.dotify.api.text.Integer2Text;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
 import org.daisy.dotify.api.text.Integer2TextFactoryMakerService;

@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.formatter.LayoutMaster;
-import org.daisy.dotify.formatter.PageSequence;
+import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.PageSequence;
 
 /**
  * PageTools is a utility class for simple operations related to pages.
