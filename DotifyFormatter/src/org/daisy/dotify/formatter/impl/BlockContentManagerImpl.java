@@ -11,7 +11,6 @@ import org.daisy.dotify.formatter.CrossReferences;
 import org.daisy.dotify.formatter.Leader;
 import org.daisy.dotify.formatter.Marker;
 import org.daisy.dotify.formatter.Row;
-import org.daisy.dotify.text.FilterLocale;
 
 class BlockContentManagerImpl implements BlockContentManager {
 	private boolean isVolatile;
@@ -127,11 +126,11 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return ret;
 	}
 
-	private void layout(CharSequence c, BlockHandler bh, Stack<Row> rows, RowDataProperties rdp, FilterLocale locale) {
+	private void layout(CharSequence c, BlockHandler bh, Stack<Row> rows, RowDataProperties rdp, String locale) {
 		BrailleTranslatorResult btr;
 		if (locale!=null) {
 			try {
-				btr = rdp.getTranslator().translate(c.toString(), locale.toString());
+				btr = rdp.getTranslator().translate(c.toString(), locale);
 			} catch (TranslationException e) {
 				e.printStackTrace();
 				btr = rdp.getTranslator().translate(c.toString());

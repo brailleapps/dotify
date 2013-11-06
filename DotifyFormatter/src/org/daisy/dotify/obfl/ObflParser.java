@@ -351,7 +351,7 @@ public class ObflParser {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				formatter.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale).hyphenate(hyph).build());
+				formatter.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
 				parseBlock(event, input, locale, hyph);
 			} else if (equalsStart(event, ObflQName.SPAN)) {
@@ -382,7 +382,7 @@ public class ObflParser {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				formatter.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale).hyphenate(hyph).build());
+				formatter.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 			} else if (equalsStart(event, ObflQName.STYLE)) {
 				parseStyle(event, input, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
@@ -402,7 +402,7 @@ public class ObflParser {
 	}
 
 	private void parseStyle(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		TextProperties tp = new TextProperties.Builder(locale).hyphenate(hyph).build();
+		TextProperties tp = new TextProperties.Builder(locale.toString()).hyphenate(hyph).build();
 
 		BlockEventHandler eh = new BlockEventHandler(formatter, ef);
 		eh.insertEventContents(parseStyleEvent(event, input, tp));
@@ -585,7 +585,7 @@ public class ObflParser {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				ret.add(new TextContents(event.asCharacters().getData(), new TextProperties.Builder(locale).hyphenate(hyph).build()));
+				ret.add(new TextContents(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build()));
 			} else if (equalsStart(event, ObflQName.TOC_ENTRY)) {
 				ret.add(parseTocEntry(event, input, toc, locale, hyph));
 			} else if (equalsStart(event, ObflQName.LEADER)) {
@@ -629,7 +629,7 @@ public class ObflParser {
 	private Evaluate parseEvaluate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		String expr = getAttr(event, "expression");
 		scanEmptyElement(input, ObflQName.EVALUATE);
-		return new Evaluate(expr, new TextProperties.Builder(locale).hyphenate(hyph).build());
+		return new Evaluate(expr, new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 	}
 	
 	private void parseVolumeTemplate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
@@ -769,7 +769,7 @@ public class ObflParser {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				ret.add(new TextContents(event.asCharacters().getData(), new TextProperties.Builder(locale).hyphenate(hyph).build()));
+				ret.add(new TextContents(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build()));
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
 				ret.add(parseBlockEvent(event, input, locale, hyph));
 			} else if (equalsStart(event, ObflQName.LEADER)) {
@@ -782,7 +782,7 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
 				ret.add(parseEvaluate(event, input, locale, hyph));
 			} else if (equalsStart(event, ObflQName.STYLE)) {
-				ret.add(parseStyleEvent(event, input, new TextProperties.Builder(locale).hyphenate(hyph).build()));
+				ret.add(parseStyleEvent(event, input, new TextProperties.Builder(locale.toString()).hyphenate(hyph).build()));
 			} else if (equalsStart(event, ObflQName.SPAN)) {
 				// FIXME: implement span support. See DTB05532
 			}

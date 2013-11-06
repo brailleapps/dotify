@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter;
 
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * <p>SpanProperties defines properties specific for a span of text</p>
@@ -9,7 +8,7 @@ import org.daisy.dotify.text.FilterLocale;
  * @author Joel Håkansson
  */
 public class TextProperties {
-	private final FilterLocale locale;
+	private final String locale;
 	private final boolean hyphenate;
 	
 	/**
@@ -18,13 +17,13 @@ public class TextProperties {
 	 * @author Joel Håkansson
 	 */
 	public static class Builder {
-		private final FilterLocale locale;
+		private final String locale;
 		private boolean hyphenate = true;
 		/**
 		 * Creates a new builder with the specified locale
 		 * @param locale the locale for the builder
 		 */
-		public Builder(FilterLocale locale) {
+		public Builder(String locale) {
 			this.locale = locale;
 		}
 		/**
@@ -55,7 +54,7 @@ public class TextProperties {
 	 * Gets the locale of this text properties
 	 * @return returns the locale
 	 */
-	public FilterLocale getLocale() {
+	public String getLocale() {
 		return locale;
 	}
 
