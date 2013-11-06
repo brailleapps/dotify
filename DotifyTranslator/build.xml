@@ -81,7 +81,7 @@
     		<fileset dir="../dotify.common/src"/>
     		<fileset dir="../dotify.hyphenator.impl/src"/>
     		<fileset dir="../dotify.text.impl/src"/>
-    		<fileset dir="../dotify.translator.api/src"/>
+    		<fileset dir="../dotify.api/src"/>
     		<fileset dir="../dotify.translator.impl/src"/>
     	</copy>
     </target>
@@ -98,7 +98,7 @@
     		<fileset dir="../dotify.hyphenator.impl/test" />
     		<fileset dir="../dotify.text.impl/test"/>
     		<!--
-    		<fileset dir="../dotify.translator.api/test"/> -->
+    		<fileset dir="../dotify.api/test"/> -->
     		<fileset dir="../dotify.translator.impl/test"/>
     	</copy>
     </target>

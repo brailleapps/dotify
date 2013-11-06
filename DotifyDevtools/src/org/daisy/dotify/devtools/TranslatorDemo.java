@@ -25,12 +25,11 @@ import javax.swing.LayoutStyle;
 import org.daisy.braille.table.BrailleConverter;
 import org.daisy.braille.table.Table;
 import org.daisy.braille.table.TableCatalog;
-import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.BrailleTranslator;
-import org.daisy.dotify.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.translator.BrailleTranslatorResult;
-import org.daisy.dotify.translator.UnsupportedSpecificationException;
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.TranslatorConfigurationException;
+import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 
 
 public class TranslatorDemo extends javax.swing.JFrame {
@@ -84,8 +83,8 @@ public class TranslatorDemo extends javax.swing.JFrame {
         braille2Panel.setFont(f.deriveFont(24f));
         
 		try {
-			t = BrailleTranslatorFactoryMaker.newInstance().newTranslator(FilterLocale.parse("sv-SE"), BrailleTranslatorFactory.MODE_UNCONTRACTED);
-		} catch (UnsupportedSpecificationException e) {
+			t = BrailleTranslatorFactoryMaker.newInstance().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		} catch (TranslatorConfigurationException e) {
 			throw new RuntimeException("Cannot translate");
 		}
 		TableCatalog tc = TableCatalog.newInstance();

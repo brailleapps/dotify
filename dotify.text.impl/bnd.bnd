@@ -4,6 +4,6 @@ Service-Component: *
 	osgi.cmpn,\
 	biz.aQute.bnd.annotation,\
 	junit.osgi,\
-	dotify.translator.api;version=latest
+	dotify.api;version=latest
 Include-Resource: / = src/
 -sources: false
