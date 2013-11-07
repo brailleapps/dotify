@@ -1,0 +1,16 @@
+Private-Package: org.daisy.dotify.devtools.gui
+Service-Component: *
+-buildpath: osgi.core,\
+	osgi.cmpn,\
+	biz.aQute.bnd.annotation,\
+	junit.osgi,\
+	dotify.api;version=latest,\
+	dotify.common;version=latest,\
+	dotify.hyphenator.impl;version=latest,\
+	dotify.text.impl;version=latest,\
+	dotify.translator.impl;version=latest,\
+	com.googlecode.texhyphj,\
+	com.ibm.icu
+Bundle-Activator: org.daisy.dotify.devtools.gui.GuiActivator
+Include-Resource: / = src/
+-sources: false
