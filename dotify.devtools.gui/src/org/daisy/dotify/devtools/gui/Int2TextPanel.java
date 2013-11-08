@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
@@ -19,7 +20,7 @@ public class Int2TextPanel extends MyPanel {
 	 */
 	private static final long serialVersionUID = -8051107255963928066L;
 	private final JTextField textField;
-	private final JTextField outputField;
+	private final JTextArea outputField;
 
 	private Int2TextTracker tracker;
 	
@@ -28,7 +29,7 @@ public class Int2TextPanel extends MyPanel {
 
 		Font f = new Font(null, Font.BOLD, 26);
 
-		outputField = new JTextField();
+		outputField = new JTextArea();
 		outputField.setFont(f);
 		outputField.setEditable(false);
 
@@ -53,7 +54,7 @@ public class Int2TextPanel extends MyPanel {
 		if (getTargetLocale()==null || getTargetLocale().equals("")) {
 			outputField.setText("No locale selected");
 		} else {
-			try {
+
 				Integer2TextFactoryMakerService t = tracker.get();
 				if (t == null) {
 					outputField.setText("No conversion");
@@ -62,7 +63,15 @@ public class Int2TextPanel extends MyPanel {
 						outputField.setText("");
 					} else {
 						try {
-							outputField.setText(t.newInteger2Text(getTargetLocale()).intToText(Integer.parseInt(textField.getText())));
+							try {
+								outputField.setText(t.newInteger2Text(getTargetLocale()).intToText(Integer.parseInt(textField.getText())));
+							} catch (Integer2TextConfigurationException e1) {
+								outputField.setText("Locale not supported: " + getTargetLocale() + "\n");
+								outputField.append("Supported values:\n");
+								for (String s : t.listLocales()) {
+									outputField.append(s+"\n");
+								}
+							}
 						} catch (NumberFormatException e1) {
 							outputField.setText("Not a valid integer");
 						} catch (IntegerOutOfRange e1) {
@@ -70,9 +79,7 @@ public class Int2TextPanel extends MyPanel {
 						}
 					}
 				}
-			} catch (Integer2TextConfigurationException e1) {
-				outputField.setText("Locale not supported: " + getTargetLocale());
-			}
+
 		}
 	}
 

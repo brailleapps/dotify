@@ -80,7 +80,7 @@ public class TranslatorPanel extends MyPanel {
 					try {
 
 						outputField.setText(
-								t.newFactory(loc, BrailleTranslatorFactory.MODE_UNCONTRACTED).newTranslator(loc, BrailleTranslatorFactory.MODE_UNCONTRACTED).translate(textField.getText()).getTranslatedRemainder()
+								t.newTranslator(loc, BrailleTranslatorFactory.MODE_UNCONTRACTED).translate(textField.getText()).getTranslatedRemainder()
 								);
 					} catch (TranslatorConfigurationException e1) {
 						outputField.setText("Specification not supported. " + tracker.size());
