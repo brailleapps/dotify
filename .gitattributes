@@ -723,12 +723,9 @@ dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerP
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryService.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas1.xml -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas2.xml -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/BreakPoint.java -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/BreakPointHandler.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/text/CaseFilter.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/text/CharFilter.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/text/HyphenatorFilter.java -text
 dotify.translator.impl/src/org/daisy/dotify/text/IdentityFilter.java -text
 dotify.translator.impl/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
@@ -737,7 +734,6 @@ dotify.translator.impl/src/org/daisy/dotify/text/StringFilter.java -text svneol=
 dotify.translator.impl/src/org/daisy/dotify/text/package-info.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/DefaultBrailleTranslatorResult.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/DefaultMarkerProcessor.java -text
-dotify.translator.impl/src/org/daisy/dotify/translator/DefaultTextAttribute.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/Marker.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/MarkerDictionary.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/MarkerNotCompatibleException.java -text
@@ -755,7 +751,5 @@ dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/Capitalizatio
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryTest.java -text
-dotify.translator.impl/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
-dotify.translator.impl/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 dotify.translator.impl/test/org/daisy/dotify/translator/DefaultMarkerProcessorTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/translator/DefaultTextAttributeTest.java -text
