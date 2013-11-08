@@ -487,6 +487,10 @@ dotify.common/build-properties.xml -text
 dotify.common/build.xml -text
 dotify.common/build2.xml -text
 dotify.common/launch.bndrun -text
+dotify.common/src/org/daisy/dotify/text/BreakPoint.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/BreakPointHandler.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/packageinfo -text
 dotify.common/src/se/mtm/common/io/FileIO.java -text
 dotify.common/src/se/mtm/common/io/TempFileHandler.java -text
 dotify.common/src/se/mtm/common/io/packageinfo -text
@@ -496,6 +500,8 @@ dotify.common/src/se/mtm/common/text/packageinfo -text
 dotify.common/src/se/mtm/common/xml/XMLTools.java -text
 dotify.common/src/se/mtm/common/xml/XMLToolsException.java -text
 dotify.common/src/se/mtm/common/xml/packageinfo -text
+dotify.common/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
+dotify.common/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
 dotify.devtools.gui/.classpath -text
 dotify.devtools.gui/.project -text
 dotify.devtools.gui/.settings/org.eclipse.jdt.core.prefs -text
