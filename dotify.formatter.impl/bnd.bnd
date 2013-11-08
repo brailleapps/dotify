@@ -1,5 +1,4 @@
-Private-Package: org.example,\
-	org.daisy.dotify.engine.impl,\
+Private-Package: org.daisy.dotify.engine.impl,\
 	org.daisy.dotify.formatter.impl,\
 	org.daisy.dotify.obfl.impl
 Service-Component: *
