@@ -1,0 +1,18 @@
+Private-Package: org.example,\
+	org.daisy.dotify.engine.impl,\
+	org.daisy.dotify.formatter.impl,\
+	org.daisy.dotify.obfl.impl
+Service-Component: *
+Include-Resource: / = src/
+-sources: false
+-buildpath: osgi.core,\
+	osgi.cmpn,\
+	biz.aQute.bnd.annotation,\
+	junit.osgi,\
+	dotify.api;version=latest,\
+	javax.xml.stream,\
+	dotify.common;version=latest,\
+	com.sun.enterprise.stax-osgi
+Export-Package: org.daisy.dotify.obfl,\
+	org.daisy.dotify.tools,\
+	org.daisy.dotify.writer
