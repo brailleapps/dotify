@@ -5,7 +5,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
@@ -18,7 +22,7 @@ public class HyphPanel extends MyPanel {
 	 */
 	private static final long serialVersionUID = -8051107255963928066L;
 	private final JTextField textField;
-	private final JTextField outputField;
+	private final JTextArea outputField;
 
 	private HyphTracker tracker;
 
@@ -28,7 +32,7 @@ public class HyphPanel extends MyPanel {
 
 		Font f = new Font(null, Font.BOLD, 26);
 
-		outputField = new JTextField();
+		outputField = new JTextArea();
 		outputField.setFont(f);
 		outputField.setEditable(false);
 
@@ -44,7 +48,7 @@ public class HyphPanel extends MyPanel {
 		});
 
 		add(textField);
-		add(outputField);
+		add(new JScrollPane(outputField));
 
 		setPreferredSize(new Dimension(500, 400));
 	}
@@ -63,7 +67,14 @@ public class HyphPanel extends MyPanel {
 					try {
 						outputField.setText(t.newHyphenator(getTargetLocale()).hyphenate(textField.getText()));
 					} catch (HyphenatorConfigurationException e1) {
-						outputField.setText("Locale not supported: " + getTargetLocale());
+						outputField.setText("Locale not supported: " + getTargetLocale() + "\n");
+						ArrayList<String> locs = new ArrayList<String>();
+						locs.addAll(t.listLocales());
+						Collections.sort(locs);
+						outputField.append("Supported values ("+locs.size()+"): \n");
+						for (String s : locs) {
+							outputField.append(s+"\n");
+						}
 					}
 				}
 			}

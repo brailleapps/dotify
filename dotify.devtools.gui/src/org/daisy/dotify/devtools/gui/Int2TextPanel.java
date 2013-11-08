@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -45,7 +46,7 @@ public class Int2TextPanel extends MyPanel {
 		});
 
 		add(textField);
-		add(outputField);
+		add(new JScrollPane(outputField));
 
 		setPreferredSize(new Dimension(500, 400));
 	}
