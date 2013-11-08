@@ -1,4 +1,4 @@
-package org.daisy.dotify.obfl;
+package org.daisy.dotify.obfl.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.obfl.Expression;

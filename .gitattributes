@@ -205,132 +205,17 @@ DotifyFormatter/.classpath -text
 DotifyFormatter/.project -text
 DotifyFormatter/.settings/org.eclipse.jdt.core.prefs -text
 DotifyFormatter/ant-build/resources/javase-6/package-list -text
-DotifyFormatter/build-doc.xml -text
 DotifyFormatter/build-properties.xml -text
 DotifyFormatter/build.xml -text
-DotifyFormatter/src/META-INF/services/org.daisy.dotify.api.engine.FormatterEngineFactoryService -text
-DotifyFormatter/src/META-INF/services/org.daisy.dotify.api.formatter.FormatterFactory -text
-DotifyFormatter/src/META-INF/services/org.daisy.dotify.api.obfl.ExpressionFactory -text
 DotifyFormatter/src/org/daisy/dotify/cli/FormatterCLI.java -text
-DotifyFormatter/src/org/daisy/dotify/engine/impl/LayoutEngineFactoryImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/engine/impl/LayoutEngineImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/engine/impl/WriterHandler.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/BlockContentManagerImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/BlockHandler.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/BlockStructImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/BookStruct.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/MarkerSegment.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/NewLineSegment.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageCopy.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageNumberReferenceSegment.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageSequenceCopy.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageStructCopy.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PageTools.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PaginatorException.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PaginatorTools.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/PaginatorToolsException.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/Segment.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/TabStopString.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/TextBorder.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/formatter/impl/package-info.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/BlockContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/BlockEvent.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/BlockEventHandler.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/BlockEventHandlerRunner.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/BlockEventImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/BlockSequenceManipulator.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/Evaluate.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/EventContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/IterableEventContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/LeaderEventContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/LineBreak.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/MarkerEventContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/OBFLParserException.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/OBFLWsNormalizer.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/ObflParser.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/ObflQName.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/PageNumberReference.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/PageNumberReferenceEventContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/SequenceEvent.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/StaticSequenceEvent.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/obfl/StaticSequenceEventImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/StyleEvent.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/TableOfContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/TableOfContentsImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/TextContents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/TocBlockEvent.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/TocEvents.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/TocSequenceEvent.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/TocSequenceEventImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/VolumeSequenceEvent.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/VolumeTemplate.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/VolumeTemplateImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/impl/ExpressionFactoryImpl.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/impl/ExpressionImpl.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/obfl/package-info.java -text
-DotifyFormatter/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer-2.xsl -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer.xsl -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/writer/PEFMediaWriter.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/writer/TextMediaWriter.java -text svneol=unset#text/plain
-DotifyFormatter/src/org/daisy/dotify/writer/package-info.java -text
 DotifyFormatter/test/org/daisy/dotify/LayoutEngineTest.java -text
 DotifyFormatter/test/org/daisy/dotify/api/formatter/AlphaNumeralTest.java -text
 DotifyFormatter/test/org/daisy/dotify/api/formatter/NumeralFieldTest.java -text
 DotifyFormatter/test/org/daisy/dotify/api/formatter/PositionTest.java -text svneol=unset#text/plain
 DotifyFormatter/test/org/daisy/dotify/consumer/formatter/FormatterFactoryTest.java -text
-DotifyFormatter/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
-DotifyFormatter/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
-DotifyFormatter/test/org/daisy/dotify/obfl/ExpressionTest.java -text svneol=unset#text/plain
-DotifyFormatter/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-01.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-02.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-03.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-04.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-05.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-06.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-07.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-08.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-09.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-10.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-11.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-01.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-02.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-03.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-04.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-05.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-06.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-07.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-08.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-09.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-10.xml -text
-DotifyFormatter/test/org/daisy/dotify/obfl/resource-files/ws-test-input-11.xml -text
+DotifyFormatter/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#text/plain
 DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
 DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
-DotifyFormatter/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
-DotifyFormatter/test/org/daisy/dotify/tools/StringToolsTest.java -text
 DotifyShared/.project -text
 DotifyShared/bnd.jar -text
 DotifyShared/brailleUtils-catalog.jar -text
