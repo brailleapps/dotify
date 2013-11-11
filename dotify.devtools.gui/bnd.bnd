@@ -9,8 +9,7 @@ Service-Component: *
 	dotify.hyphenator.impl;version=latest,\
 	dotify.text.impl;version=latest,\
 	dotify.translator.impl;version=latest,\
-	com.googlecode.texhyphj,\
-	com.ibm.icu
+	dotify.formatter.impl;version=latest
 Bundle-Activator: org.daisy.dotify.devtools.gui.GuiActivator
 Include-Resource: / = src/
 -sources: false
