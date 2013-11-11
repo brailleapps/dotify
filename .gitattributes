@@ -264,7 +264,6 @@ dotify.api/.settings/org.eclipse.jdt.core.prefs -text
 dotify.api/bnd.bnd -text
 dotify.api/build.xml -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngine.java -text
-dotify.api/src/org/daisy/dotify/api/engine/FormatterEngineFactoryMakerService.java -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngineFactoryService.java -text
 dotify.api/src/org/daisy/dotify/api/engine/LayoutEngineException.java -text
 dotify.api/src/org/daisy/dotify/api/engine/package-info.java -text
