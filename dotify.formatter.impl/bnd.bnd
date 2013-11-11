@@ -9,9 +9,8 @@ Include-Resource: / = src/
 	biz.aQute.bnd.annotation,\
 	junit.osgi,\
 	dotify.api;version=latest,\
-	javax.xml.stream,\
 	dotify.common;version=latest,\
-	com.sun.enterprise.stax-osgi
+	dotify.translator.impl;version=latest
 Export-Package: org.daisy.dotify.obfl,\
 	org.daisy.dotify.tools,\
 	org.daisy.dotify.writer
