@@ -28,14 +28,13 @@ public class MainFrame extends JFrame {
 		super("Dotify OSGi bundle test GUI");
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(500, 400));
-		Int2TextPanel panel1;
-		HyphPanel panel2;
-		TranslatorPanel panel3;
+
 		panels = new ArrayList<MyPanel>();
 		
-		panel1 = new Int2TextPanel();
-		panel2 = new HyphPanel();
-		panel3 = new TranslatorPanel();
+		Int2TextPanel panel1 = new Int2TextPanel();
+		HyphPanel panel2 = new HyphPanel();
+		TranslatorPanel panel3 = new TranslatorPanel();
+		FormatterPanel panel4 = new FormatterPanel();
 		
 		loc = new JTextField();
 		loc.addKeyListener(new KeyAdapter() {
@@ -49,6 +48,7 @@ public class MainFrame extends JFrame {
 		addPanel("Numbers", pane, panel1);
 		addPanel("Hyphenation", pane, panel2);
 		addPanel("Translation", pane, panel3);
+		addPanel("Formatter", pane, panel4);
 		
 		JPanel north = new JPanel(new BorderLayout());
 		north.add(new JLabel("Locale:"), BorderLayout.WEST);

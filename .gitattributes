@@ -395,6 +395,8 @@ dotify.devtools.gui/.settings/org.eclipse.jdt.core.prefs -text
 dotify.devtools.gui/bnd.bnd -text
 dotify.devtools.gui/build.xml -text
 dotify.devtools.gui/launch.bndrun -text
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/FormatterPanel.java -text
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/FormatterTracker.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/GuiActivator.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/HyphPanel.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/HyphTracker.java -text
