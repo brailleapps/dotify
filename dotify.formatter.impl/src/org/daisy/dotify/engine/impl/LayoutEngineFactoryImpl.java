@@ -20,11 +20,16 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 	private MarkerProcessorFactoryMakerService mpf;
 	private TextBorderFactoryMakerService tbf;
 	private ExpressionFactory ef;
-	private XMLInputFactory in;
-	private XMLEventFactory xef;
-	private XMLOutputFactory of;
+
 
 	public LayoutEngineImpl newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
+		XMLInputFactory in = XMLInputFactory.newInstance();
+		in.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+		in.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
+		in.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+		in.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+		XMLEventFactory xef = XMLEventFactory.newInstance();
+		XMLOutputFactory of = XMLOutputFactory.newInstance();
 		return new LayoutEngineImpl(locale, mode, writer, ff, mpf, tbf, ef, in, xef, of);
 	}
 
@@ -63,33 +68,6 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 
 	public void unsetExpressionFactory(ExpressionFactory ef) {
 		this.ef = null;
-	}
-	
-	@Reference
-	public void setXMLInputFactory(XMLInputFactory in) {
-		this.in = in;
-	}
-
-	public void unsetXMLInputFactory(XMLInputFactory in) {
-		this.in = null;
-	}
-
-	@Reference
-	public void setXMLEventFactory(XMLEventFactory xef) {
-		this.xef = xef;
-	}
-
-	public void unsetXMLEventFactory(XMLEventFactory xef) {
-		this.xef = null;
-	}
-
-	@Reference
-	public void setXMLOutputFactory(XMLOutputFactory of) {
-		this.of = of;
-	}
-	
-	public void unsetXMLOutputFactory(XMLOutputFactory of) {
-		this.of = null;
 	}
 
 }
