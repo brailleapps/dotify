@@ -3,8 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.BlockSequence;
-import org.daisy.dotify.api.formatter.BlockStruct;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 

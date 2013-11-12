@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.Block;
-import org.daisy.dotify.api.formatter.BlockSequence;
-import org.daisy.dotify.api.formatter.BlockStruct;
 import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.formatter.impl.Block;
+import org.daisy.dotify.formatter.impl.BlockSequence;
+import org.daisy.dotify.formatter.impl.BlockStruct;
 
 /**
  * Provides methods for manipulating a flow sequence.

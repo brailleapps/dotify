@@ -856,7 +856,7 @@ public class ObflParser {
 	}
 	
 	public VolumeContentFormatter getVolumeContentFormatter() {
-		return new BlockEventHandlerRunner(locale.toString(), mode, masters, tocs, volumeTemplates, formatterFactory, ef);
+		return new BlockEventHandlerRunner(masters, tocs, volumeTemplates, formatter.getTranslator(), ef);
 	}
 
 	public List<MetaDataItem> getMetaData() {

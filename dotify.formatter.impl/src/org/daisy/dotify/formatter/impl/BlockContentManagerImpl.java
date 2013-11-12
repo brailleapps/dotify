@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.BlockContentManager;
 import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TranslationException;
 

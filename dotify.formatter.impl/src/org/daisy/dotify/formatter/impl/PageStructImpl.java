@@ -9,7 +9,6 @@ import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.PageStruct;
-import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {

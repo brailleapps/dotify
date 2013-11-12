@@ -4,18 +4,17 @@ import java.io.IOException;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
-import org.daisy.dotify.api.formatter.BlockStruct;
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormattingTypes;
+import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeContentFormatter;
-import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
-import org.daisy.dotify.api.formatter.NumeralField.NumeralStyle;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.impl.BlockHandler.ListItem;
 import org.daisy.dotify.tools.StateObject;
@@ -25,7 +24,7 @@ import org.daisy.dotify.tools.StateObject;
  * Breaks flow into rows, page related block properties are left to next step
  * @author Joel Håkansson
  */
-class FormatterImpl implements Formatter {
+public class FormatterImpl implements Formatter {
 	private int leftMargin;
 	private int rightMargin;
 	private final BlockStructImpl flowStruct;

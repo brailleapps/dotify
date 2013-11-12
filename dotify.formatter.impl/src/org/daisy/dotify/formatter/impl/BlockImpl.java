@@ -2,8 +2,6 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.Block;
-import org.daisy.dotify.api.formatter.BlockContentManager;
 import org.daisy.dotify.api.formatter.BlockPosition;
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.CrossReferences;

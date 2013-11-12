@@ -1,6 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
-class PaginatorException extends Exception {
+public class PaginatorException extends Exception {
 
 	/**
 	 * 

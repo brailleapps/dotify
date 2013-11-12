@@ -1,11 +1,8 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.formatter.BlockSequence;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
@@ -15,7 +12,6 @@ import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
-import org.daisy.dotify.tools.CompoundIterable;
 
 /**
  * Provides a default implementation of BookStruct
@@ -28,14 +24,12 @@ class BookStruct {
 	private final PaginatorImpl contentPaginator;
 	
 	private final VolumeContentFormatter volumeFormatter;
-	private final BrailleTranslator translator;
 
 	private final CrossReferenceHandler crh;
 
 	public BookStruct(PaginatorImpl content, VolumeContentFormatter volumeFormatter,
  BrailleTranslator translator) {
 		this.contentPaginator = content;
-		this.translator = translator;
 		this.volumeFormatter = volumeFormatter;
 		
 		this.logger = Logger.getLogger(BookStruct.class.getCanonicalName());
@@ -57,28 +51,20 @@ class BookStruct {
 	}
 
 	private PageStruct getVolumeContents(int volumeNumber, boolean pre) {
-		try {
-			List<Iterable<BlockSequence>> ib;
-			if (pre) {
-				ib = volumeFormatter.formatPreVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
-			} else {
-				ib = volumeFormatter.formatPostVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
-			}
-			PaginatorImpl paginator2 = new PaginatorImpl();
-			paginator2.open(translator, new CompoundIterable<BlockSequence>(ib));
-			PageStruct ret = paginator2.paginate(crh);
-			paginator2.close();
-			if (pre) {
-				crh.setPreVolData(volumeNumber, ret);
-			} else {
-				crh.setPostVolData(volumeNumber, ret);
-			}
-			return ret;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (PaginatorException e) {
-			throw new RuntimeException(e);
+		PageStruct ret;
+		if (pre) {
+			ret = volumeFormatter.formatPreVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
+		} else {
+			ret = volumeFormatter.formatPostVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
 		}
+
+		if (pre) {
+			crh.setPreVolData(volumeNumber, ret);
+		} else {
+			crh.setPostVolData(volumeNumber, ret);
+		}
+		return ret;
+
 	}
 	
 	private void trimEnd(StringBuilder sb, Page p) {

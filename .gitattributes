@@ -423,10 +423,14 @@ dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineFactoryImpl.j
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/WriterHandler.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Block.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManager.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManagerImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockHandler.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockStructImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BookStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
@@ -448,6 +452,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorException.jav
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorTools.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorToolsException.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Row.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Segment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TabStopString.java -text svneol=unset#text/plain

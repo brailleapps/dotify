@@ -2,12 +2,8 @@ package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 
-import org.daisy.dotify.api.formatter.Block;
-import org.daisy.dotify.api.formatter.BlockContentManager;
-import org.daisy.dotify.api.formatter.BlockSequence;
 import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.PageStruct;
-import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.tools.StateObject;
 
@@ -17,7 +13,7 @@ import org.daisy.dotify.tools.StateObject;
  * 
  * @author Joel Håkansson
  */
-class PaginatorImpl {
+public class PaginatorImpl {
 	private StateObject state;
 	private BrailleTranslator translator;
 	private Iterable<BlockSequence> fs;

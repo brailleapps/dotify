@@ -3,13 +3,14 @@ package org.daisy.dotify.obfl;
 import java.io.IOException;
 import java.util.Map;
 
-import org.daisy.dotify.api.formatter.BlockStruct;
 import org.daisy.dotify.api.formatter.Formatter;
-import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
+import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.formatter.impl.BlockStruct;
+import org.daisy.dotify.formatter.impl.FormatterImpl;
 import org.daisy.dotify.obfl.EventContents.ContentType;
 
 /**
@@ -21,8 +22,8 @@ class BlockEventHandler {
 	private final Formatter formatter;
 	private final ExpressionFactory ef;
 
-	public BlockEventHandler(String locale, String mode, Map<String, LayoutMaster> masters, FormatterFactory ff, ExpressionFactory ef) {
-		this.formatter = ff.newFormatter(locale, mode);
+	public BlockEventHandler(Map<String, LayoutMaster> masters, BrailleTranslator bt, ExpressionFactory ef) {
+		this.formatter = new FormatterImpl(bt);
 		this.formatter.open();
 		for (String name : masters.keySet()) {
 			this.formatter.addLayoutMaster(name, masters.get(name));
@@ -106,7 +107,8 @@ class BlockEventHandler {
 	
 	public BlockStruct close() throws IOException {
 		formatter.close();
-		return formatter.getFlowStruct();
+		//FIXME: this is a temporary solution in order to remove getFlowStruct from the API, In the long term, this should be solved in another way
+		return ((FormatterImpl)formatter).getFlowStruct();
 	}
 
 }
