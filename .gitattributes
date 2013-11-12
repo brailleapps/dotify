@@ -168,11 +168,14 @@ Dotify/src/org/daisy/dotify/tools/TempFileHandler.java -text
 Dotify/src/org/daisy/dotify/tools/XMLTools.java -text
 Dotify/src/org/daisy/dotify/tools/XMLToolsException.java -text
 Dotify/src/org/daisy/dotify/tools/package-info.java -text
+Dotify/test/org/daisy/dotify/LayoutEngineTest.java -text
+Dotify/test/org/daisy/dotify/consumer/formatter/FormatterFactoryTest.java -text
 Dotify/test/org/daisy/dotify/consumer/hyphenator/HyphenatorFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/consumer/text/Integer2TextFactoryTest.java -text
 Dotify/test/org/daisy/dotify/consumer/translator/BrailleTranslatorFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryTest.java -text
 Dotify/test/org/daisy/dotify/consumer/translator/TextBorderFactoryTest.java -text
+Dotify/test/org/daisy/dotify/consumer/writer/PagedMediaWriterFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/impl/input/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/impl/input/text/FileCompare.java -text
 Dotify/test/org/daisy/dotify/impl/input/text/Text2ObflWriterTest.java -text
@@ -180,6 +183,9 @@ Dotify/test/org/daisy/dotify/impl/input/text/resource-files/expected.obfl -text
 Dotify/test/org/daisy/dotify/impl/input/text/resource-files/input.txt -text
 Dotify/test/org/daisy/dotify/impl/input/text/resource-files/normalize.xsl -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
+Dotify/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#text/plain
+Dotify/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text
 DotifyDevtools/.settings/org.eclipse.jdt.core.prefs -text
@@ -213,13 +219,6 @@ DotifyFormatter/ant-build/resources/javase-6/package-list -text
 DotifyFormatter/build-properties.xml -text
 DotifyFormatter/build.xml -text
 DotifyFormatter/src/org/daisy/dotify/cli/FormatterCLI.java -text
-DotifyFormatter/test/org/daisy/dotify/LayoutEngineTest.java -text
-DotifyFormatter/test/org/daisy/dotify/api/formatter/PositionTest.java -text svneol=unset#text/plain
-DotifyFormatter/test/org/daisy/dotify/consumer/formatter/FormatterFactoryTest.java -text
-DotifyFormatter/test/org/daisy/dotify/consumer/writer/PagedMediaWriterFactoryMakerTest.java -text
-DotifyFormatter/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#text/plain
-DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
-DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
 DotifyShared/.project -text
 DotifyShared/bnd.jar -text
 DotifyShared/brailleUtils-catalog.jar -text
@@ -517,6 +516,7 @@ dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitte
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/NumeralStyleFormatterTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
+dotify.formatter.impl/test/org/daisy/dotify/obfl/PositionTest.java -text svneol=unset#text/plain
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-01.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-02.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-03.xml -text
