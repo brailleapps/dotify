@@ -6,11 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.LayoutEngine;
-import org.daisy.dotify.LayoutEngineException;
+import org.daisy.dotify.api.engine.FormatterEngine;
+import org.daisy.dotify.api.engine.LayoutEngineException;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
+import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
 import org.daisy.dotify.system.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.writer.PagedMediaWriter;
 
 /**
  * <p>
@@ -56,7 +57,8 @@ public class LayoutEngineTask extends ReadWriteTask  {
 				throw new InternalTaskException("Input validation failed.", e);
 			}
 
-			LayoutEngine engine = new LayoutEngine(locale, mode, writer);
+			FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine(locale.toString(), mode, writer);
+
 			engine.convert(new FileInputStream(input), new FileOutputStream(output));
 
 		} catch (LayoutEngineException e) {

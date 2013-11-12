@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
@@ -16,7 +17,6 @@ import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.writer.PEFMediaWriter;
-import org.daisy.dotify.writer.PagedMediaWriter;
 import org.daisy.dotify.writer.TextMediaWriter;
 
 
