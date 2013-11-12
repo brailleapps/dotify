@@ -168,6 +168,11 @@ Dotify/src/org/daisy/dotify/tools/TempFileHandler.java -text
 Dotify/src/org/daisy/dotify/tools/XMLTools.java -text
 Dotify/src/org/daisy/dotify/tools/XMLToolsException.java -text
 Dotify/src/org/daisy/dotify/tools/package-info.java -text
+Dotify/test/org/daisy/dotify/consumer/hyphenator/HyphenatorFactoryMakerTest.java -text
+Dotify/test/org/daisy/dotify/consumer/text/Integer2TextFactoryTest.java -text
+Dotify/test/org/daisy/dotify/consumer/translator/BrailleTranslatorFactoryMakerTest.java -text
+Dotify/test/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryTest.java -text
+Dotify/test/org/daisy/dotify/consumer/translator/TextBorderFactoryTest.java -text
 Dotify/test/org/daisy/dotify/impl/input/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/impl/input/text/FileCompare.java -text
 Dotify/test/org/daisy/dotify/impl/input/text/Text2ObflWriterTest.java -text
@@ -239,11 +244,6 @@ DotifyTranslator/build-doc.xml -text
 DotifyTranslator/build-properties.xml -text
 DotifyTranslator/build.xml -text
 DotifyTranslator/logging.properties -text
-DotifyTranslator/test/org/daisy/dotify/consumer/hyphenator/HyphenatorFactoryMakerTest.java -text
-DotifyTranslator/test/org/daisy/dotify/consumer/text/Integer2TextFactoryTest.java -text
-DotifyTranslator/test/org/daisy/dotify/consumer/translator/BrailleTranslatorFactoryMakerTest.java -text
-DotifyTranslator/test/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryTest.java -text
-DotifyTranslator/test/org/daisy/dotify/consumer/translator/TextBorderFactoryTest.java -text
 EpubTools/.classpath -text
 EpubTools/.project -text
 EpubTools/.settings/org.eclipse.jdt.core.prefs -text

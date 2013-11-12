@@ -9,7 +9,7 @@
 
 	<path id="path.lib">
 		<fileset dir="../DotifyShared">
-			<include name="*.jar"/>
+			<include name="bnd.jar"/>
 		</fileset>
 	</path>
 	
