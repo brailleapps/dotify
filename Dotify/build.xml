@@ -80,6 +80,7 @@
 				<fileset dir="../DotifyShared">
 					<include name="dotify-formatter*.jar"/>
 					<include name="dotify-translator*.jar"/>
+					<include name="bnd.jar"/>
         		</fileset>
 			</classpath>
         </javac>
@@ -105,6 +106,9 @@
 				<fileset dir="${lib.dir}">
 					<include name="junit*.jar"/>
 				</fileset>
+				<fileset dir="../DotifyShared">
+					<include name="bnd.jar"/>
+        		</fileset>
 			</classpath>
 	    </javac>
     </target>
