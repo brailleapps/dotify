@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -90,7 +88,6 @@ public class FormatterPanel extends MyPanel {
 						outputField.setText("File doesn't exist " + input);
 					} else {
 						Properties p = new Properties();
-						p.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 						FormatterEngine e = t.newFormatterEngine(getTargetLocale(), BrailleTranslatorFactory.MODE_UNCONTRACTED, new PEFMediaWriter(p));
 						File out = new File(input.getParentFile(), input.getName()+".pef");
 						try {

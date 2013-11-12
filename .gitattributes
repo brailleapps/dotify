@@ -213,6 +213,7 @@ DotifyFormatter/test/org/daisy/dotify/api/formatter/AlphaNumeralTest.java -text
 DotifyFormatter/test/org/daisy/dotify/api/formatter/NumeralFieldTest.java -text
 DotifyFormatter/test/org/daisy/dotify/api/formatter/PositionTest.java -text svneol=unset#text/plain
 DotifyFormatter/test/org/daisy/dotify/consumer/formatter/FormatterFactoryTest.java -text
+DotifyFormatter/test/org/daisy/dotify/consumer/writer/PagedMediaWriterFactoryMakerTest.java -text
 DotifyFormatter/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#text/plain
 DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
 DotifyFormatter/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
@@ -344,9 +345,14 @@ dotify.api/src/org/daisy/dotify/api/translator/TranslationException.java -text
 dotify.api/src/org/daisy/dotify/api/translator/TranslatorConfigurationException.java -text
 dotify.api/src/org/daisy/dotify/api/translator/package-info.java -text
 dotify.api/src/org/daisy/dotify/api/translator/packageinfo -text
+dotify.api/src/org/daisy/dotify/api/writer/MediaTypes.java -text
 dotify.api/src/org/daisy/dotify/api/writer/MetaDataItem.java -text
 dotify.api/src/org/daisy/dotify/api/writer/PagedMediaWriter.java -text svneol=unset#text/plain
+dotify.api/src/org/daisy/dotify/api/writer/PagedMediaWriterConfigurationException.java -text
 dotify.api/src/org/daisy/dotify/api/writer/PagedMediaWriterException.java -text svneol=unset#text/plain
+dotify.api/src/org/daisy/dotify/api/writer/PagedMediaWriterFactory.java -text
+dotify.api/src/org/daisy/dotify/api/writer/PagedMediaWriterFactoryMakerService.java -text
+dotify.api/src/org/daisy/dotify/api/writer/PagedMediaWriterFactoryService.java -text
 dotify.api/src/org/daisy/dotify/api/writer/package-info.java -text
 dotify.api/src/org/daisy/dotify/api/writer/packageinfo -text
 dotify.api/src/org/daisy/dotify/consumer/engine/FormatterEngineMaker.java -text
@@ -363,6 +369,7 @@ dotify.api/src/org/daisy/dotify/consumer/translator/BrailleTranslatorFactoryMake
 dotify.api/src/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryMaker.java -text
 dotify.api/src/org/daisy/dotify/consumer/translator/TextBorderFactoryMaker.java -text
 dotify.api/src/org/daisy/dotify/consumer/translator/package-info.java -text
+dotify.api/src/org/daisy/dotify/consumer/writer/PagedMediaWriterFactoryMaker.java -text
 dotify.api/src/org/daisy/dotify/translator/DefaultTextAttribute.java -text
 dotify.api/src/org/daisy/dotify/translator/packageinfo -text
 dotify.common/.classpath -text
@@ -416,6 +423,7 @@ dotify.formatter.impl/launch.bndrun -text
 dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.engine.FormatterEngineFactoryService -text
 dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.formatter.FormatterFactory -text
 dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.obfl.ExpressionFactory -text
+dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.writer.PagedMediaWriterFactoryService -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/WriterHandler.java -text svneol=unset#text/plain
@@ -501,6 +509,10 @@ dotify.formatter.impl/src/org/daisy/dotify/tools/StringTools.java -text svneol=u
 dotify.formatter.impl/src/org/daisy/dotify/tools/packageinfo -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/PEFMediaWriter.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/writer/TextMediaWriter.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriterFactory.java -text
+dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriterFactoryService.java -text
+dotify.formatter.impl/src/org/daisy/dotify/writer/impl/TextMediaWriterFactory.java -text
+dotify.formatter.impl/src/org/daisy/dotify/writer/impl/TextMediaWriterFactoryService.java -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/packageinfo -text
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
