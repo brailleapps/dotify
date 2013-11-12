@@ -243,8 +243,6 @@ DotifyTranslator/test/org/daisy/dotify/consumer/hyphenator/HyphenatorFactoryMake
 DotifyTranslator/test/org/daisy/dotify/consumer/text/Integer2TextFactoryTest.java -text
 DotifyTranslator/test/org/daisy/dotify/consumer/translator/BrailleTranslatorFactoryMakerTest.java -text
 DotifyTranslator/test/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryTest.java -text
-DotifyTranslator/test/org/daisy/dotify/consumer/translator/SwedishHyphenation2Test.java -text
-DotifyTranslator/test/org/daisy/dotify/consumer/translator/SwedishHyphenationTest.java -text
 DotifyTranslator/test/org/daisy/dotify/consumer/translator/TextBorderFactoryTest.java -text
 EpubTools/.classpath -text
 EpubTools/.project -text
@@ -703,6 +701,8 @@ dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/resource-files
 dotify.hyphenator.impl/src/org/daisy/dotify/text/TextFileReader.java -text
 dotify.hyphenator.impl/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryServiceTest.java -text
 dotify.hyphenator.impl/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
+dotify.hyphenator.impl/test/org/daisy/dotify/impl/hyphenator/latex/SwedishHyphenation2Test.java -text
+dotify.hyphenator.impl/test/org/daisy/dotify/impl/hyphenator/latex/SwedishHyphenationTest.java -text
 dotify.text.impl/.classpath -text
 dotify.text.impl/.project -text
 dotify.text.impl/.settings/org.eclipse.jdt.core.prefs -text
