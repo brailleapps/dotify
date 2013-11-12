@@ -20,11 +20,14 @@ public class LayoutEngineTest {
 	
 	@Test
 	public void testLayoutEnginge() throws LayoutEngineException, IOException {
+		//set line separator for this test, as text media writer result is dependent on its value
+		System.setProperty("line.separator", "\r\n");
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("en",
 				BrailleTranslatorFactory.MODE_BYPASS,
 				new TextMediaWriter("utf-8"));
 		File res = File.createTempFile("TestResult", ".tmp");
 
+		
 		engine.convert(this.getClass().getResourceAsStream("resource-files/obfl-input.obfl"), new FileOutputStream(res));
 		
 		try {
