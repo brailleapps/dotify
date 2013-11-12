@@ -1,8 +1,8 @@
-package org.daisy.dotify.api.formatter;
+package org.daisy.dotify.formatter.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.api.formatter.AlphaNumeral;
+import org.daisy.dotify.formatter.impl.AlphaNumeral;
 import org.junit.Test;
 
 public class AlphaNumeralTest {

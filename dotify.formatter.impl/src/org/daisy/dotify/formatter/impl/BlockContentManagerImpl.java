@@ -91,7 +91,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 					if (page==null) {
 						layout("??", bh, ret, rdp, null);
 					} else {
-						layout("" + rs.getNumeralStyle().format(page), bh, ret, rdp, null);
+						layout("" + NumeralStyleFormatter.format(page, rs.getNumeralStyle()), bh, ret, rdp, null);
 					}
 					break;
 				}

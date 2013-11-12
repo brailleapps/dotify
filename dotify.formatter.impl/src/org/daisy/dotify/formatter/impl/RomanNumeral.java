@@ -1,4 +1,4 @@
-package org.daisy.dotify.api.formatter;
+package org.daisy.dotify.formatter.impl;
 
 /**
  * Provides a static method for converting binary integers to Roman numbers.
