@@ -3,6 +3,8 @@ package org.daisy.dotify.writer;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -83,12 +85,12 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		pst.println("<dc:format>application/x-pef+xml</dc:format>");
 		// these could be moved to OBFL-input
 		pst.println("<dc:identifier>" + p.getProperty(PROPERTY_IDENTIFIER, "identifier?") + "</dc:identifier>");
-		pst.println("<dc:date>" + p.getProperty(PROPERTY_DATE, "date?") + "</dc:date>");
+		pst.println("<dc:date>" + p.getProperty(PROPERTY_DATE, new SimpleDateFormat("yyyy-MM-dd").format(new Date())) + "</dc:date>");
 
 		if (meta!=null) {
 			for (MetaDataItem item : meta) {
 				if (item.getKey().getNamespaceURI().equals(DC_NAMESPACE_URI)) {
-					if (!(item.getKey().getLocalPart().equals("format") && item.getKey().getLocalPart().equals("identifier") && item.getKey().getLocalPart().equals("date"))) {
+					if (!(item.getKey().getLocalPart().equals("format")  || item.getKey().getLocalPart().equals("identifier") || item.getKey().getLocalPart().equals("date"))) {
 						Logger.getLogger(this.getClass().getCanonicalName()).fine("adding metadata " + item.getKey() + " " + item.getValue());
 						pst.println("<dc:" + item.getKey().getLocalPart() + ">" + escape(item.getValue()) + "</dc:" + item.getKey().getLocalPart() + ">");
 					}
