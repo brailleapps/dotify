@@ -53,9 +53,7 @@
 		</fileset>
 	</path>
 	
-	<pathconvert property="jar.classpath" pathsep=" " refid="runtime.path">
-       <flattenmapper/>
-	</pathconvert>
+
 
 	<!-- Testing paths -->
 	<path id="test.classpath">
@@ -186,6 +184,9 @@
 	         ================================= -->
     <target name="buildJar" description="Builds distribution jar">
     	<antcall target="compile"></antcall>
+    	<pathconvert property="jar.classpath" pathsep=" " refid="runtime.path">
+           <flattenmapper/>
+    	</pathconvert>
     	<jar destfile="${dist.jar}">
     		<fileset dir="${build.dir}">
     			<patternset refid="compile-jar.patternset"/>
