@@ -217,8 +217,10 @@ DotifyFormatter/.project -text
 DotifyFormatter/.settings/org.eclipse.jdt.core.prefs -text
 DotifyFormatter/ant-build/resources/javase-6/package-list -text
 DotifyFormatter/build-properties.xml -text
+DotifyFormatter/build-translator.xml -text
 DotifyFormatter/build.xml -text
 DotifyFormatter/src/org/daisy/dotify/cli/FormatterCLI.java -text
+DotifyFormatter/translator-build-properties.xml -text
 DotifyShared/.project -text
 DotifyShared/bnd.jar -text
 DotifyShared/brailleUtils-catalog.jar -text

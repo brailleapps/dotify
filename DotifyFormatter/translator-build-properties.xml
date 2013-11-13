@@ -5,22 +5,21 @@
 	<!-- Timestamp format definition -->
 	<tstamp><format property="ISO-TODAY" pattern="yyyy-MM-dd"/></tstamp>
 	
-	<property name="release-name" value="Dotify Formatter"/>
+	<property name="release-name" value="Dotify Translator"/>
 	<property name="release-version" value="snapshot"/>
-	<property name="translator-release-version" value="snapshot"/>
-	<property name="repository-revision" value="N/A"/>
-	
+	<property name="repository-revision" value="N/A"/> 
+
 	<property name="ant-build.dir" value="${basedir}/ant-build"/>
-	<property name="ant-output.dir" value="${ant-build.dir}/output/formatter"/>
+	<property name="ant-output.dir" value="${ant-build.dir}/output/translator"/>
 
 	<property name="src.dir" value="${basedir}/src"/>
-	
-	<property name="lib.dir" value="../DotifyShared"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="shared-lib.dir" value="../DotifyShared"/>
 	<property name="dist.dir" value="${ant-output.dir}/dist"/>
 
-	<property name="distribution.zip" value="${dist.dir}/dotify-formatter-${release-version}.zip"/>
+	<property name="distribution.zip" value="${dist.dir}/dotify-translator-${release-version}.zip"/>
 	
-	<property name="zip-foler-prefix" value="DotifyFormatter"/>
+	<property name="zip-foler-prefix" value="dotify-translator"/>
 	
 	
 </project>

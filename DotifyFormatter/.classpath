@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="/DotifyShared/junit-4.7.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/wstx-lgpl-3.2.8.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/bnd.jar"/>
-	<classpathentry kind="lib" path="/DotifyShared/dotify-translator.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/dotify.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/dotify.formatter.impl"/>
 	<classpathentry kind="output" path="bin/test"/>
