@@ -259,7 +259,9 @@ EpubTools/src/se/mtm/epub/resource-files/opf-merge-spine.xslt -text
 dotify.api/.classpath -text
 dotify.api/.project -text
 dotify.api/.settings/org.eclipse.jdt.core.prefs -text
+dotify.api/ant-build/resources/javase-6/package-list -text
 dotify.api/bnd.bnd -text
+dotify.api/build-doc.xml -text
 dotify.api/build.xml -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngine.java -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngineFactoryService.java -text
