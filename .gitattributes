@@ -212,6 +212,9 @@ DotifyDevtools/src/org/daisy/dotify/devtools/views/StringFormatterResult.java -t
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedEvent.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextChangedListener.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/views/TextConvertPanel.java -text
+DotifyDevtoolsGUI/.classpath -text
+DotifyDevtoolsGUI/.project -text
+DotifyDevtoolsGUI/.settings/org.eclipse.jdt.core.prefs -text
 DotifyFormatter/.classpath -text
 DotifyFormatter/.project -text
 DotifyFormatter/.settings/org.eclipse.jdt.core.prefs -text
