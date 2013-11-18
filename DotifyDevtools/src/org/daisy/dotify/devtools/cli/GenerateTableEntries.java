@@ -1,4 +1,4 @@
-package org.daisy.dotify.devtools;
+package org.daisy.dotify.devtools.cli;
 
 import org.daisy.dotify.devtools.converters.CodePointHelper;
 

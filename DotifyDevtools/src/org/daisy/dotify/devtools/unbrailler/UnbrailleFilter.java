@@ -1,4 +1,4 @@
-package org.daisy.dotify.devtools;
+package org.daisy.dotify.devtools.unbrailler;
 
 import java.io.OutputStream;
 
@@ -10,13 +10,13 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 
 import org.daisy.braille.table.BrailleConverter;
-import org.daisy.dotify.tools.StaxFilter2;
 
-public class UnbrailleFilter extends StaxFilter2 {
+class UnbrailleFilter extends StaxFilter2 {
 	private final static String PEF_NS = "http://www.daisy.org/ns/2008/pef";
 	private final static QName row = new QName(PEF_NS, "row");
 	private final BrailleConverter t;
 	private boolean translate = false;
+	private boolean filtering = false;
 	
 	public UnbrailleFilter(XMLEventReader xer, OutputStream outStream, BrailleConverter t)
 			throws XMLStreamException {
@@ -34,9 +34,21 @@ public class UnbrailleFilter extends StaxFilter2 {
 	@Override
 	protected Characters characters(Characters event) {
 		if (translate) {
-			return getEventFactory().createCharacters( t.toText(event.getData()));
+			return getEventFactory().createCharacters(t.toText(filtering ? filter(event.getData()) : event.getData()));
 		}
 		return super.characters(event);
+	}
+
+	public boolean isFiltering() {
+		return filtering;
+	}
+
+	public void setFiltering(boolean filtering) {
+		this.filtering = filtering;
+	}
+
+	private static String filter(String input) {
+		return input.replaceAll("[^\u2800-\u28FF]", "\u2800");
 	}
 
 	@Override

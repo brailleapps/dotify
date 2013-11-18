@@ -9,6 +9,9 @@ public class CodePointHelper {
 		HEX,
 		DECIMAL
 	}
+	public enum Input {
+		NAME, CODE
+	}
 
 	/**
 	 * Formats a number as a zero padded hex string of a specified length.

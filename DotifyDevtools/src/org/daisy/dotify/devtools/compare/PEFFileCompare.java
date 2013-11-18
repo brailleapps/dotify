@@ -1,11 +1,8 @@
-package org.daisy.dotify.devtools;
+package org.daisy.dotify.devtools.compare;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.daisy.braille.tools.FileCompare;
 
 /**
  * Provides comparing of two folders with xml files for differences.
@@ -39,10 +28,31 @@ public class PEFFileCompare {
 	private final NormalizationResource nr;
 	private final List<String> notices;
 	private final List<String> warnings;
-	private final List<String> diffs;
+	private final List<Diff> diffs;
 	private final List<String> oks;
 	private int checked;
+	private String unbraillerTable;
 	
+	public static class Diff {
+		private final String key;
+		private final int pos;
+
+		public Diff(String key, int pos) {
+			super();
+			this.key = key;
+			this.pos = pos;
+		}
+
+		public String getKey() {
+			return key;
+		}
+
+		public int getPos() {
+			return pos;
+		}
+
+	}
+
 	/**
 	 * 
 	 * @param path1 a folder
@@ -55,11 +65,24 @@ public class PEFFileCompare {
 		this.nr = nr;
 		notices = new ArrayList<String>();
 		warnings = new ArrayList<String>();
-		diffs = new ArrayList<String>();
+		diffs = new ArrayList<Diff>();
 		oks = new ArrayList<String>();
 		checked = 0;
+		this.unbraillerTable = null;
 	}
 	
+	public PEFFileCompare(FileFilter filter) {
+		this(filter, null);
+	}
+
+	public String getUnbraillerTable() {
+		return unbraillerTable;
+	}
+
+	public void setUnbraillerTable(String unbraillerTable) {
+		this.unbraillerTable = unbraillerTable;
+	}
+
 	public void run(String path1, String path2) throws FileNotFoundException {
 		final File dir1 = getExistingPath(path1);
 		final File dir2 = getExistingPath(path2);
@@ -107,16 +130,7 @@ public class PEFFileCompare {
 			i2++;
 			e.execute(new Runnable() {
 		        public void run() {
-		        	FileCompare fc = new FileCompare();
 
-		    		//String originalTransformer = System.getProperty(TRANSFORMER_FACTORY_KEY);
-		    		//System.setProperty(TRANSFORMER_FACTORY_KEY, "net.sf.saxon.TransformerFactoryImpl");
-		        	TransformerFactory factory = TransformerFactory.newInstance();
-		    		try {
-		    			factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-		    		} catch (IllegalArgumentException iae) { 
-		    			iae.printStackTrace();
-		    		}
 					System.out.println("Comparing file " + key + " in " + dir1 + " and " + dir2 + " (" + i + "/" + x.size() + ")");
 					
 					int v = x.get(key);
@@ -127,52 +141,22 @@ public class PEFFileCompare {
 						File f2 = files2.get(key);
 		
 						try {
-					        File t1 = File.createTempFile("FileCompare", ".tmp");
-					        File t2 = File.createTempFile("FileCompare", ".tmp");
-							try {
-						        StreamSource xml1 = new StreamSource(f1);
-						        StreamSource xml2 = new StreamSource(f2);
-						        Source xslt;
-						        Transformer transformer;
-						        
-						        xslt = new StreamSource(nr.getNormalizationResourceAsStream());
-						        transformer = factory.newTransformer(xslt);
-						        transformer.transform(xml1, new StreamResult(t1));
-						        
-						        xslt = new StreamSource(nr.getNormalizationResourceAsStream());
-						        transformer = factory.newTransformer(xslt);
-						        transformer.transform(xml2, new StreamResult(t2));
-						        
-								boolean ok = fc.compareXML(new FileInputStream(t1), new FileInputStream(t2));
-								if (!ok) {
-									diff(key + " " + fc.getPos());
-								} else {
-									ok(key);
-								}
-							} catch (FileNotFoundException e) {
-								warning("An exception was thrown.");
-								e.printStackTrace();
-							} catch (IOException e) {
-								warning("An exception was thrown.");
-								e.printStackTrace();
-							} catch (TransformerException e) {
-								warning("An exception was thrown.");
-								e.printStackTrace();
-							} finally {
-					        	if (!t1.delete()) {
-					        		System.err.println("Delete failed");
-					        		t1.deleteOnExit();
-					        	}
-					        	if (!t2.delete()) {
-					        		System.err.println("Delete failed");
-					        		t2.deleteOnExit();
-					        	}
-					        }
-						} catch (IOException e) {
+							PEFFileCompareCore fcc;
+							if (nr == null) {
+								fcc = new PEFFileCompareCore();
+							} else {
+								fcc = new PEFFileCompareCore(nr);
+							}
+							boolean ok = fcc.compare(f1, f2);
+							if (!ok) {
+								diff(key, fcc.getPos());
+							} else {
+								ok(key);
+							}
+						} catch (PEFFileCompareRunException e) {
 							warning("An exception was thrown.");
 							e.printStackTrace();
 						}
-		
 					}
 		        }
 		    });
@@ -180,7 +164,7 @@ public class PEFFileCompare {
 		}
 		e.shutdown();
 		try {
-			e.awaitTermination(10, TimeUnit.MINUTES);
+			e.awaitTermination(10 * 60, TimeUnit.SECONDS);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -196,8 +180,8 @@ public class PEFFileCompare {
 		warnings.add(msg);
 	}
 	
-	private void diff(String filename) {
-		diffs.add(filename);
+	private void diff(String filename, int pos) {
+		diffs.add(new Diff(filename, pos));
 	}
 	
 	private void ok(String filename) {
@@ -212,7 +196,7 @@ public class PEFFileCompare {
 		return warnings;
 	}
 	
-	public List<String> getDiffs() {
+	public List<Diff> getDiffs() {
 		return diffs;
 	}
 	
@@ -255,7 +239,4 @@ public class PEFFileCompare {
 		
 	}
 
-	interface NormalizationResource {
-		InputStream getNormalizationResourceAsStream();
-	}
 }

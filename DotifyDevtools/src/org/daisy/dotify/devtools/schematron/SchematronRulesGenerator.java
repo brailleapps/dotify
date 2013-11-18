@@ -1,4 +1,4 @@
-package org.daisy.dotify.devtools;
+package org.daisy.dotify.devtools.schematron;
 
 import java.io.Closeable;
 import java.io.OutputStream;
