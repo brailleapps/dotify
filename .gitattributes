@@ -215,6 +215,16 @@ DotifyDevtools/src/org/daisy/dotify/devtools/views/TextConvertPanel.java -text
 DotifyDevtoolsGUI/.classpath -text
 DotifyDevtoolsGUI/.project -text
 DotifyDevtoolsGUI/.settings/org.eclipse.jdt.core.prefs -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/CodePointUtility.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/DeveloperUtility.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/TranslatorDemo.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/resource-files/odt2braille6.ttf -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/views/BrailleConvertPanel.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/views/CodePointPanel.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/views/StringFormatterResult.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/views/TextChangedEvent.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/views/TextChangedListener.java -text
+DotifyDevtoolsGUI/src/org/daisy/dotify/devtools/gui/views/TextConvertPanel.java -text
 DotifyFormatter/.classpath -text
 DotifyFormatter/.project -text
 DotifyFormatter/.settings/org.eclipse.jdt.core.prefs -text
