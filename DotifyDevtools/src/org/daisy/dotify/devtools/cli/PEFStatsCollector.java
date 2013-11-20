@@ -41,7 +41,7 @@ public class PEFStatsCollector {
 		ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		for (final File f : input.listFiles(new PEFFileFilter())) {
 				es.execute(new Runnable(){
-					@Override
+
 					public void run() {
 						try {
 							System.out.println("Reading file " + f);
@@ -70,7 +70,7 @@ public class PEFStatsCollector {
 	
 	private static class PEFFileFilter implements FileFilter {
 
-		@Override
+
 		public boolean accept(File pathname) {
 			return pathname.getName().endsWith(".pef") && !pathname.isDirectory();
 		}

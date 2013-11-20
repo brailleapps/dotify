@@ -32,7 +32,6 @@ class DotifyRegressionTester implements Runnable {
 		this.table = table;
 	}
 
-	@Override
 	public void run() {
 		JVMStarter starter = inf.requestStarter();
 		try {

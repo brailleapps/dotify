@@ -97,7 +97,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 		}
 	}
 
-	@Override
+
 	public JVMStarter requestStarter() {
 		try {
 			return pool.remove(0);
@@ -106,22 +106,18 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 		}
 	}
 
-	@Override
 	public void returnStarter(JVMStarter starter) {
 		pool.add(starter);
 	}
 
-	@Override
 	public String getPathToCLI() {
 		return pathToDotifyCli;
 	}
 
-	@Override
 	public File testOutputFolder() {
 		return pathToOutput;
 	}
 
-	@Override
 	public void reportError() {
 		errors = true;
 	}
