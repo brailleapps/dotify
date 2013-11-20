@@ -396,6 +396,7 @@ dotify.common/launch.bndrun -text
 dotify.common/src/org/daisy/dotify/text/BreakPoint.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/BreakPointHandler.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/TextFileReader.java -text
 dotify.common/src/org/daisy/dotify/text/packageinfo -text
 dotify.common/src/se/mtm/common/io/FileIO.java -text
 dotify.common/src/se/mtm/common/io/TempFileHandler.java -text
@@ -724,7 +725,6 @@ dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/resource-files
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-uk.tex -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/utf8/hyph-zh-latn-pinyin.tex -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/resource-files/zh-latn.xml -text
-dotify.hyphenator.impl/src/org/daisy/dotify/text/TextFileReader.java -text
 dotify.hyphenator.impl/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryServiceTest.java -text
 dotify.hyphenator.impl/test/org/daisy/dotify/impl/hyphenator/latex/LatexHyphenatorFactoryTest.java -text
 dotify.hyphenator.impl/test/org/daisy/dotify/impl/hyphenator/latex/SwedishHyphenation2Test.java -text
