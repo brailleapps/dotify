@@ -71,7 +71,9 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 		try {
 			while ((line = in.readLine()) != null && !errors) {
 				final String line2 = line;
-				if (line2.trim().startsWith("#")) {
+				if (line2.trim().equals("")) {
+					// ignore
+				} else if (line2.trim().startsWith("#")) {
 					Logger.getLogger(this.getClass().getCanonicalName()).warning("Ignoring line: " + line2);
 				} else {
 					String[] args = line2.split(argsSeparator);
