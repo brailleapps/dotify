@@ -210,7 +210,6 @@ DotifyDevtools/src/org/daisy/dotify/devtools/converters/BrailloTableReader.java 
 DotifyDevtools/src/org/daisy/dotify/devtools/converters/CodePointHelper.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/jvm/JVMBatchStarter.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/jvm/JVMStarter.java -text
-DotifyDevtools/src/org/daisy/dotify/devtools/package.html -text
 DotifyDevtools/src/org/daisy/dotify/devtools/regression/DotifyRegressionTester.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/regression/DotifyRegressionTesterRunner.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/regression/RegressionInterface.java -text
