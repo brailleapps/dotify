@@ -2,13 +2,6 @@ package org.daisy.dotify.devtools.converters;
 
 public class BrailleNotationConverter {
 	
-	//TODO: Add as test
-	/* 
-	public static void main(String[] args) {
-		String input = "p12456p1p4p0p12345678p2p3p4p5p6p7p8p1";
-		System.out.println(input + " -> " + charsToUnicode(input));
-	}*/
-	
 	public static String parsePNotation(String p) {
 		String[] s = p.split("p");
 		if (s.length == 0) {

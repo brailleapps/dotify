@@ -210,6 +210,7 @@ DotifyDevtools/src/org/daisy/dotify/devtools/converters/BrailloTableReader.java 
 DotifyDevtools/src/org/daisy/dotify/devtools/converters/CodePointHelper.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/jvm/JVMBatchStarter.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/jvm/JVMStarter.java -text
+DotifyDevtools/src/org/daisy/dotify/devtools/jvm/JVMStarterAsync.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/regression/DotifyRegressionTester.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/regression/DotifyRegressionTesterRunner.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/regression/RegressionInterface.java -text
@@ -217,6 +218,8 @@ DotifyDevtools/src/org/daisy/dotify/devtools/schematron/SchematronRulesGenerator
 DotifyDevtools/src/org/daisy/dotify/devtools/unbrailler/StaxFilter2.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/unbrailler/UnbrailleFilter.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/unbrailler/Unbrailler.java -text
+DotifyDevtools/test/org/daisy/dotify/devtools/converters/BrailleNotationConverterTest.java -text
+DotifyDevtools/test/org/daisy/dotify/devtools/converters/CodePointHelperTest.java -text
 DotifyDevtoolsGUI/.classpath -text
 DotifyDevtoolsGUI/.project -text
 DotifyDevtoolsGUI/.settings/org.eclipse.jdt.core.prefs -text
