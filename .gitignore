@@ -1,6 +1,7 @@
 Dotify/ant-build/output
 Dotify/bin
 DotifyDevtools/ant-build/output
+DotifyDevtools/bin_test
 DotifyFormatter/ant-build/output
 DotifyTranslator/ant-build/output
 DotifyTranslator/bin
