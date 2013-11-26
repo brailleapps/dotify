@@ -2,7 +2,7 @@
 <project default="buildAndTest">
 	<description>Buildfile for this project</description>
 
-	<import file="translator-build-properties.xml"/>
+	<import file="build-properties.xml"/>
 
 	<property name="dist.jar" value="${dist.dir}/dotify-translator.jar"/>
 	<property name="build.dir" value="${ant-output.dir}/build.temp"/>
@@ -56,19 +56,12 @@
 	</patternset>
 
 	<!-- - - - - - - - - - - - - - - - - - 
-          target: emptyBuildDir                      
+          target: emptyOutputDir                      
          - - - - - - - - - - - - - - - - - -->
-    <target name="emptyBuildDir">
-    	<delete dir="${build.dir}"/>
-    	<mkdir dir="${build.dir}"/>
-    </target>
-
-	<!-- - - - - - - - - - - - - - - - - - 
-          target: emptyDistDir                      
-         - - - - - - - - - - - - - - - - - -->
-    <target name="emptyDistDir">
-    	<delete dir="${dist.dir}"/>
-		<mkdir dir="${dist.dir}"/>
+    <target name="emptyOutputDir">
+    	<delete dir="${ant-output.dir}"/>
+		<mkdir dir="${ant-output.dir}"/>
+	    <mkdir dir="${build.dir}"/>
     </target>
 	
 	<!-- - - - - - - - - - - - - - - - - - 
@@ -105,7 +98,7 @@
 	<!-- - - - - - - - - - - - - - - - - -
           target: compile              
          - - - - - - - - - - - - - - - - - -->
-    <target name="compile" depends="emptyBuildDir, emptyDistDir, refreshSrcTempDir">
+    <target name="compile" depends="emptyOutputDir, refreshSrcTempDir">
     	<!-- Compile core files -->
         <javac srcdir="${src-temp.dir}" destdir="${build.dir}" includeantruntime="false" encoding="UTF-8" debug="true">
 			<classpath>
