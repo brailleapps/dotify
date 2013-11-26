@@ -261,10 +261,6 @@ DotifyShared/wstx-lgpl-3.2.8.jar -text
 DotifyTranslator/.classpath -text
 DotifyTranslator/.project -text
 DotifyTranslator/.settings/org.eclipse.jdt.core.prefs -text
-DotifyTranslator/ant-build/resources/javase-6/package-list -text
-DotifyTranslator/build-doc.xml -text
-DotifyTranslator/build-properties.xml -text
-DotifyTranslator/build.xml -text
 DotifyTranslator/logging.properties -text
 EpubTools/.classpath -text
 EpubTools/.project -text
