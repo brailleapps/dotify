@@ -85,6 +85,13 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 			}
 			exe.shutdown();
 			try {
+				while (!exe.isTerminated() && !errors) {
+					Thread.sleep(1000);
+				}
+				if (errors) {
+					exe.shutdownNow();
+				}
+				//probably not need anymore
 				exe.awaitTermination(timeout * 60, TimeUnit.SECONDS);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
