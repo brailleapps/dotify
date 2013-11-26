@@ -51,6 +51,8 @@ Dotify/build-doc.xml -text svneol=unset#text/plain
 Dotify/build-properties.xml -text
 Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
 Dotify/build.xml -text svneol=unset#text/plain
+Dotify/formatter-build-properties.xml -text
+Dotify/formatter-build.xml -text
 Dotify/lib/brailleUtils-catalog.jar -text
 Dotify/lib/brailleUtils-core.jar -text
 Dotify/lib/icu4j-3_8.jar -text
@@ -75,6 +77,7 @@ Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
 Dotify/src/org/daisy/dotify/Dotify.java -text
 Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemProperties.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/cli/FormatterCLI.java -text
 Dotify/src/org/daisy/dotify/cli/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/config/ConfigurationsCatalog.java -text
 Dotify/src/org/daisy/dotify/config/ConfigurationsProvider.java -text
