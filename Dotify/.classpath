@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="lib/org.daisy.util.jar"/>
 	<classpathentry kind="lib" path="lib/brailleUtils-catalog.jar"/>
 	<classpathentry kind="lib" path="lib/brailleUtils-core.jar"/>
-	<classpathentry kind="lib" path="/DotifyShared/dotify-formatter.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/dotify-translator.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/dotify.formatter.impl"/>
 	<classpathentry kind="output" path="bin/src"/>
 </classpath>

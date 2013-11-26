@@ -34,6 +34,7 @@
 	
 	<patternset id="build-jar.patternset">
 		<include name="stax-api*.jar"/>
+		<include name="dotify-translator*.jar"/>
 	</patternset>
 		
 	<patternset id="runtime.patternset">
@@ -47,9 +48,6 @@
 	<path id="runtime.path">
 		<fileset dir="${lib.dir}">
 			<patternset refid="runtime.patternset"/>
-		</fileset>
-		<fileset dir="${ant-output.dir}/lib">
-			<include name="dotify-translator.jar"/>
 		</fileset>
 	</path>
 	
@@ -102,7 +100,9 @@
 		<mkdir dir="${src-temp.dir}"/>
     	<copy todir="${src-temp.dir}">
     		<fileset dir="../dotify.formatter.impl/src"/>
-    		<fileset dir="${src.dir}"/>
+    		<fileset dir="${src.dir}">
+    			<include name="org/daisy/dotify/cli/**/Formatter*.*"/>
+    		</fileset>
     	</copy>
     </target>
 
@@ -113,44 +113,20 @@
     	<delete dir="${test-temp.dir}"/>
 		<mkdir dir="${test-temp.dir}"/>
     	<copy todir="${test-temp.dir}">
-    		<fileset dir="${test-src.dir}"/>
     		<fileset dir="../dotify.formatter.impl/test"/>
     	</copy>
     </target>
-	
-	<target name="refreshTranslator">
-		<!--
-		<subant>
-			<property name="release-version" value="${translator-release-version}"/>
-			<property name="repository-revision" value="${repository-revision}"/>
-			<fileset dir="." includes="build-translator.xml"/>
-		</subant>
-		<delete dir="${ant-output.dir}/lib"/>
-		<mkdir dir="${ant-output.dir}/lib"/>
-		<mkdir dir="${ant-output.dir}/translator.unzip"/>
-		<unzip dest="${ant-output.dir}/translator.unzip">
-			<fileset dir="${ant-build.dir}/output/translator/dist/">
-				<include name="*.zip"/>
-			</fileset>
-		</unzip>
-		<copy file="${ant-output.dir}/translator.unzip/dotify-translator/dotify-translator.jar" tofile="${ant-output.dir}/lib/dotify-translator.jar"/>
-		<delete dir="${ant-output.dir}/translator.unzip"/>
-		-->
-	</target>
 
 	<!-- - - - - - - - - - - - - - - - - -
           target: compile              
          - - - - - - - - - - - - - - - - - -->
-    <target name="compile" depends="refreshTranslator, emptyBuildDir, emptyDistDir, refreshSrcTempDir">
+    <target name="compile" depends="emptyBuildDir, emptyDistDir, refreshSrcTempDir">
     	<!-- Compile core files -->
         <javac srcdir="${src-temp.dir}" destdir="${build.dir}" includeantruntime="false" encoding="UTF-8" debug="true">
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<patternset refid="build-jar.patternset"/>
 					<include name="bnd.jar"/>
-				</fileset>
-				<fileset dir="${ant-output.dir}/lib">
-					<include name="dotify-translator.jar"/>
 				</fileset>
 			</classpath>
         </javac>
@@ -238,9 +214,6 @@
     		<zipfileset file="${dist.jar}" prefix="${zip-foler-prefix}/lib"/>
     		<zipfileset dir="${lib.dir}" prefix="${zip-foler-prefix}/lib">
     			<patternset refid="runtime.patternset"/>
-    		</zipfileset>
-    		<zipfileset dir="${ant-output.dir}/lib" prefix="${zip-foler-prefix}/lib">
-    			<include name="dotify-translator.jar"/>
     		</zipfileset>
     	</zip>
 		<delete file="${dist.jar}"/>

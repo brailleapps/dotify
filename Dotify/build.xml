@@ -52,33 +52,47 @@
 	</patternset>
 
 	<!-- - - - - - - - - - - - - - - - - - 
-          target: emptyBuildDir                      
+          target: emptyOutputDir                      
          - - - - - - - - - - - - - - - - - -->
-    <target name="emptyBuildDir">
-    	<delete dir="${build.dir}"/>
+    <target name="emptyOutputDir">
+    	<delete dir="${ant-output.dir}"/>
     	<mkdir dir="${build.dir}"/>
+    	<mkdir dir="${dist.dir}"/>
     </target>
-
-	<!-- - - - - - - - - - - - - - - - - - 
-          target: emptyDistDir                      
-         - - - - - - - - - - - - - - - - - -->
-    <target name="emptyDistDir">
-    	<delete dir="${dist.dir}"/>
-		<mkdir dir="${dist.dir}"/>
-    </target>
+	
+	<target name="refreshFormatter">
+		<subant>
+			<property name="release-version" value="${formatter-release-version}"/>
+			<property name="repository-revision" value="${repository-revision}"/>
+			<fileset dir="." includes="formatter-build.xml"/>
+		</subant>
+		<delete dir="${ant-output.dir}/lib"/>
+		<mkdir dir="${ant-output.dir}/lib"/>
+		<mkdir dir="${ant-output.dir}/formatter.unzip"/>
+		<unzip dest="${ant-output.dir}/formatter.unzip">
+			<fileset dir="${ant-build.dir}/output/formatter/dist/">
+				<include name="*.zip"/>
+			</fileset>
+		</unzip>
+		<copy file="${ant-output.dir}/formatter.unzip/DotifyFormatter/lib/dotify-formatter.jar" tofile="${ant-output.dir}/lib/dotify-formatter.jar"/>
+		<!--
+		<delete dir="${ant-output.dir}/formatter.unzip"/>-->
+	</target>
 
 	<!-- - - - - - - - - - - - - - - - - -
           target: compile              
          - - - - - - - - - - - - - - - - - -->
-    <target name="compile" depends="emptyBuildDir, emptyDistDir">
+    <target name="compile" depends="emptyOutputDir, refreshFormatter">
     	<!-- Compile core files -->
         <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" encoding="UTF-8" debug="true">
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="*.jar"/>
 				</fileset>
+				<fileset dir="${ant-output.dir}/lib">
+					<include name="dotify-formatter.jar"/>
+				</fileset>
 				<fileset dir="../DotifyShared">
-					<include name="dotify-formatter*.jar"/>
 					<include name="dotify-translator*.jar"/>
 					<include name="bnd.jar"/>
         		</fileset>
@@ -135,7 +149,7 @@
     			<attribute name="Implementation-URL" value="http://code.google.com/p/dotify/"/>
     		</manifest>
     		<!-- Merge dotify-formatter.jar into this jar, for backwards compatibility -->
-    		<zipgroupfileset dir="../DotifyShared" includes="dotify-formatter*.jar"></zipgroupfileset>
+    		<zipgroupfileset dir="${ant-output.dir}/lib" includes="dotify-formatter.jar"></zipgroupfileset>
     	</jar>
     	<jar destfile="${cli.jar}">
     		<fileset dir="${build.dir}">
