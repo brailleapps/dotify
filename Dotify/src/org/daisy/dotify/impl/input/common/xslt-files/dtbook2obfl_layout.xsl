@@ -23,7 +23,7 @@
 		- komplexa sub, sup
 		- länkar, e-postadresser
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" exclude-result-prefixes="dtb xs">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" exclude-result-prefixes="dtb xs" xmlns="http://www.daisy.org/ns/2011/obfl">
 
 	<xsl:import href="dtbook2obfl_base.xsl"/>
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>

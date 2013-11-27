@@ -19,7 +19,7 @@
 	Author: Joel Håkansson
 	Version: 2010-03-11
  -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.daisy.org/ns/2011/obfl">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="no"/>
 	<xsl:param name="page-width" select="28" as="xs:integer"/>
 	<xsl:param name="page-height" select="29" as="xs:integer"/>
