@@ -68,7 +68,7 @@ class Text2ObflWriter {
 		String line;
 		try {
 			pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			pw.println("<obfl version=\"2011-1\" xml:lang=\"" + rootLang + "\">");
+			pw.println("<obfl version=\"2011-1\" xml:lang=\"" + rootLang + "\" xmlns=\"http://www.daisy.org/ns/2011/obfl\">");
 			pw.println("<layout-master name=\"default\" page-height=\""+height+"\" page-width=\""+width+"\">");
 			pw.println("<default-template>");
 			pw.println("<header></header>");

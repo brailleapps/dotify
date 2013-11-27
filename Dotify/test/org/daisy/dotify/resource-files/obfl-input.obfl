@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<obfl version="2011-1" xml:lang="en">
+<obfl version="2011-1" xml:lang="en" xmlns="http://www.daisy.org/ns/2011/obfl">
 		<layout-master name="front" page-width="40" page-height="29" inner-margin="0" outer-margin="0" row-spacing="1" duplex="false">
 			<default-template>
 				<header>
