@@ -3,6 +3,7 @@ package org.daisy.dotify.obfl;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,13 @@ public class OBFLWsNormalizer {
 	private final Pattern beginWS;
 	private final Pattern endWS;
 
+	/**
+	 * Creates a new OBFLWsNormalizer. 
+	 * @param input the input XMLEventReader. Note that the underlying stream might not be closed after parsing, due to limitations in the StaX implementation.
+	 * @param eventFactory
+	 * @param out the output stream
+	 * @throws XMLStreamException
+	 */
 	public OBFLWsNormalizer(XMLEventReader input, XMLEventFactory eventFactory, OutputStream out) throws XMLStreamException {
 		this.input = input;
 		this.writer = null;
@@ -66,9 +74,16 @@ public class OBFLWsNormalizer {
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
+		//close outer one first
 		try {
 			writer.close();
 		} catch (XMLStreamException e) {
+			e.printStackTrace();
+		}
+		//should be closed automatically, but it isn't
+		try {
+			out.close();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

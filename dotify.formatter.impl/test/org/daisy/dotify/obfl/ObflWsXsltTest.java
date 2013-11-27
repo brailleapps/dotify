@@ -108,11 +108,6 @@ public class ObflWsXsltTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		try {
-			outstream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		if (!normalizedFile.delete()) {
 			normalizedFile.deleteOnExit();

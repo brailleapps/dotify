@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLEventFactory;
@@ -93,6 +94,11 @@ class LayoutEngineImpl implements FormatterEngine {
 					f.deleteOnExit();
 					OBFLWsNormalizer normalizer = new OBFLWsNormalizer(in.createXMLEventReader(input), xef, new FileOutputStream(f));
 					normalizer.parse(of);
+					try {
+						input.close();
+					} catch (Exception e) {
+						logger.log(Level.FINE, "Failed to close stream.", e);
+					}
 					input = new FileInputStream(f);
 				} catch (Exception e) {
 					throw new LayoutEngineException(e);
@@ -109,6 +115,12 @@ class LayoutEngineImpl implements FormatterEngine {
 				}
 				ObflParser obflParser = new ObflParser(locale, mode, mp, ff, tbf, ef);
 				obflParser.parse(in.createXMLEventReader(input));
+
+				try {
+					input.close();
+				} catch (Exception e) {
+					logger.log(Level.FINE, "Failed to close stream.", e);
+				}
 
 				logger.info("Rendering output...");
 				writer.open(output, obflParser.getMetaData());
