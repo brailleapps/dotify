@@ -10,7 +10,7 @@ import org.daisy.dotify.api.formatter.Marker;
  * 
  * @author Joel Håkansson
  */
-public interface BlockContentManager extends Iterable<Row> {
+public interface BlockContentManager extends Iterable<RowImpl> {
 
 	public List<Marker> getGroupMarkers(); 
 	public int getRowCount();

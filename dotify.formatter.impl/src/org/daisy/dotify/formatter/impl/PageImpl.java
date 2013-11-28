@@ -11,6 +11,7 @@ import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageTemplate;
+import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TextBorderStyle;
@@ -26,7 +27,7 @@ import org.daisy.dotify.tools.StringTools;
 class PageImpl implements Page {
 	private String marginCharacter = null;
 	private PageSequenceImpl parent;
-	private ArrayList<Row> rows;
+	private ArrayList<RowImpl> rows;
 	private ArrayList<Marker> markers;
 	private final int pageIndex;
 	private final int flowHeight;
@@ -36,7 +37,7 @@ class PageImpl implements Page {
 	private int keepPreviousSheets;
 	
 	public PageImpl(PageSequenceImpl parent, int pageIndex) {
-		this.rows = new ArrayList<Row>();
+		this.rows = new ArrayList<RowImpl>();
 		this.markers = new ArrayList<Marker>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
@@ -48,7 +49,7 @@ class PageImpl implements Page {
 		this.keepPreviousSheets = 0;
 	}
 	
-	public void newRow(Row r) {
+	public void newRow(RowImpl r) {
 		if (rowsOnPage()==0) {
 			contentMarkersBegin = markers.size();
 		}
@@ -92,14 +93,14 @@ class PageImpl implements Page {
 		return marginCharacter;
 	}
 
-	public List<String> getRows() {
+	public List<Row> getRows() {
 
 		try {
 			TextBorderStyle frame = getParent().getLayoutMaster().getFrame();
 			if (frame == null) {
 				frame = TextBorderStyle.NONE;
 			}
-			ArrayList<Row> ret = new ArrayList<Row>();
+			ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 			{
 				LayoutMaster lm = getParent().getLayoutMaster();
 				int pagenum = getPageIndex() + 1;
@@ -109,12 +110,12 @@ class PageImpl implements Page {
 				ret.addAll(rows);
 				if (t.getFooterHeight() > 0 || frame != TextBorderStyle.NONE) {
 					while (ret.size() < getFlowHeight() + t.getHeaderHeight()) {
-						ret.add(new Row());
+						ret.add(new RowImpl());
 					}
 					ret.addAll(renderFields(lm, t.getFooter(), filter));
 				}
 			}
-			ArrayList<String> ret2 = new ArrayList<String>();
+			ArrayList<Row> ret2 = new ArrayList<Row>();
 			{
 				final int pagenum = getPageIndex() + 1;
 				LayoutMaster lm = getParent().getLayoutMaster();
@@ -129,11 +130,11 @@ class PageImpl implements Page {
 						.outerLeftMargin(StringTools.fill(getMarginCharacter(), pageMargin))
 						.build();
 				if (!TextBorderStyle.NONE.equals(frame)) {
-					ret2.add(tb.getTopBorder());
+					ret2.add(new RowImpl(tb.getTopBorder()));
 				}
 				String res;
 
-				for (Row row : ret) {
+				for (RowImpl row : ret) {
 					res = "";
 					if (row.getChars().length() > 0) {
 						// remove trailing whitespace
@@ -162,10 +163,10 @@ class PageImpl implements Page {
 					if (rowWidth > getParent().getLayoutMaster().getPageWidth()) {
 						throw new PaginatorException("Row is too long (" + rowWidth + "/" + getParent().getLayoutMaster().getPageWidth() + ") '" + res + "'");
 					}
-					ret2.add(r);
+					ret2.add(new RowImpl(r));
 				}
 				if (!TextBorderStyle.NONE.equals(frame)) {
-					ret2.add(tb.getBottomBorder());
+					ret2.add(new RowImpl(tb.getBottomBorder()));
 				}
 			}
 			return ret2;
@@ -203,11 +204,11 @@ class PageImpl implements Page {
 	}
 	
 	
-	private List<Row> renderFields(LayoutMaster lm, List<List<Field>> fields, BrailleTranslator translator) throws PaginatorException {
-		ArrayList<Row> ret = new ArrayList<Row>();
+	private List<RowImpl> renderFields(LayoutMaster lm, List<List<Field>> fields, BrailleTranslator translator) throws PaginatorException {
+		ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 		for (List<Field> row : fields) {
 			try {
-				ret.add(new Row(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator)));
+				ret.add(new RowImpl(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator)));
 			} catch (PaginatorToolsException e) {
 				throw new PaginatorException("Error while rendering header", e);
 			}

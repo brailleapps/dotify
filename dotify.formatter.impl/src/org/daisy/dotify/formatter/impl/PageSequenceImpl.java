@@ -87,14 +87,14 @@ class PageSequenceImpl implements PageSequence {
 			}
 		}
 		
-		void newRow(Row row) {
+		void newRow(RowImpl row) {
 			if (currentPage().rowsOnPage()>=currentPage().getFlowHeight() || nextPage!=null) {
 				newPage();
 			}
 			currentPage().newRow(row);
 		}
 		
-		void newRow(Row row, String id) {
+		void newRow(RowImpl row, String id) {
 			newRow(row);
 			insertIdentifier(id);
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.daisy.dotify.api.formatter.FormattingTypes.Alignment;
 import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.Row;
 
 
 
@@ -12,7 +13,7 @@ import org.daisy.dotify.api.formatter.Marker;
  * Row represents a single row of text
  * @author Joel Håkansson
  */
-public class Row {
+class RowImpl implements Row {
 	private String chars;
 	private List<Marker> markers;
 	private List<String> anchors;
@@ -28,7 +29,7 @@ public class Row {
 	 * Create a new Row
 	 * @param chars the characters on this row
 	 */
-	public Row(String chars) {
+	public RowImpl(String chars) {
 		this.chars = chars;
 		this.markers = new ArrayList<Marker>();
 		this.anchors = new ArrayList<String>();
@@ -44,7 +45,7 @@ public class Row {
 	/**
 	 * Create a new empty Row
 	 */
-	public Row() {
+	public RowImpl() {
 		this("");
 	}
 
@@ -55,6 +56,8 @@ public class Row {
 	public String getChars() {
 		return chars;
 	}
+	
+
 	
 /*	public void appendChars(CharSequence c) {
 		chars = chars.toString() + c;
@@ -142,6 +145,11 @@ public class Row {
 	 */
 	public void setAlignment(Alignment alignment) {
 		this.alignment = alignment;
+	}
+
+	public Float getRowSpacing() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 /*

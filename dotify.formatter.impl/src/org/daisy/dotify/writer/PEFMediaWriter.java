@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.formatter.SectionProperties;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
@@ -115,18 +116,21 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		hasOpenPage = true;
 	}
 
-	public void newRow(CharSequence row) {
+	public void newRow(Row row) {
 		state.assertOpen();
-		if (nonBraillePattern.matcher(row).matches()) {
+		if (nonBraillePattern.matcher(row.getChars()).matches()) {
 			if (errorCount<10) {
 				Logger.getLogger(this.getClass().getCanonicalName()).fine(
 						"Non-braille characters in output"+
-							(errorCount==9?" (supressing additional messages of this kind)":"") + ": " + row
+							(errorCount==9?" (supressing additional messages of this kind)":"") + ": " + row.getChars()
 						);
 				errorCount++;
 			}
 		}
-		pst.println("<row>"+row+"</row>");
+		pst.println("<row" +
+		(row.getRowSpacing()!=null?" rowgap=\""+(int)Math.floor((row.getRowSpacing()-1)*4)+"\"":"") +
+		(row.getChars().length()>0?">"+row.getChars()+"</row>":"/>")
+		);
 	}
 	
 	public void newRow() {
@@ -139,7 +143,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		closeOpenVolume();
 		cCols = master.getPageWidth();
 		cRows = master.getPageHeight();
-		cRowgap = Math.round((master.getRowSpacing()-1)*4);
+		cRowgap = (int)Math.floor((master.getRowSpacing()-1)*4);
 		cDuplex = master.duplex();
 		pst.println("<volume cols=\"" + cCols + 
 				"\" rows=\"" + cRows +
@@ -163,8 +167,8 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		if (cRows!=master.getPageHeight()) { 
 			pst.print(" rows=\"" + master.getPageHeight() + "\"");
 		}
-		if (cRowgap!=Math.round((master.getRowSpacing()-1)*4)) {
-			pst.print(" rowgap=\"" + Math.round((master.getRowSpacing()-1)*4) + "\"");
+		if (cRowgap!=(int)Math.floor((master.getRowSpacing()-1)*4)) {
+			pst.print(" rowgap=\"" + (int)Math.floor((master.getRowSpacing()-1)*4) + "\"");
 		}
 		if (cDuplex!=master.duplex()) {
 			pst.print(" duplex=\"" + master.duplex() + "\"");

@@ -6,6 +6,7 @@ import java.util.List;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
+import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 
@@ -42,9 +43,9 @@ class WriterHandler {
 
 	private void writePage(PagedMediaWriter writer, Page p) {
 		writer.newPage();
-		List<String> rows = p.getRows();
-		for (String r : rows) {
-			if (r.length() > 0) {
+		List<Row> rows = p.getRows();
+		for (Row r : rows) {
+			if (r.getChars().length() > 0) {
 				writer.newRow(r);
 			} else {
 				writer.newRow();

@@ -35,7 +35,7 @@ class TextBorder {
 
 	private Align align;
 
-	private final List<Row> ret;
+	private final List<RowImpl> ret;
 
 	/**
 	 * The Builder is used when creating a TextBorder instance.
@@ -124,7 +124,7 @@ class TextBorder {
 		this.rowFill = builder.width - (leftBorder.length() + rightBorder.length());
 		this.bottomFill = builder.width - (bottomLeftCorner.length() + bottomRightCorner.length());
 		this.fillCharacter = builder.fillCharacter;
-		this.ret = new ArrayList<Row>();
+		this.ret = new ArrayList<RowImpl>();
 	}
 
 	/**
@@ -153,7 +153,7 @@ class TextBorder {
 	 */
 	public void addParagraph(BrailleTranslatorResult bph) {
 		for (String s : addBorderToParagraph(bph)) {
-			ret.add(new Row(s));
+			ret.add(new RowImpl(s));
 		}
 	}
 
@@ -163,7 +163,7 @@ class TextBorder {
 			addRow("");
 		}
 		for (String s : vol) {
-			ret.add(new Row(s));
+			ret.add(new RowImpl(s));
 		}
 	}
 
@@ -183,8 +183,8 @@ class TextBorder {
 	 * @return returns the text padded with space and surrounded with the left and right border patterns.
 	 * @throws IllegalArgumentException if the String does not fit within a single row.
 	 */
-	public Row addRow(String text) {
-		Row row = new Row(addBorderToRow(text, align, "", "", false));
+	public RowImpl addRow(String text) {
+		RowImpl row = new RowImpl(addBorderToRow(text, align, "", "", false));
 		ret.add(row);
 		return row;
 	}
@@ -228,12 +228,12 @@ class TextBorder {
     	return sb.toString();
 	}
 
-	public List<Row> getResult() {
-		ArrayList<Row> result = new ArrayList<Row>();
-		result.add(new Row(getTopBorder()));
+	public List<RowImpl> getResult() {
+		ArrayList<RowImpl> result = new ArrayList<RowImpl>();
+		result.add(new RowImpl(getTopBorder()));
 		result.addAll(ret);
 		ret.clear();
-		result.add(new Row(getBottomBorder()));
+		result.add(new RowImpl(getBottomBorder()));
 		return result;
 	}
 
@@ -241,7 +241,7 @@ class TextBorder {
 		ArrayList<String> result = new ArrayList<String>();
 		result.add(getTopBorder());
 		// TODO: remove row from this class, unless really needed...
-		for (Row r : ret) {
+		for (RowImpl r : ret) {
 			result.add(r.getChars());
 		}
 		ret.clear();

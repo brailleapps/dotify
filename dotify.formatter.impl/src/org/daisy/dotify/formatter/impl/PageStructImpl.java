@@ -64,11 +64,11 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		currentSequence().newPage();
 	}
 	
-	void newRow(Row row) {
+	void newRow(RowImpl row) {
 		currentSequence().newRow(row);
 	}
 	
-	void newRow(Row row, String id) {
+	void newRow(RowImpl row, String id) {
 		currentSequence().newRow(row, id);
 	}
 

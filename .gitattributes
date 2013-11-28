@@ -473,8 +473,8 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorTools.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorToolsException.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RomanNumeral.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Row.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Segment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TabStopString.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text svneol=unset#text/plain

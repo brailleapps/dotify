@@ -27,7 +27,7 @@ class BlockHandler {
 	//private int currentListNumber;
 	//private BlockProperties.ListType currentListType;
 	private Leader currentLeader;
-	private ArrayList<Row> ret;
+	private ArrayList<RowImpl> ret;
 	private BlockProperties p;
 	private final int available;
 	private final int rightMargin;
@@ -72,7 +72,7 @@ class BlockHandler {
 		this.currentLeader = null;
 		//this.currentListType = BlockProperties.ListType.NONE;
 		//this.currentListNumber = 0;
-		this.ret = new ArrayList<Row>();
+		this.ret = new ArrayList<RowImpl>();
 		this.p = new BlockProperties.Builder().build();
 		this.available = builder.available;
 		this.rightMargin = builder.rightMargin;
@@ -155,7 +155,7 @@ class BlockHandler {
 	 * @param blockIndentParent the block indent parent
 	 * @return returns an ArrayList of Rows
 	 */
-	public ArrayList<Row> layoutBlock(BrailleTranslatorResult btr, int leftMargin, int blockIndent, int blockIndentParent) {
+	public ArrayList<RowImpl> layoutBlock(BrailleTranslatorResult btr, int leftMargin, int blockIndent, int blockIndentParent) {
 		return layoutBlock(btr, leftMargin, null, blockIndent, blockIndentParent);
 	}
 	
@@ -169,12 +169,12 @@ class BlockHandler {
 	 * @return returns an ArrayList of Rows. The first row being the supplied row, with zero or more characters
 	 * from <tt>text</tt>
 	 */
-	public ArrayList<Row> appendBlock(BrailleTranslatorResult btr, int leftMargin, Row row, int blockIndent, int blockIndentParent) {
+	public ArrayList<RowImpl> appendBlock(BrailleTranslatorResult btr, int leftMargin, RowImpl row, int blockIndent, int blockIndentParent) {
 		return layoutBlock(btr, leftMargin, row, blockIndent, blockIndentParent);
 	}
 
-	private ArrayList<Row> layoutBlock(BrailleTranslatorResult btr, int leftMargin, Row r, int blockIndent, int blockIndentParent) {
-		ret = new ArrayList<Row>();
+	private ArrayList<RowImpl> layoutBlock(BrailleTranslatorResult btr, int leftMargin, RowImpl r, int blockIndent, int blockIndentParent) {
+		ret = new ArrayList<RowImpl>();
 		// process first row, is it a new block or should we continue the current row?
 		if (r==null) {
 			// add to left margin
@@ -242,7 +242,7 @@ class BlockHandler {
 					break;
 			}
 			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				Row row = new Row(preContent + preTabText);
+				RowImpl row = new RowImpl(preContent + preTabText);
 				row.setLeftMargin(margin);
 				row.setRightMargin(rightMargin);
 				row.setAlignment(p.getAlignment());
@@ -272,11 +272,11 @@ class BlockHandler {
 
 		boolean force = maxLenText >= available - (preContentPos);
 		String next = btr.nextTranslatedRow(maxLenText, force);
-		Row nr;
+		RowImpl nr;
 		if ("".equals(next) && "".equals(tabSpace)) {
-			nr = new Row(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""));
+			nr = new RowImpl(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""));
 		} else {
-			nr = new Row(preContent + preTabText + tabSpace + next);
+			nr = new RowImpl(preContent + preTabText + tabSpace + next);
 		}
 		
 		// discard leader

@@ -14,7 +14,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private boolean isVolatile;
 	private final ArrayList<Marker> groupMarkers;
 	private final ArrayList<String> groupAnchors;
-	private final Stack<Row> rows;
+	private final Stack<RowImpl> rows;
 	private final CrossReferences refs;
 	
 	BlockContentManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
@@ -36,9 +36,9 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return groupAnchors;
 	}
 	
-	private Stack<Row> calculateRows(Stack<Segment> segments, RowDataProperties rdp) {
+	private Stack<RowImpl> calculateRows(Stack<Segment> segments, RowDataProperties rdp) {
 		isVolatile = false;
-		Stack<Row> ret = new Stack<Row>();
+		Stack<RowImpl> ret = new Stack<RowImpl>();
 		
 		BlockHandler bh = new BlockHandler.Builder(
 				rdp.getTranslator(),
@@ -55,7 +55,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 				{
 					//flush
 					layout("", bh, ret, rdp, null);
-					Row r = new Row("");
+					RowImpl r = new RowImpl("");
 					r.setLeftMargin(((NewLineSegment)s).getLeftIndent());
 					r.setRightMargin(rdp.getRightMargin());
 					ret.add(r);
@@ -124,7 +124,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return ret;
 	}
 
-	private void layout(CharSequence c, BlockHandler bh, Stack<Row> rows, RowDataProperties rdp, String locale) {
+	private void layout(CharSequence c, BlockHandler bh, Stack<RowImpl> rows, RowDataProperties rdp, String locale) {
 		BrailleTranslatorResult btr;
 		if (locale!=null) {
 			try {
@@ -147,7 +147,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return rows.size();
 	}
 
-	public Iterator<Row> iterator() {
+	public Iterator<RowImpl> iterator() {
 		return rows.iterator();
 	}
 

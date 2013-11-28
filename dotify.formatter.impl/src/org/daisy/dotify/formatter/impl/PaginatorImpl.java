@@ -112,12 +112,12 @@ public class PaginatorImpl {
 								break;
 						}
 						for (int i = 0; i < advance; i++) {
-							pageStruct.newRow(new Row(""));
+							pageStruct.newRow(new RowImpl(""));
 						}
 					}
 				}
 				for (int i=0; i<g.getSpaceBefore();i++) {
-					pageStruct.newRow(new Row(""));
+					pageStruct.newRow(new RowImpl(""));
 				}
 
 				pageStruct.insertMarkers(rdm.getGroupMarkers());
@@ -127,7 +127,7 @@ public class PaginatorImpl {
 					pageStruct.insertIdentifier(g.getIdentifier());
 				}
 				pageStruct.currentSequence().setKeepWithNextSheets(g.getKeepWithNextSheets());
-				for (Row row : rdm) {
+				for (RowImpl row : rdm) {
 					if (first) {
 						first = false;
 						if (!"".equals(g.getIdentifier())) {
@@ -144,7 +144,7 @@ public class PaginatorImpl {
 					pageStruct.currentSequence().newPageOnRow();
 				} else {
 					for (int i=0; i<g.getSpaceAfter();i++) {
-						pageStruct.newRow(new Row(""));
+						pageStruct.newRow(new RowImpl(""));
 					}
 				}
 				//gi++;
