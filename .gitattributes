@@ -161,6 +161,7 @@ Dotify/src/org/daisy/dotify/system/ValidatorException.java -text
 Dotify/src/org/daisy/dotify/system/ValidatorTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/XsltTask.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/package-info.java -text
+Dotify/src/org/daisy/dotify/system/resource-files/double-line-spacing.sch -text
 Dotify/src/org/daisy/dotify/system/resource-files/obfl.xsd -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/resource-files/xml.xsd -text
 Dotify/src/org/daisy/dotify/tools/AbstractResourceLocator.java -text svneol=unset#text/plain
