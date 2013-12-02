@@ -283,6 +283,7 @@ dotify.api/bnd.bnd -text
 dotify.api/build-doc.xml -text
 dotify.api/build.xml -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngine.java -text
+dotify.api/src/org/daisy/dotify/api/engine/FormatterEngineConfigurationException.java -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngineFactoryService.java -text
 dotify.api/src/org/daisy/dotify/api/engine/LayoutEngineException.java -text
 dotify.api/src/org/daisy/dotify/api/engine/package-info.java -text
@@ -295,6 +296,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/CurrentPageField.java -text svneol
 dotify.api/src/org/daisy/dotify/api/formatter/Field.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Formatted.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Formatter.java -text svneol=unset#text/plain
+dotify.api/src/org/daisy/dotify/api/formatter/FormatterConfigurationException.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterException.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterFactory.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormattingTypes.java -text svneol=unset#text/plain
