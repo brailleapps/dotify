@@ -4,6 +4,7 @@ import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 
+import org.daisy.dotify.api.engine.FormatterEngineConfigurationException;
 import org.daisy.dotify.api.engine.FormatterEngineFactoryService;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
@@ -33,6 +34,22 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 		return new LayoutEngineImpl(locale, mode, writer, ff, mpf, tbf, ef, in, xef, of);
 	}
 
+	public <T> void setReference(Class<T> c, T factory) throws FormatterEngineConfigurationException {
+		if (c.equals(FormatterFactory.class)) {
+			setFormatterFactory((FormatterFactory)factory);
+		} else if (c.equals(MarkerProcessorFactoryMakerService.class)) {
+			setMarkerProcessor((MarkerProcessorFactoryMakerService)factory);
+		} else if (c.equals(TextBorderFactoryMakerService.class)) {
+			setTextBorderFactoryMaker((TextBorderFactoryMakerService)factory);
+		} else if (c.equals(ExpressionFactory.class)) {
+			setExpressionFactory((ExpressionFactory)factory);
+		}
+		
+		else {
+			throw new FormatterEngineConfigurationException("Unrecognized reference: " +factory);
+		}
+	}
+	
 	// FIXME: not a service
 	@Reference
 	public void setFormatterFactory(FormatterFactory formatterFactory) {
