@@ -49,7 +49,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><string value="&#x2800;&#x2800;"/><current-page style="roman"/></field>
+					<field><string value="&#xA0;&#xA0;"/><current-page style="roman"/></field>
 				</header>
 				<footer></footer>
 			</template>
@@ -66,7 +66,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><string value="&#x2800;&#x2800;"/><current-page style="default"/></field>
+					<field><string value="&#xA0;&#xA0;"/><current-page style="default"/></field>
 					<field>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
@@ -76,7 +76,7 @@
 			</template>
 			<default-template>
 				<header>
-					<field><string value="&#x2800;&#x2800;"/>
+					<field><string value="&#xA0;&#xA0;"/>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
 					</field>

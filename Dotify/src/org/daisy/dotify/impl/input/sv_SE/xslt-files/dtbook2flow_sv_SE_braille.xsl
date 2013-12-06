@@ -12,6 +12,14 @@
 	<xsl:param name="toc-indent-multiplier" select="1"/>
 	<xsl:param name="splitterMax" select="10"/>
 
+	<xsl:param name="l10nLang" select="'en'"/>
+	<xsl:param name="l10nTocHeadline" select="'Table Of Contents'"/>
+	<xsl:param name="l10nTocDescription" select="''"/>
+	<xsl:param name="l10nTocVolumeStart" select="'Volume {0}'"/>
+	<xsl:param name="l10nTocVolumeHeading" select="'Contents of Volume {0}'"/>
+	<xsl:param name="l10nTocVolumeXofY" select="'Volume {0} of {1}'"/>
+	<xsl:param name="l10nTocOneVolume" select="'One Volume'"/>
+
 	<xsl:template match="/">
 		<obfl version="2011-1">
 			<xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute>
@@ -27,7 +35,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><string value="&#x2800;&#x2800;"/><current-page style="roman"/></field>
+					<field><string value="&#xA0;&#xA0;"/><current-page style="roman"/></field>
 				</header>
 				<footer></footer>
 			</template>
@@ -44,7 +52,7 @@
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
 				<header>
-					<field><string value="&#x2800;&#x2800;"/><current-page style="default"/></field>
+					<field><string value="&#xA0;&#xA0;"/><current-page style="default"/></field>
 					<field>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
@@ -54,7 +62,7 @@
 			</template>
 			<default-template>
 				<header>
-					<field><string value="&#x2800;&#x2800;"/>
+					<field><string value="&#xA0;&#xA0;"/>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
 					</field>
@@ -89,14 +97,16 @@
 					<xsl:call-template name="coverPage"/>
 					<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
 						<on-toc-start>
-							<block margin-bottom="1">Innehåll</block>
-							<block margin-bottom="1">Sid­hän­vis­ning­ar till svart­skrifts­bo­ken står in­om pa­ren­tes.</block>
+							<block margin-bottom="1"><xsl:value-of select="$l10nTocHeadline"/></block>
+							<xsl:if test="$l10nTocDescription!=''">
+								<block margin-bottom="1"><xsl:value-of select="$l10nTocDescription"/></block>
+							</xsl:if>
 						</on-toc-start>
 						<on-volume-start use-when="(&amp; (> $volumes 1) (= $started-volume-number 1))">
-							<block keep="all" keep-with-next="1" margin-bottom="0">Volym <evaluate expression="(round $started-volume-number)"/></block>
+							<block keep="all" keep-with-next="1" margin-bottom="0"><evaluate expression="(format &quot;{$l10nTocVolumeStart}&quot; $started-volume-number)"/></block>
 						</on-volume-start>
 						<on-volume-start use-when="(&amp; (> $volumes 1) (> $started-volume-number 1))">
-							<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="0">Volym <evaluate expression="(round $started-volume-number)"/></block>
+							<block keep="all" keep-with-next="1" margin-top="1" margin-bottom="0"><evaluate expression="(format &quot;{$l10nTocVolumeStart}&quot; $started-volume-number)"/></block>
 						</on-volume-start>
 					</toc-sequence>
 					<xsl:apply-templates select="//dtb:frontmatter" mode="pre-volume-mode"/>
@@ -108,7 +118,7 @@
 					<xsl:call-template name="coverPage"/>
 					<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
 						<on-toc-start>
-							<block margin-bottom="1">Innehåll volym <evaluate expression="(round $volume)"/></block>
+							<block margin-bottom="1"><evaluate expression="(format &quot;{$l10nTocVolumeHeading}&quot; $volume)"/></block>
 						</on-toc-start>
 					</toc-sequence>
 				</pre-content>
@@ -148,8 +158,8 @@
 			</xsl:choose>
 			<block align="center" margin-left="2" margin-right="2" vertical-align="before" vertical-position="100%" hyphenate="false"><evaluate expression="
 			(if (&gt; $volumes 1) 
-				(concat &quot;Volym &quot; (int2text (round $volume) sv-se) &quot; av &quot; (int2text (round $volumes) sv-se))
-				&quot;En volym&quot;)"/></block>
+				(format &quot;{$l10nTocVolumeXofY}&quot; (int2text (round $volume) {$l10nLang}) (int2text (round $volumes) {$l10nLang}))
+				&quot;{$l10nTocOneVolume}&quot;)"/></block>
 		</sequence>
 	</xsl:template>
 

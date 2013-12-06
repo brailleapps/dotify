@@ -150,6 +150,16 @@ public class ExpressionTest {
 	public void testExpression_concat_02() {
 		assertEquals("value is 1", e.evaluate("(concat \"value is \" (round 1))"));
 	}
+	
+	@Test
+	public void testExpression_format_01() {
+		assertEquals("value is 1", e.evaluate("(format \"value is {0}\" (round 1))"));
+	}
+	
+	@Test
+	public void testExpression_format_02() {
+		assertEquals("1 is less than 2", e.evaluate("(format \"{0} is less than {1}\" 1 2)"));
+	}
 
 	/*
 		input + " -> " + ret + " (" +ret.getClass() + ")";

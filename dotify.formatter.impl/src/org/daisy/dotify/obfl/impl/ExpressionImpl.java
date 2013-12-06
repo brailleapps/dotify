@@ -1,5 +1,6 @@
 package org.daisy.dotify.obfl.impl;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +40,8 @@ import org.daisy.dotify.api.text.IntegerOutOfRange;
  * number to be converted into text using the language specified by
  * language-code.</li>
  * <li>concat: (concat ...) all arguments are concatenated to a single string</li>
+ * <li>format: (format string ...) the first argument is the format string as defined by MessageFormat, 
+ * following arguments are parameters to insert in the format string.</li>
  * </ul>
  * <p>
  * Quotes must surround arguments containing whitespace.
@@ -141,6 +144,8 @@ class ExpressionImpl implements Expression {
 			return int2text(args);
 		} else if ("concat".equals(operator)) {
 			return concat(args);
+		} else if ("format".equals(operator)) {
+			return message(args);
 		}
 		else {
 			throw new IllegalArgumentException("Unknown operator: '" + operator + "'");
@@ -339,6 +344,12 @@ class ExpressionImpl implements Expression {
 			sb.append(o);
 		}
 		return sb.toString();
+	}
+	
+	private Object message(Object[] input) {
+		Object[] args = new Object[input.length-1];
+		System.arraycopy(input, 1, args, 0, input.length-1);
+		return MessageFormat.format(input[0].toString(), args);
 	}
 
 	private static String[] getArgs(String expr) {
