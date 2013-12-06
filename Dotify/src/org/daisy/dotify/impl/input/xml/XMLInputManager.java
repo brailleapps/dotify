@@ -56,7 +56,7 @@ import org.xml.sax.SAXException;
  *
  */
 class XMLInputManager implements InputManager {
-	private final static String CONFIG_PATH = "config-files/";
+	private final static String TEMPLATES_PATH = "templates/";
 	private final static String LOCALIZATION_PROPS = "localization.xml";
 	private final ResourceLocator localLocator;
 	private final ResourceLocator commonLocator;
@@ -116,30 +116,17 @@ class XMLInputManager implements InputManager {
 				try { is.close(); } catch (IOException e) { }
 			}
 		}
-		Properties p = new Properties();
-		try {
-			try {
-				p.loadFromXML(localLocator.getResource(CONFIG_PATH+"output_mode_catalog.xml").openStream());
-			} catch (ResourceLocatorException e1) {
-				try {
-					p.loadFromXML(commonLocator.getResource(CONFIG_PATH+"output_mode_catalog.xml").openStream());
-				} catch (ResourceLocatorException e2) {
-					logger.log(Level.FINE, "Failed to localize resource.", e2);
-				}
-			}
-		} catch (InvalidPropertiesFormatException e1) {
-			logger.log(Level.FINE, "Invalid format.", e1);
-		} catch (IOException e1) {
-			logger.log(Level.FINE, "I/O error.", e1);
-		}
 		
 		String xmlformat = "xml.properties";
-		String outputMode = p.getProperty(parameters.get(SystemKeys.OUTPUT_FORMAT).toString().toLowerCase());
-		if (outputMode==null) {
-			logger.info("Failed to set output mode for '" +parameters.get(SystemKeys.OUTPUT_FORMAT)+ "'. Using braille mode.");
+		String template;
+		if (parameters.get(SystemKeys.TEMPLATE)==null) {
+			logger.info("No template set, using default.'");
+			template = "default";
+		} else {
+			template = parameters.get(SystemKeys.TEMPLATE).toString().toLowerCase();
 		}
 
-		String basePath = CONFIG_PATH + outputMode + "/";
+		String basePath = TEMPLATES_PATH + template + "/";
 
 		if (inputformat!=null) {
 			try {

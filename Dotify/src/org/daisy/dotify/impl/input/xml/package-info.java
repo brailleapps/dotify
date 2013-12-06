@@ -31,9 +31,8 @@
  * <p>The process of interpreting an input file format as OBFL is managed by a properties 
  * file which must be named as indicated by the input_format_catalog.xml. The input format
  * catalog connects a root element and namespace with a filename. The location of this 
- * file is determined by the output_mode_catalog.xml where an output format maps to an
- * output mode. In other words, the properties file should be located in the 
- * "config-files/[output-mode]" folder of the localization base folder. The properties 
+ * file is determined by the template. In other words, the properties file should be located
+ *  in the "templates/[template]" folder of the localization base folder. The properties 
  * file should contain two entries: transformation and validation, pointing to the xslt 
  * and schema required by the input format.</p>
  *  

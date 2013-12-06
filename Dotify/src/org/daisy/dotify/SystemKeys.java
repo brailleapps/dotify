@@ -32,6 +32,8 @@ public interface SystemKeys {
 	 */
 	public final static String OUTPUT_FORMAT = "outputFormat";
 	
+	public final static String TEMPLATE = "template";
+	
 	public final static String DATE_FORMAT = "dateFormat";
 	public final static String DATE = "date";
 	public final static String IDENTIFIER = "identifier";

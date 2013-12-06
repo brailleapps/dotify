@@ -9,5 +9,7 @@
 	<entry key="inner-margin">0</entry>
 	<entry key="outer-margin">0</entry>
 	<entry key="rowgap">0</entry>
+	
+	<entry key="template">paged</entry>
 
 </properties>
