@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.input;
+package org.daisy.dotify.impl.input.xml;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,11 +25,11 @@ import org.daisy.dotify.tools.ResourceLocator;
  *
  */
 public class XMLInputManagerFactory implements InputManagerFactory {
-	private final InputLocalizationResourceLocator locator;
+	private final Whatever locator;
 	private final Set<String> supportedFormats;
 	
 	public XMLInputManagerFactory() {
-		this.locator = new InputLocalizationResourceLocator();
+		this.locator = new Whatever();
 		DefaultInputUrlResourceLocator p = DefaultInputUrlResourceLocator.getInstance();
 		supportedFormats = p.listFileFormats();
 		supportedFormats.add("xml");
@@ -48,7 +48,7 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 	}
 
 	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
-        return new XMLInputManager(locator.getResourceLocator(locale), new CommonResourceLocator("common"));
+        return new XMLInputManager(locator.getResourceLocator(locale), new CommonResourceLocator("resource-files/common"));
 	}
 
 	private class CommonResourceLocator extends AbstractResourceLocator {
@@ -65,17 +65,21 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 	 * @author Joel Håkansson
 	 */
 	private class InputLocalizationResourceLocator extends AbstractResourceLocator {
+		
+		private InputLocalizationResourceLocator(String basePath) {
+			super(basePath);
+		}
+		
+	}
+	private class Whatever {
 		private final Properties locales;
 		
-		/**
-		 * Creates a new instance.
-		 */
-		InputLocalizationResourceLocator() {
-			super();
+		Whatever() {
 			Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
 			locales = new Properties();
 			try {
-		        URL tablesURL = getResource("localization_catalog.xml");
+				InputLocalizationResourceLocator loc = new InputLocalizationResourceLocator("resource-files");
+		        URL tablesURL = loc.getResource("localization_catalog.xml");
 		        if(tablesURL!=null){
 		        	locales.loadFromXML(tablesURL.openStream());
 		        } else {
@@ -84,11 +88,6 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 			} catch (IOException e) {
 				logger.log(Level.WARNING, "Failed to load catalog.", e);
 			}
-		}
-
-		private InputLocalizationResourceLocator(String basePath) {
-			super(basePath);
-			locales = new Properties();
 		}
 
 		/**

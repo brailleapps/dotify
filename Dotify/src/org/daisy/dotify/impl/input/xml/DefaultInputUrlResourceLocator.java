@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.input;
+package org.daisy.dotify.impl.input.xml;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -13,14 +13,14 @@ class DefaultInputUrlResourceLocator extends AbstractResourceLocator {
 	private static DefaultInputUrlResourceLocator instance;
 	private Properties props;
 
-	private DefaultInputUrlResourceLocator() {
-		super();
+	private DefaultInputUrlResourceLocator(String basePath) {
+		super(basePath);
 		props = null;
 	}
 
 	synchronized static DefaultInputUrlResourceLocator getInstance() {
 		if (instance==null) {
-			instance = new DefaultInputUrlResourceLocator();
+			instance = new DefaultInputUrlResourceLocator("resource-files");
 		}
 		return instance;
 	}

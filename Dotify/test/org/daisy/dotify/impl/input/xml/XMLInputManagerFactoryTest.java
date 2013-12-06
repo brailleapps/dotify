@@ -1,7 +1,8 @@
-package org.daisy.dotify.impl.input;
+package org.daisy.dotify.impl.input.xml;
 
 import static org.junit.Assert.assertTrue;
 
+import org.daisy.dotify.impl.input.xml.XMLInputManagerFactory;
 import org.daisy.dotify.text.FilterLocale;
 import org.junit.Test;
 
