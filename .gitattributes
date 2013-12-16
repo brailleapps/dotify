@@ -166,9 +166,6 @@ Dotify/src/org/daisy/dotify/tools/AbstractResourceLocator.java -text svneol=unse
 Dotify/src/org/daisy/dotify/tools/ResourceLocator.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/ResourceLocatorException.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/tools/StaxFilter2.java -text svneol=unset#text/plain
-Dotify/src/org/daisy/dotify/tools/TempFileHandler.java -text
-Dotify/src/org/daisy/dotify/tools/XMLTools.java -text
-Dotify/src/org/daisy/dotify/tools/XMLToolsException.java -text
 Dotify/src/org/daisy/dotify/tools/package-info.java -text
 Dotify/test/org/daisy/dotify/LayoutEngineTest.java -text
 Dotify/test/org/daisy/dotify/consumer/formatter/FormatterFactoryTest.java -text

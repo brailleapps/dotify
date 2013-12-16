@@ -25,8 +25,9 @@ import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.system.TaskSystemFactoryMaker;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.ResourceLocatorException;
-import org.daisy.dotify.tools.XMLTools;
-import org.daisy.dotify.tools.XMLToolsException;
+
+import se.mtm.common.xml.XMLTools;
+import se.mtm.common.xml.XMLToolsException;
 
 /**
  * Provides an entry point for simple embedding of Dotify. To run, call <tt>Dotify.run</tt>.
@@ -174,7 +175,7 @@ public class Dotify {
 		}
 	}
 	
-	private Map<String, Object> loadSetup(Map<String, String> guiParams, String setup, String outputformat, FilterLocale context) throws MalformedURLException {
+	private Map<String, Object> loadSetup(Map<String, String> guiParams, String setup, String outputformat, FilterLocale context) {
 		ConfigurationsCatalog cm = ConfigurationsCatalog.newInstance();
 		Properties p0;
 		try {
@@ -182,16 +183,22 @@ public class Dotify {
 		} catch (ResourceLocatorException e) {
 			//try as file
 			p0 = new Properties();
-			URL configURL = new URL(setup);
+			URL configURL;
 			try {
-				p0.loadFromXML(configURL.openStream());
-			} catch (FileNotFoundException e2) {
-				throw new RuntimeException("Configuration file not found: " + configURL, e2);
-			} catch (InvalidPropertiesFormatException e2) {
-				throw new RuntimeException("Configuration file could not be parsed: " + configURL, e2);
-			} catch (IOException e2) {
-				throw new RuntimeException("IOException while reading configuration file: " + configURL, e2);
+				configURL = new URL(setup);
+				try {
+					p0.loadFromXML(configURL.openStream());
+				} catch (FileNotFoundException e2) {
+					throw new RuntimeException("Configuration file not found: " + configURL, e2);
+				} catch (InvalidPropertiesFormatException e2) {
+					throw new RuntimeException("Configuration file could not be parsed: " + configURL, e2);
+				} catch (IOException e2) {
+					throw new RuntimeException("IOException while reading configuration file: " + configURL, e2);
+				}
+			} catch (MalformedURLException e1) {
+				throw new RuntimeException("'"+ setup + "' is not a known configuration nor a valid URL.", e1);
 			}
+
 		}
 		Map<String, Object> ret = new HashMap<String, Object>();
 		for (Object key : p0.keySet()) {
