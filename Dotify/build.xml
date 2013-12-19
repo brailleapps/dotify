@@ -94,6 +94,7 @@
 				</fileset>
 				<fileset dir="../DotifyShared">
 					<include name="dotify-translator*.jar"/>
+					<include name="brailleUtils*.jar"/>
 					<include name="bnd.jar"/>
         		</fileset>
 			</classpath>
@@ -185,6 +186,7 @@
     		</zipfileset>
 			<zipfileset dir="../DotifyShared" prefix="${zip-foler-prefix}/lib">
 				<include name="dotify-translator*.jar"/>
+				<include name="brailleUtils*.jar"/>
     		</zipfileset>
     	</zip>
 		<delete file="${dist.jar}"/>
