@@ -6,8 +6,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import org.daisy.braille.pef.PEFFileCompare;
 import org.daisy.braille.tools.FileTools;
-import org.daisy.dotify.devtools.compare.PEFFileCompare;
 import org.daisy.dotify.devtools.jvm.JVMStarter;
 import org.daisy.dotify.devtools.unbrailler.Unbrailler;
 

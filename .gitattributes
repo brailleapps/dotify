@@ -199,11 +199,6 @@ DotifyDevtools/src/org/daisy/dotify/devtools/cli/Main.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/cli/PEFFileCompareTester.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/cli/PEFFileCompareUI.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/cli/PEFStatsCollector.java -text
-DotifyDevtools/src/org/daisy/dotify/devtools/compare/NormalizationResource.java -text
-DotifyDevtools/src/org/daisy/dotify/devtools/compare/PEFFileBatchCompare.java -text
-DotifyDevtools/src/org/daisy/dotify/devtools/compare/PEFFileCompare.java -text
-DotifyDevtools/src/org/daisy/dotify/devtools/compare/PEFFileCompareException.java -text
-DotifyDevtools/src/org/daisy/dotify/devtools/compare/resource-files/strip-meta.xsl -text
 DotifyDevtools/src/org/daisy/dotify/devtools/converters/BrailleNotationConverter.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/converters/BrailloTableReader.java -text
 DotifyDevtools/src/org/daisy/dotify/devtools/converters/CodePointHelper.java -text
