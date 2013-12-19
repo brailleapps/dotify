@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="/DotifyShared/icu4j-3_8.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/junit-4.7.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/texhyphj.jar"/>
-	<classpathentry kind="lib" path="/DotifyShared/bnd.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/dotify.api"/>
 	<classpathentry kind="output" path="bin/src"/>
 </classpath>

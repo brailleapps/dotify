@@ -27,8 +27,8 @@
 	</patternset>
 	
 	<patternset id="shared-jar.patternset">
-		<include name="icu4j-*.jar"/>
-		<include name="texhyphj*.jar"/>
+		<include name="icu4j-3_8.jar"/>
+		<include name="texhyphj.jar"/>
 		<include name="stax-api*.jar"/>
 	</patternset>
 
