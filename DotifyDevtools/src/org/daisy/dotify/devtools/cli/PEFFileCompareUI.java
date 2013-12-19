@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 
 import javax.swing.JFileChooser;
 
-import org.daisy.dotify.devtools.compare.PEFFileCompare;
-import org.daisy.dotify.devtools.compare.PEFFileCompare.Diff;
+import org.daisy.dotify.devtools.compare.PEFFileBatchCompare;
+import org.daisy.dotify.devtools.compare.PEFFileBatchCompare.Diff;
 
 /**
  * Provides a command line tool for comparing two folders with pef files for differences.
@@ -46,7 +46,7 @@ public class PEFFileCompareUI {
 			arg2 = args[1];
 		}
 		System.out.println("Initiating...");
-		PEFFileCompare fc = new PEFFileCompare(new PEFFileFilter());
+		PEFFileBatchCompare fc = new PEFFileBatchCompare(new PEFFileFilter());
 		if (args.length >= 3) {
 			fc.setUnbraillerTable(args[2]);
 		}

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.daisy.braille.tools.FileTools;
-import org.daisy.dotify.devtools.compare.PEFFileCompareCore;
+import org.daisy.dotify.devtools.compare.PEFFileCompare;
 import org.daisy.dotify.devtools.jvm.JVMStarter;
 import org.daisy.dotify.devtools.unbrailler.Unbrailler;
 
@@ -56,7 +56,7 @@ class DotifyRegressionTester implements Runnable {
 					}
 				} else {
 
-					PEFFileCompareCore core = new PEFFileCompareCore();
+					PEFFileCompare core = new PEFFileCompare();
 
 					if (!core.compare(res.getAbsoluteFile(), expected)) {
 						// if not equal, write to output folder

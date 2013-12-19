@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.daisy.dotify.devtools.compare.NormalizationResource;
-import org.daisy.dotify.devtools.compare.PEFFileCompare;
-import org.daisy.dotify.devtools.compare.PEFFileCompare.Diff;
+import org.daisy.dotify.devtools.compare.PEFFileBatchCompare;
+import org.daisy.dotify.devtools.compare.PEFFileBatchCompare.Diff;
 
 public class PEFFileCompareTester {
 
@@ -21,7 +21,7 @@ public class PEFFileCompareTester {
 			System.exit(-1);
 		}
 		// Run pef-compare against baseline and unbraille if different
-		PEFFileCompare fc = new PEFFileCompare(new PEFFileFilter(), new NormalizationResource() {
+		PEFFileBatchCompare fc = new PEFFileBatchCompare(new PEFFileFilter(), new NormalizationResource() {
 
 			public InputStream getNormalizationResourceAsStream() {
 				return this.getClass().getResourceAsStream("resource-files/strip-meta.xsl");
