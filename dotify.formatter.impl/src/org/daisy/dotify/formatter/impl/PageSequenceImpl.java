@@ -86,9 +86,24 @@ class PageSequenceImpl implements PageSequence {
 				return pages.peek();
 			}
 		}
+
+	/**
+	 * Space used, in rows
+	 * 
+	 * @return
+	 */
+	int spaceUsedOnPage(int offs) {
+		/*
+		if (master.getRowSpacing() < 1) {
+			return currentPage().rowsOnPage() + offs;
+		} else {
+			return (int) Math.ceil((currentPage().rowsOnPage() + offs) * master.getRowSpacing());
+		}*/
+		return (int)Math.ceil(currentPage().spaceNeeded()) + offs;
+	}
 		
 		void newRow(RowImpl row) {
-			if (currentPage().rowsOnPage()>=currentPage().getFlowHeight() || nextPage!=null) {
+		if (spaceUsedOnPage(1) > currentPage().getFlowHeight() || nextPage != null) {
 				newPage();
 			}
 			currentPage().newRow(row);

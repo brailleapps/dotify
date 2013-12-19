@@ -8,6 +8,9 @@
 	<!-- Preset for A4 paper: 32 character wide (29 rows) -->
 	<entry key="A4-w32">A4_w32.xml</entry>
 	
+		<!-- Preset for A4 paper: 32 character wide (29 rows), double line spacing -->
+	<entry key="A4-w32-dls">A4_w32_dls.xml</entry>
+	
 	<!-- Preset for FA44 paper: 42 character wide (29 rows) -->
 	<entry key="FA44-w42">FA44_w42.xml</entry>
 	

@@ -80,10 +80,14 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		currentSequence().insertIdentifier(id);
 	}
 
-	int countRows() {
-		return currentPage().rowsOnPage();
-	}
+	/*	int countRows() {
+			return currentPage().rowsOnPage();
+		}*/
 	
+	int spaceUsedInRows(int offs) {
+		return currentSequence().spaceUsedOnPage(offs);
+	}
+
 	int getFlowHeight() {
 		return currentPage().getFlowHeight();
 	}

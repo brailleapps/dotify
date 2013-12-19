@@ -85,6 +85,7 @@ Dotify/src/org/daisy/dotify/impl/config/package-info.java -text
 Dotify/src/org/daisy/dotify/impl/config/presets_catalog.xml -text
 Dotify/src/org/daisy/dotify/impl/config/presets_descriptions.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w32.xml -text
+Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w32_dls.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/A4_w35.xml -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w42.xml -text
 Dotify/src/org/daisy/dotify/impl/config/resource-files/FA44_w43.xml -text svneol=unset#text/plain
@@ -181,7 +182,9 @@ Dotify/test/org/daisy/dotify/impl/input/text/resource-files/normalize.xsl -text
 Dotify/test/org/daisy/dotify/impl/input/xml/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#text/plain
+Dotify/test/org/daisy/dotify/resource-files/obfl-dls-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-input-dls.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text
@@ -482,6 +485,7 @@ dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockSequenceManipulator.java -t
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/Evaluate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/EventContents.java -text
+dotify.formatter.impl/src/org/daisy/dotify/obfl/FieldListImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/IterableEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/LeaderEventContents.java -text

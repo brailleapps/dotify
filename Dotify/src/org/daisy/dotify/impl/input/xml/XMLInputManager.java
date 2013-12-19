@@ -120,7 +120,7 @@ class XMLInputManager implements InputManager {
 		String xmlformat = "xml.properties";
 		String template;
 		if (parameters.get(SystemKeys.TEMPLATE)==null) {
-			logger.info("No template set, using default.'");
+			logger.info("No template set, using default.");
 			template = "default";
 		} else {
 			template = parameters.get(SystemKeys.TEMPLATE).toString().toLowerCase();

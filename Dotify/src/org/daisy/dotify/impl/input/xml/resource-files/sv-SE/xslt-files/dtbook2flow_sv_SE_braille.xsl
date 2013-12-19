@@ -41,6 +41,11 @@
 			</template>
 			<default-template>
 				<header>
+					<!-- This looks weird, but it is correct. If row-spacing is double, then offset the header
+					 of every front page as to avoid embossing on the same row on front and back -->
+					<xsl:if test="$row-spacing=2">
+						<xsl:attribute name="row-spacing">1</xsl:attribute>
+					</xsl:if>
 					<field><string value=""/></field>
 					<field><current-page style="roman"/></field>
 				</header>
@@ -62,6 +67,11 @@
 			</template>
 			<default-template>
 				<header>
+					<!-- This looks weird, but it is correct. If row-spacing is double, then offset the header
+					 of every front page as to avoid embossing on the same row on front and back -->
+					<xsl:if test="$row-spacing=2">
+						<xsl:attribute name="row-spacing">1</xsl:attribute>
+					</xsl:if>
 					<field><string value="&#xA0;&#xA0;"/>
 						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
@@ -74,14 +84,25 @@
 		<layout-master name="plain" page-width="{$page-width}" 
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
-			<default-template>
+			<template use-when="(= (% $page 2) 0)">
 				<header><field><string value=""/></field></header>
+				<footer></footer>
+			</template>
+			<default-template>
+				<header>
+					<!-- This looks weird, but it is correct. If row-spacing is double, then offset the header
+					 of every front page as to avoid embossing on the same row on front and back -->
+					<xsl:if test="$row-spacing=2">
+						<xsl:attribute name="row-spacing">1</xsl:attribute>
+					</xsl:if>
+					<field><string value=""/></field>
+				</header>
 				<footer></footer>
 			</default-template>
 		</layout-master>
 		<layout-master name="cover" page-width="{$page-width}" 
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
-							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}" frame="solid thin outer">
+							outer-margin="{$outer-margin}" row-spacing="1" duplex="{$duplex}" frame="solid thin outer">
 			<default-template>
 				<header></header>
 				<footer></footer>

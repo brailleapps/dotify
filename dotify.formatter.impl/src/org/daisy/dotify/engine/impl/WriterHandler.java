@@ -45,11 +45,7 @@ class WriterHandler {
 		writer.newPage();
 		List<Row> rows = p.getRows();
 		for (Row r : rows) {
-			if (r.getChars().length() > 0) {
-				writer.newRow(r);
-			} else {
-				writer.newRow();
-			}
+			writer.newRow(r);
 		}
 	}
 

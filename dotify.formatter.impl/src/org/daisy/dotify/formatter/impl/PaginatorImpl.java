@@ -70,7 +70,7 @@ public class PaginatorImpl {
 				//int height = ps.getCurrentLayoutMaster().getFlowHeight();
 				switch (g.getBreakBeforeType()) {
 					case PAGE:
-						if (pageStruct.countRows()>0) {
+						if (pageStruct.spaceUsedInRows(0) > 0) {
 							pageStruct.newPage();
 						}
 						break;
@@ -80,7 +80,7 @@ public class PaginatorImpl {
 				switch (g.getKeepType()) {
 					case ALL:
 						int keepHeight = seq.getKeepHeight(g, refs);
-						if (pageStruct.countRows()>0 && keepHeight>pageStruct.getFlowHeight()-pageStruct.countRows() && keepHeight<=pageStruct.getFlowHeight()) {
+						if (pageStruct.spaceUsedInRows(0) > 0 && keepHeight > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(0) && keepHeight <= pageStruct.getFlowHeight()) {
 							pageStruct.newPage();
 						}
 						break;
@@ -90,14 +90,14 @@ public class PaginatorImpl {
 				}
 				if (g.getSpaceBefore()+g.getSpaceAfter()>=pageStruct.getFlowHeight()) {
 					throw new PaginatorException("Group margins too large to fit on an empty page.");
-				} else if (g.getSpaceBefore()+1>pageStruct.getFlowHeight()-pageStruct.countRows()) {
+				} else if (g.getSpaceBefore() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
 				}
 				BlockContentManager rdm = g.getBlockContentManager(refs);
 				if (g.getVerticalPosition() != null) {
 					int blockSpace = rdm.getRowCount() + g.getSpaceBefore() + g.getSpaceAfter();
 					int pos = g.getVerticalPosition().getPosition().makeAbsolute(pageStruct.currentPage().getFlowHeight());
-					int t = pos - pageStruct.currentPage().rowsOnPage();
+					int t = pos - pageStruct.spaceUsedInRows(0);
 					if (t > 0) {
 						int advance = 0;
 						switch (g.getVerticalPosition().getAlignment()) {
@@ -111,7 +111,7 @@ public class PaginatorImpl {
 								advance = t;
 								break;
 						}
-						for (int i = 0; i < advance; i++) {
+						for (int i = 0; i < Math.floor(advance / seq.getLayoutMaster().getRowSpacing()); i++) {
 							pageStruct.newRow(new RowImpl(""));
 						}
 					}
@@ -140,7 +140,7 @@ public class PaginatorImpl {
 					}
 				}
 				pageStruct.currentSequence().setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
-				if (g.getSpaceAfter()>=pageStruct.getFlowHeight()-pageStruct.countRows()) {
+				if (g.getSpaceAfter() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
 				} else {
 					for (int i=0; i<g.getSpaceAfter();i++) {

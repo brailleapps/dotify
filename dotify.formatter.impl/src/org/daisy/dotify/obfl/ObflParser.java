@@ -23,6 +23,7 @@ import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.CompoundField;
 import org.daisy.dotify.api.formatter.CurrentPageField;
 import org.daisy.dotify.api.formatter.Field;
+import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.formatter.FormattingTypes;
@@ -251,13 +252,13 @@ public class ObflParser {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.HEADER)) {
-				ArrayList<Field> fields = parseHeaderFooter(event, input);
-				if (fields.size()>0) {
+				FieldList fields = parseHeaderFooter(event, input);
+				if (fields!=null) {
 					template.addToHeader(fields);
 				}
 			} else if (equalsStart(event, ObflQName.FOOTER)) {
-				ArrayList<Field> fields = parseHeaderFooter(event, input);
-				if (fields.size()>0) {
+				FieldList fields = parseHeaderFooter(event, input);
+				if (fields!=null) {
 					template.addToFooter(fields);
 				}
 			} else if (equalsEnd(event, ObflQName.TEMPLATE) || equalsEnd(event, ObflQName.DEFAULT_TEMPLATE)) {
@@ -269,7 +270,18 @@ public class ObflParser {
 		return template;
 	}
 	
-	private ArrayList<Field> parseHeaderFooter(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private FieldList parseHeaderFooter(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		@SuppressWarnings("unchecked")
+		Iterator<Attribute> i = event.asStartElement().getAttributes();
+		Float rowSpacing = null;
+		while (i.hasNext()) {
+			Attribute atts = i.next();
+			String name = atts.getName().getLocalPart();
+			String value = atts.getValue();
+			if (name.equals("row-spacing")) {
+				rowSpacing = Float.parseFloat(value);
+			}
+		}
 		ArrayList<Field> fields = new ArrayList<Field>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
@@ -288,7 +300,13 @@ public class ObflParser {
 				report(event);
 			}
 		}
-		return fields;
+		if (fields.size()>0) {
+			FieldListImpl ret = new FieldListImpl(fields);
+			ret.setRowSpacing(rowSpacing);
+			return ret;
+		} else {
+			return null;
+		}
 	}
 	
 	private ArrayList<Field> parseField(XMLEvent event, XMLEventReader input) throws XMLStreamException {
@@ -523,6 +541,8 @@ public class ObflParser {
 				builder.verticalPosition(Position.parsePosition(att.getValue()));
 			} else if (name.equals("vertical-align")) {
 				builder.verticalAlignment(VerticalAlignment.valueOf(att.getValue().toUpperCase()));
+			} else if (name.equals("row-spacing")) {
+				builder.rowSpacing(Float.parseFloat(att.getValue()));
 			}
 		}
 		return builder.build();

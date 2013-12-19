@@ -20,6 +20,7 @@ class RowImpl implements Row {
 	private int leftMargin;
 	private int rightMargin;
 	private Alignment alignment;
+	private Float rowSpacing;
 	/*
 	private int spaceBefore;
 	private int spaceAfter;
@@ -36,6 +37,7 @@ class RowImpl implements Row {
 		this.leftMargin = 0;
 		this.rightMargin = 0;
 		this.alignment = Alignment.LEFT;
+		this.rowSpacing = null;
 		/*
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
@@ -148,8 +150,11 @@ class RowImpl implements Row {
 	}
 
 	public Float getRowSpacing() {
-		// TODO Auto-generated method stub
-		return null;
+		return rowSpacing;
+	}
+	
+	public void setRowSpacing(Float value) {
+		this.rowSpacing = value;
 	}
 	
 /*

@@ -6,6 +6,7 @@ import java.util.List;
 import org.daisy.dotify.api.formatter.CompoundField;
 import org.daisy.dotify.api.formatter.CurrentPageField;
 import org.daisy.dotify.api.formatter.Field;
+import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
@@ -43,10 +44,25 @@ class PageImpl implements Page {
 		contentMarkersBegin = 0;
 		this.parent = parent;
 		PageTemplate template = parent.getLayoutMaster().getTemplate(pageIndex+1);
-		this.flowHeight = parent.getLayoutMaster().getPageHeight() - template.getHeaderHeight() - template.getFooterHeight() - (parent.getLayoutMaster().getFrame() != null ? 2 : 0);
+		this.flowHeight = parent.getLayoutMaster().getPageHeight() - 
+				(int)Math.ceil(getHeight(template.getHeader(), parent.getLayoutMaster().getRowSpacing())) -
+				(int)Math.ceil(getHeight(template.getFooter(), parent.getLayoutMaster().getRowSpacing())) -
+				(parent.getLayoutMaster().getFrame() != null ? (int)Math.ceil(distributeRowSpacing(null, false).spacing*2) : 0);
 		this.isVolBreak = false;
 		this.isVolBreakAllowed = true;
 		this.keepPreviousSheets = 0;
+	}
+	
+	static float getHeight(List<FieldList> list, float def) {
+		float ret = 0;
+		for (FieldList f : list) {
+			if (f.getRowSpacing()!=null) {
+				ret += f.getRowSpacing();
+			} else {
+				ret += def;
+			}
+		}
+		return ret;
 	}
 	
 	public void newRow(RowImpl r) {
@@ -92,6 +108,31 @@ class PageImpl implements Page {
 		}
 		return marginCharacter;
 	}
+	
+	/**
+	 * Gets the page space needed to render the rows. 
+	 * @param rows
+	 * @param defSpacing a value >= 1.0
+	 * @return returns the space, in rows
+	 */
+	static float rowsNeeded(List<? extends Row> rows, float defSpacing) {
+		float ret = 0;
+		if (defSpacing < 1) {
+			defSpacing = 1;
+		}
+		for (Row r : rows) {
+			if (r.getRowSpacing()!=null && r.getRowSpacing()>=1) {
+				ret += r.getRowSpacing();
+			} else {
+				ret += defSpacing;
+			}
+		}
+		return ret;
+	}
+	
+	float spaceNeeded() {
+		return rowsNeeded(rows, getParent().getLayoutMaster().getRowSpacing());
+	}
 
 	public List<Row> getRows() {
 
@@ -108,17 +149,18 @@ class PageImpl implements Page {
 				BrailleTranslator filter = getParent().getTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
 				ret.addAll(rows);
-				if (t.getFooterHeight() > 0 || frame != TextBorderStyle.NONE) {
-					while (ret.size() < getFlowHeight() + t.getHeaderHeight()) {
+				float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
+				if (t.getFooter().size() > 0 || frame != TextBorderStyle.NONE) {
+					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing())) < getFlowHeight() + headerHeight) {
 						ret.add(new RowImpl());
 					}
 					ret.addAll(renderFields(lm, t.getFooter(), filter));
 				}
 			}
+			LayoutMaster lm = getParent().getLayoutMaster();
 			ArrayList<Row> ret2 = new ArrayList<Row>();
 			{
 				final int pagenum = getPageIndex() + 1;
-				LayoutMaster lm = getParent().getLayoutMaster();
 				TextBorder tb = null;
 
 				int fsize = frame.getLeftBorder().length() + frame.getRightBorder().length();
@@ -130,7 +172,10 @@ class PageImpl implements Page {
 						.outerLeftMargin(StringTools.fill(getMarginCharacter(), pageMargin))
 						.build();
 				if (!TextBorderStyle.NONE.equals(frame)) {
-					ret2.add(new RowImpl(tb.getTopBorder()));
+					RowImpl r = new RowImpl(tb.getTopBorder());
+					DistributedRowSpacing rs = distributeRowSpacing(lm.getRowSpacing(), true);
+					r.setRowSpacing(rs.spacing);
+					ret2.add(r);
 				}
 				String res;
 
@@ -163,11 +208,40 @@ class PageImpl implements Page {
 					if (rowWidth > getParent().getLayoutMaster().getPageWidth()) {
 						throw new PaginatorException("Row is too long (" + rowWidth + "/" + getParent().getLayoutMaster().getPageWidth() + ") '" + res + "'");
 					}
-					ret2.add(new RowImpl(r));
+					RowImpl r2 = new RowImpl(r);
+					ret2.add(r2);
+					Float rs2 = row.getRowSpacing();
+					if (!TextBorderStyle.NONE.equals(frame)) {
+						DistributedRowSpacing rs = distributeRowSpacing(rs2, true);
+						r2.setRowSpacing(rs.spacing);
+						//don't add space to the last line
+						if (row!=ret.get(ret.size()-1)) {
+							RowImpl s = null;
+							for (int i = 0; i < rs.lines-1; i++) {
+								s = new RowImpl(tb.addBorderToRow("", 
+										TextBorder.Align.valueOf(row.getAlignment().toString()),
+										StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
+										StringTools.fill(getMarginCharacter(), row.getRightMargin()), false));
+								s.setRowSpacing(rs.spacing);
+								ret2.add(s);
+							}
+						}
+					} else {
+						r2.setRowSpacing(rs2);
+					}
+					
 				}
 				if (!TextBorderStyle.NONE.equals(frame)) {
 					ret2.add(new RowImpl(tb.getBottomBorder()));
 				}
+			}
+			RowImpl last = ((RowImpl)ret2.get(ret2.size()-1));
+			if (lm.getRowSpacing()!=1) {
+				//set row spacing on the last row to 1.0
+				last.setRowSpacing(1f);
+			} else if (last.getRowSpacing()!=null) {
+				//ignore row spacing on the last row if overall row spacing is 1.0
+				last.setRowSpacing(null);
 			}
 			return ret2;
 		} catch (PaginatorException e) {
@@ -204,11 +278,13 @@ class PageImpl implements Page {
 	}
 	
 	
-	private List<RowImpl> renderFields(LayoutMaster lm, List<List<Field>> fields, BrailleTranslator translator) throws PaginatorException {
+	private List<RowImpl> renderFields(LayoutMaster lm, List<FieldList> fields, BrailleTranslator translator) throws PaginatorException {
 		ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
-		for (List<Field> row : fields) {
+		for (FieldList row : fields) {
 			try {
-				ret.add(new RowImpl(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator)));
+				RowImpl r = new RowImpl(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator));
+				r.setRowSpacing(row.getRowSpacing());
+				ret.add(r);
 			} catch (PaginatorToolsException e) {
 				throw new PaginatorException("Error while rendering header", e);
 			}
@@ -216,9 +292,9 @@ class PageImpl implements Page {
 		return ret;
 	}
 	
-	private String distribute(List<Field> chunks, int width, String padding, BrailleTranslator translator) throws PaginatorToolsException {
+	private String distribute(FieldList chunks, int width, String padding, BrailleTranslator translator) throws PaginatorToolsException {
 		ArrayList<String> chunkF = new ArrayList<String>();
-		for (Field f : chunks) {
+		for (Field f : chunks.getFields()) {
 			BrailleTranslatorResult btr = translator.translate(resolveField(f, this).replaceAll("\u00ad", ""));
 			chunkF.add(btr.getTranslatedRemainder());
 		}
@@ -283,6 +359,39 @@ class PageImpl implements Page {
 		//TODO: include page number offset?
 		int pagenum = p.getPageIndex() + 1;
 		return NumeralStyleFormatter.format(pagenum, f.getStyle());
+	}
+	
+	/**
+	 * Divide a row-spacing value into several rows with a row-spacing < 2.
+	 * <p>E.g. A row spacing of 2.5 will return:</p>
+	 * <dl>
+	 * 	<dt>RowSpacing.spacing</dt><dd>1.25</dd> 
+	 *  <dt>RowSpacing.lines</dt><dd>2</dd>
+	 * </dl>
+	 * @param rs
+	 * @return
+	 */
+	private DistributedRowSpacing distributeRowSpacing(Float rs, boolean nullIfEqualToDefault) {
+		if (rs == null) {
+			//use default
+			rs = this.getParent().getLayoutMaster().getRowSpacing();
+		}
+		int ins = Math.max((int)Math.floor(rs), 1);
+		Float spacing = rs / ins;
+		if (nullIfEqualToDefault && spacing.equals(this.getParent().getLayoutMaster().getRowSpacing())) {
+			return new DistributedRowSpacing(null, ins);
+		} else {
+			return new DistributedRowSpacing(spacing, ins);
+		}
+	}
+	
+	private class DistributedRowSpacing {
+		private final Float spacing;
+		private final int lines;
+		DistributedRowSpacing(Float s, int l) {
+			this.spacing = s;
+			this.lines = l;
+		}
 	}
 	
 	void setKeepWithPreviousSheets(int value) {

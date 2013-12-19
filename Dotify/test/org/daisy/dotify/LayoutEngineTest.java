@@ -10,10 +10,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.xml.transform.stream.StreamSource;
+
+import org.daisy.braille.pef.PEFFileCompare;
+import org.daisy.braille.pef.PEFFileCompareException;
 import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.LayoutEngineException;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.writer.MediaTypes;
+import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
+import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
 import org.daisy.dotify.writer.TextMediaWriter;
 import org.junit.Test;
 public class LayoutEngineTest {
@@ -26,7 +33,7 @@ public class LayoutEngineTest {
 				BrailleTranslatorFactory.MODE_BYPASS,
 				new TextMediaWriter("utf-8"));
 		File res = File.createTempFile("TestResult", ".tmp");
-
+		res.deleteOnExit();
 		
 		engine.convert(this.getClass().getResourceAsStream("resource-files/obfl-input.obfl"), new FileOutputStream(res));
 		
@@ -38,7 +45,38 @@ public class LayoutEngineTest {
 			fail();
 		} finally {
 			if (!res.delete()) {
-				res.deleteOnExit();
+				System.err.println("Delete failed.");
+			}
+		}
+	}
+
+	@Test
+	public void testLayoutEngingeDLS() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("sv-SE",
+				BrailleTranslatorFactory.MODE_UNCONTRACTED, 
+				PagedMediaWriterFactoryMaker.newInstance().newPagedMediaWriter(MediaTypes.PEF_MEDIA_TYPE));
+
+		File res = File.createTempFile("TestResult", ".tmp");
+		res.deleteOnExit();
+
+		engine.convert(this.getClass().getResourceAsStream("resource-files/obfl-input-dls.obfl"), new FileOutputStream(res));
+
+		try {
+			PEFFileCompare cmp = new PEFFileCompare();
+			cmp.compare(new StreamSource(this.getClass().getResourceAsStream("resource-files/obfl-dls-expected.pef")), new StreamSource(new FileInputStream(res)));
+			assertEquals("Binary compare is equal", -1, cmp.getPos());
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail();
+		} catch (PEFFileCompareException e) {
+			e.printStackTrace();
+			fail();
+		} finally {
+			if (!res.delete()) {
+				System.err.println("Delete failed.");
+			}
+			if (res.isFile()) {
+				System.out.println(res.getAbsolutePath());
 			}
 		}
 	}

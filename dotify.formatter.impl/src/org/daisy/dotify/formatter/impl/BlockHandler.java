@@ -246,6 +246,7 @@ class BlockHandler {
 				row.setLeftMargin(margin);
 				row.setRightMargin(rightMargin);
 				row.setAlignment(p.getAlignment());
+				row.setRowSpacing(p.getRowSpacing());
 				if (r!=null) {
 					row.addMarkers(r);
 					r = null;
@@ -289,6 +290,7 @@ class BlockHandler {
 		nr.setLeftMargin(margin);
 		nr.setRightMargin(rightMargin);
 		nr.setAlignment(p.getAlignment());
+		nr.setRowSpacing(p.getRowSpacing());
 		/*
 		if (nr.getChars().length()>master.getFlowWidth()) {
 			throw new RuntimeException("Row is too long (" + nr.getChars().length() + "/" + master.getFlowWidth() + ") '" + nr.getChars() + "'");

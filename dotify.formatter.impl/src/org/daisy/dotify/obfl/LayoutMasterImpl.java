@@ -1,6 +1,7 @@
 package org.daisy.dotify.obfl;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.PageTemplate;
@@ -75,7 +76,11 @@ class LayoutMasterImpl implements LayoutMaster {
 		}
 		
 		public Builder rowSpacing(float value) {
-			this.rowSpacing = value;
+			if (value < 1) {
+				Logger.getLogger(this.getClass().getCanonicalName()).warning("Can't set  rowSpacing < 1: " + value);
+			} else {
+				this.rowSpacing = value;
+			}
 			return this;
 		}
 		

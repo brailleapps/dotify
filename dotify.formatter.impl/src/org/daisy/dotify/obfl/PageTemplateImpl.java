@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.daisy.dotify.api.formatter.Field;
+import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.PageTemplate;
 import org.daisy.dotify.api.obfl.Expression;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
@@ -12,8 +12,8 @@ import org.daisy.dotify.api.obfl.ExpressionFactory;
 
 class PageTemplateImpl implements PageTemplate {
 	private final String condition;
-	private final List<List<Field>> header;
-	private final List<List<Field>> footer;
+	private final List<FieldList> header;
+	private final List<FieldList> footer;
 	private final HashMap<Integer, Boolean> appliesTo;
 	private final ExpressionFactory ef;
 	
@@ -28,27 +28,27 @@ class PageTemplateImpl implements PageTemplate {
 	 */
 	public PageTemplateImpl(String useWhen, ExpressionFactory ef) {
 		this.condition = useWhen;
-		this.header = new ArrayList<List<Field>>();
-		this.footer = new ArrayList<List<Field>>();
+		this.header = new ArrayList<FieldList>();
+		this.footer = new ArrayList<FieldList>();
 		this.appliesTo = new HashMap<Integer, Boolean>();
 		this.ef = ef;
 	}
 
-	public void addToHeader(List<Field> obj) {
+	public void addToHeader(FieldList obj) {
 		header.add(obj);
 	}
 	
-	public void addToFooter(List<Field> obj) {
+	public void addToFooter(FieldList obj) {
 		footer.add(obj);
 	}
 
-	public List<List<Field>> getHeader() {
+	public List<FieldList> getHeader() {
 		//ArrayList<ArrayList<Object>> ret = new ArrayList<ArrayList<Object>>();
 		//ret.add(header);
 		return header;
 	}
 	
-	public List<List<Field>> getFooter() {
+	public List<FieldList> getFooter() {
 		//ArrayList<ArrayList<Object>> ret = new ArrayList<ArrayList<Object>>();
 		//ret.add(footer);
 		return footer;
@@ -67,11 +67,4 @@ class PageTemplateImpl implements PageTemplate {
 		return applies;
 	}
 
-	public int getFooterHeight() {
-		return footer.size();
-	}
-
-	public int getHeaderHeight() {
-		return header.size();
-	}
 }

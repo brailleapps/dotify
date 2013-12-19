@@ -10,6 +10,13 @@
 			on A4 sized paper while maintaining compatibility with existing 
 			software. Specifically, the paper size in the output will be 
 			32 braille cells wide and 29 cells high.</entry>
+			
+
+	<!-- Preset for A4 paper: 32 character wide (29 rows) -->
+	<entry key="A4-w32-dls">This setup contains measurements suitable for embossing
+			on A4 sized paper with double line spacing while maintaining compatibility
+			with existing software. Specifically, the paper size in the output will
+			be 32 braille cells wide and 29 cells high.</entry>
 	
 	<!-- Preset for FA44 paper: 42 character wide (29 rows) -->
 	<entry key="FA44-w42">This setup contains measurements suitable for embossing 

@@ -93,7 +93,7 @@
 		<xsl:attribute name="hyphenate">true</xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:h1" mode="apply-block-attributes">
-		<xsl:attribute name="margin-top">3</xsl:attribute>
+		<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">2</xsl:when><xsl:otherwise>3</xsl:otherwise></xsl:choose></xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level2)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
@@ -107,7 +107,7 @@
 	</xsl:template>
 	<!-- If level1 has part, format h2 as h1 -->
 	<xsl:template match="dtb:h2[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
-		<xsl:attribute name="margin-top">3</xsl:attribute>
+		<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">2</xsl:when><xsl:otherwise>3</xsl:otherwise></xsl:choose></xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
@@ -116,7 +116,7 @@
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:h2" mode="apply-block-attributes">
-		<xsl:attribute name="margin-top">2</xsl:attribute>
+		<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">1</xsl:when><xsl:otherwise>2</xsl:otherwise></xsl:choose></xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
@@ -126,7 +126,7 @@
 	</xsl:template>
 	<!-- If level1 has part, format h3 as h2 -->
 	<xsl:template match="dtb:h3[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
-		<xsl:attribute name="margin-top">2</xsl:attribute>
+		<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">1</xsl:when><xsl:otherwise>2</xsl:otherwise></xsl:choose></xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level4)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
@@ -180,20 +180,20 @@
 	<xsl:template match="dtb:level2[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
 		<xsl:attribute name="break-before">page</xsl:attribute>
 		<xsl:if test="not(dtb:h2)">
-			<xsl:attribute name="margin-top">3</xsl:attribute>
+			<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">2</xsl:when><xsl:otherwise>3</xsl:otherwise></xsl:choose></xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:level2" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h2)">
-			<xsl:attribute name="margin-top">2</xsl:attribute>
+			<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">1</xsl:when><xsl:otherwise>2</xsl:otherwise></xsl:choose></xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
 	<!-- If level1 has part, format level3 as level2 -->
 	<xsl:template match="dtb:level3[ancestor::dtb:level1[@class='part']]" mode="apply-block-attributes">
 		<xsl:if test="not(dtb:h3)">
-			<xsl:attribute name="margin-top">2</xsl:attribute>
+			<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">1</xsl:when><xsl:otherwise>2</xsl:otherwise></xsl:choose></xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
 	</xsl:template>
