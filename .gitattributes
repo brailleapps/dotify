@@ -376,8 +376,11 @@ dotify.api/src/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryMaker.
 dotify.api/src/org/daisy/dotify/consumer/translator/TextBorderFactoryMaker.java -text
 dotify.api/src/org/daisy/dotify/consumer/translator/package-info.java -text
 dotify.api/src/org/daisy/dotify/consumer/writer/PagedMediaWriterFactoryMaker.java -text
+dotify.api/src/org/daisy/dotify/graphics/BrailleGraphics.java -text
+dotify.api/src/org/daisy/dotify/graphics/packageinfo -text
 dotify.api/src/org/daisy/dotify/translator/DefaultTextAttribute.java -text
 dotify.api/src/org/daisy/dotify/translator/packageinfo -text
+dotify.api/test/org/daisy/dotify/graphics/BrailleGraphicsTest.java -text
 dotify.common/.classpath -text
 dotify.common/.project -text
 dotify.common/.settings/org.eclipse.jdt.core.prefs -text
