@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
@@ -504,6 +505,7 @@ public class ObflParser {
 
 	private BlockProperties blockBuilder(Iterator<Attribute> atts) {
 		BlockProperties.Builder builder = new BlockProperties.Builder();
+		HashMap<String, Object> border = new HashMap<String, Object>();
 		while (atts.hasNext()) {
 			Attribute att = atts.next();
 			String name = att.getName().getLocalPart();
@@ -543,6 +545,16 @@ public class ObflParser {
 				builder.verticalAlignment(VerticalAlignment.valueOf(att.getValue().toUpperCase()));
 			} else if (name.equals("row-spacing")) {
 				builder.rowSpacing(Float.parseFloat(att.getValue()));
+			} else if (name.startsWith("border")) {
+				border.put(name, att.getValue());
+			}
+		}
+		if (border.size()>0) {
+			border.put(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
+			try {
+				builder.textBorderStyle(maker.newTextBorderStyle(border));
+			} catch (TextBorderConfigurationException e) {
+				Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to add border to block properties: " + border, e);
 			}
 		}
 		return builder.build();

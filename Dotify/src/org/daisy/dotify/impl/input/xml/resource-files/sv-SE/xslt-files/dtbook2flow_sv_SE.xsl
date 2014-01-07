@@ -97,6 +97,10 @@
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level2)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
+		<xsl:if test="$row-spacing=2">
+			<xsl:attribute name="border-bottom-style">solid</xsl:attribute>
+			<xsl:attribute name="border-align">inner</xsl:attribute>
+		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
@@ -111,6 +115,10 @@
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
 		</xsl:if>
+		<xsl:if test="$row-spacing=2">
+			<xsl:attribute name="border-bottom-style">solid</xsl:attribute>
+			<xsl:attribute name="border-align">inner</xsl:attribute>
+		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
 		<xsl:attribute name="id"><xsl:value-of select="generate-id(.)"/></xsl:attribute>
@@ -119,6 +127,10 @@
 		<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">1</xsl:when><xsl:otherwise>2</xsl:otherwise></xsl:choose></xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level3)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="$row-spacing=2">
+			<xsl:attribute name="border-bottom-style">solid</xsl:attribute>
+			<xsl:attribute name="border-align">inner</xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
@@ -129,6 +141,10 @@
 		<xsl:attribute name="margin-top"><xsl:choose><xsl:when test="$row-spacing=2">1</xsl:when><xsl:otherwise>2</xsl:otherwise></xsl:choose></xsl:attribute>
 		<xsl:if test="(following-sibling::*[1])[not(self::dtb:level4)]">
 			<xsl:attribute name="margin-bottom">1</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="$row-spacing=2">
+			<xsl:attribute name="border-bottom-style">solid</xsl:attribute>
+			<xsl:attribute name="border-align">inner</xsl:attribute>
 		</xsl:if>
 		<xsl:attribute name="keep">all</xsl:attribute>
 		<xsl:attribute name="keep-with-next">1</xsl:attribute>
