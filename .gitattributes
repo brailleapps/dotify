@@ -752,6 +752,7 @@ dotify.translator.impl/launch.bndrun -text
 dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.BrailleTranslatorFactoryService -text
 dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.MarkerProcessorFactoryService -text
 dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.TextBorderFactoryService -text
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/BorderSpecification.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactory.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactoryService.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderStyle.java -text
@@ -789,6 +790,8 @@ dotify.translator.impl/src/org/daisy/dotify/translator/SimpleMarkerDictionary.ja
 dotify.translator.impl/src/org/daisy/dotify/translator/TextAttributeFilter.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/UncontractedBrailleFilter.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/translator/package-info.java -text
+dotify.translator.impl/test/org/daisy/dotify/impl/translator/BorderDefinitionTest.java -text
+dotify.translator.impl/test/org/daisy/dotify/impl/translator/BrailleTextBorderFactoryTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
