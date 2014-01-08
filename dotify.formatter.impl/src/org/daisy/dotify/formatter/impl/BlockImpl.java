@@ -8,8 +8,8 @@ import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.NumeralField.NumeralStyle;
+import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.formatter.impl.Segment.SegmentType;
 
 

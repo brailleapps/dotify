@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.FormattingTypes;
-import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.translator.BrailleTranslator;
@@ -38,7 +37,7 @@ class BlockHandler {
 		private final int available;
 		private final int rightMargin;
 		
-		public Builder(BrailleTranslator translator, LayoutMaster master, int width, int rightMargin) {
+		public Builder(BrailleTranslator translator, int width, int rightMargin) {
 			this.translator = translator;
 			this.available = width;
 			this.rightMargin = rightMargin;
@@ -91,6 +90,10 @@ class BlockHandler {
 	 */
 	public void setListItem(String label, FormattingTypes.ListStyle type) {
 		item = new ListItem(label, type);
+	}
+	
+	public void setListItem(ListItem item) {
+		this.item = item;
 	}
 	
 	/**

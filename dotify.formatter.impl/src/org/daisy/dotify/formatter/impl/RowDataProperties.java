@@ -94,12 +94,8 @@ class RowDataProperties {
 		return listProps!=null;
 	}
 	
-	public String getListLabel() {
-		return listProps.getLabel();
-	}
-	
-	public FormattingTypes.ListStyle getListStyle() {
-		return listProps.getType();
+	ListItem getListItem() {
+		return listProps;
 	}
 
 }

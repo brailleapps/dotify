@@ -42,12 +42,11 @@ class BlockContentManagerImpl implements BlockContentManager {
 		
 		BlockHandler bh = new BlockHandler.Builder(
 				rdp.getTranslator(),
-				rdp.getMaster(),
 				rdp.getMaster().getFlowWidth() - rdp.getRightMargin(),
 				rdp.getRightMargin()).build();
 		
 		if (rdp.isList()) {
-			bh.setListItem(rdp.getListLabel(), rdp.getListStyle());
+			bh.setListItem(rdp.getListItem());
 		}
 		for (Segment s : segments) {
 			switch (s.getSegmentType()) {
@@ -124,7 +123,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return ret;
 	}
 
-	private void layout(CharSequence c, BlockHandler bh, Stack<RowImpl> rows, RowDataProperties rdp, String locale) {
+	private static void layout(CharSequence c, BlockHandler bh, Stack<RowImpl> rows, RowDataProperties rdp, String locale) {
 		BrailleTranslatorResult btr;
 		if (locale!=null) {
 			try {
