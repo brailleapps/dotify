@@ -24,12 +24,12 @@ class BlockImpl implements Block {
 	private int keepWithNextSheets;
 	private String id;
 	private Stack<Segment> segments;
-	private final RowDataProperties rdp;
+	private final RowDataProperties.Builder rdp;
 	private BlockContentManager rdm;
 	private BlockPosition verticalPosition;
 
 	
-	BlockImpl(String blockId, RowDataProperties rdp) {
+	BlockImpl(String blockId, RowDataProperties.Builder rdp) {
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
@@ -78,7 +78,7 @@ class BlockImpl implements Block {
 	}
 	
 	public void setListItem(String label, FormattingTypes.ListStyle type) {
-		rdp.setListItem(label, type);
+		rdp.listProperties(new ListItem(label, type));
 	}
 
 	public int getSpaceBefore() {
@@ -159,7 +159,7 @@ class BlockImpl implements Block {
 	
 	public BlockContentManager getBlockContentManager(CrossReferences refs) {
 		if (rdm==null || rdm.isVolatile()) {
-			rdm = new BlockContentManagerImpl(segments, rdp, refs);
+			rdm = new BlockContentManagerImpl(segments, rdp.build(), refs);
 		}
 		return rdm;
 	}

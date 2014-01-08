@@ -2,13 +2,15 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.tools.StringTools;
 
 
@@ -21,26 +23,21 @@ import org.daisy.dotify.tools.StringTools;
  * @author Joel Håkansson
  */
 class BlockHandler {
-	private final BrailleTranslator translator;
 	private final String spaceChar;
-	//private int currentListNumber;
-	//private BlockProperties.ListType currentListType;
+	private final RowDataProperties rdp;
+	private final int available;
+	private final int rightMargin;
+	
 	private Leader currentLeader;
 	private ArrayList<RowImpl> ret;
 	private BlockProperties p;
-	private final int available;
-	private final int rightMargin;
 	private ListItem item;
 
 	public static class Builder {
-		private final BrailleTranslator translator;
-		private final int available;
-		private final int rightMargin;
+		private final RowDataProperties rdp;
 		
-		public Builder(BrailleTranslator translator, int width, int rightMargin) {
-			this.translator = translator;
-			this.available = width;
-			this.rightMargin = rightMargin;
+		public Builder(RowDataProperties rdp) {
+			this.rdp = rdp;
 		}
 		
 		public BlockHandler build() {
@@ -49,35 +46,16 @@ class BlockHandler {
 	}
 	
 	private BlockHandler(Builder builder) {
-		this.translator = builder.translator;
 		this.currentLeader = null;
-		//this.currentListType = BlockProperties.ListType.NONE;
-		//this.currentListNumber = 0;
 		this.ret = new ArrayList<RowImpl>();
 		this.p = new BlockProperties.Builder().build();
-		this.available = builder.available;
-		this.rightMargin = builder.rightMargin;
+		this.rdp = builder.rdp;
+		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin();
+		this.rightMargin = rdp.getRightMargin();
 		this.item = null;
-		this.spaceChar = translator.translate(" ").getTranslatedRemainder();
+		this.spaceChar = rdp.getTranslator().translate(" ").getTranslatedRemainder();
 		
 	}
-	/*
-	public void setCurrentListType(BlockProperties.ListType type) {
-		currentListType = type;
-	}
-	
-	public BlockProperties.ListType getCurrentListType() {
-		return currentListType;
-	}
-	
-	public void setCurrentListNumber(int value) {
-		currentListNumber = value;
-	}
-	
-	public int getCurrentListNumber() {
-		return currentListNumber;
-	}
-	*/
 	
 	//TODO: if list type is only used to differentiate between pre and other lists, and pre implies that label.equals(""), then type could be removed
 	/**
@@ -92,6 +70,10 @@ class BlockHandler {
 		item = new ListItem(label, type);
 	}
 	
+	/**
+	 * Sets the list item to use for the following call to layoutBlock / appendBlock.
+	 * @param item, the list item
+	 */
 	public void setListItem(ListItem item) {
 		this.item = item;
 	}
@@ -108,14 +90,6 @@ class BlockHandler {
 		this.p = p;
 	}
 	
-	public BlockProperties getBlockProperties() {
-		return p;
-	}
-	/*
-	public void setWidth(int value) {
-		available = value;
-	}*/
-	
 	public int getWidth() {
 		return available;
 	}
@@ -127,10 +101,6 @@ class BlockHandler {
 	public Leader getCurrentLeader() {
 		return currentLeader;
 	}
-	/*
-	public void setBlockIndent(int value) {
-		this.blockIndent = value;
-	}*/
 	
 	/**
 	 * Break text into rows. 
@@ -140,8 +110,8 @@ class BlockHandler {
 	 * @param blockIndentParent the block indent parent
 	 * @return returns an ArrayList of Rows
 	 */
-	public ArrayList<RowImpl> layoutBlock(BrailleTranslatorResult btr, int leftMargin, int blockIndent, int blockIndentParent) {
-		return layoutBlock(btr, leftMargin, null, blockIndent, blockIndentParent);
+	public ArrayList<RowImpl> layoutBlock(CharSequence c, String locale) {
+		return layoutBlock(c, null, locale);
 	}
 	
 	/**
@@ -154,53 +124,67 @@ class BlockHandler {
 	 * @return returns an ArrayList of Rows. The first row being the supplied row, with zero or more characters
 	 * from <tt>text</tt>
 	 */
-	public ArrayList<RowImpl> appendBlock(BrailleTranslatorResult btr, int leftMargin, RowImpl row, int blockIndent, int blockIndentParent) {
-		return layoutBlock(btr, leftMargin, row, blockIndent, blockIndentParent);
+	public ArrayList<RowImpl> appendBlock(CharSequence c, RowImpl r, String locale) {
+		return layoutBlock(c, r, locale);
 	}
 
-	private ArrayList<RowImpl> layoutBlock(BrailleTranslatorResult btr, int leftMargin, RowImpl r, int blockIndent, int blockIndentParent) {
+	private ArrayList<RowImpl> layoutBlock(CharSequence c, RowImpl r, String locale) {
+		BrailleTranslatorResult btr = getTranslatedResult(c, locale);
 		ret = new ArrayList<RowImpl>();
 		// process first row, is it a new block or should we continue the current row?
 		if (r==null) {
 			// add to left margin
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
-				String listLabel = translator.translate(item.getLabel()).getTranslatedRemainder();
+				String listLabel = rdp.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
-					int bypassBlockIndent = blockIndent;
-					blockIndent = blockIndentParent;
-					newRow(listLabel, btr, available, leftMargin, 0, p, blockIndent);
-					blockIndent = bypassBlockIndent;
+					newRow(listLabel, btr, 0, rdp.getBlockIndentParent());
 				} else {
-					newRow(listLabel, btr, available, leftMargin, p.getFirstLineIndent(), p, blockIndent);
+					newRow(listLabel, btr, p.getFirstLineIndent(), rdp.getBlockIndent());
 				}
 				item = null;
 			} else {
-				newRow("", btr, available, leftMargin, p.getFirstLineIndent(), p, blockIndent);
+				newRow("", btr, p.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
-			newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), btr, available, p, blockIndent);
+			newRow(r.getMarkers(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
-			newRow("", btr, available, leftMargin, p.getTextIndent(), p, blockIndent);
+			newRow("", btr, p.getTextIndent(), rdp.getBlockIndent());
 		}
 		return ret;
 	}
+	
+	private BrailleTranslatorResult getTranslatedResult(CharSequence c, String locale) {
+		BrailleTranslatorResult btr;
+		if (locale!=null) {
+			try {
+				btr = rdp.getTranslator().translate(c.toString(), locale);
+			} catch (TranslationException e) {
+				Logger.getLogger(this.getClass().getCanonicalName())
+					.log(Level.WARNING, "Failed to translate using the specified locale: " + locale + ". Using default", e);
+				btr = rdp.getTranslator().translate(c.toString());
+			}
+		} else {
+			btr = rdp.getTranslator().translate(c.toString());
+		}
+		return btr;
+	}
 
-	private void newRow(String contentBefore, BrailleTranslatorResult chars, int available, int margin, int indent, BlockProperties p, int blockIndent) {
+	private void newRow(String contentBefore, BrailleTranslatorResult chars, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		String preText = contentBefore + StringTools.fill(spaceChar, thisIndent).toString();
-		newRow(null, margin, preText, "", chars, available, p, blockIndent);
+		newRow(null, preText, "", chars, blockIndent);
 	}
 
 	//TODO: check leader functionality
-	private void newRow(List<Marker> r, int margin, String preContent, String preTabText, BrailleTranslatorResult btr, int available, BlockProperties p, int blockIndent) {
+	private void newRow(List<Marker> r, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
 
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
 
 		int preTextIndent = StringTools.length(preContent);
-		int preContentPos = margin+preTextIndent;
+		int preContentPos = rdp.getLeftMargin()+preTextIndent;
 		preTabText = preTabText.replaceAll("\u00ad", "");
 		int preTabPos = preContentPos+StringTools.length(preTabText);
 		int postTabTextLen = btr.countRemaining();
@@ -209,10 +193,9 @@ class BlockHandler {
 			throw new RuntimeException("Cannot continue layout: No space left for characters.");
 		}
 
-		int width = available;
 		String tabSpace = "";
 		if (currentLeader!=null) {
-			int leaderPos = currentLeader.getPosition().makeAbsolute(width);
+			int leaderPos = currentLeader.getPosition().makeAbsolute(available);
 			int offset = leaderPos-preTabPos;
 			int align = 0;
 			switch (currentLeader.getAlignment()) {
@@ -228,7 +211,7 @@ class BlockHandler {
 			}
 			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
 				RowImpl row = new RowImpl(preContent + preTabText);
-				row.setLeftMargin(margin);
+				row.setLeftMargin(rdp.getLeftMargin());
 				row.setRightMargin(rightMargin);
 				row.setAlignment(p.getAlignment());
 				row.setRowSpacing(p.getRowSpacing());
@@ -242,15 +225,18 @@ class BlockHandler {
 				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				
-				preContentPos = margin+preTextIndent;
+				preContentPos = rdp.getLeftMargin()+preTextIndent;
 				preTabPos = preContentPos;
 				maxLenText = available-(preContentPos);
 				offset = leaderPos-preTabPos;
 			}
 			if (offset - align > 0) {
-				String leaderPattern = translator.translate(currentLeader.getPattern()).getTranslatedRemainder();
+				String leaderPattern = rdp.getTranslator().translate(currentLeader.getPattern()).getTranslatedRemainder();
 				tabSpace = StringTools.fill(leaderPattern, offset - align);
-			} // else: leader position has been passed on an empty row or text does not fit on an empty row, ignore
+			} else {
+				Logger.getLogger(this.getClass().getCanonicalName())
+					.fine("Leader position has been passed on an empty row or text does not fit on an empty row, ignoring...");
+			}
 		}
 
 		maxLenText -= StringTools.length(tabSpace);
@@ -272,7 +258,7 @@ class BlockHandler {
 		if (r!=null) {
 			nr.addMarkers(r);
 		}
-		nr.setLeftMargin(margin);
+		nr.setLeftMargin(rdp.getLeftMargin());
 		nr.setRightMargin(rightMargin);
 		nr.setAlignment(p.getAlignment());
 		nr.setRowSpacing(p.getRowSpacing());

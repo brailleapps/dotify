@@ -112,13 +112,12 @@ public class FormatterImpl implements Formatter {
 		if (context.size()>0) {
 			addToBlockIndent(context.peek().getBlockIndent());
 		}
-		RowDataProperties rdp = new RowDataProperties.Builder(
+		RowDataProperties.Builder rdp = new RowDataProperties.Builder(
 				getTranslator(), flowStruct.getCurrentSequence().getLayoutMaster()).
 					blockIndent(blockIndent).
 					blockIndentParent(blockIndentParent.peek()).
 					leftMargin(leftMargin).
-					rightMargin(rightMargin).
-					build();
+					rightMargin(rightMargin);
 		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId, rdp);
 		if (context.size()>0) {
 			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
@@ -160,13 +159,12 @@ public class FormatterImpl implements Formatter {
 			Keep keep = context.peek().getKeepType();
 			int next = context.peek().getKeepWithNext();
 			subtractFromBlockIndent(context.peek().getBlockIndent());
-			RowDataProperties rdp = new RowDataProperties.Builder(
+			RowDataProperties.Builder rdp = new RowDataProperties.Builder(
 					getTranslator(), flowStruct.getCurrentSequence().getLayoutMaster()).
 						blockIndent(blockIndent).
 						blockIndentParent(blockIndentParent.peek()).
 						leftMargin(leftMargin).
-						rightMargin(rightMargin).
-						build();
+						rightMargin(rightMargin);
 			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, rdp);
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);

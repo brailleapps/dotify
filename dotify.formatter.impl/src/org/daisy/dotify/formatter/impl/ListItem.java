@@ -3,8 +3,8 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 
 class ListItem {
-	private String label;
-	private FormattingTypes.ListStyle type;
+	private final String label;
+	private final FormattingTypes.ListStyle type;
 	
 	/**
 	 * Creates a list item. 

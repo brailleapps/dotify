@@ -7,8 +7,6 @@ import java.util.Stack;
 import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.translator.BrailleTranslatorResult;
-import org.daisy.dotify.api.translator.TranslationException;
 
 class BlockContentManagerImpl implements BlockContentManager {
 	private boolean isVolatile;
@@ -40,10 +38,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		isVolatile = false;
 		Stack<RowImpl> ret = new Stack<RowImpl>();
 		
-		BlockHandler bh = new BlockHandler.Builder(
-				rdp.getTranslator(),
-				rdp.getMaster().getFlowWidth() - rdp.getRightMargin(),
-				rdp.getRightMargin()).build();
+		BlockHandler bh = new BlockHandler.Builder(rdp).build();
 		
 		if (rdp.isList()) {
 			bh.setListItem(rdp.getListItem());
@@ -124,21 +119,10 @@ class BlockContentManagerImpl implements BlockContentManager {
 	}
 
 	private static void layout(CharSequence c, BlockHandler bh, Stack<RowImpl> rows, RowDataProperties rdp, String locale) {
-		BrailleTranslatorResult btr;
-		if (locale!=null) {
-			try {
-				btr = rdp.getTranslator().translate(c.toString(), locale);
-			} catch (TranslationException e) {
-				e.printStackTrace();
-				btr = rdp.getTranslator().translate(c.toString());
-			}
-		} else {
-			btr = rdp.getTranslator().translate(c.toString());
-		}
 		if (rows.size()==0) {
-			rows.addAll(bh.layoutBlock(btr, rdp.getLeftMargin(), rdp.getBlockIndent(), rdp.getBlockIndentParent()));
+			rows.addAll(bh.layoutBlock(c, locale));
 		} else {
-			rows.addAll(bh.appendBlock(btr, rdp.getLeftMargin(), rows.pop(), rdp.getBlockIndent(), rdp.getBlockIndentParent()));
+			rows.addAll(bh.appendBlock(c, rows.pop(), locale));
 		}
 	}
 

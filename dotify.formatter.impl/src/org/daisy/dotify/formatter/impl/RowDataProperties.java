@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
@@ -9,7 +8,7 @@ class RowDataProperties {
 	private final BrailleTranslator translator;
 	private final LayoutMaster master;
 	private final int leftMargin, rightMargin;
-	private ListItem listProps;
+	private final ListItem listProps;
 	
 	static class Builder {
 		private final BrailleTranslator translator;
@@ -18,6 +17,7 @@ class RowDataProperties {
 		private int blockIndentParent = 0;
 		private int leftMargin = 0;
 		private int rightMargin = 0;
+		private ListItem listProps = null;
 		
 		public Builder(BrailleTranslator translator, LayoutMaster master) {
 			this.translator = translator;
@@ -42,6 +42,10 @@ class RowDataProperties {
 			rightMargin = value;
 			return this;
 		}
+		public Builder listProperties(ListItem value) {
+			listProps = value;
+			return this;
+		}
 		public RowDataProperties build() {
 			return new RowDataProperties(this);
 		}
@@ -54,7 +58,7 @@ class RowDataProperties {
 		this.master = builder.master;
 		this.leftMargin = builder.leftMargin;
 		this.rightMargin = builder.rightMargin;
-		this.listProps = null;
+		this.listProps = builder.listProps;
 	}
 
 	public int getBlockIndent() {
@@ -84,10 +88,6 @@ class RowDataProperties {
 
 	public int getRightMargin() {
 		return rightMargin;
-	}
-	
-	public void setListItem(String label, FormattingTypes.ListStyle type) {
-		listProps = new ListItem(label, type);
 	}
 	
 	public boolean isList() {
