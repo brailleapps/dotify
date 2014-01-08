@@ -137,19 +137,19 @@ class BlockHandler {
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel = rdp.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
-					newRow(listLabel, btr, 0, rdp.getBlockIndentParent());
+					newRow(listLabel, btr, rdp.getLeftMargin(), 0, rdp.getBlockIndentParent());
 				} else {
-					newRow(listLabel, btr, p.getFirstLineIndent(), rdp.getBlockIndent());
+					newRow(listLabel, btr, rdp.getLeftMargin(), p.getFirstLineIndent(), rdp.getBlockIndent());
 				}
 				item = null;
 			} else {
-				newRow("", btr, p.getFirstLineIndent(), rdp.getBlockIndent());
+				newRow("", btr, rdp.getLeftMargin(), p.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
-			newRow(r.getMarkers(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
+			newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
-			newRow("", btr, p.getTextIndent(), rdp.getBlockIndent());
+			newRow("", btr, rdp.getLeftMargin(), p.getTextIndent(), rdp.getBlockIndent());
 		}
 		return ret;
 	}
@@ -170,21 +170,21 @@ class BlockHandler {
 		return btr;
 	}
 
-	private void newRow(String contentBefore, BrailleTranslatorResult chars, int indent, int blockIndent) {
+	private void newRow(String contentBefore, BrailleTranslatorResult chars, int margin, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		String preText = contentBefore + StringTools.fill(spaceChar, thisIndent).toString();
-		newRow(null, preText, "", chars, blockIndent);
+		newRow(null, margin, preText, "", chars, blockIndent);
 	}
 
 	//TODO: check leader functionality
-	private void newRow(List<Marker> r, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
+	private void newRow(List<Marker> r, int margin, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
 
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
 
 		int preTextIndent = StringTools.length(preContent);
-		int preContentPos = rdp.getLeftMargin()+preTextIndent;
+		int preContentPos = margin+preTextIndent;
 		preTabText = preTabText.replaceAll("\u00ad", "");
 		int preTabPos = preContentPos+StringTools.length(preTabText);
 		int postTabTextLen = btr.countRemaining();
@@ -211,7 +211,7 @@ class BlockHandler {
 			}
 			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
 				RowImpl row = new RowImpl(preContent + preTabText);
-				row.setLeftMargin(rdp.getLeftMargin());
+				row.setLeftMargin(margin);
 				row.setRightMargin(rightMargin);
 				row.setAlignment(p.getAlignment());
 				row.setRowSpacing(p.getRowSpacing());
@@ -225,7 +225,7 @@ class BlockHandler {
 				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				
-				preContentPos = rdp.getLeftMargin()+preTextIndent;
+				preContentPos = margin+preTextIndent;
 				preTabPos = preContentPos;
 				maxLenText = available-(preContentPos);
 				offset = leaderPos-preTabPos;
@@ -258,7 +258,7 @@ class BlockHandler {
 		if (r!=null) {
 			nr.addMarkers(r);
 		}
-		nr.setLeftMargin(rdp.getLeftMargin());
+		nr.setLeftMargin(margin);
 		nr.setRightMargin(rightMargin);
 		nr.setAlignment(p.getAlignment());
 		nr.setRowSpacing(p.getRowSpacing());
