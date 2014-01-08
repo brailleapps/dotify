@@ -16,7 +16,6 @@ import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.translator.BrailleTranslator;
-import org.daisy.dotify.formatter.impl.BlockHandler.ListItem;
 import org.daisy.dotify.tools.StateObject;
 
 

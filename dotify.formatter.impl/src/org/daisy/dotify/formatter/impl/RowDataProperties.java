@@ -9,7 +9,7 @@ class RowDataProperties {
 	private final BrailleTranslator translator;
 	private final LayoutMaster master;
 	private final int leftMargin, rightMargin;
-	private LIDao listProps;
+	private ListItem listProps;
 	
 	static class Builder {
 		private final BrailleTranslator translator;
@@ -87,7 +87,7 @@ class RowDataProperties {
 	}
 	
 	public void setListItem(String label, FormattingTypes.ListStyle type) {
-		listProps = new LIDao(label, type);
+		listProps = new ListItem(label, type);
 	}
 	
 	public boolean isList() {
@@ -95,20 +95,11 @@ class RowDataProperties {
 	}
 	
 	public String getListLabel() {
-		return listProps.listLabel;
+		return listProps.getLabel();
 	}
 	
 	public FormattingTypes.ListStyle getListStyle() {
-		return listProps.listType;
-	}
-
-	private static class LIDao {
-		private final String listLabel;
-		private final FormattingTypes.ListStyle listType;
-		private LIDao(String label, FormattingTypes.ListStyle type) {
-			this.listLabel = label;
-			this.listType = type;
-		}
+		return listProps.getType();
 	}
 
 }

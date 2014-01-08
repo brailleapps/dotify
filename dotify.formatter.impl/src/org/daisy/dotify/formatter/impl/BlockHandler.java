@@ -32,25 +32,7 @@ class BlockHandler {
 	private final int available;
 	private final int rightMargin;
 	private ListItem item;
-	
-	public static class ListItem {
-		private String label;
-		private FormattingTypes.ListStyle type;
-		
-		public ListItem(String label, FormattingTypes.ListStyle type) {
-			this.label = label;
-			this.type = type;
-		}
-		
-		public String getLabel() {
-			return label;
-		}
-		
-		public FormattingTypes.ListStyle getType() {
-			return type;
-		}
-	}
-	
+
 	public static class Builder {
 		private final BrailleTranslator translator;
 		private final int available;
