@@ -2,9 +2,7 @@ package org.daisy.dotify.obfl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -47,7 +45,6 @@ import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
-import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.obfl.EventContents.ContentType;
 import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
@@ -202,6 +199,7 @@ public class ObflParser {
 		int height = Integer.parseInt(getAttr(event, ObflQName.ATTR_PAGE_HEIGHT));
 		String masterName = getAttr(event, ObflQName.ATTR_NAME);
 		LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height, ef);
+		HashMap<String, Object> border = new HashMap<String, Object>();
 		while (i.hasNext()) {
 			Attribute atts = i.next();
 			String name = atts.getName().getLocalPart();
@@ -214,17 +212,16 @@ public class ObflParser {
 				masterConfig.rowSpacing(Float.parseFloat(value));
 			} else if (name.equals("duplex")) {
 				masterConfig.duplex(value.equals("true"));
-			} else if (name.equals("frame")) {
-				HashSet<String> set = new HashSet<String>(Arrays.asList(value.split(" ")));
-				HashMap<String, Object> features = new HashMap<String, Object>();
-				features.put(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
-				features.put(TextBorderFactory.FEATURE_STYLE, set);
-				TextBorderStyle style = null;
-				try {
-					style = maker.newTextBorderStyle(features);
-				} catch (TextBorderConfigurationException e) {
-				}
-				masterConfig.frame(style);
+			}  else if (name.startsWith("border")) {
+				border.put(name, value);
+			}
+		}
+		if (border.size()>0) {
+			border.put(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
+			try {
+				masterConfig.border(maker.newTextBorderStyle(border));
+			} catch (TextBorderConfigurationException e) {
+				Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to add border to block properties: " + border, e);
 			}
 		}
 		while (input.hasNext()) {

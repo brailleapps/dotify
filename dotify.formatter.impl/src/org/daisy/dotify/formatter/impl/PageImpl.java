@@ -47,7 +47,7 @@ class PageImpl implements Page {
 		this.flowHeight = parent.getLayoutMaster().getPageHeight() - 
 				(int)Math.ceil(getHeight(template.getHeader(), parent.getLayoutMaster().getRowSpacing())) -
 				(int)Math.ceil(getHeight(template.getFooter(), parent.getLayoutMaster().getRowSpacing())) -
-				(parent.getLayoutMaster().getFrame() != null ? (int)Math.ceil(distributeRowSpacing(null, false).spacing*2) : 0);
+				(parent.getLayoutMaster().getBorder() != null ? (int)Math.ceil(distributeRowSpacing(null, false).spacing*2) : 0);
 		this.isVolBreak = false;
 		this.isVolBreakAllowed = true;
 		this.keepPreviousSheets = 0;
@@ -137,9 +137,9 @@ class PageImpl implements Page {
 	public List<Row> getRows() {
 
 		try {
-			TextBorderStyle frame = getParent().getLayoutMaster().getFrame();
-			if (frame == null) {
-				frame = TextBorderStyle.NONE;
+			TextBorderStyle border = getParent().getLayoutMaster().getBorder();
+			if (border == null) {
+				border = TextBorderStyle.NONE;
 			}
 			ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 			{
@@ -150,7 +150,7 @@ class PageImpl implements Page {
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
 				ret.addAll(rows);
 				float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
-				if (t.getFooter().size() > 0 || frame != TextBorderStyle.NONE) {
+				if (t.getFooter().size() > 0 || border != TextBorderStyle.NONE) {
 					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing())) < getFlowHeight() + headerHeight) {
 						ret.add(new RowImpl());
 					}
@@ -163,15 +163,15 @@ class PageImpl implements Page {
 				final int pagenum = getPageIndex() + 1;
 				TextBorder tb = null;
 
-				int fsize = frame.getLeftBorder().length() + frame.getRightBorder().length();
+				int fsize = border.getLeftBorder().length() + border.getRightBorder().length();
 				final int pageMargin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin());
 				int w = getParent().getLayoutMaster().getFlowWidth() + fsize + pageMargin;
 
 				tb = new TextBorder.Builder(w, getMarginCharacter())
-						.style(frame)
+						.style(border)
 						.outerLeftMargin(StringTools.fill(getMarginCharacter(), pageMargin))
 						.build();
-				if (!TextBorderStyle.NONE.equals(frame)) {
+				if (!TextBorderStyle.NONE.equals(border)) {
 					RowImpl r = new RowImpl(tb.getTopBorder());
 					DistributedRowSpacing rs = distributeRowSpacing(lm.getRowSpacing(), true);
 					r.setRowSpacing(rs.spacing);
@@ -189,12 +189,12 @@ class PageImpl implements Page {
 									TextBorder.Align.valueOf(row.getAlignment().toString()), 
 									StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
 									StringTools.fill(getMarginCharacter(), row.getRightMargin()),
-									TextBorderStyle.NONE.equals(frame));
+									TextBorderStyle.NONE.equals(border));
 						//} else {
 						//	res = StringTools.fill(getMarginCharacter(), pageMargin + row.getLeftMargin()) + chars;
 						//}
 					} else {
-						if (!TextBorderStyle.NONE.equals(frame)) {
+						if (!TextBorderStyle.NONE.equals(border)) {
 							res = tb.addBorderToRow("", 
 									TextBorder.Align.valueOf(row.getAlignment().toString()),
 									StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
@@ -211,7 +211,7 @@ class PageImpl implements Page {
 					RowImpl r2 = new RowImpl(r);
 					ret2.add(r2);
 					Float rs2 = row.getRowSpacing();
-					if (!TextBorderStyle.NONE.equals(frame)) {
+					if (!TextBorderStyle.NONE.equals(border)) {
 						DistributedRowSpacing rs = distributeRowSpacing(rs2, true);
 						r2.setRowSpacing(rs.spacing);
 						//don't add space to the last line
@@ -231,7 +231,7 @@ class PageImpl implements Page {
 					}
 					
 				}
-				if (!TextBorderStyle.NONE.equals(frame)) {
+				if (!TextBorderStyle.NONE.equals(border)) {
 					ret2.add(new RowImpl(tb.getBottomBorder()));
 				}
 			}

@@ -25,7 +25,7 @@ class LayoutMasterImpl implements LayoutMaster {
 	protected final float rowSpacing;
 	protected final boolean duplex;
 	protected final ArrayList<PageTemplate> templates;
-	protected final TextBorderStyle frame;
+	protected final TextBorderStyle border;
 	
 	/**
 	 * Configuration class for a ConfigurableLayoutMaster
@@ -44,7 +44,7 @@ class LayoutMasterImpl implements LayoutMaster {
 		float rowSpacing = 1;
 		boolean duplex = true;
 		ArrayList<PageTemplate> templates;
-		TextBorderStyle frame;
+		TextBorderStyle border;
 
 
 		public Builder(int pageWidth, int pageHeight, ExpressionFactory ef) {
@@ -52,7 +52,7 @@ class LayoutMasterImpl implements LayoutMaster {
 			this.pageHeight = pageHeight;
 			this.templates = new ArrayList<PageTemplate>();
 			this.ef = ef;
-			frame = null;
+			border = null;
 		}
 		/*
 		public Builder headerHeight(int value) {
@@ -89,8 +89,8 @@ class LayoutMasterImpl implements LayoutMaster {
 			return this;
 		}
 		
-		public Builder frame(TextBorderStyle frame) {
-			this.frame = frame;
+		public Builder border(TextBorderStyle border) {
+			this.border = border;
 			return this;
 		}
 
@@ -109,8 +109,8 @@ class LayoutMasterImpl implements LayoutMaster {
 //		this.headerHeight = config.headerHeight;
 //		this.footerHeight = config.footerHeight;
 		int fsize = 0;
-		if (config.frame != null) {
-			fsize = config.frame.getLeftBorder().length() + config.frame.getRightBorder().length();
+		if (config.border != null) {
+			fsize = config.border.getLeftBorder().length() + config.border.getRightBorder().length();
 		}
 		this.flowWidth = config.pageWidth - config.innerMargin - config.outerMargin - fsize;
 		//this.flowHeight = config.pageHeight-config.headerHeight-config.footerHeight;
@@ -121,7 +121,7 @@ class LayoutMasterImpl implements LayoutMaster {
 		this.rowSpacing = config.rowSpacing;
 		this.duplex = config.duplex;
 		this.templates = config.templates;
-		this.frame = config.frame;
+		this.border = config.border;
 		this.ef = config.ef;
 	}
 	
@@ -165,8 +165,8 @@ class LayoutMasterImpl implements LayoutMaster {
 		return duplex;
 	}
 
-	public TextBorderStyle getFrame() {
-		return frame;
+	public TextBorderStyle getBorder() {
+		return border;
 	}
 
 	public PageTemplate getTemplate(int pagenum) {

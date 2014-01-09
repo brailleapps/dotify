@@ -55,24 +55,158 @@
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="page-number-variable" type="xs:anySimpleType"/>
-		<xs:attribute name="frame">
+		<xs:attribute name="border-style">
 			<xs:simpleType>
-				<xs:restriction>
-					<xs:simpleType>
-						<xs:list>
-							<xs:simpleType>
-								<xs:restriction base="xs:NMTOKEN">
-									<xs:enumeration value="solid"/>
-									<xs:enumeration value="thin"/>
-									<xs:enumeration value="wide"/>
-									<xs:enumeration value="inner"/>
-									<xs:enumeration value="outer"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:list>
-					</xs:simpleType>
-					<xs:maxLength value="3"/>
-					<xs:minLength value="3"/>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
@@ -336,32 +470,60 @@
 		<xs:attribute name="border-bottom-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="border-left-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="border-top-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="border-right-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
@@ -696,32 +858,60 @@
 		<xs:attribute name="border-bottom-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="border-left-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="border-top-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="border-right-width">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="thin"/>
-					<xs:enumeration value="wide"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>

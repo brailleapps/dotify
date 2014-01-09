@@ -102,7 +102,7 @@
 		</layout-master>
 		<layout-master name="cover" page-width="{$page-width}" 
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
-							outer-margin="{$outer-margin}" row-spacing="1" duplex="{$duplex}" frame="solid thin outer">
+							outer-margin="{$outer-margin}" row-spacing="1" duplex="{$duplex}" border-style="solid" border-width="1" border-align="outer">
 			<default-template>
 				<header></header>
 				<footer></footer>
