@@ -756,7 +756,6 @@ dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.Tex
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BorderSpecification.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactory.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderFactoryService.java -text
-dotify.translator.impl/src/org/daisy/dotify/impl/translator/BrailleTextBorderStyle.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactory.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryService.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
