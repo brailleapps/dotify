@@ -7,6 +7,7 @@ import org.daisy.dotify.api.formatter.CompoundField;
 import org.daisy.dotify.api.formatter.CurrentPageField;
 import org.daisy.dotify.api.formatter.Field;
 import org.daisy.dotify.api.formatter.FieldList;
+import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
@@ -185,7 +186,8 @@ class PageImpl implements Page {
 						// remove trailing whitespace
 						String chars = row.getChars().replaceAll("\\s*\\z", "");
 						//if (!TextBorderStyle.NONE.equals(frame)) {
-							res = tb.addBorderToRow(align(tb, chars, row.getLeftMargin(), row.getRightMargin(), TextBorder.Align.valueOf(row.getAlignment().toString())), 
+							res = tb.addBorderToRow(
+									padLeft(getParent().getLayoutMaster().getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment()), 
 									StringTools.fill(getMarginCharacter(), row.getRightMargin()),
 									TextBorderStyle.NONE.equals(border));
 						//} else {
@@ -243,16 +245,8 @@ class PageImpl implements Page {
 		}
 	}
 	
-	String align(TextBorder tb, String text, int innerLeftBorder, int innerRightBorder, TextBorder.Align align) {
-		int tRowFill = tb.getRowFill() - innerLeftBorder - innerRightBorder;
-    	switch (align) {
-	    	case LEFT: return StringTools.fill(getMarginCharacter(), innerLeftBorder) + text;
-	    	case CENTER:
-				return StringTools.fill(getMarginCharacter(), (int) Math.floor((tRowFill - text.length()) / 2d) + innerLeftBorder) + text;
-	    	case RIGHT:
-				return StringTools.fill(getMarginCharacter(), tRowFill - text.length() + innerLeftBorder) + text;
-    	}
-    	throw new RuntimeException("Unhandled case in enum");
+	String padLeft(int w, String text, int leftMargin, int rightMargin, FormattingTypes.Alignment align) {
+		return StringTools.fill(getMarginCharacter(), align.getOffset(w - (leftMargin + rightMargin + text.length())) + leftMargin) + text;
 	}
 
 	/**

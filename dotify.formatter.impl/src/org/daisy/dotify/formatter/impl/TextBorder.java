@@ -189,10 +189,6 @@ class TextBorder {
 		ret.add(row);
 		return row;
 	}*/
-	
-	public int getRowFill() {
-		return rowFill;
-	}
 
 	public String addBorderToRow(String text, String innerRightBorder, boolean bypass) {
     	StringBuffer sb = new StringBuffer();
