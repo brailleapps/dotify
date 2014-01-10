@@ -52,7 +52,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.rdp = rdp;
 		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin();
 		this.rightMargin = rdp.getRightMargin();
-		this.item = null;
+		this.item = rdp.getListItem();
 		this.spaceChar = rdp.getTranslator().translate(" ").getTranslatedRemainder();
 		
 		this.rows = new Stack<RowImpl>();
@@ -74,9 +74,6 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private void calculateRows(Stack<Segment> segments, RowDataProperties rdp) {
 		isVolatile = false;
 		
-		if (rdp.isList()) {
-			item = rdp.getListItem();
-		}
 		for (Segment s : segments) {
 			switch (s.getSegmentType()) {
 				case NewLine:
