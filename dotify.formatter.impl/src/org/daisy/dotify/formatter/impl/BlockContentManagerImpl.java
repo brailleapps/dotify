@@ -75,7 +75,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		Stack<RowImpl> ret = new Stack<RowImpl>();
 		
 		if (rdp.isList()) {
-			setListItem(rdp.getListItem());
+			item = rdp.getListItem();
 		}
 		for (Segment s : segments) {
 			switch (s.getSegmentType()) {
@@ -92,7 +92,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 				case Text:
 				{
 					TextSegment ts = (TextSegment)s;
-					setBlockProperties(ts.getBlockProperties());
+					p = ts.getBlockProperties();
 					boolean oldValue = rdp.getTranslator().isHyphenating();
 					rdp.getTranslator().setHyphenating(ts.getTextProperties().isHyphenating());
 					layout(ts.getChars(), ret, rdp, ts.getTextProperties().getLocale());
@@ -101,10 +101,10 @@ class BlockContentManagerImpl implements BlockContentManager {
 				}
 				case Leader:
 				{
-					if (getCurrentLeader()!=null) {
+					if (currentLeader!=null) {
 						layout("",  ret, rdp, null);
 					}
-					setCurrentLeader((Leader)s);
+					currentLeader= (Leader)s;
 					break;
 				}
 				case Reference:
@@ -146,7 +146,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 			}
 		}
 		
-		if (getCurrentLeader()!=null || getListItem()!=null) {
+		if (currentLeader!=null || item!=null) {
 			layout("", ret, rdp, null);
 		}
 		return ret;
@@ -171,35 +171,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 	public boolean isVolatile() {
 		return isVolatile;
 	}
-	
-	/**
-	 * Sets the list item to use for the following call to layoutBlock / appendBlock.
-	 * @param item, the list item
-	 */
-	public void setListItem(ListItem item) {
-		this.item = item;
-	}
-	
-	/**
-	 * Gets the current list item.
-	 * @return returns the current list item, or null if there is no current list item
-	 */
-	public ListItem getListItem() {
-		return item;
-	}
 
-	public void setBlockProperties(BlockProperties p) {
-		this.p = p;
-	}
-	
-	public void setCurrentLeader(Leader l) {
-		currentLeader = l;
-	}
-	
-	public Leader getCurrentLeader() {
-		return currentLeader;
-	}
-	
 	/**
 	 * Break text into rows. 
 	 * @param btr the translator result to break into rows
