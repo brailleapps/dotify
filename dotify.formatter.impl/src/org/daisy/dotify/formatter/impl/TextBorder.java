@@ -28,7 +28,7 @@ class TextBorder {
 		 * Align text to the right
 		 */
 		RIGHT};
-	private final int topFill, rowFill, bottomFill;
+	private final int topFill, rowFill, bottomFill, width;
 	private final String topLeftCorner, topBorder, topRightCorner, leftBorder,
 			rightBorder, bottomLeftCorner, bottomBorder, bottomRightCorner,
 			fillCharacter;
@@ -123,6 +123,7 @@ class TextBorder {
 		this.topFill = builder.width - (topLeftCorner.length() + topRightCorner.length());
 		this.rowFill = builder.width - (leftBorder.length() + rightBorder.length());
 		this.bottomFill = builder.width - (bottomLeftCorner.length() + bottomRightCorner.length());
+		this.width = builder.width;
 		this.fillCharacter = builder.fillCharacter;
 		this.ret = new ArrayList<RowImpl>();
 	}
@@ -216,16 +217,8 @@ class TextBorder {
     	}
     	sb.append(text);
 		if (!bypass) {
-			switch (align) {
-				case LEFT:
-					sb.append(StringTools.fill(fillCharacter, tRowFill - text.length()));
-					break;
-				case CENTER:
-					sb.append(StringTools.fill(fillCharacter, (int) Math.ceil((tRowFill - text.length()) / 2d)));
-					break;
-				case RIGHT:
-					break;
-			}
+			//pad to size
+			sb.append(StringTools.fill(fillCharacter, width - sb.length() - innerRightBorder.length() - rightBorder.length()));
 			sb.append(innerRightBorder);
 			sb.append(rightBorder);
     	}
