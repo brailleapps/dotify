@@ -133,7 +133,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 				case Anchor:
 				{
 					AnchorSegment as = (AnchorSegment)s;
-					if (segments.isEmpty()) {
+					if (rows.isEmpty()) {
 						groupAnchors.add(as.getReferenceID());
 					} else {
 						rows.peek().addAnchor(as.getReferenceID());

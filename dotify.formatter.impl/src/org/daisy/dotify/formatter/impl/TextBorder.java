@@ -189,6 +189,10 @@ class TextBorder {
 		return row;
 	}
 
+	public String addBorderToRow(String text, String innerLeftBorder, String innerRightBorder, boolean bypass) {
+		return addBorderToRow(text, Align.LEFT, innerLeftBorder, innerRightBorder, bypass);
+	}
+
 	// Note: this is a transitional implementation (supporting both old code and
 	// the replacement code), therefore
 	// it might look a bit odd. It should be cleaned up, once the old code has
