@@ -442,7 +442,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Block.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManager.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManagerImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockHandler.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
