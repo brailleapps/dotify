@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.tools.StringTools;
 
@@ -33,7 +32,7 @@ class TextBorder {
 			rightBorder, bottomLeftCorner, bottomBorder, bottomRightCorner,
 			fillCharacter;
 
-	private Align align;
+	//private Align align;
 
 	private final List<RowImpl> ret;
 
@@ -44,7 +43,7 @@ class TextBorder {
 	public static class Builder {
 		final int width;
 		final String fillCharacter;
-		Align align;
+		//Align align;
 		TextBorderStyle style;
 		String outerLeftMargin, innerLeftMargin, innerRightMargin;
 		
@@ -55,7 +54,7 @@ class TextBorder {
 		public Builder(int width, String fillCharacter) {
 			this.width = width;
 			this.fillCharacter = fillCharacter;
-			this.align = Align.LEFT;
+			//this.align = Align.LEFT;
 			this.style = TextBorderStyle.NONE;
 			this.outerLeftMargin = "";
 			this.innerLeftMargin = "";
@@ -78,11 +77,11 @@ class TextBorder {
 		 * Sets the text alignment
 		 * @param align the text alignment
 		 * @return returns this Builder
-		 */
+		 *//*
 		public Builder alignment(Align align) {
 			this.align = align;
 			return this;
-		}
+		}*/
 		
 		public Builder outerLeftMargin(String margin) {
 			this.outerLeftMargin = margin;
@@ -109,7 +108,7 @@ class TextBorder {
 	}
 
 	private TextBorder(Builder builder) {
-		this.align = builder.align;
+		//this.align = builder.align;
 
 		this.topLeftCorner = builder.outerLeftMargin + builder.style.getTopLeftCorner();
 		this.topBorder = builder.style.getTopBorder();
@@ -151,7 +150,7 @@ class TextBorder {
 	 * is continued on a new row.</p>
 	 * @param bph the translator result to add borders to
 	 * @return returns an ArrayList of String where each String is a row in the block.
-	 */
+	 *//*
 	public void addParagraph(BrailleTranslatorResult bph) {
 		for (String s : addBorderToParagraph(bph)) {
 			ret.add(new RowImpl(s));
@@ -176,7 +175,7 @@ class TextBorder {
 			ret.add(addBorderToRow(bph.nextTranslatedRow(rowFill, true).replaceAll("\\s*\\z", ""), align, "", "", false));
     	}
     	return ret;
-	}
+	}*/
 
 	/**
 	 * Adds borders to a line of text.
@@ -184,37 +183,20 @@ class TextBorder {
 	 * @return returns the text padded with space and surrounded with the left and right border patterns.
 	 * @throws IllegalArgumentException if the String does not fit within a single row.
 	 */
+	/*
 	public RowImpl addRow(String text) {
 		RowImpl row = new RowImpl(addBorderToRow(text, align, "", "", false));
 		ret.add(row);
 		return row;
+	}*/
+	
+	public int getRowFill() {
+		return rowFill;
 	}
 
-	public String addBorderToRow(String text, String innerLeftBorder, String innerRightBorder, boolean bypass) {
-		return addBorderToRow(text, Align.LEFT, innerLeftBorder, innerRightBorder, bypass);
-	}
-
-	// Note: this is a transitional implementation (supporting both old code and
-	// the replacement code), therefore
-	// it might look a bit odd. It should be cleaned up, once the old code has
-	// been removed.
-	public String addBorderToRow(String text, Align align, String innerLeftBorder, String innerRightBorder, boolean bypass) {
-		int tRowFill = rowFill - innerLeftBorder.length() - innerRightBorder.length();
-		if (text.length() > tRowFill) {
-			throw new IllegalArgumentException("String (" + text + ") length (" + text.length() + ") must be <= width (" + tRowFill + ")");
-    	}
+	public String addBorderToRow(String text, String innerRightBorder, boolean bypass) {
     	StringBuffer sb = new StringBuffer();
 		sb.append(leftBorder);
-		sb.append(innerLeftBorder);
-    	switch (align) {
-	    	case LEFT: break;
-	    	case CENTER:
-				sb.append(StringTools.fill(fillCharacter, (int) Math.floor((tRowFill - text.length()) / 2d)));
-	    		break;
-	    	case RIGHT:
-				sb.append(StringTools.fill(fillCharacter, tRowFill - text.length()));
-	    		break;
-    	}
     	sb.append(text);
 		if (!bypass) {
 			//pad to size

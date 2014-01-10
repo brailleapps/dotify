@@ -185,9 +185,7 @@ class PageImpl implements Page {
 						// remove trailing whitespace
 						String chars = row.getChars().replaceAll("\\s*\\z", "");
 						//if (!TextBorderStyle.NONE.equals(frame)) {
-							res = tb.addBorderToRow(chars, 
-									TextBorder.Align.valueOf(row.getAlignment().toString()), 
-									StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
+							res = tb.addBorderToRow(align(tb, chars, row.getLeftMargin(), row.getRightMargin(), TextBorder.Align.valueOf(row.getAlignment().toString())), 
 									StringTools.fill(getMarginCharacter(), row.getRightMargin()),
 									TextBorderStyle.NONE.equals(border));
 						//} else {
@@ -195,9 +193,7 @@ class PageImpl implements Page {
 						//}
 					} else {
 						if (!TextBorderStyle.NONE.equals(border)) {
-							res = tb.addBorderToRow("", 
-									TextBorder.Align.valueOf(row.getAlignment().toString()),
-									StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
+							res = tb.addBorderToRow(StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
 									StringTools.fill(getMarginCharacter(), row.getRightMargin()), false);
 						} else {
 							res = "";
@@ -218,9 +214,7 @@ class PageImpl implements Page {
 						if (row!=ret.get(ret.size()-1)) {
 							RowImpl s = null;
 							for (int i = 0; i < rs.lines-1; i++) {
-								s = new RowImpl(tb.addBorderToRow("", 
-										TextBorder.Align.valueOf(row.getAlignment().toString()),
-										StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
+								s = new RowImpl(tb.addBorderToRow(StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
 										StringTools.fill(getMarginCharacter(), row.getRightMargin()), false));
 								s.setRowSpacing(rs.spacing);
 								ret2.add(s);
@@ -247,6 +241,18 @@ class PageImpl implements Page {
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Cannot render header/footer", e);
 		}
+	}
+	
+	String align(TextBorder tb, String text, int innerLeftBorder, int innerRightBorder, TextBorder.Align align) {
+		int tRowFill = tb.getRowFill() - innerLeftBorder - innerRightBorder;
+    	switch (align) {
+	    	case LEFT: return StringTools.fill(getMarginCharacter(), innerLeftBorder) + text;
+	    	case CENTER:
+				return StringTools.fill(getMarginCharacter(), (int) Math.floor((tRowFill - text.length()) / 2d) + innerLeftBorder) + text;
+	    	case RIGHT:
+				return StringTools.fill(getMarginCharacter(), tRowFill - text.length() + innerLeftBorder) + text;
+    	}
+    	throw new RuntimeException("Unhandled case in enum");
 	}
 
 	/**
