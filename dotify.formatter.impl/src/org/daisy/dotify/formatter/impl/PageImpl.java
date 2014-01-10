@@ -170,7 +170,8 @@ class PageImpl implements Page {
 
 				tb = new TextBorder.Builder(w, getMarginCharacter())
 						.style(border)
-						.outerLeftMargin(StringTools.fill(getMarginCharacter(), pageMargin))
+						.outerLeftMargin(pageMargin)
+						.padToSize(!TextBorderStyle.NONE.equals(border))
 						.build();
 				if (!TextBorderStyle.NONE.equals(border)) {
 					RowImpl r = new RowImpl(tb.getTopBorder());
@@ -188,15 +189,14 @@ class PageImpl implements Page {
 						//if (!TextBorderStyle.NONE.equals(frame)) {
 							res = tb.addBorderToRow(
 									padLeft(getParent().getLayoutMaster().getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment()), 
-									StringTools.fill(getMarginCharacter(), row.getRightMargin()),
-									TextBorderStyle.NONE.equals(border));
+									StringTools.fill(getMarginCharacter(), row.getRightMargin()));
 						//} else {
 						//	res = StringTools.fill(getMarginCharacter(), pageMargin + row.getLeftMargin()) + chars;
 						//}
 					} else {
 						if (!TextBorderStyle.NONE.equals(border)) {
 							res = tb.addBorderToRow(StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
-									StringTools.fill(getMarginCharacter(), row.getRightMargin()), false);
+									StringTools.fill(getMarginCharacter(), row.getRightMargin()));
 						} else {
 							res = "";
 						}
@@ -217,7 +217,7 @@ class PageImpl implements Page {
 							RowImpl s = null;
 							for (int i = 0; i < rs.lines-1; i++) {
 								s = new RowImpl(tb.addBorderToRow(StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
-										StringTools.fill(getMarginCharacter(), row.getRightMargin()), false));
+										StringTools.fill(getMarginCharacter(), row.getRightMargin())));
 								s.setRowSpacing(rs.spacing);
 								ret2.add(s);
 							}
