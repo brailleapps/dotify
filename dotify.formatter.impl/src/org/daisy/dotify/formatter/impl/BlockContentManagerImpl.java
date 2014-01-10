@@ -37,7 +37,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private final int rightMargin;
 	
 	private Leader currentLeader;
-	private ArrayList<RowImpl> ret;
+
 	private BlockProperties p;
 	private ListItem item;
 	
@@ -47,7 +47,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.refs = refs;
 		
 		this.currentLeader = null;
-		this.ret = new ArrayList<RowImpl>();
+
 		this.p = new BlockProperties.Builder().build();
 		this.rdp = rdp;
 		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin();
@@ -55,7 +55,8 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.item = null;
 		this.spaceChar = rdp.getTranslator().translate(" ").getTranslatedRemainder();
 		
-		this.rows = calculateRows(segments, rdp);
+		this.rows = new Stack<RowImpl>();
+		calculateRows(segments, rdp);
 	}
 	
 	/**
@@ -70,9 +71,8 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return groupAnchors;
 	}
 	
-	private Stack<RowImpl> calculateRows(Stack<Segment> segments, RowDataProperties rdp) {
+	private void calculateRows(Stack<Segment> segments, RowDataProperties rdp) {
 		isVolatile = false;
-		Stack<RowImpl> ret = new Stack<RowImpl>();
 		
 		if (rdp.isList()) {
 			item = rdp.getListItem();
@@ -82,11 +82,11 @@ class BlockContentManagerImpl implements BlockContentManager {
 				case NewLine:
 				{
 					//flush
-					layout("", ret, rdp, null);
+					layout("", null);
 					RowImpl r = new RowImpl("");
 					r.setLeftMargin(((NewLineSegment)s).getLeftIndent());
 					r.setRightMargin(rdp.getRightMargin());
-					ret.add(r);
+					rows.add(r);
 					break;
 				}
 				case Text:
@@ -95,14 +95,14 @@ class BlockContentManagerImpl implements BlockContentManager {
 					p = ts.getBlockProperties();
 					boolean oldValue = rdp.getTranslator().isHyphenating();
 					rdp.getTranslator().setHyphenating(ts.getTextProperties().isHyphenating());
-					layout(ts.getChars(), ret, rdp, ts.getTextProperties().getLocale());
+					layout(ts.getChars(), ts.getTextProperties().getLocale());
 					rdp.getTranslator().setHyphenating(oldValue);
 					break;
 				}
 				case Leader:
 				{
 					if (currentLeader!=null) {
-						layout("",  ret, rdp, null);
+						layout("",   null);
 					}
 					currentLeader= (Leader)s;
 					break;
@@ -117,19 +117,19 @@ class BlockContentManagerImpl implements BlockContentManager {
 					}
 					//TODO: translate references using custom language?
 					if (page==null) {
-						layout("??", ret, rdp, null);
+						layout("??",  null);
 					} else {
-						layout("" + NumeralStyleFormatter.format(page, rs.getNumeralStyle()), ret, rdp, null);
+						layout("" + NumeralStyleFormatter.format(page, rs.getNumeralStyle()), null);
 					}
 					break;
 				}
 				case Marker:
 				{
 					Marker m = (Marker)s;
-					if (ret.isEmpty()) {
+					if (rows.isEmpty()) {
 						groupMarkers.add(m);
 					} else {
-						ret.peek().addMarker(m);
+						rows.peek().addMarker(m);
 					}
 					break;
 				}
@@ -139,7 +139,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 					if (segments.isEmpty()) {
 						groupAnchors.add(as.getReferenceID());
 					} else {
-						ret.peek().addAnchor(as.getReferenceID());
+						rows.peek().addAnchor(as.getReferenceID());
 					}
 					break;
 				}
@@ -147,16 +147,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		}
 		
 		if (currentLeader!=null || item!=null) {
-			layout("", ret, rdp, null);
-		}
-		return ret;
-	}
-
-	private void layout(CharSequence c, Stack<RowImpl> rows, RowDataProperties rdp, String locale) {
-		if (rows.size()==0) {
-			rows.addAll(layoutBlock(c, locale));
-		} else {
-			rows.addAll(appendBlock(c, rows.pop(), locale));
+			layout("",  null);
 		}
 	}
 
@@ -172,37 +163,10 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return isVolatile;
 	}
 
-	/**
-	 * Break text into rows. 
-	 * @param btr the translator result to break into rows
-	 * @param leftMargin left margin of the text
-	 * @param blockIndent the block indent
-	 * @param blockIndentParent the block indent parent
-	 * @return returns an ArrayList of Rows
-	 */
-	public ArrayList<RowImpl> layoutBlock(CharSequence c, String locale) {
-		return layoutBlock(c, null, locale);
-	}
-	
-	/**
-	 * Continue a block of text, starting on the supplied row.
-	 * @param btr the translator result to break into rows
-	 * @param leftMargin left margin of the text
-	 * @param row the row to continue the layout on
-	 * @param blockIndent the block indent
-	 * @param blockIndentParent the block indent parent
-	 * @return returns an ArrayList of Rows. The first row being the supplied row, with zero or more characters
-	 * from <tt>text</tt>
-	 */
-	public ArrayList<RowImpl> appendBlock(CharSequence c, RowImpl r, String locale) {
-		return layoutBlock(c, r, locale);
-	}
-
-	private ArrayList<RowImpl> layoutBlock(CharSequence c, RowImpl r, String locale) {
+	private void layout(CharSequence c, String locale) {
 		BrailleTranslatorResult btr = getTranslatedResult(c, locale);
-		ret = new ArrayList<RowImpl>();
 		// process first row, is it a new block or should we continue the current row?
-		if (r==null) {
+		if (rows.size()==0) {
 			// add to left margin
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel = rdp.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
@@ -216,12 +180,12 @@ class BlockContentManagerImpl implements BlockContentManager {
 				newRow("", btr, rdp.getLeftMargin(), p.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
+			RowImpl r  = rows.pop();
 			newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
 			newRow("", btr, rdp.getLeftMargin(), p.getTextIndent(), rdp.getBlockIndent());
 		}
-		return ret;
 	}
 	
 	private BrailleTranslatorResult getTranslatedResult(CharSequence c, String locale) {
@@ -289,7 +253,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 					row.addMarkers(r);
 					r = null;
 				}
-				ret.add(row);
+				rows.add(row);
 
 				preContent = StringTools.fill(spaceChar, p.getTextIndent()+blockIndent);
 				preTextIndent = StringTools.length(preContent);
@@ -336,7 +300,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		if (nr.getChars().length()>master.getFlowWidth()) {
 			throw new RuntimeException("Row is too long (" + nr.getChars().length() + "/" + master.getFlowWidth() + ") '" + nr.getChars() + "'");
 		}*/
-		ret.add(nr);
+		rows.add(nr);
 	}
 
 }
