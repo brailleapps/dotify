@@ -31,27 +31,20 @@ class RowImpl implements Row {
 	 * @param chars the characters on this row
 	 */
 	public RowImpl(String chars) {
+		this(chars, new MarginProperties(), new MarginProperties());
+	}
+	public RowImpl(String chars, MarginProperties leftMargin, MarginProperties rightMargin) {
 		this.chars = chars;
 		this.markers = new ArrayList<Marker>();
 		this.anchors = new ArrayList<String>();
-		this.leftMargin = new MarginProperties();
-		this.rightMargin = new MarginProperties();
+		this.leftMargin = leftMargin;
+		this.rightMargin = rightMargin;
 		this.alignment = Alignment.LEFT;
 		this.rowSpacing = null;
 		/*
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		*/
-	}
-	
-	public RowImpl(String chars, RowDataProperties p) {
-		this.chars = chars;
-		this.markers = new ArrayList<Marker>();
-		this.anchors = new ArrayList<String>();
-		this.leftMargin = p.getLeftMargin();
-		this.rightMargin = p.getRightMargin();
-		this.alignment = Alignment.LEFT;
-		this.rowSpacing = null;
 	}
 
 	/**

@@ -113,17 +113,16 @@ public class PaginatorImpl {
 								break;
 						}
 						for (int i = 0; i < Math.floor(advance / seq.getLayoutMaster().getRowSpacing()); i++) {
-							pageStruct.newRow(new RowImpl("", g.getRowDataProperties()));
+							pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
 						}
 					}
+				}
+				for (int i=0; i<g.getSpaceBefore();i++) {
+					pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
 				}
 				if (g.getLeadingDecoration()!=null) {
 					pageStruct.newRow(newRow(g.getRowDataProperties(), g.getLeadingDecoration()));
 				}
-				for (int i=0; i<g.getSpaceBefore();i++) {
-					pageStruct.newRow(new RowImpl("", g.getRowDataProperties()));
-				}
-
 				pageStruct.insertMarkers(rdm.getGroupMarkers());
 				boolean first = true;
 				
@@ -144,15 +143,15 @@ public class PaginatorImpl {
 					}
 				}
 				pageStruct.currentSequence().setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
+				if (g.getTrailingDecoration()!=null) {
+					pageStruct.newRow(newRow(g.getRowDataProperties(), g.getTrailingDecoration()));
+				}
 				if (g.getSpaceAfter() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
 				} else {
 					for (int i=0; i<g.getSpaceAfter();i++) {
-						pageStruct.newRow(new RowImpl("", g.getRowDataProperties()));
+						pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
 					}
-				}
-				if (g.getTrailingDecoration()!=null) {
-					pageStruct.newRow(newRow(g.getRowDataProperties(), g.getTrailingDecoration()));
 				}
 				//gi++;
 			}

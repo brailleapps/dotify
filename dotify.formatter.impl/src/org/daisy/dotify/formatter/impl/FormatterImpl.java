@@ -176,7 +176,9 @@ public class FormatterImpl implements Formatter {
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
 			BlockImpl bi = flowStruct.getCurrentSequence().getCurrentBlock();
-			bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
+			if (t.getTopLeftCorner().length()+t.getTopBorder().length()+t.getTopRightCorner().length()>0) {
+				bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
+			}
 		}
 		//firstRow = true;
 	}
@@ -189,8 +191,10 @@ public class FormatterImpl implements Formatter {
 		BlockProperties p = context.pop();
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
-			flowStruct.getCurrentSequence().getCurrentBlock()
+			if (t.getBottomLeftCorner().length()+ t.getBottomBorder().length()+ t.getBottomRightCorner().length()>0) {
+				flowStruct.getCurrentSequence().getCurrentBlock()
 				.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
+			}
 		}
 		flowStruct.getCurrentSequence().getCurrentBlock().addSpaceAfter(p.getBottomMargin());
 		flowStruct.getCurrentSequence().getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
