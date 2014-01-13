@@ -182,8 +182,10 @@ Dotify/test/org/daisy/dotify/impl/input/text/resource-files/normalize.xsl -text
 Dotify/test/org/daisy/dotify/impl/input/xml/XMLInputManagerFactoryTest.java -text
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#text/plain
+Dotify/test/org/daisy/dotify/resource-files/obfl-border-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-dls-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-input-border.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-dls.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
 DotifyDevtools/.classpath -text

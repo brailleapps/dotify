@@ -52,6 +52,15 @@ public class LayoutEngineTest {
 
 	@Test
 	public void testLayoutEngingeDLS() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/obfl-input-dls.obfl", "resource-files/obfl-dls-expected.pef");
+	}
+	
+	@Test
+	public void testLayoutEngingeBorder() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/obfl-input-border.obfl", "resource-files/obfl-border-expected.pef");
+	}
+	
+	private void testPEF(String input, String expected) throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("sv-SE",
 				BrailleTranslatorFactory.MODE_UNCONTRACTED, 
 				PagedMediaWriterFactoryMaker.newInstance().newPagedMediaWriter(MediaTypes.PEF_MEDIA_TYPE));
@@ -59,11 +68,11 @@ public class LayoutEngineTest {
 		File res = File.createTempFile("TestResult", ".tmp");
 		res.deleteOnExit();
 
-		engine.convert(this.getClass().getResourceAsStream("resource-files/obfl-input-dls.obfl"), new FileOutputStream(res));
+		engine.convert(this.getClass().getResourceAsStream(input), new FileOutputStream(res));
 
 		try {
 			PEFFileCompare cmp = new PEFFileCompare();
-			cmp.compare(new StreamSource(this.getClass().getResourceAsStream("resource-files/obfl-dls-expected.pef")), new StreamSource(new FileInputStream(res)));
+			cmp.compare(new StreamSource(this.getClass().getResourceAsStream(expected)), new StreamSource(new FileInputStream(res)));
 			assertEquals("Binary compare is equal", -1, cmp.getPos());
 		} catch (IOException e) {
 			e.printStackTrace();
