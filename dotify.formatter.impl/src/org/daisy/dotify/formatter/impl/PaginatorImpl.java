@@ -121,7 +121,7 @@ public class PaginatorImpl {
 					pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
 				}
 				if (g.getLeadingDecoration()!=null) {
-					pageStruct.newRow(newRow(g.getRowDataProperties(), g.getLeadingDecoration()));
+					pageStruct.newRow(makeDecorationRow(g.getRowDataProperties(), g.getLeadingDecoration()));
 				}
 				pageStruct.insertMarkers(rdm.getGroupMarkers());
 				boolean first = true;
@@ -144,7 +144,7 @@ public class PaginatorImpl {
 				}
 				pageStruct.currentSequence().setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
 				if (g.getTrailingDecoration()!=null) {
-					pageStruct.newRow(newRow(g.getRowDataProperties(), g.getTrailingDecoration()));
+					pageStruct.newRow(makeDecorationRow(g.getRowDataProperties(), g.getTrailingDecoration()));
 				}
 				if (g.getSpaceAfter() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
@@ -159,7 +159,7 @@ public class PaginatorImpl {
 		return pageStruct;
 	}
 	
-	private RowImpl newRow(RowDataProperties rdp, SingleLineDecoration d) {
+	private RowImpl makeDecorationRow(RowDataProperties rdp, SingleLineDecoration d) {
 		int w = rdp.getMaster().getFlowWidth() - rdp.getRightMarginParent().getContent().length() - rdp.getLeftMarginParent().getContent().length();
 		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
 		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
