@@ -2,13 +2,13 @@ package org.daisy.dotify.formatter.impl;
 
 
 class NewLineSegment implements Segment {
-	private final int leftIndent;
+	private final MarginProperties leftIndent;
 	
-	public NewLineSegment(int leftIndent) {
+	public NewLineSegment(MarginProperties leftIndent) {
 		this.leftIndent = leftIndent;
 	}
 	
-	public int getLeftIndent() {
+	public MarginProperties getLeftIndent() {
 		return leftIndent;
 	}
 

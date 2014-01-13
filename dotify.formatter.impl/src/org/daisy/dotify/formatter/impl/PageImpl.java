@@ -189,16 +189,20 @@ class PageImpl implements Page {
 						//if (!TextBorderStyle.NONE.equals(frame)) {
 							res = tb.addBorderToRow(
 									padLeft(getParent().getLayoutMaster().getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment()), 
-									StringTools.fill(getMarginCharacter(), row.getRightMargin()));
+									"");
 						//} else {
 						//	res = StringTools.fill(getMarginCharacter(), pageMargin + row.getLeftMargin()) + chars;
 						//}
 					} else {
 						if (!TextBorderStyle.NONE.equals(border)) {
-							res = tb.addBorderToRow(StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
-									StringTools.fill(getMarginCharacter(), row.getRightMargin()));
+							res = tb.addBorderToRow(row.getLeftMargin().getContent(), row.getRightMargin().getContent());
 						} else {
-							res = "";
+							if (!row.getLeftMargin().isSpaceOnly() || !row.getRightMargin().isSpaceOnly()) {
+								res = TextBorder.addBorderToRow(
+									lm.getFlowWidth(), row.getLeftMargin().getContent(), "", row.getRightMargin().getContent(), marginCharacter);
+							} else {
+								res = "";
+							}
 						}
 					}
 					int rowWidth = StringTools.length(res) + pageMargin;
@@ -216,8 +220,7 @@ class PageImpl implements Page {
 						if (row!=ret.get(ret.size()-1)) {
 							RowImpl s = null;
 							for (int i = 0; i < rs.lines-1; i++) {
-								s = new RowImpl(tb.addBorderToRow(StringTools.fill(getMarginCharacter(), row.getLeftMargin()), 
-										StringTools.fill(getMarginCharacter(), row.getRightMargin())));
+								s = new RowImpl(tb.addBorderToRow(row.getLeftMargin().getContent(), row.getRightMargin().getContent()));
 								s.setRowSpacing(rs.spacing);
 								ret2.add(s);
 							}
@@ -245,8 +248,17 @@ class PageImpl implements Page {
 		}
 	}
 	
-	String padLeft(int w, String text, int leftMargin, int rightMargin, FormattingTypes.Alignment align) {
-		return StringTools.fill(getMarginCharacter(), align.getOffset(w - (leftMargin + rightMargin + text.length())) + leftMargin) + text;
+	String padLeft(int w, String text, MarginProperties leftMargin, MarginProperties rightMargin, FormattingTypes.Alignment align) {
+		if (text.equals("") && leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
+			return "";
+		} else {
+			String r = leftMargin.getContent() + StringTools.fill(getMarginCharacter(), align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;
+			if (rightMargin.isSpaceOnly()) {
+				return r;
+			} else {
+				return r + StringTools.fill(getMarginCharacter(), w - r.length() - rightMargin.getContent().length()) + rightMargin.getContent();
+			}
+		}
 	}
 
 	/**

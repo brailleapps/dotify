@@ -114,5 +114,21 @@ class TextBorder {
     	}
     	return sb.toString();
 	}
+	
+	public static String addBorderToRow(int width, String leftBorder, String text, String rightBorder, String fillCharacter) {
+		return addBorderToRow(width, leftBorder, text, rightBorder, fillCharacter, true);
+	}
+	
+	public static String addBorderToRow(int width, String leftBorder, String text, String rightBorder, String fillCharacter, boolean pad) {
+    	StringBuffer sb = new StringBuffer();
+		sb.append(leftBorder);
+    	sb.append(text);
+		if (pad) {
+			//pad to size
+			sb.append(StringTools.fill(fillCharacter, width - sb.length() - rightBorder.length()));
+			sb.append(rightBorder);
+    	}
+    	return sb.toString();
+	}
 
 }

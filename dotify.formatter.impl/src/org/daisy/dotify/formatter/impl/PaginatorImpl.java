@@ -6,6 +6,7 @@ import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.tools.StateObject;
+import org.daisy.dotify.tools.StringTools;
 
 /**
  * Provides an implementation of the paginator interface. This class should
@@ -112,12 +113,15 @@ public class PaginatorImpl {
 								break;
 						}
 						for (int i = 0; i < Math.floor(advance / seq.getLayoutMaster().getRowSpacing()); i++) {
-							pageStruct.newRow(new RowImpl(""));
+							pageStruct.newRow(new RowImpl("", g.getRowDataProperties()));
 						}
 					}
 				}
+				if (g.getLeadingDecoration()!=null) {
+					pageStruct.newRow(newRow(g.getRowDataProperties(), g.getLeadingDecoration()));
+				}
 				for (int i=0; i<g.getSpaceBefore();i++) {
-					pageStruct.newRow(new RowImpl(""));
+					pageStruct.newRow(new RowImpl("", g.getRowDataProperties()));
 				}
 
 				pageStruct.insertMarkers(rdm.getGroupMarkers());
@@ -144,13 +148,25 @@ public class PaginatorImpl {
 					pageStruct.currentSequence().newPageOnRow();
 				} else {
 					for (int i=0; i<g.getSpaceAfter();i++) {
-						pageStruct.newRow(new RowImpl(""));
+						pageStruct.newRow(new RowImpl("", g.getRowDataProperties()));
 					}
+				}
+				if (g.getTrailingDecoration()!=null) {
+					pageStruct.newRow(newRow(g.getRowDataProperties(), g.getTrailingDecoration()));
 				}
 				//gi++;
 			}
 		}
 		return pageStruct;
+	}
+	
+	private RowImpl newRow(RowDataProperties rdp, SingleLineDecoration d) {
+		int w = rdp.getMaster().getFlowWidth() - rdp.getRightMarginParent().getContent().length() - rdp.getLeftMarginParent().getContent().length();
+		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
+		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
+		row.setLeftMargin(rdp.getLeftMarginParent());
+		row.setRightMargin(rdp.getRightMarginParent());
+		return row;
 	}
 
 }

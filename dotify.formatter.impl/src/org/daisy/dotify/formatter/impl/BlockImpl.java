@@ -27,6 +27,8 @@ class BlockImpl implements Block {
 	private final RowDataProperties.Builder rdp;
 	private BlockContentManager rdm;
 	private BlockPosition verticalPosition;
+	private SingleLineDecoration leadingDecoration = null;
+	private SingleLineDecoration trailingDecoration = null;
 
 	
 	BlockImpl(String blockId, RowDataProperties.Builder rdp) {
@@ -53,7 +55,7 @@ class BlockImpl implements Block {
 		segments.add(new AnchorSegment(ref));
 	}
 	
-	public void newLine(int leftIndent) {
+	public void newLine(MarginProperties leftIndent) {
 		segments.push(new NewLineSegment(leftIndent));
 	}
 	
@@ -162,6 +164,26 @@ class BlockImpl implements Block {
 			rdm = new BlockContentManagerImpl(segments, rdp.build(), refs);
 		}
 		return rdm;
+	}
+	
+	public SingleLineDecoration getLeadingDecoration() {
+		return leadingDecoration;
+	}
+	
+	public void setLeadingDecoration(SingleLineDecoration value) {
+		this.leadingDecoration = value;
+	}
+	
+	public SingleLineDecoration getTrailingDecoration() {
+		return trailingDecoration;
+	}
+
+	public void setTrailingDecoration(SingleLineDecoration value) {
+		this.trailingDecoration = value;
+	}
+	
+	public RowDataProperties getRowDataProperties() {
+		return rdp.build();
 	}
 
 }

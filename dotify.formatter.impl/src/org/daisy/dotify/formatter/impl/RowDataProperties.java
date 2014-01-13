@@ -7,7 +7,10 @@ class RowDataProperties {
 	private final int blockIndent, blockIndentParent;
 	private final BrailleTranslator translator;
 	private final LayoutMaster master;
-	private final int leftMargin, rightMargin;
+	private final MarginProperties leftMargin;
+	private final MarginProperties rightMargin;
+	private final MarginProperties leftMarginParent;
+	private final MarginProperties rightMarginParent;
 	private final ListItem listProps;
 	
 	static class Builder {
@@ -15,8 +18,10 @@ class RowDataProperties {
 		private final LayoutMaster master;
 		private int blockIndent = 0;
 		private int blockIndentParent = 0;
-		private int leftMargin = 0;
-		private int rightMargin = 0;
+		private MarginProperties leftMargin = new MarginProperties();
+		private MarginProperties rightMargin = new MarginProperties();
+		private MarginProperties leftMarginParent = new MarginProperties();
+		private MarginProperties rightMarginParent = new MarginProperties();
 		private ListItem listProps = null;
 		
 		public Builder(BrailleTranslator translator, LayoutMaster master) {
@@ -33,19 +38,29 @@ class RowDataProperties {
 			blockIndentParent = value;
 			return this;
 		}
-		public Builder leftMargin(int value) {
+		public Builder leftMargin(MarginProperties value) {
 			leftMargin = value;
 			return this;
 		}
 		
-		public Builder rightMargin(int value) {
+		public Builder rightMargin(MarginProperties value) {
 			rightMargin = value;
+			return this;
+		}
+		
+		public Builder leftMarginParent(MarginProperties value) {
+			leftMarginParent = value;
+			return this;
+		}
+		public Builder rightMarginParent(MarginProperties value) {
+			rightMarginParent = value;
 			return this;
 		}
 		public Builder listProperties(ListItem value) {
 			listProps = value;
 			return this;
 		}
+
 		public RowDataProperties build() {
 			return new RowDataProperties(this);
 		}
@@ -58,6 +73,8 @@ class RowDataProperties {
 		this.master = builder.master;
 		this.leftMargin = builder.leftMargin;
 		this.rightMargin = builder.rightMargin;
+		this.leftMarginParent = builder.leftMarginParent;
+		this.rightMarginParent = builder.rightMarginParent;
 		this.listProps = builder.listProps;
 	}
 
@@ -82,14 +99,20 @@ class RowDataProperties {
 		return master;
 	}
 
-	public int getLeftMargin() {
+	public MarginProperties getLeftMargin() {
 		return leftMargin;
 	}
 
-	public int getRightMargin() {
+	public MarginProperties getRightMargin() {
 		return rightMargin;
 	}
 	
+	public MarginProperties getLeftMarginParent() {
+		return leftMarginParent;
+	}
+	public MarginProperties getRightMarginParent() {
+		return rightMarginParent;
+	}
 	public boolean isList() {
 		return listProps!=null;
 	}

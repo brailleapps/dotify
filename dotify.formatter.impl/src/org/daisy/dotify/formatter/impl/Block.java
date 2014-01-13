@@ -35,4 +35,8 @@ public interface Block {
 	public int getKeepWithPreviousSheets();
 	public int getKeepWithNextSheets();
 	
+	public SingleLineDecoration getLeadingDecoration();
+	public SingleLineDecoration getTrailingDecoration();
+	public RowDataProperties getRowDataProperties();
+	
 }

@@ -17,8 +17,8 @@ class RowImpl implements Row {
 	private String chars;
 	private List<Marker> markers;
 	private List<String> anchors;
-	private int leftMargin;
-	private int rightMargin;
+	private MarginProperties leftMargin;
+	private MarginProperties rightMargin;
 	private Alignment alignment;
 	private Float rowSpacing;
 	/*
@@ -34,14 +34,24 @@ class RowImpl implements Row {
 		this.chars = chars;
 		this.markers = new ArrayList<Marker>();
 		this.anchors = new ArrayList<String>();
-		this.leftMargin = 0;
-		this.rightMargin = 0;
+		this.leftMargin = new MarginProperties();
+		this.rightMargin = new MarginProperties();
 		this.alignment = Alignment.LEFT;
 		this.rowSpacing = null;
 		/*
 		this.spaceBefore = 0;
 		this.spaceAfter = 0;
 		*/
+	}
+	
+	public RowImpl(String chars, RowDataProperties p) {
+		this.chars = chars;
+		this.markers = new ArrayList<Marker>();
+		this.anchors = new ArrayList<String>();
+		this.leftMargin = p.getLeftMargin();
+		this.rightMargin = p.getRightMargin();
+		this.alignment = Alignment.LEFT;
+		this.rowSpacing = null;
 	}
 
 	/**
@@ -113,7 +123,7 @@ class RowImpl implements Row {
 	 * Set the left margin
 	 * @param value the left margin, in characters
 	 */
-	public void setLeftMargin(int value) {
+	public void setLeftMargin(MarginProperties value) {
 		leftMargin = value;
 	}
 
@@ -121,15 +131,15 @@ class RowImpl implements Row {
 	 * Get the left margin value for the Row, in characters
 	 * @return returns the left margin
 	 */
-	public int getLeftMargin() {
+	public MarginProperties getLeftMargin() {
 		return leftMargin;
 	}
 
-	public int getRightMargin() {
+	public MarginProperties getRightMargin() {
 		return rightMargin;
 	}
 
-	public void setRightMargin(int rightMargin) {
+	public void setRightMargin(MarginProperties rightMargin) {
 		this.rightMargin = rightMargin;
 	}
 

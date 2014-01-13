@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
@@ -16,7 +17,9 @@ import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.tools.StateObject;
+import org.daisy.dotify.tools.StringTools;
 
 
 /**
@@ -24,8 +27,8 @@ import org.daisy.dotify.tools.StateObject;
  * @author Joel Håkansson
  */
 public class FormatterImpl implements Formatter {
-	private int leftMargin;
-	private int rightMargin;
+	private Stack<String> leftMargin;
+	private Stack<String> rightMargin;
 	private final BlockStructImpl flowStruct;
 	private final Stack<BlockProperties> context;
 	//private boolean firstRow;
@@ -40,6 +43,7 @@ public class FormatterImpl implements Formatter {
 	private int blockIndent;
 	private Stack<Integer> blockIndentParent;
 	private ListItem listItem;
+	private final String marginChar;
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement SpanProperites
@@ -50,14 +54,15 @@ public class FormatterImpl implements Formatter {
 	public FormatterImpl(BrailleTranslator translator) {
 		//this.filters = builder.filtersFactory.getDefault();
 		this.context = new Stack<BlockProperties>();
-		this.leftMargin = 0;
-		this.rightMargin = 0;
+		this.leftMargin = new Stack<String>();
+		this.rightMargin = new Stack<String>();
 		this.flowStruct = new BlockStructImpl(); //masters
 		this.state = new StateObject();
 		//this.filter = null;
 		//this.refs = null;
 		this.listItem = null;
 		this.translator = translator;
+		this.marginChar = translator.translate(" ").getTranslatedRemainder();
 	}
 
 	/*
@@ -104,11 +109,35 @@ public class FormatterImpl implements Formatter {
 	public void startBlock(BlockProperties p) {
 		startBlock(p, null);
 	}
+	
+	private MarginProperties stackString(List<String> inp, boolean reverse) {
+		StringBuilder sb = new StringBuilder();
+		if (reverse) {
+			for (int i = inp.size()-1; i>=0; i--) {
+				sb.append(inp.get(i));
+			}
+		} else {
+			for (String s : inp) {
+				sb.append(s);
+			}
+		}
+		boolean isSpace = sb.toString().replaceAll(marginChar, "").length()==0;
+		return new MarginProperties(sb.toString(), isSpace);
+	}
 
 	public void startBlock(BlockProperties p, String blockId) {
 		state.assertOpen();
-		leftMargin += p.getLeftMargin();
-		rightMargin += p.getRightMargin();
+		String lb = "";
+		String rb = "";
+		if (p.getTextBorderStyle()!=null) {
+			TextBorderStyle t = p.getTextBorderStyle();
+			lb = t.getLeftBorder();
+			rb = t.getRightBorder();
+		}
+		leftMargin.push(StringTools.fill(marginChar, p.getLeftMargin()));
+		leftMargin.push(lb);
+		rightMargin.push(StringTools.fill(marginChar, p.getRightMargin()));
+		rightMargin.push(rb);
 		if (context.size()>0) {
 			addToBlockIndent(context.peek().getBlockIndent());
 		}
@@ -116,8 +145,10 @@ public class FormatterImpl implements Formatter {
 				getTranslator(), flowStruct.getCurrentSequence().getLayoutMaster()).
 					blockIndent(blockIndent).
 					blockIndentParent(blockIndentParent.peek()).
-					leftMargin(leftMargin).
-					rightMargin(rightMargin);
+					leftMargin(stackString(leftMargin, false)).
+					leftMarginParent(stackString(leftMargin.subList(0, leftMargin.size()-1), false)).
+					rightMargin(stackString(rightMargin, true)).
+					rightMarginParent(stackString(rightMargin.subList(0, rightMargin.size()-1), true));
 		BlockImpl c = flowStruct.getCurrentSequence().newBlock(blockId, rdp);
 		if (context.size()>0) {
 			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
@@ -142,6 +173,11 @@ public class FormatterImpl implements Formatter {
 		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		c.setVerticalPosition(p.getVerticalPosition());
 		context.push(p);
+		if (p.getTextBorderStyle()!=null) {
+			TextBorderStyle t = p.getTextBorderStyle();
+			BlockImpl bi = flowStruct.getCurrentSequence().getCurrentBlock();
+			bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
+		}
 		//firstRow = true;
 	}
 	
@@ -151,10 +187,17 @@ public class FormatterImpl implements Formatter {
 			addChars("", new TextProperties.Builder(null).build());
 		}
 		BlockProperties p = context.pop();
+		if (p.getTextBorderStyle()!=null) {
+			TextBorderStyle t = p.getTextBorderStyle();
+			flowStruct.getCurrentSequence().getCurrentBlock()
+				.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
+		}
 		flowStruct.getCurrentSequence().getCurrentBlock().addSpaceAfter(p.getBottomMargin());
 		flowStruct.getCurrentSequence().getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
-		leftMargin -= p.getLeftMargin();
-		rightMargin -= p.getRightMargin();
+		leftMargin.pop();
+		leftMargin.pop();
+		rightMargin.pop();
+		rightMargin.pop();
 		if (context.size()>0) {
 			Keep keep = context.peek().getKeepType();
 			int next = context.peek().getKeepWithNext();
@@ -163,8 +206,10 @@ public class FormatterImpl implements Formatter {
 					getTranslator(), flowStruct.getCurrentSequence().getLayoutMaster()).
 						blockIndent(blockIndent).
 						blockIndentParent(blockIndentParent.peek()).
-						leftMargin(leftMargin).
-						rightMargin(rightMargin);
+						leftMargin(stackString(leftMargin, false)).
+						leftMarginParent(stackString(leftMargin.subList(0, leftMargin.size()-1), false)).
+						rightMargin(stackString(rightMargin, true)).
+						rightMarginParent(stackString(rightMargin.subList(0, rightMargin.size()-1), true));
 			BlockImpl c = flowStruct.getCurrentSequence().newBlock(null, rdp);
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);
@@ -184,7 +229,9 @@ public class FormatterImpl implements Formatter {
 	
 	public void newLine() {
 		state.assertOpen();
-		flowStruct.getCurrentSequence().getCurrentBlock().newLine(leftMargin + context.peek().getTextIndent());
+		MarginProperties p = stackString(leftMargin, false);
+		MarginProperties ret = new MarginProperties(p.getContent()+StringTools.fill(marginChar, context.peek().getTextIndent()), p.isSpaceOnly());
+		flowStruct.getCurrentSequence().getCurrentBlock().newLine(ret);
 	}
 
 	/**

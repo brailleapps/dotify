@@ -454,6 +454,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.j
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginProperties.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarkerSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/NewLineSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/NumeralStyleFormatter.java -text
@@ -473,6 +474,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RomanNumeral.java -tex
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Segment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/SingleLineDecoration.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TabStopString.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text

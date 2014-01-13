@@ -34,7 +34,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private final String spaceChar;
 	private final RowDataProperties rdp;
 	private final int available;
-	private final int rightMargin;
+	private final MarginProperties rightMargin;
 	
 	private Leader currentLeader;
 
@@ -50,7 +50,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 
 		this.p = new BlockProperties.Builder().build();
 		this.rdp = rdp;
-		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin();
+		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin().getContent().length();
 		this.rightMargin = rdp.getRightMargin();
 		this.item = rdp.getListItem();
 		this.spaceChar = rdp.getTranslator().translate(" ").getTranslatedRemainder();
@@ -201,7 +201,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return btr;
 	}
 
-	private void newRow(String contentBefore, BrailleTranslatorResult chars, int margin, int indent, int blockIndent) {
+	private void newRow(String contentBefore, BrailleTranslatorResult chars, MarginProperties margin, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		String preText = contentBefore + StringTools.fill(spaceChar, thisIndent).toString();
@@ -209,13 +209,13 @@ class BlockContentManagerImpl implements BlockContentManager {
 	}
 
 	//TODO: check leader functionality
-	private void newRow(List<Marker> r, int margin, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
+	private void newRow(List<Marker> r, MarginProperties margin, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
 
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
 
 		int preTextIndent = StringTools.length(preContent);
-		int preContentPos = margin+preTextIndent;
+		int preContentPos = margin.getContent().length()+preTextIndent;
 		preTabText = preTabText.replaceAll("\u00ad", "");
 		int preTabPos = preContentPos+StringTools.length(preTabText);
 		int postTabTextLen = btr.countRemaining();
@@ -256,7 +256,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				
-				preContentPos = margin+preTextIndent;
+				preContentPos = margin.getContent().length()+preTextIndent;
 				preTabPos = preContentPos;
 				maxLenText = available-(preContentPos);
 				offset = leaderPos-preTabPos;
