@@ -255,7 +255,11 @@
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
 					<xs:enumeration value="default"/>
+					<xs:enumeration value="upper-roman"/>
 					<xs:enumeration value="roman"/>
+					<xs:enumeration value="lower-alpha"/>
+					<xs:enumeration value="upper-alpha"/>
+					<xs:enumeration value="lower-roman"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
@@ -1021,7 +1025,11 @@
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
 					<xs:enumeration value="default"/>
+					<xs:enumeration value="upper-roman"/>
 					<xs:enumeration value="roman"/>
+					<xs:enumeration value="lower-alpha"/>
+					<xs:enumeration value="upper-alpha"/>
+					<xs:enumeration value="lower-roman"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
