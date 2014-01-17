@@ -31,7 +31,7 @@ import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchScope;
-import org.daisy.dotify.api.formatter.NumeralField.NumeralStyle;
+import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.formatter.PageTemplate;
 import org.daisy.dotify.api.formatter.Position;
 import org.daisy.dotify.api.formatter.SequenceProperties;
