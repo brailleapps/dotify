@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 
 import org.daisy.dotify.text.TextFileReader;
 import org.daisy.dotify.text.TextFileReader.LineData;
+import org.daisy.dotify.translator.BrailleNotationConverter;
 
 
 
@@ -18,6 +19,7 @@ public class BrailloTableReader {
 	}
 	
 	public void readTable(InputStream is) throws IOException {
+		BrailleNotationConverter bnc = new BrailleNotationConverter("p");
 		TextFileReader tfr = new TextFileReader(is, Charset.forName("windows-1252"), "\\s{1,8}", 3);
 		LineData data;
 		while ((data=tfr.nextLine())!=null) {
@@ -28,7 +30,7 @@ public class BrailloTableReader {
 			try {
 				//int dec = Integer.parseInt(data.getFields()[0]);
 				String p = "p" + data.getFields()[2].replaceAll("\\s", "");
-				p = BrailleNotationConverter.parsePNotation(p);
+				p = bnc.parseBrailleNotation(p);
 				System.out.println(data.getFields()[0] + " " + data.getFields()[1] + " " + p);
 			} catch (NumberFormatException e) {  } // OK!
 		}

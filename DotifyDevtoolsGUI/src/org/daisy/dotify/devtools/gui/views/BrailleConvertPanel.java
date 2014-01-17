@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.daisy.dotify.devtools.converters.BrailleNotationConverter;
+import org.daisy.dotify.translator.BrailleNotationConverter;
 
 
 public class BrailleConvertPanel extends JPanel {
@@ -21,9 +21,11 @@ public class BrailleConvertPanel extends JPanel {
 	JLabel label;
 	JTextField input;
 	final StringFormatterResult tr;
+	private final BrailleNotationConverter bnc;
 	
 	public BrailleConvertPanel(StringFormatterResult tr) {
 		this.tr = tr;
+		this.bnc = new BrailleNotationConverter("p");
         label = new JLabel();
         label.setText("Braille (p-notation)");
         input = new JTextField(30);
@@ -80,7 +82,7 @@ public class BrailleConvertPanel extends JPanel {
 	
     private void buttonActionPerformed() {
 		try {
-			tr.setResult(BrailleNotationConverter.parsePNotation(input.getText()));
+			tr.setResult(bnc.parseBrailleNotation(input.getText()));
 		} catch (IllegalArgumentException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
