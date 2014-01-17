@@ -146,6 +146,8 @@ class ExpressionImpl implements Expression {
 			return concat(args);
 		} else if ("format".equals(operator)) {
 			return message(args);
+		} else if ("!".equals(operator)) {
+			return not(args);
 		}
 		else {
 			throw new IllegalArgumentException("Unknown operator: '" + operator + "'");
@@ -297,6 +299,22 @@ class ExpressionImpl implements Expression {
 			throw new IllegalArgumentException("Wrong number of arguments: (round value)");
 		}
 		return (int)Math.round(toNumber(input[0]));
+	}
+	
+	private static Object not(Object[] input) {
+		Object[] ret = new Object[input.length];
+		for (int i=0; i<input.length; i++) { 
+			if (input[i] instanceof Boolean) {
+				ret[i] = !(Boolean)(input[i]);
+			} else {
+				ret[i] = !Boolean.parseBoolean(input[i].toString());
+			}
+		}
+		if (ret.length==1) {
+			return ret[0];
+		} else {
+			return ret;
+		}
 	}
 	
 	private Object set(Object[] input) {

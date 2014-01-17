@@ -160,6 +160,30 @@ public class ExpressionTest {
 	public void testExpression_format_02() {
 		assertEquals("1 is less than 2", e.evaluate("(format \"{0} is less than {1}\" 1 2)"));
 	}
+	
+	@Test
+	public void testExpression_not_01() {
+		assertEquals(true, e.evaluate("(! (& (= 1 1) (= 1 2)))"));
+	}
+	
+	@Test
+	public void testExpression_not_02() {
+		Object[] exp = new Object[]{false, true};
+		Object[] act = (Object[])e.evaluate("(! true false)");
+		for (int i =0; i<exp.length; i++) {
+			assertEquals(exp[i], act[i]);
+		}
+	}
+	
+	@Test
+	public void testExpression_not_03() {
+		assertEquals(true, e.evaluate("(& (! false false))"));
+	}
+	
+	@Test
+	public void testExpression_not_04() {
+		assertEquals(false, e.evaluate("(! true)"));
+	}
 
 	/*
 		input + " -> " + ret + " (" +ret.getClass() + ")";
