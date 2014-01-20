@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xslt-doc-file doc-files/dtb2obfl.xml?>
 
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" exclude-result-prefixes="dtb" xmlns="http://www.daisy.org/ns/2011/obfl">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" exclude-result-prefixes="dtb" xmlns="http://www.daisy.org/ns/2011/obfl">
 
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	
+	<xsl:param name="hyphenate" select="true()" as="xs:boolean"/>
 
-	<xsl:template match="/"><obfl version="2011-1"><xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute><xsl:call-template name="insertMetadata"/><xsl:call-template name="insertLayoutMaster"/><xsl:apply-templates/></obfl></xsl:template>
+	<xsl:template match="/"><obfl version="2011-1" hyphenate="{$hyphenate}"><xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute><xsl:call-template name="insertMetadata"/><xsl:call-template name="insertLayoutMaster"/><xsl:apply-templates/></obfl></xsl:template>
 	<xsl:template match="dtb:dtbook | dtb:book"><xsl:apply-templates/></xsl:template>
 	<xsl:template match="dtb:head | dtb:meta | dtb:link"></xsl:template>
 	

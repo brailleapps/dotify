@@ -21,7 +21,7 @@
 	<xsl:param name="l10nTocOneVolume" select="'One Volume'"/>
 
 	<xsl:template match="/">
-		<obfl version="2011-1">
+		<obfl version="2011-1" hyphenate="{$hyphenate}">
 			<xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute>
 			<xsl:call-template name="insertMetadata"/>
 			<xsl:call-template name="insertLayoutMaster"/>

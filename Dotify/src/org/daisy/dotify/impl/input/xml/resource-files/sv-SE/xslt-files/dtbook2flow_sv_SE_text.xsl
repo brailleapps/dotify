@@ -12,6 +12,7 @@
 		outer-margin (inherited)
 		row-spacing (inherited)
 		duplex (inherited)
+		hyphenate (inherited)
 
 	Format (input -> output)
 		DTBook -> Flow

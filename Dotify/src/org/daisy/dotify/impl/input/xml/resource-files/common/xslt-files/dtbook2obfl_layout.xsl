@@ -12,6 +12,7 @@
 		outer-margin
 		row-spacing
 		duplex
+		hyphenate (inherited)
 
 	Format (input -> output)
 		DTBook -> Flow
@@ -80,17 +81,14 @@
 
 	<xsl:template match="dtb:frontmatter" mode="apply-sequence-attributes">
 		<xsl:attribute name="master">front</xsl:attribute>
-		<xsl:attribute name="hyphenate">true</xsl:attribute>
 		<xsl:attribute name="initial-page-number">1</xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:bodymatter" mode="apply-sequence-attributes">
 		<xsl:attribute name="master">main</xsl:attribute>
-		<xsl:attribute name="hyphenate">true</xsl:attribute>
 		<xsl:attribute name="initial-page-number">1</xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:rearmatter" mode="apply-sequence-attributes">
 		<xsl:attribute name="master">main</xsl:attribute>
-		<xsl:attribute name="hyphenate">true</xsl:attribute>
 	</xsl:template>
 	<xsl:template match="dtb:h1" mode="apply-block-attributes">
 		<xsl:attribute name="margin-top">3</xsl:attribute>
@@ -309,7 +307,7 @@
 	<xsl:template match="dtb:book" priority="10">
 		<xsl:apply-templates/>
 		<xsl:for-each select="//dtb:level1[@class='colophon']">
-			<sequence master="plain" hyphenate="true" initial-page-number="1">
+			<sequence master="plain" initial-page-number="1">
 				<block margin-bottom="1"><xsl:value-of select="concat(':: ', $l10ncolophon, ' ')"/><leader position="100%" pattern=":"/></block>
 				<block>
 					<xsl:apply-templates select="node()"/>
@@ -318,7 +316,7 @@
 			</sequence>
 		</xsl:for-each>
 		<xsl:for-each select="//dtb:level1[@class='backCoverText' or @class='rearjacketcopy']">
-			<sequence master="plain" hyphenate="true" initial-page-number="1">
+			<sequence master="plain" initial-page-number="1">
 				<block margin-bottom="1"><xsl:value-of select="concat(':: ', $l10nrearjacketcopy, ' ')"/><leader position="100%" pattern=":"/></block>
 				<block>
 					<xsl:apply-templates select="node()"/>
