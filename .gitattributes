@@ -763,6 +763,14 @@ dotify.translator.impl/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerP
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryService.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactory.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/DefaultBypassTranslatorFactoryService.java -text
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/CharClass.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/ClassLoaderResourceResolver.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/LiblouisBrailleFilter.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/LiblouisFileReader.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/ResourceDescriptor.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/ResourceResolver.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/StringProcessor.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/Substitution.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactory.java -text
@@ -797,6 +805,8 @@ dotify.translator.impl/test/org/daisy/dotify/impl/translator/BorderDefinitionTes
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/BrailleTextBorderFactoryTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/DefaultBypassMarkerProcessorFactoryTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/DefaultBypassTranslatorTest.java -text
+dotify.translator.impl/test/org/daisy/dotify/impl/translator/liblouis/LiblouisBrailleFilterTest.java -text svneol=unset#text/plain
+dotify.translator.impl/test/org/daisy/dotify/impl/translator/liblouis/StringProcessorTest.java -text svneol=unset#text/plain
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
