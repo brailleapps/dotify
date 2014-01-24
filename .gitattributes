@@ -293,6 +293,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/FormatterConfigurationException.ja
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterCore.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterException.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterFactory.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/FormatterToc.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormattingTypes.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/LayoutMaster.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Leader.java -text
@@ -311,9 +312,16 @@ dotify.api/src/org/daisy/dotify/api/formatter/Row.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/SectionProperties.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/SequenceProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/StringField.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/TableOfContents.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/TextProperties.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/TocEntry.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/TocProperties.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/TocSequenceBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Volume.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/VolumeContentBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/VolumeContentFormatter.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/VolumeTemplateBuilder.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/VolumeTemplateProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/package-info.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/packageinfo -text
 dotify.api/src/org/daisy/dotify/api/hyphenator/HyphenatorConfigurationException.java -text
