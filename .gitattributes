@@ -496,6 +496,7 @@ dotify.formatter.impl/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/Evaluate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/EventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/FieldListImpl.java -text
+dotify.formatter.impl/src/org/daisy/dotify/obfl/FormatterCoreEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/IterableEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/LeaderEventContents.java -text
@@ -543,6 +544,7 @@ dotify.formatter.impl/src/org/daisy/dotify/writer/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/packageinfo -text
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
+dotify.formatter.impl/test/org/daisy/dotify/obfl/FormatterCoreEventImplTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/PositionTest.java -text svneol=unset#text/plain
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-01.xml -text

@@ -9,9 +9,15 @@ import org.daisy.dotify.api.formatter.BlockProperties;
 
 class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
 	private final BlockProperties props;
+	private final String blockId;
 
 	public BlockEventImpl(BlockProperties props) {
+		this(props, null);
+	}
+	
+	public BlockEventImpl(BlockProperties props, String blockId) {
 		this.props = props;
+		this.blockId = blockId;
 	}
 	/**
 	 * 
@@ -24,6 +30,10 @@ class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
 	
 	public BlockProperties getProperties() {
 		return props;
+	}
+
+	public String getBlockId() {
+		return blockId;
 	}
 
 	public void setEvaluateContext(Map<String, String> vars) {
