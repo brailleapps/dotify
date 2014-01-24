@@ -388,10 +388,13 @@ dotify.api/src/org/daisy/dotify/consumer/translator/MarkerProcessorFactoryMaker.
 dotify.api/src/org/daisy/dotify/consumer/translator/TextBorderFactoryMaker.java -text
 dotify.api/src/org/daisy/dotify/consumer/translator/package-info.java -text
 dotify.api/src/org/daisy/dotify/consumer/writer/PagedMediaWriterFactoryMaker.java -text
+dotify.api/src/org/daisy/dotify/consumer/writer/package-info.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/graphics/BrailleGraphics.java -text
+dotify.api/src/org/daisy/dotify/graphics/package-info.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/graphics/packageinfo -text
 dotify.api/src/org/daisy/dotify/translator/BrailleNotationConverter.java -text
 dotify.api/src/org/daisy/dotify/translator/DefaultTextAttribute.java -text
+dotify.api/src/org/daisy/dotify/translator/package-info.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/translator/packageinfo -text
 dotify.api/test/org/daisy/dotify/api/formatter/AlphaNumeralTest.java -text
 dotify.api/test/org/daisy/dotify/api/formatter/NumeralStyleTest.java -text
