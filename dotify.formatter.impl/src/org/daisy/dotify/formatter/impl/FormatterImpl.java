@@ -13,9 +13,12 @@ import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.formatter.SequenceProperties;
+import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeContentFormatter;
+import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
+import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.tools.StateObject;
@@ -318,6 +321,22 @@ public class FormatterImpl implements Formatter {
 
 		BookStruct bookStruct = new BookStruct(paginator, vcf, getTranslator());
 		return bookStruct.getVolumes();
+	}
+
+	public VolumeTemplateBuilder newVolumeTemplate(
+			VolumeTemplateProperties props) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	public TableOfContents newToc(String name) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	public Iterable<Volume> getVolumes() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 }
