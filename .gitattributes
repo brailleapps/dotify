@@ -290,6 +290,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/FieldList.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Formatted.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Formatter.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterConfigurationException.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/FormatterCore.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterException.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterFactory.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormattingTypes.java -text svneol=unset#text/plain
