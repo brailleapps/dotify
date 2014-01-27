@@ -314,7 +314,6 @@ dotify.api/src/org/daisy/dotify/api/formatter/StringField.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/TableOfContents.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/TextProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/TocProperties.java -text
-dotify.api/src/org/daisy/dotify/api/formatter/TocSequenceBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Volume.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/VolumeContentBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/VolumeContentFormatter.java -text
