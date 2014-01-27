@@ -7,7 +7,7 @@ import org.daisy.dotify.api.formatter.BlockProperties;
  * 
  * @author Joel Håkansson
  */
-class TocBlockEvent extends BlockEventImpl {
+public class TocBlockEvent extends BlockEventImpl {
 	/**
 	 * 
 	 */

@@ -8,7 +8,7 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
  * 
  * @author Joel Håkansson
  */
-interface VolumeSequenceEvent {
+public interface VolumeSequenceEvent {
 	/**
 	 * Defines types of volume sequences
 	 */

@@ -7,7 +7,7 @@ package org.daisy.dotify.obfl;
  * @author Joel Håkansson
  *
  */
-class LineBreak implements EventContents {
+public class LineBreak implements EventContents {
 
 	public ContentType getContentType() {
 		return ContentType.BR;

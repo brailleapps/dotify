@@ -7,7 +7,7 @@ package org.daisy.dotify.obfl;
  * @author Joel Håkansson
  *
  */
-interface TocEvents {
+public interface TocEvents {
 	
 	/**
 	 * Gets the events that should precede the TOC
