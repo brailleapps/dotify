@@ -1,28 +1,18 @@
 package org.daisy.dotify.obfl;
 
+import org.daisy.dotify.api.formatter.TocProperties;
+
 
 /**
  * Provides a TOC sequence event object.
  * 
  * @author Joel Håkansson
  */
-interface TocSequenceEvent extends VolumeSequenceEvent {
-	/**
-	 * Defines TOC ranges.
-	 */
-	enum TocRange {
-		/**
-		 * Defines the TOC range to include the entire document
-		 */
-		DOCUMENT,
-		/**
-		 * Defines the TOC range to include entries within the volume
-		 */
-		VOLUME};
+public interface TocSequenceEvent extends VolumeSequenceEvent {
 
 	public String getTocName();
 
-	public TocRange getRange();
+	public TocProperties.TocRange getRange();
 	
 	/**
 	 * Returns true if this toc sequence applies to the supplied context

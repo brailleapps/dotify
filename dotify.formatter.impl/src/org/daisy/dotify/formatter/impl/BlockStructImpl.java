@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
@@ -30,6 +31,10 @@ class BlockStructImpl implements BlockStruct {
 	
 	public void addLayoutMaster(String name, LayoutMaster master) {
 		masters.put(name, master);
+	}
+	
+	public Map<String, LayoutMaster> getMasters() {
+		return masters;
 	}
 
 	/*public LayoutMaster getLayoutMaster(String name) {

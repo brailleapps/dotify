@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -19,8 +20,12 @@ import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
+import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.TextBorderStyle;
+import org.daisy.dotify.obfl.BlockEventHandlerRunner;
+import org.daisy.dotify.obfl.TableOfContentsImpl;
+import org.daisy.dotify.obfl.VolumeTemplateImpl;
 import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.tools.StringTools;
 
@@ -47,6 +52,9 @@ public class FormatterImpl implements Formatter {
 	private Stack<Integer> blockIndentParent;
 	private ListItem listItem;
 	private final String marginChar;
+	private final Stack<VolumeTemplateImpl> volumeTemplates;
+	private HashMap<String, TableOfContentsImpl> tocs;
+	private final ExpressionFactory ef;
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement SpanProperites
@@ -54,7 +62,7 @@ public class FormatterImpl implements Formatter {
 	/**
 	 * Creates a new formatter
 	 */
-	public FormatterImpl(BrailleTranslator translator) {
+	public FormatterImpl(BrailleTranslator translator, ExpressionFactory ef) {
 		//this.filters = builder.filtersFactory.getDefault();
 		this.context = new Stack<BlockProperties>();
 		this.leftMargin = new Stack<String>();
@@ -66,6 +74,9 @@ public class FormatterImpl implements Formatter {
 		this.listItem = null;
 		this.translator = translator;
 		this.marginChar = translator.translate(" ").getTranslatedRemainder();
+		this.volumeTemplates = new Stack<VolumeTemplateImpl>();
+		this.tocs = new HashMap<String, TableOfContentsImpl>();
+		this.ef = ef;
 	}
 
 	/*
@@ -315,27 +326,34 @@ public class FormatterImpl implements Formatter {
 		return translator;
 	}
 
-	public Iterable<Volume> getVolumes(VolumeContentFormatter vcf) {
-		PaginatorImpl paginator = new PaginatorImpl();
-		paginator.open(getTranslator(), getFlowStruct().getBlockSequenceIterable());
-
-		BookStruct bookStruct = new BookStruct(paginator, vcf, getTranslator());
-		return bookStruct.getVolumes();
+	private VolumeContentFormatter getVolumeContentFormatter() {
+		return new BlockEventHandlerRunner(flowStruct.getMasters(), tocs, volumeTemplates, getTranslator(), ef);
 	}
 
-	public VolumeTemplateBuilder newVolumeTemplate(
-			VolumeTemplateProperties props) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented");
+
+	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
+		VolumeTemplateImpl template = new VolumeTemplateImpl(props.getUseWhen(), props.getSplitterMax(), ef);
+		volumeTemplates.push(template);
+		template.setVolumeCountVariableName(props.getVolumeCountVariable());
+		template.setVolumeNumberVariableName(props.getVolumeNumberVariable());
+		return template;
 	}
 
-	public TableOfContents newToc(String name) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented");
+	public TableOfContents newToc(String tocName) {
+		TableOfContentsImpl toc = new TableOfContentsImpl();
+		tocs.put(tocName, toc);
+		return toc;
 	}
 
 	public Iterable<Volume> getVolumes() {
-		// TODO Auto-generated method stub
+		PaginatorImpl paginator = new PaginatorImpl();
+		paginator.open(getTranslator(), getFlowStruct().getBlockSequenceIterable());
+
+		BookStruct bookStruct = new BookStruct(paginator, getVolumeContentFormatter(), getTranslator());
+		return bookStruct.getVolumes();
+	}
+
+	public void insertEvaluate(String exp, TextProperties t) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 

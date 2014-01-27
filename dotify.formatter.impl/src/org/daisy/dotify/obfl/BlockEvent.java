@@ -7,12 +7,14 @@ import org.daisy.dotify.api.formatter.BlockProperties;
  *
  * @author Joel Håkansson
  */
-interface BlockEvent extends BlockContents {
+public interface BlockEvent extends BlockContents {
 
 	/**
 	 * Gets properties of this block.
 	 * @return returns the properties
 	 */
 	public BlockProperties getProperties();
+
+	public String getBlockId();
 
 }

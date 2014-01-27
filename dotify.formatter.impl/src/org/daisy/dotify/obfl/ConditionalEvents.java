@@ -7,10 +7,10 @@ import org.daisy.dotify.api.obfl.ExpressionFactory;
 
 class ConditionalEvents {
 	private final String condition;
-	private final Iterable<BlockEvent> events;
+	private final FormatterCoreEventImpl events;
 	private final ExpressionFactory ef;
 	
-	public ConditionalEvents(Iterable<BlockEvent> events, String condition, ExpressionFactory ef) {
+	public ConditionalEvents(FormatterCoreEventImpl events, String condition, ExpressionFactory ef) {
 		this.events = events;
 		this.condition = condition;
 		this.ef = ef;

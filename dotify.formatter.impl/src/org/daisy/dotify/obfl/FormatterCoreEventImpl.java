@@ -3,6 +3,7 @@ package org.daisy.dotify.obfl;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.FormatterCore;
@@ -16,13 +17,15 @@ import org.daisy.dotify.api.formatter.TextProperties;
  * @author Joel Håkansson
  *
  */
-public class FormatterCoreEventImpl implements FormatterCore {
-	private List<BlockEvent> result;
+public class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore, Iterable<BlockEvent> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8364614224797613016L;
 	private List<BlockEventImpl> blockStack;
-	private BlockEventImpl cb;
+	protected BlockEventImpl cb;
 
 	public FormatterCoreEventImpl() {
-		result = new ArrayList<BlockEvent>();
 		blockStack = new ArrayList<BlockEventImpl>();
 		cb = null;
 	}
@@ -33,16 +36,24 @@ public class FormatterCoreEventImpl implements FormatterCore {
 
 	public void startBlock(BlockProperties props, String blockId) {
 		BlockEventImpl ret = new BlockEventImpl(props, blockId);
+		pushBlock(ret);
+	}
+
+	public void endBlock() {
+		popBlock();
+	}
+	
+	protected void pushBlock(BlockEventImpl ret) {
 		if (cb==null) {
-			result.add(ret);
+			add(ret);
 		} else {
 			cb.add(ret);
 		}
 		blockStack.add(ret);
 		updateCurrentBlock();
 	}
-
-	public void endBlock() {
+	
+	protected void popBlock() {
 		blockStack.remove(blockStack.size()-1);
 		updateCurrentBlock();
 	}
@@ -90,9 +101,14 @@ public class FormatterCoreEventImpl implements FormatterCore {
 	public void newLine() {
 		cb.add(new LineBreak());
 	}
+
+	public void insertEvaluate(String exp, TextProperties t) {
+		cb.add(new Evaluate(exp, t));
+	}
+
 	
 	void printContents(PrintWriter ps) {
-		for (BlockEvent b : result) {
+		for (BlockEvent b : this) {
 			ps.println(b.getContentType());
 			printContents(ps, b, 1);
 		}

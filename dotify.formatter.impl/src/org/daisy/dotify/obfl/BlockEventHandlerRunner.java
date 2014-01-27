@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.PageStruct;
+import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.BrailleTranslator;
@@ -18,19 +19,18 @@ import org.daisy.dotify.formatter.impl.Block;
 import org.daisy.dotify.formatter.impl.BlockSequence;
 import org.daisy.dotify.formatter.impl.PaginatorException;
 import org.daisy.dotify.formatter.impl.PaginatorImpl;
-import org.daisy.dotify.obfl.TocSequenceEvent.TocRange;
 import org.daisy.dotify.tools.CompoundIterable;
 
-class BlockEventHandlerRunner implements VolumeContentFormatter {
-	private final Iterable<VolumeTemplate> volumeTemplates;
+public class BlockEventHandlerRunner implements VolumeContentFormatter {
+	private final Iterable<VolumeTemplateImpl> volumeTemplates;
 	private final Map<String, LayoutMaster> masters;
-	private final Map<String, TableOfContents> tocs;
+	private final Map<String, TableOfContentsImpl> tocs;
 	private final Logger logger;
 	//private final FormatterFactory ff;
 	private final BrailleTranslator bt;
 	private final ExpressionFactory ef;
 	
-	BlockEventHandlerRunner(Map<String, LayoutMaster> masters, Map<String, TableOfContents> tocs, Iterable<VolumeTemplate> volumeTemplates, BrailleTranslator bt, ExpressionFactory ef) {
+	public BlockEventHandlerRunner(Map<String, LayoutMaster> masters, Map<String, TableOfContentsImpl> tocs, Iterable<VolumeTemplateImpl> volumeTemplates, BrailleTranslator bt, ExpressionFactory ef) {
 		this.volumeTemplates = volumeTemplates;
 		this.masters = masters;
 		this.tocs = tocs;
@@ -44,7 +44,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 		TocSequenceEvent toc = (TocSequenceEvent)seq;
 		if (toc.appliesTo(volumeNumber, volumeCount)) {
 			BlockEventHandler beh = new BlockEventHandler(masters, bt, ef);
-			TableOfContents data = tocs.get(toc.getTocName());
+			TableOfContentsImpl data = tocs.get(toc.getTocName());
 			TocEvents events = toc.getTocEvents(volumeNumber, volumeCount);
 			StaticSequenceEventImpl evs = new StaticSequenceEventImpl(toc.getSequenceProperties());
 			for (BlockEvent e : events.getTocStartEvents()) {
@@ -53,7 +53,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 			for (BlockEvent e : data) {
 				evs.push(e);
 			}
-			if (toc.getRange()==TocRange.DOCUMENT) {
+			if (toc.getRange()==TocProperties.TocRange.DOCUMENT) {
 				for (BlockEvent e : events.getVolumeEndEvents(volumeCount)) {
 					evs.push(e);
 				}
@@ -61,7 +61,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 			for (BlockEvent e : events.getTocEndEvents()) {
 				evs.push(e);
 			}
-			if (toc.getRange()==TocRange.VOLUME) {
+			if (toc.getRange()==TocProperties.TocRange.VOLUME) {
 				beh.formatSequence(evs);
 				BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
 				String start = null;
@@ -100,7 +100,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 						logger.log(Level.SEVERE, "TOC failed for: volume " + volumeNumber + " of " + volumeCount, e);
 					}
 				}
-			} else if (toc.getRange()==TocRange.DOCUMENT) {
+			} else if (toc.getRange()==TocProperties.TocRange.DOCUMENT) {
 				beh.formatSequence(evs);
 				BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
 				int nv=0;
@@ -141,7 +141,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 	}
 	
 	public int getVolumeMaxSize(int volumeNumber, int volumeCount) {
-		for (VolumeTemplate t : volumeTemplates) {
+		for (VolumeTemplateImpl t : volumeTemplates) {
 			if (t==null) {
 				System.out.println("VOLDATA NULL");
 			}
@@ -186,7 +186,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 	
 	private List<Iterable<BlockSequence>> formatVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh, boolean pre) throws IOException {
 		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
-		for (VolumeTemplate t : volumeTemplates) {
+		for (VolumeTemplateImpl t : volumeTemplates) {
 			if (t.appliesTo(volumeNumber, volumeCount)) {
 				for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 					if (seq instanceof TocSequenceEvent) {

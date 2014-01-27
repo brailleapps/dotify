@@ -1,8 +1,10 @@
 package org.daisy.dotify.obfl;
 
+import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 
 
-interface VolumeTemplate {
+
+interface VolumeTemplate extends VolumeTemplateBuilder {
 
 	/**
 	 * Test if this Template applies to this combination of volume and volume count.
