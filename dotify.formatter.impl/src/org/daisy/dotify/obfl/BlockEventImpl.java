@@ -7,7 +7,7 @@ import org.daisy.dotify.api.formatter.BlockProperties;
 
 
 
-public class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
+class BlockEventImpl extends Stack<EventContents> implements BlockEvent {
 	private final BlockProperties props;
 	private final String blockId;
 

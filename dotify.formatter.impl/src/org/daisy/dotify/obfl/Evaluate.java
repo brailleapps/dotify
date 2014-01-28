@@ -12,7 +12,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
  * @author Joel Håkansson
  *
  */
-public class Evaluate implements EventContents {
+class Evaluate implements EventContents {
 	private final String expression;
 	private final Map<String, String> vars;
 	private final TextProperties props;

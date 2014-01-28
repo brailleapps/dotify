@@ -16,7 +16,7 @@ import org.daisy.dotify.formatter.impl.BlockStruct;
  * Provides methods for manipulating a flow sequence.
  * @author Joel Håkansson
  */
-public class BlockSequenceManipulator {
+class BlockSequenceManipulator {
 	private HashMap<String, Integer> taggedEntries;
 	private final Stack<Block> sequence;
 	//private final SequenceProperties props;

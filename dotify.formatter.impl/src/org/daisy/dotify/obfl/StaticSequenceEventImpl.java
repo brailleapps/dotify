@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
-public class StaticSequenceEventImpl extends FormatterCoreEventImpl implements StaticSequenceEvent {
+class StaticSequenceEventImpl extends FormatterCoreEventImpl implements StaticSequenceEvent {
 	private final SequenceProperties props;
 	
 	/**

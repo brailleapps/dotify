@@ -15,7 +15,7 @@ import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 
-public class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements VolumeContentBuilder {
+class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements VolumeContentBuilder {
 	/**
 	 * 
 	 */

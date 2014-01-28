@@ -8,7 +8,7 @@ import org.daisy.dotify.api.formatter.TocProperties;
  * 
  * @author Joel Håkansson
  */
-public interface TocSequenceEvent extends VolumeSequenceEvent {
+interface TocSequenceEvent extends VolumeSequenceEvent {
 
 	public String getTocName();
 

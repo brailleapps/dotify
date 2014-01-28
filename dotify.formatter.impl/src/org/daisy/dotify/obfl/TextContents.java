@@ -10,7 +10,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
  * @author Joel Håkansson
  *
  */
-public class TextContents implements EventContents {
+class TextContents implements EventContents {
 	private String text;
 	private final TextProperties p;
 	

@@ -2,7 +2,7 @@ package org.daisy.dotify.obfl;
 
 import org.daisy.dotify.api.formatter.NumeralStyle;
 
-public class PageNumberReferenceEventContents extends PageNumberReference
+class PageNumberReferenceEventContents extends PageNumberReference
 		implements EventContents {
 
 

@@ -2,7 +2,7 @@ package org.daisy.dotify.obfl;
 
 import org.daisy.dotify.api.formatter.Leader;
 
-public class LeaderEventContents extends Leader implements EventContents {
+class LeaderEventContents extends Leader implements EventContents {
 	
 	public LeaderEventContents(Builder builder) {
 		super(builder);

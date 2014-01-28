@@ -17,7 +17,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
  * @author Joel Håkansson
  *
  */
-public class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore, Iterable<BlockEvent> {
+class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore, Iterable<BlockEvent> {
 	/**
 	 * 
 	 */
