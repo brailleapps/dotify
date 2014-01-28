@@ -21,6 +21,7 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.XMLEvent;
 
 public class OBFLWsNormalizer {
+	private final Pattern ws;
 	private final XMLEventReader input;
 	private final OutputStream out;
 	private final XMLEventFactory eventFactory;
@@ -40,8 +41,9 @@ public class OBFLWsNormalizer {
 		this.writer = null;
 		this.out = out;
 		this.eventFactory = eventFactory;
-		beginWS = Pattern.compile("\\A\\s+");
-		endWS = Pattern.compile("\\s+\\z");
+		this.ws = Pattern.compile("\\s+");
+		this.beginWS = Pattern.compile("\\A\\s+");
+		this.endWS = Pattern.compile("\\s+\\z");
 	}
 
 	public void parse(XMLOutputFactory outputFactory) {
@@ -121,7 +123,7 @@ public class OBFLWsNormalizer {
 				String pre = "";
 				String post = "";
 
-				if (normalizeSpace(data).equals("") && ((i == events.size() - 2 && equalsEnd(events.get(i + 1), ObflQName.BLOCK, ObflQName.TOC_ENTRY)) || i == events.size() - 1)) {
+				if (isSpace(data) && ((i == events.size() - 2 && equalsEnd(events.get(i + 1), ObflQName.BLOCK, ObflQName.TOC_ENTRY)) || i == events.size() - 1)) {
 					// this is the last element in the block, ignore
 				} else if (i > 0) {
 					XMLEvent preceedingEvent = events.get(i - 1);
@@ -154,7 +156,7 @@ public class OBFLWsNormalizer {
 				}
 				if (i < events.size() - 1) {
 					XMLEvent followingEvent = events.get(i + 1);
-					if (normalizeSpace(data).equals("")) {
+					if (isSpace(data)) {
 						// don't output post
 						if (equalsStart(followingEvent, ObflQName.MARKER)) {
 							pre = "";
@@ -259,7 +261,18 @@ public class OBFLWsNormalizer {
 	}
 
 	private String normalizeSpace(String input) {
-		return input.replaceAll("\\s+", " ").trim();
+		return ws.matcher(input).replaceAll(" ").trim();
+	}
+	
+	//performance optimization
+	private boolean isSpace(String input) {
+		char[] ca = input.toCharArray();
+		for (char c : ca) {
+			if (!Character.isWhitespace(c)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private boolean equalsStart(XMLEvent event, QName... element) {
