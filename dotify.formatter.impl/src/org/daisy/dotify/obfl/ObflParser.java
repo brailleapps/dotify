@@ -2,6 +2,7 @@ package org.daisy.dotify.obfl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -49,7 +50,6 @@ import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.MetaDataItem;
-import org.daisy.dotify.obfl.EventContents.ContentType;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.DefaultTextAttribute;
 
@@ -377,7 +377,7 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.LEADER)) {
 				formatter.insertLeader(parseLeader(event, input));
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				formatter.insertMarker(parseMarker(event, input));
+				formatter.insertMarker(parseMarker(event));
 			} else if (equalsStart(event, ObflQName.BR)) {
 				formatter.newLine();
 				scanEmptyElement(input, ObflQName.BR);
@@ -404,7 +404,7 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.LEADER)) {
 				formatter.insertLeader(parseLeader(event, input));
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				formatter.insertMarker(parseMarker(event, input));
+				formatter.insertMarker(parseMarker(event));
 			} else if (equalsStart(event, ObflQName.BR)) {
 				formatter.newLine();
 				scanEmptyElement(input, ObflQName.BR);
@@ -420,19 +420,37 @@ public class ObflParser {
 	private void parseStyle(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		TextProperties tp = new TextProperties.Builder(locale.toString()).hyphenate(hyph).build();
 
-		BlockEventHandlerCore eh = new BlockEventHandlerCore(fc, ef);
-		eh.insertEventContents(parseStyleEvent(event, input, tp));
+		parseStyleEvent(fc, event, input, tp);
 	}
 
-	private StyleEvent parseStyleEvent(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
-
-		StyleEvent ev = parseStyleEventInner(event, input, tp);
-		{
-			TextAttribute t = processTextAttributes(ev);
-			List<String> chunks = TextContents.getTextSegments(ev);
-			TextContents.updateTextContents(ev, mp.processAttributesRetain(t, chunks.toArray(new String[] {})));
+	private void parseStyleEvent(FormatterCore fc, XMLEvent ev, XMLEventReader input, TextProperties tp) throws XMLStreamException {
+		//Buffer events and extract text
+		List<XMLEvent> events = new ArrayList<XMLEvent>();
+		List<String> chunks = new ArrayList<String>();
+		events.add(ev);
+		int level = 1;
+		while (input.hasNext()) {
+			XMLEvent event = input.nextEvent();
+			events.add(event);
+			if (event.isCharacters()) {
+				chunks.add(event.asCharacters().getData());
+			} else if (equalsStart(event, ObflQName.STYLE)) {
+				level ++;
+			} else if (equalsEnd(event, ObflQName.STYLE)) {
+				level --;
+				if (level == 0) break;
+			}
 		}
-		return ev;
+		
+		//Build text attributes
+		Iterator<XMLEvent> evs = events.iterator();
+		TextAttribute t = processTextAttributes(evs.next(), evs);
+		
+		//Add markers to text
+		String[] updated = mp.processAttributesRetain(t, chunks.toArray(new String[chunks.size()]));
+		
+		//Play back the events
+		parseStyleEventInner(fc, events.iterator(), Arrays.asList(updated).iterator(), tp);
 	}
 
 	/**
@@ -445,58 +463,55 @@ public class ObflParser {
 	 * @return
 	 * @throws XMLStreamException
 	 */
-	private StyleEvent parseStyleEventInner(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
-		StyleEvent ev = new StyleEvent(getAttr(event, "name"));
+	private void parseStyleEventInner(FormatterCore fc, Iterator<XMLEvent> input, Iterator<String> text, TextProperties tp) throws XMLStreamException {
+		//Play back the events
 		while (input.hasNext()) {
-			event = input.nextEvent();
+			XMLEvent event = input.next();
 			if (event.isCharacters()) {
-				String sr = event.asCharacters().getData();
-				ev.add(new TextContents(sr, tp));
+				fc.addChars(text.next(), tp);
 			} else if (equalsStart(event, ObflQName.STYLE)) {
-				ev.add(parseStyleEventInner(event, input, tp));
+				parseStyleEventInner(fc, input, text, tp);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				ev.add(parseMarker(event, input));
+				fc.insertMarker(parseMarker(event));
 			} else if (equalsStart(event, ObflQName.BR)) {
-				ev.add(new LineBreak());
+				fc.newLine();
 			} else if (equalsEnd(event, ObflQName.STYLE)) {
-				return ev;
+				break;
 			} else {
 				report(event);
 			}
 		}
-		return null;
 	}
 
-	private TextAttribute processTextAttributes(StyleEvent ev) throws XMLStreamException {
-		// StringBuilder sb = new StringBuilder();
+	private TextAttribute processTextAttributes(XMLEvent style, Iterator<XMLEvent> events) throws XMLStreamException {
 		int len = 0;
-		DefaultTextAttribute.Builder ret = new DefaultTextAttribute.Builder(ev.getName());
-		if (ev.size() == 1 && ev.get(0).getContentType() == ContentType.PCDATA) {
-			return ret.build(((TextContents) ev.get(0)).getText().length());
-		} else {
-			for (EventContents c : ev) {
-				switch (c.getContentType()) {
-					case PCDATA:
-						String sr = ((TextContents) c).getText();
-						ret.add(new DefaultTextAttribute.Builder().build(sr.length()));
-						len += sr.length();
-						// sb.append(sr);
-						break;
-					case STYLE:
-						TextAttribute t = processTextAttributes((StyleEvent) c);
-						ret.add(t);
-						len += t.getWidth();
-						break;
-					case MARKER:
-					case BR:
-						// ignore
-						break;
-					default:
-						throw new UnsupportedOperationException("Unknown element: " + ev);
+		String name = getAttr(style, "name");
+		DefaultTextAttribute.Builder ret = new DefaultTextAttribute.Builder(name);
+		while (events.hasNext()) {
+			XMLEvent ev = events.next();
+			if (ev.isCharacters()) {
+				String sr = ev.asCharacters().getData();
+				ret.add(new DefaultTextAttribute.Builder().build(sr.length()));
+				len += sr.length();
+			} else if (equalsStart(ev, ObflQName.STYLE)) {
+				TextAttribute t = processTextAttributes(ev, events);
+				ret.add(t);
+				len += t.getWidth();
+			} else if (equalsEnd(ev, ObflQName.STYLE)) {
+				break;
+			} else if (equalsStart(ev, ObflQName.MARKER)||equalsStart(ev, ObflQName.BR)) {
+				// ignore
+			} else if (equalsEnd(ev, ObflQName.MARKER)||equalsEnd(ev, ObflQName.BR)) {
+				// ignore
+			} else {
+				name = "";
+				if (ev.isEndElement()) {
+					name = ev.asEndElement().getName().getLocalPart();
 				}
+				throw new UnsupportedOperationException("Unknown element: " + ev +" "+ name);
 			}
-			return ret.build(len);
 		}
+		return ret.build(len);
 	}
 
 	private BlockProperties blockBuilder(Iterator<Attribute> atts) {
@@ -577,7 +592,7 @@ public class ObflParser {
 		return new LeaderEventContents(builder);
 	}
 
-	private MarkerEventContents parseMarker(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private MarkerEventContents parseMarker(XMLEvent event) throws XMLStreamException {
 		String markerName = getAttr(event, "class");
 		String markerValue = getAttr(event, "value");
 		return new MarkerEventContents(markerName, markerValue);
@@ -615,7 +630,7 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.LEADER)) {
 				toc.insertLeader(parseLeader(event, input));
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				toc.insertMarker(parseMarker(event, input));
+				toc.insertMarker(parseMarker(event));
 			} else if (equalsStart(event, ObflQName.BR)) {
 				toc.newLine();
 				scanEmptyElement(input, ObflQName.BR);
@@ -798,7 +813,7 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.LEADER)) {
 				fc.insertLeader(parseLeader(event, input));
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				fc.insertMarker(parseMarker(event, input));
+				fc.insertMarker(parseMarker(event));
 			} else if (equalsStart(event, ObflQName.BR)) {
 				fc.newLine();
 				scanEmptyElement(input, ObflQName.BR);
