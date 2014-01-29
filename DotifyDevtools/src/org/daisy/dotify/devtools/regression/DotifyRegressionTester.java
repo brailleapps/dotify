@@ -36,8 +36,9 @@ class DotifyRegressionTester implements Runnable {
 		JVMStarter starter = inf.requestStarter();
 		try {
 			File res = File.createTempFile("reg-test", ".pef");
-
+			boolean ok = false;
 			try {
+
 				ArrayList<String> command = new ArrayList<String>();
 				command.add("-jar");
 				command.add(inf.getPathToCLI());
@@ -45,36 +46,40 @@ class DotifyRegressionTester implements Runnable {
 				command.add(res.getAbsolutePath());
 				command.add(setup);
 				command.add(locale);
-
+				res.delete();
+				
 				starter.startNewJVMSync(command.toArray(new String[command.size()]));
-
-				if (!res.isFile()) {
-					if (expected.isFile()) {
-						inf.reportError();
-					} else {
-						// ok
-					}
-				} else {
-
+				if (res.isFile()) {
+					//We have a result
 					PEFFileCompare core = new PEFFileCompare();
+					try {
+						ok = core.compare(res.getAbsoluteFile(), expected);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if (!ok) { // if not equal, write to output folder
 
-					if (!core.compare(res.getAbsoluteFile(), expected)) {
-						// if not equal, write to output folder
-						Unbrailler ub = new Unbrailler(table);
-						File actual = new File(inf.testOutputFolder(), "actual-" + input.getName() + ".pef");
+						// Make sure we at least have the expected copy
 						File expectedCopy = new File(inf.testOutputFolder(), "expected-" + input.getName() + ".pef");
-						FileTools.copy(new FileInputStream(res), new FileOutputStream(actual));
 						FileTools.copy(new FileInputStream(expected), new FileOutputStream(expectedCopy));
 
-						ub.convert(actual);
+						// If that works, see if we can copy the result
+						File actual = new File(inf.testOutputFolder(), "actual-" + input.getName() + ".pef");
+						FileTools.copy(new FileInputStream(res), new FileOutputStream(actual));
+
+						//Now, try to convert this into readable characters
+						Unbrailler ub = new Unbrailler(table);
 						ub.convert(expectedCopy);
-						// set error
-						inf.reportError();
-					} else {
-						// ok
+						ub.convert(actual);
 					}
+				} else if (!expected.isFile()) {
+					//Nothing to compare with, meaning this input should fail.
+					ok = true;
 				}
 			} finally {
+				if (!ok) {
+					inf.reportError();
+				}
 				if (!res.delete()) {
 					res.deleteOnExit();
 				}
