@@ -457,23 +457,40 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Block.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManager.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManagerImpl.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContents.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEvent.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventHandler.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventHandlerCore.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventHandlerRunner.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceManipulator.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockStructImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BookStruct.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ConditionalEvents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Evaluate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/EventContents.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterCoreEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/IterableEventContents.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LineBreak.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginProperties.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarkerEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarkerSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/NewLineSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReference.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReferenceEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReferenceSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java -text svneol=unset#text/plain
@@ -487,51 +504,34 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorToolsExceptio
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowDataProperties.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Segment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/SequenceEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/SingleLineDecoration.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StaticSequenceEvent.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StaticSequenceEventImpl.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StyleEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TabStopString.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TableOfContentsImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocBlockEvent.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocEvents.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEvent.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequenceEvent.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/package-info.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockContents.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockEventHandler.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockEventHandlerCore.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockEventHandlerRunner.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockEventImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/BlockSequenceManipulator.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/ConditionalEvents.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/Evaluate.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/EventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/FieldListImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/FormatterCoreEventImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/IterableEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/LeaderEventContents.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/LineBreak.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/MarkerEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLParserException.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLWsNormalizer.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ObflParser.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ObflQName.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/PageNumberReference.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/PageNumberReferenceEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/SequenceEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/StaticSequenceEvent.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/obfl/StaticSequenceEventImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/StyleEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/TableOfContentsImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/TextContents.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/TocBlockEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/TocEvents.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/TocSequenceEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/TocSequenceEventImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/VolumeContentBuilderImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/VolumeSequenceEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/VolumeTemplate.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/VolumeTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/impl/ExpressionFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/impl/ExpressionImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/obfl/package-info.java -text
@@ -552,8 +552,8 @@ dotify.formatter.impl/src/org/daisy/dotify/writer/impl/TextMediaWriterFactorySer
 dotify.formatter.impl/src/org/daisy/dotify/writer/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/packageinfo -text
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
+dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/FormatterCoreEventImplTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
-dotify.formatter.impl/test/org/daisy/dotify/obfl/FormatterCoreEventImplTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/PositionTest.java -text svneol=unset#text/plain
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-01.xml -text

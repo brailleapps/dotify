@@ -28,6 +28,7 @@ import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
+import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchScope;
@@ -375,9 +376,9 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.STYLE)) {
 				parseStyle(event, input, formatter, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
-				formatter.insertLeader(parseLeader(event, input));
+				parseLeader(formatter, event, input);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				formatter.insertMarker(parseMarker(event));
+				parseMarker(formatter, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
 				formatter.newLine();
 				scanEmptyElement(input, ObflQName.BR);
@@ -402,9 +403,9 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.STYLE)) {
 				parseStyle(event, input, formatter, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
-				formatter.insertLeader(parseLeader(event, input));
+				parseLeader(formatter, event, input);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				formatter.insertMarker(parseMarker(event));
+				parseMarker(formatter, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
 				formatter.newLine();
 				scanEmptyElement(input, ObflQName.BR);
@@ -472,7 +473,7 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.STYLE)) {
 				parseStyleEventInner(fc, input, text, tp);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				fc.insertMarker(parseMarker(event));
+				parseMarker(fc, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
 				fc.newLine();
 			} else if (equalsEnd(event, ObflQName.STYLE)) {
@@ -571,8 +572,8 @@ public class ObflParser {
 		return builder.build();
 	}
 	
-	private LeaderEventContents parseLeader(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		LeaderEventContents.Builder builder = new LeaderEventContents.Builder();
+	private void parseLeader(FormatterCore fc, XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		Leader.Builder builder = new Leader.Builder();
 		@SuppressWarnings("unchecked")
 		Iterator<Attribute> atts = event.asStartElement().getAttributes();
 		while (atts.hasNext()) {
@@ -589,13 +590,13 @@ public class ObflParser {
 			}
 		}
 		scanEmptyElement(input, ObflQName.LEADER);
-		return new LeaderEventContents(builder);
+		fc.insertLeader(builder.build());
 	}
 
-	private MarkerEventContents parseMarker(XMLEvent event) throws XMLStreamException {
+	private static void parseMarker(FormatterCore fc, XMLEvent event) throws XMLStreamException {
 		String markerName = getAttr(event, "class");
 		String markerValue = getAttr(event, "value");
-		return new MarkerEventContents(markerName, markerValue);
+		fc.insertMarker(new Marker(markerName, markerValue));
 	}
 	
 	private void parseTableOfContents(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
@@ -628,22 +629,20 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.TOC_ENTRY)) {
 				parseTocEntry(event, input, toc, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
-				toc.insertLeader(parseLeader(event, input));
+				parseLeader(toc, event, input);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				toc.insertMarker(parseMarker(event));
+				parseMarker(toc, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
 				toc.newLine();
 				scanEmptyElement(input, ObflQName.BR);
 			} else if (equalsStart(event, ObflQName.PAGE_NUMBER)) {
-				PageNumberReferenceEventContents p = parsePageNumber(event, input);
-				toc.insertReference(p.getRefId(), p.getNumeralStyle());
+				parsePageNumber(toc, event, input);
 			} else if (equalsStart(event, ObflQName.ANCHOR)) {
 				//TODO: implement
 				throw new UnsupportedOperationException("Not implemented");
 				// TODO: span, style
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
-				Evaluate p = parseEvaluate(event, input, locale, hyph);
-				toc.insertEvaluate(p.getExpression(), p.getTextProperties());
+				parseEvaluate(toc, event, input, locale, hyph);
 			}
 			else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
 				toc.endEntry();
@@ -654,7 +653,7 @@ public class ObflParser {
 		}
 	}
 	
-	private PageNumberReferenceEventContents parsePageNumber(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private void parsePageNumber(FormatterCore fc, XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		String refId = getAttr(event, "ref-id");
 		NumeralStyle style = NumeralStyle.DEFAULT;
 		String styleStr = getAttr(event, "style");
@@ -664,13 +663,13 @@ public class ObflParser {
 			} catch (Exception e) { }
 		}
 		scanEmptyElement(input, ObflQName.PAGE_NUMBER);
-		return new PageNumberReferenceEventContents(refId, style);
+		fc.insertReference(refId, style);
 	}
 	
-	private Evaluate parseEvaluate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseEvaluate(FormatterCore fc, XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		String expr = getAttr(event, "expression");
 		scanEmptyElement(input, ObflQName.EVALUATE);
-		return new Evaluate(expr, new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+		fc.insertEvaluate(expr, new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 	}
 	
 	private void parseVolumeTemplate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
@@ -811,15 +810,14 @@ public class ObflParser {
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
 				parseBlockEvent(event, input, fc, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
-				fc.insertLeader(parseLeader(event, input));
+				parseLeader(fc, event, input);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				fc.insertMarker(parseMarker(event));
+				parseMarker(fc, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
 				fc.newLine();
 				scanEmptyElement(input, ObflQName.BR);
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
-				Evaluate e = parseEvaluate(event, input, locale, hyph);
-				fc.insertEvaluate(e.getExpression(), e.getTextProperties());
+				parseEvaluate(fc, event, input, locale, hyph);
 			} else if (equalsStart(event, ObflQName.STYLE)) {
 				parseStyle(event, input, fc, locale, hyph);
 			} else if (equalsStart(event, ObflQName.SPAN)) {
@@ -846,11 +844,11 @@ public class ObflParser {
 		}
 	}
 
-	private String getAttr(XMLEvent event, String attr) {
+	private static String getAttr(XMLEvent event, String attr) {
 		return getAttr(event, new QName(attr));
 	}
 	
-	private String getAttr(XMLEvent event, QName attr) {
+	private static String getAttr(XMLEvent event, QName attr) {
 		Attribute ret = event.asStartElement().getAttributeByName(attr);
 		if (ret==null) {
 			return null;

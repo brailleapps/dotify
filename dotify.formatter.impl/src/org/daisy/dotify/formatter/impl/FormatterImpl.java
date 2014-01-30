@@ -23,9 +23,6 @@ import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.obfl.BlockEventHandlerRunner;
-import org.daisy.dotify.obfl.TableOfContentsImpl;
-import org.daisy.dotify.obfl.VolumeTemplateImpl;
 import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.tools.StringTools;
 
