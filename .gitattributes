@@ -395,6 +395,7 @@ dotify.api/src/org/daisy/dotify/translator/package-info.java -text svneol=unset#
 dotify.api/src/org/daisy/dotify/translator/packageinfo -text
 dotify.api/test/org/daisy/dotify/api/formatter/AlphaNumeralTest.java -text
 dotify.api/test/org/daisy/dotify/api/formatter/NumeralStyleTest.java -text
+dotify.api/test/org/daisy/dotify/api/formatter/PositionTest.java -text svneol=unset#text/plain
 dotify.api/test/org/daisy/dotify/graphics/BrailleGraphicsTest.java -text
 dotify.api/test/org/daisy/dotify/translator/BrailleNotationConverterTest.java -text
 dotify.common/.classpath -text
@@ -560,7 +561,6 @@ dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitte
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/FormatterCoreEventImplTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
-dotify.formatter.impl/test/org/daisy/dotify/obfl/PositionTest.java -text svneol=unset#text/plain
 dotify.formatter.impl/test/org/daisy/dotify/obfl/XMLParserBaseTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-01.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-02.xml -text

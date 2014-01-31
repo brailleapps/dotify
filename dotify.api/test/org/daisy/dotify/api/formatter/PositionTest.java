@@ -1,4 +1,4 @@
-package org.daisy.dotify.obfl;
+package org.daisy.dotify.api.formatter;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.formatter.Position;
