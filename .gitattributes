@@ -358,6 +358,7 @@ dotify.api/src/org/daisy/dotify/api/translator/TextBorderFactoryService.java -te
 dotify.api/src/org/daisy/dotify/api/translator/TextBorderStyle.java -text
 dotify.api/src/org/daisy/dotify/api/translator/TranslationException.java -text
 dotify.api/src/org/daisy/dotify/api/translator/TranslatorConfigurationException.java -text
+dotify.api/src/org/daisy/dotify/api/translator/TranslatorSpecification.java -text
 dotify.api/src/org/daisy/dotify/api/translator/package-info.java -text
 dotify.api/src/org/daisy/dotify/api/translator/packageinfo -text
 dotify.api/src/org/daisy/dotify/api/writer/MediaTypes.java -text
@@ -398,6 +399,7 @@ dotify.api/test/org/daisy/dotify/api/formatter/NumeralStyleTest.java -text
 dotify.api/test/org/daisy/dotify/api/formatter/PositionTest.java -text svneol=unset#text/plain
 dotify.api/test/org/daisy/dotify/graphics/BrailleGraphicsTest.java -text
 dotify.api/test/org/daisy/dotify/translator/BrailleNotationConverterTest.java -text
+dotify.api/test/org/daisy/dotify/translator/TranslatorSpecificationTest.java -text
 dotify.common/.classpath -text
 dotify.common/.project -text
 dotify.common/.settings/org.eclipse.jdt.core.prefs -text
