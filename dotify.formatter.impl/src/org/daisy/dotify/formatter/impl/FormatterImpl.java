@@ -17,7 +17,6 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.Volume;
-import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
@@ -48,7 +47,7 @@ public class FormatterImpl implements Formatter {
 	private int blockIndent;
 	private Stack<Integer> blockIndentParent;
 	private ListItem listItem;
-	private final String marginChar;
+	private final char marginChar;
 	private final Stack<VolumeTemplateImpl> volumeTemplates;
 	private HashMap<String, TableOfContentsImpl> tocs;
 	private final ExpressionFactory ef;
@@ -70,7 +69,9 @@ public class FormatterImpl implements Formatter {
 		//this.refs = null;
 		this.listItem = null;
 		this.translator = translator;
-		this.marginChar = translator.translate(" ").getTranslatedRemainder();
+		//margin char can only be a single character, the reason for going through the translator
+		//is because output isn't always braille.
+		this.marginChar = translator.translate(" ").getTranslatedRemainder().charAt(0);
 		this.volumeTemplates = new Stack<VolumeTemplateImpl>();
 		this.tocs = new HashMap<String, TableOfContentsImpl>();
 		this.ef = ef;
@@ -132,7 +133,14 @@ public class FormatterImpl implements Formatter {
 				sb.append(s);
 			}
 		}
-		boolean isSpace = sb.toString().replaceAll(marginChar, "").length()==0;
+		//Performance optimization
+		boolean isSpace = true;
+		for (int i = 0; i<sb.length(); i++) {
+			if (sb.charAt(i)!=marginChar) {
+				isSpace = false;
+				break;
+			}
+		}
 		return new MarginProperties(sb.toString(), isSpace);
 	}
 

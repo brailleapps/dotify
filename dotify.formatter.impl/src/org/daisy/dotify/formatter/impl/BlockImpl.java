@@ -4,7 +4,6 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
 import org.daisy.dotify.api.formatter.BlockProperties;
-import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;

@@ -8,11 +8,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.formatter.TocProperties;
-import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.tools.CompoundIterable;

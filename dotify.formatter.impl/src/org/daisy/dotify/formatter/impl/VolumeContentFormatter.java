@@ -1,4 +1,6 @@
-package org.daisy.dotify.api.formatter;
+package org.daisy.dotify.formatter.impl;
+
+import org.daisy.dotify.api.formatter.PageStruct;
 
 
 
@@ -8,7 +10,7 @@ package org.daisy.dotify.api.formatter;
  * 
  * @author Joel Håkansson
  */
-public interface VolumeContentFormatter {
+interface VolumeContentFormatter {
 	
 	/**
 	 * Gets the volume max size based on the supplied information.

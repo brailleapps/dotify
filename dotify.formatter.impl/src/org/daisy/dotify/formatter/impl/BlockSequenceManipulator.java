@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 
 /**

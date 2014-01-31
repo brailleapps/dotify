@@ -2,7 +2,6 @@ package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 
-import org.daisy.dotify.api.formatter.CrossReferences;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.tools.StateObject;

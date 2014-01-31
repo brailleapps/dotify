@@ -1,4 +1,4 @@
-package org.daisy.dotify.api.formatter;
+package org.daisy.dotify.formatter.impl;
 
 
 /**
@@ -7,7 +7,7 @@ package org.daisy.dotify.api.formatter;
  * @author Joel Håkansson
  *
  */
-public interface CrossReferences {
+interface CrossReferences {
 	
 	/**
 	 * Gets the page number for the specified identifier.

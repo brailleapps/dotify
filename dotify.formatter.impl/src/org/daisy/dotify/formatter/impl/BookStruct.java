@@ -8,7 +8,6 @@ import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.formatter.Volume;
-import org.daisy.dotify.api.formatter.VolumeContentFormatter;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
