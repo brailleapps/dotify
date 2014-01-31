@@ -61,7 +61,7 @@ import org.daisy.dotify.translator.DefaultTextAttribute;
  * @author Joel Håkansson
  *
  */
-public class ObflParser {
+public class ObflParser extends XMLParserBase {
 
 	
 	//private HashMap<String, LayoutMaster> masters;
@@ -875,16 +875,6 @@ public class ObflParser {
 			return hyph.equals("true");
 		}
 		return hyphenate;
-	}
-	
-	private boolean equalsStart(XMLEvent event, QName element) {
-		return 	event.getEventType()==XMLStreamConstants.START_ELEMENT
-				&& event.asStartElement().getName().equals(element);
-	}
-	
-	private boolean equalsEnd(XMLEvent event, QName element) {
-		return 	event.getEventType()==XMLStreamConstants.END_ELEMENT 
-				&& event.asEndElement().getName().equals(element);
 	}
 	
 	public Iterable<Volume> getFormattedResult() {

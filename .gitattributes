@@ -536,6 +536,7 @@ dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLWsNormalizer.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ObflParser.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ObflQName.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text
+dotify.formatter.impl/src/org/daisy/dotify/obfl/XMLParserBase.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/impl/ExpressionFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/impl/ExpressionImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/obfl/package-info.java -text
@@ -560,6 +561,7 @@ dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/FormatterCoreEventImp
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/PositionTest.java -text svneol=unset#text/plain
+dotify.formatter.impl/test/org/daisy/dotify/obfl/XMLParserBaseTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-01.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-02.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-03.xml -text
