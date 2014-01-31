@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,7 +22,9 @@ import org.daisy.cli.ShortFormResolver;
 import org.daisy.dotify.Dotify;
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.SystemProperties;
+import org.daisy.dotify.api.translator.TranslatorSpecification;
 import org.daisy.dotify.config.ConfigurationsCatalog;
+import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.TaskRunner;
@@ -104,6 +107,15 @@ public class Main extends AbstractUI {
 				System.out.println("About " + SystemProperties.SYSTEM_NAME);
 				System.out.println("Version: "+ SystemProperties.SYSTEM_RELEASE);
 				System.out.println("Build: "+ SystemProperties.SYSTEM_BUILD);
+				Main.exitWithCode(ExitCode.OK);
+			} else if (args.length==1 && args[0].equals("-info")) {
+				ArrayList<TranslatorSpecification> s = new ArrayList<TranslatorSpecification>();
+				s.addAll(BrailleTranslatorFactoryMaker.newInstance().listSpecifications());
+				Collections.sort(s);
+				System.out.println("Known configurations (locale, braille mode):");
+				for (TranslatorSpecification ts : s) {
+					System.out.println("  " + ts.getLocale() + ", " + ts.getMode());
+				}
 				Main.exitWithCode(ExitCode.OK);
 			} else {
 				System.out.println("Expected at least four arguments");
