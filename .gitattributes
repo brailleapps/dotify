@@ -410,6 +410,8 @@ dotify.common/src/org/daisy/dotify/text/BreakPointHandler.java -text svneol=unse
 dotify.common/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/TextFileReader.java -text
 dotify.common/src/org/daisy/dotify/text/packageinfo -text
+dotify.common/src/se/mtm/common/collection/ArrayStack.java -text
+dotify.common/src/se/mtm/common/collection/packageinfo -text
 dotify.common/src/se/mtm/common/io/FileIO.java -text
 dotify.common/src/se/mtm/common/io/TempFileHandler.java -text
 dotify.common/src/se/mtm/common/io/packageinfo -text
