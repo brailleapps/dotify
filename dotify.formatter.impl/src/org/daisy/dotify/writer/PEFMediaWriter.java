@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.formatter.SectionProperties;
@@ -34,7 +33,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 	public final static String PROPERTY_IDENTIFIER = "identifier";
 
 	private final static String DC_NAMESPACE_URI = "http://purl.org/dc/elements/1.1/";
-	private final Pattern nonBraillePattern;
+	//private final Pattern nonBraillePattern;
 	private PrintStream pst;
 	private Properties p;
 	private boolean hasOpenVolume;
@@ -62,7 +61,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		cRowgap = 0;
 		cDuplex = true;
 		state = new StateObject("Writer");
-		this.nonBraillePattern = Pattern.compile("[^\u2800-\u28FF]+");
+		//this.nonBraillePattern = Pattern.compile("[^\u2800-\u28FF]+");
 	}
 
 	public void open(OutputStream os, List<MetaDataItem> meta) throws PagedMediaWriterException {
@@ -115,10 +114,24 @@ public class PEFMediaWriter implements PagedMediaWriter {
 		pst.println("<page>");
 		hasOpenPage = true;
 	}
+	
+	//performance optimization
+	private boolean validate(Row row) {
+		//return nonBraillePattern.matcher(row.getChars()).matches();
+		char c;
+		for (int i=0; i<row.getChars().length(); i++) {
+			c = row.getChars().charAt(i);
+			if (c<0x2800||c>0x28FF) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public void newRow(Row row) {
 		state.assertOpen();
-		if (nonBraillePattern.matcher(row.getChars()).matches()) {
+
+		if (!validate(row)) {
 			if (errorCount<10) {
 				Logger.getLogger(this.getClass().getCanonicalName()).fine(
 						"Non-braille characters in output"+
