@@ -40,7 +40,7 @@ public class FormatterImpl implements Formatter {
 	 * Creates a new formatter
 	 */
 	public FormatterImpl(BrailleTranslator translator, ExpressionFactory ef) {
-		this.flowStruct = new BlockStructImpl(); //masters
+		this.flowStruct = new BlockStructImpl(translator); //masters
 		this.state = new StateObject();
 		this.translator = translator;
 
@@ -61,7 +61,7 @@ public class FormatterImpl implements Formatter {
 	public void newSequence(SequenceProperties p) {
 		state.assertOpen();
 		flowStruct.newSequence(p);
-		core = new FormatterCoreImpl(flowStruct.getCurrentSequence(), translator);
+		core = flowStruct.getCurrentSequence();
 	}
 
 	/**

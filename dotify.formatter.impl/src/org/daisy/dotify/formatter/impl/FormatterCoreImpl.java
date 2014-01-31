@@ -7,16 +7,21 @@ import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
+import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
+import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.tools.StringTools;
 
-class FormatterCoreImpl implements FormatterCore {
-	private final BlockSequenceImpl seq;
+class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7775469339792146048L;
 	private final BrailleTranslator translator;
 	private final Stack<BlockProperties> context;
 	private final char marginChar;
@@ -29,8 +34,8 @@ class FormatterCoreImpl implements FormatterCore {
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement floating elements
-	public FormatterCoreImpl(BlockSequenceImpl seq, BrailleTranslator translator) {
-		this.seq = seq;
+	public FormatterCoreImpl(SequenceProperties p, LayoutMaster master, BrailleTranslator translator) {
+		super(p, master);
 		this.translator = translator;
 		this.context = new Stack<BlockProperties>();
 		this.leftMargin = new Stack<String>();
@@ -64,14 +69,14 @@ class FormatterCoreImpl implements FormatterCore {
 			addToBlockIndent(context.peek().getBlockIndent());
 		}
 		RowDataProperties.Builder rdp = new RowDataProperties.Builder(
-				translator, seq.getLayoutMaster()).
+				translator, getLayoutMaster()).
 					blockIndent(blockIndent).
 					blockIndentParent(blockIndentParent.peek()).
 					leftMargin(stackString(leftMargin, false)).
 					leftMarginParent(stackString(leftMargin.subList(0, leftMargin.size()-1), false)).
 					rightMargin(stackString(rightMargin, true)).
 					rightMarginParent(stackString(rightMargin.subList(0, rightMargin.size()-1), true));
-		BlockImpl c = seq.newBlock(blockId, rdp);
+		BlockImpl c = newBlock(blockId, rdp);
 		if (context.size()>0) {
 			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
@@ -97,7 +102,7 @@ class FormatterCoreImpl implements FormatterCore {
 		context.push(p);
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
-			BlockImpl bi = seq.getCurrentBlock();
+			BlockImpl bi = getCurrentBlock();
 			if (t.getTopLeftCorner().length()+t.getTopBorder().length()+t.getTopRightCorner().length()>0) {
 				bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
 			}
@@ -113,12 +118,12 @@ class FormatterCoreImpl implements FormatterCore {
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
 			if (t.getBottomLeftCorner().length()+ t.getBottomBorder().length()+ t.getBottomRightCorner().length()>0) {
-				seq.getCurrentBlock()
+				getCurrentBlock()
 				.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
 			}
 		}
-		seq.getCurrentBlock().addSpaceAfter(p.getBottomMargin());
-		seq.getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
+		getCurrentBlock().addSpaceAfter(p.getBottomMargin());
+		getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		leftMargin.pop();
 		leftMargin.pop();
 		rightMargin.pop();
@@ -128,14 +133,14 @@ class FormatterCoreImpl implements FormatterCore {
 			int next = context.peek().getKeepWithNext();
 			subtractFromBlockIndent(context.peek().getBlockIndent());
 			RowDataProperties.Builder rdp = new RowDataProperties.Builder(
-					translator, seq.getLayoutMaster()).
+					translator, getLayoutMaster()).
 						blockIndent(blockIndent).
 						blockIndentParent(blockIndentParent.peek()).
 						leftMargin(stackString(leftMargin, false)).
 						leftMarginParent(stackString(leftMargin.subList(0, leftMargin.size()-1), false)).
 						rightMargin(stackString(rightMargin, true)).
 						rightMarginParent(stackString(rightMargin.subList(0, rightMargin.size()-1), true));
-			BlockImpl c = seq.newBlock(null, rdp);
+			BlockImpl c = newBlock(null, rdp);
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);
 		}
@@ -154,7 +159,7 @@ class FormatterCoreImpl implements FormatterCore {
 
 	public void insertMarker(Marker m) {
 		//FIXME: this does not work
-		seq.getCurrentBlock().addMarker(m);
+		getCurrentBlock().addMarker(m);
 	}
 
 	public void insertAnchor(String ref) {
@@ -163,13 +168,13 @@ class FormatterCoreImpl implements FormatterCore {
 	}
 
 	public void insertLeader(Leader leader) {
-		seq.getCurrentBlock().insertLeader(leader);
+		getCurrentBlock().insertLeader(leader);
 	}
 
 	public void addChars(CharSequence c, TextProperties p) {
 		assert context.size()!=0;
 		if (context.size()==0) return;
-		BlockImpl bl = seq.getCurrentBlock();
+		BlockImpl bl = getCurrentBlock();
 		if (listItem!=null) {
 			//append to this block
 			bl.setListItem(listItem.getLabel(), listItem.getType());
@@ -182,11 +187,11 @@ class FormatterCoreImpl implements FormatterCore {
 	public void newLine() {
 		MarginProperties p = stackString(leftMargin, false);
 		MarginProperties ret = new MarginProperties(p.getContent()+StringTools.fill(marginChar, context.peek().getTextIndent()), p.isSpaceOnly());
-		seq.getCurrentBlock().newLine(ret);
+		getCurrentBlock().newLine(ret);
 	}
 
 	public void insertReference(String identifier, NumeralStyle numeralStyle) {
-		seq.getCurrentBlock().insertReference(identifier, numeralStyle);
+		getCurrentBlock().insertReference(identifier, numeralStyle);
 	}
 
 	public void insertEvaluate(String exp, TextProperties t) {

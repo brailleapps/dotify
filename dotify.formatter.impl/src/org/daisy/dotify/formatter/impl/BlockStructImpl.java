@@ -6,27 +6,30 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.SequenceProperties;
+import org.daisy.dotify.api.translator.BrailleTranslator;
 
 
 class BlockStructImpl implements BlockStruct {
 	private final HashMap<String, LayoutMaster> masters;
 	private final Stack<BlockSequence> blocks;
+	private final BrailleTranslator bt;
 
-	public BlockStructImpl() {
-		this(new HashMap<String, LayoutMaster>());
+	public BlockStructImpl(BrailleTranslator bt) {
+		this(new HashMap<String, LayoutMaster>(), bt);
 	}
 	
-	public BlockStructImpl(HashMap<String, LayoutMaster> masters) {
+	public BlockStructImpl(HashMap<String, LayoutMaster> masters, BrailleTranslator bt) {
 		this.masters = masters;
 		this.blocks = new Stack<BlockSequence>();
+		this.bt = bt;
 	}
 	
 	public void newSequence(SequenceProperties p) {
-		blocks.push((BlockSequence)new BlockSequenceImpl(p, masters.get(p.getMasterName())));
+		blocks.push((BlockSequence)new FormatterCoreImpl(p, masters.get(p.getMasterName()), bt));
 	}
 	
-	public BlockSequenceImpl getCurrentSequence() {
-		return (BlockSequenceImpl)blocks.peek();
+	public FormatterCoreImpl getCurrentSequence() {
+		return (FormatterCoreImpl)blocks.peek();
 	}
 	
 	public void addLayoutMaster(String name, LayoutMaster master) {

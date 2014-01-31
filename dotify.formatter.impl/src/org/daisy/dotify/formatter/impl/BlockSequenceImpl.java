@@ -6,7 +6,7 @@ import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 
-class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
+abstract class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 	private final SequenceProperties p;
 	private final LayoutMaster master;
 	
@@ -38,11 +38,11 @@ class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 		return master;
 	}
 
-	public Block getBlock(int index) {
+	private Block getBlock(int index) {
 		return this.elementAt(index);
 	}
 
-	public int getBlockCount() {
+	private int getBlockCount() {
 		return this.size();
 	}
 
