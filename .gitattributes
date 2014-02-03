@@ -522,7 +522,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocBlockEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocEvents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text

@@ -1,8 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.daisy.dotify.api.formatter.TextProperties;
 
 
@@ -14,27 +11,17 @@ import org.daisy.dotify.api.formatter.TextProperties;
  */
 class Evaluate implements EventContents {
 	private final String expression;
-	private final Map<String, String> vars;
 	private final TextProperties props;
 	
-	public Evaluate(String expression, Map<String, String> vars, TextProperties props) {
-		this.expression = expression;
-		this.vars = vars;
-		this.props = props;
-	}
-	
 	public Evaluate(String expression, TextProperties props) {
-		this(expression, new HashMap<String, String>(), props);
+		this.expression = expression;
+		this.props = props;
 	}
 	
 	public String getExpression() {
 		return expression;
 	}
 	
-	public Map<String, String> getVariables() {
-		return vars;
-	}
-
 	public ContentType getContentType() {
 		return ContentType.EVALUATE;
 	}

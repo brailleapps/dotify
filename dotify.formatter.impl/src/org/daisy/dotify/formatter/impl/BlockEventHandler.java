@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.impl.EventContents.ContentType;
@@ -31,14 +32,23 @@ class BlockEventHandler extends BlockEventHandlerCore {
 		this.formatter = formatter;
 	}
 	
-	public void formatSequences(Iterable<SequenceEvent> sequences) {
+	public void formatSequences(Iterable<SequenceEvent> sequences, Map<String, String> vars) {
 		for (SequenceEvent events : sequences) {
-			formatSequence(events);
+			formatSequence(events, vars);
 		}
 	}
 	
-	public void formatSequence(SequenceEvent events) {
-		formatter.newSequence(events.getSequenceProperties());
+	
+	public void newSequence(SequenceProperties props, Map<String, String> vars) {
+		formatter.newSequence(props);
+	}
+	
+	public void formatSequence(SequenceEvent events, Map<String, String> vars) {
+		newSequence(events.getSequenceProperties(), vars);
+		formatBlock(events, vars);
+	}
+	
+	public void formatBlock(Iterable<BlockEvent> events, Map<String, String> vars) {
 		for (BlockEvent e : events) {
 			if (e.getContentType()==ContentType.TOC_ENTRY) {
 				formatter.startBlock(e.getProperties(), ((TocBlockEvent)e).getTocId());
@@ -47,7 +57,7 @@ class BlockEventHandler extends BlockEventHandlerCore {
 			} else {
 				throw new RuntimeException("Coding error");
 			}
-			insertEventContents(e);
+			insertEventContents(e, vars);
 			formatter.endBlock();
 		}
 	}

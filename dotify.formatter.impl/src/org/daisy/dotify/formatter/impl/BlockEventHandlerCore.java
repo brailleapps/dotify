@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.Map;
+
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
@@ -18,7 +20,7 @@ class BlockEventHandlerCore {
 		return formatter;
 	}
 	
-	public void insertEventContents(IterableEventContents b) {
+	public void insertEventContents(IterableEventContents b, Map<String, String> vars) {
 		for (EventContents bc : b) {
 			switch (bc.getContentType()) {
 				case PCDATA: {
@@ -34,13 +36,13 @@ class BlockEventHandlerCore {
 				case BLOCK: {
 					BlockEvent ev = (BlockEvent)bc;
 					formatter.startBlock(ev.getProperties(), ev.getBlockId());
-					insertEventContents(ev);
+					insertEventContents(ev, vars);
 					formatter.endBlock();
 					break; }
 				case TOC_ENTRY: {
 					TocBlockEvent ev = (TocBlockEvent)bc;
 					formatter.startBlock(ev.getProperties(), ev.getTocId());
-					insertEventContents(ev);
+					insertEventContents(ev, vars);
 					formatter.endBlock();
 					break; }
 				case BR: {
@@ -48,7 +50,7 @@ class BlockEventHandlerCore {
 					break; }
 				case EVALUATE: {
 					Evaluate e = ((Evaluate)bc);
-					formatter.addChars((ef.newExpression().evaluate(e.getExpression(), e.getVariables())).toString(), e.getTextProperties());
+					formatter.addChars((ef.newExpression().evaluate(e.getExpression(), vars)).toString(), e.getTextProperties());
 					break; }
 				case MARKER: {
 					Marker m = ((Marker)bc);
@@ -57,7 +59,7 @@ class BlockEventHandlerCore {
 				}
 				case STYLE: {
 					StyleEvent ev = (StyleEvent) bc;
-					insertEventContents(ev);
+					insertEventContents(ev, vars);
 					break;
 				}
 				default:

@@ -34,29 +34,28 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 		this.ef = ef;
 	}
 	
-	private void appendToc(VolumeSequenceEvent seq, CrossReferences crh, int volumeNumber, int volumeCount, List<Iterable<BlockSequence>> ib) throws IOException {
+	private void appendToc(VolumeSequenceEvent seq, CrossReferences crh, int volumeNumber, int volumeCount, List<Iterable<BlockSequence>> ib, Map<String, String> vars) throws IOException {
 		TocSequenceEvent toc = (TocSequenceEvent)seq;
-		if (toc.appliesTo(volumeNumber, volumeCount)) {
+		if (toc.appliesTo(vars)) {
 			BlockEventHandler beh = new BlockEventHandler(masters, bt, ef);
 			TableOfContentsImpl data = tocs.get(toc.getTocName());
-			TocEvents events = toc.getTocEvents(volumeNumber, volumeCount);
 			StaticSequenceEventImpl evs = new StaticSequenceEventImpl(toc.getSequenceProperties());
-			for (BlockEvent e : events.getTocStartEvents()) {
+			for (BlockEvent e : toc.getTocStartEvents(vars)) {
 				evs.push(e);
 			}
 			for (BlockEvent e : data) {
 				evs.push(e);
 			}
 			if (toc.getRange()==TocProperties.TocRange.DOCUMENT) {
-				for (BlockEvent e : events.getVolumeEndEvents(volumeCount)) {
+				for (BlockEvent e : toc.getVolumeEndEvents(vars)) {
 					evs.push(e);
 				}
 			}
-			for (BlockEvent e : events.getTocEndEvents()) {
+			for (BlockEvent e : toc.getTocEndEvents(vars)) {
 				evs.push(e);
 			}
 			if (toc.getRange()==TocProperties.TocRange.VOLUME) {
-				beh.formatSequence(evs);
+				beh.formatSequence(evs, vars);
 				BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
 				String start = null;
 				String stop = null;
@@ -83,10 +82,10 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 						fsm.removeTail(stop);
 						BlockEventHandler beh2 = new BlockEventHandler(masters, bt, ef);
 						StaticSequenceEventImpl evs2 = new StaticSequenceEventImpl(toc.getSequenceProperties());
-						for (BlockEvent e : events.getTocEndEvents()) {
+						for (BlockEvent e : toc.getTocEndEvents(vars)) {
 							evs2.add(e);
 						}
-						beh2.formatSequence(evs2);
+						beh2.formatSequence(evs2, vars);
 						fsm.appendGroup(beh2.close().getBlockSequenceIterable().iterator().next());
 						r.add(fsm.newSequence());
 						ib.add(r);
@@ -95,7 +94,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 					}
 				}
 			} else if (toc.getRange()==TocProperties.TocRange.DOCUMENT) {
-				beh.formatSequence(evs);
+				beh.formatSequence(evs, vars);
 				BlockSequenceManipulator fsm = new BlockSequenceManipulator(beh.close());
 				int nv=0;
 				HashMap<String, BlockSequence> statics = new HashMap<String, BlockSequence>();
@@ -106,17 +105,14 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 						if (vol!=null) {
 							if (nv!=vol) {
 								BlockEventHandler beh2 = new BlockEventHandler(masters, bt, ef);
-								StaticSequenceEventImpl evs2 = new StaticSequenceEventImpl(toc.getSequenceProperties());
+								beh2.newSequence(toc.getSequenceProperties(), vars);
 								if (nv>0) {
-									for (BlockEvent e : events.getVolumeEndEvents(nv)) {
-										evs2.add(e);
-									}
+									vars.put(toc.getStartedVolumeVariableName(), ""+nv);
+									beh2.formatBlock(toc.getVolumeEndEvents(vars), vars);
 								}
 								nv = vol;
-								for (BlockEvent e : events.getVolumeStartEvents(vol)) {
-									evs2.add(e);
-								}
-								beh2.formatSequence(evs2);
+								vars.put(toc.getStartedVolumeVariableName(), ""+vol);
+								beh2.formatBlock(toc.getVolumeStartEvents(vars), vars);
 								statics.put(b.getBlockIdentifier(), beh2.close().getBlockSequenceIterable().iterator().next());
 							}
 						}
@@ -182,17 +178,16 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
 		for (VolumeTemplateImpl t : volumeTemplates) {
 			if (t.appliesTo(volumeNumber, volumeCount)) {
+				HashMap<String, String> vars = new HashMap<String, String>();
+				vars.put(t.getVolumeCountVariableName(), volumeCount+"");
+				vars.put(t.getVolumeNumberVariableName(), volumeNumber+"");
 				for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 					if (seq instanceof TocSequenceEvent) {
-						appendToc(seq, crh, volumeNumber, volumeCount, ib);
+						appendToc(seq, crh, volumeNumber, volumeCount, ib, vars);
 					} else if (seq instanceof SequenceEvent) {
 						BlockEventHandler beh = new BlockEventHandler(masters, bt, ef);
 						SequenceEvent seqEv = ((SequenceEvent)seq);
-						HashMap<String, String> vars = new HashMap<String, String>();
-						vars.put(t.getVolumeCountVariableName(), volumeCount+"");
-						vars.put(t.getVolumeNumberVariableName(), volumeNumber+"");
-						seqEv.setEvaluateContext(vars);
-						beh.formatSequence(seqEv);
+						beh.formatSequence(seqEv, vars);
 						ib.add(beh.close().getBlockSequenceIterable());
 					} else {
 						throw new RuntimeException("Unexpected error");

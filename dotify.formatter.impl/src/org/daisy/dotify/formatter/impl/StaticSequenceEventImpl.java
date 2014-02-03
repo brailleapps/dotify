@@ -1,7 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.Map;
-
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class StaticSequenceEventImpl extends FormatterCoreEventImpl implements StaticSequenceEvent {
@@ -28,9 +26,4 @@ class StaticSequenceEventImpl extends FormatterCoreEventImpl implements StaticSe
 		return VolumeSequenceType.STATIC;
 	}
 
-	public void setEvaluateContext(Map<String, String> vars) {
-		for (BlockEvent e : this) {
-			e.setEvaluateContext(vars);
-		}
-	}
 }

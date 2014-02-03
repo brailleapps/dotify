@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.Map;
 
 
 
@@ -11,10 +10,5 @@ import java.util.Map;
  */
 interface BlockContents extends IterableEventContents {
 
-	/**
-	 * Sets the evaluate context using the supplied map where <tt>key</tt>
-	 * is a variable name and <tt>value</tt> is the variables value. 
-	 * @param vars a map containing variables and their value
-	 */
-	public void setEvaluateContext(Map<String, String> vars);
+
 }
