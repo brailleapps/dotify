@@ -27,7 +27,7 @@ class TextContents implements EventContents {
 		return text;
 	}
 
-	public TextProperties getSpanProperties() {
+	public TextProperties getTextProperties() {
 		return p;
 	}
 

@@ -77,7 +77,7 @@ class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore,
 	}
 
 	public void insertMarker(Marker marker) {
-		cb.add(new MarkerEventContents(marker.getName(), marker.getValue()));
+		cb.add(new MarkerSegment(marker));
 	}
 
 	public void insertAnchor(String ref) {
@@ -86,11 +86,11 @@ class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore,
 	}
 
 	public void insertLeader(Leader leader) {
-		cb.add(new LeaderEventContents(leader));
+		cb.add(new LeaderSegment(leader));
 	}
 
 	public void insertReference(String identifier, NumeralStyle numeralStyle) {
-		cb.add(new PageNumberReferenceEventContents(identifier, numeralStyle));
+		cb.add(new PageNumberReferenceSegment(identifier, numeralStyle));
 	}
 
 	public void addChars(CharSequence chars, TextProperties props) {

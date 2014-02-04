@@ -89,7 +89,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 					p = ts.getBlockProperties();
 					boolean oldValue = rdp.getTranslator().isHyphenating();
 					rdp.getTranslator().setHyphenating(ts.getTextProperties().isHyphenating());
-					layout(ts.getChars(), ts.getTextProperties().getLocale());
+					layout(ts.getText(), ts.getTextProperties().getLocale());
 					rdp.getTranslator().setHyphenating(oldValue);
 					break;
 				}

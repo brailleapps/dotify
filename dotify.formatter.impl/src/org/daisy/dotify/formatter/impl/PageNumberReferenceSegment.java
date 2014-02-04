@@ -2,29 +2,10 @@ package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.NumeralStyle;
 
-class PageNumberReferenceSegment implements Segment {
-	private final String refid;
-	private final NumeralStyle style;
+class PageNumberReferenceSegment extends PageNumberReference implements Segment, EventContents {
 	
 	public PageNumberReferenceSegment(String refid, NumeralStyle style) {
-		this.refid = refid;
-		this.style = style;
-	}
-
-	/**
-	 * Gets the identifier to the reference location.
-	 * @return returns the reference identifier
-	 */
-	public String getRefId() {
-		return refid;
-	}
-	
-	/**
-	 * Gets the numeral style for this page number reference
-	 * @return returns the numeral style
-	 */
-	public NumeralStyle getNumeralStyle() {
-		return style;
+		super(refid, style);
 	}
 
 	public boolean canContainEventObjects() {
@@ -33,6 +14,10 @@ class PageNumberReferenceSegment implements Segment {
 
 	public SegmentType getSegmentType() {
 		return SegmentType.Reference;
+	}
+	
+	public ContentType getContentType() {
+		return ContentType.PAGE_NUMBER;
 	}
 
 }

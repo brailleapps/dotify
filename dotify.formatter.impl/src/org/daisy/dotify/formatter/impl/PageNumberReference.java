@@ -33,8 +33,4 @@ class PageNumberReference {
 		return style;
 	}
 
-	public boolean canContainEventObjects() {
-		return false;
-	}
-
 }

@@ -6,21 +6,21 @@ import org.daisy.dotify.api.formatter.TextProperties;
 
 
 class TextSegment implements Segment {
-	private CharSequence chars;
+	private String chars;
 	private final TextProperties tp;
 	private final BlockProperties p;
 	
-	public TextSegment(CharSequence chars, TextProperties tp, BlockProperties p) {
+	public TextSegment(String chars, TextProperties tp, BlockProperties p) {
 		this.chars = chars;
 		this.tp = tp;
 		this.p = p;
 	}
 	
-	public CharSequence getChars() {
+	public String getText() {
 		return chars;
 	}
 
-	public void setChars(CharSequence chars) {
+	public void setText(String chars) {
 		this.chars = chars;
 	}
 

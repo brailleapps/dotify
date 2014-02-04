@@ -25,7 +25,7 @@ class BlockEventHandlerCore {
 			switch (bc.getContentType()) {
 				case PCDATA: {
 					TextContents tc = (TextContents)bc;
-					formatter.addChars(tc.getText(), tc.getSpanProperties());
+					formatter.addChars(tc.getText(), tc.getTextProperties());
 					break; }
 				case LEADER: {
 					formatter.insertLeader(((Leader)bc));

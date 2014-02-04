@@ -488,18 +488,15 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterCoreImpl.java
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/IterableEventContents.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LineBreak.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginProperties.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarkerEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarkerSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/NewLineSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReference.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReferenceEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReferenceSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java -text svneol=unset#text/plain

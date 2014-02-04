@@ -63,11 +63,11 @@ class BlockImpl implements Block {
 			TextSegment ts = ((TextSegment) segments.peek());
 			if (ts.getBlockProperties().equals(p) && ts.getTextProperties().equals(tp)) {
 				// Logger.getLogger(this.getClass().getCanonicalName()).finer("Appending chars to existing text segment.");
-				ts.setChars(ts.getChars() + "" + c);
+				ts.setText(ts.getText() + "" + c);
 				return;
 			}
 		}
-		segments.push(new TextSegment(c, tp, p));
+		segments.push(new TextSegment(c.toString(), tp, p));
 	}
 	
 	public void insertLeader(Leader l) {
