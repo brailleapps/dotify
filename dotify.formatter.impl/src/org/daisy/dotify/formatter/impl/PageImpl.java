@@ -27,7 +27,6 @@ import org.daisy.dotify.tools.StringTools;
  * @author Joel Håkansson
  */
 class PageImpl implements Page {
-	private String marginCharacter = null;
 	private PageSequenceImpl parent;
 	private ArrayList<RowImpl> rows;
 	private ArrayList<Marker> markers;
@@ -102,14 +101,6 @@ class PageImpl implements Page {
 		return markers.subList(contentMarkersBegin, markers.size());
 	}
 	
-	private String getMarginCharacter() {
-		// lazy init
-		if (marginCharacter == null) {
-			marginCharacter = getParent().getTranslator().translate(" ").getTranslatedRemainder();
-		}
-		return marginCharacter;
-	}
-	
 	/**
 	 * Gets the page space needed to render the rows. 
 	 * @param rows
@@ -168,7 +159,7 @@ class PageImpl implements Page {
 				final int pageMargin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin());
 				int w = getParent().getLayoutMaster().getFlowWidth() + fsize + pageMargin;
 
-				tb = new TextBorder.Builder(w, getMarginCharacter())
+				tb = new TextBorder.Builder(w, parent.getFormatterContext().getSpaceCharacter()+"")
 						.style(border)
 						.outerLeftMargin(pageMargin)
 						.padToSize(!TextBorderStyle.NONE.equals(border))
@@ -199,7 +190,7 @@ class PageImpl implements Page {
 						} else {
 							if (!row.getLeftMargin().isSpaceOnly() || !row.getRightMargin().isSpaceOnly()) {
 								res = TextBorder.addBorderToRow(
-									lm.getFlowWidth(), row.getLeftMargin().getContent(), "", row.getRightMargin().getContent(), marginCharacter);
+									lm.getFlowWidth(), row.getLeftMargin().getContent(), "", row.getRightMargin().getContent(), getParent().getFormatterContext().getSpaceCharacter()+"");
 							} else {
 								res = "";
 							}
@@ -252,11 +243,11 @@ class PageImpl implements Page {
 		if (text.equals("") && leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
 			return "";
 		} else {
-			String r = leftMargin.getContent() + StringTools.fill(getMarginCharacter(), align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;
+			String r = leftMargin.getContent() + StringTools.fill( parent.getFormatterContext().getSpaceCharacter(), align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;
 			if (rightMargin.isSpaceOnly()) {
 				return r;
 			} else {
-				return r + StringTools.fill(getMarginCharacter(), w - r.length() - rightMargin.getContent().length()) + rightMargin.getContent();
+				return r + StringTools.fill( parent.getFormatterContext().getSpaceCharacter(), w - r.length() - rightMargin.getContent().length()) + rightMargin.getContent();
 			}
 		}
 	}
@@ -294,7 +285,7 @@ class PageImpl implements Page {
 		ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 		for (FieldList row : fields) {
 			try {
-				RowImpl r = new RowImpl(distribute(row, lm.getFlowWidth(), translator.translate(" ").getTranslatedRemainder(), translator));
+				RowImpl r = new RowImpl(distribute(row, lm.getFlowWidth(), parent.getFormatterContext().getSpaceCharacter()+"", translator));
 				r.setRowSpacing(row.getRowSpacing());
 				ret.add(r);
 			} catch (PaginatorToolsException e) {

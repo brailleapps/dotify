@@ -13,16 +13,16 @@ class PageSequenceImpl implements PageSequence {
 		private final LayoutMaster master;
 		private final int pagesOffset;
 		private final HashMap<String, Page> pageReferences;
-		private final BrailleTranslator translator;
+		private final FormatterContext context;
 		private int keepNextSheets;
 		private PageImpl nextPage;
 		
-		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, BrailleTranslator translator) {
+		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterContext context) {
 			this.pages = new Stack<PageImpl>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
 			this.pageReferences = pageReferences;
-			this.translator = translator;
+			this.context = context;
 			this.keepNextSheets = 0;
 			this.nextPage = null;
 		}
@@ -133,7 +133,11 @@ class PageSequenceImpl implements PageSequence {
 		}
 		
 		public BrailleTranslator getTranslator() {
-			return translator;
+			return context.getTranslator();
+		}
+		
+		public FormatterContext getFormatterContext() {
+			return context;
 		}
 
 }

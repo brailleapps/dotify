@@ -217,7 +217,7 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 		if (border.size()>0) {
-			border.put(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
+			border.put(TextBorderFactory.FEATURE_MODE, mode);
 			try {
 				masterConfig.border(maker.newTextBorderStyle(border));
 			} catch (TextBorderConfigurationException e) {
@@ -562,7 +562,7 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 		if (border.size()>0) {
-			border.put(TextBorderFactory.FEATURE_MODE, formatter.getTranslator().getTranslatorMode());
+			border.put(TextBorderFactory.FEATURE_MODE, mode);
 			try {
 				builder.textBorderStyle(maker.newTextBorderStyle(border));
 			} catch (TextBorderConfigurationException e) {

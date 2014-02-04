@@ -9,16 +9,17 @@ import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.PageStruct;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
+	private final FormatterContext context;
 	//private final StringFilter filters;
 	HashMap<String, Page> pageReferences;
 
 	
-	public PageStructImpl() {
+	public PageStructImpl(FormatterContext context) {
 		//this.filters = filters;
 		this.pageReferences = new HashMap<String, Page>();
+		this.context = context;
 	}
 	
 	/*public StringFilter getFilter() {
@@ -36,19 +37,19 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		return pageReferences.get(refid);
 	}
 	
-	void newSequence(LayoutMaster master, int pagesOffset, BrailleTranslator translator) {
-		this.push(new PageSequenceImpl(master, pagesOffset, this.pageReferences, translator));
+	void newSequence(LayoutMaster master, int pagesOffset) {
+		this.push(new PageSequenceImpl(master, pagesOffset, this.pageReferences, context));
 	}
 	
-	void newSequence(LayoutMaster master, BrailleTranslator translator) {
+	void newSequence(LayoutMaster master) {
 		if (this.size()==0) {
-			newSequence(master, 0, translator);
+			newSequence(master, 0);
 		} else {
 			int next = currentSequence().currentPage().getPageIndex()+1;
 			if (currentSequence().getLayoutMaster().duplex() && (next % 2)==1) {
 				next++;
 			}
-			newSequence(master, next, translator);
+			newSequence(master, next);
 		}
 	}
 	

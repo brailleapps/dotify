@@ -5,7 +5,7 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class RowDataProperties {
 	private final int blockIndent, blockIndentParent;
-	private final BrailleTranslator translator;
+	private final FormatterContext context;
 	private final LayoutMaster master;
 	private final MarginProperties leftMargin;
 	private final MarginProperties rightMargin;
@@ -14,7 +14,7 @@ class RowDataProperties {
 	private final ListItem listProps;
 	
 	static class Builder {
-		private final BrailleTranslator translator;
+		private final FormatterContext context;
 		private final LayoutMaster master;
 		private int blockIndent = 0;
 		private int blockIndentParent = 0;
@@ -24,8 +24,8 @@ class RowDataProperties {
 		private MarginProperties rightMarginParent = new MarginProperties();
 		private ListItem listProps = null;
 		
-		public Builder(BrailleTranslator translator, LayoutMaster master) {
-			this.translator = translator;
+		public Builder(FormatterContext context, LayoutMaster master) {
+			this.context = context;
 			this.master = master;
 		}
 		
@@ -69,7 +69,7 @@ class RowDataProperties {
 	private RowDataProperties(Builder builder) {
 		this.blockIndent = builder.blockIndent;
 		this.blockIndentParent = builder.blockIndentParent;
-		this.translator = builder.translator;
+		this.context = builder.context;
 		this.master = builder.master;
 		this.leftMargin = builder.leftMargin;
 		this.rightMargin = builder.rightMargin;
@@ -92,11 +92,15 @@ class RowDataProperties {
 	}*/
 	
 	public BrailleTranslator getTranslator() {
-		return translator;
+		return context.getTranslator();
 	}
 
 	public LayoutMaster getMaster() {
 		return master;
+	}
+	
+	public char getSpaceCharacter() {
+		return context.getSpaceCharacter();
 	}
 
 	public MarginProperties getLeftMargin() {

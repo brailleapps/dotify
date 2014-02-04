@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.daisy.dotify.api.formatter.Formatter;
-import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.formatter.impl.EventContents.ContentType;
 
 /**
@@ -18,13 +16,10 @@ import org.daisy.dotify.formatter.impl.EventContents.ContentType;
 class BlockEventHandler extends BlockEventHandlerCore {
 	private final Formatter formatter;
 
-	public BlockEventHandler(Map<String, LayoutMaster> masters, BrailleTranslator bt, ExpressionFactory ef) {
-		super(new FormatterImpl(bt, ef), ef);
+	public BlockEventHandler(FormatterContext context, ExpressionFactory ef) {
+		super(new FormatterImpl(context, ef), ef);
 		this.formatter = (Formatter)getFormatterCore();
 		this.formatter.open();
-		for (String name : masters.keySet()) {
-			this.formatter.addLayoutMaster(name, masters.get(name));
-		}
 	}
 	
 	public BlockEventHandler(Formatter formatter, ExpressionFactory ef) {

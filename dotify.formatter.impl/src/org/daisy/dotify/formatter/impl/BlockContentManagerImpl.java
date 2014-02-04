@@ -30,7 +30,6 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private final Stack<RowImpl> rows;
 	private final CrossReferences refs;
 	
-	private final String spaceChar;
 	private final RowDataProperties rdp;
 	private final int available;
 	private final MarginProperties rightMargin;
@@ -52,7 +51,6 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin().getContent().length();
 		this.rightMargin = rdp.getRightMargin();
 		this.item = rdp.getListItem();
-		this.spaceChar = rdp.getTranslator().translate(" ").getTranslatedRemainder();
 		
 		this.rows = new Stack<RowImpl>();
 		calculateRows(segments, rdp);
@@ -203,7 +201,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private void newRow(String contentBefore, BrailleTranslatorResult chars, MarginProperties margin, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
-		String preText = contentBefore + StringTools.fill(spaceChar, thisIndent).toString();
+		String preText = contentBefore + StringTools.fill(rdp.getSpaceCharacter(), thisIndent).toString();
 		newRow(null, margin, preText, "", chars, blockIndent);
 	}
 
@@ -251,7 +249,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 				}
 				rows.add(row);
 
-				preContent = StringTools.fill(spaceChar, p.getTextIndent()+blockIndent);
+				preContent = StringTools.fill(rdp.getSpaceCharacter(), p.getTextIndent()+blockIndent);
 				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				

@@ -29,7 +29,7 @@ public class FormatterImpl implements Formatter {
 
 	private final BlockStructImpl flowStruct;
 	private final StateObject state;
-	private final BrailleTranslator translator;
+	private final FormatterContext context;
 
 	private final Stack<VolumeTemplateImpl> volumeTemplates;
 	private HashMap<String, TableOfContentsImpl> tocs;
@@ -40,9 +40,13 @@ public class FormatterImpl implements Formatter {
 	 * Creates a new formatter
 	 */
 	public FormatterImpl(BrailleTranslator translator, ExpressionFactory ef) {
-		this.flowStruct = new BlockStructImpl(translator); //masters
+		this(new FormatterContextImpl(translator), ef);
+	}
+	
+	public FormatterImpl(FormatterContext context, ExpressionFactory ef) {
+		this.context = context;
+		this.flowStruct = new BlockStructImpl(context); //masters
 		this.state = new StateObject();
-		this.translator = translator;
 
 		this.volumeTemplates = new Stack<VolumeTemplateImpl>();
 		this.tocs = new HashMap<String, TableOfContentsImpl>();
@@ -55,7 +59,7 @@ public class FormatterImpl implements Formatter {
 	}
 
 	public void addLayoutMaster(String name, LayoutMaster master) {
-		flowStruct.addLayoutMaster(name, master);
+		context.addLayoutMaster(name, master);
 	}
 
 	public void newSequence(SequenceProperties p) {
@@ -83,11 +87,11 @@ public class FormatterImpl implements Formatter {
 	}
 
 	public BrailleTranslator getTranslator() {
-		return translator;
+		return context.getTranslator();
 	}
-
+	
 	private VolumeContentFormatter getVolumeContentFormatter() {
-		return new BlockEventHandlerRunner(flowStruct.getMasters(), tocs, volumeTemplates, getTranslator(), ef);
+		return new BlockEventHandlerRunner(tocs, volumeTemplates, context, ef);
 	}
 
 
@@ -107,9 +111,9 @@ public class FormatterImpl implements Formatter {
 
 	public Iterable<Volume> getVolumes() {
 		PaginatorImpl paginator = new PaginatorImpl();
-		paginator.open(getTranslator(), getFlowStruct().getBlockSequenceIterable());
+		paginator.open(context, getFlowStruct().getBlockSequenceIterable());
 
-		BookStruct bookStruct = new BookStruct(paginator, getVolumeContentFormatter(), getTranslator());
+		BookStruct bookStruct = new BookStruct(paginator, getVolumeContentFormatter(), context.getTranslator());
 		return bookStruct.getVolumes();
 	}
 

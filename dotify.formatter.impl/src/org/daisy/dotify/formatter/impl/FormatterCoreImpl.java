@@ -13,7 +13,6 @@ import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.tools.StringTools;
 
@@ -22,9 +21,8 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 	 * 
 	 */
 	private static final long serialVersionUID = -7775469339792146048L;
-	private final BrailleTranslator translator;
-	private final Stack<BlockProperties> context;
-	private final char marginChar;
+	private final FormatterContext formatterContext;
+	private final Stack<BlockProperties> propsContext;
 	private Stack<String> leftMargin;
 	private Stack<String> rightMargin;
 	
@@ -34,16 +32,13 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement floating elements
-	public FormatterCoreImpl(SequenceProperties p, LayoutMaster master, BrailleTranslator translator) {
+	public FormatterCoreImpl(SequenceProperties p, LayoutMaster master, FormatterContext context) {
 		super(p, master);
-		this.translator = translator;
-		this.context = new Stack<BlockProperties>();
+		this.formatterContext = context;
+		this.propsContext = new Stack<BlockProperties>();
 		this.leftMargin = new Stack<String>();
 		this.rightMargin = new Stack<String>();
 		this.listItem = null;
-		//margin char can only be a single character, the reason for going through the translator
-		//is because output isn't always braille.
-		this.marginChar = translator.translate(" ").getTranslatedRemainder().charAt(0);
 		this.blockIndent = 0;
 		this.blockIndentParent = new Stack<Integer>();
 		blockIndentParent.add(0);
@@ -61,15 +56,15 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 			lb = t.getLeftBorder();
 			rb = t.getRightBorder();
 		}
-		leftMargin.push(StringTools.fill(marginChar, p.getLeftMargin()));
+		leftMargin.push(StringTools.fill(formatterContext.getSpaceCharacter(), p.getLeftMargin()));
 		leftMargin.push(lb);
-		rightMargin.push(StringTools.fill(marginChar, p.getRightMargin()));
+		rightMargin.push(StringTools.fill(formatterContext.getSpaceCharacter(), p.getRightMargin()));
 		rightMargin.push(rb);
-		if (context.size()>0) {
-			addToBlockIndent(context.peek().getBlockIndent());
+		if (propsContext.size()>0) {
+			addToBlockIndent(propsContext.peek().getBlockIndent());
 		}
 		RowDataProperties.Builder rdp = new RowDataProperties.Builder(
-				translator, getLayoutMaster()).
+				formatterContext, getLayoutMaster()).
 					blockIndent(blockIndent).
 					blockIndentParent(blockIndentParent.peek()).
 					leftMargin(stackString(leftMargin, false)).
@@ -77,19 +72,19 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 					rightMargin(stackString(rightMargin, true)).
 					rightMarginParent(stackString(rightMargin.subList(0, rightMargin.size()-1), true));
 		BlockImpl c = newBlock(blockId, rdp);
-		if (context.size()>0) {
-			if (context.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
+		if (propsContext.size()>0) {
+			if (propsContext.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
-				switch (context.peek().getListType()) {
+				switch (propsContext.peek().getListType()) {
 				case OL:
-					listLabel = context.peek().nextListNumber()+""; break;
+					listLabel = propsContext.peek().nextListNumber()+""; break;
 				case UL:
 					listLabel = "•";
 					break;
 				case PL: default:
 					listLabel = "";
 				}
-				listItem = new ListItem(listLabel, context.peek().getListType());
+				listItem = new ListItem(listLabel, propsContext.peek().getListType());
 			}
 		}
 		c.addSpaceBefore(p.getTopMargin());
@@ -99,7 +94,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 		c.setIdentifier(p.getIdentifier());
 		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		c.setVerticalPosition(p.getVerticalPosition());
-		context.push(p);
+		propsContext.push(p);
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
 			BlockImpl bi = getCurrentBlock();
@@ -114,7 +109,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 		if (listItem!=null) {
 			addChars("", new TextProperties.Builder(null).build());
 		}
-		BlockProperties p = context.pop();
+		BlockProperties p = propsContext.pop();
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
 			if (t.getBottomLeftCorner().length()+ t.getBottomBorder().length()+ t.getBottomRightCorner().length()>0) {
@@ -128,12 +123,12 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 		leftMargin.pop();
 		rightMargin.pop();
 		rightMargin.pop();
-		if (context.size()>0) {
-			Keep keep = context.peek().getKeepType();
-			int next = context.peek().getKeepWithNext();
-			subtractFromBlockIndent(context.peek().getBlockIndent());
+		if (propsContext.size()>0) {
+			Keep keep = propsContext.peek().getKeepType();
+			int next = propsContext.peek().getKeepWithNext();
+			subtractFromBlockIndent(propsContext.peek().getBlockIndent());
 			RowDataProperties.Builder rdp = new RowDataProperties.Builder(
-					translator, getLayoutMaster()).
+					formatterContext, getLayoutMaster()).
 						blockIndent(blockIndent).
 						blockIndentParent(blockIndentParent.peek()).
 						leftMargin(stackString(leftMargin, false)).
@@ -172,8 +167,8 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 	}
 
 	public void addChars(CharSequence c, TextProperties p) {
-		assert context.size()!=0;
-		if (context.size()==0) return;
+		assert propsContext.size()!=0;
+		if (propsContext.size()==0) return;
 		BlockImpl bl = getCurrentBlock();
 		if (listItem!=null) {
 			//append to this block
@@ -181,12 +176,12 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 			//list item has been used now, discard
 			listItem = null;
 		}
-		bl.addChars(c, p, context.peek());		
+		bl.addChars(c, p, propsContext.peek());		
 	}
 
 	public void newLine() {
 		MarginProperties p = stackString(leftMargin, false);
-		MarginProperties ret = new MarginProperties(p.getContent()+StringTools.fill(marginChar, context.peek().getTextIndent()), p.isSpaceOnly());
+		MarginProperties ret = new MarginProperties(p.getContent()+StringTools.fill(formatterContext.getSpaceCharacter(), propsContext.peek().getTextIndent()), p.isSpaceOnly());
 		getCurrentBlock().newLine(ret);
 	}
 
@@ -223,7 +218,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 		//Performance optimization
 		boolean isSpace = true;
 		for (int i = 0; i<sb.length(); i++) {
-			if (sb.charAt(i)!=marginChar) {
+			if (sb.charAt(i)!=formatterContext.getSpaceCharacter()) {
 				isSpace = false;
 				break;
 			}
