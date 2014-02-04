@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 
 
@@ -8,12 +7,10 @@ import org.daisy.dotify.api.formatter.TextProperties;
 class TextSegment implements Segment {
 	private String chars;
 	private final TextProperties tp;
-	private final BlockProperties p;
 	
-	public TextSegment(String chars, TextProperties tp, BlockProperties p) {
+	public TextSegment(String chars, TextProperties tp) {
 		this.chars = chars;
 		this.tp = tp;
-		this.p = p;
 	}
 	
 	public String getText() {
@@ -30,10 +27,6 @@ class TextSegment implements Segment {
 
 	public SegmentType getSegmentType() {
 		return SegmentType.Text;
-	}
-
-	public BlockProperties getBlockProperties() {
-		return p;
 	}
 	
 }

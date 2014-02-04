@@ -7,7 +7,6 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
@@ -36,7 +35,6 @@ class BlockContentManagerImpl implements BlockContentManager {
 	
 	private Leader currentLeader;
 
-	private BlockProperties p;
 	private ListItem item;
 	
 	BlockContentManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
@@ -46,7 +44,6 @@ class BlockContentManagerImpl implements BlockContentManager {
 		
 		this.currentLeader = null;
 
-		this.p = new BlockProperties.Builder().build();
 		this.rdp = rdp;
 		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin().getContent().length();
 		this.rightMargin = rdp.getRightMargin();
@@ -86,7 +83,6 @@ class BlockContentManagerImpl implements BlockContentManager {
 				case Text:
 				{
 					TextSegment ts = (TextSegment)s;
-					p = ts.getBlockProperties();
 					boolean oldValue = rdp.getTranslator().isHyphenating();
 					rdp.getTranslator().setHyphenating(ts.getTextProperties().isHyphenating());
 					layout(ts.getText(), ts.getTextProperties().getLocale());
@@ -167,18 +163,18 @@ class BlockContentManagerImpl implements BlockContentManager {
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
 					newRow(listLabel, btr, rdp.getLeftMargin(), 0, rdp.getBlockIndentParent());
 				} else {
-					newRow(listLabel, btr, rdp.getLeftMargin(), p.getFirstLineIndent(), rdp.getBlockIndent());
+					newRow(listLabel, btr, rdp.getLeftMargin(), rdp.getFirstLineIndent(), rdp.getBlockIndent());
 				}
 				item = null;
 			} else {
-				newRow("", btr, rdp.getLeftMargin(), p.getFirstLineIndent(), rdp.getBlockIndent());
+				newRow("", btr, rdp.getLeftMargin(), rdp.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
 			RowImpl r  = rows.pop();
 			newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
-			newRow("", btr, rdp.getLeftMargin(), p.getTextIndent(), rdp.getBlockIndent());
+			newRow("", btr, rdp.getLeftMargin(), rdp.getTextIndent(), rdp.getBlockIndent());
 		}
 	}
 	
@@ -241,15 +237,15 @@ class BlockContentManagerImpl implements BlockContentManager {
 				RowImpl row = new RowImpl(preContent + preTabText);
 				row.setLeftMargin(margin);
 				row.setRightMargin(rightMargin);
-				row.setAlignment(p.getAlignment());
-				row.setRowSpacing(p.getRowSpacing());
+				row.setAlignment(rdp.getAlignment());
+				row.setRowSpacing(rdp.getRowSpacing());
 				if (r!=null) {
 					row.addMarkers(r);
 					r = null;
 				}
 				rows.add(row);
 
-				preContent = StringTools.fill(rdp.getSpaceCharacter(), p.getTextIndent()+blockIndent);
+				preContent = StringTools.fill(rdp.getSpaceCharacter(), rdp.getTextIndent()+blockIndent);
 				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				
@@ -288,8 +284,8 @@ class BlockContentManagerImpl implements BlockContentManager {
 		}
 		nr.setLeftMargin(margin);
 		nr.setRightMargin(rightMargin);
-		nr.setAlignment(p.getAlignment());
-		nr.setRowSpacing(p.getRowSpacing());
+		nr.setAlignment(rdp.getAlignment());
+		nr.setRowSpacing(rdp.getRowSpacing());
 		/*
 		if (nr.getChars().length()>master.getFlowWidth()) {
 			throw new RuntimeException("Row is too long (" + nr.getChars().length() + "/" + master.getFlowWidth() + ") '" + nr.getChars() + "'");

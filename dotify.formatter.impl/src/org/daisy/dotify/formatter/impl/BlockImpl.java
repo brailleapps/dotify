@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
-import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
@@ -58,16 +57,16 @@ class BlockImpl implements Block {
 		segments.push(new NewLineSegment(leftIndent));
 	}
 	
-	public void addChars(CharSequence c, TextProperties tp, BlockProperties p) {
+	public void addChars(CharSequence c, TextProperties tp) {
 		if (segments.size() > 0 && segments.peek().getSegmentType() == SegmentType.Text) {
 			TextSegment ts = ((TextSegment) segments.peek());
-			if (ts.getBlockProperties().equals(p) && ts.getTextProperties().equals(tp)) {
+			if (ts.getTextProperties().equals(tp)) {
 				// Logger.getLogger(this.getClass().getCanonicalName()).finer("Appending chars to existing text segment.");
 				ts.setText(ts.getText() + "" + c);
 				return;
 			}
 		}
-		segments.push(new TextSegment(c.toString(), tp, p));
+		segments.push(new TextSegment(c.toString(), tp));
 	}
 	
 	public void insertLeader(Leader l) {

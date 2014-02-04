@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
+import org.daisy.dotify.api.formatter.FormattingTypes;
+import org.daisy.dotify.api.formatter.FormattingTypes.Alignment;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
@@ -12,12 +14,20 @@ class RowDataProperties {
 	private final MarginProperties leftMarginParent;
 	private final MarginProperties rightMarginParent;
 	private final ListItem listProps;
+	private final int textIndent;
+	private final int firstLineIndent;
+	private final Alignment align;
+	private final Float rowSpacing;
 	
 	static class Builder {
 		private final FormatterContext context;
 		private final LayoutMaster master;
 		private int blockIndent = 0;
 		private int blockIndentParent = 0;
+		private int textIndent = 0;
+		private int firstLineIndent = 0;
+		private Alignment align = Alignment.LEFT;
+		private Float rowSpacing = null;
 		private MarginProperties leftMargin = new MarginProperties();
 		private MarginProperties rightMargin = new MarginProperties();
 		private MarginProperties leftMarginParent = new MarginProperties();
@@ -38,6 +48,27 @@ class RowDataProperties {
 			blockIndentParent = value;
 			return this;
 		}
+		
+		public Builder textIndent(int textIndent) {
+			this.textIndent = textIndent;
+			return this;
+		}
+		
+		public Builder firstLineIndent(int firstLineIndent) {
+			this.firstLineIndent = firstLineIndent;
+			return this;
+		}
+		
+		public Builder align(FormattingTypes.Alignment align) {
+			this.align = align;
+			return this;
+		}
+		
+		public Builder rowSpacing(Float value) {
+			this.rowSpacing = value;
+			return this;
+		}
+		
 		public Builder leftMargin(MarginProperties value) {
 			leftMargin = value;
 			return this;
@@ -76,6 +107,10 @@ class RowDataProperties {
 		this.leftMarginParent = builder.leftMarginParent;
 		this.rightMarginParent = builder.rightMarginParent;
 		this.listProps = builder.listProps;
+		this.textIndent = builder.textIndent;
+		this.firstLineIndent = builder.firstLineIndent;
+		this.align = builder.align;
+		this.rowSpacing = builder.rowSpacing;
 	}
 
 	public int getBlockIndent() {
@@ -84,6 +119,22 @@ class RowDataProperties {
 
 	public int getBlockIndentParent() {
 		return blockIndentParent;
+	}
+	
+	public int getTextIndent() {
+		return textIndent;
+	}
+	
+	public int getFirstLineIndent() {
+		return firstLineIndent;
+	}
+	
+	public FormattingTypes.Alignment getAlignment() {
+		return align;
+	}
+	
+	public Float getRowSpacing() {
+		return rowSpacing;
 	}
 
 	/*

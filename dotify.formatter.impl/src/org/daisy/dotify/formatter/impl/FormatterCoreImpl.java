@@ -65,6 +65,11 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 		}
 		RowDataProperties.Builder rdp = new RowDataProperties.Builder(
 				formatterContext, getLayoutMaster()).
+					textIndent(p.getTextIndent()).
+					firstLineIndent(p.getFirstLineIndent()).
+					align(p.getAlignment()).
+					rowSpacing(p.getRowSpacing()).
+					
 					blockIndent(blockIndent).
 					blockIndentParent(blockIndentParent.peek()).
 					leftMargin(stackString(leftMargin, false)).
@@ -129,6 +134,10 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 			subtractFromBlockIndent(propsContext.peek().getBlockIndent());
 			RowDataProperties.Builder rdp = new RowDataProperties.Builder(
 					formatterContext, getLayoutMaster()).
+						textIndent(p.getTextIndent()).
+						firstLineIndent(p.getFirstLineIndent()).
+						align(p.getAlignment()).
+						rowSpacing(p.getRowSpacing()).
 						blockIndent(blockIndent).
 						blockIndentParent(blockIndentParent.peek()).
 						leftMargin(stackString(leftMargin, false)).
@@ -167,8 +176,6 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 	}
 
 	public void addChars(CharSequence c, TextProperties p) {
-		assert propsContext.size()!=0;
-		if (propsContext.size()==0) return;
 		BlockImpl bl = getCurrentBlock();
 		if (listItem!=null) {
 			//append to this block
@@ -176,7 +183,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 			//list item has been used now, discard
 			listItem = null;
 		}
-		bl.addChars(c, p, propsContext.peek());		
+		bl.addChars(c, p);		
 	}
 
 	public void newLine() {
