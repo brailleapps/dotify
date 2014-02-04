@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 
 import org.daisy.dotify.api.formatter.PageStruct;
-import org.daisy.dotify.tools.StateObject;
 import org.daisy.dotify.tools.StringTools;
 
 /**
@@ -13,38 +12,12 @@ import org.daisy.dotify.tools.StringTools;
  * @author Joel Håkansson
  */
 public class PaginatorImpl {
-	private StateObject state;
-	private FormatterContext context;
-	private Iterable<BlockSequence> fs;
-	//private HashMap<String, LayoutMaster> templates;
+	private final FormatterContext context;
+	private final Iterable<BlockSequence> fs;
 
-	public PaginatorImpl() { //HashMap<String, LayoutMaster> templates
-		
-		this.state = new StateObject();
-		//this.templates = templates;
-	}
-	
-	public void open(FormatterContext context, Iterable<BlockSequence> fs) {
-		state.assertUnopened();
+	public PaginatorImpl(FormatterContext context, Iterable<BlockSequence> fs) {
 		this.context = context;
 		this.fs = fs;
-		state.open();
-	}
-
-/*
-	public LayoutMaster getCurrentLayoutMaster() {
-		return currentSequence().getLayoutMaster();
-	}*/
-	
-
-	// End CurrentPageInfo
-
-	public void close() throws IOException {
-		if (state.isClosed()) {
-			return;
-		}
-		state.assertOpen();
-		state.close();
 	}
 	
 	/**

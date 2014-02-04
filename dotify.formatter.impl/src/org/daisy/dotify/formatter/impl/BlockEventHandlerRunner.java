@@ -143,10 +143,8 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 	public PageStruct formatPreVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh) {
 		try {
 			List<Iterable<BlockSequence>> ib = formatVolumeContents(volumeNumber, volumeCount, crh, true);
-			PaginatorImpl paginator2 = new PaginatorImpl();
-			paginator2.open(context, new CompoundIterable<BlockSequence>(ib));
+			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
 			PageStruct ret = paginator2.paginate(crh);
-			paginator2.close();
 			return ret;
 		} catch (IOException e) {
 			return null;
@@ -158,10 +156,8 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 	public PageStruct formatPostVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh) {
 		try {
 			List<Iterable<BlockSequence>> ib = formatVolumeContents(volumeNumber, volumeCount, crh, false);
-			PaginatorImpl paginator2 = new PaginatorImpl();
-			paginator2.open(context, new CompoundIterable<BlockSequence>(ib));
+			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
 			PageStruct ret = paginator2.paginate(crh);
-			paginator2.close();
 			return ret;
 		} catch (IOException e) {
 			return null;

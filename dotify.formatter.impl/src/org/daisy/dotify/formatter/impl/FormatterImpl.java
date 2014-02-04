@@ -61,9 +61,7 @@ public class FormatterImpl extends BlockStructImpl implements Formatter {
 	}
 
 	public Iterable<Volume> getVolumes() {
-		PaginatorImpl paginator = new PaginatorImpl();
-		paginator.open(context, getFlowStruct().getBlockSequenceIterable());
-
+		PaginatorImpl paginator = new PaginatorImpl(context, getFlowStruct().getBlockSequenceIterable());
 		BookStruct bookStruct = new BookStruct(paginator, getVolumeContentFormatter(), context.getTranslator());
 		return bookStruct.getVolumes();
 	}
