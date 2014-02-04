@@ -4,7 +4,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
 
 
 
-class TextSegment implements Segment {
+class TextSegment implements Segment, EventContents {
 	private String chars;
 	private final TextProperties tp;
 	
@@ -27,6 +27,14 @@ class TextSegment implements Segment {
 
 	public SegmentType getSegmentType() {
 		return SegmentType.Text;
+	}
+	
+	public ContentType getContentType() {
+		return ContentType.PCDATA;
+	}
+	
+	public boolean canContainEventObjects() {
+		return false;
 	}
 	
 }

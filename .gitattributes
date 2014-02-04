@@ -514,11 +514,9 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/SequenceEvent.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/SingleLineDecoration.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StaticSequenceEvent.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StaticSequenceEventImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StyleEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TabStopString.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TableOfContentsImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocBlockEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEvent.java -text

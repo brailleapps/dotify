@@ -24,7 +24,7 @@ class BlockEventHandlerCore {
 		for (EventContents bc : b) {
 			switch (bc.getContentType()) {
 				case PCDATA: {
-					TextContents tc = (TextContents)bc;
+					TextSegment tc = (TextSegment)bc;
 					formatter.addChars(tc.getText(), tc.getTextProperties());
 					break; }
 				case LEADER: {
@@ -55,11 +55,6 @@ class BlockEventHandlerCore {
 				case MARKER: {
 					Marker m = ((Marker)bc);
 					formatter.insertMarker(m);
-					break;
-				}
-				case STYLE: {
-					StyleEvent ev = (StyleEvent) bc;
-					insertEventContents(ev, vars);
 					break;
 				}
 				default:

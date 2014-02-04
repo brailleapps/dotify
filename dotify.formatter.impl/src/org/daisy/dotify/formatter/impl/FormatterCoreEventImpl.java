@@ -94,7 +94,7 @@ class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore,
 	}
 
 	public void addChars(CharSequence chars, TextProperties props) {
-		cb.add(new TextContents(chars.toString(), props));
+		cb.add(new TextSegment(chars.toString(), props));
 		
 	}
 
@@ -125,7 +125,7 @@ class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore,
 				printContents(ps, (BlockContents)bc, i+2);
 				break;
 			case PCDATA:
-				ps.println(ind2 + ((TextContents)bc).getText());
+				ps.println(ind2 + ((TextSegment)bc).getText());
 				break;
 			default:
 				ps.println(ind2+bc.getContentType());
