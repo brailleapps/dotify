@@ -13,7 +13,6 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.tools.StateObject;
 
-
 class BlockStructImpl implements BlockStruct, FormatterCore {
 	protected final StateObject state;
 	protected final FormatterContext context;
@@ -31,11 +30,6 @@ class BlockStructImpl implements BlockStruct, FormatterCore {
 		currentSequence = new FormatterCoreImpl(p, context.getMasters().get(p.getMasterName()), context);
 		blocks.push(currentSequence);
 	}
-	
-	public FormatterCoreImpl getCurrentSequence() {
-		return (FormatterCoreImpl)blocks.peek();
-	}
-	
 
 	public void addLayoutMaster(String name, LayoutMaster master) {
 		context.addLayoutMaster(name, master);
@@ -63,14 +57,6 @@ class BlockStructImpl implements BlockStruct, FormatterCore {
 		state.assertClosed();
 		return this;
 	}
-	
-	/*public LayoutMaster getLayoutMaster(String name) {
-		return masters.get(name);
-	}*/
-	/*
-	public HashMap<String, LayoutMaster> getMasters() {
-		return masters;
-	}*/
 
 	public Iterable<BlockSequence> getBlockSequenceIterable() {
 		return blocks;
