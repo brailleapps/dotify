@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.Map;
 
-import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.formatter.impl.EventContents.ContentType;
@@ -14,15 +13,15 @@ import org.daisy.dotify.formatter.impl.EventContents.ContentType;
  * @author Joel Håkansson
  */
 class BlockEventHandler extends BlockEventHandlerCore {
-	private final Formatter formatter;
+	private final BlockStructImpl formatter;
 
 	public BlockEventHandler(FormatterContext context, ExpressionFactory ef) {
-		super(new FormatterImpl(context, ef), ef);
-		this.formatter = (Formatter)getFormatterCore();
+		super(new BlockStructImpl(context), ef);
+		this.formatter = (BlockStructImpl)getFormatterCore();
 		this.formatter.open();
 	}
 	
-	public BlockEventHandler(Formatter formatter, ExpressionFactory ef) {
+	public BlockEventHandler(BlockStructImpl formatter, ExpressionFactory ef) {
 		super(formatter, ef);
 		this.formatter = formatter;
 	}
@@ -32,8 +31,7 @@ class BlockEventHandler extends BlockEventHandlerCore {
 			formatSequence(events, vars);
 		}
 	}
-	
-	
+
 	public void newSequence(SequenceProperties props, Map<String, String> vars) {
 		formatter.newSequence(props);
 	}
@@ -59,8 +57,7 @@ class BlockEventHandler extends BlockEventHandlerCore {
 	
 	public BlockStruct close() throws IOException {
 		formatter.close();
-		//FIXME: this is a temporary solution in order to remove getFlowStruct from the API, In the long term, this should be solved in another way
-		return ((FormatterImpl)formatter).getFlowStruct();
+		return formatter.getFlowStruct();
 	}
 
 }
