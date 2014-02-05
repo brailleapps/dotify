@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.Context;
+import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.tools.CompoundIterable;
@@ -42,20 +43,28 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 		return startedVolumeVariableName;
 	}
 
-	void addTocStartEvents(FormatterCoreEventImpl events, Condition condition) {
-		tocStartEvents.add(new ConditionalEvents(events, condition));
+	FormatterCore addTocStartEvents(Condition condition) {
+		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
+		tocStartEvents.add(new ConditionalEvents(f, condition));
+		return f;
 	}
 
-	void addVolumeStartEvents(FormatterCoreEventImpl events, Condition condition) {
-		volumeStartEvents.add(new ConditionalEvents(events, condition));
+	FormatterCore addVolumeStartEvents(Condition condition) {
+		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
+		volumeStartEvents.add(new ConditionalEvents(f, condition));
+		return f;
 	}
 	
-	void addVolumeEndEvents(FormatterCoreEventImpl events, Condition condition) {
-		volumeEndEvents.add(new ConditionalEvents(events, condition));
+	FormatterCore addVolumeEndEvents(Condition condition) {
+		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
+		volumeEndEvents.add(new ConditionalEvents(f, condition));
+		return f;
 	}
 	
-	void addTocEndEvents(FormatterCoreEventImpl events, Condition condition) {
-		tocEndEvents.add(new ConditionalEvents(events, condition));
+	FormatterCore addTocEndEvents(Condition condition) {
+		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
+		tocEndEvents.add(new ConditionalEvents(f, condition));
+		return f;
 	}
 
 	public String getTocName() {

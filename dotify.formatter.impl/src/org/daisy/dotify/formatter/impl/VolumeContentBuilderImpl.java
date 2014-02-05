@@ -44,51 +44,35 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 	}
 
 	public void newOnTocStart(Condition useWhen) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addTocStartEvents(f, useWhen);
-		formatters.add(f);
+		formatters.add(tocSequence.addTocStartEvents(useWhen));
 	}
 
 	public void newOnTocStart() {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addTocStartEvents(f, null);
-		formatters.add(f);
+		formatters.add(tocSequence.addTocStartEvents(null));
 	}
 
 	public void newOnVolumeStart(Condition useWhen) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addVolumeStartEvents(f, useWhen);
-		formatters.add(f);
+		formatters.add(tocSequence.addVolumeStartEvents(useWhen));
 	}
 
 	public void newOnVolumeStart() {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addVolumeStartEvents(f, null);
-		formatters.add(f);
+		formatters.add(tocSequence.addVolumeStartEvents(null));
 	}
 
 	public void newOnVolumeEnd(Condition useWhen) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addVolumeEndEvents(f, useWhen);
-		formatters.add(f);
+		formatters.add(tocSequence.addVolumeEndEvents(useWhen));
 	}
 
 	public void newOnVolumeEnd() {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addVolumeEndEvents(f, null);
-		formatters.add(f);
+		formatters.add(tocSequence.addVolumeEndEvents(null));
 	}
 
 	public void newOnTocEnd(Condition useWhen) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addTocEndEvents(f, useWhen);
-		formatters.add(f);
+		formatters.add(tocSequence.addTocEndEvents(useWhen));
 	}
 
 	public void newOnTocEnd() {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocSequence.addTocEndEvents(f, null);
-		formatters.add(f);
+		formatters.add(tocSequence.addTocEndEvents(null));
 	}
 	
 	private FormatterCore current() {
