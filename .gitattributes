@@ -513,14 +513,12 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/RowImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Segment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/SequenceEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/SingleLineDecoration.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StaticSequenceEvent.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/StaticSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TabStopString.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TableOfContentsImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocBlockEvent.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderImpl.java -text

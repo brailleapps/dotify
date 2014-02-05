@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
-class StaticSequenceEventImpl extends FormatterCoreEventImpl implements StaticSequenceEvent {
+class StaticSequenceEventImpl extends FormatterCoreEventImpl implements SequenceEvent {
 	private final SequenceProperties props;
 	
 	/**

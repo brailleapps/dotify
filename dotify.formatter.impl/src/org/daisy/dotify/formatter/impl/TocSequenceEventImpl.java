@@ -13,7 +13,7 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.tools.CompoundIterable;
 
-class TocSequenceEventImpl implements TocSequenceEvent {
+class TocSequenceEventImpl implements VolumeSequenceEvent {
 
 	public final static String DEFAULT_EVENT_VOLUME_NUMBER = "started-volume-number";
 	private final SequenceProperties props;
@@ -94,18 +94,36 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		return new CompoundIterable<BlockEvent>(it);
 	}
 
+	/**
+	 * Gets the events that should precede the TOC
+	 * @return returns the events that should precede the TOC
+	 */
 	public Iterable<BlockEvent> getTocStartEvents(Context vars) {
 		return getCompoundIterable(tocStartEvents, vars);
 	}
 
+	/**
+	 * Gets the events that should precede TOC entries from the specified volume 
+	 * @param forVolume the number of the volume that is to be started, one based
+	 * @return returns the events that should precede the TOC entries from the specified volume
+	 */
 	public Iterable<BlockEvent> getVolumeStartEvents(Context vars) {
 		return getCompoundIterable(volumeStartEvents, vars);
 	}
 
+	/**
+	 * Gets the events that should follow TOC entries from the specified volume
+	 * @param forVolume the number of the volume that has just ended, one based
+	 * @return returns the events that should follow the TOC entries from the specified volume
+	 */
 	public Iterable<BlockEvent> getVolumeEndEvents(Context vars) {
 		return getCompoundIterable(volumeEndEvents, vars);
 	}
 
+	/**
+	 * Gets the events that should follow the TOC
+	 * @return returns the events that should follow the TOC
+	 */
 	public Iterable<BlockEvent> getTocEndEvents(Context vars) {
 		return getCompoundIterable(tocEndEvents, vars);
 	}
@@ -126,6 +144,7 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 
 	public List<Iterable<BlockSequence>> getBlockSequences(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
+		ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 		try {
 		if (appliesTo(vars)) {
 			BlockEventHandler beh = new BlockEventHandler(context);
@@ -175,12 +194,10 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 				// start/stop can be null if no entries are in that volume
 				if (start!=null && stop!=null) {
 					try {
-						ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 						fsm.removeRange(data.getTocIdList().iterator().next(), start);
 						fsm.removeTail(stop);
 						fsm.appendGroup(getTocEnd(vars, context));
 						r.add(fsm.newSequence());
-						ib.add(r);
 					} catch (Exception e) {
 						Logger.getLogger(this.getClass().getCanonicalName()).
 							log(Level.SEVERE, "TOC failed for: volume " + vars.getCurrentVolume() + " of " + vars.getVolumeCount(), e);
@@ -213,9 +230,7 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 				for (String key : statics.keySet()) {
 					fsm.insertGroup(statics.get(key), key);
 				}
-				ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 				r.add(fsm.newSequence());
-				ib.add(r);
 			} else {
 				throw new RuntimeException("Coding error");
 			}
@@ -223,6 +238,7 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to assemble toc.", e);
 		}
+		ib.add(r);
 		return ib;
 	}
 }
