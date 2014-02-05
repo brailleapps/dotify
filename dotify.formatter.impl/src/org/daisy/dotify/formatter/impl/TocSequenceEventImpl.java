@@ -58,10 +58,6 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 		tocEndEvents.add(new ConditionalEvents(events, condition));
 	}
 
-	public VolumeSequenceType getVolumeSequenceType() {
-		return VolumeSequenceType.TABLE_OF_CONTENTS;
-	}
-
 	public String getTocName() {
 		return tocName;
 	}
@@ -142,8 +138,7 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 		return props;
 	}
 
-	public List<Iterable<BlockSequence>> getBlockSequences(FormatterContext context, DefaultContext vars, CrossReferences crh) {
-		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
+	public List<BlockSequence> getBlockSequences(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 		try {
 		if (appliesTo(vars)) {
@@ -238,7 +233,6 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to assemble toc.", e);
 		}
-		ib.add(r);
-		return ib;
+		return r;
 	}
 }

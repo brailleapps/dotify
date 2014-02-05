@@ -12,19 +12,10 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
  */
 interface VolumeSequenceEvent {
 	/**
-	 * Defines types of volume sequences
-	 */
-	enum VolumeSequenceType {STATIC, TABLE_OF_CONTENTS};
-	/**
-	 * Gets the volume sequence event type.
-	 * @return returns the volume sequence event type
-	 */
-	//public VolumeSequenceType getVolumeSequenceType();
-	/**
 	 * Gets the volume sequence event properties.
 	 * @return returns the volume sequence event properties
 	 */
 	public SequenceProperties getSequenceProperties();
 	
-	public List<Iterable<BlockSequence>> getBlockSequences(FormatterContext context, DefaultContext c, CrossReferences crh);
+	public List<BlockSequence> getBlockSequences(FormatterContext context, DefaultContext c, CrossReferences crh);
 }

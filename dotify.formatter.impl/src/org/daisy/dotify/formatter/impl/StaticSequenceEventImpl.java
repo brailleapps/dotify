@@ -27,16 +27,14 @@ class StaticSequenceEventImpl extends FormatterCoreEventImpl implements Sequence
 		return props;
 	}
 
-	public VolumeSequenceType getVolumeSequenceType() {
-		return VolumeSequenceType.STATIC;
-	}
-
-	public List<Iterable<BlockSequence>> getBlockSequences(FormatterContext context, DefaultContext c, CrossReferences crh) {
-		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
+	public List<BlockSequence> getBlockSequences(FormatterContext context, DefaultContext c, CrossReferences crh) {
+		ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
 		BlockEventHandler beh = new BlockEventHandler(context);
 		beh.formatSequence(this, c);
 		try {
-			ib.add(beh.close().getBlockSequenceIterable());
+			for (BlockSequence s : beh.close().getBlockSequenceIterable()) {
+				ib.add(s);
+			}
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getCanonicalName()).warning("Failed to format block.");
 		}

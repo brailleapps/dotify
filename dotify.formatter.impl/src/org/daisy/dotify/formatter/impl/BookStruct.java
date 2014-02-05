@@ -2,7 +2,6 @@ package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
@@ -12,7 +11,6 @@ import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
-import org.daisy.dotify.tools.CompoundIterable;
 
 /**
  * Provides a default implementation of BookStruct
@@ -49,8 +47,8 @@ class BookStruct {
 		DefaultContext c = new DefaultContext(volumeNumber, crh.getExpectedVolumeCount());
 		PageStruct ret = null;
 		try {
-			List<Iterable<BlockSequence>> ib = formatVolumeContents(crh, pre, c);
-			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
+			Iterable<BlockSequence> ib = formatVolumeContents(crh, pre, c);
+			PaginatorImpl paginator2 = new PaginatorImpl(context, ib);
 			ret = paginator2.paginate(crh, c);
 		} catch (IOException e) {
 			ret = null;
@@ -66,8 +64,8 @@ class BookStruct {
 		return ret;
 	}
 
-	private List<Iterable<BlockSequence>> formatVolumeContents(CrossReferences crh, boolean pre, DefaultContext c) throws IOException {
-		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
+	private Iterable<BlockSequence> formatVolumeContents(CrossReferences crh, boolean pre, DefaultContext c) throws IOException {
+		ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
 		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
 			if (t.appliesTo(c)) {
 				for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
