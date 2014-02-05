@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
@@ -24,23 +23,18 @@ class BookStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Logger logger;
 	private final PaginatorImpl contentPaginator;
-	
 	private final FormatterContext context;
-
 	private final CrossReferenceHandler crh;
 
 	public BookStruct(FormatterContext context, PaginatorImpl content) {
 		this.context = context;
 		this.contentPaginator = content;
-		
 		this.logger = Logger.getLogger(BookStruct.class.getCanonicalName());
-
 		this.crh = new CrossReferenceHandler();
 	}
 	
 	private void reformat(int splitterMax) throws PaginatorException {
-		crh.setContents(contentPaginator.paginate(crh, new NullContext()), splitterMax);
-		//paginator.close();
+		crh.setContents(contentPaginator.paginate(crh, new DefaultContext(null, null)), splitterMax);
 	}
 
 	private PageStruct getPreVolumeContents(int volumeNumber) {
@@ -52,11 +46,16 @@ class BookStruct {
 	}
 
 	private PageStruct getVolumeContents(int volumeNumber, boolean pre) {
-		PageStruct ret;
-		if (pre) {
-			ret = formatPreVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
-		} else {
-			ret = formatPostVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
+		DefaultContext c = new DefaultContext(volumeNumber, crh.getExpectedVolumeCount());
+		PageStruct ret = null;
+		try {
+			List<Iterable<BlockSequence>> ib = formatVolumeContents(crh, pre, c);
+			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
+			ret = paginator2.paginate(crh, c);
+		} catch (IOException e) {
+			ret = null;
+		} catch (PaginatorException e) {
+			ret = null;
 		}
 
 		if (pre) {
@@ -65,37 +64,8 @@ class BookStruct {
 			crh.setPostVolData(volumeNumber, ret);
 		}
 		return ret;
+	}
 
-	}
-	
-	public PageStruct formatPreVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh) {
-		try {
-			DefaultContext c = new DefaultContext(volumeNumber, volumeCount);
-			List<Iterable<BlockSequence>> ib = formatVolumeContents(crh, true, c);
-			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
-			PageStruct ret = paginator2.paginate(crh, c);
-			return ret;
-		} catch (IOException e) {
-			return null;
-		} catch (PaginatorException e) {
-			return null;
-		}
-	}
-	
-	public PageStruct formatPostVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh) {
-		try {
-			DefaultContext c = new DefaultContext(volumeNumber, volumeCount);
-			List<Iterable<BlockSequence>> ib = formatVolumeContents(crh, false, c);
-			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
-			PageStruct ret = paginator2.paginate(crh, c);
-			return ret;
-		} catch (IOException e) {
-			return null;
-		} catch (PaginatorException e) {
-			return null;
-		}
-	}
-	
 	private List<Iterable<BlockSequence>> formatVolumeContents(CrossReferences crh, boolean pre, DefaultContext c) throws IOException {
 		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
 		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
@@ -316,27 +286,5 @@ class BookStruct {
 	};
 */
 	
-	private static class NullContext implements Context {
 
-		public Integer getCurrentVolume() {
-			return null;
-		}
-
-		public Integer getVolumeCount() {
-			return null;
-		}
-
-		public Integer getCurrentPage() {
-			return null;
-		}
-
-		public Integer getMetaVolume() {
-			return null;
-		}
-
-		public Integer getMetaPage() {
-			return null;
-		}
-		
-	}
 }
