@@ -1,8 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.HashMap;
-import java.util.Stack;
-
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.Volume;
@@ -17,9 +14,6 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
  */
 public class FormatterImpl extends BlockStructImpl implements Formatter {
 
-	private final Stack<VolumeTemplateImpl> volumeTemplates;
-	private HashMap<String, TableOfContentsImpl> tocs;
-
 	/**
 	 * Creates a new formatter
 	 */
@@ -29,38 +23,20 @@ public class FormatterImpl extends BlockStructImpl implements Formatter {
 	
 	public FormatterImpl(FormatterContext context) {
 		super(context);
-
-		this.volumeTemplates = new Stack<VolumeTemplateImpl>();
-		this.tocs = new HashMap<String, TableOfContentsImpl>();
 	}
-
-	public BrailleTranslator getTranslator() {
-		return context.getTranslator();
-	}
-	
-	private VolumeContentFormatter getVolumeContentFormatter() {
-		return new BlockEventHandlerRunner(tocs, volumeTemplates, context);
-	}
-
 
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
-		VolumeTemplateImpl template = new VolumeTemplateImpl(props.getCondition(), props.getSplitterMax());
-		volumeTemplates.push(template);
-		return template;
+		return context.newVolumeTemplate(props);
 	}
 
 	public TableOfContents newToc(String tocName) {
-		TableOfContentsImpl toc = new TableOfContentsImpl();
-		tocs.put(tocName, toc);
-		return toc;
+		return context.newToc(tocName);
 	}
 
 	public Iterable<Volume> getVolumes() {
 		PaginatorImpl paginator = new PaginatorImpl(context, getFlowStruct().getBlockSequenceIterable());
-		BookStruct bookStruct = new BookStruct(paginator, getVolumeContentFormatter(), context.getTranslator());
+		BookStruct bookStruct = new BookStruct(context, paginator);
 		return bookStruct.getVolumes();
 	}
-
-
 
 }

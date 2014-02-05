@@ -467,7 +467,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContents.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventHandler.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventHandlerCore.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventHandlerRunner.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -text
@@ -479,6 +478,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BookStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ConditionalEvents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferences.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DefaultContext.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Evaluate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/EventContents.java -text
@@ -524,7 +524,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEvent.java 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentFormatter.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequenceEvent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text

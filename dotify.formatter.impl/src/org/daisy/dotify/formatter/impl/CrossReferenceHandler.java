@@ -3,12 +3,13 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.PageStruct;
 
-class CrossReferenceHandler implements CrossReferences {
+class CrossReferenceHandler implements CrossReferences, Context {
 	private final Map<String, Integer> volLocations;
 	private final Map<String, Integer> pageLocations;
 	private final Map<Integer, VolData> volData;
@@ -20,6 +21,9 @@ class CrossReferenceHandler implements CrossReferences {
 	
 	private boolean isDirty;
 	private boolean volumeForContentSheetChanged;
+	
+	private Integer currentVolume, currentPage, volumeCount, contextVolume, contextPage;
+	private boolean metaContext = false;
 	//private int maxKey;
 	
 	public CrossReferenceHandler() {
@@ -273,5 +277,69 @@ class CrossReferenceHandler implements CrossReferences {
 			this.targetVolSize = targetVolSize;
 		}
 	}
+
+	public Integer getCurrentVolume() {
+		if (currentVolume==null) {
+			setDirty(true);
+		}
+		return currentVolume;
+	}
+
+	public void setCurrentVolume(Integer currentVolume) {
+		this.currentVolume = currentVolume;
+	}
+
+	public Integer getCurrentPage() {
+		if (currentPage==null) {
+			setDirty(true);
+		}
+		return currentPage;
+	}
+
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public Integer getVolumeCount() {
+		if (volumeCount==null) {
+			setDirty(true);
+		}
+		return volumeCount;
+	}
+
+	public void setVolumeCount(Integer volumeCount) {
+		this.volumeCount = volumeCount;
+	}
+	
+	/**
+	 * Set's the meta context to true.
+	 * @param value
+	 */
+	public void setMetaContext(boolean value) {
+		metaContext = value;
+	}
+
+	public Integer getMetaVolume() {
+		if (metaContext && contextVolume==null) {
+			setDirty(true);
+		}
+		return contextVolume;
+	}
+
+	public void setMetaVolume(Integer contextVolume) {
+		this.contextVolume = contextVolume;
+	}
+
+	public Integer getMetaPage() {
+		if (metaContext && contextPage==null) {
+			setDirty(true);
+		}
+		return contextPage;
+	}
+	
+	public void setMetaPage(Integer contextPage) {
+		this.contextPage = contextPage;
+	}
+
 
 }

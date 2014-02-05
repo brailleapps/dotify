@@ -7,6 +7,7 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
@@ -32,12 +33,13 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private final RowDataProperties rdp;
 	private final int available;
 	private final MarginProperties rightMargin;
+	private final Context context;
 	
 	private Leader currentLeader;
 
 	private ListItem item;
 	
-	BlockContentManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs) {
+	BlockContentManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs, Context context) {
 		this.groupMarkers = new ArrayList<Marker>();
 		this.groupAnchors = new ArrayList<String>();
 		this.refs = refs;
@@ -50,6 +52,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.item = rdp.getListItem();
 		
 		this.rows = new Stack<RowImpl>();
+		this.context = context;
 		calculateRows(segments);
 	}
 	
@@ -116,8 +119,12 @@ class BlockContentManagerImpl implements BlockContentManager {
 				case Evaluate:
 				{
 					isVolatile = true;
-					//TODO: implement
-					throw new UnsupportedOperationException("Not implemented");
+					Evaluate e = (Evaluate)s;
+					boolean oldValue = rdp.getTranslator().isHyphenating();
+					rdp.getTranslator().setHyphenating(e.getTextProperties().isHyphenating());
+					layout(e.getExpression().render(context), e.getTextProperties().getLocale());
+					rdp.getTranslator().setHyphenating(oldValue);
+					break;
 				}
 				case Marker:
 				{

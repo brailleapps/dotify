@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.io.IOException;
+
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.TocProperties;
 
@@ -50,5 +52,7 @@ interface TocSequenceEvent extends VolumeSequenceEvent{
 	 * @return returns the events that should follow the TOC
 	 */
 	public Iterable<BlockEvent> getTocEndEvents(Context vars);
+	
+	public BlockSequence getTocEnd(Context vars, FormatterContext context) throws IOException;
 
 }

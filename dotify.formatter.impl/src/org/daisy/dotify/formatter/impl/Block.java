@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
 /**
@@ -21,7 +22,7 @@ public interface Block {
 	public String getIdentifier();
 	public Keep getKeepType();
 	public BreakBefore getBreakBeforeType();
-	public BlockContentManager getBlockContentManager(CrossReferences refs);
+	public BlockContentManager getBlockContentManager(CrossReferences refs, Context context);
 	public String getBlockIdentifier();
 
 	/**

@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.tools.StringTools;
 
@@ -25,7 +26,7 @@ public class PaginatorImpl {
 	 * @param refs the cross references to use
 	 * @throws IOException if IO fails
 	 */
-	public PageStruct paginate(CrossReferences refs) throws PaginatorException {
+	public PageStruct paginate(CrossReferences refs, Context rcontext) throws PaginatorException {
 		PageStructImpl pageStruct = new PageStructImpl(context);
 		for (BlockSequence seq : fs) {
 			if (seq.getInitialPageNumber()==null) {
@@ -51,7 +52,7 @@ public class PaginatorImpl {
 				//FIXME: se över recursiv hämtning
 				switch (g.getKeepType()) {
 					case ALL:
-						int keepHeight = seq.getKeepHeight(g, refs);
+						int keepHeight = seq.getKeepHeight(g, refs, rcontext);
 						if (pageStruct.spaceUsedInRows(0) > 0 && keepHeight > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(0) && keepHeight <= pageStruct.getFlowHeight()) {
 							pageStruct.newPage();
 						}
@@ -65,7 +66,7 @@ public class PaginatorImpl {
 				} else if (g.getSpaceBefore() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
 				}
-				BlockContentManager rdm = g.getBlockContentManager(refs);
+				BlockContentManager rdm = g.getBlockContentManager(refs, rcontext);
 				if (g.getVerticalPosition() != null) {
 					int blockSpace = rdm.getRowCount() + g.getSpaceBefore() + g.getSpaceAfter();
 					int pos = g.getVerticalPosition().getPosition().makeAbsolute(pageStruct.currentPage().getFlowHeight());

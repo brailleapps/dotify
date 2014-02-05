@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
@@ -162,9 +163,9 @@ class BlockImpl implements Block {
 		return blockId;
 	}
 	
-	public BlockContentManager getBlockContentManager(CrossReferences refs) {
+	public BlockContentManager getBlockContentManager(CrossReferences refs, Context context) {
 		if (rdm==null || rdm.isVolatile()) {
-			rdm = new BlockContentManagerImpl(segments, rdp.build(), refs);
+			rdm = new BlockContentManagerImpl(segments, rdp.build(), refs, context);
 		}
 		return rdm;
 	}

@@ -1,16 +1,19 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.formatter.Volume;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
+import org.daisy.dotify.tools.CompoundIterable;
 
 /**
  * Provides a default implementation of BookStruct
@@ -22,14 +25,13 @@ class BookStruct {
 	private final Logger logger;
 	private final PaginatorImpl contentPaginator;
 	
-	private final VolumeContentFormatter volumeFormatter;
+	private final FormatterContext context;
 
 	private final CrossReferenceHandler crh;
 
-	public BookStruct(PaginatorImpl content, VolumeContentFormatter volumeFormatter,
- BrailleTranslator translator) {
+	public BookStruct(FormatterContext context, PaginatorImpl content) {
+		this.context = context;
 		this.contentPaginator = content;
-		this.volumeFormatter = volumeFormatter;
 		
 		this.logger = Logger.getLogger(BookStruct.class.getCanonicalName());
 
@@ -37,7 +39,7 @@ class BookStruct {
 	}
 	
 	private void reformat(int splitterMax) throws PaginatorException {
-		crh.setContents(contentPaginator.paginate(crh), splitterMax);
+		crh.setContents(contentPaginator.paginate(crh, new NullContext()), splitterMax);
 		//paginator.close();
 	}
 
@@ -52,9 +54,9 @@ class BookStruct {
 	private PageStruct getVolumeContents(int volumeNumber, boolean pre) {
 		PageStruct ret;
 		if (pre) {
-			ret = volumeFormatter.formatPreVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
+			ret = formatPreVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
 		} else {
-			ret = volumeFormatter.formatPostVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
+			ret = formatPostVolumeContents(volumeNumber, crh.getExpectedVolumeCount(), crh);
 		}
 
 		if (pre) {
@@ -64,6 +66,67 @@ class BookStruct {
 		}
 		return ret;
 
+	}
+	
+	public PageStruct formatPreVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh) {
+		try {
+			DefaultContext c = new DefaultContext(volumeNumber, volumeCount);
+			List<Iterable<BlockSequence>> ib = formatVolumeContents(crh, true, c);
+			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
+			PageStruct ret = paginator2.paginate(crh, c);
+			return ret;
+		} catch (IOException e) {
+			return null;
+		} catch (PaginatorException e) {
+			return null;
+		}
+	}
+	
+	public PageStruct formatPostVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh) {
+		try {
+			DefaultContext c = new DefaultContext(volumeNumber, volumeCount);
+			List<Iterable<BlockSequence>> ib = formatVolumeContents(crh, false, c);
+			PaginatorImpl paginator2 = new PaginatorImpl(context, new CompoundIterable<BlockSequence>(ib));
+			PageStruct ret = paginator2.paginate(crh, c);
+			return ret;
+		} catch (IOException e) {
+			return null;
+		} catch (PaginatorException e) {
+			return null;
+		}
+	}
+	
+	private List<Iterable<BlockSequence>> formatVolumeContents(CrossReferences crh, boolean pre, DefaultContext c) throws IOException {
+		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
+		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
+			if (t.appliesTo(c)) {
+				for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
+					ib.addAll(seq.getBlockSequences(context, c, crh));
+				}
+				break;
+			}
+		}
+		return ib;
+	}
+	
+	/**
+	 * Gets the volume max size based on the supplied information.
+	 * 
+	 * @param volumeNumber the volume number, one based
+	 * @param volumeCount the number of volumes
+	 * @return returns the maximum number of sheets in the volume
+	 */
+	public int getVolumeMaxSize(int volumeNumber, int volumeCount) {
+		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
+			if (t==null) {
+				System.out.println("VOLDATA NULL");
+			}
+			if (t.appliesTo(new DefaultContext(volumeNumber, volumeCount))) {
+				return t.getVolumeMaxSize();
+			}
+		}
+		//TODO: don't return a fixed value
+		return 50;
 	}
 	
 	private void trimEnd(StringBuilder sb, Page p) {
@@ -129,7 +192,7 @@ class BookStruct {
 			}
 			logger.fine("Volume break string: " + res.toString().replace(ZERO_WIDTH_SPACE, '-'));
 			BreakPointHandler volBreaks = new BreakPointHandler(res.toString());
-			int splitterMax = volumeFormatter.getVolumeMaxSize(1, crh.getExpectedVolumeCount());
+			int splitterMax = getVolumeMaxSize(1, crh.getExpectedVolumeCount());
 
 			EvenSizeVolumeSplitterCalculator esc;
 			esc = new EvenSizeVolumeSplitterCalculator(contents + totalPreCount + totalPostCount, splitterMax, volumeOffset);
@@ -157,7 +220,7 @@ class BookStruct {
 			ArrayList<Iterable<PageSequence>> postV = new ArrayList<Iterable<PageSequence>>();
 			
 			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
-				if (splitterMax!=volumeFormatter.getVolumeMaxSize(i, crh.getExpectedVolumeCount())) {
+				if (splitterMax!=getVolumeMaxSize(i, crh.getExpectedVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
 				preV.add((Iterable<PageSequence>) getPreVolumeContents(i).getContents());
@@ -232,7 +295,7 @@ class BookStruct {
 				j++;
 				crh.setDirty(false);
 				try {
-					reformat(volumeFormatter.getVolumeMaxSize(1, crh.getExpectedVolumeCount()));
+					reformat(getVolumeMaxSize(1, crh.getExpectedVolumeCount()));
 				} catch (PaginatorException e) {
 					throw new RuntimeException("Error while reformatting.", e);
 				}
@@ -252,4 +315,28 @@ class BookStruct {
 		}
 	};
 */
+	
+	private static class NullContext implements Context {
+
+		public Integer getCurrentVolume() {
+			return null;
+		}
+
+		public Integer getVolumeCount() {
+			return null;
+		}
+
+		public Integer getCurrentPage() {
+			return null;
+		}
+
+		public Integer getMetaVolume() {
+			return null;
+		}
+
+		public Integer getMetaPage() {
+			return null;
+		}
+		
+	}
 }

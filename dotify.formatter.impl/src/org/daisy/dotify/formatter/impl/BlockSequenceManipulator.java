@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 
 /**
@@ -177,16 +178,16 @@ class BlockSequenceManipulator {
 			return this.elementAt(index);
 		}
 		
-		public int getKeepHeight(Block block, CrossReferences refs) {
-			return getKeepHeight(this.indexOf(block), refs);
+		public int getKeepHeight(Block block, CrossReferences refs, Context context) {
+			return getKeepHeight(this.indexOf(block), refs, context);
 		}
-		private int getKeepHeight(int gi, CrossReferences refs) {
-			int keepHeight = getBlock(gi).getSpaceBefore()+getBlock(gi).getBlockContentManager(refs).getRowCount();
+		private int getKeepHeight(int gi, CrossReferences refs, Context context) {
+			int keepHeight = getBlock(gi).getSpaceBefore()+getBlock(gi).getBlockContentManager(refs, context).getRowCount();
 			if (getBlock(gi).getKeepWithNext()>0 && gi+1<getBlockCount()) {
 				keepHeight += getBlock(gi).getSpaceAfter()+getBlock(gi+1).getSpaceBefore()+getBlock(gi).getKeepWithNext();
 				switch (getBlock(gi+1).getKeepType()) {
 					case ALL:
-						keepHeight += getKeepHeight(gi+1, refs);
+						keepHeight += getKeepHeight(gi+1, refs, context);
 						break;
 					case AUTO: break;
 					default:;

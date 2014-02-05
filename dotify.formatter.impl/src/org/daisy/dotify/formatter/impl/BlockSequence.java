@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 
 
@@ -35,7 +36,7 @@ public interface BlockSequence extends Iterable<Block> {
 	 * @param refs
 	 * @return the minimum number of rows
 	 */
-	public int getKeepHeight(Block block, CrossReferences refs);
+	public int getKeepHeight(Block block, CrossReferences refs, Context context);
 	
 	/**
 	 * Gets the layout master for this sequence
