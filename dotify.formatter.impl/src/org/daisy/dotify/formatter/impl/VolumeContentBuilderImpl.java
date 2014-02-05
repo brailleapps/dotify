@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
+import org.daisy.dotify.api.formatter.Condition;
+import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
@@ -13,20 +15,17 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
 
 class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements VolumeContentBuilder {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3736631267650875060L;
-	private final ExpressionFactory ef;
 	private final VolumeTemplateImpl template;
 	private List<FormatterCore> formatters;
 	private TocSequenceEventImpl tocSequence;
 
-	public VolumeContentBuilderImpl(ExpressionFactory ef, VolumeTemplateImpl template) {
-		this.ef = ef;
+	public VolumeContentBuilderImpl(VolumeTemplateImpl template) {
 		this.template = template;
 		this.formatters = new ArrayList<FormatterCore>();
 		this.tocSequence = null;
@@ -40,11 +39,11 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 	}
 
 	public void newTocSequence(TocProperties props) {
-		tocSequence = new TocSequenceEventImpl(props, props.getTocName(), props.getRange(), props.getUseWhen(), null, template, ef);
+		tocSequence = new TocSequenceEventImpl(props, props.getTocName(), props.getRange(), props.getCondition(), null, template);
 		add(tocSequence);
 	}
 
-	public void newOnTocStart(String useWhen) {
+	public void newOnTocStart(Condition useWhen) {
 		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
 		tocSequence.addTocStartEvents(f, useWhen);
 		formatters.add(f);
@@ -56,7 +55,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 		formatters.add(f);
 	}
 
-	public void newOnVolumeStart(String useWhen) {
+	public void newOnVolumeStart(Condition useWhen) {
 		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
 		tocSequence.addVolumeStartEvents(f, useWhen);
 		formatters.add(f);
@@ -68,7 +67,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 		formatters.add(f);
 	}
 
-	public void newOnVolumeEnd(String useWhen) {
+	public void newOnVolumeEnd(Condition useWhen) {
 		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
 		tocSequence.addVolumeEndEvents(f, useWhen);
 		formatters.add(f);
@@ -80,7 +79,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 		formatters.add(f);
 	}
 
-	public void newOnTocEnd(String useWhen) {
+	public void newOnTocEnd(Condition useWhen) {
 		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
 		tocSequence.addTocEndEvents(f, useWhen);
 		formatters.add(f);
@@ -140,7 +139,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 		current().insertReference(identifier, numeralStyle);
 	}
 
-	public void insertEvaluate(String exp, TextProperties t) {
+	public void insertEvaluate(DynamicContent exp, TextProperties t) {
 		current().insertEvaluate(exp, t);
 	}
 

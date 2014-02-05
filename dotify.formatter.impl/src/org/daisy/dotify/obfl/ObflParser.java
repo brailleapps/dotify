@@ -669,18 +669,18 @@ public class ObflParser extends XMLParserBase {
 	private void parseEvaluate(FormatterCore fc, XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		String expr = getAttr(event, "expression");
 		scanEmptyElement(input, ObflQName.EVALUATE);
-		fc.insertEvaluate(expr, new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+		OBFLDynamicContent dynamic = new OBFLDynamicContent(expr, ef, true);
+		fc.insertEvaluate(dynamic, new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 	}
 	
 	private void parseVolumeTemplate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		String volumeVar = getAttr(event, "volume-number-variable");
-		String volumeCountVar = getAttr(event, "volume-count-variable");
 		String useWhen = getAttr(event, ObflQName.ATTR_USE_WHEN);
 		String splitterMax = getAttr(event, "sheets-in-volume-max");
+		OBFLCondition condition = new OBFLCondition(useWhen, ef, false);
+		condition.setVolumeCountVariable(getAttr(event, "volume-count-variable"));
+		condition.setVolumeNumberVariable(getAttr(event, "volume-number-variable"));
 		VolumeTemplateProperties vtp = new VolumeTemplateProperties.Builder(Integer.parseInt(splitterMax))
-				.useWhen(useWhen)
-				.volumeCountVariable(volumeCountVar)
-				.volumeNumberVariable(volumeVar)
+				.condition(condition)
 				.build();
 		VolumeTemplateBuilder template = formatter.newVolumeTemplate(vtp);
 		while (input.hasNext()) {
@@ -753,28 +753,29 @@ public class ObflParser extends XMLParserBase {
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
 		TocProperties.TocRange range = TocProperties.TocRange.valueOf(getAttr(event, "range").toUpperCase());
-		String condition = getAttr(event, ObflQName.ATTR_USE_WHEN);
+		String c = getAttr(event, ObflQName.ATTR_USE_WHEN);
+		OBFLCondition condition = new OBFLCondition(c, ef, true);
+		condition.setMetaVolumeNumberVariable(getAttr(event, "toc-event-volume-number-variable"));
 		TocProperties.Builder builder = new TocProperties.Builder(masterName, tocName, range, condition);
 		String initialPageNumber = getAttr(event, "initial-page-number");
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
 
-		String volEventVar = getAttr(event, "toc-event-volume-number-variable");
 		template.newTocSequence(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.ON_TOC_START)) {
-				template.newOnTocStart(getAttr(event, ObflQName.ATTR_USE_WHEN));
+				template.newOnTocStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
 				parseOnEvent(event, input, template, ObflQName.ON_TOC_START, locale, hyph);
 			} else if (equalsStart(event, ObflQName.ON_VOLUME_START)) {
-				template.newOnVolumeStart(getAttr(event, ObflQName.ATTR_USE_WHEN));
+				template.newOnVolumeStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
 				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_START, locale, hyph);
 			} else if (equalsStart(event, ObflQName.ON_VOLUME_END)) {
-				template.newOnVolumeEnd(getAttr(event, ObflQName.ATTR_USE_WHEN));
+				template.newOnVolumeEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
 				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_END, locale, hyph);
 			} else if (equalsStart(event, ObflQName.ON_TOC_END)) {
-				template.newOnTocEnd(getAttr(event, ObflQName.ATTR_USE_WHEN));
+				template.newOnTocEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
 				parseOnEvent(event, input, template, ObflQName.ON_TOC_END, locale, hyph);
 			}
 			else if (equalsEnd(event, ObflQName.TOC_SEQUENCE)) {

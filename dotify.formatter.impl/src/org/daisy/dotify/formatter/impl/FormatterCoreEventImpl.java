@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
+import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
@@ -102,7 +103,7 @@ class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore,
 		cb.add(new LineBreak());
 	}
 
-	public void insertEvaluate(String exp, TextProperties t) {
+	public void insertEvaluate(DynamicContent exp, TextProperties t) {
 		cb.add(new Evaluate(exp, t));
 	}
 

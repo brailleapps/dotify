@@ -1,11 +1,11 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
-import java.util.Map;
 
+import org.daisy.dotify.api.formatter.Condition;
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.tools.CompoundIterable;
 
 class TocSequenceEventImpl implements TocSequenceEvent {
@@ -14,15 +14,14 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 	private final SequenceProperties props;
 	private final String tocName;
 	private final TocProperties.TocRange range;
-	private final String condition;
+	private final Condition condition;
 	private final ArrayList<ConditionalEvents> tocStartEvents;
 	private final ArrayList<ConditionalEvents> volumeStartEvents;
 	private final ArrayList<ConditionalEvents> volumeEndEvents;
 	private final ArrayList<ConditionalEvents> tocEndEvents;
 	private final String startedVolumeVariableName;
-	private final ExpressionFactory ef;
 	
-	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocProperties.TocRange range, String condition, String volEventVar, VolumeTemplateImpl template, ExpressionFactory ef) {
+	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocProperties.TocRange range, Condition condition, String volEventVar, VolumeTemplateImpl template) {
 		this.props = props;
 		this.tocName = tocName;
 		this.range = range;
@@ -32,27 +31,26 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		this.volumeEndEvents = new ArrayList<ConditionalEvents>();
 		this.tocEndEvents = new ArrayList<ConditionalEvents>();
 		this.startedVolumeVariableName = (volEventVar!=null?volEventVar:DEFAULT_EVENT_VOLUME_NUMBER);
-		this.ef = ef;
 	}
 	
 	public String getStartedVolumeVariableName() {
 		return startedVolumeVariableName;
 	}
 
-	void addTocStartEvents(FormatterCoreEventImpl events, String condition) {
-		tocStartEvents.add(new ConditionalEvents(events, condition, ef));
+	void addTocStartEvents(FormatterCoreEventImpl events, Condition condition) {
+		tocStartEvents.add(new ConditionalEvents(events, condition));
 	}
 
-	void addVolumeStartEvents(FormatterCoreEventImpl events, String condition) {
-		volumeStartEvents.add(new ConditionalEvents(events, condition, ef));
+	void addVolumeStartEvents(FormatterCoreEventImpl events, Condition condition) {
+		volumeStartEvents.add(new ConditionalEvents(events, condition));
 	}
 	
-	void addVolumeEndEvents(FormatterCoreEventImpl events, String condition) {
-		volumeEndEvents.add(new ConditionalEvents(events, condition, ef));
+	void addVolumeEndEvents(FormatterCoreEventImpl events, Condition condition) {
+		volumeEndEvents.add(new ConditionalEvents(events, condition));
 	}
 	
-	void addTocEndEvents(FormatterCoreEventImpl events, String condition) {
-		tocEndEvents.add(new ConditionalEvents(events, condition, ef));
+	void addTocEndEvents(FormatterCoreEventImpl events, Condition condition) {
+		tocEndEvents.add(new ConditionalEvents(events, condition));
 	}
 
 	public VolumeSequenceType getVolumeSequenceType() {
@@ -73,14 +71,14 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 	 * @param volumeCount
 	 * @return returns true if this toc sequence applies to the supplied context, false otherwise
 	 */
-	public boolean appliesTo(Map<String, String> vars) {
+	public boolean appliesTo(Context context) {
 		if (condition==null) {
 			return true;
 		}
-		return ef.newExpression().evaluate(condition, vars).equals(true);
+		return condition.evaluate(context);
 	}
 	
-	private static Iterable<BlockEvent> getCompoundIterable(Iterable<ConditionalEvents> events, Map<String, String> vars) {
+	private static Iterable<BlockEvent> getCompoundIterable(Iterable<ConditionalEvents> events, Context vars) {
 		ArrayList<Iterable<BlockEvent>> it = new ArrayList<Iterable<BlockEvent>>();
 		for (ConditionalEvents ev : events) {
 			if (ev.appliesTo(vars)) {
@@ -91,19 +89,19 @@ class TocSequenceEventImpl implements TocSequenceEvent {
 		return new CompoundIterable<BlockEvent>(it);
 	}
 
-	public Iterable<BlockEvent> getTocStartEvents(Map<String, String> vars) {
+	public Iterable<BlockEvent> getTocStartEvents(Context vars) {
 		return getCompoundIterable(tocStartEvents, vars);
 	}
 
-	public Iterable<BlockEvent> getVolumeStartEvents(Map<String, String> vars) {
+	public Iterable<BlockEvent> getVolumeStartEvents(Context vars) {
 		return getCompoundIterable(volumeStartEvents, vars);
 	}
 
-	public Iterable<BlockEvent> getVolumeEndEvents(Map<String, String> vars) {
+	public Iterable<BlockEvent> getVolumeEndEvents(Context vars) {
 		return getCompoundIterable(volumeEndEvents, vars);
 	}
 
-	public Iterable<BlockEvent> getTocEndEvents(Map<String, String> vars) {
+	public Iterable<BlockEvent> getTocEndEvents(Context vars) {
 		return getCompoundIterable(tocEndEvents, vars);
 	}
 

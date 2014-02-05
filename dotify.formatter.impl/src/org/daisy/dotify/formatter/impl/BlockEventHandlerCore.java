@@ -1,18 +1,14 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.Map;
-
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
 
 class BlockEventHandlerCore {
-	private final ExpressionFactory ef;
 	private final FormatterCore formatter;
 
-	public BlockEventHandlerCore(FormatterCore formatter, ExpressionFactory ef) {
-		this.ef = ef;
+	public BlockEventHandlerCore(FormatterCore formatter) {
 		this.formatter = formatter;
 	}
 	
@@ -20,7 +16,7 @@ class BlockEventHandlerCore {
 		return formatter;
 	}
 	
-	public void insertEventContents(IterableEventContents b, Map<String, String> vars) {
+	public void insertEventContents(IterableEventContents b, Context vars) {
 		for (EventContents bc : b) {
 			switch (bc.getContentType()) {
 				case PCDATA: {
@@ -50,7 +46,7 @@ class BlockEventHandlerCore {
 					break; }
 				case EVALUATE: {
 					Evaluate e = ((Evaluate)bc);
-					formatter.addChars((ef.newExpression().evaluate(e.getExpression(), vars)).toString(), e.getTextProperties());
+					formatter.addChars(e.getExpression().render(vars), e.getTextProperties());
 					break; }
 				case MARKER: {
 					Marker m = ((Marker)bc);

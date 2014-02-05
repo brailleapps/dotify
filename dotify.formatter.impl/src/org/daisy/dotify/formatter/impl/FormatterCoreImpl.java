@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
+import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
@@ -196,7 +197,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 		getCurrentBlock().insertReference(identifier, numeralStyle);
 	}
 
-	public void insertEvaluate(String exp, TextProperties t) {
+	public void insertEvaluate(DynamicContent exp, TextProperties t) {
 		getCurrentBlock().insertEvaluate(exp, t);
 	}
 	

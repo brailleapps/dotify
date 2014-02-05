@@ -28,7 +28,7 @@ public class FormatterFactoryImpl implements FormatterFactory {
 		} catch (TranslatorConfigurationException e) {
 			t = null;
 		}
-		return new FormatterImpl(t, expressionFactory);
+		return new FormatterImpl(t);
 	}
 
 	@Reference

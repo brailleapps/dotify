@@ -532,6 +532,9 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplateImpl.jav
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/FieldListImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
+dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLCondition.java -text
+dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLDynamicContent.java -text
+dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLExpressionBase.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLParserException.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLWsNormalizer.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ObflParser.java -text

@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
+import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
@@ -77,7 +78,7 @@ class BlockImpl implements Block {
 		segments.push(new PageNumberReferenceSegment(identifier, numeralStyle));
 	}
 	
-	public void insertEvaluate(String expr, TextProperties t) {
+	public void insertEvaluate(DynamicContent expr, TextProperties t) {
 		segments.push(new Evaluate(expr, t));
 	}
 	

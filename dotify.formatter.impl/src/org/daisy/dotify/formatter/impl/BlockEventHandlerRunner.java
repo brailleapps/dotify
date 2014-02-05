@@ -8,32 +8,28 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.formatter.TocProperties;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.tools.CompoundIterable;
 
 class BlockEventHandlerRunner implements VolumeContentFormatter {
 	private final Iterable<VolumeTemplateImpl> volumeTemplates;
 	private final Map<String, TableOfContentsImpl> tocs;
 	private final Logger logger;
-	//private final FormatterFactory ff;
 	private final FormatterContext context;
-	private final ExpressionFactory ef;
 	
-	public BlockEventHandlerRunner(Map<String, TableOfContentsImpl> tocs, Iterable<VolumeTemplateImpl> volumeTemplates, FormatterContext context, ExpressionFactory ef) {
+	public BlockEventHandlerRunner(Map<String, TableOfContentsImpl> tocs, Iterable<VolumeTemplateImpl> volumeTemplates, FormatterContext context) {
 		this.volumeTemplates = volumeTemplates;
 		this.tocs = tocs;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 		this.context = context;
-		//this.ff = ff;
-		this.ef = ef;
 	}
 	
-	private void appendToc(VolumeSequenceEvent seq, CrossReferences crh, int volumeNumber, int volumeCount, List<Iterable<BlockSequence>> ib, Map<String, String> vars) throws IOException {
+	private void appendToc(VolumeSequenceEvent seq, CrossReferences crh, int volumeNumber, int volumeCount, List<Iterable<BlockSequence>> ib, MyContext vars) throws IOException {
 		TocSequenceEvent toc = (TocSequenceEvent)seq;
 		if (toc.appliesTo(vars)) {
-			BlockEventHandler beh = new BlockEventHandler(context, ef);
+			BlockEventHandler beh = new BlockEventHandler(context);
 			TableOfContentsImpl data = tocs.get(toc.getTocName());
 			StaticSequenceEventImpl evs = new StaticSequenceEventImpl(toc.getSequenceProperties());
 			for (BlockEvent e : toc.getTocStartEvents(vars)) {
@@ -76,7 +72,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 						ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 						fsm.removeRange(data.getTocIdList().iterator().next(), start);
 						fsm.removeTail(stop);
-						BlockEventHandler beh2 = new BlockEventHandler(context, ef);
+						BlockEventHandler beh2 = new BlockEventHandler(context);
 						StaticSequenceEventImpl evs2 = new StaticSequenceEventImpl(toc.getSequenceProperties());
 						for (BlockEvent e : toc.getTocEndEvents(vars)) {
 							evs2.add(e);
@@ -100,14 +96,14 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 						Integer vol = crh.getVolumeNumber(ref);
 						if (vol!=null) {
 							if (nv!=vol) {
-								BlockEventHandler beh2 = new BlockEventHandler(context, ef);
+								BlockEventHandler beh2 = new BlockEventHandler(context);
 								beh2.newSequence(toc.getSequenceProperties(), vars);
 								if (nv>0) {
-									vars.put(toc.getStartedVolumeVariableName(), ""+nv);
+									vars.setMetaVolume(nv);
 									beh2.formatBlock(toc.getVolumeEndEvents(vars), vars);
 								}
 								nv = vol;
-								vars.put(toc.getStartedVolumeVariableName(), ""+vol);
+								vars.setMetaVolume(vol);
 								beh2.formatBlock(toc.getVolumeStartEvents(vars), vars);
 								statics.put(b.getBlockIdentifier(), beh2.close().getBlockSequenceIterable().iterator().next());
 							}
@@ -131,7 +127,7 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 			if (t==null) {
 				System.out.println("VOLDATA NULL");
 			}
-			if (t.appliesTo(volumeNumber, volumeCount)) {
+			if (t.appliesTo(new MyContext(volumeNumber, volumeCount))) {
 				return t.getVolumeMaxSize();
 			}
 		}
@@ -169,17 +165,15 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 	private List<Iterable<BlockSequence>> formatVolumeContents(int volumeNumber, int volumeCount, CrossReferences crh, boolean pre) throws IOException {
 		ArrayList<Iterable<BlockSequence>> ib = new ArrayList<Iterable<BlockSequence>>();
 		for (VolumeTemplateImpl t : volumeTemplates) {
-			if (t.appliesTo(volumeNumber, volumeCount)) {
-				HashMap<String, String> vars = new HashMap<String, String>();
-				vars.put(t.getVolumeCountVariableName(), volumeCount+"");
-				vars.put(t.getVolumeNumberVariableName(), volumeNumber+"");
+			MyContext c = new MyContext(volumeNumber, volumeCount);
+			if (t.appliesTo(c)) {
 				for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 					if (seq instanceof TocSequenceEvent) {
-						appendToc(seq, crh, volumeNumber, volumeCount, ib, vars);
+						appendToc(seq, crh, volumeNumber, volumeCount, ib, c);
 					} else if (seq instanceof SequenceEvent) {
-						BlockEventHandler beh = new BlockEventHandler(context, ef);
+						BlockEventHandler beh = new BlockEventHandler(context);
 						SequenceEvent seqEv = ((SequenceEvent)seq);
-						beh.formatSequence(seqEv, vars);
+						beh.formatSequence(seqEv, c);
 						ib.add(beh.close().getBlockSequenceIterable());
 					} else {
 						throw new RuntimeException("Unexpected error");
@@ -189,6 +183,43 @@ class BlockEventHandlerRunner implements VolumeContentFormatter {
 			}
 		}
 		return ib;
+	}
+	
+	private static class MyContext implements Context {
+		private Integer currentVolume, volumeCount, metaVolume;
+		
+		public MyContext(Integer currentVolume, Integer volumeCount) {
+			this.currentVolume = currentVolume;
+			this.volumeCount = volumeCount;
+			this.metaVolume = null;
+		} 
+
+		public Integer getCurrentVolume() {
+			return currentVolume;
+		}
+
+		public Integer getVolumeCount() {
+			return volumeCount;
+		}
+
+		public Integer getCurrentPage() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public Integer getMetaVolume() {
+			return metaVolume;
+		}
+		
+		public void setMetaVolume(Integer value) {
+			this.metaVolume = value;
+		}
+
+		public Integer getMetaPage() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 	}
 
 }

@@ -8,7 +8,6 @@ import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 
@@ -20,21 +19,19 @@ public class FormatterImpl extends BlockStructImpl implements Formatter {
 
 	private final Stack<VolumeTemplateImpl> volumeTemplates;
 	private HashMap<String, TableOfContentsImpl> tocs;
-	private final ExpressionFactory ef;
 
 	/**
 	 * Creates a new formatter
 	 */
-	public FormatterImpl(BrailleTranslator translator, ExpressionFactory ef) {
-		this(new FormatterContextImpl(translator), ef);
+	public FormatterImpl(BrailleTranslator translator) {
+		this(new FormatterContextImpl(translator));
 	}
 	
-	public FormatterImpl(FormatterContext context, ExpressionFactory ef) {
+	public FormatterImpl(FormatterContext context) {
 		super(context);
 
 		this.volumeTemplates = new Stack<VolumeTemplateImpl>();
 		this.tocs = new HashMap<String, TableOfContentsImpl>();
-		this.ef = ef;
 	}
 
 	public BrailleTranslator getTranslator() {
@@ -42,15 +39,13 @@ public class FormatterImpl extends BlockStructImpl implements Formatter {
 	}
 	
 	private VolumeContentFormatter getVolumeContentFormatter() {
-		return new BlockEventHandlerRunner(tocs, volumeTemplates, context, ef);
+		return new BlockEventHandlerRunner(tocs, volumeTemplates, context);
 	}
 
 
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
-		VolumeTemplateImpl template = new VolumeTemplateImpl(props.getUseWhen(), props.getSplitterMax(), ef);
+		VolumeTemplateImpl template = new VolumeTemplateImpl(props.getCondition(), props.getSplitterMax());
 		volumeTemplates.push(template);
-		template.setVolumeCountVariableName(props.getVolumeCountVariable());
-		template.setVolumeNumberVariableName(props.getVolumeNumberVariable());
 		return template;
 	}
 

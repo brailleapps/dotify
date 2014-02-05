@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 
 
@@ -11,14 +12,11 @@ interface VolumeTemplate extends VolumeTemplateBuilder {
 	 * @param volume the volume to test
 	 * @return returns true if the Template should be applied to the volume
 	 */
-	public boolean appliesTo(int volume, int volumeCount);
+	public boolean appliesTo(Context context);
 	
 	public Iterable<VolumeSequenceEvent> getPreVolumeContent();
 	
 	public Iterable<VolumeSequenceEvent> getPostVolumeContent();
-	
-	public String getVolumeNumberVariableName();
-	public String getVolumeCountVariableName();
 	
 	/**
 	 * Gets the maximum number of sheets allowed.
