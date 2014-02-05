@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 
 /**
@@ -38,7 +37,7 @@ class BlockSequenceManipulator {
 	}
 
 	private BlockSequence newSequence(List<Block> c) {
-		BlockSeqImpl ret = new BlockSeqImpl(initialPagenum, master);
+		BlockSequenceImpl ret = new BlockSequenceImpl(initialPagenum, master);
 		ret.addAll(c);
 		return ret;
 	}
@@ -147,58 +146,6 @@ class BlockSequenceManipulator {
 		return sequence;
 	}
 	
-	private static class BlockSeqImpl extends Stack<Block> implements BlockSequence {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -7098716884005865317L;
-		//private final SequenceProperties p;
-		private final LayoutMaster master;
-		private final int initialPagenum;
-		
-		private BlockSeqImpl(int initialPagenum, LayoutMaster master) {
-			//this.p = p;
-			this.initialPagenum = initialPagenum;
-			this.master = master;
-		}
 
-		public LayoutMaster getLayoutMaster() {
-			return master;
-		}
-
-		public Integer getInitialPageNumber() {
-			return initialPagenum;
-		}
-
-		public int getBlockCount() {
-			return this.size();
-		}
-
-		public Block getBlock(int index) {
-			return this.elementAt(index);
-		}
-		
-		public int getKeepHeight(Block block, CrossReferences refs, Context context) {
-			return getKeepHeight(this.indexOf(block), refs, context);
-		}
-		private int getKeepHeight(int gi, CrossReferences refs, Context context) {
-			int keepHeight = getBlock(gi).getSpaceBefore()+getBlock(gi).getBlockContentManager(refs, context).getRowCount();
-			if (getBlock(gi).getKeepWithNext()>0 && gi+1<getBlockCount()) {
-				keepHeight += getBlock(gi).getSpaceAfter()+getBlock(gi+1).getSpaceBefore()+getBlock(gi).getKeepWithNext();
-				switch (getBlock(gi+1).getKeepType()) {
-					case ALL:
-						keepHeight += getKeepHeight(gi+1, refs, context);
-						break;
-					case AUTO: break;
-					default:;
-				}
-			}
-			return keepHeight;
-		}
-/*
-		public SequenceProperties getSequenceProperties() {
-			return p;
-		}*/
-	}
 
 }

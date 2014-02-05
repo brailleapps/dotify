@@ -34,7 +34,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 	// TODO: fix recursive keep problem
 	// TODO: Implement floating elements
 	public FormatterCoreImpl(SequenceProperties p, LayoutMaster master, FormatterContext context) {
-		super(p, master);
+		super(p.getInitialPageNumber(), master);
 		this.formatterContext = context;
 		this.propsContext = new Stack<BlockProperties>();
 		this.leftMargin = new Stack<String>();
@@ -150,6 +150,14 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 			c.setKeepWithNext(next);
 		}
 		//firstRow = true;
+	}
+	
+	public BlockImpl newBlock(String blockId, RowDataProperties.Builder rdp) {
+		return (BlockImpl)this.push((Block)new BlockImpl(blockId, rdp));
+	}
+	
+	public BlockImpl getCurrentBlock() {
+		return (BlockImpl)this.peek();
 	}
 
 	public void startFloat(String id) {

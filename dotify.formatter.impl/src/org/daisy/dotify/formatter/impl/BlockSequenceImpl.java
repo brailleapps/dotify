@@ -4,34 +4,14 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.formatter.SequenceProperties;
-
-
-abstract class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
-	private final SequenceProperties p;
+class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 	private final LayoutMaster master;
+	private final Integer initialPagenum;
 	
-	public BlockSequenceImpl(SequenceProperties p, LayoutMaster master) {
-		this.p = p;
+	public BlockSequenceImpl(Integer initialPagenum, LayoutMaster master) {
+		this.initialPagenum = initialPagenum;
 		this.master = master;
 	}
-	/*
-	public SequenceProperties getSequenceProperties() {
-		return p;
-	}*/
-
-	public BlockImpl newBlock(String blockId, RowDataProperties.Builder rdp) {
-		return (BlockImpl)this.push((Block)new BlockImpl(blockId, rdp));
-	}
-	
-	public BlockImpl getCurrentBlock() {
-		return (BlockImpl)this.peek();
-	}
-/*
-	public Block[] toArray() {
-		Block[] ret = new Block[this.size()];
-		return super.toArray(ret);
-	}*/
 
 	private static final long serialVersionUID = -6105005856680272131L;
 
@@ -39,20 +19,26 @@ abstract class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 		return master;
 	}
 
+	/**
+	 * Gets the block with the specified index, where index >= 0 && index < getBlockCount()
+	 * @param index the block index
+	 * @return returns the block index
+	 * @throws IndexOutOfBoundsException if index < 0 || index >= getBlockCount()
+	 */
 	private Block getBlock(int index) {
 		return this.elementAt(index);
 	}
 
+	/**
+	 * Gets the number of blocks in this sequence
+	 * @return returns the number of blocks in this sequence
+	 */
 	private int getBlockCount() {
 		return this.size();
 	}
 
 	public Integer getInitialPageNumber() {
-		return p.getInitialPageNumber();
-	}
-
-	public SequenceProperties getSequenceProperties() {
-		return p;
+		return initialPagenum;
 	}
 	
 	public int getKeepHeight(Block block, CrossReferences refs, Context context) {
