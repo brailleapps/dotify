@@ -77,6 +77,10 @@ class BlockImpl implements Block {
 		segments.push(new PageNumberReferenceSegment(identifier, numeralStyle));
 	}
 	
+	public void insertEvaluate(String expr, TextProperties t) {
+		segments.push(new Evaluate(expr, t));
+	}
+	
 	public void setListItem(String label, FormattingTypes.ListStyle type) {
 		rdp.listProperties(new ListItem(label, type));
 	}

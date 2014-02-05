@@ -50,7 +50,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.item = rdp.getListItem();
 		
 		this.rows = new Stack<RowImpl>();
-		calculateRows(segments, rdp);
+		calculateRows(segments);
 	}
 	
 	/**
@@ -65,7 +65,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		return groupAnchors;
 	}
 	
-	private void calculateRows(Stack<Segment> segments, RowDataProperties rdp) {
+	private void calculateRows(Stack<Segment> segments) {
 		isVolatile = false;
 		
 		for (Segment s : segments) {
@@ -112,6 +112,12 @@ class BlockContentManagerImpl implements BlockContentManager {
 						layout("" + rs.getNumeralStyle().format(page), null);
 					}
 					break;
+				}
+				case Evaluate:
+				{
+					isVolatile = true;
+					//TODO: implement
+					throw new UnsupportedOperationException("Not implemented");
 				}
 				case Marker:
 				{

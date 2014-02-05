@@ -9,7 +9,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
  * @author Joel Håkansson
  *
  */
-class Evaluate implements EventContents {
+class Evaluate implements Segment, EventContents {
 	private final String expression;
 	private final TextProperties props;
 	
@@ -32,6 +32,10 @@ class Evaluate implements EventContents {
 
 	public TextProperties getTextProperties() {
 		return props;
+	}
+
+	public SegmentType getSegmentType() {
+		return SegmentType.Evaluate;
 	}
 
 }

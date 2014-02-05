@@ -197,7 +197,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 	}
 
 	public void insertEvaluate(String exp, TextProperties t) {
-		throw new UnsupportedOperationException("Not implemented");
+		getCurrentBlock().insertEvaluate(exp, t);
 	}
 	
 	private void addToBlockIndent(int value) {
