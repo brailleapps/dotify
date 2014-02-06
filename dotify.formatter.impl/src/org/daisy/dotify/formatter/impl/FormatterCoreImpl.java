@@ -7,16 +7,14 @@ import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
-import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
-import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.formatter.impl.Margin.Type;
 
-class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
+class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 	/**
 	 * 
 	 */
@@ -31,8 +29,8 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement floating elements
-	public FormatterCoreImpl(SequenceProperties p, LayoutMaster master) {
-		super(p.getInitialPageNumber(), master);
+	public FormatterCoreImpl() {
+		super();
 		this.propsContext = new Stack<BlockProperties>();
 		this.leftMargin = new Margin(Type.LEFT);
 		this.rightMargin = new Margin(Type.RIGHT);

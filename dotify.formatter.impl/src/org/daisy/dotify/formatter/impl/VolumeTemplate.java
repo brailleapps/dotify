@@ -14,9 +14,9 @@ interface VolumeTemplate extends VolumeTemplateBuilder {
 	 */
 	public boolean appliesTo(Context context);
 	
-	public Iterable<VolumeSequenceEvent> getPreVolumeContent();
+	public Iterable<VolumeSequence> getPreVolumeContent();
 	
-	public Iterable<VolumeSequenceEvent> getPostVolumeContent();
+	public Iterable<VolumeSequence> getPostVolumeContent();
 	
 	/**
 	 * Gets the maximum number of sheets allowed.

@@ -100,7 +100,7 @@ class FormatterCoreEventImpl extends Stack<BlockEvent> implements FormatterCore,
 	}
 
 	public void newLine() {
-		cb.add(new LineBreak());
+		cb.add(new NewLineSegment());
 	}
 
 	public void insertEvaluate(DynamicContent exp, TextProperties t) {

@@ -68,7 +68,7 @@ class BookStruct {
 		ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
 		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
 			if (t.appliesTo(c)) {
-				for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
+				for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 					ib.addAll(seq.getBlockSequence(context, c, crh));
 				}
 				break;

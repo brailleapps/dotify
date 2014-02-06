@@ -24,11 +24,11 @@ class VolumeTemplateImpl implements VolumeTemplate {
 		return condition.evaluate(context);
 	}
 	
-	public Iterable<VolumeSequenceEvent> getPreVolumeContent() {
+	public Iterable<VolumeSequence> getPreVolumeContent() {
 		return preVolumeContent;
 	}
 
-	public Iterable<VolumeSequenceEvent> getPostVolumeContent() {
+	public Iterable<VolumeSequence> getPostVolumeContent() {
 		return postVolumeContent;
 	}
 

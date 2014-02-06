@@ -491,7 +491,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.j
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/IterableEventContents.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LineBreak.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Margin.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginComponent.java -text
@@ -526,7 +525,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.j
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequenceEvent.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/package-info.java -text

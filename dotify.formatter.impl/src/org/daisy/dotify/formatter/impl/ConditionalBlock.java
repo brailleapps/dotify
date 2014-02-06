@@ -13,7 +13,7 @@ class ConditionalBlock {
 		this.condition = condition;
 	}
 	
-	public BlockSequence getSequence() {
+	public FormatterCoreImpl getSequence() {
 		return sequence;
 	}
 	

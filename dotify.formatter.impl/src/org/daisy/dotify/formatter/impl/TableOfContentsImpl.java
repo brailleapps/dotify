@@ -11,7 +11,7 @@ import org.daisy.dotify.api.formatter.TableOfContents;
  * Provides table of contents entries to be used when building a Table of Contents
  * @author Joel Håkansson
  */
-class TableOfContentsImpl extends FormatterCoreEventImpl implements TableOfContents  {
+class TableOfContentsImpl extends FormatterCoreImpl implements TableOfContents  {
 	/**
 	 * 
 	 */
@@ -42,12 +42,11 @@ class TableOfContentsImpl extends FormatterCoreEventImpl implements TableOfConte
 		if (refs.put(tocId, refId)!=null) {
 			throw new RuntimeException("Identifier is not unique: " + tocId);
 		}
-		TocBlockEvent ret = new TocBlockEvent(refId, tocId, props);
-		pushBlock(ret);
+		startBlock(props, tocId);
 	}
 	
 	public void endEntry() {
-		popBlock();
+		endBlock();
 	}
 
 }

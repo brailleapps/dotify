@@ -3,6 +3,6 @@ package org.daisy.dotify.formatter.impl;
 
 
 
-interface SequenceEvent extends Iterable<BlockEvent>, VolumeSequenceEvent {
+interface SequenceEvent extends Iterable<BlockEvent>, VolumeSequence {
 	
 }

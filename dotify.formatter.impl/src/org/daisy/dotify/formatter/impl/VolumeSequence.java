@@ -5,15 +5,15 @@ import java.util.List;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 /**
- * Provides a volume sequence event object. A volume sequence is a chunk of contents
+ * Provides a volume sequence object. A volume sequence is a chunk of contents
  * that is to be placed before or after the contents of a volume.
  * 
  * @author Joel Håkansson
  */
-interface VolumeSequenceEvent {
+interface VolumeSequence {
 	/**
-	 * Gets the volume sequence event properties.
-	 * @return returns the volume sequence event properties
+	 * Gets the volume sequence properties.
+	 * @return returns the volume sequence properties
 	 */
 	public SequenceProperties getSequenceProperties();
 	

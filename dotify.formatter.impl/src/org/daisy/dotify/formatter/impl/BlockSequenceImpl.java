@@ -1,10 +1,8 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.Stack;
-
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
-class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
+class BlockSequenceImpl extends FormatterCoreImpl implements BlockSequence {
 	private final LayoutMaster master;
 	private final Integer initialPagenum;
 	

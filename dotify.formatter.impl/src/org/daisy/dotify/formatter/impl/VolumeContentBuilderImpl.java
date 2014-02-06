@@ -16,7 +16,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
 
-class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements VolumeContentBuilder {
+class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeContentBuilder {
 	/**
 	 * 
 	 */
@@ -44,11 +44,11 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 	}
 
 	public void newOnTocStart(Condition useWhen) {
-		formatters.add(tocSequence.addTocStartEvents(useWhen));
+		formatters.add(tocSequence.addTocStart(useWhen));
 	}
 
 	public void newOnTocStart() {
-		formatters.add(tocSequence.addTocStartEvents(null));
+		formatters.add(tocSequence.addTocStart(null));
 	}
 
 	public void newOnVolumeStart(Condition useWhen) {
@@ -68,11 +68,11 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequenceEvent> implements Vol
 	}
 
 	public void newOnTocEnd(Condition useWhen) {
-		formatters.add(tocSequence.addTocEndEvents(useWhen));
+		formatters.add(tocSequence.addTocEnd(useWhen));
 	}
 
 	public void newOnTocEnd() {
-		formatters.add(tocSequence.addTocEndEvents(null));
+		formatters.add(tocSequence.addTocEnd(null));
 	}
 	
 	private FormatterCore current() {

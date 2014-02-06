@@ -14,30 +14,31 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.tools.CompoundIterable;
 
-class TocSequenceEventImpl implements VolumeSequenceEvent {
+class TocSequenceEventImpl implements VolumeSequence {
 	private final SequenceProperties props;
 	private final String tocName;
 	private final TocProperties.TocRange range;
 	private final Condition condition;
-	private final ArrayList<ConditionalEvents> tocStartEvents;
+	private final ArrayList<ConditionalBlock> tocStartEvents;
 	private final ArrayList<ConditionalEvents> volumeStartEvents;
 	private final ArrayList<ConditionalEvents> volumeEndEvents;
-	private final ArrayList<ConditionalEvents> tocEndEvents;
+	private final ArrayList<ConditionalBlock> tocEndEvents;
 	
 	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocProperties.TocRange range, Condition condition, String volEventVar, VolumeTemplateImpl template) {
 		this.props = props;
 		this.tocName = tocName;
 		this.range = range;
 		this.condition = condition;
-		this.tocStartEvents = new ArrayList<ConditionalEvents>();
+		this.tocStartEvents = new ArrayList<ConditionalBlock>();
 		this.volumeStartEvents = new ArrayList<ConditionalEvents>();
 		this.volumeEndEvents = new ArrayList<ConditionalEvents>();
-		this.tocEndEvents = new ArrayList<ConditionalEvents>();
+		this.tocEndEvents = new ArrayList<ConditionalBlock>();
 	}
 
-	FormatterCore addTocStartEvents(Condition condition) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocStartEvents.add(new ConditionalEvents(f, condition));
+	FormatterCore addTocStart(Condition condition) {
+		// we don't need a layout master here, because it will be replaced before rendering below
+		FormatterCoreImpl f = new FormatterCoreImpl();
+		tocStartEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}
 
@@ -53,9 +54,10 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 		return f;
 	}
 	
-	FormatterCore addTocEndEvents(Condition condition) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		tocEndEvents.add(new ConditionalEvents(f, condition));
+	FormatterCore addTocEnd(Condition condition) {
+		// we don't need a layout master here, because it will be replaced before rendering below
+		FormatterCoreImpl f = new FormatterCoreImpl();
+		tocEndEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}
 
@@ -89,6 +91,17 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 			}
 		}
 		return new CompoundIterable<BlockEvent>(it);
+	}
+	
+	private static Iterable<Block> getCompoundIterableB(Iterable<ConditionalBlock> events, Context vars) {
+		ArrayList<Iterable<Block>> it = new ArrayList<Iterable<Block>>();
+		for (ConditionalBlock ev : events) {
+			if (ev.appliesTo(vars)) {
+				Iterable<Block> tmp = ev.getSequence();
+				it.add(tmp);
+			}
+		}
+		return new CompoundIterable<Block>(it);
 	}
 
 	/**
@@ -127,12 +140,12 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 		return getTocSequence(volumeEndEvents, vars, context);
 	}
 	
-	public BlockSequence getTocStart(Context vars, FormatterContext context) throws IOException {
-		return getTocSequence(tocStartEvents, vars, context);
+	public Iterable<Block> getTocStart(Context vars, FormatterContext context) throws IOException {
+		return getCompoundIterableB(tocStartEvents, vars);
 	}
 
-	public BlockSequence getTocEnd(Context vars, FormatterContext context) throws IOException {
-		return getTocSequence(tocEndEvents, vars, context);
+	public Iterable<Block> getTocEnd(Context vars, FormatterContext context) throws IOException {
+		return getCompoundIterableB(tocEndEvents, vars);
 	}
 
 	public SequenceProperties getSequenceProperties() {
@@ -150,22 +163,13 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 					getSequenceProperties().getInitialPageNumber());
 
 			fsm.appendGroup(getTocStart(vars, context));
-			BlockSequence d;
-			{
-				
-				StaticSequenceEventImpl evs = new StaticSequenceEventImpl(getSequenceProperties());
-				for (BlockEvent e : data) {
-					evs.push(e);
-				}
 
-				d = evs.getBlockSequence(context, vars, crh).get(0);
-			}
-
+			fsm.appendGroup(data);
+			
 			if (getRange()==TocProperties.TocRange.DOCUMENT) {
 				fsm.appendGroup(getVolumeEnd(vars, context));
 			}
 
-			fsm.appendGroup(d);
 			fsm.appendGroup(getTocEnd(vars, context));
 
 			if (getRange()==TocProperties.TocRange.VOLUME) {
