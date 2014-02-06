@@ -163,9 +163,9 @@ class BlockImpl implements Block {
 		return blockId;
 	}
 	
-	public BlockContentManager getBlockContentManager(CrossReferences refs, Context context) {
+	public BlockContentManager getBlockContentManager(int flowWidth, CrossReferences refs, Context context, FormatterContext fcontext) {
 		if (rdm==null || rdm.isVolatile()) {
-			rdm = new BlockContentManagerImpl(segments, rdp.build(), refs, context);
+			rdm = new BlockContentManagerImpl(flowWidth, segments, rdp.build(), refs, context, fcontext);
 		}
 		return rdm;
 	}

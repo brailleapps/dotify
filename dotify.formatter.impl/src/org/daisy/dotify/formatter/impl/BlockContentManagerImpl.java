@@ -34,12 +34,13 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private final int available;
 	private final MarginProperties rightMargin;
 	private final Context context;
+	private final FormatterContext fcontext;
 	
 	private Leader currentLeader;
 
 	private ListItem item;
 	
-	BlockContentManagerImpl(Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs, Context context) {
+	BlockContentManagerImpl(int flowWidth, Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs, Context context, FormatterContext fcontext) {
 		this.groupMarkers = new ArrayList<Marker>();
 		this.groupAnchors = new ArrayList<String>();
 		this.refs = refs;
@@ -47,12 +48,13 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.currentLeader = null;
 
 		this.rdp = rdp;
-		this.available = rdp.getMaster().getFlowWidth() - rdp.getRightMargin().getContent().length();
+		this.available = flowWidth - rdp.getRightMargin().getContent().length();
 		this.rightMargin = rdp.getRightMargin();
 		this.item = rdp.getListItem();
 		
 		this.rows = new Stack<RowImpl>();
 		this.context = context;
+		this.fcontext = fcontext;
 		calculateRows(segments);
 	}
 	
@@ -86,10 +88,10 @@ class BlockContentManagerImpl implements BlockContentManager {
 				case Text:
 				{
 					TextSegment ts = (TextSegment)s;
-					boolean oldValue = rdp.getTranslator().isHyphenating();
-					rdp.getTranslator().setHyphenating(ts.getTextProperties().isHyphenating());
+					boolean oldValue = fcontext.getTranslator().isHyphenating();
+					fcontext.getTranslator().setHyphenating(ts.getTextProperties().isHyphenating());
 					layout(ts.getText(), ts.getTextProperties().getLocale());
-					rdp.getTranslator().setHyphenating(oldValue);
+					fcontext.getTranslator().setHyphenating(oldValue);
 					break;
 				}
 				case Leader:
@@ -120,10 +122,10 @@ class BlockContentManagerImpl implements BlockContentManager {
 				{
 					isVolatile = true;
 					Evaluate e = (Evaluate)s;
-					boolean oldValue = rdp.getTranslator().isHyphenating();
-					rdp.getTranslator().setHyphenating(e.getTextProperties().isHyphenating());
+					boolean oldValue = fcontext.getTranslator().isHyphenating();
+					fcontext.getTranslator().setHyphenating(e.getTextProperties().isHyphenating());
 					layout(e.getExpression().render(context), e.getTextProperties().getLocale());
-					rdp.getTranslator().setHyphenating(oldValue);
+					fcontext.getTranslator().setHyphenating(oldValue);
 					break;
 				}
 				case Marker:
@@ -172,7 +174,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 		if (rows.size()==0) {
 			// add to left margin
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
-				String listLabel = rdp.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
+				String listLabel = fcontext.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
 					newRow(listLabel, btr, rdp.getLeftMargin(), 0, rdp.getBlockIndentParent());
 				} else {
@@ -195,14 +197,14 @@ class BlockContentManagerImpl implements BlockContentManager {
 		BrailleTranslatorResult btr;
 		if (locale!=null) {
 			try {
-				btr = rdp.getTranslator().translate(c.toString(), locale);
+				btr = fcontext.getTranslator().translate(c.toString(), locale);
 			} catch (TranslationException e) {
 				Logger.getLogger(this.getClass().getCanonicalName())
 					.log(Level.WARNING, "Failed to translate using the specified locale: " + locale + ". Using default", e);
-				btr = rdp.getTranslator().translate(c.toString());
+				btr = fcontext.getTranslator().translate(c.toString());
 			}
 		} else {
-			btr = rdp.getTranslator().translate(c.toString());
+			btr = fcontext.getTranslator().translate(c.toString());
 		}
 		return btr;
 	}
@@ -210,7 +212,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 	private void newRow(String contentBefore, BrailleTranslatorResult chars, MarginProperties margin, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
-		String preText = contentBefore + StringTools.fill(rdp.getSpaceCharacter(), thisIndent).toString();
+		String preText = contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
 		newRow(null, margin, preText, "", chars, blockIndent);
 	}
 
@@ -258,7 +260,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 				}
 				rows.add(row);
 
-				preContent = StringTools.fill(rdp.getSpaceCharacter(), rdp.getTextIndent()+blockIndent);
+				preContent = StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent);
 				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				
@@ -268,7 +270,7 @@ class BlockContentManagerImpl implements BlockContentManager {
 				offset = leaderPos-preTabPos;
 			}
 			if (offset - align > 0) {
-				String leaderPattern = rdp.getTranslator().translate(currentLeader.getPattern()).getTranslatedRemainder();
+				String leaderPattern = fcontext.getTranslator().translate(currentLeader.getPattern()).getTranslatedRemainder();
 				tabSpace = StringTools.fill(leaderPattern, offset - align);
 			} else {
 				Logger.getLogger(this.getClass().getCanonicalName())

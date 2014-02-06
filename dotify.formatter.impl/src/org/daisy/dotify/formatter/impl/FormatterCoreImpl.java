@@ -64,8 +64,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 		if (propsContext.size()>0) {
 			addToBlockIndent(propsContext.peek().getBlockIndent());
 		}
-		RowDataProperties.Builder rdp = new RowDataProperties.Builder(
-				formatterContext, getLayoutMaster()).
+		RowDataProperties.Builder rdp = new RowDataProperties.Builder().
 					textIndent(p.getTextIndent()).
 					firstLineIndent(p.getFirstLineIndent()).
 					align(p.getAlignment()).
@@ -133,8 +132,7 @@ class FormatterCoreImpl extends BlockSequenceImpl implements FormatterCore {
 			Keep keep = propsContext.peek().getKeepType();
 			int next = propsContext.peek().getKeepWithNext();
 			subtractFromBlockIndent(propsContext.peek().getBlockIndent());
-			RowDataProperties.Builder rdp = new RowDataProperties.Builder(
-					formatterContext, getLayoutMaster()).
+			RowDataProperties.Builder rdp = new RowDataProperties.Builder().
 						textIndent(p.getTextIndent()).
 						firstLineIndent(p.getFirstLineIndent()).
 						align(p.getAlignment()).

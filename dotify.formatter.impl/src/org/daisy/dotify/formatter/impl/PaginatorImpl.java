@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 
 import org.daisy.dotify.api.formatter.Context;
+import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.tools.StringTools;
 
@@ -52,7 +53,7 @@ public class PaginatorImpl {
 				//FIXME: se över recursiv hämtning
 				switch (g.getKeepType()) {
 					case ALL:
-						int keepHeight = seq.getKeepHeight(g, refs, rcontext);
+						int keepHeight = seq.getKeepHeight(g, refs, rcontext, context);
 						if (pageStruct.spaceUsedInRows(0) > 0 && keepHeight > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(0) && keepHeight <= pageStruct.getFlowHeight()) {
 							pageStruct.newPage();
 						}
@@ -66,7 +67,7 @@ public class PaginatorImpl {
 				} else if (g.getSpaceBefore() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
 				}
-				BlockContentManager rdm = g.getBlockContentManager(refs, rcontext);
+				BlockContentManager rdm = g.getBlockContentManager(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
 				if (g.getVerticalPosition() != null) {
 					int blockSpace = rdm.getRowCount() + g.getSpaceBefore() + g.getSpaceAfter();
 					int pos = g.getVerticalPosition().getPosition().makeAbsolute(pageStruct.currentPage().getFlowHeight());
@@ -93,7 +94,7 @@ public class PaginatorImpl {
 					pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
 				}
 				if (g.getLeadingDecoration()!=null) {
-					pageStruct.newRow(makeDecorationRow(g.getRowDataProperties(), g.getLeadingDecoration()));
+					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), g.getRowDataProperties(), g.getLeadingDecoration()));
 				}
 				pageStruct.insertMarkers(rdm.getGroupMarkers());
 				boolean first = true;
@@ -116,7 +117,7 @@ public class PaginatorImpl {
 				}
 				pageStruct.currentSequence().setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
 				if (g.getTrailingDecoration()!=null) {
-					pageStruct.newRow(makeDecorationRow(g.getRowDataProperties(), g.getTrailingDecoration()));
+					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), g.getRowDataProperties(), g.getTrailingDecoration()));
 				}
 				if (g.getSpaceAfter() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
@@ -131,8 +132,8 @@ public class PaginatorImpl {
 		return pageStruct;
 	}
 	
-	private RowImpl makeDecorationRow(RowDataProperties rdp, SingleLineDecoration d) {
-		int w = rdp.getMaster().getFlowWidth() - rdp.getRightMarginParent().getContent().length() - rdp.getLeftMarginParent().getContent().length();
+	private RowImpl makeDecorationRow(LayoutMaster master, RowDataProperties rdp, SingleLineDecoration d) {
+		int w = master.getFlowWidth() - rdp.getRightMarginParent().getContent().length() - rdp.getLeftMarginParent().getContent().length();
 		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
 		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
 		row.setLeftMargin(rdp.getLeftMarginParent());

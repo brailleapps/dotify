@@ -41,16 +41,16 @@ class BlockSequenceImpl extends Stack<Block> implements BlockSequence {
 		return initialPagenum;
 	}
 	
-	public int getKeepHeight(Block block, CrossReferences refs, Context context) {
-		return getKeepHeight(this.indexOf(block), refs, context);
+	public int getKeepHeight(Block block, CrossReferences refs, Context context, FormatterContext fcontext) {
+		return getKeepHeight(this.indexOf(block), refs, context, fcontext);
 	}
-	private int getKeepHeight(int gi, CrossReferences refs, Context context) {
-		int keepHeight = getBlock(gi).getSpaceBefore()+getBlock(gi).getBlockContentManager(refs, context).getRowCount();
+	private int getKeepHeight(int gi, CrossReferences refs, Context context, FormatterContext fcontext) {
+		int keepHeight = getBlock(gi).getSpaceBefore()+getBlock(gi).getBlockContentManager(getLayoutMaster().getFlowWidth(), refs, context, fcontext).getRowCount();
 		if (getBlock(gi).getKeepWithNext()>0 && gi+1<getBlockCount()) {
 			keepHeight += getBlock(gi).getSpaceAfter()+getBlock(gi+1).getSpaceBefore()+getBlock(gi).getKeepWithNext();
 			switch (getBlock(gi+1).getKeepType()) {
 				case ALL:
-					keepHeight += getKeepHeight(gi+1, refs, context);
+					keepHeight += getKeepHeight(gi+1, refs, context, fcontext);
 					break;
 				case AUTO: break;
 				default:;

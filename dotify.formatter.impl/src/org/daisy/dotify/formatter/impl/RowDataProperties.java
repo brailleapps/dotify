@@ -2,13 +2,9 @@ package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Alignment;
-import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class RowDataProperties {
 	private final int blockIndent, blockIndentParent;
-	private final FormatterContext context;
-	private final LayoutMaster master;
 	private final MarginProperties leftMargin;
 	private final MarginProperties rightMargin;
 	private final MarginProperties leftMarginParent;
@@ -20,8 +16,6 @@ class RowDataProperties {
 	private final Float rowSpacing;
 	
 	static class Builder {
-		private final FormatterContext context;
-		private final LayoutMaster master;
 		private int blockIndent = 0;
 		private int blockIndentParent = 0;
 		private int textIndent = 0;
@@ -34,9 +28,7 @@ class RowDataProperties {
 		private MarginProperties rightMarginParent = new MarginProperties();
 		private ListItem listProps = null;
 		
-		public Builder(FormatterContext context, LayoutMaster master) {
-			this.context = context;
-			this.master = master;
+		public Builder() {
 		}
 		
 		public Builder blockIndent(int value) {
@@ -100,8 +92,6 @@ class RowDataProperties {
 	private RowDataProperties(Builder builder) {
 		this.blockIndent = builder.blockIndent;
 		this.blockIndentParent = builder.blockIndentParent;
-		this.context = builder.context;
-		this.master = builder.master;
 		this.leftMargin = builder.leftMargin;
 		this.rightMargin = builder.rightMargin;
 		this.leftMarginParent = builder.leftMarginParent;
@@ -135,23 +125,6 @@ class RowDataProperties {
 	
 	public Float getRowSpacing() {
 		return rowSpacing;
-	}
-
-	/*
-	public StringFilter getFilter() {
-		return filter;
-	}*/
-	
-	public BrailleTranslator getTranslator() {
-		return context.getTranslator();
-	}
-
-	public LayoutMaster getMaster() {
-		return master;
-	}
-	
-	public char getSpaceCharacter() {
-		return context.getSpaceCharacter();
 	}
 
 	public MarginProperties getLeftMargin() {

@@ -22,7 +22,7 @@ public interface Block {
 	public String getIdentifier();
 	public Keep getKeepType();
 	public BreakBefore getBreakBeforeType();
-	public BlockContentManager getBlockContentManager(CrossReferences refs, Context context);
+	public BlockContentManager getBlockContentManager(int flowWidth, CrossReferences refs, Context context, FormatterContext fcontext);
 	public String getBlockIdentifier();
 
 	/**
