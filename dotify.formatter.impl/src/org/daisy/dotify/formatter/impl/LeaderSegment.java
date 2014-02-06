@@ -2,7 +2,7 @@ package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.Leader;
 
-class LeaderSegment extends Leader implements Segment, EventContents {
+class LeaderSegment extends Leader implements Segment{
 	
 	protected LeaderSegment(Builder builder) {
 		super(builder);
@@ -14,14 +14,6 @@ class LeaderSegment extends Leader implements Segment, EventContents {
 
 	public SegmentType getSegmentType() {
 		return SegmentType.Leader;
-	}
-	
-	public ContentType getContentType() {
-		return ContentType.LEADER;
-	}
-
-	public boolean canContainEventObjects() {
-		return false;
 	}
 
 }

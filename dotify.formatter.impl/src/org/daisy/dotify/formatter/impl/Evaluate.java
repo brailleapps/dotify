@@ -10,7 +10,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
  * @author Joel Håkansson
  *
  */
-class Evaluate implements Segment, EventContents {
+class Evaluate implements Segment {
 	private final DynamicContent expression;
 	private final TextProperties props;
 	
@@ -21,14 +21,6 @@ class Evaluate implements Segment, EventContents {
 	
 	public DynamicContent getExpression() {
 		return expression;
-	}
-	
-	public ContentType getContentType() {
-		return ContentType.EVALUATE;
-	}
-
-	public boolean canContainEventObjects() {
-		return false;
 	}
 
 	public TextProperties getTextProperties() {
