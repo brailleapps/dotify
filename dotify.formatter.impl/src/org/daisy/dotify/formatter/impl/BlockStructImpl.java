@@ -28,7 +28,7 @@ class BlockStructImpl implements BlockStruct, FormatterCore {
 		
 	public void newSequence(SequenceProperties p) {
 		state.assertOpen();
-		currentSequence = new FormatterCoreImpl(p, context.getMasters().get(p.getMasterName()), context);
+		currentSequence = new FormatterCoreImpl(p, context.getMasters().get(p.getMasterName()));
 		blocks.push(currentSequence);
 	}
 

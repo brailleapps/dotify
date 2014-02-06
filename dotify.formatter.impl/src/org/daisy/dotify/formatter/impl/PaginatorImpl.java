@@ -41,6 +41,8 @@ public class PaginatorImpl {
 			//groupA = tmp.toArray(groupA);
 			//int gi = 0;
 			for (Block g : seq) {
+				MarginProperties leftParent = g.getRowDataProperties().getLeftMargin().buildMarginParent(context.getSpaceCharacter());
+				MarginProperties rightParent = g.getRowDataProperties().getRightMargin().buildMarginParent(context.getSpaceCharacter());
 				//int height = ps.getCurrentLayoutMaster().getFlowHeight();
 				switch (g.getBreakBeforeType()) {
 					case PAGE:
@@ -86,15 +88,15 @@ public class PaginatorImpl {
 								break;
 						}
 						for (int i = 0; i < Math.floor(advance / seq.getLayoutMaster().getRowSpacing()); i++) {
-							pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
+							pageStruct.newRow(new RowImpl("", leftParent, rightParent));
 						}
 					}
 				}
 				for (int i=0; i<g.getSpaceBefore();i++) {
-					pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
+					pageStruct.newRow(new RowImpl("", leftParent, rightParent));
 				}
 				if (g.getLeadingDecoration()!=null) {
-					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), g.getRowDataProperties(), g.getLeadingDecoration()));
+					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), leftParent, rightParent, g.getLeadingDecoration()));
 				}
 				pageStruct.insertMarkers(rdm.getGroupMarkers());
 				boolean first = true;
@@ -116,14 +118,16 @@ public class PaginatorImpl {
 					}
 				}
 				pageStruct.currentSequence().setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
+
 				if (g.getTrailingDecoration()!=null) {
-					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), g.getRowDataProperties(), g.getTrailingDecoration()));
+					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), leftParent, rightParent, g.getTrailingDecoration()));
 				}
 				if (g.getSpaceAfter() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
 				} else {
 					for (int i=0; i<g.getSpaceAfter();i++) {
-						pageStruct.newRow(new RowImpl("", g.getRowDataProperties().getLeftMarginParent(), g.getRowDataProperties().getRightMarginParent()));
+						pageStruct.newRow(new RowImpl("", leftParent,
+								rightParent));
 					}
 				}
 				//gi++;
@@ -132,12 +136,12 @@ public class PaginatorImpl {
 		return pageStruct;
 	}
 	
-	private RowImpl makeDecorationRow(LayoutMaster master, RowDataProperties rdp, SingleLineDecoration d) {
-		int w = master.getFlowWidth() - rdp.getRightMarginParent().getContent().length() - rdp.getLeftMarginParent().getContent().length();
+	private RowImpl makeDecorationRow(LayoutMaster master, MarginProperties left, MarginProperties right, SingleLineDecoration d) {
+		int w = master.getFlowWidth() - right.getContent().length() - left.getContent().length();
 		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
 		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
-		row.setLeftMargin(rdp.getLeftMarginParent());
-		row.setRightMargin(rdp.getRightMarginParent());
+		row.setLeftMargin(left);
+		row.setRightMargin(right);
 		return row;
 	}
 

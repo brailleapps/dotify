@@ -32,10 +32,11 @@ class BlockContentManagerImpl implements BlockContentManager {
 	
 	private final RowDataProperties rdp;
 	private final int available;
-	private final MarginProperties rightMargin;
+
 	private final Context context;
 	private final FormatterContext fcontext;
-	
+	private final MarginProperties leftMargin;
+	private final MarginProperties rightMargin;
 	private Leader currentLeader;
 
 	private ListItem item;
@@ -44,17 +45,19 @@ class BlockContentManagerImpl implements BlockContentManager {
 		this.groupMarkers = new ArrayList<Marker>();
 		this.groupAnchors = new ArrayList<String>();
 		this.refs = refs;
-		
+		this.fcontext = fcontext;
 		this.currentLeader = null;
 
 		this.rdp = rdp;
-		this.available = flowWidth - rdp.getRightMargin().getContent().length();
-		this.rightMargin = rdp.getRightMargin();
+		this.leftMargin = rdp.getLeftMargin().buildMargin(fcontext.getSpaceCharacter());
+		this.rightMargin = rdp.getRightMargin().buildMargin(fcontext.getSpaceCharacter());
+		this.available = flowWidth - rightMargin.getContent().length();
+
 		this.item = rdp.getListItem();
 		
 		this.rows = new Stack<RowImpl>();
 		this.context = context;
-		this.fcontext = fcontext;
+		
 		calculateRows(segments);
 	}
 	
@@ -80,8 +83,9 @@ class BlockContentManagerImpl implements BlockContentManager {
 					//flush
 					layout("", null);
 					RowImpl r = new RowImpl("");
-					r.setLeftMargin(((NewLineSegment)s).getLeftIndent());
-					r.setRightMargin(rdp.getRightMargin());
+					MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
+					r.setLeftMargin(ret);
+					r.setRightMargin(rdp.getRightMargin().buildMargin(fcontext.getSpaceCharacter()));
 					rows.add(r);
 					break;
 				}
@@ -176,20 +180,20 @@ class BlockContentManagerImpl implements BlockContentManager {
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel = fcontext.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
-					newRow(listLabel, btr, rdp.getLeftMargin(), 0, rdp.getBlockIndentParent());
+					newRow(listLabel, btr, leftMargin, 0, rdp.getBlockIndentParent());
 				} else {
-					newRow(listLabel, btr, rdp.getLeftMargin(), rdp.getFirstLineIndent(), rdp.getBlockIndent());
+					newRow(listLabel, btr, leftMargin, rdp.getFirstLineIndent(), rdp.getBlockIndent());
 				}
 				item = null;
 			} else {
-				newRow("", btr, rdp.getLeftMargin(), rdp.getFirstLineIndent(), rdp.getBlockIndent());
+				newRow("", btr, leftMargin, rdp.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
 			RowImpl r  = rows.pop();
 			newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
-			newRow("", btr, rdp.getLeftMargin(), rdp.getTextIndent(), rdp.getBlockIndent());
+			newRow("", btr, leftMargin, rdp.getTextIndent(), rdp.getBlockIndent());
 		}
 	}
 	

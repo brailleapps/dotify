@@ -55,8 +55,8 @@ class BlockImpl implements Block {
 		segments.add(new AnchorSegment(ref));
 	}
 	
-	public void newLine(MarginProperties leftIndent) {
-		segments.push(new NewLineSegment(leftIndent));
+	public void newLine() {
+		segments.push(new NewLineSegment());
 	}
 	
 	public void addChars(CharSequence c, TextProperties tp) {

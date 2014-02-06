@@ -2,13 +2,12 @@ package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Alignment;
+import org.daisy.dotify.formatter.impl.Margin.Type;
 
 class RowDataProperties {
 	private final int blockIndent, blockIndentParent;
-	private final MarginProperties leftMargin;
-	private final MarginProperties rightMargin;
-	private final MarginProperties leftMarginParent;
-	private final MarginProperties rightMarginParent;
+	private final Margin leftMargin;
+	private final Margin rightMargin;
 	private final ListItem listProps;
 	private final int textIndent;
 	private final int firstLineIndent;
@@ -22,10 +21,9 @@ class RowDataProperties {
 		private int firstLineIndent = 0;
 		private Alignment align = Alignment.LEFT;
 		private Float rowSpacing = null;
-		private MarginProperties leftMargin = new MarginProperties();
-		private MarginProperties rightMargin = new MarginProperties();
-		private MarginProperties leftMarginParent = new MarginProperties();
-		private MarginProperties rightMarginParent = new MarginProperties();
+		private Margin leftMargin = new Margin(Type.LEFT);
+		private Margin rightMargin = new Margin(Type.RIGHT);
+
 		private ListItem listProps = null;
 		
 		public Builder() {
@@ -61,24 +59,16 @@ class RowDataProperties {
 			return this;
 		}
 		
-		public Builder leftMargin(MarginProperties value) {
+		public Builder leftMargin(Margin value) {
 			leftMargin = value;
 			return this;
 		}
 		
-		public Builder rightMargin(MarginProperties value) {
+		public Builder rightMargin(Margin value) {
 			rightMargin = value;
 			return this;
 		}
-		
-		public Builder leftMarginParent(MarginProperties value) {
-			leftMarginParent = value;
-			return this;
-		}
-		public Builder rightMarginParent(MarginProperties value) {
-			rightMarginParent = value;
-			return this;
-		}
+
 		public Builder listProperties(ListItem value) {
 			listProps = value;
 			return this;
@@ -94,8 +84,7 @@ class RowDataProperties {
 		this.blockIndentParent = builder.blockIndentParent;
 		this.leftMargin = builder.leftMargin;
 		this.rightMargin = builder.rightMargin;
-		this.leftMarginParent = builder.leftMarginParent;
-		this.rightMarginParent = builder.rightMarginParent;
+
 		this.listProps = builder.listProps;
 		this.textIndent = builder.textIndent;
 		this.firstLineIndent = builder.firstLineIndent;
@@ -127,19 +116,12 @@ class RowDataProperties {
 		return rowSpacing;
 	}
 
-	public MarginProperties getLeftMargin() {
+	public Margin getLeftMargin() {
 		return leftMargin;
 	}
 
-	public MarginProperties getRightMargin() {
+	public Margin getRightMargin() {
 		return rightMargin;
-	}
-	
-	public MarginProperties getLeftMarginParent() {
-		return leftMarginParent;
-	}
-	public MarginProperties getRightMarginParent() {
-		return rightMarginParent;
 	}
 	public boolean isList() {
 		return listProps!=null;
