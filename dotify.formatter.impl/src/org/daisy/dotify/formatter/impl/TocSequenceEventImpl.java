@@ -16,7 +16,7 @@ import org.daisy.dotify.tools.CompoundIterable;
 
 class TocSequenceEventImpl implements VolumeSequence {
 	private final SequenceProperties props;
-	private final String tocName;
+	private final TableOfContentsImpl data;
 	private final TocProperties.TocRange range;
 	private final Condition condition;
 	private final ArrayList<ConditionalBlock> tocStartEvents;
@@ -24,9 +24,9 @@ class TocSequenceEventImpl implements VolumeSequence {
 	private final ArrayList<ConditionalBlock> volumeEndEvents;
 	private final ArrayList<ConditionalBlock> tocEndEvents;
 	
-	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocProperties.TocRange range, Condition condition, String volEventVar, VolumeTemplateImpl template) {
+	public TocSequenceEventImpl(SequenceProperties props, TableOfContentsImpl data, TocProperties.TocRange range, Condition condition, String volEventVar) {
 		this.props = props;
-		this.tocName = tocName;
+		this.data = data;
 		this.range = range;
 		this.condition = condition;
 		this.tocStartEvents = new ArrayList<ConditionalBlock>();
@@ -59,10 +59,6 @@ class TocSequenceEventImpl implements VolumeSequence {
 		FormatterCoreImpl f = new FormatterCoreImpl();
 		tocEndEvents.add(new ConditionalBlock(f, condition));
 		return f;
-	}
-
-	public String getTocName() {
-		return tocName;
 	}
 
 	public TocProperties.TocRange getRange() {
@@ -117,8 +113,6 @@ class TocSequenceEventImpl implements VolumeSequence {
 		ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 		try {
 		if (appliesTo(vars)) {
-
-			TableOfContentsImpl data = context.getTocs().get(getTocName());
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
 					getSequenceProperties().getInitialPageNumber());

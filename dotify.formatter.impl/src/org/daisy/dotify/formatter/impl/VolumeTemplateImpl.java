@@ -1,5 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.Map;
+
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
@@ -10,11 +12,11 @@ class VolumeTemplateImpl implements VolumeTemplate {
 	private final int splitterMax;
 	private final VolumeContentBuilderImpl preVolumeContent, postVolumeContent;
 
-	public VolumeTemplateImpl(Condition condition, Integer splitterMax) {
+	public VolumeTemplateImpl(Map<String, TableOfContentsImpl> tocs, Condition condition, Integer splitterMax) {
 		this.condition = condition;
 		this.splitterMax = splitterMax;
-		this.preVolumeContent = new VolumeContentBuilderImpl(this);
-		this.postVolumeContent = new VolumeContentBuilderImpl(this);
+		this.preVolumeContent = new VolumeContentBuilderImpl(tocs);
+		this.postVolumeContent = new VolumeContentBuilderImpl(tocs);
 	}
 
 	public boolean appliesTo(Context context) {

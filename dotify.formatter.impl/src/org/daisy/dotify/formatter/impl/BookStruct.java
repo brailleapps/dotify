@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
@@ -23,8 +24,10 @@ class BookStruct {
 	private final PaginatorImpl contentPaginator;
 	private final FormatterContext context;
 	private final CrossReferenceHandler crh;
+	private final List<VolumeTemplateImpl> volumeTemplates;
 
-	public BookStruct(FormatterContext context, PaginatorImpl content) {
+	public BookStruct(List<VolumeTemplateImpl> volumeTemplates, FormatterContext context, PaginatorImpl content) {
+		this.volumeTemplates = volumeTemplates;
 		this.context = context;
 		this.contentPaginator = content;
 		this.logger = Logger.getLogger(BookStruct.class.getCanonicalName());
@@ -66,7 +69,7 @@ class BookStruct {
 
 	private Iterable<BlockSequence> formatVolumeContents(CrossReferences crh, boolean pre, DefaultContext c) throws IOException {
 		ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
-		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
+		for (VolumeTemplateImpl t : volumeTemplates) {
 			if (t.appliesTo(c)) {
 				for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
 					ib.addAll(seq.getBlockSequence(context, c, crh));
@@ -85,7 +88,7 @@ class BookStruct {
 	 * @return returns the maximum number of sheets in the volume
 	 */
 	public int getVolumeMaxSize(int volumeNumber, int volumeCount) {
-		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
+		for (VolumeTemplateImpl t : volumeTemplates) {
 			if (t==null) {
 				System.out.println("VOLDATA NULL");
 			}

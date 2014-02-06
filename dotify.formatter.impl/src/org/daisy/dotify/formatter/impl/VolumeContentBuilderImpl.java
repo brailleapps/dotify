@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
@@ -21,12 +22,12 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	 * 
 	 */
 	private static final long serialVersionUID = -3736631267650875060L;
-	private final VolumeTemplateImpl template;
+	private final Map<String, TableOfContentsImpl> tocs;
 	private List<FormatterCore> formatters;
 	private TocSequenceEventImpl tocSequence;
 
-	public VolumeContentBuilderImpl(VolumeTemplateImpl template) {
-		this.template = template;
+	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs) {
+		this.tocs = tocs;
 		this.formatters = new ArrayList<FormatterCore>();
 		this.tocSequence = null;
 	}
@@ -39,7 +40,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	}
 
 	public void newTocSequence(TocProperties props) {
-		tocSequence = new TocSequenceEventImpl(props, props.getTocName(), props.getRange(), props.getCondition(), null, template);
+		tocSequence = new TocSequenceEventImpl(props, tocs.get(props.getTocName()), props.getRange(), props.getCondition(), null);
 		add(tocSequence);
 	}
 
