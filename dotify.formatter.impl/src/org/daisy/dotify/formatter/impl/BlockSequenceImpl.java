@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 class BlockSequenceImpl extends FormatterCoreImpl implements BlockSequence {
 	private final LayoutMaster master;
@@ -39,10 +38,10 @@ class BlockSequenceImpl extends FormatterCoreImpl implements BlockSequence {
 		return initialPagenum;
 	}
 	
-	public int getKeepHeight(Block block, CrossReferences refs, Context context, FormatterContext fcontext) {
+	public int getKeepHeight(Block block, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
 		return getKeepHeight(this.indexOf(block), refs, context, fcontext);
 	}
-	private int getKeepHeight(int gi, CrossReferences refs, Context context, FormatterContext fcontext) {
+	private int getKeepHeight(int gi, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
 		int keepHeight = getBlock(gi).getSpaceBefore()+getBlock(gi).getBlockContentManager(getLayoutMaster().getFlowWidth(), refs, context, fcontext).getRowCount();
 		if (getBlock(gi).getKeepWithNext()>0 && gi+1<getBlockCount()) {
 			keepHeight += getBlock(gi).getSpaceAfter()+getBlock(gi+1).getSpaceBefore()+getBlock(gi).getKeepWithNext();

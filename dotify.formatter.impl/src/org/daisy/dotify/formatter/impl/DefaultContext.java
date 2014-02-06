@@ -3,12 +3,13 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.Context;
 
 class DefaultContext implements Context {
-	private Integer currentVolume, volumeCount, metaVolume;
+	private Integer currentVolume, volumeCount, metaVolume, metaPage;
 	
 	public DefaultContext(Integer currentVolume, Integer volumeCount) {
 		this.currentVolume = currentVolume;
 		this.volumeCount = volumeCount;
 		this.metaVolume = null;
+		this.metaPage = null;
 	} 
 
 	public Integer getCurrentVolume() {
@@ -33,8 +34,11 @@ class DefaultContext implements Context {
 	}
 
 	public Integer getMetaPage() {
-		// TODO Auto-generated method stub
-		return null;
+		return metaPage;
 	}
-	
+
+	public void setMetaPage(Integer metaPage) {
+		this.metaPage = metaPage;
+	}
+
 }

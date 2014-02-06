@@ -1,13 +1,11 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
-class StaticSequenceEventImpl extends FormatterCoreEventImpl implements SequenceEvent {
+class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequence {
 	private final SequenceProperties props;
 	
 	/**
@@ -28,17 +26,13 @@ class StaticSequenceEventImpl extends FormatterCoreEventImpl implements Sequence
 	}
 
 	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
-		ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
-		BlockEventHandler beh = new BlockEventHandler(context);
-		beh.formatSequence(this, c);
-		try {
-			for (BlockSequence s : beh.close().getBlockSequenceIterable()) {
-				ib.add(s);
-			}
-		} catch (IOException e) {
-			Logger.getLogger(this.getClass().getCanonicalName()).warning("Failed to format block.");
-		}
-		return ib;
+		BlockSequenceManipulator fsm = new BlockSequenceManipulator(
+				context.getMasters().get(getSequenceProperties().getMasterName()), 
+				getSequenceProperties().getInitialPageNumber());
+		fsm.appendGroup(this);
+		ArrayList<BlockSequence> ret = new ArrayList<BlockSequence>();
+		ret.add(fsm.newSequence());
+		return ret;
 	}
 
 }

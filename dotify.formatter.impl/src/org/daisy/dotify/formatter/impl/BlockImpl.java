@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
-import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
@@ -30,6 +29,7 @@ class BlockImpl implements Block {
 	private SingleLineDecoration leadingDecoration = null;
 	private SingleLineDecoration trailingDecoration = null;
 
+	private Integer metaVolume = null, metaPage = null;
 	
 	BlockImpl(String blockId, RowDataProperties.Builder rdp) {
 		this.spaceBefore = 0;
@@ -163,13 +163,25 @@ class BlockImpl implements Block {
 		return blockId;
 	}
 	
-	public BlockContentManager getBlockContentManager(int flowWidth, CrossReferences refs, Context context, FormatterContext fcontext) {
+	public BlockContentManager getBlockContentManager(int flowWidth, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
 		if (rdm==null || rdm.isVolatile()) {
+			context.setMetaVolume(metaVolume);
+			context.setMetaPage(metaPage);
 			rdm = new BlockContentManagerImpl(flowWidth, segments, rdp.build(), refs, context, fcontext);
+			context.setMetaVolume(null);
+			context.setMetaPage(null);
 		}
 		return rdm;
 	}
-	
+
+	public void setMetaVolume(Integer metaVolume) {
+		this.metaVolume = metaVolume;
+	}
+
+	public void setMetaPage(Integer metaPage) {
+		this.metaPage = metaPage;
+	}
+
 	public SingleLineDecoration getLeadingDecoration() {
 		return leadingDecoration;
 	}
@@ -189,5 +201,19 @@ class BlockImpl implements Block {
 	public RowDataProperties getRowDataProperties() {
 		return rdp.build();
 	}
+
+    @SuppressWarnings("unchecked")
+	public Object clone() {
+    	try {
+	    	BlockImpl newObject = (BlockImpl)super.clone();
+	    	if (this.segments!=null) {
+	    		newObject.segments = (Stack<Segment>)this.segments.clone();
+	    	}
+	    	return newObject;
+    	} catch (CloneNotSupportedException e) { 
+    	    // this shouldn't happen, since we are Cloneable
+    	    throw new InternalError();
+    	}
+    }
 
 }

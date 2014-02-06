@@ -1,7 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
-import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
 /**
@@ -9,7 +8,7 @@ import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
  * associated with it.
  * @author Joel Håkansson
  */
-public interface Block {
+public interface Block extends Cloneable {
 
 	/**
 	 * Gets the number of empty rows that should precede the 
@@ -22,8 +21,12 @@ public interface Block {
 	public String getIdentifier();
 	public Keep getKeepType();
 	public BreakBefore getBreakBeforeType();
-	public BlockContentManager getBlockContentManager(int flowWidth, CrossReferences refs, Context context, FormatterContext fcontext);
+	public BlockContentManager getBlockContentManager(int flowWidth, CrossReferences refs, DefaultContext context, FormatterContext fcontext);
 	public String getBlockIdentifier();
+
+	public void setMetaVolume(Integer metaVolume);
+
+	public void setMetaPage(Integer metaPage);
 
 	/**
 	 * Gets the vertical position of the block on page, or null if none is
@@ -38,5 +41,6 @@ public interface Block {
 	public SingleLineDecoration getLeadingDecoration();
 	public SingleLineDecoration getTrailingDecoration();
 	public RowDataProperties getRowDataProperties();
+	public Object clone();
 	
 }

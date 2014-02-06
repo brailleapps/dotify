@@ -20,8 +20,8 @@ class TocSequenceEventImpl implements VolumeSequence {
 	private final TocProperties.TocRange range;
 	private final Condition condition;
 	private final ArrayList<ConditionalBlock> tocStartEvents;
-	private final ArrayList<ConditionalEvents> volumeStartEvents;
-	private final ArrayList<ConditionalEvents> volumeEndEvents;
+	private final ArrayList<ConditionalBlock> volumeStartEvents;
+	private final ArrayList<ConditionalBlock> volumeEndEvents;
 	private final ArrayList<ConditionalBlock> tocEndEvents;
 	
 	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocProperties.TocRange range, Condition condition, String volEventVar, VolumeTemplateImpl template) {
@@ -30,8 +30,8 @@ class TocSequenceEventImpl implements VolumeSequence {
 		this.range = range;
 		this.condition = condition;
 		this.tocStartEvents = new ArrayList<ConditionalBlock>();
-		this.volumeStartEvents = new ArrayList<ConditionalEvents>();
-		this.volumeEndEvents = new ArrayList<ConditionalEvents>();
+		this.volumeStartEvents = new ArrayList<ConditionalBlock>();
+		this.volumeEndEvents = new ArrayList<ConditionalBlock>();
 		this.tocEndEvents = new ArrayList<ConditionalBlock>();
 	}
 
@@ -43,14 +43,14 @@ class TocSequenceEventImpl implements VolumeSequence {
 	}
 
 	FormatterCore addVolumeStartEvents(Condition condition) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		volumeStartEvents.add(new ConditionalEvents(f, condition));
+		FormatterCoreImpl f = new FormatterCoreImpl();
+		volumeStartEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}
 	
 	FormatterCore addVolumeEndEvents(Condition condition) {
-		FormatterCoreEventImpl f = new FormatterCoreEventImpl();
-		volumeEndEvents.add(new ConditionalEvents(f, condition));
+		FormatterCoreImpl f = new FormatterCoreImpl();
+		volumeEndEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}
 	
@@ -82,17 +82,6 @@ class TocSequenceEventImpl implements VolumeSequence {
 		return condition.evaluate(context);
 	}
 	
-	private static Iterable<BlockEvent> getCompoundIterable(Iterable<ConditionalEvents> events, Context vars) {
-		ArrayList<Iterable<BlockEvent>> it = new ArrayList<Iterable<BlockEvent>>();
-		for (ConditionalEvents ev : events) {
-			if (ev.appliesTo(vars)) {
-				Iterable<BlockEvent> tmp = ev.getEvents();
-				it.add(tmp);
-			}
-		}
-		return new CompoundIterable<BlockEvent>(it);
-	}
-	
 	private static Iterable<Block> getCompoundIterableB(Iterable<ConditionalBlock> events, Context vars) {
 		ArrayList<Iterable<Block>> it = new ArrayList<Iterable<Block>>();
 		for (ConditionalBlock ev : events) {
@@ -104,40 +93,12 @@ class TocSequenceEventImpl implements VolumeSequence {
 		return new CompoundIterable<Block>(it);
 	}
 
-	/**
-	 * Gets the events that should precede TOC entries from the specified volume 
-	 * @param forVolume the number of the volume that is to be started, one based
-	 * @return returns the events that should precede the TOC entries from the specified volume
-	 */
-	public Iterable<BlockEvent> getVolumeStartEvents(Context vars) {
-		return getCompoundIterable(volumeStartEvents, vars);
-	}
-
-	/**
-	 * Gets the events that should follow TOC entries from the specified volume
-	 * @param forVolume the number of the volume that has just ended, one based
-	 * @return returns the events that should follow the TOC entries from the specified volume
-	 */
-	public Iterable<BlockEvent> getVolumeEndEvents(Context vars) {
-		return getCompoundIterable(volumeEndEvents, vars);
+	public Iterable<Block> getVolumeStart(Context vars, FormatterContext context) throws IOException {
+		return getCompoundIterableB(volumeStartEvents, vars);
 	}
 	
-	public BlockSequence getTocSequence(ArrayList<ConditionalEvents> evs, Context vars, FormatterContext context) throws IOException {
-		BlockEventHandler beh2 = new BlockEventHandler(context);
-		StaticSequenceEventImpl evs2 = new StaticSequenceEventImpl(getSequenceProperties());
-		for (BlockEvent e : getCompoundIterable(evs, vars)) {
-			evs2.add(e);
-		}
-		beh2.formatSequence(evs2, vars);
-		return beh2.close().getBlockSequenceIterable().iterator().next();
-	}
-	
-	public BlockSequence getVolumeStart(Context vars, FormatterContext context) throws IOException {
-		return getTocSequence(volumeStartEvents, vars, context);
-	}
-	
-	public BlockSequence getVolumeEnd(Context vars, FormatterContext context) throws IOException {
-		return getTocSequence(volumeEndEvents, vars, context);
+	public Iterable<Block> getVolumeEnd(Context vars, FormatterContext context) throws IOException {
+		return getCompoundIterableB(volumeEndEvents, vars);
 	}
 	
 	public Iterable<Block> getTocStart(Context vars, FormatterContext context) throws IOException {
@@ -206,23 +167,38 @@ class TocSequenceEventImpl implements VolumeSequence {
 			} else if (getRange()==TocProperties.TocRange.DOCUMENT) {
 
 				int nv=0;
-				HashMap<String, BlockSequence> statics = new HashMap<String, BlockSequence>();
+				HashMap<String, Iterable<Block>> statics = new HashMap<String, Iterable<Block>>();
 				for (Block b : fsm.getBlocks()) {
 					if (b.getBlockIdentifier()!=null) {
 						String ref = data.getRefForID(b.getBlockIdentifier());
 						Integer vol = crh.getVolumeNumber(ref);
 						if (vol!=null) {
 							if (nv!=vol) {
-								BlockEventHandler beh2 = new BlockEventHandler(context);
-								beh2.newSequence(getSequenceProperties(), vars);
+								ArrayList<Block> rr = new ArrayList<Block>();
 								if (nv>0) {
+									//set the meta context for selection evaluation
 									vars.setMetaVolume(nv);
-									beh2.formatBlock(getVolumeEndEvents(vars), vars);
+									Iterable<Block> ib1 = getVolumeEnd(vars, context);
+									for (Block b1 : ib1) {
+										//we need a clone because of meta context
+										Block b2 = (Block)b1.clone();
+										//set the meta volume for each block, for later evaluation
+										b2.setMetaVolume(nv);
+										rr.add(b2);
+									}
 								}
 								nv = vol;
+								//set the meta context for selection evaluation
 								vars.setMetaVolume(vol);
-								beh2.formatBlock(getVolumeStartEvents(vars), vars);
-								statics.put(b.getBlockIdentifier(), beh2.close().getBlockSequenceIterable().iterator().next());
+								Iterable<Block> ib1 = getVolumeStart(vars, context);
+								for (Block b1 : ib1) {
+									//we need a clone because of meta context
+									Block b2 = (Block)b1.clone();
+									//set the meta volume for each block, for later evaluation
+									b2.setMetaVolume(vol);
+									rr.add(b2);
+								}
+								statics.put(b.getBlockIdentifier(), rr);
 							}
 						}
 					}
