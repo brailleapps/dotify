@@ -69,7 +69,7 @@ class BookStruct {
 		for (VolumeTemplateImpl t : context.getVolumeTemplates()) {
 			if (t.appliesTo(c)) {
 				for (VolumeSequenceEvent seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
-					ib.addAll(seq.getBlockSequences(context, c, crh));
+					ib.addAll(seq.getBlockSequence(context, c, crh));
 				}
 				break;
 			}

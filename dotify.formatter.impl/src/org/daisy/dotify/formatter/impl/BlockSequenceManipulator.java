@@ -19,20 +19,20 @@ class BlockSequenceManipulator {
 	private int initialPagenum;
 	private final LayoutMaster master;
 	
-	public BlockSequenceManipulator(BlockStruct struct) {
+	public BlockSequenceManipulator(BlockSequence b) {
 		this.sequence = new Stack<Block>();
-		//SequenceProperties tmp = null;
-		LayoutMaster tMaster = null;
-		for (BlockSequence b : struct.getBlockSequenceIterable()) {
-			//tmp = b.getSequenceProperties();
-			initialPagenum = b.getInitialPageNumber();
-			tMaster = b.getLayoutMaster();
-			for (Block bb : b) {
-				this.sequence.add(bb);
-			}
+		for (Block bb : b) {
+			this.sequence.add(bb);
 		}
-		//this.props = tmp;
-		this.master = tMaster;
+		this.master = b.getLayoutMaster();
+		this.initialPagenum = b.getInitialPageNumber();
+		this.taggedEntries = tagSequence(this.sequence);
+	}
+	
+	public BlockSequenceManipulator(LayoutMaster master, Integer initialPageNumber) {
+		this.sequence = new Stack<Block>();
+		this.master = master;
+		this.initialPagenum = initialPageNumber;
 		this.taggedEntries = tagSequence(this.sequence);
 	}
 

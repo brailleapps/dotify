@@ -27,7 +27,7 @@ class StaticSequenceEventImpl extends FormatterCoreEventImpl implements Sequence
 		return props;
 	}
 
-	public List<BlockSequence> getBlockSequences(FormatterContext context, DefaultContext c, CrossReferences crh) {
+	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
 		ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
 		BlockEventHandler beh = new BlockEventHandler(context);
 		beh.formatSequence(this, c);

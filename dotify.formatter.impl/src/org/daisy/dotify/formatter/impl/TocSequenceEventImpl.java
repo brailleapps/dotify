@@ -15,8 +15,6 @@ import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.tools.CompoundIterable;
 
 class TocSequenceEventImpl implements VolumeSequenceEvent {
-
-	public final static String DEFAULT_EVENT_VOLUME_NUMBER = "started-volume-number";
 	private final SequenceProperties props;
 	private final String tocName;
 	private final TocProperties.TocRange range;
@@ -25,7 +23,6 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 	private final ArrayList<ConditionalEvents> volumeStartEvents;
 	private final ArrayList<ConditionalEvents> volumeEndEvents;
 	private final ArrayList<ConditionalEvents> tocEndEvents;
-	private final String startedVolumeVariableName;
 	
 	public TocSequenceEventImpl(SequenceProperties props, String tocName, TocProperties.TocRange range, Condition condition, String volEventVar, VolumeTemplateImpl template) {
 		this.props = props;
@@ -36,11 +33,6 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 		this.volumeStartEvents = new ArrayList<ConditionalEvents>();
 		this.volumeEndEvents = new ArrayList<ConditionalEvents>();
 		this.tocEndEvents = new ArrayList<ConditionalEvents>();
-		this.startedVolumeVariableName = (volEventVar!=null?volEventVar:DEFAULT_EVENT_VOLUME_NUMBER);
-	}
-	
-	public String getStartedVolumeVariableName() {
-		return startedVolumeVariableName;
 	}
 
 	FormatterCore addTocStartEvents(Condition condition) {
@@ -100,14 +92,6 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 	}
 
 	/**
-	 * Gets the events that should precede the TOC
-	 * @return returns the events that should precede the TOC
-	 */
-	public Iterable<BlockEvent> getTocStartEvents(Context vars) {
-		return getCompoundIterable(tocStartEvents, vars);
-	}
-
-	/**
 	 * Gets the events that should precede TOC entries from the specified volume 
 	 * @param forVolume the number of the volume that is to be started, one based
 	 * @return returns the events that should precede the TOC entries from the specified volume
@@ -124,58 +108,66 @@ class TocSequenceEventImpl implements VolumeSequenceEvent {
 	public Iterable<BlockEvent> getVolumeEndEvents(Context vars) {
 		return getCompoundIterable(volumeEndEvents, vars);
 	}
-
-	/**
-	 * Gets the events that should follow the TOC
-	 * @return returns the events that should follow the TOC
-	 */
-	public Iterable<BlockEvent> getTocEndEvents(Context vars) {
-		return getCompoundIterable(tocEndEvents, vars);
-	}
 	
-	public BlockSequence getTocEnd(Context vars, FormatterContext context) throws IOException {
+	public BlockSequence getTocSequence(ArrayList<ConditionalEvents> evs, Context vars, FormatterContext context) throws IOException {
 		BlockEventHandler beh2 = new BlockEventHandler(context);
 		StaticSequenceEventImpl evs2 = new StaticSequenceEventImpl(getSequenceProperties());
-		for (BlockEvent e : getTocEndEvents(vars)) {
+		for (BlockEvent e : getCompoundIterable(evs, vars)) {
 			evs2.add(e);
 		}
 		beh2.formatSequence(evs2, vars);
 		return beh2.close().getBlockSequenceIterable().iterator().next();
+	}
+	
+	public BlockSequence getVolumeStart(Context vars, FormatterContext context) throws IOException {
+		return getTocSequence(volumeStartEvents, vars, context);
+	}
+	
+	public BlockSequence getVolumeEnd(Context vars, FormatterContext context) throws IOException {
+		return getTocSequence(volumeEndEvents, vars, context);
+	}
+	
+	public BlockSequence getTocStart(Context vars, FormatterContext context) throws IOException {
+		return getTocSequence(tocStartEvents, vars, context);
+	}
+
+	public BlockSequence getTocEnd(Context vars, FormatterContext context) throws IOException {
+		return getTocSequence(tocEndEvents, vars, context);
 	}
 
 	public SequenceProperties getSequenceProperties() {
 		return props;
 	}
 
-	public List<BlockSequence> getBlockSequences(FormatterContext context, DefaultContext vars, CrossReferences crh) {
+	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 		try {
 		if (appliesTo(vars)) {
-			BlockEventHandler beh = new BlockEventHandler(context);
+
 			TableOfContentsImpl data = context.getTocs().get(getTocName());
-			
-			BlockStruct bs;
+			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
+					context.getMasters().get(getSequenceProperties().getMasterName()), 
+					getSequenceProperties().getInitialPageNumber());
+
+			fsm.appendGroup(getTocStart(vars, context));
+			BlockSequence d;
 			{
+				
 				StaticSequenceEventImpl evs = new StaticSequenceEventImpl(getSequenceProperties());
-				for (BlockEvent e : getTocStartEvents(vars)) {
-					evs.push(e);
-				}
 				for (BlockEvent e : data) {
 					evs.push(e);
 				}
-				if (getRange()==TocProperties.TocRange.DOCUMENT) {
-					for (BlockEvent e : getVolumeEndEvents(vars)) {
-						evs.push(e);
-					}
-				}
-				for (BlockEvent e : getTocEndEvents(vars)) {
-					evs.push(e);
-				}
-				beh.formatSequence(evs, vars);
-				
+
+				d = evs.getBlockSequence(context, vars, crh).get(0);
 			}
-			bs = beh.close();
-			BlockSequenceManipulator fsm = new BlockSequenceManipulator(bs);
+
+			if (getRange()==TocProperties.TocRange.DOCUMENT) {
+				fsm.appendGroup(getVolumeEnd(vars, context));
+			}
+
+			fsm.appendGroup(d);
+			fsm.appendGroup(getTocEnd(vars, context));
+
 			if (getRange()==TocProperties.TocRange.VOLUME) {
 
 				String start = null;
