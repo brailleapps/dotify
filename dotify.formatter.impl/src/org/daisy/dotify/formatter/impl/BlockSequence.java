@@ -1,19 +1,55 @@
 package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
-
-
 /**
  * Provides an interface for a sequence of block contents.
  * 
  * @author Joel Håkansson
  */
-public interface BlockSequence extends Iterable<Block> {
+class BlockSequence extends FormatterCoreImpl {
+	private final LayoutMaster master;
+	private final Integer initialPagenum;
+	
+	public BlockSequence(Integer initialPagenum, LayoutMaster master) {
+		this.initialPagenum = initialPagenum;
+		this.master = master;
+	}
+
+	private static final long serialVersionUID = -6105005856680272131L;
+
+	/**
+	 * Gets the layout master for this sequence
+	 * @return returns the layout master for this sequence
+	 */
+	public LayoutMaster getLayoutMaster() {
+		return master;
+	}
+
+	/**
+	 * Gets the block with the specified index, where index >= 0 && index < getBlockCount()
+	 * @param index the block index
+	 * @return returns the block index
+	 * @throws IndexOutOfBoundsException if index < 0 || index >= getBlockCount()
+	 */
+	private Block getBlock(int index) {
+		return this.elementAt(index);
+	}
+
+	/**
+	 * Gets the number of blocks in this sequence
+	 * @return returns the number of blocks in this sequence
+	 */
+	private int getBlockCount() {
+		return this.size();
+	}
+
 	/**
 	 * Get the initial page number, i.e. the number that the first page in the sequence should have
 	 * @return returns the initial page number, or null if no initial page number has been specified
 	 */
-	public Integer getInitialPageNumber();
+	public Integer getInitialPageNumber() {
+		return initialPagenum;
+	}
 	
 	/**
 	 * Gets the minimum number of rows that the specified block requires to begin 
@@ -23,12 +59,23 @@ public interface BlockSequence extends Iterable<Block> {
 	 * @param refs
 	 * @return the minimum number of rows
 	 */
-	public int getKeepHeight(Block block, CrossReferences refs, DefaultContext context, FormatterContext fcontext);
-	
-	/**
-	 * Gets the layout master for this sequence
-	 * @return returns the layout master for this sequence
-	 */
-	public LayoutMaster getLayoutMaster();
+	public int getKeepHeight(Block block, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
+		return getKeepHeight(this.indexOf(block), refs, context, fcontext);
+	}
+	private int getKeepHeight(int gi, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
+		int keepHeight = getBlock(gi).getSpaceBefore()+getBlock(gi).getBlockContentManager(getLayoutMaster().getFlowWidth(), refs, context, fcontext).getRowCount();
+		if (getBlock(gi).getKeepWithNext()>0 && gi+1<getBlockCount()) {
+			keepHeight += getBlock(gi).getSpaceAfter()+getBlock(gi+1).getSpaceBefore()+getBlock(gi).getKeepWithNext();
+			switch (getBlock(gi+1).getKeepType()) {
+				case ALL:
+					keepHeight += getKeepHeight(gi+1, refs, context, fcontext);
+					break;
+				case AUTO: break;
+				default:;
+			}
+		}
+		return keepHeight;
+	}
+
 
 }

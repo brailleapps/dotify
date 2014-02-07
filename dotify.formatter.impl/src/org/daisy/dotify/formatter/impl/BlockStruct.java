@@ -23,7 +23,7 @@ class BlockStruct implements FormatterCore {
 	protected final StateObject state;
 	protected final FormatterContext context;
 	private final Stack<BlockSequence> blocks;
-	private BlockSequenceImpl currentSequence;
+	private BlockSequence currentSequence;
 
 	
 	public BlockStruct(FormatterContext context) {
@@ -34,7 +34,7 @@ class BlockStruct implements FormatterCore {
 		
 	public void newSequence(SequenceProperties p) {
 		state.assertOpen();
-		currentSequence = new BlockSequenceImpl(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
+		currentSequence = new BlockSequence(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
 		blocks.push(currentSequence);
 	}
 

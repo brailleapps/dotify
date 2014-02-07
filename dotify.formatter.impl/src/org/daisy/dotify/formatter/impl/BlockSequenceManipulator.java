@@ -37,7 +37,7 @@ class BlockSequenceManipulator {
 	}
 
 	private BlockSequence newSequence(List<Block> c) {
-		BlockSequenceImpl ret = new BlockSequenceImpl(initialPagenum, master);
+		BlockSequence ret = new BlockSequence(initialPagenum, master);
 		ret.addAll(c);
 		return ret;
 	}
