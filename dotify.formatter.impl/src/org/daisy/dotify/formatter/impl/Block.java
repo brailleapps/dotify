@@ -191,13 +191,13 @@ class Block implements Cloneable {
 		return rdp.build();
 	}
 
-    @SuppressWarnings("unchecked")
 	public Object clone() {
     	try {
 	    	Block newObject = (Block)super.clone();
+	    	/* Probably no need to deep copy clone segments
 	    	if (this.segments!=null) {
 	    		newObject.segments = (Stack<Segment>)this.segments.clone();
-	    	}
+	    	}*/
 	    	return newObject;
     	} catch (CloneNotSupportedException e) { 
     	    // this shouldn't happen, since we are Cloneable

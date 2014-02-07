@@ -12,7 +12,6 @@ import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
-import org.daisy.dotify.tools.CompoundIterable;
 
 class TocSequenceEventImpl implements VolumeSequence {
 	private final SequenceProperties props;
@@ -79,14 +78,17 @@ class TocSequenceEventImpl implements VolumeSequence {
 	}
 	
 	private static Iterable<Block> getCompoundIterableB(Iterable<ConditionalBlock> events, Context vars) {
-		ArrayList<Iterable<Block>> it = new ArrayList<Iterable<Block>>();
+		ArrayList<Block> it = new ArrayList<Block>();
 		for (ConditionalBlock ev : events) {
 			if (ev.appliesTo(vars)) {
 				Iterable<Block> tmp = ev.getSequence();
-				it.add(tmp);
+				for (Block b : tmp) {
+					//always clone these blocks, as they may be placed in multiple contexts
+					it.add((Block)b.clone());
+				}
 			}
 		}
-		return new CompoundIterable<Block>(it);
+		return it;
 	}
 
 	public Iterable<Block> getVolumeStart(Context vars, FormatterContext context) throws IOException {
@@ -174,11 +176,9 @@ class TocSequenceEventImpl implements VolumeSequence {
 									vars.setMetaVolume(nv);
 									Iterable<Block> ib1 = getVolumeEnd(vars, context);
 									for (Block b1 : ib1) {
-										//we need a clone because of meta context
-										Block b2 = (Block)b1.clone();
 										//set the meta volume for each block, for later evaluation
-										b2.setMetaVolume(nv);
-										rr.add(b2);
+										b1.setMetaVolume(nv);
+										rr.add(b1);
 									}
 								}
 								nv = vol;
@@ -186,11 +186,9 @@ class TocSequenceEventImpl implements VolumeSequence {
 								vars.setMetaVolume(vol);
 								Iterable<Block> ib1 = getVolumeStart(vars, context);
 								for (Block b1 : ib1) {
-									//we need a clone because of meta context
-									Block b2 = (Block)b1.clone();
 									//set the meta volume for each block, for later evaluation
-									b2.setMetaVolume(vol);
-									rr.add(b2);
+									b1.setMetaVolume(vol);
+									rr.add(b1);
 								}
 								statics.put(b.getBlockIdentifier(), rr);
 							}
