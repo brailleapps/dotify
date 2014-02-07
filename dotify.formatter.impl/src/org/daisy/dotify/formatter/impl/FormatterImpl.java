@@ -19,7 +19,7 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
  */
 public class FormatterImpl extends BlockStruct implements Formatter {
 	private HashMap<String, TableOfContentsImpl> tocs;
-	private final Stack<VolumeTemplateImpl> volumeTemplates;
+	private final Stack<VolumeTemplate> volumeTemplates;
 	/**
 	 * Creates a new formatter
 	 */
@@ -30,16 +30,16 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	public FormatterImpl(FormatterContext context) {
 		super(context);
 		this.tocs = new HashMap<String, TableOfContentsImpl>();
-		this.volumeTemplates = new Stack<VolumeTemplateImpl>();
+		this.volumeTemplates = new Stack<VolumeTemplate>();
 	}
 
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
-		VolumeTemplateImpl template = new VolumeTemplateImpl(tocs, props.getCondition(), props.getSplitterMax());
+		VolumeTemplate template = new VolumeTemplate(tocs, props.getCondition(), props.getSplitterMax());
 		volumeTemplates.push(template);
 		return template;
 	}
 	
-	public List<VolumeTemplateImpl> getVolumeTemplates() {
+	public List<VolumeTemplate> getVolumeTemplates() {
 		return volumeTemplates;
 	}
 

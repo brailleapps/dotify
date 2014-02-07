@@ -513,7 +513,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderIm
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/FieldListImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
