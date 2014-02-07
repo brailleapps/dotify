@@ -187,7 +187,9 @@ Dotify/test/org/daisy/dotify/resource-files/obfl-dls-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-border.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-dls.obfl -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-input-toc.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-toc-expected.pef -text
 DotifyDevtools/.classpath -text
 DotifyDevtools/.project -text
 DotifyDevtools/.settings/org.eclipse.jdt.core.prefs -text

@@ -60,6 +60,11 @@ public class LayoutEngineTest {
 		testPEF("resource-files/obfl-input-border.obfl", "resource-files/obfl-border-expected.pef");
 	}
 	
+	@Test
+	public void testLayoutEngingeToc() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/obfl-input-toc.obfl", "resource-files/obfl-toc-expected.pef");
+	}
+	
 	private void testPEF(String input, String expected) throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("sv-SE",
 				BrailleTranslatorFactory.MODE_UNCONTRACTED, 
