@@ -163,16 +163,15 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 
 	public void insertMarker(Marker m) {
 		//FIXME: this does not work
-		getCurrentBlock().addMarker(m);
+		getCurrentBlock().addSegment((new MarkerSegment(m)));
 	}
-
+	
 	public void insertAnchor(String ref) {
-		// TODO implement anchor
-		throw new UnsupportedOperationException("Not implemented");
+		getCurrentBlock().addSegment(new AnchorSegment(ref));
 	}
 
 	public void insertLeader(Leader leader) {
-		getCurrentBlock().insertLeader(leader);
+		getCurrentBlock().addSegment(new LeaderSegment(leader));
 	}
 
 	public void addChars(CharSequence c, TextProperties p) {
@@ -183,19 +182,19 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 			//list item has been used now, discard
 			listItem = null;
 		}
-		bl.addChars(c, p);		
+		bl.addSegment(new TextSegment(c.toString(), p));
 	}
 
 	public void newLine() {
-		getCurrentBlock().newLine();
+		getCurrentBlock().addSegment(new NewLineSegment());
 	}
 
 	public void insertReference(String identifier, NumeralStyle numeralStyle) {
-		getCurrentBlock().insertReference(identifier, numeralStyle);
+		getCurrentBlock().addSegment(new PageNumberReferenceSegment(identifier, numeralStyle));
 	}
 
 	public void insertEvaluate(DynamicContent exp, TextProperties t) {
-		getCurrentBlock().insertEvaluate(exp, t);
+		getCurrentBlock().addSegment(new Evaluate(exp, t));
 	}
 	
 	private void addToBlockIndent(int value) {

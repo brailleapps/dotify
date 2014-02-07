@@ -3,12 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
-import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormattingTypes;
-import org.daisy.dotify.api.formatter.Leader;
-import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.formatter.NumeralStyle;
-import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.formatter.impl.Segment.SegmentType;
 
 /**
@@ -51,41 +46,21 @@ class Block implements Cloneable {
 		this.rdm = null;
 		this.verticalPosition = null;
 	}
+	
+	public void addSegment(Segment s) {
+		segments.add(s);
+	}
 
-	public void addMarker(Marker m) {
-		segments.add(new MarkerSegment(m));
-	}
-	
-	public void addAnchor(String ref) {
-		segments.add(new AnchorSegment(ref));
-	}
-	
-	public void newLine() {
-		segments.push(new NewLineSegment());
-	}
-	
-	public void addChars(CharSequence c, TextProperties tp) {
+	public void addSegment(TextSegment s) {
 		if (segments.size() > 0 && segments.peek().getSegmentType() == SegmentType.Text) {
 			TextSegment ts = ((TextSegment) segments.peek());
-			if (ts.getTextProperties().equals(tp)) {
+			if (ts.getTextProperties().equals(s.getTextProperties())) {
 				// Logger.getLogger(this.getClass().getCanonicalName()).finer("Appending chars to existing text segment.");
-				ts.setText(ts.getText() + "" + c);
+				ts.setText(ts.getText() + "" + s.getText());
 				return;
 			}
 		}
-		segments.push(new TextSegment(c.toString(), tp));
-	}
-	
-	public void insertLeader(Leader l) {
-		segments.push(new LeaderSegment(l));
-	}
-	
-	public void insertReference(String identifier, NumeralStyle numeralStyle) {
-		segments.push(new PageNumberReferenceSegment(identifier, numeralStyle));
-	}
-	
-	public void insertEvaluate(DynamicContent expr, TextProperties t) {
-		segments.push(new Evaluate(expr, t));
+		segments.push(s);
 	}
 	
 	public void setListItem(String label, FormattingTypes.ListStyle type) {
