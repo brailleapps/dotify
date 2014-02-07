@@ -17,7 +17,7 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
  * Breaks flow into rows, page related block properties are left to next step
  * @author Joel Håkansson
  */
-public class FormatterImpl extends BlockStructImpl implements Formatter {
+public class FormatterImpl extends BlockStruct implements Formatter {
 	private HashMap<String, TableOfContentsImpl> tocs;
 	private final Stack<VolumeTemplateImpl> volumeTemplates;
 	/**
