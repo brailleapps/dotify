@@ -348,7 +348,7 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, locale, hyph);
+				parseBlock(event, input, formatter, locale, hyph);
 			}/* else if (equalsStart(event, LEADER)) {
 				parseLeader(event, input);
 			}*/
@@ -361,53 +361,55 @@ public class ObflParser extends XMLParserBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void parseBlock(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		formatter.startBlock(blockBuilder(event.asStartElement().getAttributes()));
+	private void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
+		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				formatter.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, locale, hyph);
-			} else if (equalsStart(event, ObflQName.SPAN)) {
-				parseSpan(event, input, locale, hyph);
-			} else if (equalsStart(event, ObflQName.STYLE)) {
-				parseStyle(event, input, formatter, locale, hyph);
+				parseBlock(event, input, fc, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
-				parseLeader(formatter, event, input);
+				parseLeader(fc, event, input);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				parseMarker(formatter, event);
+				parseMarker(fc, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
-				formatter.newLine();
+				fc.newLine();
 				scanEmptyElement(input, ObflQName.BR);
+			} else if (equalsStart(event, ObflQName.EVALUATE)) {
+				parseEvaluate(fc, event, input, locale, hyph);
+			} else if (equalsStart(event, ObflQName.STYLE)) {
+				parseStyle(event, input, fc, locale, hyph);
+			} else if (equalsStart(event, ObflQName.SPAN)) {
+				parseSpan(event, input, fc, locale, hyph);
 			}
-			// TODO:anchor, evaluate, page-number
+			// TODO:anchor, page-number
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
+				fc.endBlock();
 				break;
 			} else {
 				report(event);
 			}
 		}
-		formatter.endBlock();
 	}
 	
-	private void parseSpan(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseSpan(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				formatter.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 			} else if (equalsStart(event, ObflQName.STYLE)) {
-				parseStyle(event, input, formatter, locale, hyph);
+				parseStyle(event, input, fc, locale, hyph);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
-				parseLeader(formatter, event, input);
+				parseLeader(fc, event, input);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
-				parseMarker(formatter, event);
+				parseMarker(fc, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
-				formatter.newLine();
+				fc.newLine();
 				scanEmptyElement(input, ObflQName.BR);
 			}
 			else if (equalsEnd(event, ObflQName.SPAN)) {
@@ -738,7 +740,7 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlockEvent(event, input, template, locale, hyph);
+				parseBlock(event, input, template, locale, hyph);
 			} else if (equalsEnd(event, ObflQName.SEQUENCE)) {
 				break;
 			} else {
@@ -790,42 +792,8 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlockEvent(event, input, fc, locale, hyph);
+				parseBlock(event, input, fc, locale, hyph);
 			} else if (equalsEnd(event, end)) {
-				break;
-			} else {
-				report(event);
-			}
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void parseBlockEvent(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
-		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
-		while (input.hasNext()) {
-			event=input.nextEvent();
-			if (event.isCharacters()) {
-				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
-			} else if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlockEvent(event, input, fc, locale, hyph);
-			} else if (equalsStart(event, ObflQName.LEADER)) {
-				parseLeader(fc, event, input);
-			} else if (equalsStart(event, ObflQName.MARKER)) {
-				parseMarker(fc, event);
-			} else if (equalsStart(event, ObflQName.BR)) {
-				fc.newLine();
-				scanEmptyElement(input, ObflQName.BR);
-			} else if (equalsStart(event, ObflQName.EVALUATE)) {
-				parseEvaluate(fc, event, input, locale, hyph);
-			} else if (equalsStart(event, ObflQName.STYLE)) {
-				parseStyle(event, input, fc, locale, hyph);
-			} else if (equalsStart(event, ObflQName.SPAN)) {
-				// FIXME: implement span support. See DTB05532
-			}
-			else if (equalsEnd(event, ObflQName.BLOCK)) {
-				fc.endBlock();
 				break;
 			} else {
 				report(event);
