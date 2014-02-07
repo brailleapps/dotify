@@ -70,7 +70,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 					rightMargin((Margin)rightMargin.clone())//. //.stackMarginComp(formatterContext, false, true)
 					//rightMarginParent((Margin)rightMargin.clone())
 					; //.stackMarginComp(formatterContext, true, true)
-		BlockImpl c = newBlock(blockId, rdp);
+		Block c = newBlock(blockId, rdp);
 		if (propsContext.size()>0) {
 			if (propsContext.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
@@ -96,7 +96,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 		propsContext.push(p);
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
-			BlockImpl bi = getCurrentBlock();
+			Block bi = getCurrentBlock();
 			if (t.getTopLeftCorner().length()+t.getTopBorder().length()+t.getTopRightCorner().length()>0) {
 				bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
 			}
@@ -136,19 +136,19 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 						rightMargin((Margin)rightMargin.clone())//. //.stackMarginComp(formatterContext, false, true)
 						//rightMarginParent((Margin)rightMargin.clone())
 						; //.stackMarginComp(formatterContext, true, true)
-			BlockImpl c = newBlock(null, rdp);
+			Block c = newBlock(null, rdp);
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);
 		}
 		//firstRow = true;
 	}
 	
-	public BlockImpl newBlock(String blockId, RowDataProperties.Builder rdp) {
-		return (BlockImpl)this.push((Block)new BlockImpl(blockId, rdp));
+	public Block newBlock(String blockId, RowDataProperties.Builder rdp) {
+		return this.push(new Block(blockId, rdp));
 	}
 	
-	public BlockImpl getCurrentBlock() {
-		return (BlockImpl)this.peek();
+	public Block getCurrentBlock() {
+		return this.peek();
 	}
 
 	public void startFloat(String id) {
@@ -176,7 +176,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 	}
 
 	public void addChars(CharSequence c, TextProperties p) {
-		BlockImpl bl = getCurrentBlock();
+		Block bl = getCurrentBlock();
 		if (listItem!=null) {
 			//append to this block
 			bl.setListItem(listItem.getLabel(), listItem.getType());
