@@ -465,7 +465,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManagerImp
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceManipulator.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockStruct.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BookStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ConditionalBlock.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferences.java -text
