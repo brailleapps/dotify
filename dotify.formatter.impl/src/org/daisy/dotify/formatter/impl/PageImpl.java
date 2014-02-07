@@ -28,6 +28,8 @@ import org.daisy.dotify.tools.StringTools;
  */
 class PageImpl implements Page {
 	private PageSequenceImpl parent;
+	private final LayoutMaster master;
+	private final FormatterContext fcontext;
 	private ArrayList<RowImpl> rows;
 	private ArrayList<Marker> markers;
 	private final int pageIndex;
@@ -37,17 +39,19 @@ class PageImpl implements Page {
 	private boolean isVolBreakAllowed;
 	private int keepPreviousSheets;
 	
-	public PageImpl(PageSequenceImpl parent, int pageIndex) {
+	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequenceImpl parent, int pageIndex) {
+		this.master = master;
+		this.fcontext = fcontext;
 		this.rows = new ArrayList<RowImpl>();
 		this.markers = new ArrayList<Marker>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
 		this.parent = parent;
-		PageTemplate template = parent.getLayoutMaster().getTemplate(pageIndex+1);
-		this.flowHeight = parent.getLayoutMaster().getPageHeight() - 
-				(int)Math.ceil(getHeight(template.getHeader(), parent.getLayoutMaster().getRowSpacing())) -
-				(int)Math.ceil(getHeight(template.getFooter(), parent.getLayoutMaster().getRowSpacing())) -
-				(parent.getLayoutMaster().getBorder() != null ? (int)Math.ceil(distributeRowSpacing(null, false).spacing*2) : 0);
+		PageTemplate template = master.getTemplate(pageIndex+1);
+		this.flowHeight = master.getPageHeight() - 
+				(int)Math.ceil(getHeight(template.getHeader(), master.getRowSpacing())) -
+				(int)Math.ceil(getHeight(template.getFooter(), master.getRowSpacing())) -
+				(master.getBorder() != null ? (int)Math.ceil(distributeRowSpacing(null, false).spacing*2) : 0);
 		this.isVolBreak = false;
 		this.isVolBreakAllowed = true;
 		this.keepPreviousSheets = 0;
@@ -123,22 +127,22 @@ class PageImpl implements Page {
 	}
 	
 	float spaceNeeded() {
-		return rowsNeeded(rows, getParent().getLayoutMaster().getRowSpacing());
+		return rowsNeeded(rows, master.getRowSpacing());
 	}
 
 	public List<Row> getRows() {
 
 		try {
-			TextBorderStyle border = getParent().getLayoutMaster().getBorder();
+			TextBorderStyle border = master.getBorder();
 			if (border == null) {
 				border = TextBorderStyle.NONE;
 			}
 			ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 			{
-				LayoutMaster lm = getParent().getLayoutMaster();
+				LayoutMaster lm = master;
 				int pagenum = getPageIndex() + 1;
 				PageTemplate t = lm.getTemplate(pagenum);
-				BrailleTranslator filter = getParent().getTranslator();
+				BrailleTranslator filter = fcontext.getTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
 				ret.addAll(rows);
 				float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
@@ -149,7 +153,7 @@ class PageImpl implements Page {
 					ret.addAll(renderFields(lm, t.getFooter(), filter));
 				}
 			}
-			LayoutMaster lm = getParent().getLayoutMaster();
+			LayoutMaster lm = master;
 			ArrayList<Row> ret2 = new ArrayList<Row>();
 			{
 				final int pagenum = getPageIndex() + 1;
@@ -157,7 +161,7 @@ class PageImpl implements Page {
 
 				int fsize = border.getLeftBorder().length() + border.getRightBorder().length();
 				final int pageMargin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin());
-				int w = getParent().getLayoutMaster().getFlowWidth() + fsize + pageMargin;
+				int w = master.getFlowWidth() + fsize + pageMargin;
 
 				tb = new TextBorder.Builder(w, parent.getFormatterContext().getSpaceCharacter()+"")
 						.style(border)
@@ -179,7 +183,7 @@ class PageImpl implements Page {
 						String chars = row.getChars().replaceAll("\\s*\\z", "");
 						//if (!TextBorderStyle.NONE.equals(frame)) {
 							res = tb.addBorderToRow(
-									padLeft(getParent().getLayoutMaster().getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment()), 
+									padLeft(master.getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment()), 
 									"");
 						//} else {
 						//	res = StringTools.fill(getMarginCharacter(), pageMargin + row.getLeftMargin()) + chars;
@@ -190,7 +194,7 @@ class PageImpl implements Page {
 						} else {
 							if (!row.getLeftMargin().isSpaceOnly() || !row.getRightMargin().isSpaceOnly()) {
 								res = TextBorder.addBorderToRow(
-									lm.getFlowWidth(), row.getLeftMargin().getContent(), "", row.getRightMargin().getContent(), getParent().getFormatterContext().getSpaceCharacter()+"");
+									lm.getFlowWidth(), row.getLeftMargin().getContent(), "", row.getRightMargin().getContent(), fcontext.getSpaceCharacter()+"");
 							} else {
 								res = "";
 							}
@@ -198,8 +202,8 @@ class PageImpl implements Page {
 					}
 					int rowWidth = StringTools.length(res) + pageMargin;
 					String r = res;
-					if (rowWidth > getParent().getLayoutMaster().getPageWidth()) {
-						throw new PaginatorException("Row is too long (" + rowWidth + "/" + getParent().getLayoutMaster().getPageWidth() + ") '" + res + "'");
+					if (rowWidth > master.getPageWidth()) {
+						throw new PaginatorException("Row is too long (" + rowWidth + "/" + master.getPageWidth() + ") '" + res + "'");
 					}
 					RowImpl r2 = new RowImpl(r);
 					ret2.add(r2);
@@ -358,8 +362,7 @@ class PageImpl implements Page {
 		return "";
 	}
 	
-	private static String resolveCurrentPageField(CurrentPageField f, Page p) {
-		//TODO: include page number offset?
+	private static String resolveCurrentPageField(CurrentPageField f, PageImpl p) {
 		int pagenum = p.getPageIndex() + 1;
 		return f.getStyle().format(pagenum);
 	}
@@ -377,11 +380,11 @@ class PageImpl implements Page {
 	private DistributedRowSpacing distributeRowSpacing(Float rs, boolean nullIfEqualToDefault) {
 		if (rs == null) {
 			//use default
-			rs = this.getParent().getLayoutMaster().getRowSpacing();
+			rs = this.master.getRowSpacing();
 		}
 		int ins = Math.max((int)Math.floor(rs), 1);
 		Float spacing = rs / ins;
-		if (nullIfEqualToDefault && spacing.equals(this.getParent().getLayoutMaster().getRowSpacing())) {
+		if (nullIfEqualToDefault && spacing.equals(this.master.getRowSpacing())) {
 			return new DistributedRowSpacing(null, ins);
 		} else {
 			return new DistributedRowSpacing(spacing, ins);

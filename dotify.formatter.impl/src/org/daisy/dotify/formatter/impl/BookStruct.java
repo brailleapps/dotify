@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
-import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
@@ -48,7 +46,7 @@ class BookStruct {
 
 	private PageStruct getVolumeContents(int volumeNumber, boolean pre) {
 		DefaultContext c = new DefaultContext(volumeNumber, crh.getExpectedVolumeCount());
-		PageStruct ret = null;
+		PageStructImpl ret = null;
 		try {
 			Iterable<BlockSequence> ib = formatVolumeContents(crh, pre, c);
 			PaginatorImpl paginator2 = new PaginatorImpl(context, ib);
@@ -100,7 +98,7 @@ class BookStruct {
 		return 50;
 	}
 	
-	private void trimEnd(StringBuilder sb, Page p) {
+	private void trimEnd(StringBuilder sb, PageImpl p) {
 		int i = 0;
 		int x = sb.length()-1;
 		while (i<p.keepPreviousSheets() && x>0) {
@@ -132,17 +130,17 @@ class BookStruct {
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
-			Iterable<? extends PageSequence> ps = crh.getContents().getContents();
+			Iterable<PageSequenceImpl> ps = crh.getContents().getContents();
 			final int contents = PageTools.countSheets(ps); 
-			ArrayList<Page> pages = new ArrayList<Page>();
+			ArrayList<PageImpl> pages = new ArrayList<PageImpl>();
 			StringBuilder res = new StringBuilder();
 			{
 				boolean volBreakAllowed = true;
-				for (PageSequence seq :ps) {
+				for (PageSequenceImpl seq :ps) {
 					StringBuilder sb = new StringBuilder();
 					LayoutMaster lm = seq.getLayoutMaster();
 					int pageIndex=0;
-					for (Page p : seq.getPages()) {
+					for (PageImpl p : seq.getPages()) {
 						if (!lm.duplex() || pageIndex%2==0) {
 							volBreakAllowed = true;
 							sb.append("s");

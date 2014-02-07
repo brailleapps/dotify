@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.util.Iterator;
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
 
 
@@ -19,7 +18,7 @@ class PageStructCopy implements Iterable<PageSequence> {
 		this.pagesInSeq = 0;
 	}
 	
-	public void addPage(Page p) {
+	public void addPage(PageImpl p) {
 		if (seq.empty() || originalSeq != p.getParent()) {
 			originalSeq = p.getParent();
 			seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
@@ -41,7 +40,7 @@ class PageStructCopy implements Iterable<PageSequence> {
 	 * @param p
 	 * @return
 	 */
-	public int countSheets(Page p) {
+	public int countSheets(PageImpl p) {
 		int i = 0;
 		if (originalSeq != p.getParent() || !p.getParent().getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {
 			i = 1;

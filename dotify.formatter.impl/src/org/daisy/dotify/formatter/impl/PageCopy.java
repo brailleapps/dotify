@@ -14,10 +14,10 @@ import org.daisy.dotify.api.formatter.Row;
  * @author Joel Håkansson
  */
 class PageCopy implements Page {
-	private final Page p;
+	private final PageImpl p;
 	private final PageSequence parent;
 	
-	PageCopy(Page p, PageSequence parent) {
+	PageCopy(PageImpl p, PageSequence parent) {
 		this.p = p;
 		this.parent = parent;
 	}

@@ -7,7 +7,6 @@ import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
-import org.daisy.dotify.api.formatter.PageStruct;
 
 class CrossReferenceHandler implements CrossReferences, Context {
 	private final Map<String, Integer> volLocations;
@@ -16,7 +15,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 
 	private HashMap<Integer, Integer> volSheet;
 	private Map<Page, Integer> pageSheetMap;
-	private PageStruct ps;
+	private PageStructImpl ps;
 	private EvenSizeVolumeSplitterCalculator sdc;
 	
 	private boolean isDirty;
@@ -37,11 +36,11 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		//this.maxKey = 0;
 	}
 	
-	public PageStruct getContents() {
+	public PageStructImpl getContents() {
 		return ps;
 	}
 	
-	public void setContents(PageStruct contents, int splitterMax) {
+	public void setContents(PageStructImpl contents, int splitterMax) {
 		this.ps = contents;
 		this.sdc = new EvenSizeVolumeSplitterCalculator(PageTools.countSheets(ps.getContents()), splitterMax);
 		int sheetIndex=0;
@@ -78,7 +77,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		volData.put(volumeNumber, d);
 	}
 	
-	public void setPreVolData(int volumeNumber, PageStruct preVolData) {
+	public void setPreVolData(int volumeNumber, PageStructImpl preVolData) {
 		VolData d = (VolData)getVolData(volumeNumber);
 		/*if (d.preVolData!=preVolData) {
 			setDirty(true);
@@ -86,7 +85,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		d.setPreVolData(preVolData);
 	}
 	
-	public void setPostVolData(int volumeNumber, PageStruct postVolData) {
+	public void setPostVolData(int volumeNumber, PageStructImpl postVolData) {
 		VolData d = (VolData)getVolData(volumeNumber);
 		/*if (d.postVolData!=postVolData) {
 			setDirty(true);
@@ -131,7 +130,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		return vol;
 	}
 	
-	public Page updatePageLocation(String refid, Page page) {
+	public PageImpl updatePageLocation(String refid, PageImpl page) {
 		Integer p = pageLocations.get(refid);
 		pageLocations.put(refid, page.getPageIndex());
 		if (p!=null && p!=page.getPageIndex()) {
@@ -160,8 +159,8 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		return null;
 	}
 
-	private Page getPage(String refid) {
-		Page ret;
+	private PageImpl getPage(String refid) {
+		PageImpl ret;
 		if (ps!=null && (ret=ps.getPage(refid))!=null) {
 			return updatePageLocation(refid, ret);
 		}
@@ -182,7 +181,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 	}
 	
 	public Integer getPageNumber(String refid) {
-		Page p = getPage(refid);
+		PageImpl p = getPage(refid);
 		if (p==null) {
 			return null;
 		} else {
@@ -225,8 +224,8 @@ class CrossReferenceHandler implements CrossReferences, Context {
 	}
 	
 	private class VolData implements VolDataInterface {
-		private PageStruct preVolData;
-		private PageStruct postVolData;
+		private PageStructImpl preVolData;
+		private PageStructImpl postVolData;
 		private int preVolSize;
 		private int postVolSize;
 		private int targetVolSize;
@@ -237,21 +236,21 @@ class CrossReferenceHandler implements CrossReferences, Context {
 			this.targetVolSize = 0;
 		}
 
-		public PageStruct getPreVolData() {
+		public PageStructImpl getPreVolData() {
 			return preVolData;
 		}
 
-		public void setPreVolData(PageStruct preVolData) {
+		public void setPreVolData(PageStructImpl preVolData) {
 			//use the highest value to avoid oscillation
 			preVolSize = Math.max(preVolSize, PageTools.countSheets(preVolData.getContents()));
 			this.preVolData = preVolData;
 		}
 
-		public PageStruct getPostVolData() {
+		public PageStructImpl getPostVolData() {
 			return postVolData;
 		}
 
-		public void setPostVolData(PageStruct postVolData) {
+		public void setPostVolData(PageStructImpl postVolData) {
 			//use the highest value to avoid oscillation
 			postVolSize = Math.max(postVolSize, PageTools.countSheets(postVolData.getContents()));
 			this.postVolData = postVolData;

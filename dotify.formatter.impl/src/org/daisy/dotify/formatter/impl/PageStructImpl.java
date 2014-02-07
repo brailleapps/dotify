@@ -6,19 +6,16 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.formatter.Page;
-import org.daisy.dotify.api.formatter.PageSequence;
-import org.daisy.dotify.api.formatter.PageStruct;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private final FormatterContext context;
 	//private final StringFilter filters;
-	HashMap<String, Page> pageReferences;
+	HashMap<String, PageImpl> pageReferences;
 
 	
 	public PageStructImpl(FormatterContext context) {
 		//this.filters = filters;
-		this.pageReferences = new HashMap<String, Page>();
+		this.pageReferences = new HashMap<String, PageImpl>();
 		this.context = context;
 	}
 	
@@ -29,11 +26,11 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private static final long serialVersionUID = 2591429059130956153L;
 
 
-	public Iterable<? extends PageSequence> getContents() {
+	public Iterable<PageSequenceImpl> getContents() {
 		return this;
 	}
 
-	public Page getPage(String refid) {
+	public PageImpl getPage(String refid) {
 		return pageReferences.get(refid);
 	}
 	

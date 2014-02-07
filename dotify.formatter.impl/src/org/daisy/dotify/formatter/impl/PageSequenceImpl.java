@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
@@ -12,12 +11,12 @@ class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;
 		private final LayoutMaster master;
 		private final int pagesOffset;
-		private final HashMap<String, Page> pageReferences;
+		private final HashMap<String, PageImpl> pageReferences;
 		private final FormatterContext context;
 		private int keepNextSheets;
 		private PageImpl nextPage;
 		
-		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, Page> pageReferences, FormatterContext context) {
+		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, PageImpl> pageReferences, FormatterContext context) {
 			this.pages = new Stack<PageImpl>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
@@ -36,7 +35,7 @@ class PageSequenceImpl implements PageSequence {
 				pages.push(nextPage);
 				nextPage = null;
 			} else {
-				pages.push(new PageImpl(this, pages.size()+pagesOffset));
+				pages.push(new PageImpl(master, context, this, pages.size()+pagesOffset));
 			}
 			if (keepNextSheets>0) {
 				currentPage().setAllowsVolumeBreak(false);
@@ -53,7 +52,7 @@ class PageSequenceImpl implements PageSequence {
 				//if new page is already in buffer, flush it.
 				newPage();
 			}
-			nextPage = new PageImpl(this, pages.size()+pagesOffset);
+			nextPage = new PageImpl(master, context, this, pages.size()+pagesOffset);
 		}
 		
 		void setKeepWithPreviousSheets(int value) {
@@ -122,7 +121,7 @@ class PageSequenceImpl implements PageSequence {
 			return (Iterator<Page>)pages.iterator();
 		}*/
 		
-		public Iterable<? extends Page> getPages() {
+		public Iterable<PageImpl> getPages() {
 			return pages;
 		}
 		

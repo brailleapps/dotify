@@ -27,7 +27,7 @@ class PageSequenceCopy implements PageSequence {
 		//this.formatter = null;
 	}
 	
-	void addPage(Page p) {
+	void addPage(PageImpl p) {
 		pages.add(new PageCopy(p, this));
 	}
 

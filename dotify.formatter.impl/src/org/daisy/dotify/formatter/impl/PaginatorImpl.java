@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.formatter.PageStruct;
 import org.daisy.dotify.tools.StringTools;
 
 /**
@@ -26,7 +25,7 @@ public class PaginatorImpl {
 	 * @param refs the cross references to use
 	 * @throws IOException if IO fails
 	 */
-	public PageStruct paginate(CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+	public PageStructImpl paginate(CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		PageStructImpl pageStruct = new PageStructImpl(context);
 		for (BlockSequence seq : fs) {
 			if (seq.getInitialPageNumber()==null) {
