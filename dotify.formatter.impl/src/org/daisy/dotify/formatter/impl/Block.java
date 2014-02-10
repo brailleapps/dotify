@@ -156,7 +156,7 @@ class Block implements Cloneable {
 		if (rdm==null || rdm.isVolatile()) {
 			context.setMetaVolume(metaVolume);
 			context.setMetaPage(metaPage);
-			rdm = new BlockContentManagerImpl(flowWidth, segments, rdp.build(), refs, context, fcontext);
+			rdm = new BlockContentManager(flowWidth, segments, rdp.build(), refs, context, fcontext);
 			context.setMetaVolume(null);
 			context.setMetaPage(null);
 		}
