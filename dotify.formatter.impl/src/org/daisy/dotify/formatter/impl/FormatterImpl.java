@@ -26,6 +26,7 @@ import org.daisy.dotify.text.BreakPointHandler;
  */
 public class FormatterImpl extends BlockStruct implements Formatter {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
+	private final static int DEFAULT_SPLITTER_MAX = 50;
 	
 	private HashMap<String, TableOfContentsImpl> tocs;
 	private final Stack<VolumeTemplate> volumeTemplates;
@@ -71,10 +72,10 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	}
 
 	public Iterable<Volume> getVolumes() {
-		contentPaginator = new PaginatorImpl(context, getFlowStruct().getBlockSequenceIterable());
+		contentPaginator = new PaginatorImpl(context, getBlockSequenceIterable());
 
 		try {
-			reformat(50);
+			reformat(DEFAULT_SPLITTER_MAX);
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while reformatting.");
 		}
@@ -295,7 +296,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 			}
 		}
 		//TODO: don't return a fixed value
-		return 50;
+		return DEFAULT_SPLITTER_MAX;
 	}
 	
 	private void trimEnd(StringBuilder sb, PageImpl p) {
