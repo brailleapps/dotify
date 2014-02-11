@@ -12,7 +12,6 @@ import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
-import org.daisy.dotify.system.OBFLWhitespaceNormalizerTask;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.text.FilterLocale;
@@ -84,7 +83,7 @@ public class DotifyTaskSystem implements TaskSystem {
 			 * null,
 			 * h));
 			 */
-			setup.add(new OBFLWhitespaceNormalizerTask("OBFL whitespace normalizer"));
+			//setup.add(new OBFLWhitespaceNormalizerTask("OBFL whitespace normalizer"));
 		}
 
 		if (SystemKeys.OBFL_FORMAT.equals(outputFormat)) {

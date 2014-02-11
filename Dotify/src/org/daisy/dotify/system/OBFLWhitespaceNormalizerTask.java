@@ -12,6 +12,10 @@ import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.obfl.OBFLWsNormalizer;
 
+/**
+ * @deprecated Not needed anymore. It is the formatter's responsibility.
+ *
+ */
 public class OBFLWhitespaceNormalizerTask extends ReadWriteTask {
 
 	public OBFLWhitespaceNormalizerTask(String name) {
