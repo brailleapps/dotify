@@ -1,10 +1,8 @@
 package org.daisy.dotify.system;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -13,6 +11,8 @@ import org.daisy.dotify.text.StringFilter;
 import org.daisy.util.xml.catalog.CatalogEntityResolver;
 import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
 import org.daisy.util.xml.stax.StaxEntityResolver;
+
+import se.mtm.common.io.InputStreamMaker;
 
 /**
  * <p>Task that runs a list of StringFilters on the character data of the input file.</p>
@@ -36,7 +36,7 @@ public class TextNodeTask extends ReadWriteTask {
 	}
 
 	@Override
-	public void execute(File input, File output) throws InternalTaskException {
+	public void execute(InputStreamMaker input, OutputStream output) throws InternalTaskException {
         XMLInputFactory inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
         inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
@@ -52,12 +52,14 @@ public class TextNodeTask extends ReadWriteTask {
 		TextNodeFilter tnf = null;
 
 		try {
-			tnf = new TextNodeFilter(inFactory.createXMLEventReader(new FileInputStream(input)), new FileOutputStream(output), filters);
+			tnf = new TextNodeFilter(inFactory.createXMLEventReader(input.newInputStream()), output, filters);
 			tnf.filter();
 		} catch (FileNotFoundException e) {
 			throw new InternalTaskException("FileNotFoundException:", e);
 		} catch (XMLStreamException e) {
 			throw new InternalTaskException("XMLStreamException:", e);
+		} catch (IOException e) {
+			throw new InternalTaskException("IOException:", e);
 		} finally {
 			if (tnf!=null) {
 				try { tnf.close(); } catch (IOException e) { }

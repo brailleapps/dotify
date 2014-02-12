@@ -1,9 +1,11 @@
 package org.daisy.dotify.system;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.daisy.util.file.FileUtils;
+import se.mtm.common.io.FileIO;
+import se.mtm.common.io.InputStreamMaker;
 
 /**
  * <p>DuplicatorTask copies the input file both to output and to a separate file.
@@ -26,9 +28,9 @@ public class DuplicatorTask extends ReadOnlyTask {
 	}
 
 	@Override
-	public void execute(File input) throws InternalTaskException {
+	public void execute(InputStreamMaker input) throws InternalTaskException {
 		try {
-			FileUtils.copyFile(input, copy);
+			FileIO.copy(input.newInputStream(), new FileOutputStream(copy));
 		} catch (IOException e) {
 			throw new InternalTaskException("Exception while copying file.", e);
 		}

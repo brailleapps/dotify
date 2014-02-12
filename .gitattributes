@@ -146,6 +146,7 @@ Dotify/src/org/daisy/dotify/system/ObflResourceLocator.java -text
 Dotify/src/org/daisy/dotify/system/Progress.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/ReadOnlyTask.java -text
 Dotify/src/org/daisy/dotify/system/ReadWriteTask.java -text
+Dotify/src/org/daisy/dotify/system/SimpleValidator2.java -text
 Dotify/src/org/daisy/dotify/system/TaskRunner.java -text
 Dotify/src/org/daisy/dotify/system/TaskSystem.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/system/TaskSystemException.java -text svneol=unset#text/plain

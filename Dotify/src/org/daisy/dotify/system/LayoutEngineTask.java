@@ -1,9 +1,8 @@
 package org.daisy.dotify.system;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.engine.FormatterEngine;
@@ -12,6 +11,8 @@ import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
 import org.daisy.dotify.system.ObflResourceLocator.ObflResourceIdentifier;
 import org.daisy.dotify.text.FilterLocale;
+
+import se.mtm.common.io.InputStreamMaker;
 
 /**
  * <p>
@@ -46,7 +47,7 @@ public class LayoutEngineTask extends ReadWriteTask  {
 	}
 
 	@Override
-	public void execute(File input, File output) throws InternalTaskException {
+	public void execute(InputStreamMaker input, OutputStream output) throws InternalTaskException {
 		try {
 
 			logger.info("Validating input...");
@@ -59,11 +60,13 @@ public class LayoutEngineTask extends ReadWriteTask  {
 
 			FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine(locale.toString(), mode, writer);
 
-			engine.convert(new FileInputStream(input), new FileOutputStream(output));
+			engine.convert(input.newInputStream(), output);
 
 		} catch (LayoutEngineException e) {
 			throw new InternalTaskException(e);
 		} catch (FileNotFoundException e) {
+			throw new InternalTaskException(e);
+		} catch (IOException e) {
 			throw new InternalTaskException(e);
 		}
 	}

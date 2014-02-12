@@ -1,11 +1,13 @@
 package org.daisy.dotify.impl.input.text;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.ReadWriteTask;
+
+import se.mtm.common.io.InputStreamMaker;
 
 class Text2ObflTask extends ReadWriteTask {
 	private final String encoding;
@@ -22,9 +24,9 @@ class Text2ObflTask extends ReadWriteTask {
 	}
 
 	@Override
-	public void execute(File input, File output) throws InternalTaskException {
+	public void execute(InputStreamMaker input, OutputStream output) throws InternalTaskException {
 		try {
-			Text2ObflWriter fw = new Text2ObflWriter(input, output, encoding);
+			Text2ObflWriter fw = new Text2ObflWriter(input.newInputStream(), output, encoding);
 			fw.setRootLang(rootLang);
 			fw.parse();
 		} catch (FileNotFoundException e) {

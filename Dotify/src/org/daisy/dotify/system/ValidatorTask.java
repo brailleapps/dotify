@@ -1,18 +1,17 @@
 package org.daisy.dotify.system;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.transform.TransformerException;
 
-import org.daisy.util.xml.validation.SimpleValidator;
 import org.daisy.util.xml.validation.ValidationException;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import se.mtm.common.io.InputStreamMaker;
 
 /**
  * <p>This task validates the input file against the given schema. The 
@@ -32,7 +31,7 @@ public class ValidatorTask extends ReadOnlyTask {
 		this.schema = schema;
 	}
 	
-	public static boolean validate(File input, URL schema) throws ValidatorException {
+	public static boolean validate(InputStreamMaker input, URL schema) throws ValidatorException {
 		if (System.getProperty(SCHEMATRON_PROPERTY_KEY)==null) {
 			Logger logger = Logger.getLogger(ValidatorTask.class.getCanonicalName());
 			logger.info("System property \"" + SCHEMATRON_PROPERTY_KEY + "\" not set");
@@ -41,11 +40,9 @@ public class ValidatorTask extends ReadOnlyTask {
 		}
 		ValidatorTaskErrorHandler errorHandler = new ValidatorTaskErrorHandler();
 		try {
-			SimpleValidator sv = new SimpleValidator(schema, errorHandler);
-			boolean ret = sv.validate(input.toURI().toURL());
+			SimpleValidator2 sv = new SimpleValidator2(schema, errorHandler);
+			boolean ret = sv.validate(input);
 			return ret && !errorHandler.hasError();
-		} catch (MalformedURLException e) {
-			throw new ValidatorException("Validation failed.", e);
 		} catch (SAXException e) {
 			throw new ValidatorException("Validation failed.", e);
 		} catch (TransformerException e) {
@@ -56,7 +53,7 @@ public class ValidatorTask extends ReadOnlyTask {
 	}
 
 	@Override
-	public void execute(File input) throws InternalTaskException {
+	public void execute(InputStreamMaker input) throws InternalTaskException {
 		try {
 			boolean ret = validate(input, schema);
 			//FileUtils.copy(input, output);

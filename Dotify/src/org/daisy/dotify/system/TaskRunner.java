@@ -1,15 +1,18 @@
 package org.daisy.dotify.system;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.daisy.util.file.FileUtils;
-
+import se.mtm.common.io.ByteArrayStreamJuggler;
+import se.mtm.common.io.FileIO;
+import se.mtm.common.io.StreamJuggler;
 import se.mtm.common.io.TempFileHandler;
 
 /**
@@ -19,6 +22,16 @@ import se.mtm.common.io.TempFileHandler;
  */
 public class TaskRunner {
 	public final static String TEMP_DIR;// = System.getProperty("java.io.tmpdir");
+	enum OptimizationPriority {
+		/**
+		 * Prioritize low disk I/O.
+		 */
+		IO,
+		/**
+		 * Prioritize low RAM memory use.
+		 */
+		RAM
+	};
 	static {
 		String path = System.getProperty("java.io.tmpdir");
 		if (path!=null && !"".equals(path) && new File(path).isDirectory()) {
@@ -33,6 +46,7 @@ public class TaskRunner {
 	private boolean writeTempFiles;
 	private boolean keepTempFilesOnSuccess;
 	private String identifier;
+	private OptimizationPriority optimizationPriority;
 	
 	public TaskRunner() {
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
@@ -40,6 +54,7 @@ public class TaskRunner {
 		this.writeTempFiles = false;
 		this.keepTempFilesOnSuccess = false;
 		this.identifier = "" + System.currentTimeMillis();
+		this.optimizationPriority = OptimizationPriority.IO;
 	}
 
 	public boolean isWriteTempFiles() {
@@ -83,19 +98,26 @@ public class TaskRunner {
 		int i = 0;
 		NumberFormat nf = NumberFormat.getPercentInstance();
 		//FIXME: implement temp file handling as per issue #47
-		TempFileHandler fj = new TempFileHandler(input, output);
+		StreamJuggler fj;
+		switch (optimizationPriority) {
+			case RAM:
+				fj = new TempFileHandler(input, output);
+			case IO:
+			default:
+				fj = new ByteArrayStreamJuggler(input, output);
+		}
 		ArrayList<File> tempFiles = new ArrayList<File>();
 		for (InternalTask task : tasks) {
 			if (task instanceof ReadWriteTask) {
 				logger.info("Running (r/w) " + task.getName());
-				((ReadWriteTask)task).execute(fj.getInput(), fj.getOutput());
+				((ReadWriteTask)task).execute(fj.getInputStreamMaker(), fj.getOutputStream());
 				if (writeTempFiles) {
-					tempFiles.add(writeTempFile(fj.getOutput(), taskSystem.getName(), task.getName(), i));
+					tempFiles.add(writeTempFile(fj.getInputStreamMaker().newInputStream(), taskSystem.getName(), task.getName(), i));
 				}
 				fj.reset();
 			} else if (task instanceof ReadOnlyTask) {
 				logger.info("Running (r) " + task.getName());
-				((ReadOnlyTask)task).execute(fj.getInput());
+				((ReadOnlyTask)task).execute(fj.getInputStreamMaker());
 			} else {
 				logger.warning("Unknown task type, skipping.");
 			}
@@ -116,7 +138,7 @@ public class TaskRunner {
 		logger.info("\"" + taskSystem.getName() + "\" finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
 	}
 	
-	private File writeTempFile(File source, String taskSystemName, String taskName, int i) throws IOException {
+	private File writeTempFile(InputStream source, String taskSystemName, String taskName, int i) throws IOException {
 		String it = ""+(i+1);
 		while (it.length()<3) {
 			it = "0" + it; 
@@ -129,7 +151,7 @@ public class TaskRunner {
 		fileName += ".tmp";
 		File f = new File(tempFilesFolder, fileName);
 		logger.fine("Writing debug file: " + f);
-		FileUtils.copyFile(source, f);
+		FileIO.copy(source, new FileOutputStream(f));
 		return f;
 	}
 	

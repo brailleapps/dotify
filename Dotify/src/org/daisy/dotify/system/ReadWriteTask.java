@@ -1,6 +1,8 @@
 package org.daisy.dotify.system;
 
-import java.io.File;
+import java.io.OutputStream;
+
+import se.mtm.common.io.InputStreamMaker;
 
 /**
  * Provides an abstract base for read/write tasks. 
@@ -24,6 +26,6 @@ public abstract class ReadWriteTask extends InternalTask {
 	 * @param output output file
 	 * @throws InternalTaskException throws InternalTaskException if something goes wrong.
 	 */
-	public abstract void execute(File input, File output) throws InternalTaskException;
+	public abstract void execute(InputStreamMaker input, OutputStream output) throws InternalTaskException;
 
 }

@@ -1,9 +1,8 @@
 package org.daisy.dotify.engine.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -85,21 +84,25 @@ class LayoutEngineImpl implements FormatterEngine {
 	}
 
 	public void convert(InputStream input, OutputStream output) throws LayoutEngineException {
-		File f = null;
+		//File f = null;
 		try {
 			if (normalize) {
 				logger.info("Normalizing obfl...");
 				try {
-					f = File.createTempFile("temp", ".tmp");
-					f.deleteOnExit();
-					OBFLWsNormalizer normalizer = new OBFLWsNormalizer(in.createXMLEventReader(input), xef, new FileOutputStream(f));
+					//f = File.createTempFile("temp", ".tmp");
+					//f.deleteOnExit();
+					//OutputStream bos = new FileOutputStream(f);
+					ByteArrayOutputStream bos = new ByteArrayOutputStream(65536);
+					OBFLWsNormalizer normalizer = new OBFLWsNormalizer(in.createXMLEventReader(input), xef, bos);
 					normalizer.parse(of);
 					try {
 						input.close();
 					} catch (Exception e) {
 						logger.log(Level.FINE, "Failed to close stream.", e);
 					}
-					input = new FileInputStream(f);
+					//input = new FileInputStream(f);
+					bos.close();
+					input = new ByteArrayInputStream(bos.toByteArray());
 				} catch (Exception e) {
 					throw new LayoutEngineException(e);
 				}
@@ -141,11 +144,11 @@ class LayoutEngineImpl implements FormatterEngine {
 				throw new LayoutEngineException("FormatterException while running task.", e);
 			}
 		} finally {
-			if (f != null) {
+			/*if (f != null) {
 				if (!f.delete()) {
 					f.deleteOnExit();
 				}
-			}
+			}*/
 		}
 	}
 

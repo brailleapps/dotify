@@ -1,9 +1,11 @@
 package org.daisy.dotify.impl.input.epub;
 
-import java.io.File;
+import java.io.OutputStream;
 
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.ReadWriteTask;
+
+import se.mtm.common.io.InputStreamMaker;
 
 public class Epub3Task extends ReadWriteTask {
 
@@ -12,7 +14,7 @@ public class Epub3Task extends ReadWriteTask {
 	}
 
 	@Override
-	public void execute(File input, File output) throws InternalTaskException {
+	public void execute(InputStreamMaker input, OutputStream output) throws InternalTaskException {
 
 	}
 
