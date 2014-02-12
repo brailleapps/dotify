@@ -413,7 +413,12 @@ dotify.common/src/org/daisy/dotify/text/TextFileReader.java -text
 dotify.common/src/org/daisy/dotify/text/packageinfo -text
 dotify.common/src/se/mtm/common/collection/ArrayStack.java -text
 dotify.common/src/se/mtm/common/collection/packageinfo -text
+dotify.common/src/se/mtm/common/io/ByteArrayInputStreamMaker.java -text
+dotify.common/src/se/mtm/common/io/ByteArrayStreamJuggler.java -text
 dotify.common/src/se/mtm/common/io/FileIO.java -text
+dotify.common/src/se/mtm/common/io/FileInputStreamMaker.java -text
+dotify.common/src/se/mtm/common/io/InputStreamMaker.java -text
+dotify.common/src/se/mtm/common/io/StreamJuggler.java -text
 dotify.common/src/se/mtm/common/io/TempFileHandler.java -text
 dotify.common/src/se/mtm/common/io/packageinfo -text
 dotify.common/src/se/mtm/common/text/SplitResult.java -text svneol=unset#text/plain
