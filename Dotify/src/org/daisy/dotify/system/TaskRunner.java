@@ -54,7 +54,7 @@ public class TaskRunner {
 		this.writeTempFiles = false;
 		this.keepTempFilesOnSuccess = false;
 		this.identifier = "" + System.currentTimeMillis();
-		this.optimizationPriority = OptimizationPriority.RAM;
+		this.optimizationPriority = OptimizationPriority.IO;
 	}
 
 	public boolean isWriteTempFiles() {

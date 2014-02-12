@@ -1,16 +1,22 @@
 package org.daisy.dotify.system;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.transform.TransformerException;
 
+import org.daisy.util.xml.validation.SimpleValidator;
 import org.daisy.util.xml.validation.ValidationException;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import se.mtm.common.io.FileIO;
 import se.mtm.common.io.InputStreamMaker;
 
 /**
@@ -40,8 +46,11 @@ public class ValidatorTask extends ReadOnlyTask {
 		}
 		ValidatorTaskErrorHandler errorHandler = new ValidatorTaskErrorHandler();
 		try {
-			SimpleValidator2 sv = new SimpleValidator2(schema, errorHandler);
-			boolean ret = sv.validate(input);
+			SimpleValidator sv = new SimpleValidator(schema, errorHandler);
+			File f = FileIO.createTempFile();
+			FileIO.copy(input.newInputStream(), new FileOutputStream(f));
+			boolean ret = sv.validate(f.toURI().toURL());
+			if (!f.delete()) f.deleteOnExit();
 			return ret && !errorHandler.hasError();
 		} catch (SAXException e) {
 			throw new ValidatorException("Validation failed.", e);
@@ -49,6 +58,10 @@ public class ValidatorTask extends ReadOnlyTask {
 			throw new ValidatorException("Validation failed.", e);
 		} catch (ValidationException e) {
 			throw new ValidatorException("Validation failed.", e);
+		} catch (FileNotFoundException e) {
+			throw new ValidatorException(e);
+		} catch (IOException e) {
+			throw new ValidatorException(e);
 		}
 	}
 
