@@ -1,17 +1,11 @@
 package org.daisy.dotify.system;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.daisy.util.xml.xslt.Stylesheet;
 import org.daisy.util.xml.xslt.XSLTException;
-
-import se.mtm.common.io.InputStreamMaker;
 
 /**
  * <p>Task that runs an XSLT conversion.</p>
@@ -41,14 +35,10 @@ public class XsltTask extends ReadWriteTask {
 	}
 
 	@Override
-	public void execute(InputStreamMaker input, OutputStream output) throws InternalTaskException {
+	public void execute(File input, File output) throws InternalTaskException {
 		try {
-			StreamSource xslt = new StreamSource(url.openStream());
-			xslt.setSystemId(url.toString());
-			Stylesheet.apply(new StreamSource(input.newInputStream()), xslt, new StreamResult(output), factory, options, null);
+			Stylesheet.apply(input.getAbsolutePath(), url, output.getAbsolutePath(), factory, options, null);
 		} catch (XSLTException e) {
-			throw new InternalTaskException("Error: ", e);
-		} catch (IOException e) {
 			throw new InternalTaskException("Error: ", e);
 		}
 

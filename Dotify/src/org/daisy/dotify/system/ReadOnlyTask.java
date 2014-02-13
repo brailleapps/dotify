@@ -1,6 +1,6 @@
 package org.daisy.dotify.system;
 
-import se.mtm.common.io.InputStreamMaker;
+import java.io.File;
 
 /**
  * Provides an abstract base for read only tasks. A read only task is 
@@ -24,6 +24,6 @@ public abstract class ReadOnlyTask extends InternalTask {
 	 * @param input input file
 	 * @throws InternalTaskException throws InternalTaskException if something goes wrong.
 	 */
-	public abstract void execute(InputStreamMaker input) throws InternalTaskException;
+	public abstract void execute(File input) throws InternalTaskException;
 
 }
