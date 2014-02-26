@@ -21,7 +21,7 @@ class TextInputManager implements InputManager {
 
 	public List<InternalTask> compile(Map<String, Object> parameters) throws TaskSystemException {
 		List<InternalTask> ret = new ArrayList<InternalTask>();
-		ret.add(new Text2ObflTask("Text to OBFL converter", rootLang));
+		ret.add(new Text2ObflTask("Text to OBFL converter", rootLang, parameters));
 		return ret;
 	}
 
