@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xslt-doc-file doc-files/dtb2obfl.xml?>
+<?xslt-doc-file doc-files/dtb2obfl.html?>
 
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" exclude-result-prefixes="dtb" xmlns="http://www.daisy.org/ns/2011/obfl">
 

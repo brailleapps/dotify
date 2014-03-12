@@ -108,7 +108,7 @@ Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/templates/defau
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/templates/paged/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/templates/paged/xml.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/validation-files/dtbook.sch -text
-Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/xslt-files/doc-files/dtb2obfl.xml -text
+Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/xslt-files/doc-files/dtb2obfl.html -text
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/xslt-files/dtbook2obfl_base.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/xslt-files/dtbook2obfl_layout.xsl -text
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/common/xslt-files/dtbook2obfl_text.xsl -text
@@ -119,8 +119,8 @@ Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/localization.xml
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/templates/default/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/templates/paged/dtbook.properties -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/validation-files/dtbook.sch -text
-Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/xslt-files/doc-files/dtb2obfl.xml -text
-Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/xslt-files/doc-files/dtb2obfl_braille.xml -text
+Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/xslt-files/doc-files/dtb2obfl.html -text
+Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/xslt-files/doc-files/dtb2obfl_braille.html -text
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/xslt-files/dtbook2flow.xsl -text
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/xslt-files/dtbook2flow_sv_SE.xsl -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/impl/input/xml/resource-files/sv-SE/xslt-files/dtbook2flow_sv_SE_braille.xsl -text svneol=unset#text/plain

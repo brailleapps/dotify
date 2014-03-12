@@ -13,6 +13,14 @@
 		<fileset dir="${basedir}/lib">
 			<include name="*.jar"/>
 		</fileset>
+		<fileset dir="../DotifyShared">
+			<include name="dotify-translator*.jar"/>
+			<include name="brailleUtils*.jar"/>
+			<include name="bnd.jar"/>
+		</fileset>
+		<fileset dir="${ant-output.dir}/lib">
+			<include name="dotify-formatter.jar"/>
+		</fileset>
 	</path>
 	
     <target name="javadoc" description="Create javadoc">

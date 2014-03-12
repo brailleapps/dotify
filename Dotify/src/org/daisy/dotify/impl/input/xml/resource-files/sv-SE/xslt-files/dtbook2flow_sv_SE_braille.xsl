@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xslt-doc-file doc-files/dtb2obfl_braille.xml?>
+<?xslt-doc-file doc-files/dtb2obfl_braille.html?>
 <!--
 	TODO:
 		- komplexa sub, sup
