@@ -282,6 +282,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/BlockPosition.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/BlockProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/CompoundField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/Condition.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/ContentCollection.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Context.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/CurrentPageField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/DynamicContent.java -text
@@ -301,6 +302,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/MarkerReferenceField.java -text sv
 dotify.api/src/org/daisy/dotify/api/formatter/NumeralField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/NumeralStyle.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Page.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/PageArea.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageSequence.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageTemplate.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PagenumField.java -text svneol=unset#text/plain
