@@ -31,6 +31,8 @@ class PageImpl implements Page {
 	private final LayoutMaster master;
 	private final FormatterContext fcontext;
 	private ArrayList<RowImpl> rows;
+	private ArrayList<RowImpl> top;
+	private ArrayList<RowImpl> bottom;
 	private ArrayList<Marker> markers;
 	private final int pageIndex;
 	private final int flowHeight;
@@ -43,6 +45,8 @@ class PageImpl implements Page {
 		this.master = master;
 		this.fcontext = fcontext;
 		this.rows = new ArrayList<RowImpl>();
+		this.top = new ArrayList<RowImpl>();
+		this.bottom = new ArrayList<RowImpl>();
 		this.markers = new ArrayList<Marker>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
@@ -67,6 +71,14 @@ class PageImpl implements Page {
 			}
 		}
 		return ret;
+	}
+	
+	void newTopBlock(List<RowImpl> block) {
+		top.addAll(block);
+	}
+	
+	void newBottomBlock(List<RowImpl> block) {
+		bottom.addAll(block);
 	}
 	
 	public void newRow(RowImpl r) {
@@ -111,7 +123,7 @@ class PageImpl implements Page {
 	 * @param defSpacing a value >= 1.0
 	 * @return returns the space, in rows
 	 */
-	static float rowsNeeded(List<? extends Row> rows, float defSpacing) {
+	static float rowsNeeded(Iterable<? extends Row> rows, float defSpacing) {
 		float ret = 0;
 		if (defSpacing < 1) {
 			defSpacing = 1;
@@ -127,7 +139,18 @@ class PageImpl implements Page {
 	}
 	
 	float spaceNeeded() {
-		return rowsNeeded(rows, master.getRowSpacing());
+		return 	rowsNeeded(top, master.getRowSpacing()) + 
+				rowsNeeded(rows, master.getRowSpacing()) +
+				rowsNeeded(bottom, master.getRowSpacing());
+	}
+	
+	/**
+	 * Space needed for the supplied rows.
+	 * @param rs
+	 * @return
+	 */
+	float spaceNeeded(Iterable<? extends Row> rs) {
+		return rowsNeeded(rs, master.getRowSpacing());
 	}
 
 	public List<Row> getRows() {
@@ -144,12 +167,14 @@ class PageImpl implements Page {
 				PageTemplate t = lm.getTemplate(pagenum);
 				BrailleTranslator filter = fcontext.getTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
+				ret.addAll(top);
 				ret.addAll(rows);
 				float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
-				if (t.getFooter().size() > 0 || border != TextBorderStyle.NONE) {
-					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing())) < getFlowHeight() + headerHeight) {
+				if (t.getFooter().size() > 0 || border != TextBorderStyle.NONE || bottom.size() > 0) {
+					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing()) + rowsNeeded(bottom, lm.getRowSpacing())) < getFlowHeight() + headerHeight) {
 						ret.add(new RowImpl());
 					}
+					ret.addAll(bottom);
 					ret.addAll(renderFields(lm, t.getFooter(), filter));
 				}
 			}
