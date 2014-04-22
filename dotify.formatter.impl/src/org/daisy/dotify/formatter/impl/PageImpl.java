@@ -152,6 +152,10 @@ class PageImpl implements Page {
 	float spaceNeeded(Iterable<? extends Row> rs) {
 		return rowsNeeded(rs, master.getRowSpacing());
 	}
+	
+	int spaceUsedOnPage(int offs) {
+		return (int)Math.ceil(spaceNeeded()) + offs;
+	}
 
 	public List<Row> getRows() {
 
