@@ -13,16 +13,24 @@ class RowDataProperties {
 	private final int firstLineIndent;
 	private final Alignment align;
 	private final Float rowSpacing;
+	private final int spaceBefore;
+	private final int spaceAfter;
+	private final SingleLineDecoration leadingDecoration;
+	private final SingleLineDecoration trailingDecoration;
 	
 	static class Builder {
 		private int blockIndent = 0;
 		private int blockIndentParent = 0;
 		private int textIndent = 0;
 		private int firstLineIndent = 0;
+		private int spaceBefore = 0;
+		private int spaceAfter = 0;
 		private Alignment align = Alignment.LEFT;
 		private Float rowSpacing = null;
 		private Margin leftMargin = new Margin(Type.LEFT);
 		private Margin rightMargin = new Margin(Type.RIGHT);
+		private SingleLineDecoration leadingDecoration = null;
+		private SingleLineDecoration trailingDecoration = null;
 
 		private ListItem listProps = null;
 		
@@ -73,6 +81,38 @@ class RowDataProperties {
 			listProps = value;
 			return this;
 		}
+		
+		public int getSpaceBefore() {
+			return spaceBefore;
+		}
+		
+		public int getSpaceAfter() {
+			return spaceAfter;
+		}
+		
+		public void addSpaceBefore(int spaceBefore) {
+			this.spaceBefore += spaceBefore;
+		}
+		
+		public void addSpaceAfter(int spaceAfter) {
+			this.spaceAfter += spaceAfter;
+		}
+		
+		public SingleLineDecoration getLeadingDecoration() {
+			return leadingDecoration;
+		}
+		
+		public void setLeadingDecoration(SingleLineDecoration value) {
+			this.leadingDecoration = value;
+		}
+		
+		public SingleLineDecoration getTrailingDecoration() {
+			return trailingDecoration;
+		}
+
+		public void setTrailingDecoration(SingleLineDecoration value) {
+			this.trailingDecoration = value;
+		}
 
 		public RowDataProperties build() {
 			return new RowDataProperties(this);
@@ -90,6 +130,10 @@ class RowDataProperties {
 		this.firstLineIndent = builder.firstLineIndent;
 		this.align = builder.align;
 		this.rowSpacing = builder.rowSpacing;
+		this.spaceBefore = builder.spaceBefore;
+		this.spaceAfter = builder.spaceAfter;
+		this.leadingDecoration = builder.leadingDecoration;
+		this.trailingDecoration = builder.trailingDecoration;
 	}
 
 	public int getBlockIndent() {
@@ -129,6 +173,22 @@ class RowDataProperties {
 	
 	ListItem getListItem() {
 		return listProps;
+	}
+
+	public int getSpaceBefore() {
+		return spaceBefore;
+	}
+
+	public int getSpaceAfter() {
+		return spaceAfter;
+	}
+
+	public SingleLineDecoration getLeadingDecoration() {
+		return leadingDecoration;
+	}
+
+	public SingleLineDecoration getTrailingDecoration() {
+		return trailingDecoration;
 	}
 
 }

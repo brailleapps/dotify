@@ -14,8 +14,6 @@ import org.daisy.dotify.formatter.impl.Segment.SegmentType;
 
 class Block implements Cloneable {
 	private String blockId;
-	private int spaceBefore;
-	private int spaceAfter;
 	private FormattingTypes.BreakBefore breakBefore;
 	private FormattingTypes.Keep keep;
 	private int keepWithNext;
@@ -26,14 +24,15 @@ class Block implements Cloneable {
 	private final RowDataProperties.Builder rdp;
 	private BlockContentManager rdm;
 	private BlockPosition verticalPosition;
-	private SingleLineDecoration leadingDecoration = null;
-	private SingleLineDecoration trailingDecoration = null;
+	
+	private int flowWidth = 0;
+	private CrossReferences refs;
+	private DefaultContext context;
+	private FormatterContext fcontext;
 
 	private Integer metaVolume = null, metaPage = null;
 	
 	Block(String blockId, RowDataProperties.Builder rdp) {
-		this.spaceBefore = 0;
-		this.spaceAfter = 0;
 		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
 		this.keep = FormattingTypes.Keep.AUTO;
 		this.keepWithNext = 0;
@@ -73,11 +72,11 @@ class Block implements Cloneable {
 	 * @return returns the number of empty rows preceding the rows in this block
 	 */
 	public int getSpaceBefore() {
-		return spaceBefore;
+		return rdp.getSpaceBefore();
 	}
 	
 	public int getSpaceAfter() {
-		return spaceAfter;
+		return rdp.getSpaceAfter();
 	}
 	
 	public FormattingTypes.BreakBefore getBreakBeforeType() {
@@ -109,11 +108,11 @@ class Block implements Cloneable {
 	}
 	
 	public void addSpaceBefore(int spaceBefore) {
-		this.spaceBefore += spaceBefore;
+		rdp.addSpaceBefore(spaceBefore);
 	}
 	
 	public void addSpaceAfter(int spaceAfter) {
-		this.spaceAfter += spaceAfter;
+		rdp.addSpaceAfter(spaceAfter);
 	}
 	
 	public void setBreakBeforeType(FormattingTypes.BreakBefore breakBefore) {
@@ -152,8 +151,11 @@ class Block implements Cloneable {
 		return blockId;
 	}
 	
-	public BlockContentManager getBlockContentManager(int flowWidth, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
+	public BlockContentManager getBlockContentManager() {
 		if (rdm==null || rdm.isVolatile()) {
+			if (flowWidth<=0 || refs ==null || context == null || fcontext == null) {
+				throw new IllegalStateException("Context not set.");
+			}
 			context.setMetaVolume(metaVolume);
 			context.setMetaPage(metaPage);
 			rdm = new BlockContentManager(flowWidth, segments, rdp.build(), refs, context, fcontext);
@@ -161,6 +163,17 @@ class Block implements Cloneable {
 			context.setMetaPage(null);
 		}
 		return rdm;
+	}
+	
+	public void setContext(int flowWidth, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
+		if (this.flowWidth!=flowWidth || this.refs != refs || !context.equals(this.context) || this.fcontext != fcontext) {
+			//invalidate, if existing
+			rdm = null;
+		}
+		this.flowWidth = flowWidth;
+		this.refs = refs;
+		this.context = context;
+		this.fcontext = fcontext;
 	}
 
 	public void setMetaVolume(Integer metaVolume) {
@@ -172,19 +185,19 @@ class Block implements Cloneable {
 	}
 
 	public SingleLineDecoration getLeadingDecoration() {
-		return leadingDecoration;
+		return rdp.getLeadingDecoration();
 	}
 	
 	public void setLeadingDecoration(SingleLineDecoration value) {
-		this.leadingDecoration = value;
+		rdp.setLeadingDecoration(value);
 	}
 	
 	public SingleLineDecoration getTrailingDecoration() {
-		return trailingDecoration;
+		return rdp.getTrailingDecoration();
 	}
 
 	public void setTrailingDecoration(SingleLineDecoration value) {
-		this.trailingDecoration = value;
+		rdp.setTrailingDecoration(value);
 	}
 	
 	public RowDataProperties getRowDataProperties() {

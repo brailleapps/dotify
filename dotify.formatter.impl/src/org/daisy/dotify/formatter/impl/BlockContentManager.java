@@ -37,7 +37,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private final FormatterContext fcontext;
 	private final MarginProperties leftMargin;
 	private final MarginProperties rightMargin;
+	private final MarginProperties leftParent;
+	private final MarginProperties rightParent;
 	private Leader currentLeader;
+	private List<RowImpl> preContentRows;
+	private List<RowImpl> postContentRows;
+	private List<RowImpl> skippablePostContentRows;
 
 	private ListItem item;
 	
@@ -57,8 +62,36 @@ class BlockContentManager implements Iterable<RowImpl> {
 		
 		this.rows = new Stack<RowImpl>();
 		this.context = context;
+		this.preContentRows = new ArrayList<RowImpl>();
+		this.leftParent = rdp.getLeftMargin().buildMarginParent(fcontext.getSpaceCharacter());
+		this.rightParent = rdp.getRightMargin().buildMarginParent(fcontext.getSpaceCharacter());
+		for (int i=0; i<rdp.getSpaceBefore();i++) {
+			preContentRows.add(new RowImpl("", leftParent, rightParent));
+		}
+		if (rdp.getLeadingDecoration()!=null) {
+			preContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
+		}
+		this.postContentRows = new ArrayList<RowImpl>();
+
+		if (rdp.getTrailingDecoration()!=null) {
+			postContentRows.add(makeDecorationRow(flowWidth, rdp.getTrailingDecoration(), leftParent, rightParent));
+		}
 		
+		this.skippablePostContentRows = new ArrayList<RowImpl>();
+		for (int i=0; i<rdp.getSpaceAfter();i++) {
+			skippablePostContentRows.add(new RowImpl("", leftParent, rightParent));
+		}
+
 		calculateRows(segments);
+	}
+
+	private RowImpl makeDecorationRow(int flowWidth, SingleLineDecoration d, MarginProperties leftParent, MarginProperties rightParent) {
+		int w = flowWidth - rightParent.getContent().length() - leftParent.getContent().length();
+		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
+		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
+		row.setLeftMargin(leftParent);
+		row.setRightMargin(rightParent);
+		return row;
 	}
 	
 	/**
@@ -71,6 +104,14 @@ class BlockContentManager implements Iterable<RowImpl> {
 	
 	public ArrayList<String> getGroupAnchors() {
 		return groupAnchors;
+	}
+	
+	public MarginProperties getLeftMarginParent() {
+		return leftParent;
+	}
+	
+	public MarginProperties getRightMarginParent() {
+		return rightParent;
 	}
 	
 	private void calculateRows(Stack<Segment> segments) {
@@ -158,6 +199,30 @@ class BlockContentManager implements Iterable<RowImpl> {
 		if (currentLeader!=null || item!=null) {
 			layout("",  null);
 		}
+	}
+	
+	public int countPreContentRows() {
+		return preContentRows.size();
+	}
+	
+	public Iterable<RowImpl> getPreContentRows() {
+		return preContentRows;
+	}
+	
+	public int countPostContentRows() {
+		return postContentRows.size();
+	}
+	
+	public Iterable<RowImpl> getPostContentRows() {
+		return postContentRows;
+	}
+	
+	public int countSkippablePostContentRows() {
+		return skippablePostContentRows.size();
+	}
+	
+	public Iterable<RowImpl> getSkippablePostContentRows() {
+		return skippablePostContentRows;
 	}
 
 	public int getRowCount() {

@@ -2,9 +2,6 @@ package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 
-import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.tools.StringTools;
-
 /**
  * Provides an implementation of the paginator interface. This class should
  * not be used directly, use the corresponding factory methods instead.
@@ -34,99 +31,42 @@ public class PaginatorImpl {
 				pageStruct.newSequence(seq.getLayoutMaster(), seq.getInitialPageNumber() - 1);
 			}
 			pageStruct.newPage();
-			//ArrayList<Block> tmp = new ArrayList<Block>();
-			//Block[] groupA = new Block[tmp.size()];
-			//groupA = tmp.toArray(groupA);
-			//int gi = 0;
+
+			//update context
 			for (Block g : seq) {
-				MarginProperties leftParent = g.getRowDataProperties().getLeftMargin().buildMarginParent(context.getSpaceCharacter());
-				MarginProperties rightParent = g.getRowDataProperties().getRightMargin().buildMarginParent(context.getSpaceCharacter());
-				//int height = ps.getCurrentLayoutMaster().getFlowHeight();
-				switch (g.getBreakBeforeType()) {
-					case PAGE:
-						if (pageStruct.spaceUsedInRows(0) > 0) {
-							pageStruct.newPage();
-						}
-						break;
-					case AUTO:default:;
-				}
-				//FIXME: se över recursiv hämtning
-				switch (g.getKeepType()) {
-					case ALL:
-						int keepHeight = seq.getKeepHeight(g, refs, rcontext, context);
-						if (pageStruct.spaceUsedInRows(0) > 0 && keepHeight > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(0) && keepHeight <= pageStruct.getFlowHeight()) {
-							pageStruct.newPage();
-						}
-						break;
-					case AUTO:
-						break;
-					default:;
-				}
-				if (g.getSpaceBefore()+g.getSpaceAfter()>=pageStruct.getFlowHeight()) {
+				g.setContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
+			}
+
+			//layout
+			for (Block g : seq) {
+				BlockDataContext bd = new BlockDataContext(g);
+				//FIXME: this assumes that row spacing is equal to 1
+				if (bd.rdm.countPreContentRows()+bd.rdm.countPostContentRows()>=pageStruct.getFlowHeight()) {
 					throw new PaginatorException("Group margins too large to fit on an empty page.");
-				} else if (g.getSpaceBefore() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
-					pageStruct.currentSequence().newPageOnRow();
 				}
-				BlockContentManager rdm = g.getBlockContentManager(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
-				if (g.getVerticalPosition() != null) {
-					int blockSpace = rdm.getRowCount() + g.getSpaceBefore() + g.getSpaceAfter();
-					int pos = g.getVerticalPosition().getPosition().makeAbsolute(pageStruct.currentPage().getFlowHeight());
-					int t = pos - pageStruct.spaceUsedInRows(0);
-					if (t > 0) {
-						int advance = 0;
-						switch (g.getVerticalPosition().getAlignment()) {
-							case BEFORE:
-								advance = t - blockSpace;
-								break;
-							case CENTER:
-								advance = t - blockSpace / 2;
-								break;
-							case AFTER:
-								advance = t;
-								break;
-						}
-						for (int i = 0; i < Math.floor(advance / seq.getLayoutMaster().getRowSpacing()); i++) {
-							pageStruct.newRow(new RowImpl("", leftParent, rightParent));
-						}
-					}
-				}
-				for (int i=0; i<g.getSpaceBefore();i++) {
-					pageStruct.newRow(new RowImpl("", leftParent, rightParent));
-				}
-				if (g.getLeadingDecoration()!=null) {
-					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), leftParent, rightParent, g.getLeadingDecoration()));
-				}
-				pageStruct.insertMarkers(rdm.getGroupMarkers());
-				boolean first = true;
 				
-				if (rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
+				//Start new page if needed
+				bd.startNewPageIfNeeded(pageStruct, seq);
+				bd.addVerticalSpace(pageStruct);
+				
+				addRows(bd.rdm.getPreContentRows(), pageStruct);
+				
+				pageStruct.insertMarkers(bd.rdm.getGroupMarkers());
+				if (bd.rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
 					pageStruct.insertIdentifier(g.getIdentifier());
 				}
+
 				pageStruct.currentSequence().setKeepWithNextSheets(g.getKeepWithNextSheets());
-				for (RowImpl row : rdm) {
-					if (first) {
-						first = false;
-						if (!"".equals(g.getIdentifier())) {
-							pageStruct.newRow(row, g.getIdentifier());
-						} else {
-							pageStruct.newRow(row);
-						}
-					} else {
-						pageStruct.newRow(row);
-					}
-				}
+				bd.addRows(pageStruct);
 				pageStruct.currentSequence().setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
 
-				if (g.getTrailingDecoration()!=null) {
-					pageStruct.newRow(makeDecorationRow(seq.getLayoutMaster(), leftParent, rightParent, g.getTrailingDecoration()));
-				}
-				if (g.getSpaceAfter() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
+				addRows(bd.rdm.getPostContentRows(), pageStruct);
+				
+				//FIXME: this assumes that row spacing is equal to 1
+				if (bd.rdm.countSkippablePostContentRows() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
 					pageStruct.currentSequence().newPageOnRow();
 				} else {
-					for (int i=0; i<g.getSpaceAfter();i++) {
-						pageStruct.newRow(new RowImpl("", leftParent,
-								rightParent));
-					}
+					addRows(bd.rdm.getSkippablePostContentRows(), pageStruct);
 				}
 				//gi++;
 			}
@@ -134,13 +74,90 @@ public class PaginatorImpl {
 		return pageStruct;
 	}
 	
-	private RowImpl makeDecorationRow(LayoutMaster master, MarginProperties left, MarginProperties right, SingleLineDecoration d) {
-		int w = master.getFlowWidth() - right.getContent().length() - left.getContent().length();
-		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
-		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
-		row.setLeftMargin(left);
-		row.setRightMargin(right);
-		return row;
+	private void addRows(Iterable<RowImpl> rows, PageStructImpl pageStruct) {
+		for (RowImpl r : rows) {
+			pageStruct.newRow(r);
+		}
+	}
+	
+	/**
+	 * Provides the block in the context of the supplied parameters.
+	 */
+	private class BlockDataContext {
+		private final Block block;
+		private final BlockContentManager rdm;
+		
+		private BlockDataContext(Block block) {
+			this.block = block;
+			this.rdm = block.getBlockContentManager();
+		}
+		
+		private void addVerticalSpace(PageStructImpl pageStruct) {
+			if (block.getVerticalPosition() != null) {
+				int blockSpace = rdm.getRowCount() + block.getSpaceBefore() + block.getSpaceAfter();
+				int pos = block.getVerticalPosition().getPosition().makeAbsolute(pageStruct.currentPage().getFlowHeight());
+				int t = pos - pageStruct.spaceUsedInRows(0);
+				if (t > 0) {
+					int advance = 0;
+					switch (block.getVerticalPosition().getAlignment()) {
+						case BEFORE:
+							advance = t - blockSpace;
+							break;
+						case CENTER:
+							advance = t - blockSpace / 2;
+							break;
+						case AFTER:
+							advance = t;
+							break;
+					}
+					for (int i = 0; i < Math.floor(advance / pageStruct.currentSequence().getLayoutMaster().getRowSpacing()); i++) {
+						pageStruct.newRow(new RowImpl("", rdm.getLeftMarginParent(), rdm.getRightMarginParent()));
+					}
+				}
+			}
+		}
+		
+		private void startNewPageIfNeeded(PageStructImpl pageStruct, BlockSequence seq) {
+			boolean hasContent = pageStruct.spaceUsedInRows(0) > 0;
+			switch (block.getBreakBeforeType()) {
+				case PAGE:
+					if (hasContent) {
+						pageStruct.newPage();
+					}
+					break;
+				case AUTO:default:;
+			}
+			switch (block.getKeepType()) {
+				case ALL:
+					int keepHeight = seq.getKeepHeight(block);
+					//FIXME: this assumes that row spacing is equal to 1
+					if (hasContent && keepHeight > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(0) && keepHeight <= pageStruct.getFlowHeight()) {
+						pageStruct.newPage();
+					}
+					break;
+				case AUTO:
+					break;
+				default:;
+			}
+			//FIXME: this assumes that row spacing is equal to 1
+			if (block.getSpaceBefore() > pageStruct.getFlowHeight() - pageStruct.spaceUsedInRows(1)) {
+				pageStruct.currentSequence().newPageOnRow();
+			}
+		}
+
+
+		private void addRows(PageStructImpl pageStruct) {
+			boolean first = true;
+			for (RowImpl row : rdm) {
+				pageStruct.newRow(row);
+				if (first) {
+					first = false;
+					if (!"".equals(block.getIdentifier())) {
+						pageStruct.insertIdentifier(block.getIdentifier());
+					}
+				}
+			}
+		}
 	}
 
 }
