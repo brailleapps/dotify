@@ -89,9 +89,8 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
-			Iterable<PageSequenceImpl> ps = crh.getContents().getContents();
+			PageStructImpl ps = crh.getContents();
 			final int contents = PageTools.countSheets(ps); 
-			ArrayList<PageImpl> pages = new ArrayList<PageImpl>();
 			StringBuilder res = new StringBuilder();
 			{
 				boolean volBreakAllowed = true;
@@ -111,7 +110,6 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 								sb.append(ZERO_WIDTH_SPACE);
 							}
 						}
-						pages.add(p);
 						pageIndex++;
 					}
 					res.append(sb);
@@ -181,11 +179,11 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 						", overhead:" + crh.getVolData(i).getVolOverhead());
 				PageStructCopy body = new PageStructCopy();
 				while (true) {
-					if (pageIndex>=pages.size()) {
+					if (pageIndex>=ps.getPageCount()) {
 						break;
 					}
-					if (body.countSheets(pages.get(pageIndex))<=contentSheets) {
-						body.addPage(pages.get(pageIndex));
+					if (body.countSheets(ps.getPage(pageIndex))<=contentSheets) {
+						body.addPage(ps.getPage(pageIndex));
 						pageIndex++;
 					} else {
 						break;
@@ -200,7 +198,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 			}
 			if (volBreaks.hasNext()) {
 				ok2 = false;
-				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(pages.size()-pageIndex));
+				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(ps.getPageCount()-pageIndex));
 				if (!crh.isDirty()) {
 					if (volumeOffset < 1) {
 						//First check to see if the page increase can will be handled automatically without increasing volume offset 
@@ -214,7 +212,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 					}
 				}
 			}
-			if (!crh.isDirty() && pageIndex==pages.size() && ok2) {
+			if (!crh.isDirty() && pageIndex==ps.getPageCount() && ok2) {
 				//everything fits
 				ok = true;
 			} else if (j>9) {

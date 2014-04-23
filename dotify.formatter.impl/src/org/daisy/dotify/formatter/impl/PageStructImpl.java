@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.PageSequence;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private final FormatterContext context;
@@ -26,7 +27,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private static final long serialVersionUID = 2591429059130956153L;
 
 
-	public Iterable<PageSequenceImpl> getContents() {
+	public List<PageSequenceImpl> getContents() {
 		return this;
 	}
 
@@ -54,7 +55,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		return this.peek();
 	}
 
-	PageImpl currentPage() {
+	private PageImpl currentPage() {
 		return currentSequence().currentPage();
 	}
 
@@ -86,8 +87,31 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		return currentSequence().spaceUsedOnPage(offs);
 	}
 
+	/**
+	 * Gets the flow height of the current page.
+	 * @return returns the flow height
+	 */
 	int getFlowHeight() {
 		return currentPage().getFlowHeight();
+	}
+	
+	int getPageCount() {
+		int size = 0;
+		for (PageSequence ps : this) {
+			size += ps.getPageCount();
+		}
+		return size;
+	}
+	
+	PageImpl getPage(int i) {
+		for (PageSequenceImpl ps : this) {
+			if (i < ps.getPageCount()) {
+				return ps.getPage(i);
+			} else {
+				i -= ps.getPageCount();
+			}
+		}
+		throw new IndexOutOfBoundsException(i + " is out of bounds." );
 	}
 
 }

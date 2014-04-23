@@ -95,7 +95,7 @@ public class PaginatorImpl {
 		private void addVerticalSpace(PageStructImpl pageStruct) {
 			if (block.getVerticalPosition() != null) {
 				int blockSpace = rdm.getRowCount() + block.getSpaceBefore() + block.getSpaceAfter();
-				int pos = block.getVerticalPosition().getPosition().makeAbsolute(pageStruct.currentPage().getFlowHeight());
+				int pos = block.getVerticalPosition().getPosition().makeAbsolute(pageStruct.getFlowHeight());
 				int t = pos - pageStruct.spaceUsedInRows(0);
 				if (t > 0) {
 					int advance = 0;
