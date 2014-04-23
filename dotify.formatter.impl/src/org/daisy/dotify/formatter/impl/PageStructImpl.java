@@ -9,6 +9,8 @@ import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.PageSequence;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
+	private final static char ZERO_WIDTH_SPACE = '\u200b';
+	
 	private final FormatterContext context;
 	//private final StringFilter filters;
 	HashMap<String, PageImpl> pageReferences;
@@ -112,6 +114,54 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 			}
 		}
 		throw new IndexOutOfBoundsException(i + " is out of bounds." );
+	}
+	
+	/**
+	 * Builds a string with possible breakpoints for the contents of this page struct.
+	 * Each sheet is represented by a lower case 's' and breakpoints are represented
+	 * by zero width space (0x200b).
+	 * @return returns a string with allowed breakpoints
+	 */
+	String buildBreakpointString() {
+		StringBuilder res = new StringBuilder();
+		boolean volBreakAllowed = true;
+		for (PageSequenceImpl seq : this) {
+			StringBuilder sb = new StringBuilder();
+			LayoutMaster lm = seq.getLayoutMaster();
+			int pageIndex=0;
+			for (PageImpl p : seq.getPages()) {
+				if (!lm.duplex() || pageIndex%2==0) {
+					volBreakAllowed = true;
+					sb.append("s");
+				}
+				volBreakAllowed &= p.allowsVolumeBreak();
+				trimEnd(sb, p);
+				if (!lm.duplex() || pageIndex%2==1) {
+					if (volBreakAllowed) {
+						sb.append(ZERO_WIDTH_SPACE);
+					}
+				}
+				pageIndex++;
+			}
+			res.append(sb);
+			res.append(ZERO_WIDTH_SPACE);
+		}
+		return res.toString();
+	}
+	
+	private void trimEnd(StringBuilder sb, PageImpl p) {
+		int i = 0;
+		int x = sb.length()-1;
+		while (i<p.keepPreviousSheets() && x>0) {
+			if (sb.charAt(x)=='s') {
+				x--;
+				i++;
+			}
+			if (sb.charAt(x)==ZERO_WIDTH_SPACE) {
+				sb.deleteCharAt(x);
+				x--;
+			}
+		}
 	}
 
 }

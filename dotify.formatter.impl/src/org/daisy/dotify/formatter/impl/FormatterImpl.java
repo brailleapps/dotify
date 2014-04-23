@@ -9,7 +9,6 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.Formatter;
-import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.Volume;
@@ -91,33 +90,9 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 			// make a preliminary calculation based on contents only
 			PageStructImpl ps = crh.getContents();
 			final int contents = PageTools.countSheets(ps); 
-			StringBuilder res = new StringBuilder();
-			{
-				boolean volBreakAllowed = true;
-				for (PageSequenceImpl seq :ps) {
-					StringBuilder sb = new StringBuilder();
-					LayoutMaster lm = seq.getLayoutMaster();
-					int pageIndex=0;
-					for (PageImpl p : seq.getPages()) {
-						if (!lm.duplex() || pageIndex%2==0) {
-							volBreakAllowed = true;
-							sb.append("s");
-						}
-						volBreakAllowed &= p.allowsVolumeBreak();
-						trimEnd(sb, p);
-						if (!lm.duplex() || pageIndex%2==1) {
-							if (volBreakAllowed) {
-								sb.append(ZERO_WIDTH_SPACE);
-							}
-						}
-						pageIndex++;
-					}
-					res.append(sb);
-					res.append(ZERO_WIDTH_SPACE);
-				}
-			}
-			logger.fine("Volume break string: " + res.toString().replace(ZERO_WIDTH_SPACE, '-'));
-			BreakPointHandler volBreaks = new BreakPointHandler(res.toString());
+			String breakpoints = ps.buildBreakpointString();
+			logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
+			BreakPointHandler volBreaks = new BreakPointHandler(breakpoints);
 			int splitterMax = getVolumeMaxSize(1, crh.getExpectedVolumeCount());
 
 			EvenSizeVolumeSplitterCalculator esc;
@@ -297,19 +272,6 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 		return DEFAULT_SPLITTER_MAX;
 	}
 	
-	private void trimEnd(StringBuilder sb, PageImpl p) {
-		int i = 0;
-		int x = sb.length()-1;
-		while (i<p.keepPreviousSheets() && x>0) {
-			if (sb.charAt(x)=='s') {
-				x--;
-				i++;
-			}
-			if (sb.charAt(x)==ZERO_WIDTH_SPACE) {
-				sb.deleteCharAt(x);
-				x--;
-			}
-		}
-	}
+
 
 }
