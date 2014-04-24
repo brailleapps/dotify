@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.formatter.ContentCollection;
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.TableOfContents;
@@ -68,6 +69,11 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	
 	public Map<String, TableOfContentsImpl> getTocs() {
 		return tocs;
+	}
+	
+	public ContentCollection newCollection(String collectionIdentifier) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public Iterable<Volume> getVolumes() {

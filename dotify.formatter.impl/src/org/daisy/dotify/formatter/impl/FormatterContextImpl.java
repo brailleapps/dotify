@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
+import org.daisy.dotify.api.formatter.SectionProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 public class FormatterContextImpl implements FormatterContext {
@@ -23,9 +25,11 @@ public class FormatterContextImpl implements FormatterContext {
 	public BrailleTranslator getTranslator() {
 		return translator;
 	}
-
-	public void addLayoutMaster(String name, LayoutMaster master) {
+	
+	public LayoutMasterBuilder newLayoutMaster(String name, SectionProperties properties) {
+		LayoutMasterImpl master = new LayoutMasterImpl(properties);
 		masters.put(name, master);
+		return master;
 	}
 	
 	public Map<String, LayoutMaster> getMasters() {

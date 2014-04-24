@@ -92,14 +92,6 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 		current().endBlock();
 	}
 
-	public void startFloat(String id) {
-		current().startFloat(id);
-	}
-
-	public void endFloat() {
-		current().endFloat();
-	}
-
 	public void insertMarker(Marker marker) {
 		current().insertMarker(marker);
 	}

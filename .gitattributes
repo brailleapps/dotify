@@ -482,6 +482,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterContextImpl.j
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterCoreImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LayoutMasterImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Margin.java -text
@@ -520,7 +521,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequence.java -t
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/FieldListImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/LayoutMasterImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLCondition.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLDynamicContent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLExpressionBase.java -text

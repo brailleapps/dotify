@@ -27,6 +27,8 @@ import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.formatter.FormattingTypes;
+import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
+import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
@@ -198,7 +200,8 @@ public class ObflParser extends XMLParserBase {
 		int width = Integer.parseInt(getAttr(event, ObflQName.ATTR_PAGE_WIDTH));
 		int height = Integer.parseInt(getAttr(event, ObflQName.ATTR_PAGE_HEIGHT));
 		String masterName = getAttr(event, ObflQName.ATTR_NAME);
-		LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height, ef);
+		//LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height, ef);
+		LayoutMasterProperties.Builder masterConfig = new LayoutMasterProperties.Builder(width, height);
 		HashMap<String, Object> border = new HashMap<String, Object>();
 		while (i.hasNext()) {
 			Attribute atts = i.next();
@@ -224,19 +227,20 @@ public class ObflParser extends XMLParserBase {
 				Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to add border to block properties: " + border, e);
 			}
 		}
+		LayoutMasterBuilder master = formatter.newLayoutMaster(masterName, masterConfig.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.TEMPLATE)) {
-				masterConfig.addTemplate(parseTemplate(event, input));
+				master.addTemplate(parseTemplate(event, input));
 			} else if (equalsStart(event, ObflQName.DEFAULT_TEMPLATE)) {
-				masterConfig.addTemplate(parseTemplate(event, input));
+				master.addTemplate(parseTemplate(event, input));
 			} else if (equalsEnd(event, ObflQName.LAYOUT_MASTER)) {
 				break;
 			} else {
 				report(event);
 			}
 		}
-		formatter.addLayoutMaster(masterName, masterConfig.build());
+
 		//masters.put(masterName, masterConfig.build());
 	}
 	

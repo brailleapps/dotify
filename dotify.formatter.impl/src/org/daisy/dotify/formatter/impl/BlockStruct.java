@@ -6,10 +6,11 @@ import java.util.Stack;
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormatterCore;
-import org.daisy.dotify.api.formatter.LayoutMaster;
+import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
+import org.daisy.dotify.api.formatter.SectionProperties;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.tools.StateObject;
@@ -38,8 +39,9 @@ class BlockStruct implements FormatterCore {
 		blocks.push(currentSequence);
 	}
 
-	public void addLayoutMaster(String name, LayoutMaster master) {
-		context.addLayoutMaster(name, master);
+	public LayoutMasterBuilder newLayoutMaster(String name,
+			SectionProperties properties) {
+		return context.newLayoutMaster(name, properties);
 	}
 
 	public void open() {
@@ -86,16 +88,6 @@ class BlockStruct implements FormatterCore {
 	public void endBlock() {
 		state.assertOpen();
 		currentSequence.endBlock();
-	}
-
-	public void startFloat(String id) {
-		state.assertOpen();
-		currentSequence.startFloat(id);
-	}
-
-	public void endFloat() {
-		state.assertOpen();
-		currentSequence.endFloat();
 	}
 
 	public void insertMarker(Marker marker) {

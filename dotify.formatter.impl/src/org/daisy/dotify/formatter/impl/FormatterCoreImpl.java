@@ -151,16 +151,6 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 		return this.peek();
 	}
 
-	public void startFloat(String id) {
-		// TODO implement float
-		throw new UnsupportedOperationException("Not implemented");
-	}
-
-	public void endFloat() {
-		// TODO implement float
-		throw new UnsupportedOperationException("Not implemented");
-	}
-
 	public void insertMarker(Marker m) {
 		//FIXME: this does not work
 		getCurrentBlock().addSegment((new MarkerSegment(m)));
