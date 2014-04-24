@@ -19,41 +19,39 @@ class PageStructCopy implements Iterable<PageSequence> {
 		this.pagesInSeq = 0;
 		this.size = 0;
 		PageImpl p;
-		while (pageIndex<orSeq.getPageCount() && countSheets(p = orSeq.getPage(pageIndex))<=contentSheets) {
-			addPage(p);
-			pageIndex++;
-			size++;
+		PageSequenceImpl ps;
+		int i;
+		while (pageIndex<orSeq.getPageCount()) {
+
+			p = orSeq.getPage(pageIndex);
+			ps = p.getParent();
+			
+			//new sheet needed for this page?
+			i = 0;
+			if (originalSeq != ps || !ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {
+				i = 1;
+			}
+			if (sheets + i<=contentSheets) {
+				if (seq.empty() || originalSeq != ps) {
+					originalSeq = ps;
+					seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
+					pagesInSeq = 0;
+				}
+				((PageSequenceCopy)seq.peek()).addPage(p);
+				pagesInSeq++;
+				if (!ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 1) {
+					sheets++;
+				}
+				pageIndex++;
+				size++;
+			} else {
+				break;
+			}
 		}
 	}
 	
-	private void addPage(PageImpl p) {
-		if (seq.empty() || originalSeq != p.getParent()) {
-			originalSeq = p.getParent();
-			seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
-			pagesInSeq = 0;
-		}
-		((PageSequenceCopy)seq.peek()).addPage(p);
-		pagesInSeq++;
-		if (!p.getParent().getLayoutMaster().duplex() || pagesInSeq % 2 == 1) {
-			sheets++;
-		}
-	}
-
 	int getPageCount() {
 		return size;
-	}
-	
-	/**
-	 * Counts the total number of sheets if this page were added
-	 * @param p
-	 * @return
-	 */
-	private int countSheets(PageImpl p) {
-		int i = 0;
-		if (originalSeq != p.getParent() || !p.getParent().getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {
-			i = 1;
-		}
-		return sheets + i;
 	}
 
 	public Iterator<PageSequence> iterator() {
