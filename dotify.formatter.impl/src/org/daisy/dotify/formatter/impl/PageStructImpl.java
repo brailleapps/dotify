@@ -164,8 +164,58 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		}
 	}
 	
+	/**
+	 * Makes a new sub structure starting from the pageIndex with the specified
+	 * number of sheets
+	 * @param pageIndex the starting page index
+	 * @param contentSheets the number of sheets
+	 * @return
+	 */
 	PageStructCopy substruct(int pageIndex, int contentSheets) {
-		PageStructCopy body = new PageStructCopy(this, pageIndex, contentSheets);
+		Stack<PageSequence> seq = new Stack<PageSequence>();
+		int size = 0;
+		PageSequence originalSeq = null;
+		int sheets = 0;
+		int pagesInSeq = 0;
+		PageImpl p;
+		int offs = 0;
+		int i;
+		process:for (PageSequenceImpl ps : this) {
+			while (pageIndex-offs < ps.getPageCount()) {
+				p = ps.getPage(pageIndex-offs);
+				if (pageIndex<getPageCount()) {
+
+					//new sheet needed for this page?
+					if (originalSeq != ps || !ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {
+						i = 1;
+					} else {
+						i = 0;
+					}
+					if (sheets + i<=contentSheets) {
+						if (seq.empty() || originalSeq != ps) {
+							originalSeq = ps;
+							seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
+							pagesInSeq = 0;
+						}
+						((PageSequenceCopy)seq.peek()).addPage(p);
+						pagesInSeq++;
+						if (!ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 1) {
+							sheets++;
+						}
+						pageIndex++;
+						size++;
+					} else {
+						//we have what we need
+						break process;
+					}
+				} else {
+					//no more content
+					break process;
+				}
+			}
+			offs += ps.getPageCount();
+		}
+		PageStructCopy body = new PageStructCopy(seq, size);
 		return body;
 	}
 
