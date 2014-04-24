@@ -163,5 +163,10 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 			}
 		}
 	}
+	
+	PageStructCopy substruct(int pageIndex, int contentSheets) {
+		PageStructCopy body = new PageStructCopy(this, pageIndex, contentSheets);
+		return body;
+	}
 
 }

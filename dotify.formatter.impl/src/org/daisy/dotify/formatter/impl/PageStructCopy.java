@@ -11,14 +11,22 @@ class PageStructCopy implements Iterable<PageSequence> {
 	private PageSequence originalSeq;
 	private int sheets;
 	private int pagesInSeq;
+	private int size;
 	
-	public PageStructCopy() {
+	public PageStructCopy(PageStructImpl orSeq, int pageIndex, int contentSheets) {
 		this.seq = new Stack<PageSequence>();
 		this.sheets = 0;
 		this.pagesInSeq = 0;
+		this.size = 0;
+		PageImpl p;
+		while (pageIndex<orSeq.getPageCount() && countSheets(p = orSeq.getPage(pageIndex))<=contentSheets) {
+			addPage(p);
+			pageIndex++;
+			size++;
+		}
 	}
 	
-	public void addPage(PageImpl p) {
+	private void addPage(PageImpl p) {
 		if (seq.empty() || originalSeq != p.getParent()) {
 			originalSeq = p.getParent();
 			seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
@@ -30,9 +38,9 @@ class PageStructCopy implements Iterable<PageSequence> {
 			sheets++;
 		}
 	}
-	
-	public int countSheets() {
-		return sheets;
+
+	int getPageCount() {
+		return size;
 	}
 	
 	/**
@@ -40,7 +48,7 @@ class PageStructCopy implements Iterable<PageSequence> {
 	 * @param p
 	 * @return
 	 */
-	public int countSheets(PageImpl p) {
+	private int countSheets(PageImpl p) {
 		int i = 0;
 		if (originalSeq != p.getParent() || !p.getParent().getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {
 			i = 1;

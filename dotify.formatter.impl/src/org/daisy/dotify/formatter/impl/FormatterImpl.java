@@ -152,18 +152,8 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+crh.getVolData(i).getVolOverhead()) + 
 						", content:" + contentSheets +
 						", overhead:" + crh.getVolData(i).getVolOverhead());
-				PageStructCopy body = new PageStructCopy();
-				while (true) {
-					if (pageIndex>=ps.getPageCount()) {
-						break;
-					}
-					if (body.countSheets(ps.getPage(pageIndex))<=contentSheets) {
-						body.addPage(ps.getPage(pageIndex));
-						pageIndex++;
-					} else {
-						break;
-					}
-				}
+				PageStructCopy body = ps.substruct(pageIndex, contentSheets);
+				pageIndex += body.getPageCount();
 				int sheetsInVolume = PageTools.countSheets(body) + crh.getVolData(i).getVolOverhead();
 				if (sheetsInVolume>crh.getVolData(i).getTargetVolSize()) {
 					ok2 = false;
