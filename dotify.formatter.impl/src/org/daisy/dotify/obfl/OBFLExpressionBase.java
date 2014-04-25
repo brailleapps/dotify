@@ -7,12 +7,14 @@ import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 
 public abstract class OBFLExpressionBase {
+	public final static String DEFAULT_PAGE_NUMBER_VARIABLE_NAME = "page";
 	public final static String DEFAULT_VOLUME_NUMBER_VARIABLE_NAME = "volume";
 	public final static String DEFAULT_VOLUME_COUNT_VARIABLE_NAME = "volumes";
 	public final static String DEFAULT_EVENT_VOLUME_NUMBER = "started-volume-number";
 	protected final ExpressionFactory ef;
 	protected final String exp;
-	
+
+	protected String pageNumberVariable;
 	protected String volumeNumberVariable;
 	protected String volumeCountVariable;
 	protected String metaVolumeNumberVariable;
@@ -20,12 +22,21 @@ public abstract class OBFLExpressionBase {
 	public OBFLExpressionBase(String exp, ExpressionFactory ef, boolean extended) {
 		this.ef = ef;
 		this.exp = exp;
+		this.pageNumberVariable = DEFAULT_PAGE_NUMBER_VARIABLE_NAME;
 		this.volumeNumberVariable = DEFAULT_VOLUME_NUMBER_VARIABLE_NAME;
 		this.volumeCountVariable = DEFAULT_VOLUME_COUNT_VARIABLE_NAME;
 		if (extended) {
 			this.metaVolumeNumberVariable = DEFAULT_EVENT_VOLUME_NUMBER;
 		} else {
 			this.metaVolumeNumberVariable = null;
+		}
+	}
+	
+	public void setPageNumberVariable(String pageNumberVariable) {
+		if (pageNumberVariable==null) {
+			this.pageNumberVariable = DEFAULT_PAGE_NUMBER_VARIABLE_NAME;
+		} else {
+			this.pageNumberVariable = pageNumberVariable;
 		}
 	}
 	
@@ -55,6 +66,9 @@ public abstract class OBFLExpressionBase {
 
 	protected Map<String, String> buildArgs(Context context) {
 		HashMap<String, String> variables = new HashMap<String, String>();
+		if (pageNumberVariable!=null) {
+			variables.put(pageNumberVariable, ""+context.getCurrentPage());
+		}
 		if (volumeNumberVariable!=null) {
 			variables.put(volumeNumberVariable, ""+context.getCurrentVolume());
 		}

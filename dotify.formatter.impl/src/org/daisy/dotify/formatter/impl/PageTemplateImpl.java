@@ -1,24 +1,25 @@
-package org.daisy.dotify.obfl;
+package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.daisy.dotify.api.formatter.Condition;
+import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.PageTemplate;
+import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.obfl.Expression;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
 
 
-class PageTemplateImpl implements PageTemplate {
-	private final String condition;
+class PageTemplateImpl implements PageTemplate, PageTemplateBuilder {
+	private final Condition condition;
 	private final List<FieldList> header;
 	private final List<FieldList> footer;
 	private final HashMap<Integer, Boolean> appliesTo;
-	private final ExpressionFactory ef;
 	
-	public PageTemplateImpl(ExpressionFactory ef) {
-		this(null, ef);
+	public PageTemplateImpl() {
+		this(null);
 	}
 
 	/**
@@ -26,12 +27,11 @@ class PageTemplateImpl implements PageTemplate {
 	 * @param useWhen string to evaluate. In addition to the syntax of {@link Expression}, the value $page can be
 	 * used. This will be replaced by the current page number before the expression is evaluated.
 	 */
-	public PageTemplateImpl(String useWhen, ExpressionFactory ef) {
-		this.condition = useWhen;
+	public PageTemplateImpl(Condition condition) {
+		this.condition = condition;
 		this.header = new ArrayList<FieldList>();
 		this.footer = new ArrayList<FieldList>();
 		this.appliesTo = new HashMap<Integer, Boolean>();
-		this.ef = ef;
 	}
 
 	public void addToHeader(FieldList obj) {
@@ -62,9 +62,38 @@ class PageTemplateImpl implements PageTemplate {
 		if (appliesTo.containsKey(pagenum)) {
 			return appliesTo.get(pagenum);
 		}
-		boolean applies = ef.newExpression().evaluate(condition.replaceAll("\\$page(?=\\W)", "" + pagenum)).equals(true);
+		boolean applies = condition.evaluate(new PageContext(pagenum));
 		appliesTo.put(pagenum, applies);
 		return applies;
+	}
+	
+	private class PageContext implements Context {
+		private final Integer page;
+		
+		private PageContext(int pagenum) {
+			this.page = pagenum;
+		}
+
+		public Integer getCurrentVolume() {
+			return null;
+		}
+
+		public Integer getVolumeCount() {
+			return null;
+		}
+
+		public Integer getCurrentPage() {
+			return page;
+		}
+
+		public Integer getMetaVolume() {
+			return null;
+		}
+
+		public Integer getMetaPage() {
+			return null;
+		}
+		
 	}
 
 }

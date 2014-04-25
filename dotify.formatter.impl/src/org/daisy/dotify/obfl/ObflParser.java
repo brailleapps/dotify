@@ -35,7 +35,7 @@ import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.api.formatter.NumeralStyle;
-import org.daisy.dotify.api.formatter.PageTemplate;
+import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.formatter.Position;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.StringField;
@@ -231,9 +231,9 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.TEMPLATE)) {
-				master.addTemplate(parseTemplate(event, input));
+				parseTemplate(master, event, input);
 			} else if (equalsStart(event, ObflQName.DEFAULT_TEMPLATE)) {
-				master.addTemplate(parseTemplate(event, input));
+				parseTemplate(master, event, input);
 			} else if (equalsEnd(event, ObflQName.LAYOUT_MASTER)) {
 				break;
 			} else {
@@ -244,12 +244,12 @@ public class ObflParser extends XMLParserBase {
 		//masters.put(masterName, masterConfig.build());
 	}
 	
-	private PageTemplate parseTemplate(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		PageTemplateImpl template;
+	private void parseTemplate(LayoutMasterBuilder master, XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		PageTemplateBuilder template;
 		if (equalsStart(event, ObflQName.TEMPLATE)) {
-			template = new PageTemplateImpl(getAttr(event, ObflQName.ATTR_USE_WHEN), ef);
+			template = master.newTemplate(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, false));
 		} else {
-			template = new PageTemplateImpl(ef);
+			template = master.newTemplate(null);
 		}
 		while (input.hasNext()) {
 			event=input.nextEvent();
@@ -269,7 +269,6 @@ public class ObflParser extends XMLParserBase {
 				report(event);
 			}
 		}
-		return template;
 	}
 	
 	private FieldList parseHeaderFooter(XMLEvent event, XMLEventReader input) throws XMLStreamException {
@@ -303,9 +302,7 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 		if (fields.size()>0) {
-			FieldListImpl ret = new FieldListImpl(fields);
-			ret.setRowSpacing(rowSpacing);
-			return ret;
+			return new FieldList.Builder(fields).rowSpacing(rowSpacing).build();
 		} else {
 			return null;
 		}

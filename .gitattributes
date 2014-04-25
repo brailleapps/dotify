@@ -492,6 +492,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginComponent.java -
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginProperties.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarkerSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/NewLineSegment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageAreaBuilderImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReference.java -text
@@ -501,6 +502,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTools.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorException.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -text svneol=unset#text/plain
@@ -522,7 +524,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/package-info.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/FieldListImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLCondition.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLDynamicContent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLExpressionBase.java -text
@@ -530,7 +531,6 @@ dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLParserException.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLWsNormalizer.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ObflParser.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/ObflQName.java -text
-dotify.formatter.impl/src/org/daisy/dotify/obfl/PageTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/XMLParserBase.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/impl/ExpressionFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/impl/ExpressionImpl.java -text svneol=unset#text/plain
