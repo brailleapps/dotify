@@ -80,7 +80,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 					exe.execute(new DotifyRegressionTester(this,
 							new File(pathToCommandsList.getParentFile(), args[0]),
 							new File(pathToCommandsList.getParentFile(), args[1]),
-							setup, locale, table));
+							(args.length>2?args[2]:setup), (args.length>3?args[3]:locale), table));
 				}
 			}
 			exe.shutdown();
