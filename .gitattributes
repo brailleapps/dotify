@@ -304,9 +304,11 @@ dotify.api/src/org/daisy/dotify/api/formatter/MarkerReferenceField.java -text sv
 dotify.api/src/org/daisy/dotify/api/formatter/NumeralField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/NumeralStyle.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Page.java -text
-dotify.api/src/org/daisy/dotify/api/formatter/PageArea.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/PageAreaBuilder.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/PageAreaProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageSequence.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageTemplate.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/PageTemplateBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PagenumField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/Position.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/RomanNumeral.java -text svneol=unset#text/plain
