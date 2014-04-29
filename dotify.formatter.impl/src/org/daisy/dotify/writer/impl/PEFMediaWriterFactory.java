@@ -15,7 +15,7 @@ class PEFMediaWriterFactory implements PagedMediaWriterFactory {
 		p = new Properties();
 	}
 
-	public PagedMediaWriter newPagedMediaWriter(String mediaType)
+	public PagedMediaWriter newPagedMediaWriter()
 			throws PagedMediaWriterConfigurationException {
 		return new PEFMediaWriter(p);
 	}

@@ -9,7 +9,7 @@ class TextMediaWriterFactory implements PagedMediaWriterFactory {
 	private final static String FEATURE_ENCODING_KEY = "encoding";
 	private String encoding = "utf-8";
 
-	public PagedMediaWriter newPagedMediaWriter(String mediaType)
+	public PagedMediaWriter newPagedMediaWriter()
 			throws PagedMediaWriterConfigurationException {
 		return new TextMediaWriter(encoding);
 	}
