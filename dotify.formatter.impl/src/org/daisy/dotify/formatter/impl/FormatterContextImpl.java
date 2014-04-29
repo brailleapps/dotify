@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
-import org.daisy.dotify.api.formatter.SectionProperties;
+import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 public class FormatterContextImpl implements FormatterContext {
@@ -26,7 +26,7 @@ public class FormatterContextImpl implements FormatterContext {
 		return translator;
 	}
 	
-	public LayoutMasterBuilder newLayoutMaster(String name, SectionProperties properties) {
+	public LayoutMasterBuilder newLayoutMaster(String name, LayoutMasterProperties properties) {
 		LayoutMasterImpl master = new LayoutMasterImpl(properties);
 		masters.put(name, master);
 		return master;

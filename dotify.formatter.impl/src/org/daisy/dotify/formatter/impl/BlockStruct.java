@@ -7,10 +7,10 @@ import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
+import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
-import org.daisy.dotify.api.formatter.SectionProperties;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.tools.StateObject;
@@ -40,7 +40,7 @@ class BlockStruct implements FormatterCore {
 	}
 
 	public LayoutMasterBuilder newLayoutMaster(String name,
-			SectionProperties properties) {
+			LayoutMasterProperties properties) {
 		return context.newLayoutMaster(name, properties);
 	}
 

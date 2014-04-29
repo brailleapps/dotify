@@ -7,11 +7,11 @@ import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
+import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.PageAreaBuilder;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.PageTemplate;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
-import org.daisy.dotify.api.formatter.SectionProperties;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 
 /**
@@ -19,12 +19,12 @@ import org.daisy.dotify.api.translator.TextBorderStyle;
  * @author Joel Håkansson
  */
 class LayoutMasterImpl implements LayoutMaster, LayoutMasterBuilder {
-	private final SectionProperties props; 
+	private final LayoutMasterProperties props; 
 	private final ArrayList<PageTemplate> templates;
 	private final DefaultPageTemplate defaultPageTemplate;
 	private PageAreaBuilder pageArea;
 
-	public LayoutMasterImpl(SectionProperties props) {
+	public LayoutMasterImpl(LayoutMasterProperties props) {
 		this.templates = new ArrayList<PageTemplate>();
 		this.props = props;
 		this.defaultPageTemplate = new DefaultPageTemplate();

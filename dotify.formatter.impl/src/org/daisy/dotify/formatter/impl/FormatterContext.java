@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
-import org.daisy.dotify.api.formatter.SectionProperties;
+import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 /**
@@ -18,7 +18,7 @@ interface FormatterContext {
 	
 	public Map<String, LayoutMaster> getMasters();
 	
-	public LayoutMasterBuilder newLayoutMaster(String name, SectionProperties properties);
+	public LayoutMasterBuilder newLayoutMaster(String name, LayoutMasterProperties properties);
 	
 	public char getSpaceCharacter();
 	
