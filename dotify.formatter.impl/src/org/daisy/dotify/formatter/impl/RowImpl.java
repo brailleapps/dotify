@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.daisy.dotify.api.formatter.FormattingTypes.Alignment;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.formatter.Row;
+import org.daisy.dotify.api.writer.Row;
 
 
 

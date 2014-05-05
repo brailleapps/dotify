@@ -125,9 +125,7 @@ class LayoutEngineImpl implements FormatterEngine {
 				logger.info("Rendering output...");
 				writer.open(output, obflParser.getMetaData());
 
-				WriterHandler wh = new WriterHandler();
-				wh.write(obflParser.getFormattedResult(), writer);
-				writer.close();
+				obflParser.writeResult(writer);
 
 			} catch (FileNotFoundException e) {
 				throw new LayoutEngineException("FileNotFoundException while running task. ", e);

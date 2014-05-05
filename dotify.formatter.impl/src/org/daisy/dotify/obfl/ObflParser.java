@@ -42,7 +42,6 @@ import org.daisy.dotify.api.formatter.StringField;
 import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
-import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
@@ -53,6 +52,7 @@ import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.MetaDataItem;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.translator.DefaultTextAttribute;
 
@@ -847,8 +847,8 @@ public class ObflParser extends XMLParserBase {
 		return hyphenate;
 	}
 	
-	public Iterable<Volume> getFormattedResult() {
-		return formatter.getVolumes();
+	public void writeResult(PagedMediaWriter writer) throws IOException {
+		formatter.write(writer);
 	}
 
 	public List<MetaDataItem> getMetaData() {

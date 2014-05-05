@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.formatter.Page;
-import org.daisy.dotify.api.formatter.PageSequence;
 
 class CrossReferenceHandler implements CrossReferences, Context {
 	private final Map<String, Integer> volLocations;

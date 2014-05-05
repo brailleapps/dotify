@@ -1,14 +1,12 @@
-package org.daisy.dotify.engine.impl;
+package org.daisy.dotify.formatter.impl;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.formatter.Page;
-import org.daisy.dotify.api.formatter.PageSequence;
-import org.daisy.dotify.api.formatter.Row;
-import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
+import org.daisy.dotify.api.writer.Row;
+import org.daisy.dotify.api.writer.SectionProperties;
 
 /**
  * Provides a method for writing pages to a PagedMediaWriter,
@@ -17,18 +15,18 @@ import org.daisy.dotify.api.writer.PagedMediaWriter;
  */
 class WriterHandler {
 	
-	public WriterHandler() {
+	WriterHandler() {
 	}
 	/**
 	 * Writes this structure to the suppled PagedMediaWriter.
 	 * @param writer the PagedMediaWriter to write to
 	 * @throws IOException if IO fails
 	 */
-	public void write(Iterable<Volume> volumes, PagedMediaWriter writer) {
+	void write(Iterable<Volume> volumes, PagedMediaWriter writer) {
 		for (Volume v : volumes) {
 			boolean firstInVolume = true;
 			for (PageSequence s : v.getContents()) {
-				LayoutMaster lm = s.getLayoutMaster();
+				SectionPropertiesAdapter lm = new SectionPropertiesAdapter(s.getLayoutMaster());
 				if (firstInVolume) {
 					firstInVolume = false;
 					writer.newVolume(lm);
@@ -47,6 +45,31 @@ class WriterHandler {
 		for (Row r : rows) {
 			writer.newRow(r);
 		}
+	}
+	
+	private static class SectionPropertiesAdapter implements SectionProperties {
+		private final LayoutMaster lm;
+		
+		public SectionPropertiesAdapter(LayoutMaster lm) {
+			this.lm = lm;
+		}
+
+		public int getPageWidth() {
+			return lm.getPageWidth();
+		}
+
+		public int getPageHeight() {
+			return lm.getPageHeight();
+		}
+
+		public float getRowSpacing() {
+			return lm.getRowSpacing();
+		}
+
+		public boolean duplex() {
+			return lm.duplex();
+		}
+		
 	}
 
 }

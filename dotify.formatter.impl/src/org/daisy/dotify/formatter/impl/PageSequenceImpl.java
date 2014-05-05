@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
-import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class PageSequenceImpl implements PageSequence {

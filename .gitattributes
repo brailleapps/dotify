@@ -461,7 +461,6 @@ dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.obfl.Expression
 dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.writer.PagedMediaWriterFactoryService -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/engine/impl/WriterHandler.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Block.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManager.java -text
@@ -487,11 +486,13 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginComponent.java -
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginProperties.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarkerSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/NewLineSegment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Page.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageAreaBuilderImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReference.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReferenceSegment.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStruct.java -text
@@ -514,10 +515,12 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Volume.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/WriterHandler.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLCondition.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/OBFLDynamicContent.java -text

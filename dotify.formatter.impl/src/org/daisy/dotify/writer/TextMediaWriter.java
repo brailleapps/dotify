@@ -5,11 +5,11 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.daisy.dotify.api.formatter.Row;
-import org.daisy.dotify.api.formatter.SectionProperties;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterException;
+import org.daisy.dotify.api.writer.Row;
+import org.daisy.dotify.api.writer.SectionProperties;
 import org.daisy.dotify.tools.StateObject;
 
 

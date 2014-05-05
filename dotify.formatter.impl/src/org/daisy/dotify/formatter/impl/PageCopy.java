@@ -2,9 +2,7 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.List;
 
-import org.daisy.dotify.api.formatter.Page;
-import org.daisy.dotify.api.formatter.PageSequence;
-import org.daisy.dotify.api.formatter.Row;
+import org.daisy.dotify.api.writer.Row;
 
 
 /**

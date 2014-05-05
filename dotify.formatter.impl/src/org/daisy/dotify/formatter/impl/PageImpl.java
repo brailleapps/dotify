@@ -11,12 +11,11 @@ import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
-import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageTemplate;
-import org.daisy.dotify.api.formatter.Row;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TextBorderStyle;
+import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.tools.StringTools;
 
 

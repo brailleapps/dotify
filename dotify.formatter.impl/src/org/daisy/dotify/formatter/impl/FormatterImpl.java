@@ -10,12 +10,11 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.ContentCollection;
 import org.daisy.dotify.api.formatter.Formatter;
-import org.daisy.dotify.api.formatter.PageSequence;
 import org.daisy.dotify.api.formatter.TableOfContents;
-import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
 
@@ -76,7 +75,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 		return null;
 	}
 
-	public Iterable<Volume> getVolumes() {
+	private Iterable<Volume> getVolumes() {
 		contentPaginator = new PaginatorImpl(context, getBlockSequenceIterable());
 
 		try {
@@ -266,6 +265,15 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 		}
 		//TODO: don't return a fixed value
 		return DEFAULT_SPLITTER_MAX;
+	}
+
+	public void write(PagedMediaWriter writer) {
+		WriterHandler wh = new WriterHandler();
+		wh.write(getVolumes(), writer);
+		try {
+			writer.close();
+		} catch (IOException e) {
+		}
 	}
 	
 

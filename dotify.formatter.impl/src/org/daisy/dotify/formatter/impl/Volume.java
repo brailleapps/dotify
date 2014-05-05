@@ -3,18 +3,16 @@ package org.daisy.dotify.formatter.impl;
 
 
 
-
-
 /**
- * Provides a page oriented structure
+ * Provides a container for a physical volume of braille
  * @author Joel Håkansson
  */
-interface PageStruct {
+public interface Volume {
 
 	/**
 	 * Gets the contents
-	 * @return returns the content
+	 * @return returns the contents
 	 */
 	public Iterable<? extends PageSequence> getContents();
-
+	
 }

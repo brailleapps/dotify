@@ -6,7 +6,6 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.formatter.PageSequence;
 
 class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
