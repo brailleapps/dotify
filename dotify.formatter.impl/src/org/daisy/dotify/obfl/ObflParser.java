@@ -20,6 +20,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.daisy.dotify.api.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.CompoundField;
+import org.daisy.dotify.api.formatter.ContentCollection;
 import org.daisy.dotify.api.formatter.CurrentPageField;
 import org.daisy.dotify.api.formatter.Field;
 import org.daisy.dotify.api.formatter.FieldList;
@@ -35,6 +36,8 @@ import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.api.formatter.NumeralStyle;
+import org.daisy.dotify.api.formatter.PageAreaBuilder;
+import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.formatter.Position;
 import org.daisy.dotify.api.formatter.SequenceProperties;
@@ -114,7 +117,10 @@ public class ObflParser extends XMLParserBase {
 				parseTableOfContents(event, input, locale, hyphenate);
 			} else if (equalsStart(event, ObflQName.VOLUME_TEMPLATE)) {
 				parseVolumeTemplate(event, input, locale, hyphenate);
-			} else {
+			} else if (equalsStart(event, ObflQName.COLLECTION)) {
+				parseCollection(event, input, locale, hyphenate);
+			} 
+			else {
 				report(event);
 			}
 		}
@@ -234,6 +240,8 @@ public class ObflParser extends XMLParserBase {
 				parseTemplate(master, event, input);
 			} else if (equalsStart(event, ObflQName.DEFAULT_TEMPLATE)) {
 				parseTemplate(master, event, input);
+			} else if (equalsStart(event, ObflQName.PAGE_AREA)) {
+				parsePageArea(master, event, input);
 			} else if (equalsEnd(event, ObflQName.LAYOUT_MASTER)) {
 				break;
 			} else {
@@ -242,6 +250,62 @@ public class ObflParser extends XMLParserBase {
 		}
 
 		//masters.put(masterName, masterConfig.build());
+	}
+	
+	private void parsePageArea(LayoutMasterBuilder master, XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		String collection = getAttr(event, ObflQName.ATTR_COLLECTION);
+		int maxHeight = Integer.parseInt(getAttr(event, ObflQName.ATTR_MAX_HEIGHT));
+		PageAreaProperties.Builder config = new PageAreaProperties.Builder(collection, maxHeight);
+		@SuppressWarnings("unchecked")
+		Iterator<Attribute> i = event.asStartElement().getAttributes();
+		while (i.hasNext()) {
+			Attribute atts = i.next();
+			String name = atts.getName().getLocalPart();
+			String value = atts.getValue();
+			if (name.equals("align")) {
+				config.align(PageAreaProperties.Alignment.valueOf(value.toUpperCase()));
+			} else if (name.equals("fallback")) {
+				config.fallbackId(value);
+			} else if (name.equals("fallback-scope")) {
+				config.scope(PageAreaProperties.FallbackScope.valueOf(value.toUpperCase()));
+			}
+		}
+		PageAreaBuilder builder = master.setPageArea(config.build());
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.BEFORE)) {
+				parseBeforeAfter(event, input, builder.getBeforeArea(), locale, true);
+			} else if (equalsStart(event, ObflQName.AFTER)) {
+				parseBeforeAfter(event, input, builder.getAfterArea(), locale, true);
+			} else if (equalsEnd(event, ObflQName.PAGE_AREA)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void parseBeforeAfter(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
+		locale = getLang(event, locale);
+		hyph = getHyphenate(event, hyph);
+		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (event.isCharacters()) {
+				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+			} else if (equalsStart(event, ObflQName.BLOCK)) {
+				parseBlock(event, input, fc, locale, hyph);
+			} else if (processAsBlockContents(fc, event, input, locale, hyph)) {
+				//done!
+			}
+			else if (equalsEnd(event, ObflQName.BEFORE, ObflQName.AFTER)) {
+				fc.endBlock();
+				break;
+			} else {
+				report(event);
+			}
+		}
 	}
 	
 	private void parseTemplate(LayoutMasterBuilder master, XMLEvent event, XMLEventReader input) throws XMLStreamException {
@@ -372,21 +436,9 @@ public class ObflParser extends XMLParserBase {
 				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
 				parseBlock(event, input, fc, locale, hyph);
-			} else if (equalsStart(event, ObflQName.LEADER)) {
-				parseLeader(fc, event, input);
-			} else if (equalsStart(event, ObflQName.MARKER)) {
-				parseMarker(fc, event);
-			} else if (equalsStart(event, ObflQName.BR)) {
-				fc.newLine();
-				scanEmptyElement(input, ObflQName.BR);
-			} else if (equalsStart(event, ObflQName.EVALUATE)) {
-				parseEvaluate(fc, event, input, locale, hyph);
-			} else if (equalsStart(event, ObflQName.STYLE)) {
-				parseStyle(event, input, fc, locale, hyph);
-			} else if (equalsStart(event, ObflQName.SPAN)) {
-				parseSpan(event, input, fc, locale, hyph);
+			} else if (processAsBlockContents(fc, event, input, locale, hyph)) {
+				//done
 			}
-			// TODO:anchor, page-number
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
 				fc.endBlock();
 				break;
@@ -602,6 +654,10 @@ public class ObflParser extends XMLParserBase {
 		fc.insertMarker(new Marker(markerName, markerValue));
 	}
 	
+	private String parseAnchor(XMLEvent event) {
+		return getAttr(event, "item");
+	}
+	
 	private void parseTableOfContents(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		String tocName = getAttr(event, ObflQName.ATTR_NAME);
 		locale = getLang(event, locale);
@@ -612,6 +668,21 @@ public class ObflParser extends XMLParserBase {
 			if (equalsStart(event, ObflQName.TOC_ENTRY)) {
 				parseTocEntry(event, input, toc, locale, hyph);
 			} else if (equalsEnd(event, ObflQName.TABLE_OF_CONTENTS)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+	
+	private void parseCollection(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+		String id = getAttr(event, ObflQName.ATTR_NAME);
+		ContentCollection coll = formatter.newCollection(id); 
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.ITEM)) {
+				parseCollectionItem(event, input, coll, locale, hyph);
+			} else if (equalsEnd(event, ObflQName.COLLECTION)) {
 				break;
 			} else {
 				report(event);
@@ -631,21 +702,8 @@ public class ObflParser extends XMLParserBase {
 				toc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
 			} else if (equalsStart(event, ObflQName.TOC_ENTRY)) {
 				parseTocEntry(event, input, toc, locale, hyph);
-			} else if (equalsStart(event, ObflQName.LEADER)) {
-				parseLeader(toc, event, input);
-			} else if (equalsStart(event, ObflQName.MARKER)) {
-				parseMarker(toc, event);
-			} else if (equalsStart(event, ObflQName.BR)) {
-				toc.newLine();
-				scanEmptyElement(input, ObflQName.BR);
-			} else if (equalsStart(event, ObflQName.PAGE_NUMBER)) {
-				parsePageNumber(toc, event, input);
-			} else if (equalsStart(event, ObflQName.ANCHOR)) {
-				//TODO: implement
-				throw new UnsupportedOperationException("Not implemented");
-				// TODO: span, style
-			} else if (equalsStart(event, ObflQName.EVALUATE)) {
-				parseEvaluate(toc, event, input, locale, hyph);
+			} else if (processAsBlockContents(toc, event, input, locale, hyph)) {
+				//done!
 			}
 			else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
 				toc.endEntry();
@@ -653,6 +711,63 @@ public class ObflParser extends XMLParserBase {
 			} else {
 				report(event);
 			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void parseCollectionItem(XMLEvent event, XMLEventReader input, ContentCollection coll, FilterLocale locale, boolean hyph) throws XMLStreamException {
+		locale = getLang(event, locale);
+		hyph = getHyphenate(event, hyph);
+		coll.startItem(blockBuilder(event.asStartElement().getAttributes()));
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (event.isCharacters()) {
+				coll.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+			} else if (equalsStart(event, ObflQName.ITEM)) {
+				parseCollectionItem(event, input, coll, locale, hyph);
+				Logger.getLogger(this.getClass().getCanonicalName()).warning("Nested collection items.");
+			} else if (equalsStart(event, ObflQName.BLOCK)) {
+				parseBlock(event, input, coll, locale, hyph);
+			} else if (processAsBlockContents(coll, event, input, locale, hyph)) {
+				//done!
+			}
+			else if (equalsEnd(event, ObflQName.ITEM)) {
+				coll.endItem();
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+
+	private boolean processAsBlockContents(FormatterCore fc, XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+		if (equalsStart(event, ObflQName.LEADER)) {
+			parseLeader(fc, event, input);
+			return true;
+		} else if (equalsStart(event, ObflQName.MARKER)) {
+			parseMarker(fc, event);
+			return true;
+		} else if (equalsStart(event, ObflQName.BR)) {
+			fc.newLine();
+			scanEmptyElement(input, ObflQName.BR);
+			return true;
+		} else if (equalsStart(event, ObflQName.EVALUATE)) {
+			parseEvaluate(fc, event, input, locale, hyph);
+			return true;
+		} else if (equalsStart(event, ObflQName.STYLE)) {
+			parseStyle(event, input, fc, locale, hyph);
+			return true;
+		} else if (equalsStart(event, ObflQName.SPAN)) {
+			parseSpan(event, input, fc, locale, hyph);
+			return true;
+		} else if (equalsStart(event, ObflQName.ANCHOR)) {
+			fc.insertAnchor(parseAnchor(event));
+			return true;
+		} else if (equalsStart(event, ObflQName.PAGE_NUMBER)) {
+			parsePageNumber(fc, event, input);
+			return true;
+		}  else {
+			return false;
 		}
 	}
 	

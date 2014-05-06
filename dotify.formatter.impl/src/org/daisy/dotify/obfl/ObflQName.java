@@ -27,21 +27,38 @@ interface ObflQName {
 	 final static QName PAGE_NUMBER = new QName(OBFL_NS, "page-number");
 	
 	 final static QName SEQUENCE = new QName(OBFL_NS, "sequence");
+	 final static QName PAGE_AREA = new QName(OBFL_NS, "page-area");
+	 final static QName BEFORE = new QName(OBFL_NS, "before");
+	 final static QName AFTER = new QName(OBFL_NS, "after");
 	 final static QName VOLUME_TEMPLATE = new QName(OBFL_NS, "volume-template");
 	 final static QName PRE_CONTENT = new QName(OBFL_NS, "pre-content");
 	 final static QName POST_CONTENT = new QName(OBFL_NS, "post-content");
+
 	 final static QName TOC_SEQUENCE = new QName(OBFL_NS, "toc-sequence");
 	 final static QName ON_TOC_START = new QName(OBFL_NS, "on-toc-start");
 	 final static QName ON_VOLUME_START = new QName(OBFL_NS, "on-volume-start");
 	 final static QName ON_VOLUME_END = new QName(OBFL_NS, "on-volume-end");
 	 final static QName ON_TOC_END = new QName(OBFL_NS, "on-toc-end");
+
+	 final static QName ITEM_SEQUENCE = new QName(OBFL_NS, "item-sequence");
+	 final static QName ON_COLLECTION_START = new QName(OBFL_NS, "on-collection-start");
+	 final static QName ON_PAGE_START = new QName(OBFL_NS, "on-page-start");
+	 final static QName ON_PAGE_END = new QName(OBFL_NS, "on-page-end");
+	 final static QName ON_COLLECTION_END = new QName(OBFL_NS, "on-collection-end");
 	
 	 final static QName TABLE_OF_CONTENTS = new QName(OBFL_NS, "table-of-contents");
+	 
+	 final static QName COLLECTION = new QName(OBFL_NS, "collection");
+	 final static QName ITEM = new QName(OBFL_NS, "item");
 	
 	 final static QName ATTR_XML_LANG = new QName("http://www.w3.org/XML/1998/namespace", "lang", "xml");
 	 final static QName ATTR_HYPHENATE = new QName("hyphenate");
 	 final static QName ATTR_PAGE_WIDTH = new QName("page-width");
 	 final static QName ATTR_PAGE_HEIGHT = new QName("page-height");
 	 final static QName ATTR_NAME = new QName("name");
+	 final static QName ATTR_ID = new QName("id");
 	 final static QName ATTR_USE_WHEN = new QName("use-when");
+	 final static QName ATTR_COLLECTION = new QName("collection");
+	 final static QName ATTR_MAX_HEIGHT = new QName("max-height");
+	 final static QName ATTR_ALIGN = new QName("align");
 }
