@@ -52,6 +52,10 @@ public class Dotify {
 		writeTempFiles = "true".equals(params.get(SystemKeys.WRITE_TEMP_FILES));
 		keepTempFilesOnSuccess = !("false".equals(params.get(SystemKeys.KEEP_TEMP_FILES_ON_SUCCESS)));
 	}
+	
+	public static void run(File input, File output, String setup, String locale, Map<String, String> params) throws IOException, InternalTaskException {
+		run(input, output, setup, FilterLocale.parse(locale), params);
+	}
 
 	/**
 	 * Runs Dotify with the supplied parameters.
