@@ -96,6 +96,7 @@ public class FormatterPanel extends MyPanel {
 						} catch (FileNotFoundException e1) {
 							outputField.setText(e1.toString());
 						} catch (LayoutEngineException e1) {
+							e1.printStackTrace();
 							outputField.setText("Not supported");
 						}
 					}
