@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
@@ -11,12 +10,12 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
 public class FormatterContextImpl implements FormatterContext {
 
 	private final BrailleTranslator translator;
-	private final Map<String, LayoutMaster> masters;
+	private final Map<String, LayoutMasterImpl> masters;
 	private final char spaceChar;
 
 	public FormatterContextImpl(BrailleTranslator translator) {
 		this.translator = translator;
-		this.masters = new HashMap<String, LayoutMaster>();
+		this.masters = new HashMap<String, LayoutMasterImpl>();
 		//margin char can only be a single character, the reason for going through the translator
 		//is because output isn't always braille.
 		this.spaceChar = getTranslator().translate(" ").getTranslatedRemainder().charAt(0);
@@ -32,7 +31,7 @@ public class FormatterContextImpl implements FormatterContext {
 		return master;
 	}
 	
-	public Map<String, LayoutMaster> getMasters() {
+	public Map<String, LayoutMasterImpl> getMasters() {
 		return masters;
 	}
 	

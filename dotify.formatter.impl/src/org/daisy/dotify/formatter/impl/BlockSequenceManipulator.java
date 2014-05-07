@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.LayoutMaster;
-
 /**
  * Provides methods for manipulating a flow sequence.
  * @author Joel Håkansson
@@ -17,7 +15,7 @@ class BlockSequenceManipulator {
 	private final Stack<Block> sequence;
 	//private final SequenceProperties props;
 	private Integer initialPagenum;
-	private final LayoutMaster master;
+	private final LayoutMasterImpl master;
 	
 	public BlockSequenceManipulator(BlockSequence b) {
 		this.sequence = new Stack<Block>();
@@ -29,7 +27,7 @@ class BlockSequenceManipulator {
 		this.taggedEntries = tagSequence(this.sequence);
 	}
 	
-	public BlockSequenceManipulator(LayoutMaster master, Integer initialPageNumber) {
+	public BlockSequenceManipulator(LayoutMasterImpl master, Integer initialPageNumber) {
 		this.sequence = new Stack<Block>();
 		this.master = master;
 		this.initialPagenum = initialPageNumber;

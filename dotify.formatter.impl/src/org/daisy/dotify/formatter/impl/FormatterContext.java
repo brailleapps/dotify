@@ -2,7 +2,6 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.Map;
 
-import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
@@ -16,7 +15,7 @@ interface FormatterContext {
 
 	public BrailleTranslator getTranslator();
 	
-	public Map<String, LayoutMaster> getMasters();
+	public Map<String, LayoutMasterImpl> getMasters();
 	
 	public LayoutMasterBuilder newLayoutMaster(String name, LayoutMasterProperties properties);
 	
