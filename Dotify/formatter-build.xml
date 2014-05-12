@@ -33,7 +33,6 @@
 	</patternset>
 	
 	<patternset id="build-jar.patternset">
-		<include name="stax-api*.jar"/>
 		<include name="dotify-translator*.jar"/>
 	</patternset>
 		
@@ -41,7 +40,6 @@
 		<patternset refid="build-jar.patternset"/>
 		<include name="wstx-*.jar"/>
 		<!-- translator dependencies -->
-		<include name="icu4j-3_8.jar"/>
 		<include name="texhyphj.jar"/>
 	</patternset>
 	

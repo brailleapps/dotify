@@ -27,9 +27,7 @@
 	</patternset>
 	
 	<patternset id="shared-jar.patternset">
-		<include name="icu4j-3_8.jar"/>
 		<include name="texhyphj.jar"/>
-		<include name="stax-api*.jar"/>
 	</patternset>
 
 	<!-- Testing paths -->
@@ -147,7 +145,7 @@
     			<patternset refid="dist-jar.patternset"/>  			
     		</fileset>
     		<manifest>
-    			<attribute name="Class-Path" value="icu4j-3_8.jar texhyphj.jar"/>
+    			<attribute name="Class-Path" value="texhyphj.jar"/>
     			<attribute name="Built-By" value="${user.name}"/>
     			<attribute name="Built-On" value="${ISO-TODAY}"/>
     			<attribute name="Repository-Revision" value="${repository-revision}"/>

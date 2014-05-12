@@ -1,6 +1,7 @@
 * text=auto !eol
 Dotify/.classpath -text svneol=unset#text/plain
 Dotify/.project -text svneol=unset#text/plain
+Dotify/.settings/org.eclipse.jdt.core.prefs -text
 Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic-table.rng -text
 Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-basic.rng -text
 Dotify/ant-build/resources/dtd/xhtml10/exclude/exclude-form.rng -text
@@ -238,7 +239,6 @@ DotifyShared/dotify-common.jar -text
 DotifyShared/dotify-devtools.jar -text
 DotifyShared/dotify-translator.jar -text
 DotifyShared/icu4j-3_8.jar -text
-DotifyShared/icu4j-4.6.jar -text
 DotifyShared/junit-4.7.jar -text
 DotifyShared/saxon8.jar -text
 DotifyShared/stax-api-1.0.1.jar -text
