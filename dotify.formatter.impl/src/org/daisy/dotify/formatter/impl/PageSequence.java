@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.api.formatter.LayoutMaster;
 
 
 

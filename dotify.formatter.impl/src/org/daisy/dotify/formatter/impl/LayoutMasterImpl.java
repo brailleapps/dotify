@@ -5,12 +5,10 @@ import java.util.List;
 
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.FieldList;
-import org.daisy.dotify.api.formatter.LayoutMaster;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.PageAreaBuilder;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
-import org.daisy.dotify.api.formatter.PageTemplate;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 

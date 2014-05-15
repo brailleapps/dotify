@@ -479,6 +479,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterContextImpl.j
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterCoreImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LayoutMaster.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LayoutMasterImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
@@ -499,6 +500,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTemplate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTools.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorException.java -text

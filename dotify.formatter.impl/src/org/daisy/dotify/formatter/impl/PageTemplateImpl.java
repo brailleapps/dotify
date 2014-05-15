@@ -7,7 +7,6 @@ import java.util.List;
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FieldList;
-import org.daisy.dotify.api.formatter.PageTemplate;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.obfl.Expression;
 

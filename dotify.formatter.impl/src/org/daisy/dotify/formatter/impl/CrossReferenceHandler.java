@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.daisy.dotify.api.formatter.Context;
-import org.daisy.dotify.api.formatter.LayoutMaster;
 
 class CrossReferenceHandler implements CrossReferences, Context {
 	private final Map<String, Integer> volLocations;

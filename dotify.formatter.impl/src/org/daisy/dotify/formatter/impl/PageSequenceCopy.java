@@ -2,8 +2,6 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.Stack;
 
-import org.daisy.dotify.api.formatter.LayoutMaster;
-
 /**
  * Provides a method for creating a shallow copy of a PageSequence. 
  * 
