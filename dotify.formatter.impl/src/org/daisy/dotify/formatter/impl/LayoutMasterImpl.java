@@ -22,7 +22,7 @@ class LayoutMasterImpl implements LayoutMaster, LayoutMasterBuilder {
 	private final LayoutMasterProperties props; 
 	private final ArrayList<PageTemplate> templates;
 	private final DefaultPageTemplate defaultPageTemplate;
-	private PageAreaBuilder pageArea;
+	private PageAreaBuilderImpl pageArea;
 
 	public LayoutMasterImpl(LayoutMasterProperties props) {
 		this.templates = new ArrayList<PageTemplate>();
@@ -45,8 +45,11 @@ class LayoutMasterImpl implements LayoutMaster, LayoutMasterBuilder {
 	}
 
 	public PageAreaProperties getPageArea() {
-		// TODO Auto-generated method stub
-		return null;
+		return (pageArea!=null?pageArea.getProperties():null);
+	}
+	
+	PageAreaBuilderImpl getPageAreaBuilder() {
+		return pageArea;
 	}
 
 	public int getPageWidth() {

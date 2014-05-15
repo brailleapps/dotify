@@ -1,13 +1,12 @@
 package org.daisy.dotify.formatter.impl;
 
-import org.daisy.dotify.api.formatter.FormatterCore;
-import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.PageAreaBuilder;
+import org.daisy.dotify.api.formatter.PageAreaProperties;
 
 class PageAreaBuilderImpl implements PageAreaBuilder {
 	private final PageAreaProperties properties;
-	private final FormatterCore beforeArea;
-	private final FormatterCore afterArea;
+	private final FormatterCoreImpl beforeArea;
+	private final FormatterCoreImpl afterArea;
 
 	PageAreaBuilderImpl(PageAreaProperties properties) {
 		this.properties = properties;
@@ -19,11 +18,11 @@ class PageAreaBuilderImpl implements PageAreaBuilder {
 		return properties;
 	}
 
-	public FormatterCore getBeforeArea() {
+	public FormatterCoreImpl getBeforeArea() {
 		return beforeArea;
 	}
 
-	public FormatterCore getAfterArea() {
+	public FormatterCoreImpl getAfterArea() {
 		return afterArea;
 	}
 
