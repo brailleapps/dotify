@@ -296,7 +296,6 @@ dotify.api/src/org/daisy/dotify/api/formatter/FormatterConfigurationException.ja
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterCore.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterFactory.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormattingTypes.java -text svneol=unset#text/plain
-dotify.api/src/org/daisy/dotify/api/formatter/LayoutMaster.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/LayoutMasterBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/LayoutMasterProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Leader.java -text
@@ -306,7 +305,6 @@ dotify.api/src/org/daisy/dotify/api/formatter/NumeralField.java -text svneol=uns
 dotify.api/src/org/daisy/dotify/api/formatter/NumeralStyle.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageAreaBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageAreaProperties.java -text
-dotify.api/src/org/daisy/dotify/api/formatter/PageTemplate.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageTemplateBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PagenumField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/Position.java -text svneol=unset#text/plain
