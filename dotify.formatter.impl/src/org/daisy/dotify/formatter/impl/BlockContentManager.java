@@ -261,7 +261,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			}
 		} else {
 			RowImpl r  = rows.pop();
-			newRow(r.getMarkers(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
+			newRow(r.getMarkers(), r.getAnchors(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
 			newRow("", btr, leftMargin, rdp.getTextIndent(), rdp.getBlockIndent());
@@ -288,11 +288,11 @@ class BlockContentManager implements Iterable<RowImpl> {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		String preText = contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
-		newRow(null, margin, preText, "", chars, blockIndent);
+		newRow(null, null, margin, preText, "", chars, blockIndent);
 	}
 
 	//TODO: check leader functionality
-	private void newRow(List<Marker> r, MarginProperties margin, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
+	private void newRow(List<Marker> r, List<String> a, MarginProperties margin, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
 
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
@@ -371,6 +371,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 		assert nr != null;
 		if (r!=null) {
 			nr.addMarkers(r);
+		}
+		if (a!=null) {
+			nr.addAnchors(a);
 		}
 		nr.setLeftMargin(margin);
 		nr.setRightMargin(rightMargin);
