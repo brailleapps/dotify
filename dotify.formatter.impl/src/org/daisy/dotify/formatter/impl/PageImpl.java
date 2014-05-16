@@ -26,7 +26,7 @@ import org.daisy.dotify.tools.StringTools;
  */
 class PageImpl implements Page {
 	private PageSequenceImpl parent;
-	private final LayoutMasterImpl master;
+	private final LayoutMaster master;
 	private final FormatterContext fcontext;
 	private final List<RowImpl> before;
 	private final List<RowImpl> after;
@@ -40,7 +40,7 @@ class PageImpl implements Page {
 	private boolean isVolBreakAllowed;
 	private int keepPreviousSheets;
 	
-	public PageImpl(LayoutMasterImpl master, FormatterContext fcontext, PageSequenceImpl parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
+	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequenceImpl parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
 		this.master = master;
 		this.fcontext = fcontext;
 		this.rows = new ArrayList<RowImpl>();
@@ -170,7 +170,7 @@ class PageImpl implements Page {
 			}
 			ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 			{
-				LayoutMasterImpl lm = master;
+				LayoutMaster lm = master;
 				int pagenum = getPageIndex() + 1;
 				PageTemplate t = lm.getTemplate(pagenum);
 				BrailleTranslator filter = fcontext.getTranslator();

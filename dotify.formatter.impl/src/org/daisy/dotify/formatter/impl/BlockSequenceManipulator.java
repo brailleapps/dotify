@@ -15,7 +15,7 @@ class BlockSequenceManipulator {
 	private final Stack<Block> sequence;
 	//private final SequenceProperties props;
 	private Integer initialPagenum;
-	private final LayoutMasterImpl master;
+	private final LayoutMaster master;
 	
 	public BlockSequenceManipulator(BlockSequence b) {
 		this.sequence = new Stack<Block>();
@@ -27,7 +27,7 @@ class BlockSequenceManipulator {
 		this.taggedEntries = tagSequence(this.sequence);
 	}
 	
-	public BlockSequenceManipulator(LayoutMasterImpl master, Integer initialPageNumber) {
+	public BlockSequenceManipulator(LayoutMaster master, Integer initialPageNumber) {
 		this.sequence = new Stack<Block>();
 		this.master = master;
 		this.initialPagenum = initialPageNumber;

@@ -15,7 +15,7 @@ interface FormatterContext {
 
 	public BrailleTranslator getTranslator();
 	
-	public Map<String, LayoutMasterImpl> getMasters();
+	public Map<String, LayoutMaster> getMasters();
 	
 	public LayoutMasterBuilder newLayoutMaster(String name, LayoutMasterProperties properties);
 	

@@ -6,10 +6,10 @@ package org.daisy.dotify.formatter.impl;
  * @author Joel Håkansson
  */
 class BlockSequence extends FormatterCoreImpl {
-	private final LayoutMasterImpl master;
+	private final LayoutMaster master;
 	private final Integer initialPagenum;
 	
-	public BlockSequence(Integer initialPagenum, LayoutMasterImpl master) {
+	public BlockSequence(Integer initialPagenum, LayoutMaster master) {
 		this.initialPagenum = initialPagenum;
 		this.master = master;
 	}
@@ -20,7 +20,7 @@ class BlockSequence extends FormatterCoreImpl {
 	 * Gets the layout master for this sequence
 	 * @return returns the layout master for this sequence
 	 */
-	public LayoutMasterImpl getLayoutMaster() {
+	public LayoutMaster getLayoutMaster() {
 		return master;
 	}
 

@@ -8,7 +8,7 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;
-		private final LayoutMasterImpl master;
+		private final LayoutMaster master;
 		private final int pagesOffset;
 		private final HashMap<String, PageImpl> pageReferences;
 		private final FormatterContext context;
@@ -17,7 +17,7 @@ class PageSequenceImpl implements PageSequence {
 		private final List<RowImpl> before;
 		private final List<RowImpl> after;
 		
-		PageSequenceImpl(LayoutMasterImpl master, int pagesOffset, HashMap<String, PageImpl> pageReferences, List<RowImpl> before, List<RowImpl> after, FormatterContext context) {
+		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, PageImpl> pageReferences, List<RowImpl> before, List<RowImpl> after, FormatterContext context) {
 			this.pages = new Stack<PageImpl>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;

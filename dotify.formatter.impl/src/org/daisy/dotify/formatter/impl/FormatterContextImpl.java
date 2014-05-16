@@ -10,12 +10,12 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
 public class FormatterContextImpl implements FormatterContext {
 
 	private final BrailleTranslator translator;
-	private final Map<String, LayoutMasterImpl> masters;
+	private final Map<String, LayoutMaster> masters;
 	private final char spaceChar;
 
 	public FormatterContextImpl(BrailleTranslator translator) {
 		this.translator = translator;
-		this.masters = new HashMap<String, LayoutMasterImpl>();
+		this.masters = new HashMap<String, LayoutMaster>();
 		//margin char can only be a single character, the reason for going through the translator
 		//is because output isn't always braille.
 		this.spaceChar = getTranslator().translate(" ").getTranslatedRemainder().charAt(0);
@@ -26,12 +26,12 @@ public class FormatterContextImpl implements FormatterContext {
 	}
 	
 	public LayoutMasterBuilder newLayoutMaster(String name, LayoutMasterProperties properties) {
-		LayoutMasterImpl master = new LayoutMasterImpl(properties);
+		LayoutMaster master = new LayoutMaster(properties);
 		masters.put(name, master);
 		return master;
 	}
 	
-	public Map<String, LayoutMasterImpl> getMasters() {
+	public Map<String, LayoutMaster> getMasters() {
 		return masters;
 	}
 	

@@ -483,7 +483,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterCoreImpl.java
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LayoutMaster.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LayoutMasterImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Margin.java -text

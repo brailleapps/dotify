@@ -34,11 +34,11 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		return pageReferences.get(refid);
 	}
 	
-	void newSequence(LayoutMasterImpl master, int pagesOffset,  List<RowImpl> before, List<RowImpl> after) {
+	void newSequence(LayoutMaster master, int pagesOffset,  List<RowImpl> before, List<RowImpl> after) {
 		this.push(new PageSequenceImpl(master, pagesOffset, this.pageReferences, before, after, context));
 	}
 	
-	void newSequence(LayoutMasterImpl master, List<RowImpl> before, List<RowImpl> after) {
+	void newSequence(LayoutMaster master, List<RowImpl> before, List<RowImpl> after) {
 		if (this.size()==0) {
 			newSequence(master, 0, before, after);
 		} else {
