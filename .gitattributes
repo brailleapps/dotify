@@ -184,9 +184,11 @@ Dotify/test/org/daisy/dotify/impl/input/xml/XMLInputManagerFactoryTest.java -tex
 Dotify/test/org/daisy/dotify/input/InputManagerFactoryMakerTest.java -text
 Dotify/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#text/plain
 Dotify/test/org/daisy/dotify/resource-files/obfl-border-expected.pef -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-content-items-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-dls-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-border.obfl -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-dls.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-toc.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input.obfl -text
@@ -469,6 +471,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceManipulator.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockStruct.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ConditionalBlock.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ContentCollectionImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferences.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DefaultContext.java -text

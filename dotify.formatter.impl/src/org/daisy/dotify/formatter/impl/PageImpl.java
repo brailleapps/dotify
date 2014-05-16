@@ -10,6 +10,7 @@ import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
+import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TextBorderStyle;
@@ -25,11 +26,12 @@ import org.daisy.dotify.tools.StringTools;
  */
 class PageImpl implements Page {
 	private PageSequenceImpl parent;
-	private final LayoutMaster master;
+	private final LayoutMasterImpl master;
 	private final FormatterContext fcontext;
+	private final List<RowImpl> before;
+	private final List<RowImpl> after;
 	private ArrayList<RowImpl> rows;
-	private ArrayList<RowImpl> top;
-	private ArrayList<RowImpl> bottom;
+	private ArrayList<RowImpl> pageArea;
 	private ArrayList<Marker> markers;
 	private final int pageIndex;
 	private final int flowHeight;
@@ -38,12 +40,14 @@ class PageImpl implements Page {
 	private boolean isVolBreakAllowed;
 	private int keepPreviousSheets;
 	
-	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequenceImpl parent, int pageIndex) {
+	public PageImpl(LayoutMasterImpl master, FormatterContext fcontext, PageSequenceImpl parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
 		this.master = master;
 		this.fcontext = fcontext;
 		this.rows = new ArrayList<RowImpl>();
-		this.top = new ArrayList<RowImpl>();
-		this.bottom = new ArrayList<RowImpl>();
+		this.before = before;
+		this.after = after; 
+
+		this.pageArea = new ArrayList<RowImpl>();
 		this.markers = new ArrayList<Marker>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
@@ -69,13 +73,9 @@ class PageImpl implements Page {
 		}
 		return ret;
 	}
-	
-	void newTopBlock(List<RowImpl> block) {
-		top.addAll(block);
-	}
-	
-	void newBottomBlock(List<RowImpl> block) {
-		bottom.addAll(block);
+
+	void addToPageArea(List<RowImpl> block) {
+		pageArea.addAll(block);
 	}
 	
 	public void newRow(RowImpl r) {
@@ -136,18 +136,25 @@ class PageImpl implements Page {
 	}
 	
 	float spaceNeeded() {
-		return 	rowsNeeded(top, master.getRowSpacing()) + 
-				rowsNeeded(rows, master.getRowSpacing()) +
-				rowsNeeded(bottom, master.getRowSpacing());
+		return 	pageAreaSpaceNeeded() +
+				rowsNeeded(rows, master.getRowSpacing());
+	}
+	
+	float staticAreaSpaceNeeded() {
+		return rowsNeeded(before, master.getRowSpacing()) + rowsNeeded(after, master.getRowSpacing());
+	}
+	
+	float pageAreaSpaceNeeded() {
+		return (pageArea.size()>0 ? staticAreaSpaceNeeded() + rowsNeeded(pageArea, master.getRowSpacing()) : 0);
 	}
 	
 	/**
-	 * Space needed for the supplied rows.
+	 * Space needed if adding the supplied floating rows.
 	 * @param rs
 	 * @return
 	 */
 	float spaceNeeded(Iterable<? extends Row> rs) {
-		return rowsNeeded(rs, master.getRowSpacing());
+		return rowsNeeded(rs, master.getRowSpacing()) + (pageArea.size()==0 ? staticAreaSpaceNeeded() : 0);
 	}
 	
 	int spaceUsedOnPage(int offs) {
@@ -163,19 +170,28 @@ class PageImpl implements Page {
 			}
 			ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 			{
-				LayoutMaster lm = master;
+				LayoutMasterImpl lm = master;
 				int pagenum = getPageIndex() + 1;
 				PageTemplate t = lm.getTemplate(pagenum);
 				BrailleTranslator filter = fcontext.getTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
-				ret.addAll(top);
+				if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.TOP && pageArea.size() > 0) {
+					ret.addAll(before);
+					ret.addAll(pageArea);
+					ret.addAll(after);
+				}
 				ret.addAll(rows);
 				float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
-				if (t.getFooter().size() > 0 || border != TextBorderStyle.NONE || bottom.size() > 0) {
-					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing()) + rowsNeeded(bottom, lm.getRowSpacing())) < getFlowHeight() + headerHeight) {
+				if (t.getFooter().size() > 0 || border != TextBorderStyle.NONE || (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && pageArea.size() > 0)) {
+					float areaSize = (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM ? pageAreaSpaceNeeded() : 0);
+					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing()) + areaSize) < getFlowHeight() + headerHeight) {
 						ret.add(new RowImpl());
 					}
-					ret.addAll(bottom);
+					if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && pageArea.size() > 0) {
+						ret.addAll(before);
+						ret.addAll(pageArea);
+						ret.addAll(after);
+					}
 					ret.addAll(renderFields(lm, t.getFooter(), filter));
 				}
 			}

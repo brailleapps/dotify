@@ -1,20 +1,23 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class PageSequenceImpl implements PageSequence {
 		private final Stack<PageImpl> pages;
-		private final LayoutMaster master;
+		private final LayoutMasterImpl master;
 		private final int pagesOffset;
 		private final HashMap<String, PageImpl> pageReferences;
 		private final FormatterContext context;
 		private int keepNextSheets;
 		private PageImpl nextPage;
+		private final List<RowImpl> before;
+		private final List<RowImpl> after;
 		
-		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, PageImpl> pageReferences, FormatterContext context) {
+		PageSequenceImpl(LayoutMasterImpl master, int pagesOffset, HashMap<String, PageImpl> pageReferences, List<RowImpl> before, List<RowImpl> after, FormatterContext context) {
 			this.pages = new Stack<PageImpl>();
 			this.master = master;
 			this.pagesOffset = pagesOffset;
@@ -22,6 +25,8 @@ class PageSequenceImpl implements PageSequence {
 			this.context = context;
 			this.keepNextSheets = 0;
 			this.nextPage = null;
+			this.before = before;
+			this.after = after;
 		}
 
 		int rowsOnCurrentPage() {
@@ -33,7 +38,7 @@ class PageSequenceImpl implements PageSequence {
 				pages.push(nextPage);
 				nextPage = null;
 			} else {
-				pages.push(new PageImpl(master, context, this, pages.size()+pagesOffset));
+				pages.push(new PageImpl(master, context, this, pages.size()+pagesOffset, before, after));
 			}
 			if (keepNextSheets>0) {
 				currentPage().setAllowsVolumeBreak(false);
@@ -50,7 +55,7 @@ class PageSequenceImpl implements PageSequence {
 				//if new page is already in buffer, flush it.
 				newPage();
 			}
-			nextPage = new PageImpl(master, context, this, pages.size()+pagesOffset);
+			nextPage = new PageImpl(master, context, this, pages.size()+pagesOffset, before, after);
 		}
 		
 		void setKeepWithPreviousSheets(int value) {
@@ -92,6 +97,14 @@ class PageSequenceImpl implements PageSequence {
 	int spaceUsedOnPage(int offs) {
 		return currentPage().spaceUsedOnPage(offs);
 	}
+	
+	void newRow(RowImpl row, List<RowImpl> block) {
+		if (nextPage != null || currentPage().spaceNeeded(block) + currentPage().spaceNeeded() + 1 > currentPage().getFlowHeight()) {
+			newPage();
+		}
+		currentPage().newRow(row);
+		currentPage().addToPageArea(block);
+	}
 		
 		void newRow(RowImpl row) {
 		if (spaceUsedOnPage(1) > currentPage().getFlowHeight() || nextPage != null) {
@@ -99,12 +112,7 @@ class PageSequenceImpl implements PageSequence {
 			}
 			currentPage().newRow(row);
 		}
-		
-		void newRow(RowImpl row, String id) {
-			newRow(row);
-			insertIdentifier(id);
-		}
-		
+			
 		public LayoutMaster getLayoutMaster() {
 			return master;
 		}

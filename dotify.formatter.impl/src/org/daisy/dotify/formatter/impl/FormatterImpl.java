@@ -27,7 +27,8 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final static int DEFAULT_SPLITTER_MAX = 50;
 	
-	private HashMap<String, TableOfContentsImpl> tocs;
+	private final HashMap<String, TableOfContentsImpl> tocs;
+	private final HashMap<String, ContentCollectionImpl> collections;
 	private final Stack<VolumeTemplate> volumeTemplates;
 	
 	private PaginatorImpl contentPaginator;
@@ -44,6 +45,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	public FormatterImpl(FormatterContext context) {
 		super(context);
 		this.tocs = new HashMap<String, TableOfContentsImpl>();
+		this.collections = new HashMap<String, ContentCollectionImpl>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
 		
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
@@ -70,18 +72,19 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 		return tocs;
 	}
 	
-	public ContentCollection newCollection(String collectionIdentifier) {
-		// TODO Auto-generated method stub
-		return null;
+	public ContentCollection newCollection(String collectionId) {
+		ContentCollectionImpl collection = new ContentCollectionImpl();
+		collections.put(collectionId, collection);
+		return collection;
 	}
 
 	private Iterable<Volume> getVolumes() {
-		contentPaginator = new PaginatorImpl(context, getBlockSequenceIterable());
+		contentPaginator = new PaginatorImpl(context, getBlockSequenceIterable(), collections);
 
 		try {
 			reformat(DEFAULT_SPLITTER_MAX);
 		} catch (PaginatorException e) {
-			throw new RuntimeException("Error while reformatting.");
+			throw new RuntimeException("Error while reformatting.", e);
 		}
 		int j = 1;
 		boolean ok = false;
@@ -218,7 +221,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 		PageStructImpl ret = null;
 		try {
 			Iterable<BlockSequence> ib = formatVolumeContents(crh, pre, c);
-			PaginatorImpl paginator2 = new PaginatorImpl(context, ib);
+			PaginatorImpl paginator2 = new PaginatorImpl(context, ib, collections);
 			ret = paginator2.paginate(crh, c);
 		} catch (IOException e) {
 			ret = null;

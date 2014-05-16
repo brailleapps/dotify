@@ -12,7 +12,6 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private final FormatterContext context;
 	//private final StringFilter filters;
 	HashMap<String, PageImpl> pageReferences;
-
 	
 	public PageStructImpl(FormatterContext context) {
 		//this.filters = filters;
@@ -35,19 +34,19 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		return pageReferences.get(refid);
 	}
 	
-	void newSequence(LayoutMaster master, int pagesOffset) {
-		this.push(new PageSequenceImpl(master, pagesOffset, this.pageReferences, context));
+	void newSequence(LayoutMasterImpl master, int pagesOffset,  List<RowImpl> before, List<RowImpl> after) {
+		this.push(new PageSequenceImpl(master, pagesOffset, this.pageReferences, before, after, context));
 	}
 	
-	void newSequence(LayoutMaster master) {
+	void newSequence(LayoutMasterImpl master, List<RowImpl> before, List<RowImpl> after) {
 		if (this.size()==0) {
-			newSequence(master, 0);
+			newSequence(master, 0, before, after);
 		} else {
 			int next = currentSequence().currentPage().getPageIndex()+1;
 			if (currentSequence().getLayoutMaster().duplex() && (next % 2)==1) {
 				next++;
 			}
-			newSequence(master, next);
+			newSequence(master, next, before, after);
 		}
 	}
 	
@@ -58,17 +57,25 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private PageImpl currentPage() {
 		return currentSequence().currentPage();
 	}
+	
+	/**
+	 * Gets the height of the page area, including row spacing.
+	 * @return
+	 */
+	float pageAreaHeight() {
+		return currentPage().pageAreaSpaceNeeded();
+	}
 
 	void newPage() {
 		currentSequence().newPage();
 	}
 	
-	void newRow(RowImpl row) {
-		currentSequence().newRow(row);
+	void newRow(RowImpl row, List<RowImpl> block) {
+		currentSequence().newRow(row, block);
 	}
 	
-	void newRow(RowImpl row, String id) {
-		currentSequence().newRow(row, id);
+	void newRow(RowImpl row) {
+		currentSequence().newRow(row);
 	}
 
 	void insertMarkers(List<Marker> m) {
