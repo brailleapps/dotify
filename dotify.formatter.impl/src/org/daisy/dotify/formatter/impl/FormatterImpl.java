@@ -8,22 +8,32 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.ContentCollection;
+import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.Formatter;
+import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
+import org.daisy.dotify.api.formatter.LayoutMasterProperties;
+import org.daisy.dotify.api.formatter.Leader;
+import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.NumeralStyle;
+import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TableOfContents;
+import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.text.BreakPoint;
 import org.daisy.dotify.text.BreakPointHandler;
+import org.daisy.dotify.tools.StateObject;
 
 
 /**
  * Breaks flow into rows, page related block properties are left to next step
  * @author Joel Håkansson
  */
-public class FormatterImpl extends BlockStruct implements Formatter {
+public class FormatterImpl implements Formatter {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final static int DEFAULT_SPLITTER_MAX = 50;
 	
@@ -35,6 +45,11 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	private final Logger logger;
 	private final CrossReferenceHandler crh;
 	
+	private final StateObject state;
+	private final FormatterContext context;
+	private final Stack<BlockSequence> blocks;
+	private BlockSequence currentSequence;
+	
 	/**
 	 * Creates a new formatter
 	 */
@@ -43,13 +58,89 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	}
 	
 	public FormatterImpl(FormatterContext context) {
-		super(context);
+		this.context = context;
+		this.blocks = new Stack<BlockSequence>();
+		this.state = new StateObject();
 		this.tocs = new HashMap<String, TableOfContentsImpl>();
 		this.collections = new HashMap<String, ContentCollectionImpl>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
 		
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 		this.crh = new CrossReferenceHandler();
+	}
+	
+	public void newSequence(SequenceProperties p) {
+		state.assertOpen();
+		currentSequence = new BlockSequence(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
+		blocks.push(currentSequence);
+	}
+
+	public LayoutMasterBuilder newLayoutMaster(String name,
+			LayoutMasterProperties properties) {
+		return context.newLayoutMaster(name, properties);
+	}
+
+	public void open() {
+		state.assertUnopened();
+		state.open();
+	}
+	
+	public void close() throws IOException {
+		if (state.isClosed()) {
+			return;
+		}
+		state.assertOpen();
+		state.close();
+	}
+	
+	public void startBlock(BlockProperties props) {
+		state.assertOpen();
+		currentSequence.startBlock(props);
+	}
+
+	public void startBlock(BlockProperties props, String blockId) {
+		state.assertOpen();
+		currentSequence.startBlock(props, blockId);
+	}
+
+	public void endBlock() {
+		state.assertOpen();
+		currentSequence.endBlock();
+	}
+
+	public void insertMarker(Marker marker) {
+		state.assertOpen();
+		currentSequence.insertMarker(marker);
+	}
+
+	public void insertAnchor(String ref) {
+		state.assertOpen();
+		currentSequence.insertAnchor(ref);
+	}
+
+	public void insertLeader(Leader leader) {
+		state.assertOpen();
+		currentSequence.insertLeader(leader);
+	}
+
+	public void addChars(CharSequence chars, TextProperties props) {
+		state.assertOpen();
+		currentSequence.addChars(chars, props);
+	}
+
+	public void newLine() {
+		state.assertOpen();
+		currentSequence.newLine();
+	}
+
+	public void insertReference(String identifier, NumeralStyle numeralStyle) {
+		state.assertOpen();
+		currentSequence.insertReference(identifier, numeralStyle);
+	}
+
+	public void insertEvaluate(DynamicContent exp, TextProperties t) {
+		state.assertOpen();
+		currentSequence.insertEvaluate(exp, t);
 	}
 
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
@@ -79,7 +170,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	}
 
 	private Iterable<Volume> getVolumes() {
-		contentPaginator = new PaginatorImpl(context, getBlockSequenceIterable(), collections);
+		contentPaginator = new PaginatorImpl(context, blocks, collections);
 
 		try {
 			reformat(DEFAULT_SPLITTER_MAX);
