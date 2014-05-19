@@ -167,7 +167,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 					ok2 = false;
 					logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
 				}
-				ret.add(new VolumeImpl(preV.get(i-1), body, postV.get(i-1)));
+				ret.add(new Volume(preV.get(i-1), body, postV.get(i-1)));
 			}
 			if (volBreaks.hasNext()) {
 				ok2 = false;

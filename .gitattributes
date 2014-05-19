@@ -519,9 +519,8 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Volume.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Volume.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/WriterHandler.java -text svneol=unset#text/plain
