@@ -39,7 +39,7 @@ public class FormatterImpl extends BlockStruct implements Formatter {
 	 * Creates a new formatter
 	 */
 	public FormatterImpl(BrailleTranslator translator) {
-		this(new FormatterContextImpl(translator));
+		this(new FormatterContext(translator));
 	}
 	
 	public FormatterImpl(FormatterContext context) {

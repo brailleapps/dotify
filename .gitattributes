@@ -478,7 +478,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DefaultContext.java -t
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Evaluate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterContext.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterContextImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterCoreImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
