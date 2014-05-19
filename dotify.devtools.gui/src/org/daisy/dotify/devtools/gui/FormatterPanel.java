@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -21,7 +20,10 @@ import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.FormatterEngineFactoryService;
 import org.daisy.dotify.api.engine.LayoutEngineException;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
-import org.daisy.dotify.writer.PEFMediaWriter;
+import org.daisy.dotify.api.writer.MediaTypes;
+import org.daisy.dotify.api.writer.PagedMediaWriter;
+import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactoryService;
 import org.osgi.framework.BundleContext;
 
 public class FormatterPanel extends MyPanel {
@@ -35,6 +37,7 @@ public class FormatterPanel extends MyPanel {
 	private File input;
 
 	private FormatterTracker tracker;
+	private WriterTracker wtracker;
 	
 	public FormatterPanel() {
 		super(new GridLayout(2, 1));
@@ -78,8 +81,11 @@ public class FormatterPanel extends MyPanel {
 		} else {
 
 				FormatterEngineFactoryService t = tracker.get();
+				PagedMediaWriterFactoryService w = wtracker.get();
 				if (t == null) {
 					outputField.setText("No formatter detected");
+				} if (w == null) {
+					outputField.setText("No writer detected");
 				} else {
 					if (input==null) {
 						outputField.setText("No file selected.");
@@ -87,10 +93,11 @@ public class FormatterPanel extends MyPanel {
 					} else if (!input.isFile()) { 
 						outputField.setText("File doesn't exist " + input);
 					} else {
-						Properties p = new Properties();
-						FormatterEngine e = t.newFormatterEngine(getTargetLocale(), BrailleTranslatorFactory.MODE_UNCONTRACTED, new PEFMediaWriter(p));
-						File out = new File(input.getParentFile(), input.getName()+".pef");
 						try {
+							PagedMediaWriter pw = w.newFactory(MediaTypes.PEF_MEDIA_TYPE).newPagedMediaWriter();
+							FormatterEngine e = t.newFormatterEngine(getTargetLocale(), BrailleTranslatorFactory.MODE_UNCONTRACTED, pw);
+							File out = new File(input.getParentFile(), input.getName()+".pef");
+						
 							e.convert(new FileInputStream(input), new FileOutputStream(out));
 							outputField.setText("Done! " + out);
 						} catch (FileNotFoundException e1) {
@@ -98,6 +105,9 @@ public class FormatterPanel extends MyPanel {
 						} catch (LayoutEngineException e1) {
 							e1.printStackTrace();
 							outputField.setText("Not supported");
+						} catch (PagedMediaWriterConfigurationException e1) {
+							e1.printStackTrace();
+							outputField.setText(e1.toString());
 						}
 					}
 				}
@@ -108,10 +118,13 @@ public class FormatterPanel extends MyPanel {
 	public void openTracking(BundleContext context) {
 		tracker = new FormatterTracker(context);
 		tracker.open();
+		wtracker = new WriterTracker(context);
+		wtracker.open();
 	}
 
 	public void closeTracking() {
 		tracker.close();
+		wtracker.close();
 	}
 
 }

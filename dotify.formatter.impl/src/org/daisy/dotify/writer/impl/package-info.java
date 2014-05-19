@@ -14,4 +14,4 @@
  * </p>
  * @author Joel Håkansson
  */
-package org.daisy.dotify.writer;
+package org.daisy.dotify.writer.impl;

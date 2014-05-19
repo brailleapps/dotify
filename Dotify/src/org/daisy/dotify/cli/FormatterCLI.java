@@ -6,12 +6,14 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
 
 import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.LayoutEngineException;
+import org.daisy.dotify.api.writer.MediaTypes;
+import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
-import org.daisy.dotify.writer.PEFMediaWriter;
+import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
 
 public class FormatterCLI {
 
@@ -19,17 +21,20 @@ public class FormatterCLI {
 	 * @param args
 	 * @throws LayoutEngineException
 	 * @throws FileNotFoundException
+	 * @throws PagedMediaWriterConfigurationException 
 	 */
-	public static void main(String[] args) throws FileNotFoundException, LayoutEngineException {
+	public static void main(String[] args) throws FileNotFoundException, LayoutEngineException, PagedMediaWriterConfigurationException {
 		if (args.length != 4) {
 			System.out.println("Expected four arguments: input_file output_file locale mode");
 			System.out.println(" file.obfl file.pef sv-SE uncontracted");
 			System.exit(-1);
 		}
-		Properties p = new Properties();
-		p.put("identifier", generateIdentifier());
-		p.put("date", getDefaultDate("yyyy-MM-dd"));
-		FormatterEngine formatter = FormatterEngineMaker.newInstance().newFormatterEngine(args[2], args[3], new PEFMediaWriter(p));
+		PagedMediaWriterFactory f = PagedMediaWriterFactoryMaker.newInstance().getFactory(MediaTypes.PEF_MEDIA_TYPE);
+
+		f.setFeature("identifier", generateIdentifier());
+		f.setFeature("date", getDefaultDate("yyyy-MM-dd"));
+		
+		FormatterEngine formatter = FormatterEngineMaker.newInstance().newFormatterEngine(args[2], args[3], f.newPagedMediaWriter());
 		formatter.convert(new FileInputStream(args[0]), new FileOutputStream(args[1]));
 	}
 

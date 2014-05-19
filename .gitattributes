@@ -451,6 +451,7 @@ dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/MyPanel.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/MyTracker.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/TranslatorPanel.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/TranslatorTracker.java -text
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/WriterTracker.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/resource-files/odt2braille6.ttf -text
 dotify.formatter.impl/.classpath -text
 dotify.formatter.impl/.project -text
@@ -542,14 +543,13 @@ dotify.formatter.impl/src/org/daisy/dotify/tools/CompoundIterator.java -text svn
 dotify.formatter.impl/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/tools/packageinfo -text
-dotify.formatter.impl/src/org/daisy/dotify/writer/PEFMediaWriter.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/writer/TextMediaWriter.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriter.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriterFactory.java -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriterFactoryService.java -text
+dotify.formatter.impl/src/org/daisy/dotify/writer/impl/TextMediaWriter.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/writer/impl/TextMediaWriterFactory.java -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/impl/TextMediaWriterFactoryService.java -text
-dotify.formatter.impl/src/org/daisy/dotify/writer/package-info.java -text
-dotify.formatter.impl/src/org/daisy/dotify/writer/packageinfo -text
+dotify.formatter.impl/src/org/daisy/dotify/writer/impl/package-info.java -text
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculatorTest.java -text svneol=unset#text/plain
 dotify.formatter.impl/test/org/daisy/dotify/formatter/impl/TabStopStringTest.java -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/ObflWsXsltTest.java -text

@@ -7,7 +7,11 @@ import java.util.Properties;
 
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
+import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
+import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTask;
@@ -15,8 +19,6 @@ import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.writer.PEFMediaWriter;
-import org.daisy.dotify.writer.TextMediaWriter;
 
 
 /**
@@ -102,14 +104,22 @@ public class DotifyTaskSystem implements TaskSystem {
 
 			String translatorMode;
 			PagedMediaWriter paged;
-
-			if (SystemKeys.PEF_FORMAT.equals(outputFormat)) {
-				// additional braille modes here...
-				translatorMode = BrailleTranslatorFactory.MODE_UNCONTRACTED;
-				paged = new PEFMediaWriter(p2);
-			} else {
-				translatorMode = BrailleTranslatorFactory.MODE_BYPASS;
-				paged = new TextMediaWriter("UTF-8");
+			
+			try {
+				if (SystemKeys.PEF_FORMAT.equals(outputFormat)) {
+					// additional braille modes here...
+					translatorMode = BrailleTranslatorFactory.MODE_UNCONTRACTED;
+					PagedMediaWriterFactory pmf = PagedMediaWriterFactoryMaker.newInstance().getFactory(MediaTypes.PEF_MEDIA_TYPE);
+					for (Object key : p2.keySet()) {
+						pmf.setFeature(key.toString(), p2.get(key));
+					}
+					paged = pmf.newPagedMediaWriter();
+				} else {
+					translatorMode = BrailleTranslatorFactory.MODE_BYPASS;
+					paged = PagedMediaWriterFactoryMaker.newInstance().newPagedMediaWriter(MediaTypes.TEXT_MEDIA_TYPE);
+				}
+			} catch (PagedMediaWriterConfigurationException e) {
+				throw new TaskSystemException(e);
 			}
 			// BrailleTranslator bt =
 			// BrailleTranslatorFactoryMaker.newInstance().newTranslator(context,

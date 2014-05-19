@@ -19,19 +19,20 @@ import org.daisy.dotify.api.engine.LayoutEngineException;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
 import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
-import org.daisy.dotify.writer.TextMediaWriter;
 import org.junit.Test;
 public class LayoutEngineTest {
 	
 	@Test
-	public void testLayoutEnginge() throws LayoutEngineException, IOException {
+	public void testLayoutEnginge() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		//set line separator for this test, as text media writer result is dependent on its value
 		System.setProperty("line.separator", "\r\n");
+		PagedMediaWriterFactory f = PagedMediaWriterFactoryMaker.newInstance().getFactory(MediaTypes.TEXT_MEDIA_TYPE);
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("en",
 				BrailleTranslatorFactory.MODE_BYPASS,
-				new TextMediaWriter("utf-8"));
+				f.newPagedMediaWriter());
 		File res = File.createTempFile("TestResult", ".tmp");
 		res.deleteOnExit();
 		

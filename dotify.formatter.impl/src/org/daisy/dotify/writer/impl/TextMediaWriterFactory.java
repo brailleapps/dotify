@@ -3,7 +3,6 @@ package org.daisy.dotify.writer.impl;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
-import org.daisy.dotify.writer.TextMediaWriter;
 
 class TextMediaWriterFactory implements PagedMediaWriterFactory {
 	private final static String FEATURE_ENCODING_KEY = "encoding";

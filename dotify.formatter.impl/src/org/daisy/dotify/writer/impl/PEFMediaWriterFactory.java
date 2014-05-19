@@ -5,7 +5,6 @@ import java.util.Properties;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
-import org.daisy.dotify.writer.PEFMediaWriter;
 
 class PEFMediaWriterFactory implements PagedMediaWriterFactory {
 	private final Properties p;

@@ -1,4 +1,4 @@
-package org.daisy.dotify.writer;
+package org.daisy.dotify.writer.impl;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -18,7 +18,7 @@ import org.daisy.dotify.tools.StateObject;
  * @author Joel Håkansson
  *
  */
-public class TextMediaWriter implements PagedMediaWriter {
+class TextMediaWriter implements PagedMediaWriter {
 	private PrintStream pst;
 	//private Properties p;
 	private boolean hasOpenVolume;

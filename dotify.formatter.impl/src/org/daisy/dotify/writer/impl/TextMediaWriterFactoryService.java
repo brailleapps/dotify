@@ -34,7 +34,7 @@ public class TextMediaWriterFactoryService implements
 	}
 
 	public PagedMediaWriterFactory newFactory(String mediaType) {
-		return new PEFMediaWriterFactory();
+		return new TextMediaWriterFactory();
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.daisy.dotify.writer;
+package org.daisy.dotify.writer.impl;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -22,7 +22,7 @@ import org.daisy.dotify.tools.StateObject;
  * @author Joel Håkansson
  *
  */
-public class PEFMediaWriter implements PagedMediaWriter {
+class PEFMediaWriter implements PagedMediaWriter {
 	/**
 	 * Defines a key to set the date in the PEF-file.
 	 */
