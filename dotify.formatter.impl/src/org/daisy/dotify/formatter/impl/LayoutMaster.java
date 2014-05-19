@@ -1,10 +1,8 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.daisy.dotify.api.formatter.Condition;
-import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.PageAreaBuilder;
@@ -19,18 +17,18 @@ import org.daisy.dotify.api.translator.TextBorderStyle;
 class LayoutMaster implements LayoutMasterBuilder {
 	private final LayoutMasterProperties props; 
 	private final ArrayList<PageTemplate> templates;
-	private final DefaultPageTemplate defaultPageTemplate;
+	private final PageTemplate defaultPageTemplate;
 	private PageAreaBuilderImpl pageArea;
 
 	public LayoutMaster(LayoutMasterProperties props) {
 		this.templates = new ArrayList<PageTemplate>();
 		this.props = props;
-		this.defaultPageTemplate = new DefaultPageTemplate();
+		this.defaultPageTemplate = new PageTemplate();
 		this.pageArea = null;
 	}
 	
 	public PageTemplateBuilder newTemplate(Condition c) {
-		PageTemplateImpl p = new PageTemplateImpl(c);
+		PageTemplate p = new PageTemplate(c);
 		templates.add(p);
 		return p;
 	}
@@ -123,23 +121,6 @@ class LayoutMaster implements LayoutMasterBuilder {
 	 */
 	public int getOuterMargin() {
 		return props.getOuterMargin();
-	}
-
-	private static class DefaultPageTemplate implements PageTemplate {
-		private final List<FieldList> empty = new ArrayList<FieldList>();
-
-		public List<FieldList> getHeader() {
-			return empty;
-		}
-
-		public List<FieldList> getFooter() {
-			return empty;
-		}
-
-		public boolean appliesTo(int pagenum) {
-			return false;
-		}
-		
 	}
 
 	public PageAreaBuilder setPageArea(PageAreaProperties properties) {

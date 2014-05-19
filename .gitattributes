@@ -503,7 +503,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTemplate.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTemplateImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageTools.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorException.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PaginatorImpl.java -text svneol=unset#text/plain
