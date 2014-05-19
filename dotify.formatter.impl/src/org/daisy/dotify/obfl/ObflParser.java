@@ -409,11 +409,11 @@ public class ObflParser extends XMLParserBase {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
-		formatter.newSequence(builder.build());
+		FormatterCore seq = formatter.newSequence(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, formatter, locale, hyph);
+				parseBlock(event, input, seq, locale, hyph);
 			}/* else if (equalsStart(event, LEADER)) {
 				parseLeader(event, input);
 			}*/

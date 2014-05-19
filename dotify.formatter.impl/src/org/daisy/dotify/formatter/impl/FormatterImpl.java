@@ -8,18 +8,13 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.ContentCollection;
-import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.Formatter;
+import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
-import org.daisy.dotify.api.formatter.Leader;
-import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TableOfContents;
-import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
@@ -48,7 +43,6 @@ public class FormatterImpl implements Formatter {
 	private final StateObject state;
 	private final FormatterContext context;
 	private final Stack<BlockSequence> blocks;
-	private BlockSequence currentSequence;
 	
 	/**
 	 * Creates a new formatter
@@ -69,10 +63,11 @@ public class FormatterImpl implements Formatter {
 		this.crh = new CrossReferenceHandler();
 	}
 	
-	public void newSequence(SequenceProperties p) {
+	public FormatterCore newSequence(SequenceProperties p) {
 		state.assertOpen();
-		currentSequence = new BlockSequence(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
+		BlockSequence currentSequence = new BlockSequence(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
 		blocks.push(currentSequence);
+		return currentSequence;
 	}
 
 	public LayoutMasterBuilder newLayoutMaster(String name,
@@ -91,56 +86,6 @@ public class FormatterImpl implements Formatter {
 		}
 		state.assertOpen();
 		state.close();
-	}
-	
-	public void startBlock(BlockProperties props) {
-		state.assertOpen();
-		currentSequence.startBlock(props);
-	}
-
-	public void startBlock(BlockProperties props, String blockId) {
-		state.assertOpen();
-		currentSequence.startBlock(props, blockId);
-	}
-
-	public void endBlock() {
-		state.assertOpen();
-		currentSequence.endBlock();
-	}
-
-	public void insertMarker(Marker marker) {
-		state.assertOpen();
-		currentSequence.insertMarker(marker);
-	}
-
-	public void insertAnchor(String ref) {
-		state.assertOpen();
-		currentSequence.insertAnchor(ref);
-	}
-
-	public void insertLeader(Leader leader) {
-		state.assertOpen();
-		currentSequence.insertLeader(leader);
-	}
-
-	public void addChars(CharSequence chars, TextProperties props) {
-		state.assertOpen();
-		currentSequence.addChars(chars, props);
-	}
-
-	public void newLine() {
-		state.assertOpen();
-		currentSequence.newLine();
-	}
-
-	public void insertReference(String identifier, NumeralStyle numeralStyle) {
-		state.assertOpen();
-		currentSequence.insertReference(identifier, numeralStyle);
-	}
-
-	public void insertEvaluate(DynamicContent exp, TextProperties t) {
-		state.assertOpen();
-		currentSequence.insertEvaluate(exp, t);
 	}
 
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
@@ -369,7 +314,5 @@ public class FormatterImpl implements Formatter {
 		} catch (IOException e) {
 		}
 	}
-	
-
 
 }
