@@ -2,18 +2,17 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.Marker;
 
-class PageStructImpl extends Stack<PageSequence> implements PageStruct {
+class PageStructBuilder extends PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	
 	private final FormatterContext context;
 	//private final StringFilter filters;
 	HashMap<String, PageImpl> pageReferences;
 	
-	public PageStructImpl(FormatterContext context) {
+	public PageStructBuilder(FormatterContext context) {
 		//this.filters = filters;
 		this.pageReferences = new HashMap<String, PageImpl>();
 		this.context = context;
@@ -24,11 +23,6 @@ class PageStructImpl extends Stack<PageSequence> implements PageStruct {
 	}*/
 
 	private static final long serialVersionUID = 2591429059130956153L;
-
-
-	public List<PageSequence> getContents() {
-		return this;
-	}
 
 	public PageImpl getPage(String refid) {
 		return pageReferences.get(refid);
@@ -102,14 +96,6 @@ class PageStructImpl extends Stack<PageSequence> implements PageStruct {
 		return currentPage().getFlowHeight();
 	}
 	
-	int getPageCount() {
-		int size = 0;
-		for (PageSequence ps : this) {
-			size += ps.getPageCount();
-		}
-		return size;
-	}
-	
 	PageImpl getPage(int i) {
 		for (PageSequence ps : this) {
 			if (i < ps.getPageCount()) {
@@ -176,8 +162,8 @@ class PageStructImpl extends Stack<PageSequence> implements PageStruct {
 	 * @param contentSheets the number of sheets
 	 * @return
 	 */
-	PageStructCopy substruct(int pageIndex, int contentSheets) {
-		PageStructCopy body = new PageStructCopy();
+	PageStruct substruct(int pageIndex, int contentSheets) {
+		PageStruct body = new PageStruct();
 		PageSequence originalSeq = null;
 		int sheets = 0;
 		int pagesInSeq = 0;

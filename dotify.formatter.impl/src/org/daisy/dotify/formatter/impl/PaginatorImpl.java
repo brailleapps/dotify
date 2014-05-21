@@ -29,9 +29,9 @@ public class PaginatorImpl {
 	 * @param refs the cross references to use
 	 * @throws IOException if IO fails
 	 */
-	public PageStructImpl paginate(CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+	public PageStructBuilder paginate(CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 	restart:while (true) {
-		PageStructImpl pageStruct = new PageStructImpl(context);
+		PageStructBuilder pageStruct = new PageStructBuilder(context);
 		for (BlockSequence seq : fs) {
 			ContentCollectionImpl c = null;
 			PageAreaProperties pa = seq.getLayoutMaster().getPageArea();
@@ -118,7 +118,7 @@ public class PaginatorImpl {
 	}
 	}
 	
-	private void addRows(Iterable<RowImpl> rows, PageStructImpl pageStruct) {
+	private void addRows(Iterable<RowImpl> rows, PageStructBuilder pageStruct) {
 		for (RowImpl r : rows) {
 			pageStruct.newRow(r);
 		}
@@ -136,7 +136,7 @@ public class PaginatorImpl {
 			this.rdm = block.getBlockContentManager();
 		}
 		
-		private void addVerticalSpace(PageStructImpl pageStruct) {
+		private void addVerticalSpace(PageStructBuilder pageStruct) {
 			if (block.getVerticalPosition() != null) {
 				int blockSpace = rdm.getRowCount() + block.getSpaceBefore() + block.getSpaceAfter();
 				int pos = block.getVerticalPosition().getPosition().makeAbsolute(pageStruct.getFlowHeight());
@@ -161,7 +161,7 @@ public class PaginatorImpl {
 			}
 		}
 		
-		private void startNewPageIfNeeded(PageStructImpl pageStruct, BlockSequence seq) {
+		private void startNewPageIfNeeded(PageStructBuilder pageStruct, BlockSequence seq) {
 			boolean hasContent = pageStruct.spaceUsedInRows(0) > 0;
 			switch (block.getBreakBeforeType()) {
 				case PAGE:
@@ -190,7 +190,7 @@ public class PaginatorImpl {
 		}
 
 
-		private boolean addRows(PageStructImpl pageStruct, LayoutMaster master, CrossReferences refs, DefaultContext rcontext, ContentCollectionImpl c) {
+		private boolean addRows(PageStructBuilder pageStruct, LayoutMaster master, CrossReferences refs, DefaultContext rcontext, ContentCollectionImpl c) {
 			boolean first = true;
 			for (RowImpl row : rdm) {
 				if (master.getPageArea()!=null && c!=null) {

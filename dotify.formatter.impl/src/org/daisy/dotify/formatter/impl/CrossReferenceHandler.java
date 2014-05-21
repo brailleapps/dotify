@@ -12,7 +12,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 
 	private HashMap<Integer, Integer> volSheet;
 	private Map<Page, Integer> pageSheetMap;
-	private PageStructImpl ps;
+	private PageStructBuilder ps;
 	private EvenSizeVolumeSplitterCalculator sdc;
 	
 	private boolean isDirty;
@@ -33,11 +33,11 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		//this.maxKey = 0;
 	}
 	
-	public PageStructImpl getContents() {
+	public PageStructBuilder getContents() {
 		return ps;
 	}
 	
-	public void setContents(PageStructImpl contents, int splitterMax) {
+	public void setContents(PageStructBuilder contents, int splitterMax) {
 		this.ps = contents;
 		this.sdc = new EvenSizeVolumeSplitterCalculator(PageTools.countSheets(ps.getContents()), splitterMax);
 		int sheetIndex=0;
@@ -74,7 +74,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		volData.put(volumeNumber, d);
 	}
 	
-	public void setPreVolData(int volumeNumber, PageStructImpl preVolData) {
+	public void setPreVolData(int volumeNumber, PageStructBuilder preVolData) {
 		VolData d = (VolData)getVolData(volumeNumber);
 		/*if (d.preVolData!=preVolData) {
 			setDirty(true);
@@ -82,7 +82,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		d.setPreVolData(preVolData);
 	}
 	
-	public void setPostVolData(int volumeNumber, PageStructImpl postVolData) {
+	public void setPostVolData(int volumeNumber, PageStructBuilder postVolData) {
 		VolData d = (VolData)getVolData(volumeNumber);
 		/*if (d.postVolData!=postVolData) {
 			setDirty(true);
@@ -221,8 +221,8 @@ class CrossReferenceHandler implements CrossReferences, Context {
 	}
 	
 	private class VolData implements VolDataInterface {
-		private PageStructImpl preVolData;
-		private PageStructImpl postVolData;
+		private PageStructBuilder preVolData;
+		private PageStructBuilder postVolData;
 		private int preVolSize;
 		private int postVolSize;
 		private int targetVolSize;
@@ -233,21 +233,21 @@ class CrossReferenceHandler implements CrossReferences, Context {
 			this.targetVolSize = 0;
 		}
 
-		public PageStructImpl getPreVolData() {
+		public PageStructBuilder getPreVolData() {
 			return preVolData;
 		}
 
-		public void setPreVolData(PageStructImpl preVolData) {
+		public void setPreVolData(PageStructBuilder preVolData) {
 			//use the highest value to avoid oscillation
 			preVolSize = Math.max(preVolSize, PageTools.countSheets(preVolData.getContents()));
 			this.preVolData = preVolData;
 		}
 
-		public PageStructImpl getPostVolData() {
+		public PageStructBuilder getPostVolData() {
 			return postVolData;
 		}
 
-		public void setPostVolData(PageStructImpl postVolData) {
+		public void setPostVolData(PageStructBuilder postVolData) {
 			//use the highest value to avoid oscillation
 			postVolSize = Math.max(postVolSize, PageTools.countSheets(postVolData.getContents()));
 			this.postVolData = postVolData;

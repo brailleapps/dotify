@@ -132,7 +132,7 @@ public class FormatterImpl implements Formatter {
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
-			PageStructImpl ps = crh.getContents();
+			PageStructBuilder ps = crh.getContents();
 			final int contents = PageTools.countSheets(ps); 
 			String breakpoints = ps.buildBreakpointString();
 			logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
@@ -196,7 +196,7 @@ public class FormatterImpl implements Formatter {
 				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+crh.getVolData(i).getVolOverhead()) + 
 						", content:" + contentSheets +
 						", overhead:" + crh.getVolData(i).getVolOverhead());
-				PageStructCopy body = ps.substruct(pageIndex, contentSheets);
+				PageStruct body = ps.substruct(pageIndex, contentSheets);
 				pageIndex += body.getPageCount();
 				int sheetsInVolume = PageTools.countSheets(body) + crh.getVolData(i).getVolOverhead();
 				if (sheetsInVolume>crh.getVolData(i).getTargetVolSize()) {
@@ -254,7 +254,7 @@ public class FormatterImpl implements Formatter {
 
 	private PageStruct getVolumeContents(int volumeNumber, boolean pre) {
 		DefaultContext c = new DefaultContext(volumeNumber, crh.getExpectedVolumeCount());
-		PageStructImpl ret = null;
+		PageStructBuilder ret = null;
 		try {
 			Iterable<BlockSequence> ib = formatVolumeContents(crh, pre, c);
 			PaginatorImpl paginator2 = new PaginatorImpl(context, ib, collections);
