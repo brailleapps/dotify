@@ -1,25 +1,15 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Stack;
 
 
-class PageStructCopy implements Iterable<PageSequence> {
-	private final List<PageSequence> seq;
-	private final int size;
-	
-	public PageStructCopy(List<PageSequence> seq, int size) {
-		this.seq = seq;
-		this.size = size;
-		
-	}
-	
+class PageStructCopy extends Stack<PageSequence> {
+
 	int getPageCount() {
+		int size = 0;
+		for (PageSequence ps : this) {
+			size += ps.getPageCount();
+		}
 		return size;
 	}
-
-	public Iterator<PageSequence> iterator() {
-		return seq.iterator();
-	}
-
 }

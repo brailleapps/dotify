@@ -177,8 +177,7 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 	 * @return
 	 */
 	PageStructCopy substruct(int pageIndex, int contentSheets) {
-		Stack<PageSequence> seq = new Stack<PageSequence>();
-		int size = 0;
+		PageStructCopy body = new PageStructCopy();
 		PageSequence originalSeq = null;
 		int sheets = 0;
 		int pagesInSeq = 0;
@@ -197,18 +196,17 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 						i = 0;
 					}
 					if (sheets + i<=contentSheets) {
-						if (seq.empty() || originalSeq != ps) {
+						if (body.empty() || originalSeq != ps) {
 							originalSeq = ps;
-							seq.add(new PageSequence(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
+							body.add(new PageSequence(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
 							pagesInSeq = 0;
 						}
-						((PageSequence)seq.peek()).addPage(p);
+						((PageSequence)body.peek()).addPage(p);
 						pagesInSeq++;
 						if (!ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 1) {
 							sheets++;
 						}
 						pageIndex++;
-						size++;
 					} else {
 						//we have what we need
 						break process;
@@ -220,7 +218,6 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 			}
 			offs += ps.getPageCount();
 		}
-		PageStructCopy body = new PageStructCopy(seq, size);
 		return body;
 	}
 
