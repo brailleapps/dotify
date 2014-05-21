@@ -6,7 +6,7 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.Marker;
 
-class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
+class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	
 	private final FormatterContext context;
@@ -26,7 +26,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	private static final long serialVersionUID = 2591429059130956153L;
 
 
-	public List<PageSequenceImpl> getContents() {
+	public List<PageSequenceBuilder> getContents() {
 		return this;
 	}
 
@@ -35,7 +35,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	}
 	
 	void newSequence(LayoutMaster master, int pagesOffset,  List<RowImpl> before, List<RowImpl> after) {
-		this.push(new PageSequenceImpl(master, pagesOffset, this.pageReferences, before, after, context));
+		this.push(new PageSequenceBuilder(master, pagesOffset, this.pageReferences, before, after, context));
 	}
 	
 	void newSequence(LayoutMaster master, List<RowImpl> before, List<RowImpl> after) {
@@ -50,7 +50,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		}
 	}
 	
-	PageSequenceImpl currentSequence() {
+	PageSequenceBuilder currentSequence() {
 		return this.peek();
 	}
 
@@ -111,7 +111,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	}
 	
 	PageImpl getPage(int i) {
-		for (PageSequenceImpl ps : this) {
+		for (PageSequenceBuilder ps : this) {
 			if (i < ps.getPageCount()) {
 				return ps.getPage(i);
 			} else {
@@ -130,7 +130,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 	String buildBreakpointString() {
 		StringBuilder res = new StringBuilder();
 		boolean volBreakAllowed = true;
-		for (PageSequenceImpl seq : this) {
+		for (PageSequenceBuilder seq : this) {
 			StringBuilder sb = new StringBuilder();
 			LayoutMaster lm = seq.getLayoutMaster();
 			int pageIndex=0;
@@ -185,7 +185,7 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 		PageImpl p;
 		int offs = 0;
 		int i;
-		process:for (PageSequenceImpl ps : this) {
+		process:for (PageSequenceBuilder ps : this) {
 			while (pageIndex-offs < ps.getPageCount()) {
 				p = ps.getPage(pageIndex-offs);
 				if (pageIndex<getPageCount()) {
@@ -199,10 +199,10 @@ class PageStructImpl extends Stack<PageSequenceImpl> implements PageStruct {
 					if (sheets + i<=contentSheets) {
 						if (seq.empty() || originalSeq != ps) {
 							originalSeq = ps;
-							seq.add(new PageSequenceCopy(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
+							seq.add(new PageSequence(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
 							pagesInSeq = 0;
 						}
-						((PageSequenceCopy)seq.peek()).addPage(p);
+						((PageSequence)seq.peek()).addPage(p);
 						pagesInSeq++;
 						if (!ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 1) {
 							sheets++;

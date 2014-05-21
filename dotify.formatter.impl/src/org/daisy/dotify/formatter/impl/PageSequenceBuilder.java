@@ -2,13 +2,10 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
-class PageSequenceImpl implements PageSequence {
-		private final Stack<PageImpl> pages;
-		private final LayoutMaster master;
+class PageSequenceBuilder extends PageSequence {
 		private final int pagesOffset;
 		private final HashMap<String, PageImpl> pageReferences;
 		private final FormatterContext context;
@@ -17,9 +14,8 @@ class PageSequenceImpl implements PageSequence {
 		private final List<RowImpl> before;
 		private final List<RowImpl> after;
 		
-		PageSequenceImpl(LayoutMaster master, int pagesOffset, HashMap<String, PageImpl> pageReferences, List<RowImpl> before, List<RowImpl> after, FormatterContext context) {
-			this.pages = new Stack<PageImpl>();
-			this.master = master;
+		PageSequenceBuilder(LayoutMaster master, int pagesOffset, HashMap<String, PageImpl> pageReferences, List<RowImpl> before, List<RowImpl> after, FormatterContext context) {
+			super(master);
 			this.pagesOffset = pagesOffset;
 			this.pageReferences = pageReferences;
 			this.context = context;
@@ -73,14 +69,6 @@ class PageSequenceImpl implements PageSequence {
 			return pagesOffset;
 		}
 		
-		public int getPageCount() {
-			return pages.size();
-		}
-		
-		public PageImpl getPage(int index) {
-			return pages.get(index);
-		}
-		
 		PageImpl currentPage() {
 			if (nextPage!=null) {
 				return nextPage;
@@ -112,19 +100,7 @@ class PageSequenceImpl implements PageSequence {
 			}
 			currentPage().newRow(row);
 		}
-			
-		public LayoutMaster getLayoutMaster() {
-			return master;
-		}
-/*
-		public Iterator<Page> iterator() {
-			return (Iterator<Page>)pages.iterator();
-		}*/
-		
-		public Iterable<PageImpl> getPages() {
-			return pages;
-		}
-		
+
 		void insertIdentifier(String id) {
 			if (pageReferences.put(id, currentPage())!=null) {
 				throw new IllegalArgumentException("Identifier not unique: " + id);

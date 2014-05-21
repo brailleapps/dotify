@@ -494,9 +494,8 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageAreaBuilderImpl.ja
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageImpl.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReference.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageNumberReferenceSegment.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequence.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceCopy.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequence.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageSequenceBuilder.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStruct.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructCopy.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/PageStructImpl.java -text svneol=unset#text/plain
