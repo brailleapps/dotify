@@ -6,7 +6,7 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.Marker;
 
-class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
+class PageStructImpl extends Stack<PageSequence> implements PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	
 	private final FormatterContext context;
@@ -26,7 +26,7 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 	private static final long serialVersionUID = 2591429059130956153L;
 
 
-	public List<PageSequenceBuilder> getContents() {
+	public List<PageSequence> getContents() {
 		return this;
 	}
 
@@ -51,7 +51,7 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 	}
 	
 	PageSequenceBuilder currentSequence() {
-		return this.peek();
+		return (PageSequenceBuilder)this.peek();
 	}
 
 	private PageImpl currentPage() {
@@ -111,7 +111,7 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 	}
 	
 	PageImpl getPage(int i) {
-		for (PageSequenceBuilder ps : this) {
+		for (PageSequence ps : this) {
 			if (i < ps.getPageCount()) {
 				return ps.getPage(i);
 			} else {
@@ -130,7 +130,7 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 	String buildBreakpointString() {
 		StringBuilder res = new StringBuilder();
 		boolean volBreakAllowed = true;
-		for (PageSequenceBuilder seq : this) {
+		for (PageSequence seq : this) {
 			StringBuilder sb = new StringBuilder();
 			LayoutMaster lm = seq.getLayoutMaster();
 			int pageIndex=0;
@@ -184,7 +184,7 @@ class PageStructImpl extends Stack<PageSequenceBuilder> implements PageStruct {
 		PageImpl p;
 		int offs = 0;
 		int i;
-		process:for (PageSequenceBuilder ps : this) {
+		process:for (PageSequence ps : this) {
 			while (pageIndex-offs < ps.getPageCount()) {
 				p = ps.getPage(pageIndex-offs);
 				if (pageIndex<getPageCount()) {
