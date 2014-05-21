@@ -133,7 +133,7 @@ public class FormatterImpl implements Formatter {
 		while (!ok) {
 			// make a preliminary calculation based on contents only
 			PageStructBuilder ps = crh.getContents();
-			final int contents = PageTools.countSheets(ps); 
+			final int contents = ps.countSheets(); 
 			String breakpoints = ps.buildBreakpointString();
 			logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
 			BreakPointHandler volBreaks = new BreakPointHandler(breakpoints);
@@ -168,8 +168,8 @@ public class FormatterImpl implements Formatter {
 				if (splitterMax!=getVolumeMaxSize(i, crh.getExpectedVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
-				preV.add((Iterable<PageSequence>) getPreVolumeContents(i).getContents());
-				postV.add((Iterable<PageSequence>) getPostVolumeContents(i).getContents());
+				preV.add((Iterable<PageSequence>) getPreVolumeContents(i));
+				postV.add((Iterable<PageSequence>) getPostVolumeContents(i));
 			}
 			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
 				
@@ -197,8 +197,8 @@ public class FormatterImpl implements Formatter {
 						", content:" + contentSheets +
 						", overhead:" + crh.getVolData(i).getVolOverhead());
 				PageStruct body = ps.substruct(pageIndex, contentSheets);
-				pageIndex += body.getPageCount();
-				int sheetsInVolume = PageTools.countSheets(body) + crh.getVolData(i).getVolOverhead();
+				pageIndex += body.countPages();
+				int sheetsInVolume = body.countSheets() + crh.getVolData(i).getVolOverhead();
 				if (sheetsInVolume>crh.getVolData(i).getTargetVolSize()) {
 					ok2 = false;
 					logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
@@ -207,7 +207,7 @@ public class FormatterImpl implements Formatter {
 			}
 			if (volBreaks.hasNext()) {
 				ok2 = false;
-				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(ps.getPageCount()-pageIndex));
+				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(ps.countPages()-pageIndex));
 				if (!crh.isDirty()) {
 					if (volumeOffset < 1) {
 						//First check to see if the page increase can will be handled automatically without increasing volume offset 
@@ -221,7 +221,7 @@ public class FormatterImpl implements Formatter {
 					}
 				}
 			}
-			if (!crh.isDirty() && pageIndex==ps.getPageCount() && ok2) {
+			if (!crh.isDirty() && pageIndex==ps.countPages() && ok2) {
 				//everything fits
 				ok = true;
 			} else if (j>9) {

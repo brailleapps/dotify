@@ -173,7 +173,7 @@ class PageStructBuilder extends PageStruct {
 		process:for (PageSequence ps : this) {
 			while (pageIndex-offs < ps.getPageCount()) {
 				p = ps.getPage(pageIndex-offs);
-				if (pageIndex<getPageCount()) {
+				if (pageIndex<countPages()) {
 
 					//new sheet needed for this page?
 					if (originalSeq != ps || !ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {

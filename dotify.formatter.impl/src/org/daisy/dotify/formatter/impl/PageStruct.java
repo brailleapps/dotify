@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -14,21 +13,25 @@ class PageStruct extends Stack<PageSequence> {
 	 */
 	private static final long serialVersionUID = 4273679615162808108L;
 
-	int getPageCount() {
+	int countPages() {
 		int size = 0;
 		for (PageSequence ps : this) {
 			size += ps.getPageCount();
 		}
 		return size;
 	}
-	
-	/**
-	 * Gets the contents
-	 * @return returns the content
-	 */
-	public List<PageSequence> getContents() {
-		return this;
-	}
 
+	int countSheets() {
+		int sheets = 0;
+		for (PageSequence seq : this) {
+			LayoutMaster lm = seq.getLayoutMaster();
+			if (lm.duplex()) {
+				sheets += (int)Math.ceil(seq.getPageCount()/2d);
+			} else {
+				sheets += seq.getPageCount();
+			}
+		}
+		return sheets;
+	}
 
 }

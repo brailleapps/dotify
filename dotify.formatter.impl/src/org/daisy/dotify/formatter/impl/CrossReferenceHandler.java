@@ -39,10 +39,10 @@ class CrossReferenceHandler implements CrossReferences, Context {
 	
 	public void setContents(PageStructBuilder contents, int splitterMax) {
 		this.ps = contents;
-		this.sdc = new EvenSizeVolumeSplitterCalculator(PageTools.countSheets(ps.getContents()), splitterMax);
+		this.sdc = new EvenSizeVolumeSplitterCalculator(ps.countSheets(), splitterMax);
 		int sheetIndex=0;
 		this.pageSheetMap = new HashMap<Page, Integer>();
-		for (PageSequence s : ps.getContents()) {
+		for (PageSequence s : ps) {
 			LayoutMaster lm = s.getLayoutMaster();
 			int pageIndex=0;
 			for (Page p : s.getPages()) {
@@ -239,7 +239,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 
 		public void setPreVolData(PageStructBuilder preVolData) {
 			//use the highest value to avoid oscillation
-			preVolSize = Math.max(preVolSize, PageTools.countSheets(preVolData.getContents()));
+			preVolSize = Math.max(preVolSize, preVolData.countSheets());
 			this.preVolData = preVolData;
 		}
 
@@ -249,7 +249,7 @@ class CrossReferenceHandler implements CrossReferences, Context {
 
 		public void setPostVolData(PageStructBuilder postVolData) {
 			//use the highest value to avoid oscillation
-			postVolSize = Math.max(postVolSize, PageTools.countSheets(postVolData.getContents()));
+			postVolSize = Math.max(postVolSize, postVolData.countSheets());
 			this.postVolData = postVolData;
 		}
 
