@@ -3,8 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.List;
 
-import org.daisy.dotify.api.formatter.Marker;
-
 class PageStructBuilder extends PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	
@@ -28,72 +26,26 @@ class PageStructBuilder extends PageStruct {
 		return pageReferences.get(refid);
 	}
 	
-	void newSequence(LayoutMaster master, int pagesOffset,  List<RowImpl> before, List<RowImpl> after) {
-		this.push(new PageSequenceBuilder(master, pagesOffset, this.pageReferences, before, after, context));
+	PageSequenceBuilder newSequence(LayoutMaster master, int pagesOffset,  List<RowImpl> before, List<RowImpl> after) {
+		PageSequenceBuilder ret = new PageSequenceBuilder(master, pagesOffset, this.pageReferences, before, after, context);
+		this.push(ret);
+		return ret;
 	}
 	
-	void newSequence(LayoutMaster master, List<RowImpl> before, List<RowImpl> after) {
+	PageSequenceBuilder newSequence(LayoutMaster master, List<RowImpl> before, List<RowImpl> after) {
 		if (this.size()==0) {
-			newSequence(master, 0, before, after);
+			return newSequence(master, 0, before, after);
 		} else {
 			int next = currentSequence().currentPage().getPageIndex()+1;
 			if (currentSequence().getLayoutMaster().duplex() && (next % 2)==1) {
 				next++;
 			}
-			newSequence(master, next, before, after);
+			return newSequence(master, next, before, after);
 		}
 	}
 	
-	PageSequenceBuilder currentSequence() {
+	private PageSequenceBuilder currentSequence() {
 		return (PageSequenceBuilder)this.peek();
-	}
-
-	private PageImpl currentPage() {
-		return currentSequence().currentPage();
-	}
-	
-	/**
-	 * Gets the height of the page area, including row spacing.
-	 * @return
-	 */
-	float pageAreaHeight() {
-		return currentPage().pageAreaSpaceNeeded();
-	}
-
-	void newPage() {
-		currentSequence().newPage();
-	}
-	
-	void newRow(RowImpl row, List<RowImpl> block) {
-		currentSequence().newRow(row, block);
-	}
-	
-	void newRow(RowImpl row) {
-		currentSequence().newRow(row);
-	}
-
-	void insertMarkers(List<Marker> m) {
-		currentSequence().currentPage().addMarkers(m);
-	}
-	
-	void insertIdentifier(String id) {
-		currentSequence().insertIdentifier(id);
-	}
-
-	/*	int countRows() {
-			return currentPage().rowsOnPage();
-		}*/
-	
-	int spaceUsedInRows(int offs) {
-		return currentSequence().spaceUsedOnPage(offs);
-	}
-
-	/**
-	 * Gets the flow height of the current page.
-	 * @return returns the flow height
-	 */
-	int getFlowHeight() {
-		return currentPage().getFlowHeight();
 	}
 	
 	PageImpl getPage(int i) {
