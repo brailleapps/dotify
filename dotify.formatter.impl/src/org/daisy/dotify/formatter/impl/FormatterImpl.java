@@ -185,7 +185,7 @@ public class FormatterImpl implements Formatter {
 				BreakPoint bp;
 				do {
 					offset++;
-					bp = volBreaks.tryNextRow(contentSheets+offset);
+					bp = volBreaks.copy().nextRow(contentSheets+offset, false);
 				} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitterMax);
 				bp = volBreaks.nextRow(contentSheets + offset, true);
 				contentSheets = bp.getHead().length();
