@@ -155,6 +155,7 @@
     		</manifest>
     	</jar>
     	<delete dir="${build.dir}"/>
+    	<copy tofile="../DotifyShared/dotify-translator.jar" file="${dist.jar}"/>
     </target>
 
 	<!-- ================================= 
