@@ -777,6 +777,7 @@ dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/ResourceRes
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/StringProcessor.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/liblouis/Substitution.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkers.java -text svneol=unset#text/plain
+dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/DigitFilter.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilter.java -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactory.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorFactoryService.java -text
@@ -813,6 +814,7 @@ dotify.translator.impl/test/org/daisy/dotify/impl/translator/DefaultBypassTransl
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/liblouis/LiblouisBrailleFilterTest.java -text svneol=unset#text/plain
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/liblouis/StringProcessorTest.java -text svneol=unset#text/plain
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/CapitalizationMarkersTest.java -text
+dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/DigitFilterTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleFilterTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishBrailleTranslatorTest.java -text
 dotify.translator.impl/test/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryTest.java -text
