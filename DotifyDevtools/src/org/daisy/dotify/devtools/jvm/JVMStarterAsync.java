@@ -55,9 +55,7 @@ public class JVMStarterAsync {
 		try {
 			exe.awaitTermination(timeout, unit);
 		} catch (InterruptedException e1) {
-			IOException ex =  new IOException();
-			ex.initCause(e1);
-			throw ex;
+			throw new IOException(e1);
 		}
 	}
 	
