@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.tools.ResourceLocatorException;
 
@@ -31,7 +30,7 @@ public abstract class ConfigurationsCatalog {
 	 * @return returns an instance of a configurations catalog
 	 */
 	public final static ConfigurationsCatalog newInstance() {
-		Iterator<ConfigurationsCatalog> i = ServiceRegistry.lookupProviders(ConfigurationsCatalog.class);
+		Iterator<ConfigurationsCatalog> i = ServiceLoader.load(ConfigurationsCatalog.class).iterator();
 		while (i.hasNext()) {
 			return i.next();
 		}
@@ -73,7 +72,7 @@ public abstract class ConfigurationsCatalog {
 		DefaultConfigurationsCatalog() {
 			super();
 			this.map = new HashMap<String, ConfigurationsProvider>();
-			Iterator<ConfigurationsProvider> i = ServiceRegistry.lookupProviders(ConfigurationsProvider.class);
+			Iterator<ConfigurationsProvider> i = ServiceLoader.load(ConfigurationsProvider.class).iterator();
 			Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
 			while (i.hasNext()) {
 				ConfigurationsProvider f = i.next();

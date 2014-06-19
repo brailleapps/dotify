@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.logging.Logger;
-
-import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.text.FilterLocale;
 
@@ -28,7 +27,7 @@ public class TaskSystemFactoryMaker {
 	private TaskSystemFactoryMaker() {
 		logger = Logger.getLogger(TaskSystemFactoryMaker.class.getCanonicalName());
 		filters = new ArrayList<TaskSystemFactory>();
-		Iterator<TaskSystemFactory> i = ServiceRegistry.lookupProviders(TaskSystemFactory.class);
+		Iterator<TaskSystemFactory> i = ServiceLoader.load(TaskSystemFactory.class).iterator();
 		while (i.hasNext()) {
 			filters.add(i.next());
 		}
@@ -36,7 +35,7 @@ public class TaskSystemFactoryMaker {
 	}
 
 	public static TaskSystemFactoryMaker newInstance() {
-		Iterator<TaskSystemFactoryMaker> i = ServiceRegistry.lookupProviders(TaskSystemFactoryMaker.class);
+		Iterator<TaskSystemFactoryMaker> i = ServiceLoader.load(TaskSystemFactoryMaker.class).iterator();
 		while (i.hasNext()) {
 			return i.next();
 		}

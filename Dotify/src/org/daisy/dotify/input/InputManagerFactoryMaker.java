@@ -6,10 +6,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import javax.imageio.spi.ServiceRegistry;
 
 import org.daisy.dotify.text.FilterLocale;
 
@@ -23,7 +22,7 @@ public abstract class InputManagerFactoryMaker {
 	protected InputManagerFactoryMaker() { }
 
 	public final static InputManagerFactoryMaker newInstance() {
-		Iterator<InputManagerFactoryMaker> i = ServiceRegistry.lookupProviders(InputManagerFactoryMaker.class);
+		Iterator<InputManagerFactoryMaker> i = ServiceLoader.load(InputManagerFactoryMaker.class).iterator();
 		while (i.hasNext()) {
 			return i.next();
 		}
@@ -49,7 +48,7 @@ public abstract class InputManagerFactoryMaker {
 		public DefaultInputManagerFactoryMaker() {
 			logger = Logger.getLogger(InputManagerFactoryMaker.class.getCanonicalName());
 			filters = new ArrayList<InputManagerFactory>();
-			Iterator<InputManagerFactory> i = ServiceRegistry.lookupProviders(InputManagerFactory.class);
+			Iterator<InputManagerFactory> i = ServiceLoader.load(InputManagerFactory.class).iterator();
 			while (i.hasNext()) {
 				filters.add(i.next());
 			}
