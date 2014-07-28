@@ -91,19 +91,19 @@ class TocSequenceEventImpl implements VolumeSequence {
 		return it;
 	}
 
-	public Iterable<Block> getVolumeStart(Context vars, FormatterContext context) throws IOException {
+	public Iterable<Block> getVolumeStart(Context vars) throws IOException {
 		return getCompoundIterableB(volumeStartEvents, vars);
 	}
 	
-	public Iterable<Block> getVolumeEnd(Context vars, FormatterContext context) throws IOException {
+	public Iterable<Block> getVolumeEnd(Context vars) throws IOException {
 		return getCompoundIterableB(volumeEndEvents, vars);
 	}
 	
-	public Iterable<Block> getTocStart(Context vars, FormatterContext context) throws IOException {
+	public Iterable<Block> getTocStart(Context vars) throws IOException {
 		return getCompoundIterableB(tocStartEvents, vars);
 	}
 
-	public Iterable<Block> getTocEnd(Context vars, FormatterContext context) throws IOException {
+	public Iterable<Block> getTocEnd(Context vars) throws IOException {
 		return getCompoundIterableB(tocEndEvents, vars);
 	}
 
@@ -119,15 +119,15 @@ class TocSequenceEventImpl implements VolumeSequence {
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
 					getSequenceProperties().getInitialPageNumber());
 
-			fsm.appendGroup(getTocStart(vars, context));
+			fsm.appendGroup(getTocStart(vars));
 
 			fsm.appendGroup(data);
 			
 			if (getRange()==TocProperties.TocRange.DOCUMENT) {
-				fsm.appendGroup(getVolumeEnd(vars, context));
+				fsm.appendGroup(getVolumeEnd(vars));
 			}
 
-			fsm.appendGroup(getTocEnd(vars, context));
+			fsm.appendGroup(getTocEnd(vars));
 
 			if (getRange()==TocProperties.TocRange.VOLUME) {
 
@@ -153,7 +153,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 					try {
 						fsm.removeRange(data.getTocIdList().iterator().next(), start);
 						fsm.removeTail(stop);
-						fsm.appendGroup(getTocEnd(vars, context));
+						fsm.appendGroup(getTocEnd(vars));
 						r.add(fsm.newSequence());
 					} catch (Exception e) {
 						Logger.getLogger(this.getClass().getCanonicalName()).
@@ -174,7 +174,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 								if (nv>0) {
 									//set the meta context for selection evaluation
 									vars.setMetaVolume(nv);
-									Iterable<Block> ib1 = getVolumeEnd(vars, context);
+									Iterable<Block> ib1 = getVolumeEnd(vars);
 									for (Block b1 : ib1) {
 										//set the meta volume for each block, for later evaluation
 										b1.setMetaVolume(nv);
@@ -184,7 +184,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 								nv = vol;
 								//set the meta context for selection evaluation
 								vars.setMetaVolume(vol);
-								Iterable<Block> ib1 = getVolumeStart(vars, context);
+								Iterable<Block> ib1 = getVolumeStart(vars);
 								for (Block b1 : ib1) {
 									//set the meta volume for each block, for later evaluation
 									b1.setMetaVolume(vol);
