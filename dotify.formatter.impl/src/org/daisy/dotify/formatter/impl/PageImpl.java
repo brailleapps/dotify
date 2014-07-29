@@ -33,6 +33,7 @@ class PageImpl implements Page {
 	private ArrayList<RowImpl> rows;
 	private ArrayList<RowImpl> pageArea;
 	private ArrayList<Marker> markers;
+	private ArrayList<String> anchors;
 	private final int pageIndex;
 	private final int flowHeight;
 	private int contentMarkersBegin;
@@ -49,6 +50,7 @@ class PageImpl implements Page {
 
 		this.pageArea = new ArrayList<RowImpl>();
 		this.markers = new ArrayList<Marker>();
+		this.anchors = new ArrayList<String>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
 		this.parent = parent;
@@ -84,6 +86,7 @@ class PageImpl implements Page {
 		}
 		rows.add(r);
 		markers.addAll(r.getMarkers());
+		anchors.addAll(r.getAnchors());
 	}
 	
 	/**
@@ -112,6 +115,10 @@ class PageImpl implements Page {
 	 */
 	public List<Marker> getContentMarkers() {
 		return markers.subList(contentMarkersBegin, markers.size());
+	}
+	
+	public List<String> getAnchors() {
+		return anchors;
 	}
 	
 	/**
