@@ -23,6 +23,13 @@ interface CrossReferences {
 	 */
 	public Integer getVolumeNumber(String refid);
 	
+	/**
+	 * Gets the volume for the specified page in content.
+	 * @param p the page to get the volume for
+	 * @return returns the volume number, one-based
+	 */
+	public Integer getVolumeNumber(Page p);
+	
 	public PageStructBuilder getContents();
 
 }

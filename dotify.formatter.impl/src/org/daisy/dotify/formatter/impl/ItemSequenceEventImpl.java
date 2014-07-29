@@ -59,16 +59,17 @@ class ItemSequenceEventImpl implements VolumeSequence {
 				context.getMasters().get(getSequenceProperties().getMasterName()), 
 				getSequenceProperties().getInitialPageNumber());
 		fsm.appendGroup(collectionStartEvents);
+		boolean hasContents = false;
 		for (PageSequence s : crh.getContents()) {
 			for (PageImpl p : s.getPages()) {
-			
 				ArrayList<String> refs = new ArrayList<String>();
 				for (String a : p.getAnchors()) {
 					if (c.containsItemID(a) && !refs.contains(a)) {
 						refs.add(a);
 					}
 				}
-				if (refs.size()>0) {
+				if (refs.size()>0 && crh.getVolumeNumber(p)==vars.getCurrentVolume()) {
+					hasContents = true;
 					{
 						ArrayList<Block> b = new ArrayList<Block>();
 						for (Block blk : pageStartEvents) {
@@ -94,7 +95,10 @@ class ItemSequenceEventImpl implements VolumeSequence {
 			}
 		}
 		fsm.appendGroup(collectionEndEvents);
-		ret.add(fsm.newSequence());
+		if (hasContents) {
+			//only add a section if there are notes in it.
+			ret.add(fsm.newSequence());
+		}
 		return ret;
 	}
 }

@@ -156,6 +156,17 @@ class CrossReferenceHandler implements CrossReferences, Context {
 		return null;
 	}
 
+	@Override
+	public Integer getVolumeNumber(Page p) {
+		Integer sheet = pageSheetMap.get(p);
+		if (sheet!=null) {
+			return getVolumeForContentSheet(sheet);
+		} else {
+			setDirty(true);
+			return null;
+		}
+	}
+
 	private PageImpl getPage(String refid) {
 		PageImpl ret;
 		if (ps!=null && (ret=ps.getPage(refid))!=null) {
