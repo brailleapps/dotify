@@ -297,6 +297,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/FormatterConfigurationException.ja
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterCore.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormatterFactory.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FormattingTypes.java -text svneol=unset#text/plain
+dotify.api/src/org/daisy/dotify/api/formatter/ItemSequenceProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/LayoutMasterBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/LayoutMasterProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Leader.java -text
@@ -480,6 +481,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterContext.java 
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterCoreImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterImpl.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ItemSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LayoutMaster.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text

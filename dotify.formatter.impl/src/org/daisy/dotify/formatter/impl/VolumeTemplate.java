@@ -13,11 +13,11 @@ class VolumeTemplate implements VolumeTemplateBuilder {
 	private final int splitterMax;
 	private final VolumeContentBuilderImpl preVolumeContent, postVolumeContent;
 
-	public VolumeTemplate(Map<String, TableOfContentsImpl> tocs, Condition condition, Integer splitterMax) {
+	public VolumeTemplate(Map<String, TableOfContentsImpl> tocs, Map<String, ContentCollectionImpl> collections, Condition condition, Integer splitterMax) {
 		this.condition = condition;
 		this.splitterMax = splitterMax;
-		this.preVolumeContent = new VolumeContentBuilderImpl(tocs);
-		this.postVolumeContent = new VolumeContentBuilderImpl(tocs);
+		this.preVolumeContent = new VolumeContentBuilderImpl(tocs, collections);
+		this.postVolumeContent = new VolumeContentBuilderImpl(tocs, collections);
 	}
 
 	/**

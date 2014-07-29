@@ -28,6 +28,7 @@ import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.formatter.FormattingTypes;
+import org.daisy.dotify.api.formatter.ItemSequenceProperties;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.Leader;
@@ -822,6 +823,8 @@ public class ObflParser extends XMLParserBase {
 				parseVolumeSequence(event, input, template, locale, hyph);
 			} else if (equalsStart(event, ObflQName.TOC_SEQUENCE)) {
 				parseTocSequence(event, input, template, locale, hyph);
+			} else if (equalsStart(event, ObflQName.ITEM_SEQUENCE)) {
+				parseItemSequence(event, input, template, locale, hyph);
 			} else if (equalsEnd(event, ObflQName.PRE_CONTENT)) {
 				break;
 			} else {
@@ -835,6 +838,8 @@ public class ObflParser extends XMLParserBase {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.SEQUENCE)) {
 				parseVolumeSequence(event, input, template, locale, hyph);
+			} else if (equalsStart(event, ObflQName.ITEM_SEQUENCE)) {
+				parseItemSequence(event, input, template, locale, hyph);
 			} else if (equalsEnd(event, ObflQName.POST_CONTENT)) {
 				break;
 			} else {
@@ -897,6 +902,41 @@ public class ObflParser extends XMLParserBase {
 				parseOnEvent(event, input, template, ObflQName.ON_TOC_END, locale, hyph);
 			}
 			else if (equalsEnd(event, ObflQName.TOC_SEQUENCE)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+	
+	private void parseItemSequence(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, FilterLocale locale, boolean hyph) throws XMLStreamException {
+		String masterName = getAttr(event, "master");
+		String collection = getAttr(event, "collection");
+		locale = getLang(event, locale);
+		hyph = getHyphenate(event, hyph);
+		ItemSequenceProperties.Builder builder = new ItemSequenceProperties.Builder(masterName, collection);
+		String initialPageNumber = getAttr(event, "initial-page-number");
+		if (initialPageNumber!=null) {
+			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
+		}
+
+		template.newItemSequence(builder.build());
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.ON_COLLECTION_START)) {
+				template.newOnCollectionStart();
+				parseOnEvent(event, input, template, ObflQName.ON_COLLECTION_START, locale, hyph);
+			} else if (equalsStart(event, ObflQName.ON_PAGE_START)) {
+				template.newOnPageStart();
+				parseOnEvent(event, input, template, ObflQName.ON_PAGE_START, locale, hyph);
+			} else if (equalsStart(event, ObflQName.ON_PAGE_END)) {
+				template.newOnPageEnd();
+				parseOnEvent(event, input, template, ObflQName.ON_PAGE_END, locale, hyph);
+			} else if (equalsStart(event, ObflQName.ON_COLLECTION_END)) {
+				template.newOnCollectionEnd();
+				parseOnEvent(event, input, template, ObflQName.ON_COLLECTION_END, locale, hyph);
+			}
+			else if (equalsEnd(event, ObflQName.ITEM_SEQUENCE)) {
 				break;
 			} else {
 				report(event);

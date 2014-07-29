@@ -22,5 +22,7 @@ interface CrossReferences {
 	 * @return returns the volume number, one-based
 	 */
 	public Integer getVolumeNumber(String refid);
+	
+	public PageStructBuilder getContents();
 
 }

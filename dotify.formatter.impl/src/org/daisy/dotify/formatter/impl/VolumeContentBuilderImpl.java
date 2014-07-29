@@ -9,6 +9,7 @@ import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.FormatterCore;
+import org.daisy.dotify.api.formatter.ItemSequenceProperties;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
@@ -23,13 +24,17 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	 */
 	private static final long serialVersionUID = -3736631267650875060L;
 	private final Map<String, TableOfContentsImpl> tocs;
+	private final Map<String, ContentCollectionImpl> collections;
 	private List<FormatterCore> formatters;
 	private TocSequenceEventImpl tocSequence;
+	private ItemSequenceEventImpl itemSequence;
 
-	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs) {
+	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs, Map<String, ContentCollectionImpl> collections) {
 		this.tocs = tocs;
+		this.collections = collections;
 		this.formatters = new ArrayList<FormatterCore>();
 		this.tocSequence = null;
+		this.itemSequence = null;
 	}
 
 	public void newSequence(SequenceProperties props) {
@@ -118,6 +123,32 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 
 	public void insertEvaluate(DynamicContent exp, TextProperties t) {
 		current().insertEvaluate(exp, t);
+	}
+
+	@Override
+	public void newItemSequence(ItemSequenceProperties props) {
+		itemSequence = new ItemSequenceEventImpl(props, props.getCollectionID(), collections);
+		add(itemSequence);
+	}
+
+	@Override
+	public void newOnCollectionStart() {
+		formatters.add(itemSequence.addCollectionStart());
+	}
+
+	@Override
+	public void newOnCollectionEnd() {
+		formatters.add(itemSequence.addCollectionEnd());
+	}
+
+	@Override
+	public void newOnPageStart() {
+		formatters.add(itemSequence.addPageStartEvents());
+	}
+
+	@Override
+	public void newOnPageEnd() {
+		formatters.add(itemSequence.addPageEndEvents());
 	}
 
 }

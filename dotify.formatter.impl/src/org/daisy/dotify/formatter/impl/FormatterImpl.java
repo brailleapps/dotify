@@ -89,7 +89,7 @@ public class FormatterImpl implements Formatter {
 	}
 
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
-		VolumeTemplate template = new VolumeTemplate(tocs, props.getCondition(), props.getSplitterMax());
+		VolumeTemplate template = new VolumeTemplate(tocs, collections, props.getCondition(), props.getSplitterMax());
 		volumeTemplates.push(template);
 		return template;
 	}

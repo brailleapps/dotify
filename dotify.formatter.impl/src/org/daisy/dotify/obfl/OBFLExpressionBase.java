@@ -11,6 +11,7 @@ public abstract class OBFLExpressionBase {
 	public final static String DEFAULT_VOLUME_NUMBER_VARIABLE_NAME = "volume";
 	public final static String DEFAULT_VOLUME_COUNT_VARIABLE_NAME = "volumes";
 	public final static String DEFAULT_EVENT_VOLUME_NUMBER = "started-volume-number";
+	public final static String DEFAULT_EVENT_PAGE_NUMBER = "started-page-number";
 	protected final ExpressionFactory ef;
 	protected final String exp;
 
@@ -18,6 +19,7 @@ public abstract class OBFLExpressionBase {
 	protected String volumeNumberVariable;
 	protected String volumeCountVariable;
 	protected String metaVolumeNumberVariable;
+	protected String metaPageNumberVariable;
 	
 	public OBFLExpressionBase(String exp, ExpressionFactory ef, boolean extended) {
 		this.ef = ef;
@@ -27,8 +29,10 @@ public abstract class OBFLExpressionBase {
 		this.volumeCountVariable = DEFAULT_VOLUME_COUNT_VARIABLE_NAME;
 		if (extended) {
 			this.metaVolumeNumberVariable = DEFAULT_EVENT_VOLUME_NUMBER;
+			this.metaPageNumberVariable = DEFAULT_EVENT_PAGE_NUMBER;
 		} else {
 			this.metaVolumeNumberVariable = null;
+			this.metaPageNumberVariable = null;
 		}
 	}
 	
@@ -63,6 +67,14 @@ public abstract class OBFLExpressionBase {
 			this.metaVolumeNumberVariable = metaVolumeNumberVariable;
 		}
 	}
+	
+	public void setMetaPageNumberVariable(String metaPageNumberVariable) {
+		if (metaPageNumberVariable==null) {
+			this.metaPageNumberVariable = DEFAULT_EVENT_PAGE_NUMBER;
+		} else {
+			this.metaPageNumberVariable = metaPageNumberVariable;
+		}
+	}
 
 	protected Map<String, String> buildArgs(Context context) {
 		HashMap<String, String> variables = new HashMap<String, String>();
@@ -77,6 +89,9 @@ public abstract class OBFLExpressionBase {
 		}
 		if (metaVolumeNumberVariable!=null) {
 			variables.put(metaVolumeNumberVariable, ""+context.getMetaVolume());
+		}
+		if (metaPageNumberVariable!=null) {
+			variables.put(metaPageNumberVariable, ""+context.getMetaPage());
 		}
 		return variables;
 	}

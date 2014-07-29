@@ -197,21 +197,24 @@ public class PaginatorImpl {
 				if (master.getPageArea()!=null && c!=null) {
 					ArrayList<RowImpl> blk = new ArrayList<RowImpl>();
 					for (String a : row.getAnchors()) {
-						for (Block b : c.getBlocks(a)) {
-							b.setContext(master.getFlowWidth(), refs, rcontext, context);
-						}
-						for (Block b : c.getBlocks(a)) {
-							for (RowImpl r : b.getBlockContentManager().getPreContentRows()) {
-								blk.add(r);
+						if (!pageSeq.currentPage().getAnchors().contains(a)) {
+							//page doesn't already contains these blocks
+							for (Block b : c.getBlocks(a)) {
+								b.setContext(master.getFlowWidth(), refs, rcontext, context);
 							}
-							for (RowImpl r : b.getBlockContentManager()) {
-								blk.add(r);
-							}
-							for (RowImpl r : b.getBlockContentManager().getPostContentRows()) {
-								blk.add(r);
-							}
-							for (RowImpl r : b.getBlockContentManager().getSkippablePostContentRows()) {
-								blk.add(r);
+							for (Block b : c.getBlocks(a)) {
+								for (RowImpl r : b.getBlockContentManager().getPreContentRows()) {
+									blk.add(r);
+								}
+								for (RowImpl r : b.getBlockContentManager()) {
+									blk.add(r);
+								}
+								for (RowImpl r : b.getBlockContentManager().getPostContentRows()) {
+									blk.add(r);
+								}
+								for (RowImpl r : b.getBlockContentManager().getSkippablePostContentRows()) {
+									blk.add(r);
+								}
 							}
 						}
 					}
