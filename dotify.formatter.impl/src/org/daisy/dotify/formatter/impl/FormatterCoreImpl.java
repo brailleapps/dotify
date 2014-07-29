@@ -26,10 +26,16 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 	private Stack<Integer> blockIndentParent;
 	private int blockIndent;
 	private ListItem listItem;
+	
+	private final boolean discardIdentifiers;
 
 	// TODO: fix recursive keep problem
 	// TODO: Implement floating elements
 	public FormatterCoreImpl() {
+		this(false);
+	}
+	
+	public FormatterCoreImpl(boolean discardIdentifiers) {
 		super();
 		this.propsContext = new Stack<BlockProperties>();
 		this.leftMargin = new Margin(Type.LEFT);
@@ -38,6 +44,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 		this.blockIndent = 0;
 		this.blockIndentParent = new Stack<Integer>();
 		blockIndentParent.add(0);
+		this.discardIdentifiers = discardIdentifiers;
 	}
 
 	public void startBlock(BlockProperties p) {
@@ -90,7 +97,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 		c.setBreakBeforeType(p.getBreakBeforeType());
 		c.setKeepType(p.getKeepType());
 		c.setKeepWithNext(p.getKeepWithNext());
-		c.setIdentifier(p.getIdentifier());
+		if (!discardIdentifiers) {
+			c.setIdentifier(p.getIdentifier());
+		}
 		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		c.setVerticalPosition(p.getVerticalPosition());
 		propsContext.push(p);

@@ -1,9 +1,10 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
@@ -24,12 +25,21 @@ class ContentCollectionImpl extends FormatterCoreImpl implements ContentCollecti
 	private final Stack<Item> open;
 	
 	public ContentCollectionImpl() {
-		this.items = new HashMap<String, Item>();
+		super(true);
+		this.items = new LinkedHashMap<String, Item>();
 		this.open = new Stack<Item>();
 	}
 	
 	public boolean containsItemID(String id) {
 		return items.containsKey(id);
+	}
+	
+	public Set<String> getItemList() {
+		return items.keySet();
+	}
+	
+	public String getRefForID(String id) {
+		return items.get(id).id;
 	}
 	
 	public List<Block> getBlocks(String id) {
