@@ -24,14 +24,12 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	 */
 	private static final long serialVersionUID = -3736631267650875060L;
 	private final Map<String, TableOfContentsImpl> tocs;
-	private final Map<String, ContentCollectionImpl> collections;
 	private List<FormatterCore> formatters;
 	private TocSequenceEventImpl tocSequence;
 	private ItemSequenceEventImpl itemSequence;
 
-	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs, Map<String, ContentCollectionImpl> collections) {
+	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs) {
 		this.tocs = tocs;
-		this.collections = collections;
 		this.formatters = new ArrayList<FormatterCore>();
 		this.tocSequence = null;
 		this.itemSequence = null;
@@ -127,7 +125,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 
 	@Override
 	public void newItemSequence(ItemSequenceProperties props) {
-		itemSequence = new ItemSequenceEventImpl(props, props.getCollectionID(), collections);
+		itemSequence = new ItemSequenceEventImpl(props, props.getCollectionID());
 		add(itemSequence);
 	}
 

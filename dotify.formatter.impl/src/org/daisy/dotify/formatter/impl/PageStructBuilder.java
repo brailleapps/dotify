@@ -7,17 +7,15 @@ class PageStructBuilder extends PageStruct {
 
 	private final FormatterContext context;
 	private final Iterable<BlockSequence> fs;
-	private final HashMap<String, ContentCollectionImpl> collections;
 
 	//private final StringFilter filters;
 	HashMap<String, PageImpl> pageReferences;
 
-	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs, HashMap<String, ContentCollectionImpl> collections) {
+	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs) {
 		//this.filters = filters;
 		this.pageReferences = new HashMap<String, PageImpl>();
 		this.context = context;
 		this.fs = fs;
-		this.collections = collections;
 	}
 
 	/*public StringFilter getFilter() {
@@ -43,7 +41,7 @@ class PageStructBuilder extends PageStruct {
 					}
 				}
 				prv = (PageSequenceBuilder)psb;
-				if (!prv.paginate(offset, refs, rcontext, collections)) {
+				if (!prv.paginate(offset, refs, rcontext)) {
 					continue restart;
 				}
 			}

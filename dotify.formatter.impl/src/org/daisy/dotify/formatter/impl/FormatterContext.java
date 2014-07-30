@@ -16,11 +16,13 @@ class FormatterContext {
 
 	private final BrailleTranslator translator;
 	private final Map<String, LayoutMaster> masters;
+	private final Map<String, ContentCollectionImpl> collections;
 	private final char spaceChar;
 
 	FormatterContext(BrailleTranslator translator) {
 		this.translator = translator;
 		this.masters = new HashMap<String, LayoutMaster>();
+		this.collections = new HashMap<String, ContentCollectionImpl>();
 		//margin char can only be a single character, the reason for going through the translator
 		//is because output isn't always braille.
 		this.spaceChar = getTranslator().translate(" ").getTranslatedRemainder().charAt(0);
@@ -36,8 +38,18 @@ class FormatterContext {
 		return master;
 	}
 	
+	ContentCollectionImpl newContentCollection(String collectionId) {
+		ContentCollectionImpl collection = new ContentCollectionImpl();
+		collections.put(collectionId, collection);
+		return collection;
+	}
+	
 	Map<String, LayoutMaster> getMasters() {
 		return masters;
+	}
+	
+	Map<String, ContentCollectionImpl> getCollections() {
+		return collections;
 	}
 	
 	char getSpaceCharacter() {

@@ -33,7 +33,6 @@ public class FormatterImpl implements Formatter {
 	private final static int DEFAULT_SPLITTER_MAX = 50;
 	
 	private final HashMap<String, TableOfContentsImpl> tocs;
-	private final HashMap<String, ContentCollectionImpl> collections;
 	private final Stack<VolumeTemplate> volumeTemplates;
 	
 	private PageStructBuilder contentPaginator;
@@ -56,7 +55,6 @@ public class FormatterImpl implements Formatter {
 		this.blocks = new Stack<BlockSequence>();
 		this.state = new StateObject();
 		this.tocs = new HashMap<String, TableOfContentsImpl>();
-		this.collections = new HashMap<String, ContentCollectionImpl>();
 		this.volumeTemplates = new Stack<VolumeTemplate>();
 		
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
@@ -89,7 +87,7 @@ public class FormatterImpl implements Formatter {
 	}
 
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
-		VolumeTemplate template = new VolumeTemplate(tocs, collections, props.getCondition(), props.getSplitterMax());
+		VolumeTemplate template = new VolumeTemplate(tocs, props.getCondition(), props.getSplitterMax());
 		volumeTemplates.push(template);
 		return template;
 	}
@@ -109,13 +107,11 @@ public class FormatterImpl implements Formatter {
 	}
 	
 	public ContentCollection newCollection(String collectionId) {
-		ContentCollectionImpl collection = new ContentCollectionImpl();
-		collections.put(collectionId, collection);
-		return collection;
+		return context.newContentCollection(collectionId);
 	}
 
 	private Iterable<Volume> getVolumes() {
-		contentPaginator =  new PageStructBuilder(context, blocks, collections);
+		contentPaginator =  new PageStructBuilder(context, blocks);
 
 		try {
 			reformat(DEFAULT_SPLITTER_MAX);
@@ -257,7 +253,7 @@ public class FormatterImpl implements Formatter {
 		PageStructBuilder ret = null;
 		try {
 			Iterable<BlockSequence> ib = formatVolumeContents(crh, pre, c);
-			ret = new PageStructBuilder(context, ib, collections).paginate(crh, c);
+			ret = new PageStructBuilder(context, ib).paginate(crh, c);
 		} catch (IOException e) {
 			ret = null;
 		} catch (PaginatorException e) {

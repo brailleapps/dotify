@@ -126,7 +126,7 @@ class PageSequenceBuilder extends PageSequence {
 		return context;
 	}
 
-	boolean paginate(int pagesOffset, CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException  {
+	boolean paginate(int pagesOffset, CrossReferences refs, DefaultContext rcontext) throws PaginatorException  {
 		if (seq.getInitialPageNumber()!=null) {
 			this.pagesOffset = seq.getInitialPageNumber() - 1;
 		} else {
@@ -137,7 +137,7 @@ class PageSequenceBuilder extends PageSequence {
 		ContentCollectionImpl c = null;
 		PageAreaProperties pa = seq.getLayoutMaster().getPageArea();
 		if (pa!=null) {
-			c = collections.get(pa.getCollectionId());
+			c = context.getCollections().get(pa.getCollectionId());
 		}
 		PageAreaBuilderImpl pab = seq.getLayoutMaster().getPageAreaBuilder();
 		if (pab !=null) {
@@ -187,8 +187,8 @@ class PageSequenceBuilder extends PageSequence {
 			if (!bd.addRows(seq.getLayoutMaster(), refs, rcontext, c)) {
 				//reassign collection
 				if (pa!=null) {
-					c = collections.remove(pa.getCollectionId());
-					if (collections.put(pa.getFallbackId(), c)!=null) {
+					c = context.getCollections().remove(pa.getCollectionId());
+					if (context.getCollections().put(pa.getFallbackId(), c)!=null) {
 						throw new PaginatorException("Fallback id already in use:" + pa.getFallbackId());
 					}
 				}

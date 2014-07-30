@@ -2,14 +2,12 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class ItemSequenceEventImpl implements VolumeSequence {
 	private final SequenceProperties props;
-	private final Map<String, ContentCollectionImpl> collections;
 	private final String collectionID;
 
 
@@ -18,9 +16,8 @@ class ItemSequenceEventImpl implements VolumeSequence {
 	private final FormatterCoreImpl pageEndEvents;
 	private final FormatterCoreImpl collectionEndEvents;
 	
-	public ItemSequenceEventImpl(SequenceProperties props, String collectionID, Map<String, ContentCollectionImpl> collections) {
+	public ItemSequenceEventImpl(SequenceProperties props, String collectionID) {
 		this.props = props;
-		this.collections = collections;
 		this.collectionID = collectionID;
 		this.collectionStartEvents = new FormatterCoreImpl();
 		this.pageStartEvents = new FormatterCoreImpl();
@@ -50,7 +47,7 @@ class ItemSequenceEventImpl implements VolumeSequence {
 
 	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ArrayList<BlockSequence> ret = new ArrayList<BlockSequence>();
-		ContentCollectionImpl c = collections.get(collectionID);
+		ContentCollectionImpl c = context.getCollections().get(collectionID);
 		if (c==null) {
 			return ret;
 		}
