@@ -30,49 +30,33 @@ class PageStructBuilder extends PageStruct {
 		restart:while (true) {
 			pageReferences = new HashMap<String, PageImpl>();
 			clear();
+			PageSequenceBuilder prv = null;
 			for (BlockSequence seq : fs) {
-				PageSequenceBuilder psb = newSequence(seq, refs, rcontext, collections);
-				if (!psb.paginate(refs, rcontext, collections)) {
+				newSequence(seq);
+			}
+			for (PageSequence psb : this) {
+				int offset = 0;
+				if (prv!=null) {
+					offset = prv.currentPage().getPageIndex()+1;
+					if (prv.getLayoutMaster().duplex() && (offset % 2)==1) {
+						offset++;
+					}
+				}
+				prv = (PageSequenceBuilder)psb;
+				if (!prv.paginate(offset, refs, rcontext, collections)) {
 					continue restart;
 				}
 			}
 			return this;
 		}
 	}
+
 	public PageImpl getPage(String refid) {
 		return pageReferences.get(refid);
 	}
 
-	private PageSequenceBuilder newSequence(BlockSequence seq, int pagesOffset) {
-		PageSequenceBuilder ret = new PageSequenceBuilder(seq, pagesOffset, this.pageReferences, context);
-		this.push(ret);
-		return ret;
-	}
-
-	private PageSequenceBuilder newSequence(BlockSequence seq) {
-		if (this.size()==0) {
-			return newSequence(seq, 0);
-		} else {
-			int next = currentSequence().currentPage().getPageIndex()+1;
-			if (currentSequence().getLayoutMaster().duplex() && (next % 2)==1) {
-				next++;
-			}
-			return newSequence(seq, next);
-		}
-	}
-
-	PageSequenceBuilder newSequence(BlockSequence seq, CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException {
-		PageSequenceBuilder pageSeq;
-		if (seq.getInitialPageNumber()==null) {
-			pageSeq = newSequence(seq);
-		} else {
-			pageSeq = newSequence(seq, seq.getInitialPageNumber() - 1);
-		}
-		return pageSeq;
-	}
-
-	private PageSequenceBuilder currentSequence() {
-		return (PageSequenceBuilder)this.peek();
+	private void newSequence(BlockSequence seq) {
+		this.push(new PageSequenceBuilder(seq, this.pageReferences, context));
 	}
 
 	/**

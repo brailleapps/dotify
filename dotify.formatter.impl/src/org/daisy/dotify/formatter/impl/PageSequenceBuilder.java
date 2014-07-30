@@ -8,18 +8,17 @@ import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class PageSequenceBuilder extends PageSequence {
-	private final int pagesOffset;
 	private final HashMap<String, PageImpl> pageReferences;
 	private final FormatterContext context;
 	private final BlockSequence seq;
+	private int pagesOffset;
 	private int keepNextSheets;
 	private PageImpl nextPage;
 	private List<RowImpl> before;
 	private List<RowImpl> after;
 
-	PageSequenceBuilder(BlockSequence seq, int pagesOffset, HashMap<String, PageImpl> pageReferences, FormatterContext context) {
+	PageSequenceBuilder(BlockSequence seq, HashMap<String, PageImpl> pageReferences, FormatterContext context) {
 		super(seq.getLayoutMaster());
-		this.pagesOffset = pagesOffset;
 		this.pageReferences = pageReferences;
 		this.context = context;
 		this.seq = seq;
@@ -127,7 +126,12 @@ class PageSequenceBuilder extends PageSequence {
 		return context;
 	}
 
-	boolean paginate(CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException  {
+	boolean paginate(int pagesOffset, CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException  {
+		if (seq.getInitialPageNumber()!=null) {
+			this.pagesOffset = seq.getInitialPageNumber() - 1;
+		} else {
+			this.pagesOffset = pagesOffset;
+		}
 		newPage();
 
 		ContentCollectionImpl c = null;
