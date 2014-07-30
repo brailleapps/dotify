@@ -1,21 +1,20 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
-import java.util.List;
 
 class PageStructBuilder extends PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
-	
+
 	private final FormatterContext context;
 	//private final StringFilter filters;
 	HashMap<String, PageImpl> pageReferences;
-	
+
 	public PageStructBuilder(FormatterContext context) {
 		//this.filters = filters;
 		this.pageReferences = new HashMap<String, PageImpl>();
 		this.context = context;
 	}
-	
+
 	/*public StringFilter getFilter() {
 		return filters;
 	}*/
@@ -25,40 +24,39 @@ class PageStructBuilder extends PageStruct {
 	public PageImpl getPage(String refid) {
 		return pageReferences.get(refid);
 	}
-	
-	PageSequenceBuilder newSequence(LayoutMaster master, int pagesOffset,  List<RowImpl> before, List<RowImpl> after) {
-		PageSequenceBuilder ret = new PageSequenceBuilder(master, pagesOffset, this.pageReferences, before, after, context);
+
+	private PageSequenceBuilder newSequence(LayoutMaster master, int pagesOffset) {
+		PageSequenceBuilder ret = new PageSequenceBuilder(master, pagesOffset, this.pageReferences, context);
 		this.push(ret);
 		return ret;
 	}
-	
-	PageSequenceBuilder newSequence(LayoutMaster master, List<RowImpl> before, List<RowImpl> after) {
+
+	private PageSequenceBuilder newSequence(LayoutMaster master) {
 		if (this.size()==0) {
-			return newSequence(master, 0, before, after);
+			return newSequence(master, 0);
 		} else {
 			int next = currentSequence().currentPage().getPageIndex()+1;
 			if (currentSequence().getLayoutMaster().duplex() && (next % 2)==1) {
 				next++;
 			}
-			return newSequence(master, next, before, after);
+			return newSequence(master, next);
 		}
 	}
-	
+
+	boolean newSequence(BlockSequence seq, CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException {
+		PageSequenceBuilder pageSeq;
+		if (seq.getInitialPageNumber()==null) {
+			pageSeq = newSequence(seq.getLayoutMaster());
+		} else {
+			pageSeq = newSequence(seq.getLayoutMaster(), seq.getInitialPageNumber() - 1);
+		}
+		return pageSeq.appendBlockSequence(seq, refs, rcontext, collections);
+	}
+
 	private PageSequenceBuilder currentSequence() {
 		return (PageSequenceBuilder)this.peek();
 	}
-	
-	PageImpl getPage(int i) {
-		for (PageSequence ps : this) {
-			if (i < ps.getPageCount()) {
-				return ps.getPage(i);
-			} else {
-				i -= ps.getPageCount();
-			}
-		}
-		throw new IndexOutOfBoundsException(i + " is out of bounds." );
-	}
-	
+
 	/**
 	 * Builds a string with possible breakpoints for the contents of this page struct.
 	 * Each sheet is represented by a lower case 's' and breakpoints are represented
@@ -91,7 +89,7 @@ class PageStructBuilder extends PageStruct {
 		}
 		return res.toString();
 	}
-	
+
 	private void trimEnd(StringBuilder sb, PageImpl p) {
 		int i = 0;
 		int x = sb.length()-1;
@@ -106,7 +104,7 @@ class PageStructBuilder extends PageStruct {
 			}
 		}
 	}
-	
+
 	/**
 	 * Makes a new sub structure starting from the pageIndex with the specified
 	 * number of sheets

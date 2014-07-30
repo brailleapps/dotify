@@ -7,6 +7,8 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequence {
 	private final SequenceProperties props;
+	private List<BlockSequence> ret;
+
 	
 	/**
 	 * Creates a new sequence event
@@ -14,6 +16,7 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 	 */
 	public StaticSequenceEventImpl(SequenceProperties props) {
 		this.props = props;
+		this.ret = null;
 	}
 
 	/**
@@ -26,13 +29,18 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 	}
 
 	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
-		BlockSequenceManipulator fsm = new BlockSequenceManipulator(
-				context.getMasters().get(getSequenceProperties().getMasterName()), 
-				getSequenceProperties().getInitialPageNumber());
-		fsm.appendGroup(this);
-		ArrayList<BlockSequence> ret = new ArrayList<BlockSequence>();
-		ret.add(fsm.newSequence());
-		return ret;
+		if (ret!=null) {
+			//we can return previous result, because static contents does not depend on context.
+			return ret;
+		} else {
+			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
+					context.getMasters().get(getSequenceProperties().getMasterName()), 
+					getSequenceProperties().getInitialPageNumber());
+			fsm.appendGroup(this);
+			ret = new ArrayList<BlockSequence>();
+			ret.add(fsm.newSequence());
+			return ret;
+		}
 	}
 
 }
