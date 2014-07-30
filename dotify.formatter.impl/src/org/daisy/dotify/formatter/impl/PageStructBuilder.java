@@ -6,13 +6,18 @@ class PageStructBuilder extends PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 
 	private final FormatterContext context;
+	private final Iterable<BlockSequence> fs;
+	private final HashMap<String, ContentCollectionImpl> collections;
+
 	//private final StringFilter filters;
 	HashMap<String, PageImpl> pageReferences;
 
-	public PageStructBuilder(FormatterContext context) {
+	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs, HashMap<String, ContentCollectionImpl> collections) {
 		//this.filters = filters;
 		this.pageReferences = new HashMap<String, PageImpl>();
 		this.context = context;
+		this.fs = fs;
+		this.collections = collections;
 	}
 
 	/*public StringFilter getFilter() {
@@ -21,36 +26,49 @@ class PageStructBuilder extends PageStruct {
 
 	private static final long serialVersionUID = 2591429059130956153L;
 
+	PageStructBuilder paginate(CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+		restart:while (true) {
+			pageReferences = new HashMap<String, PageImpl>();
+			clear();
+			for (BlockSequence seq : fs) {
+				PageSequenceBuilder psb = newSequence(seq, refs, rcontext, collections);
+				if (!psb.paginate(refs, rcontext, collections)) {
+					continue restart;
+				}
+			}
+			return this;
+		}
+	}
 	public PageImpl getPage(String refid) {
 		return pageReferences.get(refid);
 	}
 
-	private PageSequenceBuilder newSequence(LayoutMaster master, int pagesOffset) {
-		PageSequenceBuilder ret = new PageSequenceBuilder(master, pagesOffset, this.pageReferences, context);
+	private PageSequenceBuilder newSequence(BlockSequence seq, int pagesOffset) {
+		PageSequenceBuilder ret = new PageSequenceBuilder(seq, pagesOffset, this.pageReferences, context);
 		this.push(ret);
 		return ret;
 	}
 
-	private PageSequenceBuilder newSequence(LayoutMaster master) {
+	private PageSequenceBuilder newSequence(BlockSequence seq) {
 		if (this.size()==0) {
-			return newSequence(master, 0);
+			return newSequence(seq, 0);
 		} else {
 			int next = currentSequence().currentPage().getPageIndex()+1;
 			if (currentSequence().getLayoutMaster().duplex() && (next % 2)==1) {
 				next++;
 			}
-			return newSequence(master, next);
+			return newSequence(seq, next);
 		}
 	}
 
-	boolean newSequence(BlockSequence seq, CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException {
+	PageSequenceBuilder newSequence(BlockSequence seq, CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException {
 		PageSequenceBuilder pageSeq;
 		if (seq.getInitialPageNumber()==null) {
-			pageSeq = newSequence(seq.getLayoutMaster());
+			pageSeq = newSequence(seq);
 		} else {
-			pageSeq = newSequence(seq.getLayoutMaster(), seq.getInitialPageNumber() - 1);
+			pageSeq = newSequence(seq, seq.getInitialPageNumber() - 1);
 		}
-		return pageSeq.appendBlockSequence(seq, refs, rcontext, collections);
+		return pageSeq;
 	}
 
 	private PageSequenceBuilder currentSequence() {

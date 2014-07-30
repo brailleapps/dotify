@@ -36,7 +36,7 @@ public class FormatterImpl implements Formatter {
 	private final HashMap<String, ContentCollectionImpl> collections;
 	private final Stack<VolumeTemplate> volumeTemplates;
 	
-	private PaginatorImpl contentPaginator;
+	private PageStructBuilder contentPaginator;
 	private final Logger logger;
 	private final CrossReferenceHandler crh;
 	
@@ -115,7 +115,7 @@ public class FormatterImpl implements Formatter {
 	}
 
 	private Iterable<Volume> getVolumes() {
-		contentPaginator = new PaginatorImpl(context, blocks, collections);
+		contentPaginator =  new PageStructBuilder(context, blocks, collections);
 
 		try {
 			reformat(DEFAULT_SPLITTER_MAX);
@@ -257,8 +257,7 @@ public class FormatterImpl implements Formatter {
 		PageStructBuilder ret = null;
 		try {
 			Iterable<BlockSequence> ib = formatVolumeContents(crh, pre, c);
-			PaginatorImpl paginator2 = new PaginatorImpl(context, ib, collections);
-			ret = paginator2.paginate(crh, c);
+			ret = new PageStructBuilder(context, ib, collections).paginate(crh, c);
 		} catch (IOException e) {
 			ret = null;
 		} catch (PaginatorException e) {

@@ -11,16 +11,22 @@ class PageSequenceBuilder extends PageSequence {
 	private final int pagesOffset;
 	private final HashMap<String, PageImpl> pageReferences;
 	private final FormatterContext context;
+	private final BlockSequence seq;
 	private int keepNextSheets;
 	private PageImpl nextPage;
 	private List<RowImpl> before;
 	private List<RowImpl> after;
 
-	PageSequenceBuilder(LayoutMaster master, int pagesOffset, HashMap<String, PageImpl> pageReferences, FormatterContext context) {
-		super(master);
+	PageSequenceBuilder(BlockSequence seq, int pagesOffset, HashMap<String, PageImpl> pageReferences, FormatterContext context) {
+		super(seq.getLayoutMaster());
 		this.pagesOffset = pagesOffset;
 		this.pageReferences = pageReferences;
 		this.context = context;
+		this.seq = seq;
+		reset();
+	}
+	
+	private void reset() {
 		this.keepNextSheets = 0;
 		this.nextPage = null;
 		this.before = new ArrayList<RowImpl>();
@@ -121,7 +127,7 @@ class PageSequenceBuilder extends PageSequence {
 		return context;
 	}
 
-	boolean appendBlockSequence(BlockSequence seq, CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException  {
+	boolean paginate(CrossReferences refs, DefaultContext rcontext, HashMap<String, ContentCollectionImpl> collections) throws PaginatorException  {
 		newPage();
 
 		ContentCollectionImpl c = null;
