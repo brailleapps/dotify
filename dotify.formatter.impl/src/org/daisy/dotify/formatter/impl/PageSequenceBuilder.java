@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.daisy.dotify.api.formatter.PageAreaProperties;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 
 class PageSequenceBuilder extends PageSequence {
 	private final HashMap<String, PageImpl> pageReferences;
@@ -80,12 +79,17 @@ class PageSequenceBuilder extends PageSequence {
 		return pagesOffset;
 	}
 
-	PageImpl currentPage() {
+	
+	private PageImpl currentPage() {
 		if (nextPage!=null) {
 			return nextPage;
 		} else {
 			return pages.peek();
 		}
+	}
+	
+	int currentPageNumber() {
+		return currentPage().getPageIndex()+1;
 	}
 
 	/**
@@ -116,14 +120,6 @@ class PageSequenceBuilder extends PageSequence {
 		if (pageReferences.put(id, currentPage())!=null) {
 			throw new IllegalArgumentException("Identifier not unique: " + id);
 		}
-	}
-
-	public BrailleTranslator getTranslator() {
-		return context.getTranslator();
-	}
-
-	public FormatterContext getFormatterContext() {
-		return context;
 	}
 
 	boolean paginate(int pagesOffset, CrossReferences refs, DefaultContext rcontext) throws PaginatorException  {

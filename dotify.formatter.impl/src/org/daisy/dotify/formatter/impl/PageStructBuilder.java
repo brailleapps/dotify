@@ -35,7 +35,7 @@ class PageStructBuilder extends PageStruct {
 			for (PageSequence psb : this) {
 				int offset = 0;
 				if (prv!=null) {
-					offset = prv.currentPage().getPageIndex()+1;
+					offset = prv.currentPageNumber();
 					if (prv.getLayoutMaster().duplex() && (offset % 2)==1) {
 						offset++;
 					}

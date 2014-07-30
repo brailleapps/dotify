@@ -212,7 +212,7 @@ class PageImpl implements Page {
 				final int pageMargin = ((pagenum % 2 == 0) ? lm.getOuterMargin() : lm.getInnerMargin());
 				int w = master.getFlowWidth() + fsize + pageMargin;
 
-				tb = new TextBorder.Builder(w, parent.getFormatterContext().getSpaceCharacter()+"")
+				tb = new TextBorder.Builder(w, fcontext.getSpaceCharacter()+"")
 						.style(border)
 						.outerLeftMargin(pageMargin)
 						.padToSize(!TextBorderStyle.NONE.equals(border))
@@ -296,11 +296,11 @@ class PageImpl implements Page {
 		if (text.equals("") && leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
 			return "";
 		} else {
-			String r = leftMargin.getContent() + StringTools.fill( parent.getFormatterContext().getSpaceCharacter(), align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;
+			String r = leftMargin.getContent() + StringTools.fill(fcontext.getSpaceCharacter(), align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;
 			if (rightMargin.isSpaceOnly()) {
 				return r;
 			} else {
-				return r + StringTools.fill( parent.getFormatterContext().getSpaceCharacter(), w - r.length() - rightMargin.getContent().length()) + rightMargin.getContent();
+				return r + StringTools.fill(fcontext.getSpaceCharacter(), w - r.length() - rightMargin.getContent().length()) + rightMargin.getContent();
 			}
 		}
 	}
@@ -338,7 +338,7 @@ class PageImpl implements Page {
 		ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
 		for (FieldList row : fields) {
 			try {
-				RowImpl r = new RowImpl(distribute(row, lm.getFlowWidth(), parent.getFormatterContext().getSpaceCharacter()+"", translator));
+				RowImpl r = new RowImpl(distribute(row, lm.getFlowWidth(), fcontext.getSpaceCharacter()+"", translator));
 				r.setRowSpacing(row.getRowSpacing());
 				ret.add(r);
 			} catch (PaginatorToolsException e) {
