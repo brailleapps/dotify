@@ -71,7 +71,11 @@ public class LayoutEngineTest {
 		testPEF("resource-files/obfl-input-content-items.obfl", "resource-files/obfl-content-items-expected.pef");
 	}
 	
-	
+	@Test
+	public void testLayoutEngingeContentItemsFallback() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/obfl-input-content-items-fallback.obfl", "resource-files/obfl-content-items-fallback-expected.pef");
+	}
+
 	private void testPEF(String input, String expected) throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("sv-SE",
 				BrailleTranslatorFactory.MODE_UNCONTRACTED, 

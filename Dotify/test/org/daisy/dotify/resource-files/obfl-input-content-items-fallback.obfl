@@ -12,7 +12,7 @@
 			</header>	
 			<footer/>
 		</default-template>
-		<page-area align="bottom" max-height="10" collection="footnotes" fallback="endnotes">
+		<page-area align="bottom" max-height="2" collection="footnotes" fallback="endnotes">
 			<before>... Footnotes <leader position="100%" pattern="."/></before>
 			<after><leader position="50%" pattern=" " align="center"/>--- END ---</after>
 		</page-area>

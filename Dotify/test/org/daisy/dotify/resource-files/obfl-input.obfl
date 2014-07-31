@@ -67,12 +67,12 @@
 		<sequence master="main" initial-page-number="7">
 			<block margin-top="2" margin-bottom="1">Initial page number</block>
 			<block margin-bottom="0">Notice that this sequence is starting on page seven, rather than one.</block>
-			<block margin-top="2" margin-bottom="1">Paragraphs<anchor float-item="note1"/>
+			<block margin-top="2" margin-bottom="1">Paragraphs<!--<anchor float-item="note1"/>-->
 			</block>
 			<block>One common style is to start the first paragraph with a single new line before, or rather, an empty line after the preceding block.</block>
 			<block first-line-indent="2" margin-bottom="1">Following paragraphs usually have the first line indented, such as this one.</block>
 			<block margin-left="2" margin-bottom="0">Block quotes or poems are examples where it could be desired to apply a margin to a whole block.</block>
-			<block margin-top="2" margin-bottom="1">Leaders<anchor float-item="note2"/>
+			<block margin-top="2" margin-bottom="1">Leaders<!--<anchor float-item="note2"/>-->
 			</block>
 			<block margin-bottom="1">Leaders can be used for many things, such as creating a table of contents:</block>
 			<block margin-bottom="1">
