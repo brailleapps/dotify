@@ -183,6 +183,10 @@ class PageSequenceBuilder extends PageSequence {
 			if (!bd.addRows(seq.getLayoutMaster(), refs, rcontext, c)) {
 				//reassign collection
 				if (pa!=null) {
+					if (pa.getFallbackId()==null) {
+						throw new PaginatorException("Failed to fit collection '" + pa.getCollectionId() + "' within the page-area boundaries, and no fallback was defined.");
+					}
+
 					c = context.getCollections().remove(pa.getCollectionId());
 					if (context.getCollections().put(pa.getFallbackId(), c)!=null) {
 						throw new PaginatorException("Fallback id already in use:" + pa.getFallbackId());

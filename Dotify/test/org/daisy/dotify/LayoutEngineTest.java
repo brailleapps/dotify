@@ -75,6 +75,11 @@ public class LayoutEngineTest {
 	public void testLayoutEngingeContentItemsFallback() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/obfl-input-content-items-fallback.obfl", "resource-files/obfl-content-items-fallback-expected.pef");
 	}
+	
+	@Test (expected = RuntimeException.class)
+	public void testLayoutEngineContentItemsNoFallback() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/obfl-input-content-items-no-fallback.obfl", null);
+	}
 
 	private void testPEF(String input, String expected) throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("sv-SE",

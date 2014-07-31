@@ -190,6 +190,7 @@ Dotify/test/org/daisy/dotify/resource-files/obfl-dls-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-border.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items-fallback.obfl -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items-no-fallback.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-dls.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-toc.obfl -text
