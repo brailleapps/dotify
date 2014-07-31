@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Logger;
@@ -28,7 +27,7 @@ import org.daisy.dotify.tools.StateObject;
  * Breaks flow into rows, page related block properties are left to next step
  * @author Joel Håkansson
  */
-public class FormatterImpl implements Formatter {
+public class FormatterImpl implements Formatter, CrossReferences {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final static int DEFAULT_SPLITTER_MAX = 50;
 	
@@ -37,7 +36,6 @@ public class FormatterImpl implements Formatter {
 	
 	private PageStructBuilder contentPaginator;
 	private final Logger logger;
-	private final CrossReferenceHandler crh;
 	
 	private final StateObject state;
 	private final FormatterContext context;
@@ -58,9 +56,17 @@ public class FormatterImpl implements Formatter {
 		this.volumeTemplates = new Stack<VolumeTemplate>();
 		
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
-		this.crh = new CrossReferenceHandler();
+		
+		//CrossReferenceHandler
+		this.volLocations = new HashMap<String, Integer>();
+		this.pageLocations = new HashMap<String, Integer>();
+		this.volumes = new HashMap<Integer, Volume>();
+		this.volSheet = new HashMap<Integer, Integer>();
+		this.isDirty = false;
+		this.volumeForContentSheetChanged = false;
 	}
 	
+	@Override
 	public FormatterCore newSequence(SequenceProperties p) {
 		state.assertOpen();
 		BlockSequence currentSequence = new BlockSequence(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
@@ -68,16 +74,19 @@ public class FormatterImpl implements Formatter {
 		return currentSequence;
 	}
 
+	@Override
 	public LayoutMasterBuilder newLayoutMaster(String name,
 			LayoutMasterProperties properties) {
 		return context.newLayoutMaster(name, properties);
 	}
 
+	@Override
 	public void open() {
 		state.assertUnopened();
 		state.open();
 	}
 	
+	@Override
 	public void close() throws IOException {
 		if (state.isClosed()) {
 			return;
@@ -86,28 +95,33 @@ public class FormatterImpl implements Formatter {
 		state.close();
 	}
 
+	@Override
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
 		VolumeTemplate template = new VolumeTemplate(tocs, props.getCondition(), props.getSplitterMax());
 		volumeTemplates.push(template);
 		return template;
 	}
-	
-	public List<VolumeTemplate> getVolumeTemplates() {
-		return volumeTemplates;
-	}
 
+	@Override
 	public TableOfContents newToc(String tocName) {
 		TableOfContentsImpl toc = new TableOfContentsImpl();
 		tocs.put(tocName, toc);
 		return toc;
 	}
-	
-	public Map<String, TableOfContentsImpl> getTocs() {
-		return tocs;
-	}
-	
+
+	@Override
 	public ContentCollection newCollection(String collectionId) {
 		return context.newContentCollection(collectionId);
+	}
+	
+	@Override
+	public void write(PagedMediaWriter writer) {
+		WriterHandler wh = new WriterHandler();
+		wh.write(getVolumes(), writer);
+		try {
+			writer.close();
+		} catch (IOException e) {
+		}
 	}
 
 	private Iterable<Volume> getVolumes() {
@@ -120,96 +134,91 @@ public class FormatterImpl implements Formatter {
 		}
 		int j = 1;
 		boolean ok = false;
-		int totalPreCount = 0;
-		int totalPostCount = 0;
+		int totalOverheadCount = 0;
 		int prvVolCount = 0;
 		int volumeOffset = 0;
 		int volsMin = Integer.MAX_VALUE;
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
 			// make a preliminary calculation based on contents only
-			PageStructBuilder ps = crh.getContents();
 			final int contents = ps.countSheets(); 
 			String breakpoints = ps.buildBreakpointString();
 			logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
 			BreakPointHandler volBreaks = new BreakPointHandler(breakpoints);
-			int splitterMax = getVolumeMaxSize(1, crh.getExpectedVolumeCount());
+			int splitterMax = getVolumeMaxSize(1,  sdc.getVolumeCount());
 
-			EvenSizeVolumeSplitterCalculator esc;
-			esc = new EvenSizeVolumeSplitterCalculator(contents + totalPreCount + totalPostCount, splitterMax, volumeOffset);
-			// this fixes a problem where the volume overhead pushes the
-			// volume count up once the volume offset has been set
-			if (volumeOffset == 1 && esc.getVolumeCount() > volsMin + 1) {
-				volumeOffset = 0;
-				esc = new EvenSizeVolumeSplitterCalculator(contents + totalPreCount + totalPostCount, splitterMax, volumeOffset);
+			{
+				EvenSizeVolumeSplitterCalculator esc = new EvenSizeVolumeSplitterCalculator(contents + totalOverheadCount, splitterMax, volumeOffset);
+				// this fixes a problem where the volume overhead pushes the
+				// volume count up once the volume offset has been set
+				if (volumeOffset == 1 && esc.getVolumeCount() > volsMin + 1) {
+					volumeOffset = 0;
+					esc = new EvenSizeVolumeSplitterCalculator(contents + totalOverheadCount, splitterMax, volumeOffset);
+				}
+	
+				volsMin = Math.min(esc.getVolumeCount(), volsMin);
+				
+				volumeForContentSheetChanged = false;
+				sdc = esc;
 			}
 
-			volsMin = Math.min(esc.getVolumeCount(), volsMin);
-			
-			crh.setSDC(esc);
-
-			if (crh.getExpectedVolumeCount()!=prvVolCount) {
-				prvVolCount = crh.getExpectedVolumeCount();
+			if ( sdc.getVolumeCount()!=prvVolCount) {
+				prvVolCount =  sdc.getVolumeCount();
 			}
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
-			totalPreCount = 0;
-			totalPostCount = 0;
+			totalOverheadCount = 0;
 			ret = new ArrayList<Volume>();
 			int pageIndex = 0;
-			ArrayList<Iterable<PageSequence>> preV = new ArrayList<Iterable<PageSequence>>();
-			ArrayList<Iterable<PageSequence>> postV = new ArrayList<Iterable<PageSequence>>();
 			
-			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
-				if (splitterMax!=getVolumeMaxSize(i, crh.getExpectedVolumeCount())) {
+			for (int i=1;i<= sdc.getVolumeCount();i++) {
+				if (splitterMax!=getVolumeMaxSize(i,  sdc.getVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
-				preV.add((Iterable<PageSequence>) getPreVolumeContents(i));
-				postV.add((Iterable<PageSequence>) getPostVolumeContents(i));
-			}
-			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
-				
-				totalPreCount += crh.getVolData(i).getPreVolSize();
-				totalPostCount += crh.getVolData(i).getPostVolSize();
+				updateVolumeContents(i);
 
-				int targetSheetsInVolume = crh.sheetsInVolume(i);
-				if (i==crh.getExpectedVolumeCount()) {
-					targetSheetsInVolume = splitterMax;
+				totalOverheadCount += getVolume(i).getOverhead();
+
+				{
+					int targetSheetsInVolume = (i==sdc.getVolumeCount()?splitterMax:sdc.sheetsInVolume(i));
+					int contentSheets = targetSheetsInVolume-getVolume(i).getOverhead();
+					BreakPoint bp;
+					{
+						int offset = -1;
+						do {
+							offset++;
+							bp = volBreaks.copy().nextRow(contentSheets+offset, false);
+						} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitterMax);
+						bp = volBreaks.nextRow(contentSheets + offset, true);
+					}
+					contentSheets = bp.getHead().length();
+					setTargetVolSize(i, contentSheets + getVolume(i).getOverhead());
 				}
-				int contentSheets = targetSheetsInVolume-crh.getVolData(i).getVolOverhead();
-				int offset = -1;
-				BreakPoint bp;
-				do {
-					offset++;
-					bp = volBreaks.copy().nextRow(contentSheets+offset, false);
-				} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitterMax);
-				bp = volBreaks.nextRow(contentSheets + offset, true);
-				contentSheets = bp.getHead().length();
-				crh.setTargetVolSize(i, contentSheets + crh.getVolData(i).getVolOverhead());
-			}
-			for (int i=1;i<=crh.getExpectedVolumeCount();i++) {
-				int contentSheets = crh.getVolData(i).getTargetVolSize() - crh.getVolData(i).getVolOverhead();
-				logger.fine("Sheets  in volume " + i + ": " + (contentSheets+crh.getVolData(i).getVolOverhead()) + 
-						", content:" + contentSheets +
-						", overhead:" + crh.getVolData(i).getVolOverhead());
-				PageStruct body = ps.substruct(pageIndex, contentSheets);
-				pageIndex += body.countPages();
-				int sheetsInVolume = body.countSheets() + crh.getVolData(i).getVolOverhead();
-				if (sheetsInVolume>crh.getVolData(i).getTargetVolSize()) {
-					ok2 = false;
-					logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
+				{
+					int contentSheets = getVolume(i).getTargetSize() - getVolume(i).getOverhead();
+					logger.fine("Sheets  in volume " + i + ": " + (contentSheets+getVolume(i).getOverhead()) + 
+							", content:" + contentSheets +
+							", overhead:" + getVolume(i).getOverhead());
+					PageStruct body = ps.substruct(pageIndex, contentSheets);
+					pageIndex += body.countPages();
+					int sheetsInVolume = body.countSheets() + getVolume(i).getOverhead();
+					if (sheetsInVolume>getVolume(i).getTargetSize()) {
+						ok2 = false;
+						logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
+					}
+					getVolume(i).setBody(body);
+					ret.add(getVolume(i));
 				}
-				ret.add(new Volume(preV.get(i-1), body, postV.get(i-1)));
 			}
 			if (volBreaks.hasNext()) {
 				ok2 = false;
 				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(ps.countPages()-pageIndex));
-				if (!crh.isDirty()) {
+				if (!isDirty()) {
 					if (volumeOffset < 1) {
 						//First check to see if the page increase can will be handled automatically without increasing volume offset 
 						//in the next iteration (by supplying up-to-date overhead values)
-						EvenSizeVolumeSplitterCalculator esv = new EvenSizeVolumeSplitterCalculator(contents+totalPreCount+totalPostCount, splitterMax, volumeOffset);
-						if (esv.equals(crh.getSdc())) {
+						EvenSizeVolumeSplitterCalculator esv = new EvenSizeVolumeSplitterCalculator(contents+totalOverheadCount, splitterMax, volumeOffset);
+						if (esv.equals(sdc)) {
 							volumeOffset++;
 						}
 					} else {
@@ -217,16 +226,16 @@ public class FormatterImpl implements Formatter {
 					}
 				}
 			}
-			if (!crh.isDirty() && pageIndex==ps.countPages() && ok2) {
+			if (!isDirty() && pageIndex==ps.countPages() && ok2) {
 				//everything fits
 				ok = true;
 			} else if (j>9) {
 				throw new RuntimeException("Failed to complete volume division.");
 			} else {
 				j++;
-				crh.setDirty(false);
+				setDirty(false);
 				try {
-					reformat(getVolumeMaxSize(1, crh.getExpectedVolumeCount()));
+					reformat(getVolumeMaxSize(1, sdc.getVolumeCount()));
 				} catch (PaginatorException e) {
 					throw new RuntimeException("Error while reformatting.", e);
 				}
@@ -237,48 +246,37 @@ public class FormatterImpl implements Formatter {
 	}
 	
 	private void reformat(int splitterMax) throws PaginatorException {
-		crh.setContents(contentPaginator.paginate(crh, new DefaultContext(null, null)), splitterMax);
+		setContents(contentPaginator.paginate(this, new DefaultContext(null, null)), splitterMax);
 	}
 
-	private PageStruct getPreVolumeContents(int volumeNumber) {
-		return getVolumeContents(volumeNumber, true);
+	private void updateVolumeContents(int volumeNumber) {
+		updateVolumeContents(volumeNumber, true);
+		updateVolumeContents(volumeNumber, false);
 	}
 
-	private PageStruct getPostVolumeContents(int volumeNumber) {
-		return getVolumeContents(volumeNumber, false);
-	}
-
-	private PageStruct getVolumeContents(int volumeNumber, boolean pre) {
-		DefaultContext c = new DefaultContext(volumeNumber, crh.getExpectedVolumeCount());
+	private void updateVolumeContents(int volumeNumber, boolean pre) {
+		DefaultContext c = new DefaultContext(volumeNumber, sdc.getVolumeCount());
 		PageStructBuilder ret = null;
 		try {
-			Iterable<BlockSequence> ib = formatVolumeContents(crh, pre, c);
-			ret = new PageStructBuilder(context, ib).paginate(crh, c);
-		} catch (IOException e) {
-			ret = null;
+			ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
+			for (VolumeTemplate t : volumeTemplates) {
+				if (t.appliesTo(c)) {
+					for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
+						ib.addAll(seq.getBlockSequence(context, c, this));
+					}
+					break;
+				}
+			}
+			ret = new PageStructBuilder(context, ib).paginate(this, c);
 		} catch (PaginatorException e) {
 			ret = null;
 		}
 
 		if (pre) {
-			crh.setPreVolData(volumeNumber, ret);
+			setPreVolData(volumeNumber, ret);
 		} else {
-			crh.setPostVolData(volumeNumber, ret);
+			setPostVolData(volumeNumber, ret);
 		}
-		return ret;
-	}
-
-	private Iterable<BlockSequence> formatVolumeContents(CrossReferences crh, boolean pre, DefaultContext c) throws IOException {
-		ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
-		for (VolumeTemplate t : volumeTemplates) {
-			if (t.appliesTo(c)) {
-				for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
-					ib.addAll(seq.getBlockSequence(context, c, crh));
-				}
-				break;
-			}
-		}
-		return ib;
 	}
 	
 	/**
@@ -288,7 +286,7 @@ public class FormatterImpl implements Formatter {
 	 * @param volumeCount the number of volumes
 	 * @return returns the maximum number of sheets in the volume
 	 */
-	public int getVolumeMaxSize(int volumeNumber, int volumeCount) {
+	private int getVolumeMaxSize(int volumeNumber, int volumeCount) {
 		for (VolumeTemplate t : volumeTemplates) {
 			if (t==null) {
 				System.out.println("VOLDATA NULL");
@@ -299,15 +297,195 @@ public class FormatterImpl implements Formatter {
 		}
 		//TODO: don't return a fixed value
 		return DEFAULT_SPLITTER_MAX;
+	}	
+	
+	//CrossReferenceHandler
+	private final Map<String, Integer> volLocations;
+	private final Map<String, Integer> pageLocations;
+	private final Map<Integer, Volume> volumes;
+	private HashMap<Integer, Integer> volSheet;
+	private Map<Page, Integer> pageSheetMap;
+	private PageStructBuilder ps;
+	private EvenSizeVolumeSplitterCalculator sdc;
+	private boolean isDirty;
+	private boolean volumeForContentSheetChanged;
+	
+	
+	@Override
+	public PageStructBuilder getContents() {
+		return ps;
 	}
-
-	public void write(PagedMediaWriter writer) {
-		WriterHandler wh = new WriterHandler();
-		wh.write(getVolumes(), writer);
-		try {
-			writer.close();
-		} catch (IOException e) {
+	
+	private void setContents(PageStructBuilder contents, int splitterMax) {
+		this.ps = contents;
+		this.sdc = new EvenSizeVolumeSplitterCalculator(ps.countSheets(), splitterMax);
+		int sheetIndex=0;
+		this.pageSheetMap = new HashMap<Page, Integer>();
+		for (PageSequence s : ps) {
+			LayoutMaster lm = s.getLayoutMaster();
+			int pageIndex=0;
+			for (Page p : s.getPages()) {
+				if (!lm.duplex() || pageIndex%2==0) {
+					sheetIndex++;
+				}
+				pageSheetMap.put(p, sheetIndex);
+				pageIndex++;
+			}
 		}
 	}
 
+	private void setPreVolData(int volumeNumber, PageStructBuilder preVolData) {
+		Volume d = getVolume(volumeNumber);
+		/*if (d.preVolData!=preVolData) {
+			setDirty(true);
+		}*/
+		d.setPreVolData(preVolData);
+	}
+	
+	private void setPostVolData(int volumeNumber, PageStructBuilder postVolData) {
+		Volume d = getVolume(volumeNumber);
+		/*if (d.postVolData!=postVolData) {
+			setDirty(true);
+		}*/
+		d.setPostVolData(postVolData);
+	}
+	
+	private void setTargetVolSize(int volumeNumber, int targetVolSize) {
+		Volume d = getVolume(volumeNumber);
+		if (d.getTargetSize()!=targetVolSize) {
+			setDirty(true);
+		}
+		d.setTargetVolSize(targetVolSize);
+	}
+	
+	private Volume getVolume(int volumeNumber) {
+		if (volumeNumber<1) {
+			throw new IndexOutOfBoundsException("Volume must be greater than or equal to 1");
+		}
+		if (volumes.get(volumeNumber)==null) {
+			volumes.put(volumeNumber, new Volume());
+			setDirty(true);
+		}
+		return volumes.get(volumeNumber);
+	}
+	
+	private boolean isDirty() {
+		return isDirty || volumeForContentSheetChanged;
+	}
+
+	private void setDirty(boolean isDirty) {
+		this.isDirty = isDirty;
+	}
+
+	private int updateVolumeLocation(String refid, int vol) {
+		Integer v = volLocations.get(refid);
+		volLocations.put(refid, vol);
+		if (v!=null && v!=vol) {
+			//this refid has been requested before and it changed location
+			isDirty = true;
+		}
+		return vol;
+	}
+	
+	private PageImpl updatePageLocation(String refid, PageImpl page) {
+		Integer p = pageLocations.get(refid);
+		pageLocations.put(refid, page.getPageIndex());
+		if (p!=null && p!=page.getPageIndex()) {
+			//this refid has been requested before and it changed location
+			isDirty = true;
+		}
+		return page;
+	}
+	
+	@Override
+	public Integer getVolumeNumber(String refid) {
+		for (int i=1; i<=sdc.getVolumeCount(); i++) {
+			if (volumes.get(i)!=null) {
+				if (volumes.get(i).getPreVolData()!=null && volumes.get(i).getPreVolData().getPage(refid)!=null) {
+					return updateVolumeLocation(refid, i);
+				}
+				if (volumes.get(i).getPostVolData()!=null &&  volumes.get(i).getPostVolData().getPage(refid)!=null) {
+					return updateVolumeLocation(refid, i);
+				}
+			}
+		}
+		Integer i = pageSheetMap.get(getPage(refid));
+		if (i!=null) {
+			return updateVolumeLocation(refid, getVolumeForContentSheet(i));
+		}
+		setDirty(true);
+		return null;
+	}
+
+	@Override
+	public Integer getVolumeNumber(Page p) {
+		Integer sheet = pageSheetMap.get(p);
+		if (sheet!=null) {
+			return getVolumeForContentSheet(sheet);
+		} else {
+			setDirty(true);
+			return null;
+		}
+	}
+
+	private PageImpl getPage(String refid) {
+		PageImpl ret;
+		if (ps!=null && (ret=ps.getPage(refid))!=null) {
+			return updatePageLocation(refid, ret);
+		}
+		if (sdc!=null) {
+			for (int i=1; i<=sdc.getVolumeCount(); i++) {
+				if (volumes.get(i)!=null) {
+					if (volumes.get(i).getPreVolData()!=null && (ret=volumes.get(i).getPreVolData().getPage(refid))!=null) {
+						return updatePageLocation(refid, ret);
+					}
+					if (volumes.get(i).getPostVolData()!=null &&  (ret=volumes.get(i).getPostVolData().getPage(refid))!=null) {
+						return updatePageLocation(refid, ret);
+					}
+				}
+			}
+		}
+		setDirty(true);
+		return null;
+	}
+	
+	@Override
+	public Integer getPageNumber(String refid) {
+		PageImpl p = getPage(refid);
+		if (p==null) {
+			return null;
+		} else {
+			return p.getPageIndex()+1;
+		}
+	}
+	
+	private int getVolumeForContentSheet(int sheetIndex) {
+		if (sheetIndex<1) {
+			throw new IndexOutOfBoundsException("Sheet index must be greater than zero: " + sheetIndex);
+		}
+		if (sheetIndex>sdc.getSheetCount()) {
+			throw new IndexOutOfBoundsException("Sheet index must not exceed agreed value.");
+		}
+		int lastSheetInCurrentVolume=0;
+		int retVolume=0;
+		do {
+			retVolume++;
+			int prvVal = lastSheetInCurrentVolume;
+			int volSize = getVolume(retVolume).getTargetSize();
+			if (volSize==0) {
+				volSize = sdc.sheetsInVolume(retVolume);
+			}
+			lastSheetInCurrentVolume += volSize;
+			lastSheetInCurrentVolume -= getVolume(retVolume).getOverhead();
+			if (prvVal>=lastSheetInCurrentVolume) {
+				throw new RuntimeException("Negative volume size");
+			}
+		} while (sheetIndex>lastSheetInCurrentVolume);
+		Integer cv = volSheet.get(sheetIndex);
+		if (cv==null || cv!=retVolume) {
+			volumeForContentSheetChanged = true;
+			volSheet.put(sheetIndex, retVolume);
+		}
+		return retVolume;
+	}
 }

@@ -472,7 +472,6 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceManipulator.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ConditionalBlock.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ContentCollectionImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferences.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DefaultContext.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Evaluate.java -text
@@ -513,8 +512,8 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TableOfContentsImpl.ja
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextBorder.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TextSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/TocSequenceEventImpl.java -text
-dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolDataInterface.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Volume.java -text svneol=unset#text/plain
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeBuilder.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeContentBuilderImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeSequence.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/VolumeTemplate.java -text
