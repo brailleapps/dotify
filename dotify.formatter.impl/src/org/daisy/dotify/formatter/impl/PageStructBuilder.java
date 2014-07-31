@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
+import java.util.Map;
 
 class PageStructBuilder extends PageStruct {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
@@ -9,7 +10,8 @@ class PageStructBuilder extends PageStruct {
 	private final Iterable<BlockSequence> fs;
 
 	//private final StringFilter filters;
-	HashMap<String, PageImpl> pageReferences;
+	private Map<String, PageImpl> pageReferences;
+	private Map<Page, Integer> pageSheetMap;
 
 	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs) {
 		//this.filters = filters;
@@ -27,6 +29,7 @@ class PageStructBuilder extends PageStruct {
 	PageStructBuilder paginate(CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		restart:while (true) {
 			pageReferences = new HashMap<String, PageImpl>();
+			pageSheetMap = new HashMap<Page, Integer>();
 			clear();
 			PageSequenceBuilder prv = null;
 			for (BlockSequence seq : fs) {
@@ -45,8 +48,25 @@ class PageStructBuilder extends PageStruct {
 					continue restart;
 				}
 			}
+			int sheetIndex=0;
+			for (PageSequence s : this) {
+				LayoutMaster lm = s.getLayoutMaster();
+				int pageIndex=0;
+				for (Page p : s.getPages()) {
+					if (!lm.duplex() || pageIndex%2==0) {
+						sheetIndex++;
+					}
+					pageSheetMap.put(p, sheetIndex);
+					pageIndex++;
+				}
+			}
+			
 			return this;
 		}
+	}
+	
+	Integer getSheet(Page p) {
+		return pageSheetMap.get(p);
 	}
 
 	public PageImpl getPage(String refid) {

@@ -33,8 +33,6 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	
 	private final HashMap<String, TableOfContentsImpl> tocs;
 	private final Stack<VolumeTemplate> volumeTemplates;
-	
-	private PageStructBuilder contentPaginator;
 	private final Logger logger;
 	
 	private final StateObject state;
@@ -125,21 +123,23 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	}
 
 	private Iterable<Volume> getVolumes() {
-		contentPaginator =  new PageStructBuilder(context, blocks);
+		PageStructBuilder contentPaginator =  new PageStructBuilder(context, blocks);
 
-		try {
-			reformat(DEFAULT_SPLITTER_MAX);
-		} catch (PaginatorException e) {
-			throw new RuntimeException("Error while reformatting.", e);
-		}
 		int j = 1;
 		boolean ok = false;
 		int totalOverheadCount = 0;
 		int prvVolCount = 0;
 		int volumeOffset = 0;
 		int volsMin = Integer.MAX_VALUE;
+		int reformatSplitterMax = DEFAULT_SPLITTER_MAX;
 		ArrayList<Volume> ret = new ArrayList<Volume>();
 		while (!ok) {
+			try {
+				this.ps = contentPaginator.paginate(this, new DefaultContext(null, null));
+				this.sdc = new EvenSizeVolumeSplitterCalculator(ps.countSheets(), reformatSplitterMax);
+			} catch (PaginatorException e) {
+				throw new RuntimeException("Error while reformatting.", e);
+			}
 			// make a preliminary calculation based on contents only
 			final int contents = ps.countSheets(); 
 			String breakpoints = ps.buildBreakpointString();
@@ -175,13 +175,15 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				if (splitterMax!=getVolumeMaxSize(i,  sdc.getVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
-				updateVolumeContents(i);
+				
+				Volume volume = getVolume(i);
+				updateVolumeContents(volume);
 
-				totalOverheadCount += getVolume(i).getOverhead();
+				totalOverheadCount += volume.getOverhead();
 
 				{
 					int targetSheetsInVolume = (i==sdc.getVolumeCount()?splitterMax:sdc.sheetsInVolume(i));
-					int contentSheets = targetSheetsInVolume-getVolume(i).getOverhead();
+					int contentSheets = targetSheetsInVolume-volume.getOverhead();
 					BreakPoint bp;
 					{
 						int offset = -1;
@@ -192,22 +194,22 @@ public class FormatterImpl implements Formatter, CrossReferences {
 						bp = volBreaks.nextRow(contentSheets + offset, true);
 					}
 					contentSheets = bp.getHead().length();
-					setTargetVolSize(i, contentSheets + getVolume(i).getOverhead());
+					setTargetVolSize(volume, contentSheets + volume.getOverhead());
 				}
 				{
-					int contentSheets = getVolume(i).getTargetSize() - getVolume(i).getOverhead();
-					logger.fine("Sheets  in volume " + i + ": " + (contentSheets+getVolume(i).getOverhead()) + 
+					int contentSheets = volume.getTargetSize() - volume.getOverhead();
+					logger.fine("Sheets  in volume " + i + ": " + (contentSheets+volume.getOverhead()) + 
 							", content:" + contentSheets +
-							", overhead:" + getVolume(i).getOverhead());
+							", overhead:" + volume.getOverhead());
 					PageStruct body = ps.substruct(pageIndex, contentSheets);
 					pageIndex += body.countPages();
-					int sheetsInVolume = body.countSheets() + getVolume(i).getOverhead();
-					if (sheetsInVolume>getVolume(i).getTargetSize()) {
+					int sheetsInVolume = body.countSheets() + volume.getOverhead();
+					if (sheetsInVolume>volume.getTargetSize()) {
 						ok2 = false;
 						logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
 					}
-					getVolume(i).setBody(body);
-					ret.add(getVolume(i));
+					volume.setBody(body);
+					ret.add(volume);
 				}
 			}
 			if (volBreaks.hasNext()) {
@@ -234,27 +236,19 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			} else {
 				j++;
 				setDirty(false);
-				try {
-					reformat(getVolumeMaxSize(1, sdc.getVolumeCount()));
-				} catch (PaginatorException e) {
-					throw new RuntimeException("Error while reformatting.", e);
-				}
+				reformatSplitterMax = getVolumeMaxSize(1, sdc.getVolumeCount());
 				logger.info("Things didn't add up, running another iteration (" + j + ")");
 			}
 		}
 		return ret;
 	}
-	
-	private void reformat(int splitterMax) throws PaginatorException {
-		setContents(contentPaginator.paginate(this, new DefaultContext(null, null)), splitterMax);
+
+	private void updateVolumeContents(Volume d) {
+		d.setPreVolData(updateVolumeContents(d.getVolumeNumber(), true));
+		d.setPostVolData(updateVolumeContents(d.getVolumeNumber(), false));
 	}
 
-	private void updateVolumeContents(int volumeNumber) {
-		updateVolumeContents(volumeNumber, true);
-		updateVolumeContents(volumeNumber, false);
-	}
-
-	private void updateVolumeContents(int volumeNumber, boolean pre) {
+	private PageStructBuilder updateVolumeContents(int volumeNumber, boolean pre) {
 		DefaultContext c = new DefaultContext(volumeNumber, sdc.getVolumeCount());
 		PageStructBuilder ret = null;
 		try {
@@ -272,11 +266,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			ret = null;
 		}
 
-		if (pre) {
-			setPreVolData(volumeNumber, ret);
-		} else {
-			setPostVolData(volumeNumber, ret);
-		}
+		return ret;
 	}
 	
 	/**
@@ -304,7 +294,6 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	private final Map<String, Integer> pageLocations;
 	private final Map<Integer, Volume> volumes;
 	private HashMap<Integer, Integer> volSheet;
-	private Map<Page, Integer> pageSheetMap;
 	private PageStructBuilder ps;
 	private EvenSizeVolumeSplitterCalculator sdc;
 	private boolean isDirty;
@@ -316,42 +305,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		return ps;
 	}
 	
-	private void setContents(PageStructBuilder contents, int splitterMax) {
-		this.ps = contents;
-		this.sdc = new EvenSizeVolumeSplitterCalculator(ps.countSheets(), splitterMax);
-		int sheetIndex=0;
-		this.pageSheetMap = new HashMap<Page, Integer>();
-		for (PageSequence s : ps) {
-			LayoutMaster lm = s.getLayoutMaster();
-			int pageIndex=0;
-			for (Page p : s.getPages()) {
-				if (!lm.duplex() || pageIndex%2==0) {
-					sheetIndex++;
-				}
-				pageSheetMap.put(p, sheetIndex);
-				pageIndex++;
-			}
-		}
-	}
-
-	private void setPreVolData(int volumeNumber, PageStructBuilder preVolData) {
-		Volume d = getVolume(volumeNumber);
-		/*if (d.preVolData!=preVolData) {
-			setDirty(true);
-		}*/
-		d.setPreVolData(preVolData);
-	}
-	
-	private void setPostVolData(int volumeNumber, PageStructBuilder postVolData) {
-		Volume d = getVolume(volumeNumber);
-		/*if (d.postVolData!=postVolData) {
-			setDirty(true);
-		}*/
-		d.setPostVolData(postVolData);
-	}
-	
-	private void setTargetVolSize(int volumeNumber, int targetVolSize) {
-		Volume d = getVolume(volumeNumber);
+	private void setTargetVolSize(Volume d, int targetVolSize) {
 		if (d.getTargetSize()!=targetVolSize) {
 			setDirty(true);
 		}
@@ -363,7 +317,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			throw new IndexOutOfBoundsException("Volume must be greater than or equal to 1");
 		}
 		if (volumes.get(volumeNumber)==null) {
-			volumes.put(volumeNumber, new Volume());
+			volumes.put(volumeNumber, new Volume(volumeNumber));
 			setDirty(true);
 		}
 		return volumes.get(volumeNumber);
@@ -409,7 +363,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				}
 			}
 		}
-		Integer i = pageSheetMap.get(getPage(refid));
+		Integer i = ps.getSheet(getPage(refid));
 		if (i!=null) {
 			return updateVolumeLocation(refid, getVolumeForContentSheet(i));
 		}
@@ -419,7 +373,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 
 	@Override
 	public Integer getVolumeNumber(Page p) {
-		Integer sheet = pageSheetMap.get(p);
+		Integer sheet = ps.getSheet(p);
 		if (sheet!=null) {
 			return getVolumeForContentSheet(sheet);
 		} else {

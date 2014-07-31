@@ -1,13 +1,13 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 
 class PageSequenceBuilder extends PageSequence {
-	private final HashMap<String, PageImpl> pageReferences;
+	private final Map<String, PageImpl> pageReferences;
 	private final FormatterContext context;
 	private final BlockSequence seq;
 	private int pagesOffset;
@@ -16,7 +16,7 @@ class PageSequenceBuilder extends PageSequence {
 	private List<RowImpl> before;
 	private List<RowImpl> after;
 
-	PageSequenceBuilder(BlockSequence seq, HashMap<String, PageImpl> pageReferences, FormatterContext context) {
+	PageSequenceBuilder(BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context) {
 		super(seq.getLayoutMaster());
 		this.pageReferences = pageReferences;
 		this.context = context;

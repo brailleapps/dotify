@@ -14,11 +14,13 @@ class Volume {
 	private Iterable<PageSequence> body;
 	private PageStructBuilder preVolData;
 	private PageStructBuilder postVolData;
+	private final int volumeNumber;
 	private int preVolSize;
 	private int postVolSize;
 	private int targetVolSize;
 	
-	Volume() {
+	Volume(int volumeNumber) {
+		this.volumeNumber = volumeNumber;
 		ret = null;
 		this.preVolSize = 0;
 		this.postVolSize = 0;
@@ -66,6 +68,10 @@ class Volume {
 
 	public void setTargetVolSize(int targetVolSize) {
 		this.targetVolSize = targetVolSize;
+	}
+
+	public int getVolumeNumber() {
+		return volumeNumber;
 	}
 
 	/**
