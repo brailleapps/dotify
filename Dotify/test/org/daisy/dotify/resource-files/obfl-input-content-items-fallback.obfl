@@ -20,7 +20,7 @@
 	<volume-template sheets-in-volume-max="50">
 		<pre-content/>
 		<post-content>
-			<item-sequence master="main" collection="endnotes">
+			<item-sequence master="main" collection="endnotes" range="volume">
 				<on-collection-start>
 					<block margin-top="3">Footnotes</block>
 				</on-collection-start>

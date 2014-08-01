@@ -125,7 +125,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 
 	@Override
 	public void newItemSequence(ItemSequenceProperties props) {
-		itemSequence = new ItemSequenceEventImpl(props, props.getCollectionID());
+		itemSequence = new ItemSequenceEventImpl(props, props.getRange(), props.getCollectionID());
 		add(itemSequence);
 	}
 

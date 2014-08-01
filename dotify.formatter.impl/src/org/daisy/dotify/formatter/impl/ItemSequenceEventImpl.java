@@ -4,21 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
+import org.daisy.dotify.api.formatter.ItemSequenceProperties;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class ItemSequenceEventImpl implements VolumeSequence {
 	private final SequenceProperties props;
 	private final String collectionID;
-
+	private final ItemSequenceProperties.Range range;
 
 	private final FormatterCoreImpl collectionStartEvents;
 	private final FormatterCoreImpl pageStartEvents;
 	private final FormatterCoreImpl pageEndEvents;
 	private final FormatterCoreImpl collectionEndEvents;
 	
-	public ItemSequenceEventImpl(SequenceProperties props, String collectionID) {
+	public ItemSequenceEventImpl(SequenceProperties props, ItemSequenceProperties.Range range, String collectionID) {
 		this.props = props;
 		this.collectionID = collectionID;
+		this.range = range;
 		this.collectionStartEvents = new FormatterCoreImpl();
 		this.pageStartEvents = new FormatterCoreImpl();
 		this.pageEndEvents = new FormatterCoreImpl();
@@ -65,7 +67,7 @@ class ItemSequenceEventImpl implements VolumeSequence {
 						refs.add(a);
 					}
 				}
-				if (refs.size()>0 && crh.getVolumeNumber(p)==vars.getCurrentVolume()) {
+				if (refs.size()>0 && (range == ItemSequenceProperties.Range.DOCUMENT || crh.getVolumeNumber(p)==vars.getCurrentVolume())) {
 					hasContents = true;
 					{
 						ArrayList<Block> b = new ArrayList<Block>();

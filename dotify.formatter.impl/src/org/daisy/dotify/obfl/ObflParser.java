@@ -911,7 +911,8 @@ public class ObflParser extends XMLParserBase {
 		String collection = getAttr(event, "collection");
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
-		ItemSequenceProperties.Builder builder = new ItemSequenceProperties.Builder(masterName, collection);
+		ItemSequenceProperties.Range range = ItemSequenceProperties.Range.valueOf(getAttr(event, "range").toUpperCase());
+		ItemSequenceProperties.Builder builder = new ItemSequenceProperties.Builder(masterName, collection, range);
 		String initialPageNumber = getAttr(event, "initial-page-number");
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
