@@ -279,7 +279,7 @@
 		<xs:attribute name="scope" use="required">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="page_content"/>
+					<xs:enumeration value="page-content"/>
 					<xs:enumeration value="page"/>
 					<xs:enumeration value="sequence"/>
 				</xs:restriction>

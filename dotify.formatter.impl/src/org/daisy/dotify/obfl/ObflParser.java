@@ -389,7 +389,7 @@ public class ObflParser extends XMLParserBase {
 					new MarkerReferenceField(
 							getAttr(event, "marker"), 
 							MarkerSearchDirection.valueOf(getAttr(event, "direction").toUpperCase()),
-							MarkerSearchScope.valueOf(getAttr(event, "scope").toUpperCase())
+							MarkerSearchScope.valueOf(getAttr(event, "scope").replace('-', '_').toUpperCase())
 					)
 				);
 			} else if (equalsEnd(event, ObflQName.FIELD)) {

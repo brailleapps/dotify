@@ -59,7 +59,7 @@
 				<header>
 					<field><string value="&#xA0;&#xA0;"/><current-page style="default"/></field>
 					<field>
-						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
+						<marker-reference marker="pagenum-turn" direction="forward" scope="page-content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
 					</field>
 				</header>
@@ -73,7 +73,7 @@
 						<xsl:attribute name="row-spacing">1</xsl:attribute>
 					</xsl:if>
 					<field><string value="&#xA0;&#xA0;"/>
-						<marker-reference marker="pagenum-turn" direction="forward" scope="page_content"/>
+						<marker-reference marker="pagenum-turn" direction="forward" scope="page-content"/>
 						<marker-reference marker="pagenum" direction="backward" scope="sequence"/>
 					</field>
 					<field><current-page style="default"/></field>
