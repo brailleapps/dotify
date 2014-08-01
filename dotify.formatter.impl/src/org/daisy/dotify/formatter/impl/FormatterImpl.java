@@ -363,7 +363,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				}
 			}
 		}
-		Integer i = ps.getSheet(getPage(refid));
+		Integer i = ps.getSheetIndex(getPage(refid));
 		if (i!=null) {
 			return updateVolumeLocation(refid, getVolumeForContentSheet(i));
 		}
@@ -373,7 +373,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 
 	@Override
 	public Integer getVolumeNumber(Page p) {
-		Integer sheet = ps.getSheet(p);
+		Integer sheet = ps.getSheetIndex(p);
 		if (sheet!=null) {
 			return getVolumeForContentSheet(sheet);
 		} else {

@@ -31,50 +31,57 @@ class PageStructBuilder extends PageStruct {
 			pageReferences = new HashMap<String, PageImpl>();
 			pageSheetMap = new HashMap<Page, Integer>();
 			clear();
-			PageSequenceBuilder prv = null;
 			for (BlockSequence seq : fs) {
-				newSequence(seq);
-			}
-			for (PageSequence psb : this) {
-				int offset = 0;
-				if (prv!=null) {
-					offset = prv.currentPageNumber();
-					if (prv.getLayoutMaster().duplex() && (offset % 2)==1) {
-						offset++;
-					}
-				}
-				prv = (PageSequenceBuilder)psb;
-				if (!prv.paginate(offset, refs, rcontext)) {
+				if (!newSequence(seq, refs, rcontext)) {
 					continue restart;
 				}
 			}
-			int sheetIndex=0;
-			for (PageSequence s : this) {
-				LayoutMaster lm = s.getLayoutMaster();
-				int pageIndex=0;
-				for (Page p : s.getPages()) {
-					if (!lm.duplex() || pageIndex%2==0) {
-						sheetIndex++;
-					}
-					pageSheetMap.put(p, sheetIndex);
-					pageIndex++;
-				}
-			}
-			
+
+			updateSheetIndexMap();
 			return this;
 		}
 	}
 	
-	Integer getSheet(Page p) {
+	private void updateSheetIndexMap() {
+		int sheetIndex=0;
+		for (PageSequence s : this) {
+			LayoutMaster lm = s.getLayoutMaster();
+			int pageIndex=0;
+			for (Page p : s.getPages()) {
+				if (!lm.duplex() || pageIndex%2==0) {
+					sheetIndex++;
+				}
+				pageSheetMap.put(p, sheetIndex);
+				pageIndex++;
+			}
+		}
+	}
+	
+	Integer getSheetIndex(Page p) {
 		return pageSheetMap.get(p);
 	}
 
-	public PageImpl getPage(String refid) {
+	PageImpl getPage(String refid) {
 		return pageReferences.get(refid);
 	}
 
-	private void newSequence(BlockSequence seq) {
-		this.push(new PageSequenceBuilder(seq, this.pageReferences, context));
+	private boolean newSequence(BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+		int offset = getCurrentPageOffset();
+		PageSequenceBuilder psb = new PageSequenceBuilder(seq, this.pageReferences, context);
+		this.push(psb);
+		return psb.paginate(offset, refs, rcontext);
+	}
+	
+	private int getCurrentPageOffset() {
+		int offset = 0;
+		if (size()>0) {
+			PageSequenceBuilder prv = (PageSequenceBuilder)peek();
+			offset = prv.currentPageNumber();
+			if (prv.getLayoutMaster().duplex() && (offset % 2)==1) {
+				offset++;
+			}
+		}
+		return offset;
 	}
 
 	/**
