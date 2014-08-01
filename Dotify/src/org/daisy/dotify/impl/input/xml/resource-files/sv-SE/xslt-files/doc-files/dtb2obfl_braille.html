@@ -3,12 +3,12 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title>Enter your title here</title>
+		<title>DTBook to OBFL for braille</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	</head>
 	<body>
 <pre>
-	DTBook to Flow for braille (sv_SE)
+	DTBook to OBFL for braille (sv_SE)
 
 	Description
 	DTBook to Flow stylesheet for Swedish braille.
@@ -22,7 +22,7 @@
 		duplex (inherited)
 
 	Format (input -> output)
-		DTBook -> Flow
+		DTBook -> OBFL
 
 	Author: Joel Håkansson
 </pre>
@@ -160,6 +160,13 @@
 				<td>text sibling</td>
 				<td/>
 				<td>New block</td>
+			</tr>
+			<tr>
+				<td>note</td>
+				<td>Block (type 2)</td>
+				<td>text sibling</td>
+				<td>Create "collection"</td>
+				<td/>
 			</tr>
 			<tr>
 				<td>bridgehead</td>
@@ -531,13 +538,6 @@
 				<td/>
 				<td/>
 				<td>Continue</td>
-			</tr>
-			<tr>
-				<td>note</td>
-				<td>Not supported</td>
-				<td/>
-				<td/>
-				<td>Abort</td>
 			</tr>
 			<tr>
 				<td>table</td>

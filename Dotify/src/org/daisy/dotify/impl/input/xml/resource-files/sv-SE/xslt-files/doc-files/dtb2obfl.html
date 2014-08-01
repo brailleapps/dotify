@@ -3,12 +3,12 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title>Enter your title here</title>
+		<title>DTBook to OBFL</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	</head>
 	<body>
 <pre>
-	DTBook to Flow
+	DTBook to OBFL
 
 	Description
 	Provides a base stylesheet for DTBook. The stylesheet must be extended. 
@@ -21,7 +21,7 @@
 		None
 
 	Format (input -> output)
-		DTBook -> Flow
+		DTBook -> OBFL
     
 	Author: Joel Håkansson
 </pre>
@@ -48,7 +48,7 @@ inline) can easily be customized using the processing modes.</p>
 	<dt>no text</dt>
 		<dd>level, level1, level2, level3, level4, level5, level6</dd>
 	<dt>can be surrounded by text, does not contain text</dt>
-		<dd>list, blockquote, linegroup, poem, div, annotation, dl, imggroup</dd>
+		<dd>list, blockquote, linegroup, poem, div, annotation, dl, imggroup, note</dd>
 	<dt>can contain text, but cannot be surrounded by text</dt>
 		<dd>bridgehead, caption, covertitle, docauthor, doctitle, li, h1, h2, h3, h4, h5, h6</dd>
 	<dt>can be surrounded by text and contain text</dt>
@@ -57,6 +57,7 @@ inline) can easily be customized using the processing modes.</p>
 <h3>inline/block</h3>
 <p>The following elemnts may be treated as inline or block depending on context:</p>
 <p>a, cite, kbd, samp</p>
+<p>Treat as block element if parent is level1, level2, level3, level4, level5, level6, level, div or annotation. Treat as inline otherwise.</p>
 
 <h3>inline</h3>
 <p>code, bdo, em, strong, span, sub, sup, abbr, acronym, 
@@ -69,7 +70,7 @@ dfn, q, noteref, annoref, sent, w, linenum, lic, dd, dt</p>
 <p>book, dtbook, head, meta, link, img</p>
 
 <h2>Unhandled elements</h2>
-<p>note, table, col, colgroup, tbody, td, tfoot, th, thead, title, tr</p>
+<p>table, col, colgroup, tbody, td, tfoot, th, thead, title, tr</p>
 <h2>Summary</h2>
 		<table border="1px">
 			<tr>
@@ -118,7 +119,7 @@ dfn, q, noteref, annoref, sent, w, linenum, lic, dd, dt</p>
 				<td>annoref</td>
 				<td/>
 				<td>head</td>
-				<td>note</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td/>
@@ -183,7 +184,7 @@ dfn, q, noteref, annoref, sent, w, linenum, lic, dd, dt</p>
 			<tr>
 				<td/>
 				<td/>
-				<td/>
+				<td>note</td>
 				<td>h4</td>
 				<td>prodnote</td>
 				<td/>
