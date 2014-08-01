@@ -876,10 +876,7 @@ public class ObflParser extends XMLParserBase {
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
 		TocProperties.TocRange range = TocProperties.TocRange.valueOf(getAttr(event, "range").toUpperCase());
-		String c = getAttr(event, ObflQName.ATTR_USE_WHEN);
-		OBFLCondition condition = new OBFLCondition(c, ef, true);
-		condition.setMetaVolumeNumberVariable(getAttr(event, "toc-event-volume-number-variable"));
-		TocProperties.Builder builder = new TocProperties.Builder(masterName, tocName, range, condition);
+		TocProperties.Builder builder = new TocProperties.Builder(masterName, tocName, range);
 		String initialPageNumber = getAttr(event, "initial-page-number");
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));

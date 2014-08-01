@@ -23,7 +23,7 @@
 	</table-of-contents>
 	<volume-template sheets-in-volume-max="50"  use-when="(= 1 1)">
 		<pre-content>
-		<toc-sequence toc="toc" range="document" use-when="(= 1 1)" master="main">
+		<toc-sequence toc="toc" range="document" master="main">
 			<on-toc-start>
 				<block>Toc Start</block>
 			</on-toc-start>

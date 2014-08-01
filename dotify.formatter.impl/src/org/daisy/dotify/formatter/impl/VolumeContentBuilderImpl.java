@@ -43,7 +43,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	}
 
 	public void newTocSequence(TocProperties props) {
-		tocSequence = new TocSequenceEventImpl(props, tocs.get(props.getTocName()), props.getRange(), props.getCondition(), null);
+		tocSequence = new TocSequenceEventImpl(props, tocs.get(props.getTocName()), props.getRange(), null);
 		add(tocSequence);
 	}
 

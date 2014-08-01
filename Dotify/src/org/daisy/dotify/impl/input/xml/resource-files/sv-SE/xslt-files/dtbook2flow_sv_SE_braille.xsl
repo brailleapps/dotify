@@ -116,7 +116,7 @@
 			<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(= $volume 1)" sheets-in-volume-max="{$splitterMax}">
 				<pre-content>
 					<xsl:call-template name="coverPage"/>
-					<toc-sequence master="front" toc="full-toc" range="document" use-when="(= $volume 1)" initial-page-number="1">
+					<toc-sequence master="front" toc="full-toc" range="document" initial-page-number="1">
 						<on-toc-start>
 							<block margin-bottom="1"><xsl:value-of select="$l10nTocHeadline"/></block>
 							<xsl:if test="$l10nTocDescription!=''">
@@ -137,7 +137,7 @@
 			<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(> $volume 1)" sheets-in-volume-max="{$splitterMax}">
 				<pre-content>
 					<xsl:call-template name="coverPage"/>
-					<toc-sequence master="front" toc="full-toc" range="volume" use-when="(> $volume 1)" initial-page-number="1">
+					<toc-sequence master="front" toc="full-toc" range="volume" initial-page-number="1">
 						<on-toc-start>
 							<block margin-bottom="1"><evaluate expression="(format &quot;{$l10nTocVolumeHeading}&quot; $volume)"/></block>
 						</on-toc-start>

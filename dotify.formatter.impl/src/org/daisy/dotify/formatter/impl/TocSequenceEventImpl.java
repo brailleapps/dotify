@@ -17,17 +17,15 @@ class TocSequenceEventImpl implements VolumeSequence {
 	private final SequenceProperties props;
 	private final TableOfContentsImpl data;
 	private final TocProperties.TocRange range;
-	private final Condition condition;
 	private final ArrayList<ConditionalBlock> tocStartEvents;
 	private final ArrayList<ConditionalBlock> volumeStartEvents;
 	private final ArrayList<ConditionalBlock> volumeEndEvents;
 	private final ArrayList<ConditionalBlock> tocEndEvents;
 	
-	public TocSequenceEventImpl(SequenceProperties props, TableOfContentsImpl data, TocProperties.TocRange range, Condition condition, String volEventVar) {
+	public TocSequenceEventImpl(SequenceProperties props, TableOfContentsImpl data, TocProperties.TocRange range, String volEventVar) {
 		this.props = props;
 		this.data = data;
 		this.range = range;
-		this.condition = condition;
 		this.tocStartEvents = new ArrayList<ConditionalBlock>();
 		this.volumeStartEvents = new ArrayList<ConditionalBlock>();
 		this.volumeEndEvents = new ArrayList<ConditionalBlock>();
@@ -64,19 +62,6 @@ class TocSequenceEventImpl implements VolumeSequence {
 		return range;
 	}
 
-	/**
-	 * Returns true if this toc sequence applies to the supplied context
-	 * @param volume
-	 * @param volumeCount
-	 * @return returns true if this toc sequence applies to the supplied context, false otherwise
-	 */
-	public boolean appliesTo(Context context) {
-		if (condition==null) {
-			return true;
-		}
-		return condition.evaluate(context);
-	}
-	
 	private static Iterable<Block> getCompoundIterableB(Iterable<ConditionalBlock> events, Context vars) {
 		ArrayList<Block> it = new ArrayList<Block>();
 		for (ConditionalBlock ev : events) {
@@ -114,7 +99,6 @@ class TocSequenceEventImpl implements VolumeSequence {
 	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
 		try {
-		if (appliesTo(vars)) {
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
 					getSequenceProperties().getInitialPageNumber());
@@ -202,7 +186,6 @@ class TocSequenceEventImpl implements VolumeSequence {
 			} else {
 				throw new RuntimeException("Coding error");
 			}
-		}
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to assemble toc.", e);
 		}
