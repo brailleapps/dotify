@@ -465,6 +465,8 @@ public class ObflParser extends XMLParserBase {
 			} else if (equalsStart(event, ObflQName.BR)) {
 				fc.newLine();
 				scanEmptyElement(input, ObflQName.BR);
+			} else if (equalsStart(event, ObflQName.ANCHOR)) {
+				fc.insertAnchor(parseAnchor(event));
 			}
 			else if (equalsEnd(event, ObflQName.SPAN)) {
 				break;
@@ -532,6 +534,8 @@ public class ObflParser extends XMLParserBase {
 				parseMarker(fc, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
 				fc.newLine();
+			} else if (equalsStart(event, ObflQName.ANCHOR)) {
+				fc.insertAnchor(parseAnchor(event));
 			} else if (equalsEnd(event, ObflQName.STYLE)) {
 				break;
 			} else {
@@ -556,14 +560,16 @@ public class ObflParser extends XMLParserBase {
 				len += t.getWidth();
 			} else if (equalsEnd(ev, ObflQName.STYLE)) {
 				break;
-			} else if (equalsStart(ev, ObflQName.MARKER)||equalsStart(ev, ObflQName.BR)) {
+			} else if (equalsStart(ev, ObflQName.MARKER, ObflQName.BR, ObflQName.ANCHOR)) {
 				// ignore
-			} else if (equalsEnd(ev, ObflQName.MARKER)||equalsEnd(ev, ObflQName.BR)) {
+			} else if (equalsEnd(ev, ObflQName.MARKER, ObflQName.BR, ObflQName.ANCHOR)) {
 				// ignore
 			} else {
 				name = "";
 				if (ev.isEndElement()) {
 					name = ev.asEndElement().getName().getLocalPart();
+				} else if (ev.isStartElement()) {
+					name = ev.asStartElement().getName().getLocalPart();
 				}
 				throw new UnsupportedOperationException("Unknown element: " + ev +" "+ name);
 			}
