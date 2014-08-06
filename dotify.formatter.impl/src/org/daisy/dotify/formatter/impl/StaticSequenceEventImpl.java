@@ -1,13 +1,10 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequence {
 	private final SequenceProperties props;
-	private List<BlockSequence> ret;
+	private BlockSequence ret;
 
 	
 	/**
@@ -28,7 +25,7 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 		return props;
 	}
 
-	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
+	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
 		if (ret!=null) {
 			//we can return previous result, because static contents does not depend on context.
 			return ret;
@@ -37,8 +34,7 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
 					getSequenceProperties().getInitialPageNumber());
 			fsm.appendGroup(this);
-			ret = new ArrayList<BlockSequence>();
-			ret.add(fsm.newSequence());
+			ret = fsm.newSequence();
 			return ret;
 		}
 	}

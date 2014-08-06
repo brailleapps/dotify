@@ -1,7 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.List;
-
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 /**
@@ -17,5 +15,5 @@ interface VolumeSequence {
 	 */
 	public SequenceProperties getSequenceProperties();
 	
-	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh);
+	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh);
 }

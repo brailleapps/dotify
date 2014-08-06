@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,8 +95,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 		return props;
 	}
 
-	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
-		ArrayList<BlockSequence> r = new ArrayList<BlockSequence>();
+	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		try {
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
@@ -138,7 +136,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 						fsm.removeRange(data.getTocIdList().iterator().next(), start);
 						fsm.removeTail(stop);
 						fsm.appendGroup(getTocEnd(vars));
-						r.add(fsm.newSequence());
+						return fsm.newSequence();
 					} catch (Exception e) {
 						Logger.getLogger(this.getClass().getCanonicalName()).
 							log(Level.SEVERE, "TOC failed for: volume " + vars.getCurrentVolume() + " of " + vars.getVolumeCount(), e);
@@ -182,13 +180,13 @@ class TocSequenceEventImpl implements VolumeSequence {
 				for (String key : statics.keySet()) {
 					fsm.insertGroup(statics.get(key), key);
 				}
-				r.add(fsm.newSequence());
+				return fsm.newSequence();
 			} else {
 				throw new RuntimeException("Coding error");
 			}
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to assemble toc.", e);
 		}
-		return r;
+		return null;
 	}
 }

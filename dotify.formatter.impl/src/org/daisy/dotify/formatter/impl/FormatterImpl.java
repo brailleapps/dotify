@@ -256,7 +256,10 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			for (VolumeTemplate t : volumeTemplates) {
 				if (t.appliesTo(c)) {
 					for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
-						ib.addAll(seq.getBlockSequence(context, c, this));
+						BlockSequence s = seq.getBlockSequence(context, c, this);
+						if (s!=null) {
+							ib.add(s);
+						}
 					}
 					break;
 				}

@@ -1,7 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.ItemSequenceProperties;
@@ -47,11 +46,10 @@ class ItemSequenceEventImpl implements VolumeSequence {
 		return props;
 	}
 
-	public List<BlockSequence> getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
-		ArrayList<BlockSequence> ret = new ArrayList<BlockSequence>();
+	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ContentCollectionImpl c = context.getCollections().get(collectionID);
 		if (c==null) {
-			return ret;
+			return null;
 		}
 		
 		BlockSequenceManipulator fsm = new BlockSequenceManipulator(
@@ -96,8 +94,8 @@ class ItemSequenceEventImpl implements VolumeSequence {
 		fsm.appendGroup(collectionEndEvents);
 		if (hasContents) {
 			//only add a section if there are notes in it.
-			ret.add(fsm.newSequence());
+			return fsm.newSequence();
 		}
-		return ret;
+		return null;
 	}
 }
