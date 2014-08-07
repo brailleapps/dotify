@@ -186,10 +186,12 @@ Dotify/test/org/daisy/dotify/obfl/impl/ExpressionTest.java -text svneol=unset#te
 Dotify/test/org/daisy/dotify/resource-files/obfl-border-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-content-items-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-content-items-fallback-expected.pef -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-content-items-fallback2-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-dls-expected.pef -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-expected.txt -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-border.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items-fallback.obfl -text
+Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items-fallback2.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items-no-fallback.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-content-items.obfl -text
 Dotify/test/org/daisy/dotify/resource-files/obfl-input-dls.obfl -text
@@ -293,6 +295,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/ContentCollection.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Context.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/CurrentPageField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/DynamicContent.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/DynamicSequenceBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Field.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FieldList.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Formatter.java -text svneol=unset#text/plain
@@ -313,6 +316,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/PageAreaProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PageTemplateBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PagenumField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/Position.java -text svneol=unset#text/plain
+dotify.api/src/org/daisy/dotify/api/formatter/ReferenceListBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/RomanNumeral.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/SequenceProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/StringField.java -text
@@ -471,12 +475,14 @@ dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineImpl.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Block.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManager.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockGroup.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceManipulator.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ConditionalBlock.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ContentCollectionImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferences.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DefaultContext.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DynamicSequenceEventImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Evaluate.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/EvenSizeVolumeSplitterCalculator.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/FormatterContext.java -text

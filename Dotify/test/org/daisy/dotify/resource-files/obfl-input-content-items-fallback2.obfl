@@ -21,6 +21,19 @@
 		<pre-content/>
 		<post-content>
 			<dynamic-sequence master="main">
+				<list-of-references collection="refs" range="volume">
+					<on-collection-start>
+						<block margin-top="3">References</block>
+					</on-collection-start>
+					<on-page-start>
+						<block margin-top="1"><evaluate expression="(format &quot;Page {0}&quot; $started-page-number)"/></block>
+					</on-page-start>
+				</list-of-references>
+				<list-of-references collection="refs2" range="volume">
+					<on-collection-start>
+						<block margin-top="1">Not referenced.</block>
+					</on-collection-start>
+				</list-of-references>
 				<list-of-references collection="endnotes" range="volume">
 					<on-collection-start>
 						<block margin-top="3">Footnotes</block>
@@ -35,6 +48,12 @@
 			</dynamic-sequence>
 		</post-content>
 	</volume-template>
+	<collection name="refs">
+		<item id="ref1" text-indent="4">* This is an example of an endnote.</item>
+	</collection>
+	<collection name="refs2">
+		<item id="ref2_1" text-indent="4">* This is an example of an unused collection.</item>
+	</collection>
 	<collection name="footnotes">
 		<item id="note1" text-indent="4">1) This is a text from "THE HOUND OF THE BASKERVILLES" by A. Conan Doyle with meaningless footnotes added, to demonstrate this feature.</item>
 		<item id="note2" text-indent="4">2) This note belongs to the second paragraph.</item>
@@ -45,7 +64,7 @@
 		<item id="note7" text-indent="4">* This is a note that appears several times.</item>
 	</collection>
 	<sequence master="main">
-		<block>Mr. Sherlock Holmes, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table. I stood upon the hearth-rug and picked up the stick which our visitor had left behind him the night before. It was a fine, thick piece of wood, bulbous-headed, of the sort which is known as a "Penang lawyer." Just under the head was a broad silver band nearly an inch across. "To James Mortimer, M.R.C.S., from his friends of the C.C.H.," was engraved upon it, with the date "1884." It was just such a stick as the old-fashioned family practitioner used to carry—dignified, solid, and reassuring.<style name="sup">1</style><anchor item="note1"/></block>
+		<block>Mr. Sherlock Holmes<anchor item="ref1"/>, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table. I stood upon the hearth-rug and picked up the stick which our visitor had left behind him the night before. It was a fine, thick piece of wood, bulbous-headed, of the sort which is known as a "Penang lawyer." Just under the head was a broad silver band nearly an inch across. "To James Mortimer, M.R.C.S., from his friends of the C.C.H.," was engraved upon it, with the date "1884." It was just such a stick as the old-fashioned family practitioner used to carry—dignified, solid, and reassuring.<style name="sup">1</style><anchor item="note1"/></block>
 		<block>"Well, Watson, what do you make of it?"<style name="sup">2</style><anchor item="note2"/></block>
 		<block>Holmes was sitting with his back to me, and I had given him no sign of my occupation.<style name="sup">3</style><anchor item="note3"/></block>
 		<block>"How did you know what I was doing? I believe you have eyes in the back of your head."</block>

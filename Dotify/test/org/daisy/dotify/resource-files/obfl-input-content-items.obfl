@@ -20,17 +20,19 @@
 	<volume-template sheets-in-volume-max="50">
 		<pre-content/>
 		<post-content>
-			<item-sequence master="main" collection="endnotes" range="volume">
-				<on-collection-start>
-					<block margin-top="3">Footnotes</block>
-				</on-collection-start>
-				<on-page-start>
-					<block margin-top="1"><evaluate expression="(format &quot;Page {0}&quot; $started-page-number)"/></block>
-				</on-page-start>
-				<on-collection-end>
-					<block>End of footnotes.</block>
-				</on-collection-end>
-			</item-sequence>
+			<dynamic-sequence master="main">
+				<list-of-references collection="endnotes" range="volume">
+					<on-collection-start>
+						<block margin-top="3">Footnotes</block>
+					</on-collection-start>
+					<on-page-start>
+						<block margin-top="1"><evaluate expression="(format &quot;Page {0}&quot; $started-page-number)"/></block>
+					</on-page-start>
+					<on-collection-end>
+						<block>End of footnotes.</block>
+					</on-collection-end>
+				</list-of-references>
+			</dynamic-sequence>
 		</post-content>
 	</volume-template>
 	<collection name="footnotes">

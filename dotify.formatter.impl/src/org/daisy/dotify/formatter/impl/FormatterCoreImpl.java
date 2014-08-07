@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.List;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
@@ -14,7 +15,7 @@ import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.formatter.impl.Margin.Type;
 
-class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
+class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGroup {
 	/**
 	 * 
 	 */
@@ -205,6 +206,17 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore {
 		int test = blockIndentParent.pop();
 		blockIndent -= value;
 		assert blockIndent==test;
+	}
+
+	@Override
+	public List<Block> getBlocks(FormatterContext context, DefaultContext c,
+			CrossReferences crh) {
+		return this;
+	}
+
+	@Override
+	public boolean isGenerated() {
+		return false;
 	}
 	
 }

@@ -8,8 +8,8 @@ import java.util.Stack;
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.DynamicContent;
+import org.daisy.dotify.api.formatter.DynamicSequenceBuilder;
 import org.daisy.dotify.api.formatter.FormatterCore;
-import org.daisy.dotify.api.formatter.ItemSequenceProperties;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
@@ -26,13 +26,11 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	private final Map<String, TableOfContentsImpl> tocs;
 	private List<FormatterCore> formatters;
 	private TocSequenceEventImpl tocSequence;
-	private ItemSequenceEventImpl itemSequence;
 
 	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs) {
 		this.tocs = tocs;
 		this.formatters = new ArrayList<FormatterCore>();
 		this.tocSequence = null;
-		this.itemSequence = null;
 	}
 
 	public void newSequence(SequenceProperties props) {
@@ -124,29 +122,10 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	}
 
 	@Override
-	public void newItemSequence(ItemSequenceProperties props) {
-		itemSequence = new ItemSequenceEventImpl(props, props.getRange(), props.getCollectionID());
-		add(itemSequence);
-	}
-
-	@Override
-	public void newOnCollectionStart() {
-		formatters.add(itemSequence.addCollectionStart());
-	}
-
-	@Override
-	public void newOnCollectionEnd() {
-		formatters.add(itemSequence.addCollectionEnd());
-	}
-
-	@Override
-	public void newOnPageStart() {
-		formatters.add(itemSequence.addPageStartEvents());
-	}
-
-	@Override
-	public void newOnPageEnd() {
-		formatters.add(itemSequence.addPageEndEvents());
+	public DynamicSequenceBuilder newDynamicSequence(SequenceProperties props) {
+		DynamicSequenceEventImpl dsb = new DynamicSequenceEventImpl(props);
+		add(dsb);
+		return dsb;
 	}
 
 }

@@ -76,6 +76,11 @@ public class LayoutEngineTest {
 		testPEF("resource-files/obfl-input-content-items-fallback.obfl", "resource-files/obfl-content-items-fallback-expected.pef");
 	}
 	
+	@Test
+	public void testLayoutEngingeContentItemsFallback2() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/obfl-input-content-items-fallback2.obfl", "resource-files/obfl-content-items-fallback2-expected.pef");
+	}
+	
 	@Test (expected = RuntimeException.class)
 	public void testLayoutEngineContentItemsNoFallback() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/obfl-input-content-items-no-fallback.obfl", null);

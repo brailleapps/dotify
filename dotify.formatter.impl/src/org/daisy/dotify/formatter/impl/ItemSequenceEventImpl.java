@@ -1,13 +1,13 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.ItemSequenceProperties;
-import org.daisy.dotify.api.formatter.SequenceProperties;
+import org.daisy.dotify.api.formatter.ReferenceListBuilder;
 
-class ItemSequenceEventImpl implements VolumeSequence {
-	private final SequenceProperties props;
+class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 	private final String collectionID;
 	private final ItemSequenceProperties.Range range;
 
@@ -16,8 +16,7 @@ class ItemSequenceEventImpl implements VolumeSequence {
 	private final FormatterCoreImpl pageEndEvents;
 	private final FormatterCoreImpl collectionEndEvents;
 	
-	public ItemSequenceEventImpl(SequenceProperties props, ItemSequenceProperties.Range range, String collectionID) {
-		this.props = props;
+	public ItemSequenceEventImpl(ItemSequenceProperties.Range range, String collectionID) {
 		this.collectionID = collectionID;
 		this.range = range;
 		this.collectionStartEvents = new FormatterCoreImpl();
@@ -26,36 +25,32 @@ class ItemSequenceEventImpl implements VolumeSequence {
 		this.collectionEndEvents = new FormatterCoreImpl();
 	}
 
-	FormatterCore addCollectionStart() {
+	public FormatterCore newOnCollectionStart() {
 		return collectionStartEvents;
 	}
 
-	FormatterCore addPageStartEvents() {
+	@Override
+	public FormatterCore newOnPageStart() {
 		return pageStartEvents;
 	}
-	
-	FormatterCore addPageEndEvents() {
+
+	@Override
+	public FormatterCore newOnPageEnd() {
 		return pageEndEvents;
 	}
 	
-	FormatterCore addCollectionEnd() {
+	public FormatterCore newOnCollectionEnd() {
 		return collectionEndEvents;
 	}
 
-	public SequenceProperties getSequenceProperties() {
-		return props;
-	}
-
-	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
+	public List<Block> getBlocks(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ContentCollectionImpl c = context.getCollections().get(collectionID);
+		ArrayList<Block> ret = new ArrayList<Block>();
 		if (c==null) {
-			return null;
+			return ret;
 		}
-		
-		BlockSequenceManipulator fsm = new BlockSequenceManipulator(
-				context.getMasters().get(getSequenceProperties().getMasterName()), 
-				getSequenceProperties().getInitialPageNumber());
-		fsm.appendGroup(collectionStartEvents);
+
+		ret.addAll(collectionStartEvents);
 		boolean hasContents = false;
 		for (PageSequence s : crh.getContents()) {
 			for (PageImpl p : s.getPages()) {
@@ -74,10 +69,10 @@ class ItemSequenceEventImpl implements VolumeSequence {
 							bl.setMetaPage(p.getPageIndex()+1);
 							b.add(bl);
 						}
-						fsm.appendGroup(b);
+						ret.addAll(b);
 					}
 					for (String key : refs) {
-						fsm.appendGroup(c.getBlocks(key));
+						ret.addAll(c.getBlocks(key));
 					}
 					{
 						ArrayList<Block> b = new ArrayList<Block>();
@@ -86,16 +81,23 @@ class ItemSequenceEventImpl implements VolumeSequence {
 							bl.setMetaPage(p.getPageIndex()+1);
 							b.add(bl);
 						}
-						fsm.appendGroup(b);
+						ret.addAll(b);
 					}
 				}
 			}
 		}
-		fsm.appendGroup(collectionEndEvents);
+		ret.addAll(collectionEndEvents);
 		if (hasContents) {
 			//only add a section if there are notes in it.
-			return fsm.newSequence();
+			return ret;
 		}
-		return null;
+		return new ArrayList<Block>();
 	}
+
+	@Override
+	public boolean isGenerated() {
+		return true;
+	}
+
+
 }

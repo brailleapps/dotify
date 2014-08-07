@@ -40,7 +40,9 @@ interface ObflQName {
 	 final static QName ON_VOLUME_END = new QName(OBFL_NS, "on-volume-end");
 	 final static QName ON_TOC_END = new QName(OBFL_NS, "on-toc-end");
 
-	 final static QName ITEM_SEQUENCE = new QName(OBFL_NS, "item-sequence");
+	 final static QName DYNAMIC_SEQUENCE = new QName(OBFL_NS, "dynamic-sequence");
+	 final static QName INSERT_REFS_LIST = new QName(OBFL_NS, "list-of-references");
+
 	 final static QName ON_COLLECTION_START = new QName(OBFL_NS, "on-collection-start");
 	 final static QName ON_PAGE_START = new QName(OBFL_NS, "on-page-start");
 	 final static QName ON_PAGE_END = new QName(OBFL_NS, "on-page-end");
