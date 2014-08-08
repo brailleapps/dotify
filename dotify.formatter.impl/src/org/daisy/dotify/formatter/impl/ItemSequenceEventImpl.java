@@ -53,35 +53,38 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 		ret.addAll(collectionStartEvents);
 		boolean hasContents = false;
 		for (int i=0; i<crh.getVolumeCount(); i++) {
-			for (AnchorData ad : crh.getAnchorData(i+1)) {
-				ArrayList<String> refs = new ArrayList<String>();
-				for (String a : ad.getAnchors()) {
-					if (c.containsItemID(a) && !refs.contains(a)) {
-						refs.add(a);
-					}
-				}
-				if (refs.size()>0 && (range == ItemSequenceProperties.Range.DOCUMENT || (i+1)==vars.getCurrentVolume())) {
-					hasContents = true;
-					{
-						ArrayList<Block> b = new ArrayList<Block>();
-						for (Block blk : pageStartEvents) {
-							Block bl = (Block)blk.clone();
-							bl.setMetaPage(ad.getPageIndex()+1);
-							b.add(bl);
+			Iterable<AnchorData> v = crh.getAnchorData(i+1);
+			if (v!=null) {
+				for (AnchorData ad : v) {
+					ArrayList<String> refs = new ArrayList<String>();
+					for (String a : ad.getAnchors()) {
+						if (c.containsItemID(a) && !refs.contains(a)) {
+							refs.add(a);
 						}
-						ret.addAll(b);
 					}
-					for (String key : refs) {
-						ret.addAll(c.getBlocks(key));
-					}
-					{
-						ArrayList<Block> b = new ArrayList<Block>();
-						for (Block blk : pageEndEvents) {
-							Block bl = (Block)blk.clone();
-							bl.setMetaPage(ad.getPageIndex()+1);
-							b.add(bl);
+					if (refs.size()>0 && (range == ItemSequenceProperties.Range.DOCUMENT || (i+1)==vars.getCurrentVolume())) {
+						hasContents = true;
+						{
+							ArrayList<Block> b = new ArrayList<Block>();
+							for (Block blk : pageStartEvents) {
+								Block bl = (Block)blk.clone();
+								bl.setMetaPage(ad.getPageIndex()+1);
+								b.add(bl);
+							}
+							ret.addAll(b);
 						}
-						ret.addAll(b);
+						for (String key : refs) {
+							ret.addAll(c.getBlocks(key));
+						}
+						{
+							ArrayList<Block> b = new ArrayList<Block>();
+							for (Block blk : pageEndEvents) {
+								Block bl = (Block)blk.clone();
+								bl.setMetaPage(ad.getPageIndex()+1);
+								b.add(bl);
+							}
+							ret.addAll(b);
+						}
 					}
 				}
 			}
