@@ -131,6 +131,8 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		int volsMin = Integer.MAX_VALUE;
 		int reformatSplitterMax = DEFAULT_SPLITTER_MAX;
 		ArrayList<Volume> ret = new ArrayList<Volume>();
+		ArrayList<AnchorData> ad;
+
 		while (!ok) {
 			try {
 				this.ps = contentPaginator.paginate(crh, this, new DefaultContext(null, null));
@@ -175,9 +177,9 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				}
 				
 				Volume volume = getVolume(i);
-				ArrayList<AnchorData> ad = new ArrayList<AnchorData>();
+				ad = new ArrayList<AnchorData>();
+
 				volume.setPreVolData(updateVolumeContents(i, ad, true));
-				crh.setAnchorData(i, ad);
 
 				totalOverheadCount += volume.getOverhead();
 
