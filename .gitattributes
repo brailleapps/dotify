@@ -472,6 +472,7 @@ dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.obfl.Expression
 dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.writer.PagedMediaWriterFactoryService -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineFactoryImpl.java -text
 dotify.formatter.impl/src/org/daisy/dotify/engine/impl/LayoutEngineImpl.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/AnchorData.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/AnchorSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Block.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockContentManager.java -text

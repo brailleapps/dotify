@@ -118,7 +118,9 @@ class TocSequenceEventImpl implements VolumeSequence {
 				//assumes toc is in sequential order
 				for (String id : data.getTocIdList()) {
 					String ref = data.getRefForID(id);
-					int vol = crh.getVolumeNumber(ref);
+					Integer volNo = crh.getVolumeNumber(ref);
+					
+					int vol = (volNo!=null?volNo:1);
 					if (vol<vars.getCurrentVolume()) {
 						
 					} else if (vol==vars.getCurrentVolume()) {

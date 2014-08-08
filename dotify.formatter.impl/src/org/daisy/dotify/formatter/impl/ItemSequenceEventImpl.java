@@ -52,21 +52,21 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 
 		ret.addAll(collectionStartEvents);
 		boolean hasContents = false;
-		for (PageSequence s : crh.getContents()) {
-			for (PageImpl p : s.getPages()) {
+		for (int i=0; i<crh.getVolumeCount(); i++) {
+			for (AnchorData ad : crh.getAnchorData(i+1)) {
 				ArrayList<String> refs = new ArrayList<String>();
-				for (String a : p.getAnchors()) {
+				for (String a : ad.getAnchors()) {
 					if (c.containsItemID(a) && !refs.contains(a)) {
 						refs.add(a);
 					}
 				}
-				if (refs.size()>0 && (range == ItemSequenceProperties.Range.DOCUMENT || crh.getVolumeNumber(p)==vars.getCurrentVolume())) {
+				if (refs.size()>0 && (range == ItemSequenceProperties.Range.DOCUMENT || (i+1)==vars.getCurrentVolume())) {
 					hasContents = true;
 					{
 						ArrayList<Block> b = new ArrayList<Block>();
 						for (Block blk : pageStartEvents) {
 							Block bl = (Block)blk.clone();
-							bl.setMetaPage(p.getPageIndex()+1);
+							bl.setMetaPage(ad.getPageIndex()+1);
 							b.add(bl);
 						}
 						ret.addAll(b);
@@ -78,7 +78,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 						ArrayList<Block> b = new ArrayList<Block>();
 						for (Block blk : pageEndEvents) {
 							Block bl = (Block)blk.clone();
-							bl.setMetaPage(p.getPageIndex()+1);
+							bl.setMetaPage(ad.getPageIndex()+1);
 							b.add(bl);
 						}
 						ret.addAll(b);

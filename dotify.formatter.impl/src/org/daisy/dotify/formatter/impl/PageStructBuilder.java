@@ -26,13 +26,13 @@ class PageStructBuilder extends PageStruct {
 
 	private static final long serialVersionUID = 2591429059130956153L;
 
-	PageStructBuilder paginate(CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+	PageStructBuilder paginate(CrossReferenceHandler crh, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		restart:while (true) {
 			pageReferences = new HashMap<String, PageImpl>();
 			pageSheetMap = new HashMap<Page, Integer>();
 			clear();
 			for (BlockSequence seq : fs) {
-				if (!newSequence(seq, refs, rcontext)) {
+				if (!newSequence(crh, seq, refs, rcontext)) {
 					continue restart;
 				}
 			}
@@ -65,9 +65,9 @@ class PageStructBuilder extends PageStruct {
 		return pageReferences.get(refid);
 	}
 
-	private boolean newSequence(BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		int offset = getCurrentPageOffset();
-		PageSequenceBuilder psb = new PageSequenceBuilder(seq, this.pageReferences, context);
+		PageSequenceBuilder psb = new PageSequenceBuilder(crh, seq, this.pageReferences, context);
 		this.push(psb);
 		return psb.paginate(offset, refs, rcontext);
 	}

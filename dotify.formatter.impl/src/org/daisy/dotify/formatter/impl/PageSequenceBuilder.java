@@ -10,17 +10,19 @@ class PageSequenceBuilder extends PageSequence {
 	private final Map<String, PageImpl> pageReferences;
 	private final FormatterContext context;
 	private final BlockSequence seq;
+	private final CrossReferenceHandler crh;
 	private int pagesOffset;
 	private int keepNextSheets;
 	private PageImpl nextPage;
 	private List<RowImpl> before;
 	private List<RowImpl> after;
 
-	PageSequenceBuilder(BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context) {
+	PageSequenceBuilder(CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context) {
 		super(seq.getLayoutMaster());
 		this.pageReferences = pageReferences;
 		this.context = context;
 		this.seq = seq;
+		this.crh = crh;
 		reset();
 	}
 	
@@ -117,6 +119,8 @@ class PageSequenceBuilder extends PageSequence {
 	}
 
 	private void insertIdentifier(String id) {
+		crh.setPageNumber(id, currentPage().getPageIndex() + 1);
+		currentPage().addIdentifier(id);
 		if (pageReferences.put(id, currentPage())!=null) {
 			throw new IllegalArgumentException("Identifier not unique: " + id);
 		}
