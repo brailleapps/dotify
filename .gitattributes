@@ -480,6 +480,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequence.java -te
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/BlockSequenceManipulator.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ConditionalBlock.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ContentCollectionImpl.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferenceHandler.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/CrossReferences.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DefaultContext.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/DynamicSequenceEventImpl.java -text
@@ -493,6 +494,7 @@ dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ItemSequenceEventImpl.
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LayoutMaster.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LeaderSegment.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/ListItem.java -text
+dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/LookupHandler.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/Margin.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginComponent.java -text
 dotify.formatter.impl/src/org/daisy/dotify/formatter/impl/MarginProperties.java -text
