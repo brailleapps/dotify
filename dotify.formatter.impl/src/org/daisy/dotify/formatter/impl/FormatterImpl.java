@@ -136,12 +136,13 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		while (!ok) {
 			try {
 				this.ps = contentPaginator.paginate(crh, this, new DefaultContext(null, null));
-				this.sdc = new EvenSizeVolumeSplitterCalculator(ps.countSheets(), reformatSplitterMax);
 			} catch (PaginatorException e) {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
-			// make a preliminary calculation based on contents only
 			final int contents = ps.countSheets(); 
+			this.sdc = new EvenSizeVolumeSplitterCalculator(contents, reformatSplitterMax);
+			// make a preliminary calculation based on contents only
+			
 			String breakpoints = ps.buildBreakpointString();
 			logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
 			BreakPointHandler volBreaks = new BreakPointHandler(breakpoints);
