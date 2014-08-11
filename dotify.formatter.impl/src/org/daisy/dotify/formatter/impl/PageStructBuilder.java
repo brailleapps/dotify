@@ -11,7 +11,6 @@ class PageStructBuilder extends PageStruct {
 
 	//private final StringFilter filters;
 	private Map<String, PageImpl> pageReferences;
-	private Map<Page, Integer> pageSheetMap;
 
 	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs) {
 		//this.filters = filters;
@@ -29,40 +28,14 @@ class PageStructBuilder extends PageStruct {
 	PageStructBuilder paginate(CrossReferenceHandler crh, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		restart:while (true) {
 			pageReferences = new HashMap<String, PageImpl>();
-			pageSheetMap = new HashMap<Page, Integer>();
 			clear();
 			for (BlockSequence seq : fs) {
 				if (!newSequence(crh, seq, refs, rcontext)) {
 					continue restart;
 				}
 			}
-
-			updateSheetIndexMap();
 			return this;
 		}
-	}
-	
-	private void updateSheetIndexMap() {
-		int sheetIndex=0;
-		for (PageSequence s : this) {
-			LayoutMaster lm = s.getLayoutMaster();
-			int pageIndex=0;
-			for (Page p : s.getPages()) {
-				if (!lm.duplex() || pageIndex%2==0) {
-					sheetIndex++;
-				}
-				pageSheetMap.put(p, sheetIndex);
-				pageIndex++;
-			}
-		}
-	}
-	
-	Integer getSheetIndex(Page p) {
-		return pageSheetMap.get(p);
-	}
-
-	PageImpl getPage(String refid) {
-		return pageReferences.get(refid);
 	}
 
 	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
