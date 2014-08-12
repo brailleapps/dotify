@@ -572,6 +572,8 @@ dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-10.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-11.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-12.xml -text
+dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-13.xml -text
+dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-expected-14.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-01.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-02.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-03.xml -text
@@ -584,6 +586,8 @@ dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-09
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-10.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-11.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-12.xml -text
+dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-13.xml -text
+dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-14.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 dotify.formatter.impl/test/org/daisy/dotify/tools/StringToolsTest.java -text
 dotify.hyphenator.impl/.classpath -text

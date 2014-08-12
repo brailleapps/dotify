@@ -24,6 +24,7 @@ public class OBFLWsNormalizer extends XMLParserBase {
 	private final OutputStream out;
 	private final XMLEventFactory eventFactory;
 	private XMLEventWriter writer;
+	private boolean writingOften;
 
 	/**
 	 * Creates a new OBFLWsNormalizer. 
@@ -37,6 +38,7 @@ public class OBFLWsNormalizer extends XMLParserBase {
 		this.writer = null;
 		this.out = out;
 		this.eventFactory = eventFactory;
+		this.writingOften = false;
 	}
 
 	public void parse(XMLOutputFactory outputFactory) {
@@ -55,7 +57,7 @@ public class OBFLWsNormalizer extends XMLParserBase {
 					}
 				} else if (event.getEventType() == XMLStreamConstants.CHARACTERS) {
 					writer.add(eventFactory.createCharacters(normalizeSpace(event.asCharacters().getData())));
-				} else if (equalsStart(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY)) {
+				} else if (beginsMixedContent(event)) {
 					parseBlock(event);
 				} else {
 					writer.add(event);
@@ -83,13 +85,21 @@ public class OBFLWsNormalizer extends XMLParserBase {
 		}
 	}
 
+	public boolean isWritingOften() {
+		return writingOften;
+	}
+
+	public void setWritingOften(boolean writingOften) {
+		this.writingOften = writingOften;
+	}
+
 	private void parseBlock(XMLEvent event) throws XMLStreamException {
 		QName end = event.asStartElement().getName();
 		List<XMLEvent> events = new ArrayList<XMLEvent>();
 		events.add(event);
 		while (input.hasNext()) {
 			event = input.nextEvent();
-			if (equalsStart(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY)) {
+			if (beginsMixedContent(event)) {
 				writeEvents(modifyWhitespace(events));
 				events.clear();
 				parseBlock(event);
@@ -108,6 +118,9 @@ public class OBFLWsNormalizer extends XMLParserBase {
 		for (XMLEvent event : modified) {
 			writer.add(event);
 		}
+		if (writingOften) {
+			writer.flush();
+		}
 	}
 
 	private List<XMLEvent> modifyWhitespace(List<XMLEvent> events)  {
@@ -123,7 +136,7 @@ public class OBFLWsNormalizer extends XMLParserBase {
 				String post = "";
 				boolean beginWSMatch = beginWS(data);
 
-				if (isSpace(data) && ((i == events.size() - 2 && equalsEnd(events.get(i + 1), ObflQName.BLOCK, ObflQName.TOC_ENTRY)) || i == events.size() - 1)) {
+				if (isSpace(data) && ((i == events.size() - 2 && endsMixedContent(events.get(i + 1))) || i == events.size() - 1)) {
 					// this is the last element in the block, ignore
 				} else if (i > 0) {
 					XMLEvent preceedingEvent = events.get(i - 1);
@@ -246,6 +259,15 @@ public class OBFLWsNormalizer extends XMLParserBase {
 			}
 		}
 		return -1;
+	}
+	
+	private boolean beginsMixedContent(XMLEvent event) {
+		return equalsStart(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER);
+			   
+	}
+	
+	private boolean endsMixedContent(XMLEvent event) {
+		return equalsEnd(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER);
 	}
 
 	/**

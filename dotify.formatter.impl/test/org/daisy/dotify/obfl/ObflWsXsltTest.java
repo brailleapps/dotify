@@ -88,7 +88,19 @@ public class ObflWsXsltTest {
 	@Test
 	public void testWsNormalizer_12() throws IOException, XMLStreamException {
 		int ret = testWsNormalizer("resource-files/ws-test-input-12.xml", "resource-files/ws-test-expected-12.xml", "12");
-		assertTrue("Compare (NBSP) failed at byte: " + ret, ret == -1);
+		assertTrue("Compare (Before/After) failed at byte: " + ret, ret == -1);
+	}
+	
+	@Test
+	public void testWsNormalizer_13() throws IOException, XMLStreamException {
+		int ret = testWsNormalizer("resource-files/ws-test-input-13.xml", "resource-files/ws-test-expected-13.xml", "13");
+		assertTrue("Compare (Before/After) failed at byte: " + ret, ret == -1);
+	}
+	
+	@Test
+	public void testWsNormalizer_14() throws IOException, XMLStreamException {
+		int ret = testWsNormalizer("resource-files/ws-test-input-14.xml", "resource-files/ws-test-expected-14.xml", "14");
+		assertTrue("Compare (Item) failed at byte: " + ret, ret == -1);
 	}
 
 	// Helpers
