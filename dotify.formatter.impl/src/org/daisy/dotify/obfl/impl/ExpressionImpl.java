@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.obfl.Expression;
 import org.daisy.dotify.api.text.Integer2Text;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
@@ -148,6 +149,8 @@ class ExpressionImpl implements Expression {
 			return message(args);
 		} else if ("!".equals(operator)) {
 			return not(args);
+		} else if ("numeral-format".equals(operator)) {
+			return numeralFormat(args);
 		}
 		else {
 			throw new IllegalArgumentException("Unknown operator: '" + operator + "'");
@@ -299,6 +302,13 @@ class ExpressionImpl implements Expression {
 			throw new IllegalArgumentException("Wrong number of arguments: (round value)");
 		}
 		return (int)Math.round(toNumber(input[0]));
+	}
+	
+	private static String numeralFormat(Object[] input) {
+		if (input.length!=2) {
+			throw new IllegalArgumentException("Wrong number of arguments: (numeral-format style value)");
+		}
+		return NumeralStyle.valueOf(input[0].toString().toUpperCase().replace('-', '_')).format((int)toNumber(input[1]));
 	}
 	
 	private static Object not(Object[] input) {

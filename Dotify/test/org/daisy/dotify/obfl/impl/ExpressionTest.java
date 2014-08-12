@@ -184,6 +184,21 @@ public class ExpressionTest {
 	public void testExpression_not_04() {
 		assertEquals(false, e.evaluate("(! true)"));
 	}
+	
+	@Test
+	public void testExpression_numberFormat_01() {
+		assertEquals("A", e.evaluate("(numeral-format alpha 1)"));
+	}
+	
+	@Test
+	public void testExpression_numberFormat_02() {
+		assertEquals("III", e.evaluate("(numeral-format roman 3)"));
+	}
+	
+	@Test
+	public void testExpression_numberFormat_03() {
+		assertEquals("c", e.evaluate("(numeral-format lower-alpha 3)"));
+	}
 
 	/*
 		input + " -> " + ret + " (" +ret.getClass() + ")";
