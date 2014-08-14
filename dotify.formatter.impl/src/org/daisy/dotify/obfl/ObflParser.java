@@ -43,6 +43,7 @@ import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.formatter.Position;
 import org.daisy.dotify.api.formatter.ReferenceListBuilder;
+import org.daisy.dotify.api.formatter.RenameFallbackRule;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.StringField;
 import org.daisy.dotify.api.formatter.TableOfContents;
@@ -267,25 +268,47 @@ public class ObflParser extends XMLParserBase {
 			String value = atts.getValue();
 			if (name.equals("align")) {
 				config.align(PageAreaProperties.Alignment.valueOf(value.toUpperCase()));
-			} else if (name.equals("fallback")) {
-				config.fallbackId(value);
-			} else if (name.equals("fallback-scope")) {
-				config.scope(PageAreaProperties.FallbackScope.valueOf(value.toUpperCase()));
 			}
 		}
-		PageAreaBuilder builder = master.setPageArea(config.build());
+		PageAreaBuilder builder = null;
 		while (input.hasNext()) {
 			event=input.nextEvent();
-			if (equalsStart(event, ObflQName.BEFORE)) {
+			if (equalsStart(event, ObflQName.FALLBACK)) {
+				parseFallback(event, input, config);
+			} else if (equalsStart(event, ObflQName.BEFORE)) {
+				if (builder==null) { builder = master.setPageArea(config.build()); }
 				parseBeforeAfter(event, input, builder.getBeforeArea(), locale, true);
 			} else if (equalsStart(event, ObflQName.AFTER)) {
+				if (builder==null) { builder = master.setPageArea(config.build()); }
 				parseBeforeAfter(event, input, builder.getAfterArea(), locale, true);
 			} else if (equalsEnd(event, ObflQName.PAGE_AREA)) {
+				if (builder==null) { builder = master.setPageArea(config.build()); }
 				break;
 			} else {
 				report(event);
 			}
 		}
+	}
+
+	private void parseFallback(XMLEvent event, XMLEventReader input, PageAreaProperties.Builder pap) throws XMLStreamException {
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.RENAME)) {
+				parseRename(event, input, pap);
+			}
+			else if (equalsEnd(event, ObflQName.FALLBACK)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+
+	private void parseRename(XMLEvent event, XMLEventReader input, PageAreaProperties.Builder pap) throws XMLStreamException {
+		String from = getAttr(event, "collection");
+		String to = getAttr(event, "to");
+		pap.addFallback(new RenameFallbackRule(from, to));
+		scanEmptyElement(input, ObflQName.RENAME);
 	}
 	
 	@SuppressWarnings("unchecked")

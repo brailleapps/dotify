@@ -296,6 +296,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/Context.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/CurrentPageField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/DynamicContent.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/DynamicSequenceBuilder.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/FallbackRule.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Field.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/FieldList.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/Formatter.java -text svneol=unset#text/plain
@@ -317,6 +318,7 @@ dotify.api/src/org/daisy/dotify/api/formatter/PageTemplateBuilder.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/PagenumField.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/Position.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/ReferenceListBuilder.java -text
+dotify.api/src/org/daisy/dotify/api/formatter/RenameFallbackRule.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/RomanNumeral.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/api/formatter/SequenceProperties.java -text
 dotify.api/src/org/daisy/dotify/api/formatter/StringField.java -text

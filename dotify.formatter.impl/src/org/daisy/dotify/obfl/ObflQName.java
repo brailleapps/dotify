@@ -28,6 +28,8 @@ interface ObflQName {
 	
 	 final static QName SEQUENCE = new QName(OBFL_NS, "sequence");
 	 final static QName PAGE_AREA = new QName(OBFL_NS, "page-area");
+	 final static QName FALLBACK = new QName(OBFL_NS, "fallback");
+	 final static QName RENAME = new QName(OBFL_NS, "rename");
 	 final static QName BEFORE = new QName(OBFL_NS, "before");
 	 final static QName AFTER = new QName(OBFL_NS, "after");
 	 final static QName VOLUME_TEMPLATE = new QName(OBFL_NS, "volume-template");
