@@ -40,6 +40,7 @@
 		<xs:sequence>
 			<xs:element ref="obfl:template" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="obfl:default-template"/>
+			<xs:element ref="obfl:page-area" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:ID" use="required"/>
 		<xs:attribute name="page-width" type="xs:anySimpleType" use="required"/>
@@ -306,7 +307,6 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element ref="obfl:leader"/>
 			<xs:element ref="obfl:marker"/>
-			<xs:element ref="obfl:anchor"/>
 			<xs:element ref="obfl:br"/>
 			<xs:element ref="obfl:evaluate"/>
 			<xs:element ref="obfl:page-number"/>
@@ -597,7 +597,7 @@
 	<xs:complexType name="pre-content">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element ref="obfl:sequence"/>
-			<xs:element ref="obfl:item-sequence"/>
+			<xs:element ref="obfl:dynamic-sequence"/>
 			<xs:element ref="obfl:toc-sequence"/>
 		</xs:choice>
 	</xs:complexType>
@@ -605,7 +605,7 @@
 	<xs:complexType name="post-content">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element ref="obfl:sequence"/>
-			<xs:element ref="obfl:item-sequence"/>
+			<xs:element ref="obfl:dynamic-sequence"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:element name="post-content" type="obfl:post-content"/>
@@ -666,7 +666,7 @@
 		<xs:attribute name="use-when" type="xs:anySimpleType"/>
 	</xs:complexType>
 	<xs:element name="on-toc-end" type="obfl:on-toc-end"/>
-	<xs:complexType name="item-sequence">
+	<xs:complexType name="list-of-references">
 		<xs:sequence>
 			<xs:element ref="obfl:on-collection-start" minOccurs="0"/>
 			<xs:element ref="obfl:on-page-start" minOccurs="0"/>
@@ -682,19 +682,8 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
-		<xs:attribute name="master" type="xs:IDREF" use="required"/>
-		<xs:attribute name="initial-page-number" type="xs:anySimpleType"/>
-		<xs:attribute ref="xml:lang"/>
-		<xs:attribute name="hyphenate">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="false"/>
-					<xs:enumeration value="true"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
 	</xs:complexType>
-	<xs:element name="item-sequence" type="obfl:item-sequence"/>
+	<xs:element name="list-of-references" type="obfl:list-of-references"/>
 	<xs:complexType name="on-collection-start">
 		<xs:sequence>
 			<xs:element ref="obfl:block" maxOccurs="unbounded"/>
@@ -719,9 +708,26 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="on-page-end" type="obfl:on-page-end"/>
+	<xs:complexType name="dynamic-sequence">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="obfl:block"/>
+			<xs:element ref="obfl:list-of-references"/>
+		</xs:choice>
+		<xs:attribute name="master" type="xs:IDREF" use="required"/>
+		<xs:attribute name="initial-page-number" type="xs:anySimpleType"/>
+		<xs:attribute ref="xml:lang"/>
+		<xs:attribute name="hyphenate">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="false"/>
+					<xs:enumeration value="true"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="dynamic-sequence" type="obfl:dynamic-sequence"/>
 	<xs:complexType name="sequence">
 		<xs:sequence>
-			<xs:element ref="obfl:page-area" minOccurs="0"/>
 			<xs:element ref="obfl:block" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="master" type="xs:IDREF" use="required"/>
@@ -738,7 +744,12 @@
 	</xs:complexType>
 	<xs:element name="sequence" type="obfl:sequence"/>
 	<xs:complexType name="page-area">
-		<xs:attribute name="align" use="required">
+		<xs:sequence>
+			<xs:element ref="obfl:fallback" minOccurs="0"/>
+			<xs:element ref="obfl:before" minOccurs="0"/>
+			<xs:element ref="obfl:after" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="align">
 			<xs:simpleType>
 				<xs:restriction base="xs:NMTOKEN">
 					<xs:enumeration value="top"/>
@@ -747,310 +758,24 @@
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="collection" type="xs:IDREF" use="required"/>
-		<xs:attribute name="fallback" type="xs:ID"/>
-		<xs:attribute name="fallback-scope">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="page"/>
-					<xs:enumeration value="all"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
 		<xs:attribute name="max-height" type="xs:int" use="required"/>
 	</xs:complexType>
 	<xs:element name="page-area" type="obfl:page-area"/>
-	<xs:complexType name="collection">
-		<xs:sequence>
-			<xs:element ref="obfl:item" maxOccurs="unbounded"/>
-		</xs:sequence>
-		<xs:attribute name="name" type="xs:ID" use="required"/>
-	</xs:complexType>
-	<xs:element name="collection" type="obfl:collection"/>
-	<xs:complexType name="block" mixed="true">
-		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element ref="obfl:leader"/>
-			<xs:element ref="obfl:marker"/>
-			<xs:element ref="obfl:anchor"/>
-			<xs:element ref="obfl:br"/>
-			<xs:element ref="obfl:evaluate"/>
-			<xs:element ref="obfl:page-number"/>
-			<xs:element ref="obfl:span"/>
-			<xs:element ref="obfl:style"/>
-			<xs:element ref="obfl:block"/>
+	<xs:complexType name="fallback">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element ref="obfl:rename"/>
 		</xs:choice>
-		<xs:attribute name="break-before">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="auto"/>
-					<xs:enumeration value="page"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="first-line-indent" type="xs:anySimpleType"/>
-		<xs:attribute name="keep">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="auto"/>
-					<xs:enumeration value="all"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="keep-with-next">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-					<xs:enumeration value="0"/>
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="keep-with-previous-sheets">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="0"/>
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="keep-with-next-sheets">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="0"/>
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="list-type">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="ul"/>
-					<xs:enumeration value="ol"/>
-					<xs:enumeration value="none"/>
-					<xs:enumeration value="pl"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="margin-bottom" type="xs:anySimpleType"/>
-		<xs:attribute name="margin-left" type="xs:anySimpleType"/>
-		<xs:attribute name="margin-top" type="xs:anySimpleType"/>
-		<xs:attribute name="margin-right" type="xs:anySimpleType"/>
-		<xs:attribute name="text-indent" type="xs:anySimpleType"/>
-		<xs:attribute name="block-indent" type="xs:anySimpleType"/>
-		<xs:attribute name="align">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="left"/>
-					<xs:enumeration value="center"/>
-					<xs:enumeration value="right"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="vertical-align">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="before"/>
-					<xs:enumeration value="center"/>
-					<xs:enumeration value="after"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="vertical-position" type="xs:anySimpleType"/>
-		<xs:attribute name="id" type="xs:ID"/>
-		<xs:attribute name="row-spacing" type="xs:float"/>
-		<xs:attribute name="border-style">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="none"/>
-					<xs:enumeration value="solid"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-bottom-style">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="none"/>
-					<xs:enumeration value="solid"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-left-style">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="none"/>
-					<xs:enumeration value="solid"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-top-style">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="none"/>
-					<xs:enumeration value="solid"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-right-style">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="none"/>
-					<xs:enumeration value="solid"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-width">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-bottom-width">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-left-width">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-top-width">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-right-width">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="1"/>
-					<xs:enumeration value="2"/>
-					<xs:enumeration value="3"/>
-					<xs:enumeration value="4"/>
-					<xs:enumeration value="5"/>
-					<xs:enumeration value="6"/>
-					<xs:enumeration value="7"/>
-					<xs:enumeration value="8"/>
-					<xs:enumeration value="9"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-align">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="inner"/>
-					<xs:enumeration value="outer"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-bottom-align">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="inner"/>
-					<xs:enumeration value="outer"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-left-align">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="inner"/>
-					<xs:enumeration value="outer"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-top-align">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="inner"/>
-					<xs:enumeration value="outer"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="border-right-align">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="inner"/>
-					<xs:enumeration value="outer"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute ref="xml:lang"/>
-		<xs:attribute name="hyphenate">
-			<xs:simpleType>
-				<xs:restriction base="xs:NMTOKEN">
-					<xs:enumeration value="false"/>
-					<xs:enumeration value="true"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
 	</xs:complexType>
-	<xs:element name="block" type="obfl:block"/>
-	<xs:complexType name="item" mixed="true">
+	<xs:element name="fallback" type="obfl:fallback"/>
+	<xs:complexType name="rename">
+		<xs:attribute name="collection" type="xs:IDREF" use="required"/>
+		<xs:attribute name="to" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:element name="rename" type="obfl:rename"/>
+	<xs:complexType name="before" mixed="true">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element ref="obfl:leader"/>
 			<xs:element ref="obfl:marker"/>
-			<xs:element ref="obfl:anchor"/>
 			<xs:element ref="obfl:br"/>
 			<xs:element ref="obfl:evaluate"/>
 			<xs:element ref="obfl:page-number"/>
@@ -1325,10 +1050,856 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:element name="before" type="obfl:before"/>
+	<xs:complexType name="after" mixed="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="obfl:leader"/>
+			<xs:element ref="obfl:marker"/>
+			<xs:element ref="obfl:br"/>
+			<xs:element ref="obfl:evaluate"/>
+			<xs:element ref="obfl:page-number"/>
+			<xs:element ref="obfl:span"/>
+			<xs:element ref="obfl:style"/>
+			<xs:element ref="obfl:block"/>
+		</xs:choice>
+		<xs:attribute name="break-before">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="auto"/>
+					<xs:enumeration value="page"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="first-line-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="keep">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="auto"/>
+					<xs:enumeration value="all"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-next">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-previous-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-next-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="list-type">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="ul"/>
+					<xs:enumeration value="ol"/>
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="pl"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="margin-bottom" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-left" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-top" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-right" type="xs:anySimpleType"/>
+		<xs:attribute name="text-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="block-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="right"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="left"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="vertical-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="after"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="before"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="vertical-position" type="xs:anySimpleType"/>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="row-spacing" type="xs:anySimpleType"/>
+		<xs:attribute name="border-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute ref="xml:lang"/>
+		<xs:attribute name="hyphenate">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="false"/>
+					<xs:enumeration value="true"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="after" type="obfl:after"/>
+	<xs:complexType name="collection">
+		<xs:sequence>
+			<xs:element ref="obfl:item" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:element name="collection" type="obfl:collection"/>
+	<xs:complexType name="block" mixed="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="obfl:leader"/>
+			<xs:element ref="obfl:marker"/>
+			<xs:element ref="obfl:br"/>
+			<xs:element ref="obfl:evaluate"/>
+			<xs:element ref="obfl:page-number"/>
+			<xs:element ref="obfl:span"/>
+			<xs:element ref="obfl:style"/>
+			<xs:element ref="obfl:anchor"/>
+			<xs:element ref="obfl:block"/>
+		</xs:choice>
+		<xs:attribute name="break-before">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="auto"/>
+					<xs:enumeration value="page"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="first-line-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="keep">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="auto"/>
+					<xs:enumeration value="all"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-next">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-previous-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-next-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="list-type">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="ul"/>
+					<xs:enumeration value="ol"/>
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="pl"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="margin-bottom" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-left" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-top" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-right" type="xs:anySimpleType"/>
+		<xs:attribute name="text-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="block-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="left"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="right"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="vertical-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="before"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="after"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="vertical-position" type="xs:anySimpleType"/>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="row-spacing" type="xs:float"/>
+		<xs:attribute name="border-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute ref="xml:lang"/>
+		<xs:attribute name="hyphenate">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="false"/>
+					<xs:enumeration value="true"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="block" type="obfl:block"/>
+	<xs:complexType name="item" mixed="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="obfl:leader"/>
+			<xs:element ref="obfl:marker"/>
+			<xs:element ref="obfl:br"/>
+			<xs:element ref="obfl:evaluate"/>
+			<xs:element ref="obfl:page-number"/>
+			<xs:element ref="obfl:span"/>
+			<xs:element ref="obfl:style"/>
+			<xs:element ref="obfl:block"/>
+		</xs:choice>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="break-before">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="auto"/>
+					<xs:enumeration value="page"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="first-line-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="keep">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="auto"/>
+					<xs:enumeration value="all"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-next">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-previous-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="keep-with-next-sheets">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="list-type">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="ul"/>
+					<xs:enumeration value="ol"/>
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="pl"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="margin-bottom" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-left" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-top" type="xs:anySimpleType"/>
+		<xs:attribute name="margin-right" type="xs:anySimpleType"/>
+		<xs:attribute name="text-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="block-indent" type="xs:anySimpleType"/>
+		<xs:attribute name="align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="right"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="left"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="vertical-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="after"/>
+					<xs:enumeration value="center"/>
+					<xs:enumeration value="before"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="vertical-position" type="xs:anySimpleType"/>
+		<xs:attribute name="row-spacing" type="xs:anySimpleType"/>
+		<xs:attribute name="border-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-style">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="solid"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-width">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="7"/>
+					<xs:enumeration value="8"/>
+					<xs:enumeration value="9"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+					<xs:enumeration value="5"/>
+					<xs:enumeration value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-bottom-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-left-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-top-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="border-right-align">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="inner"/>
+					<xs:enumeration value="outer"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute ref="xml:lang"/>
+		<xs:attribute name="hyphenate">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="false"/>
+					<xs:enumeration value="true"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
 	<xs:element name="item" type="obfl:item"/>
 	<xs:complexType name="span" mixed="true">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element ref="obfl:style"/>
+			<xs:element ref="obfl:anchor"/>
 		</xs:choice>
 		<xs:attribute ref="xml:lang"/>
 		<xs:attribute name="hyphenate">
@@ -1346,6 +1917,7 @@
 			<xs:element ref="obfl:style"/>
 			<xs:element ref="obfl:marker"/>
 			<xs:element ref="obfl:br"/>
+			<xs:element ref="obfl:anchor"/>
 		</xs:choice>
 		<xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
 	</xs:complexType>

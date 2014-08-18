@@ -19,12 +19,17 @@
 	<xsl:param name="l10nTocVolumeHeading" select="'Contents of Volume {0}'"/>
 	<xsl:param name="l10nTocVolumeXofY" select="'Volume {0} of {1}'"/>
 	<xsl:param name="l10nTocOneVolume" select="'One Volume'"/>
+	<xsl:param name="l10nEndnotesHeadling" select="'Footnotes'"/>
+	<xsl:param name="l10nEndnotesPageStart" select="'Page {0}'"/>
+	
+	<xsl:key name="noterefs" match="dtb:noteref" use="substring-after(@idref, '#')"/>
 
 	<xsl:template match="/">
 		<obfl version="2011-1" hyphenate="{$hyphenate}">
 			<xsl:attribute name="xml:lang"><xsl:value-of select="/dtb:dtbook/@xml:lang"/></xsl:attribute>
 			<xsl:call-template name="insertMetadata"/>
 			<xsl:call-template name="insertLayoutMaster"/>
+			<xsl:call-template name="insertNoteCollection"/>
 			<xsl:apply-templates/>
 		</obfl>
 	</xsl:template>
@@ -51,6 +56,7 @@
 				</header>
 				<footer></footer>
 			</default-template>
+			<xsl:call-template name="insertFrontPageArea"/>
 		</layout-master>
 		<layout-master name="main" page-width="{$page-width}" 
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
@@ -80,6 +86,7 @@
 				</header>
 				<footer></footer>
 			</default-template>
+			<xsl:call-template name="insertMainPageArea"/>
 		</layout-master>
 		<layout-master name="plain" page-width="{$page-width}" 
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
@@ -132,7 +139,9 @@
 					</toc-sequence>
 					<xsl:apply-templates select="//dtb:frontmatter" mode="pre-volume-mode"/>
 				</pre-content>
-				<post-content/>
+				<post-content>
+					<xsl:call-template name="postContentNotes"/>
+				</post-content>
 			</volume-template>
 			<volume-template volume-number-variable="volume" volume-count-variable="volumes" use-when="(> $volume 1)" sheets-in-volume-max="{$splitterMax}">
 				<pre-content>
@@ -143,7 +152,9 @@
 						</on-toc-start>
 					</toc-sequence>
 				</pre-content>
-				<post-content/>
+				<post-content>
+					<xsl:call-template name="postContentNotes"/>
+				</post-content>
 			</volume-template>
 			</xsl:when>
 			<xsl:otherwise>
@@ -151,10 +162,78 @@
 					<pre-content>
 						<xsl:call-template name="coverPage"/>
 					</pre-content>
-					<post-content/>
+					<post-content>
+						<xsl:call-template name="postContentNotes"/>
+					</post-content>
 				</volume-template>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="insertFrontPageArea">
+		<xsl:if test="count(//dtb:note[key('noterefs', @id)[ancestor::dtb:frontmatter]])>0">
+			<page-area align="bottom" max-height="10" collection="footnotes-front">
+				<fallback>
+					<rename collection="footnotes-front" to="endnotes-front"/>
+					<xsl:if test="count(//dtb:note[key('noterefs', @id)[not(ancestor::dtb:frontmatter)]])>0">
+						<rename collection="footnotes" to="endnotesB"/>
+					</xsl:if>
+				</fallback>
+				<before><leader position="100%" pattern="."/></before>
+				<after></after>
+			</page-area>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="insertMainPageArea">
+		<xsl:if test="count(//dtb:note[key('noterefs', @id)[not(ancestor::dtb:frontmatter)]])>0">
+			<page-area align="bottom" max-height="10" collection="footnotes">
+				<fallback>
+					<rename collection="footnotes" to="endnotes"/>
+					<xsl:if test="count(//dtb:note[key('noterefs', @id)[ancestor::dtb:frontmatter]])>0">
+						<rename collection="footnotes-front" to="endnotes-frontB"/>
+					</xsl:if>
+				</fallback>
+				<before><leader position="100%" pattern="."/></before>
+				<after></after>
+			</page-area>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="postContentNotes">
+		<xsl:if test="count(//dtb:note)>0">
+			<dynamic-sequence master="plain">
+				<block margin-top="3"><xsl:value-of select="$l10nEndnotesHeadling"/></block>
+				<xsl:if test="count(//dtb:note[key('noterefs', @id)[ancestor::dtb:frontmatter]])>0">
+					<list-of-references collection="endnotes-front" range="volume">
+						<on-page-start>
+							<block margin-top="1" keep="all" keep-with-next="1"><evaluate expression="(format &quot;{$l10nEndnotesPageStart}&quot; (numeral-format roman $started-page-number))"/></block>
+						</on-page-start>
+					</list-of-references>
+					<xsl:if test="count(//dtb:note[key('noterefs', @id)[not(ancestor::dtb:frontmatter)]])>0">
+						<list-of-references collection="endnotes-frontB" range="volume">
+							<on-page-start>
+								<block margin-top="1" keep="all" keep-with-next="1"><evaluate expression="(format &quot;{$l10nEndnotesPageStart}&quot; (numeral-format roman $started-page-number))"/></block>
+							</on-page-start>
+						</list-of-references>
+					</xsl:if>
+				</xsl:if>
+				<xsl:if test="count(//dtb:note[key('noterefs', @id)[not(ancestor::dtb:frontmatter)]])>0">
+					<list-of-references collection="endnotes" range="volume">
+						<on-page-start>
+							<block margin-top="1" keep="all" keep-with-next="1"><evaluate expression="(format &quot;{$l10nEndnotesPageStart}&quot; $started-page-number)"/></block>
+						</on-page-start>
+					</list-of-references>
+					<xsl:if test="count(//dtb:note[key('noterefs', @id)[ancestor::dtb:frontmatter]])>0">
+						<list-of-references collection="endnotesB" range="volume">
+							<on-page-start>
+								<block margin-top="1" keep="all" keep-with-next="1"><evaluate expression="(format &quot;{$l10nEndnotesPageStart}&quot; $started-page-number)"/></block>
+							</on-page-start>
+						</list-of-references>
+					</xsl:if>
+				</xsl:if>
+			</dynamic-sequence>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="coverPage">
@@ -182,6 +261,70 @@
 				(format &quot;{$l10nTocVolumeXofY}&quot; (int2text (round $volume) {$l10nLang}) (int2text (round $volumes) {$l10nLang}))
 				&quot;{$l10nTocOneVolume}&quot;)"/></block>
 		</sequence>
+	</xsl:template>
+	
+	<xsl:template name="insertNoteCollection">
+		<xsl:if test="count(//dtb:note[key('noterefs', @id)[ancestor::dtb:frontmatter]])>0">
+			<collection name="footnotes-front">
+				<xsl:apply-templates select="//dtb:note[key('noterefs', @id)[ancestor::dtb:frontmatter]]" mode="collectNotes">
+					<xsl:with-param name="afix">.A</xsl:with-param>
+				</xsl:apply-templates>
+				<!-- 
+				<item id="note1" text-indent="4">1).</item>  -->
+			</collection>
+		</xsl:if>
+		<xsl:if test="count(//dtb:note[key('noterefs', @id)[not(ancestor::dtb:frontmatter)]])>0">
+			<collection name="footnotes">
+				<xsl:apply-templates select="//dtb:note[key('noterefs', @id)[not(ancestor::dtb:frontmatter)]]" mode="collectNotes">
+					<xsl:with-param name="afix">.B</xsl:with-param>
+				</xsl:apply-templates>
+				<!-- 
+				<item id="note1" text-indent="4">1).</item>  -->
+			</collection>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="dtb:noteref" priority="10">
+		<xsl:apply-templates select="." mode="inline-mode"/>
+		<xsl:variable name="afix">
+			<xsl:choose>
+				<xsl:when test="ancestor::dtb:frontmatter">.A</xsl:when>
+				<xsl:otherwise>.B</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="starts-with(@idref, '#')"><anchor item="{concat(substring-after(@idref, '#'), $afix)}"/></xsl:when>
+			<xsl:otherwise><xsl:message terminate="no">Only fragment identifier supported: <xsl:value-of select="@idref"/></xsl:message></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="dtb:note" mode="collectNotes">
+			<xsl:param name="afix"/>
+			<item id="{concat(@id, $afix)}">
+				<xsl:variable name="note">
+					<xsl:apply-templates/>
+				</xsl:variable>
+				<xsl:for-each select="$note/node()[self::* or self::text()]">
+					<xsl:choose>
+						<xsl:when test="self::text()">
+							<xsl:message terminate="yes">Unexpected text contents in "note" element.</xsl:message>
+						</xsl:when> 
+						<xsl:when test="position()=1 and count(text())>0"> <!-- and an element -->
+							<xsl:copy>
+								<xsl:copy-of select="@*"/>
+								<xsl:attribute name="text-indent">2</xsl:attribute>
+								<xsl:attribute name="block-indent">2</xsl:attribute>
+								<xsl:copy-of select="node()"/>
+							</xsl:copy>
+						</xsl:when>
+						<xsl:otherwise>
+							<block margin-left="2">
+								<xsl:copy-of select="."/>
+							</block>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+			</item>
 	</xsl:template>
 
 	<!-- Don't output a sequence if there is nothing left when doctitle, docauthor and level1@class='backCoverText', level1@class='rearjacketcopy' and level1@class='colophon' has been moved -->
@@ -238,6 +381,11 @@
 	<xsl:template match="dtb:level1[dtb:list[@class='toc']]" mode="toc"></xsl:template>
 
 	<xsl:template match="dtb:level1[(@class='backCoverText' or @class='rearjacketcopy' or @class='colophon') and (parent::dtb:frontmatter or parent::dtb:rearmatter)]" mode="toc"></xsl:template>
+	
+	<xsl:template match="dtb:level1[
+		count(descendant::dtb:note)>0 and
+		count(descendant::*[not(ancestor::dtb:note) and (self::dtb:level2 or self::dtb:level3 or self::dtb:level4 or self::dtb:level5 or self::dtb:level6 or self::dtb:h1 or self::dtb:h2 or self::dtb:h3 or self::dtb:h4 or self::dtb:h5 or self::dtb:h6 or self::dtb:note or self::dtb:pagenum)])
+		=count(descendant::*[not(ancestor::dtb:note)])]" mode="toc"/>
 	
 	<xsl:template match="dtb:level1|dtb:level2" mode="toc">
 		<xsl:if test="dtb:h1|dtb:h2">

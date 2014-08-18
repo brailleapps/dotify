@@ -3,12 +3,13 @@
 <sch:schema xmlns:sch="http://www.ascc.net/xml/schematron">
 	<sch:title>DTBook 2005-3 Schematron basic tests</sch:title>
 	<sch:ns prefix="dtb" uri="http://www.daisy.org/z3986/2005/dtbook/"/>
-	<!-- Rule 1: Disallowed element: note -->
+	<!-- Rule 1: Disallowed element: note 
 	<sch:pattern name="no_note" id="no_note">
 		<sch:rule context="dtb:note">
 			<sch:assert test="false">[Rule 1] No 'note'</sch:assert>
 		</sch:rule>
 	</sch:pattern>
+	-->
 	<!-- Rule 2: Disallowed element: table -->
 	<sch:pattern name="no_table" id="no_table">
 		<sch:rule context="dtb:table">
@@ -38,11 +39,13 @@
 		<sch:rule context="dtb:level1[@class]">
 			<sch:assert test="@class!='part'">[Rule 6] @class='part' is not supported.</sch:assert>
 		</sch:rule>
-	</sch:pattern> -->
-	<!-- Rule 7: Disallow frontmatter contents together with toc 
+	</sch:pattern>
+	 -->
+	<!-- Rule 7: Disallow frontmatter contents together with toc
 	<sch:pattern name="no_frontmatter_contents" id="no_frontmatter_contents">
 		<sch:rule context="dtb:frontmatter[dtb:level1[@class='toc' or dtb:list[@class='toc']]]">
 			<sch:report test="*[not(self::dtb:doctitle or self::dtb:docauthor or self::dtb:level1[@class='backCoverText' or @class='rearjacketcopy' or @class='colophon' or @class='toc' or dtb:list[@class='toc']])]">[Rule 7] Contents in frontmatter (aside from doctitle, docauthor, rearjacketcopy, colophon and toc) is not supported together with toc.</sch:report>
 		</sch:rule>
-	</sch:pattern>-->
+	</sch:pattern>
+	 -->
 </sch:schema>
