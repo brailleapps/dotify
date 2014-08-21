@@ -24,6 +24,7 @@
 	<entry key="l10nTocOneVolume">En volym</entry>
 	<entry key="l10nEndnotesHeadling">Fotnoter till denna volym</entry>
 	<entry key="l10nEndnotesPageStart">Sida {0}</entry>
+	<entry key="l10nEndnotesPageHeader">Noter</entry>
 
 	<!--  (concat &quot;Volym &quot; (round $started-volume-number)) -->
 	<!--  (concat &quot;Innehåll volym &quot; (round $volume)) -->

@@ -21,6 +21,7 @@
 	<xsl:param name="l10nTocOneVolume" select="'One Volume'"/>
 	<xsl:param name="l10nEndnotesHeadling" select="'Footnotes'"/>
 	<xsl:param name="l10nEndnotesPageStart" select="'Page {0}'"/>
+	<xsl:param name="l10nEndnotesPageHeader" select="'Footnotes'"/>
 	
 	<xsl:key name="noterefs" match="dtb:noteref" use="substring-after(@idref, '#')"/>
 
@@ -103,6 +104,26 @@
 						<xsl:attribute name="row-spacing">1</xsl:attribute>
 					</xsl:if>
 					<field><string value=""/></field>
+				</header>
+				<footer></footer>
+			</default-template>
+		</layout-master>
+		<layout-master name="notes" page-width="{$page-width}" 
+							page-height="{$page-height}" inner-margin="{$inner-margin}"
+							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
+			<template use-when="(= (% $page 2) 0)">
+				<header><field><string value="&#xA0;&#xA0;"/><current-page style="default"/><string value=" {$l10nEndnotesPageHeader}"/></field></header>
+				<footer></footer>
+			</template>
+			<default-template>
+				<header>
+					<!-- This looks weird, but it is correct. If row-spacing is double, then offset the header
+					 of every front page as to avoid embossing on the same row on front and back -->
+					<xsl:if test="$row-spacing=2">
+						<xsl:attribute name="row-spacing">1</xsl:attribute>
+					</xsl:if>
+					<field><string value=""/></field>
+					<field><string value="{$l10nEndnotesPageHeader} "/><current-page style="default"/></field>
 				</header>
 				<footer></footer>
 			</default-template>
@@ -202,7 +223,7 @@
 	
 	<xsl:template name="postContentNotes">
 		<xsl:if test="count(//dtb:note)>0">
-			<dynamic-sequence master="plain">
+			<dynamic-sequence master="notes">
 				<block margin-top="3"><xsl:value-of select="$l10nEndnotesHeadling"/></block>
 				<xsl:if test="count(//dtb:note[key('noterefs', @id)[ancestor::dtb:frontmatter]])>0">
 					<list-of-references collection="endnotes-front" range="volume">
