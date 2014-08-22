@@ -112,7 +112,7 @@
 							page-height="{$page-height}" inner-margin="{$inner-margin}"
 							outer-margin="{$outer-margin}" row-spacing="{$row-spacing}" duplex="{$duplex}">
 			<template use-when="(= (% $page 2) 0)">
-				<header><field><string value="&#xA0;&#xA0;"/><current-page style="default"/><string value=" {$l10nEndnotesPageHeader}"/></field></header>
+				<header><field><string value="&#xA0;&#xA0;"/><string value="{$l10nEndnotesPageHeader} "/><current-page style="default"/></field></header>
 				<footer></footer>
 			</template>
 			<default-template>
@@ -332,14 +332,14 @@
 						</xsl:when> 
 						<xsl:when test="position()=1 and count(text())>0"> <!-- and an element -->
 							<xsl:copy>
-								<xsl:copy-of select="@*"/>
-								<xsl:attribute name="text-indent">2</xsl:attribute>
-								<xsl:attribute name="block-indent">2</xsl:attribute>
+								<xsl:copy-of select="@*[not(local-name()='first-line-indent' or local-name()='text-indent' or local-name()='block-indent')]"/>
+								<xsl:attribute name="text-indent">3</xsl:attribute>
+								<xsl:attribute name="block-indent">3</xsl:attribute>
 								<xsl:copy-of select="node()"/>
 							</xsl:copy>
 						</xsl:when>
 						<xsl:otherwise>
-							<block margin-left="2">
+							<block margin-left="3">
 								<xsl:copy-of select="."/>
 							</block>
 						</xsl:otherwise>
