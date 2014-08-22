@@ -25,7 +25,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 
 import org.daisy.dotify.text.StringFilter;
-import org.daisy.util.xml.stax.StaxFilter;
+import org.daisy.dotify.tools.StaxFilter2;
 
 /**
  * 
@@ -35,7 +35,7 @@ import org.daisy.util.xml.stax.StaxFilter;
  * @version 4 maj 2009
  * @since 1.0
  */
-public class TextNodeFilter extends StaxFilter {
+public class TextNodeFilter extends StaxFilter2 {
 	private StringFilter filters;
 
 	/**

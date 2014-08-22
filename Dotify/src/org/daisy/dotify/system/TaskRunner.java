@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.daisy.util.file.FileUtils;
-
+import se.mtm.common.io.FileIO;
 import se.mtm.common.io.TempFileHandler;
 
 /**
@@ -129,7 +128,7 @@ public class TaskRunner {
 		fileName += ".tmp";
 		File f = new File(tempFilesFolder, fileName);
 		logger.fine("Writing debug file: " + f);
-		FileUtils.copyFile(source, f);
+		FileIO.copyFile(source, f);
 		return f;
 	}
 	
