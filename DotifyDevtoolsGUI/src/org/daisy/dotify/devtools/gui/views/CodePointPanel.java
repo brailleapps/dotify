@@ -19,9 +19,7 @@ import javax.swing.JTextArea;
 import org.daisy.dotify.devtools.converters.CodePointHelper;
 import org.daisy.dotify.devtools.converters.CodePointHelper.Mode;
 import org.daisy.dotify.devtools.converters.CodePointHelper.Style;
-
-import com.ibm.icu.lang.UCharacter;
-import com.ibm.icu.text.UCharacterIterator;
+import org.daisy.dotify.devtools.converters.UnicodeNames;
 
 public class CodePointPanel extends JPanel implements StringFormatterResult {
 	/**
@@ -210,11 +208,12 @@ public class CodePointPanel extends JPanel implements StringFormatterResult {
 	}
 	
 	private void updateCharacterNames(String input) {
-		UCharacterIterator uci = UCharacterIterator.getInstance(input);
 		int codePoint;
 		ArrayList<String> ret = new ArrayList<String>();
-		while ((codePoint = uci.nextCodePoint()) != UCharacterIterator.DONE) {
-			ret.add(UCharacter.getName(codePoint) + ", " + CodePointHelper.format("" + (char) codePoint, Style.COMMA, getSelectedMode()));
+		for (int offset = 0; offset < input.length();) {
+			codePoint = input.codePointAt(offset);
+			ret.add(UnicodeNames.getName(codePoint) + ", " + CodePointHelper.format("" + (char) codePoint, Style.COMMA, getSelectedMode()));
+			offset += Character.charCount(codePoint);
 		}
 		list.setListData(ret.toArray(new String[] {}));
 	}

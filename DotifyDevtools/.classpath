@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="/DotifyShared/saxon8.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/brailleUtils-catalog.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/brailleUtils-core.jar"/>
-	<classpathentry kind="lib" path="/DotifyShared/icu4j-3_8.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/texhyphj.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/dotify-translator.jar"/>
 	<classpathentry kind="lib" path="/DotifyShared/junit-4.7.jar"/>
