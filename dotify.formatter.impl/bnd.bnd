@@ -12,5 +12,5 @@ Include-Resource: / = src/
 	dotify.api;version=latest,\
 	dotify.common;version=latest,\
 	dotify.translator.impl;version=latest
-Export-Package: org.daisy.dotify.obfl,\
-	org.daisy.dotify.tools
+Export-Package:  \
+	org.daisy.dotify.obfl

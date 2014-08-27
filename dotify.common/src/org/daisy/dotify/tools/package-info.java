@@ -3,4 +3,4 @@
  * 
  * @author Joel Håkansson
  */
-package org.daisy.dotify.translator;
+package org.daisy.dotify.tools;

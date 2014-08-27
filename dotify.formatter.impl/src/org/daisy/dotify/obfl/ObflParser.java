@@ -53,6 +53,7 @@ import org.daisy.dotify.api.formatter.VolumeContentBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
+import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
@@ -61,7 +62,6 @@ import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.text.FilterLocale;
-import org.daisy.dotify.translator.DefaultTextAttribute;
 
 /**
  * Provides a parser for OBFL. The parser accepts OBFL input, either

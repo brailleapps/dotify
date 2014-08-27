@@ -1,4 +1,4 @@
-package org.daisy.dotify.translator;
+package org.daisy.dotify.tools;
 
 /**
  * Converts braille notation into Unicode braille patterns.

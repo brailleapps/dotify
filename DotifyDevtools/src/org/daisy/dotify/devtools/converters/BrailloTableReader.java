@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 
 import org.daisy.dotify.text.TextFileReader;
 import org.daisy.dotify.text.TextFileReader.LineData;
-import org.daisy.dotify.translator.BrailleNotationConverter;
+import org.daisy.dotify.tools.BrailleNotationConverter;
 
 
 

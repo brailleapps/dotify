@@ -355,6 +355,7 @@ dotify.api/src/org/daisy/dotify/api/translator/BrailleTranslatorFactory.java -te
 dotify.api/src/org/daisy/dotify/api/translator/BrailleTranslatorFactoryMakerService.java -text
 dotify.api/src/org/daisy/dotify/api/translator/BrailleTranslatorFactoryService.java -text
 dotify.api/src/org/daisy/dotify/api/translator/BrailleTranslatorResult.java -text
+dotify.api/src/org/daisy/dotify/api/translator/DefaultTextAttribute.java -text
 dotify.api/src/org/daisy/dotify/api/translator/MarkerProcessor.java -text
 dotify.api/src/org/daisy/dotify/api/translator/MarkerProcessorConfigurationException.java -text
 dotify.api/src/org/daisy/dotify/api/translator/MarkerProcessorFactory.java -text
@@ -402,16 +403,11 @@ dotify.api/src/org/daisy/dotify/consumer/writer/package-info.java -text svneol=u
 dotify.api/src/org/daisy/dotify/graphics/BrailleGraphics.java -text
 dotify.api/src/org/daisy/dotify/graphics/package-info.java -text svneol=unset#text/plain
 dotify.api/src/org/daisy/dotify/graphics/packageinfo -text
-dotify.api/src/org/daisy/dotify/translator/BrailleNotationConverter.java -text
-dotify.api/src/org/daisy/dotify/translator/DefaultTextAttribute.java -text
-dotify.api/src/org/daisy/dotify/translator/package-info.java -text svneol=unset#text/plain
-dotify.api/src/org/daisy/dotify/translator/packageinfo -text
 dotify.api/test/org/daisy/dotify/api/formatter/AlphaNumeralTest.java -text
 dotify.api/test/org/daisy/dotify/api/formatter/NumeralStyleTest.java -text
 dotify.api/test/org/daisy/dotify/api/formatter/PositionTest.java -text svneol=unset#text/plain
+dotify.api/test/org/daisy/dotify/api/translator/TranslatorSpecificationTest.java -text
 dotify.api/test/org/daisy/dotify/graphics/BrailleGraphicsTest.java -text
-dotify.api/test/org/daisy/dotify/translator/BrailleNotationConverterTest.java -text
-dotify.api/test/org/daisy/dotify/translator/TranslatorSpecificationTest.java -text
 dotify.common/.classpath -text
 dotify.common/.project -text
 dotify.common/.settings/org.eclipse.jdt.core.prefs -text
@@ -422,9 +418,23 @@ dotify.common/build2.xml -text
 dotify.common/launch.bndrun -text
 dotify.common/src/org/daisy/dotify/text/BreakPoint.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/BreakPointHandler.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/CaseFilter.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/IdentityFilter.java -text
+dotify.common/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/text/SimpleUCharReplacer.java -text
+dotify.common/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/TextFileReader.java -text
+dotify.common/src/org/daisy/dotify/text/UCharFilter.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/packageinfo -text
+dotify.common/src/org/daisy/dotify/tools/BrailleNotationConverter.java -text
+dotify.common/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/tools/package-info.java -text svneol=unset#text/plain
+dotify.common/src/org/daisy/dotify/tools/packageinfo -text
 dotify.common/src/se/mtm/common/collection/ArrayStack.java -text
 dotify.common/src/se/mtm/common/collection/packageinfo -text
 dotify.common/src/se/mtm/common/io/ByteArrayInputStreamMaker.java -text
@@ -443,6 +453,9 @@ dotify.common/src/se/mtm/common/xml/XMLToolsException.java -text
 dotify.common/src/se/mtm/common/xml/packageinfo -text
 dotify.common/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
 dotify.common/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
+dotify.common/test/org/daisy/dotify/tools/BrailleNotationConverterTest.java -text
+dotify.common/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
+dotify.common/test/org/daisy/dotify/tools/StringToolsTest.java -text
 dotify.devtools.gui/.classpath -text
 dotify.devtools.gui/.project -text
 dotify.devtools.gui/.settings/org.eclipse.jdt.core.prefs -text
@@ -547,11 +560,6 @@ dotify.formatter.impl/src/org/daisy/dotify/obfl/package-info.java -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/packageinfo -text
 dotify.formatter.impl/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer-2.xsl -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/obfl/resource-files/obfl-ws-normalizer.xsl -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/tools/CompoundIterable.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/tools/CompoundIterator.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/tools/StateObject.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/tools/StringTools.java -text svneol=unset#text/plain
-dotify.formatter.impl/src/org/daisy/dotify/tools/packageinfo -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriter.java -text svneol=unset#text/plain
 dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriterFactory.java -text
 dotify.formatter.impl/src/org/daisy/dotify/writer/impl/PEFMediaWriterFactoryService.java -text
@@ -591,8 +599,6 @@ dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-11
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-12.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-13.xml -text
 dotify.formatter.impl/test/org/daisy/dotify/obfl/resource-files/ws-test-input-14.xml -text
-dotify.formatter.impl/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
-dotify.formatter.impl/test/org/daisy/dotify/tools/StringToolsTest.java -text
 dotify.hyphenator.impl/.classpath -text
 dotify.hyphenator.impl/.project -text
 dotify.hyphenator.impl/.settings/org.eclipse.jdt.core.prefs -text
@@ -600,6 +606,9 @@ dotify.hyphenator.impl/bnd.bnd -text
 dotify.hyphenator.impl/build.xml -text
 dotify.hyphenator.impl/launch.bndrun -text
 dotify.hyphenator.impl/src/META-INF/services/org.daisy.dotify.api.hyphenator.HyphenatorFactoryService -text
+dotify.hyphenator.impl/src/org/daisy/dotify/hyphenator/HyphenatorFilter.java -text
+dotify.hyphenator.impl/src/org/daisy/dotify/hyphenator/package-info.java -text
+dotify.hyphenator.impl/src/org/daisy/dotify/hyphenator/packageinfo -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/AbstractHyphenator.java -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/CWDecompounder.java -text
 dotify.hyphenator.impl/src/org/daisy/dotify/impl/hyphenator/latex/CWHyphenationUnit.java -text
@@ -805,15 +814,6 @@ dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerP
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/SwedishMarkerProcessorFactoryService.java -text
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas1.xml -text svneol=unset#text/plain
 dotify.translator.impl/src/org/daisy/dotify/impl/translator/sv_SE/sv_SE-pas2.xml -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/CaseFilter.java -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/HyphenatorFilter.java -text
-dotify.translator.impl/src/org/daisy/dotify/text/IdentityFilter.java -text
-dotify.translator.impl/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/SimpleUCharReplacer.java -text
-dotify.translator.impl/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/UCharFilter.java -text svneol=unset#text/plain
-dotify.translator.impl/src/org/daisy/dotify/text/package-info.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/DefaultBrailleTranslatorResult.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/DefaultMarkerProcessor.java -text
 dotify.translator.impl/src/org/daisy/dotify/translator/Marker.java -text

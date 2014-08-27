@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.daisy.dotify.translator.BrailleNotationConverter;
+import org.daisy.dotify.tools.BrailleNotationConverter;
 
 
 public class BrailleConvertPanel extends JPanel {

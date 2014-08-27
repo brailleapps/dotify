@@ -1,5 +1,6 @@
-package org.daisy.dotify.translator;
+package org.daisy.dotify.tools;
 
+import org.daisy.dotify.tools.BrailleNotationConverter;
 import org.junit.Test;
 
 public class BrailleNotationConverterTest {

@@ -4,4 +4,4 @@
  * based on the FilterLocale.</p>
  * @author Joel Håkansson
  */
-package org.daisy.dotify.text;
+package org.daisy.dotify.hyphenator;
