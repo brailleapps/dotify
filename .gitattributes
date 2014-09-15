@@ -280,6 +280,7 @@ dotify.api/.settings/org.eclipse.jdt.core.prefs -text
 dotify.api/ant-build/resources/javase-6/package-list -text
 dotify.api/bnd.bnd -text
 dotify.api/build-doc.xml -text
+dotify.api/build.gradle -text
 dotify.api/build.xml -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngine.java -text
 dotify.api/src/org/daisy/dotify/api/engine/FormatterEngineConfigurationException.java -text
@@ -413,6 +414,7 @@ dotify.common/.project -text
 dotify.common/.settings/org.eclipse.jdt.core.prefs -text
 dotify.common/bnd.bnd -text
 dotify.common/build-properties.xml -text
+dotify.common/build.gradle -text
 dotify.common/build.xml -text
 dotify.common/build2.xml -text
 dotify.common/launch.bndrun -text
@@ -484,6 +486,7 @@ dotify.formatter.impl/.classpath -text
 dotify.formatter.impl/.project -text
 dotify.formatter.impl/.settings/org.eclipse.jdt.core.prefs -text
 dotify.formatter.impl/bnd.bnd -text
+dotify.formatter.impl/build.gradle -text
 dotify.formatter.impl/build.xml -text
 dotify.formatter.impl/launch.bndrun -text
 dotify.formatter.impl/src/META-INF/services/org.daisy.dotify.api.engine.FormatterEngineFactoryService -text
@@ -607,6 +610,7 @@ dotify.hyphenator.impl/.classpath -text
 dotify.hyphenator.impl/.project -text
 dotify.hyphenator.impl/.settings/org.eclipse.jdt.core.prefs -text
 dotify.hyphenator.impl/bnd.bnd -text
+dotify.hyphenator.impl/build.gradle -text
 dotify.hyphenator.impl/build.xml -text
 dotify.hyphenator.impl/launch.bndrun -text
 dotify.hyphenator.impl/src/META-INF/services/org.daisy.dotify.api.hyphenator.HyphenatorFactoryService -text
@@ -772,6 +776,7 @@ dotify.text.impl/.classpath -text
 dotify.text.impl/.project -text
 dotify.text.impl/.settings/org.eclipse.jdt.core.prefs -text
 dotify.text.impl/bnd.bnd -text
+dotify.text.impl/build.gradle -text
 dotify.text.impl/build.xml -text
 dotify.text.impl/launch.bndrun -text
 dotify.text.impl/src/META-INF/services/org.daisy.dotify.api.text.Integer2TextFactoryService -text
@@ -789,6 +794,7 @@ dotify.translator.impl/.classpath -text
 dotify.translator.impl/.project -text
 dotify.translator.impl/.settings/org.eclipse.jdt.core.prefs -text
 dotify.translator.impl/bnd.bnd -text
+dotify.translator.impl/build.gradle -text
 dotify.translator.impl/build.xml -text
 dotify.translator.impl/launch.bndrun -text
 dotify.translator.impl/src/META-INF/services/org.daisy.dotify.api.translator.BrailleTranslatorFactoryService -text
