@@ -4,7 +4,7 @@ apply plugin: "maven"
 apply plugin: "bundle"
 
 group = "org.daisy.dotify"
-version = "2.3-SNAPSHOT"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -16,7 +16,7 @@ repositories {
 // need to use maven dependencies instead of DotifyShared otherwise POM won't validate
 dependencies {
     // compile files("../dotify.api/build/libs/dotify.api-2.3-SNAPSHOT.jar")
-    compile group: "org.daisy.dotify", name: "dotify.api", version: "2.3-SNAPSHOT"
+    compile group: "org.daisy.dotify", name: "dotify.api", version: "1.0-SNAPSHOT"
     // compile name: "bnd"
     compile group: "biz.aQute.bnd", name: "annotation", version: "2.3.0"
     // testCompile name: "junit-4.7"

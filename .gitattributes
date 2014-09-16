@@ -51,6 +51,7 @@ Dotify/ant-build/resources/javase-6/package-list -text
 Dotify/build-doc.xml -text svneol=unset#text/plain
 Dotify/build-properties.xml -text
 Dotify/build-xslt-doc.xsl -text svneol=unset#text/plain
+Dotify/build.gradle -text
 Dotify/build.xml -text svneol=unset#text/plain
 Dotify/formatter-build-properties.xml -text
 Dotify/formatter-build.xml -text
