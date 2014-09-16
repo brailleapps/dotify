@@ -424,6 +424,7 @@ dotify.common/src/org/daisy/dotify/text/CaseFilter.java -text svneol=unset#text/
 dotify.common/src/org/daisy/dotify/text/CombinationFilter.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/FilterLocale.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/IdentityFilter.java -text
+dotify.common/src/org/daisy/dotify/text/NonStandardHyphenationInfo.java -text
 dotify.common/src/org/daisy/dotify/text/RegexFilter.java -text svneol=unset#text/plain
 dotify.common/src/org/daisy/dotify/text/SimpleUCharReplacer.java -text
 dotify.common/src/org/daisy/dotify/text/StringFilter.java -text svneol=unset#text/plain
@@ -456,6 +457,8 @@ dotify.common/src/se/mtm/common/xml/XMLToolsException.java -text
 dotify.common/src/se/mtm/common/xml/packageinfo -text
 dotify.common/test/org/daisy/dotify/text/BreakPointHandlerTest.java -text svneol=unset#text/plain
 dotify.common/test/org/daisy/dotify/text/FilterLocaleTest.java -text svneol=unset#text/plain
+dotify.common/test/org/daisy/dotify/text/NonStandardHyphenationRuleTest.java -text
+dotify.common/test/org/daisy/dotify/text/TestNSH.java -text
 dotify.common/test/org/daisy/dotify/tools/BrailleNotationConverterTest.java -text
 dotify.common/test/org/daisy/dotify/tools/StateObjectTest.java -text svneol=unset#text/plain
 dotify.common/test/org/daisy/dotify/tools/StringToolsTest.java -text
