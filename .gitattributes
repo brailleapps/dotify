@@ -55,6 +55,7 @@ Dotify/build.gradle -text
 Dotify/build.xml -text svneol=unset#text/plain
 Dotify/formatter-build-properties.xml -text
 Dotify/formatter-build.xml -text
+Dotify/gradle.properties -text
 Dotify/lib/icu4j-3_8.jar -text
 Dotify/lib/isorelax.jar -text
 Dotify/lib/jing.jar -text

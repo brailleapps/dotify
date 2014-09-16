@@ -40,7 +40,7 @@ jar.doFirst {
 		'Repository-Revision': "$repositoryRevision",
 		'Implementation-Title': "$releaseName",
 		'Implementation-Version': "$releaseVersion",
-		'Implementation-URL': 'http://code.google.com/p/brailleutils/',
+		'Implementation-URL': "$releaseURL",
 		'Class-Path': configurations.compile.collect { it.getName() }.join(' ')			//'${core.classpath.attribute}'
 		)
 	}
