@@ -3,8 +3,7 @@ Private-Package: org.daisy.dotify.engine.impl,\
 	org.daisy.dotify.obfl.impl,\
 	org.daisy.dotify.writer.impl
 Service-Component: *
-Include-Resource: / = src/
--sources: false
+-sources: true
 -buildpath: osgi.core,\
 	osgi.cmpn,\
 	biz.aQute.bnd.annotation,\
