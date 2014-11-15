@@ -7,46 +7,55 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.daisy.braille.embosser.EmbosserCatalog;
 import org.daisy.braille.embosser.EmbosserFactoryException;
 import org.daisy.braille.embosser.UnsupportedWidthException;
 import org.daisy.braille.facade.PEFConverterFacade;
 import org.daisy.braille.pef.PEFValidator;
 import org.daisy.braille.table.TableCatalog;
 import org.daisy.cli.AbstractUI;
+import org.daisy.cli.Argument;
+import org.daisy.cli.CommandParserResult;
+import org.daisy.cli.Definition;
+import org.daisy.cli.ExitCode;
+import org.daisy.cli.OptionalArgument;
 import org.daisy.cli.ShortFormResolver;
+import org.daisy.cli.SwitchArgument;
 import org.daisy.dotify.Dotify;
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.SystemProperties;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.daisy.dotify.text.FilterLocale;
 import org.xml.sax.SAXException;
-/*import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;*/
 
 /**
  * Provides a command line entry point to Dotify.
  * @author Joel Håkansson
  */
 public class Main extends AbstractUI {
+	//private final static String DEFAULT_TEMPLATE = "A4-w32";
+	private final static String DEFAULT_LOCALE = Locale.getDefault().toString().replaceAll("_", "-");
+	private final static String META_KEY = "meta";
+	private final static String VERSION_KEY = "version";
+	private final static String CONFIG_KEY = "configs";
 
 	private final List<Argument> reqArgs;
 	private final List<OptionalArgument> optionalArgs;
 
 	private final ShortFormResolver tableSF;
 
-	private Main() {
+	public Main() {
 
 		this.reqArgs = new ArrayList<Argument>();
 		reqArgs.add(new Argument("path_to_input", "Path to the input file"));
@@ -60,7 +69,7 @@ public class Main extends AbstractUI {
 			vals.add(new Definition("[other]", "Path to setup file"));
 			reqArgs.add(new Argument("setup", "The formatting setup to use", vals));
 		}
-		
+		/*
 		{
 			ArrayList<Definition> vals = new ArrayList<Definition>();
 			InputManagerFactoryMaker m = InputManagerFactoryMaker.newInstance();
@@ -68,9 +77,12 @@ public class Main extends AbstractUI {
 				vals.add(new Definition(o, "A context locale"));
 			}
 			reqArgs.add(new Argument("locale", "The target locale for the result", vals));
-		}
+		}*/
 		
 		this.optionalArgs = new ArrayList<OptionalArgument>();
+		
+		optionalArgs.add(new OptionalArgument("locale", "The target locale for the result", DEFAULT_LOCALE));
+		
 		{
 			ArrayList<Definition> vals = new ArrayList<Definition>();
 			vals.add(new Definition(SystemKeys.PEF_FORMAT, "write result in PEF-format"));
@@ -91,6 +103,8 @@ public class Main extends AbstractUI {
 		TableCatalog tableCatalog = TableCatalog.newInstance();
 		tableSF = new ShortFormResolver(tableCatalog.list());
 		optionalArgs.add(new OptionalArgument(PEFConverterFacade.KEY_TABLE, "If specified, an ASCII-braille file (.brl) is generated in addition to the PEF-file using the specified braille code table", getDefinitionList(tableCatalog, tableSF), ""));
+		parser.addSwitch(new SwitchArgument('v', VERSION_KEY, META_KEY, VERSION_KEY, "Displays the version of Dotify."));
+		parser.addSwitch(new SwitchArgument('c', CONFIG_KEY, META_KEY, CONFIG_KEY, "Lists known configurations."));
 	}
 
 	/**
@@ -102,13 +116,14 @@ public class Main extends AbstractUI {
 	 */
 	public static void main(String[] args) throws InternalTaskException, IOException, TaskSystemFactoryException {
 		Main m = new Main();
-		if (args.length<4) {
-			if (args.length==1 && args[0].equals("-version")) {
+		CommandParserResult result = m.parser.parse(args);
+		if (args.length<3) {
+			if (VERSION_KEY.equals(result.getOptional().get(META_KEY))) {
 				System.out.println("About " + SystemProperties.SYSTEM_NAME);
 				System.out.println("Version: "+ SystemProperties.SYSTEM_RELEASE);
 				System.out.println("Build: "+ SystemProperties.SYSTEM_BUILD);
 				Main.exitWithCode(ExitCode.OK);
-			} else if (args.length==1 && args[0].equals("-info")) {
+			} else if (CONFIG_KEY.equals(result.getOptional().get(META_KEY))) {
 				ArrayList<TranslatorSpecification> s = new ArrayList<TranslatorSpecification>();
 				s.addAll(BrailleTranslatorFactoryMaker.newInstance().listSpecifications());
 				Collections.sort(s);
@@ -118,7 +133,7 @@ public class Main extends AbstractUI {
 				}
 				Main.exitWithCode(ExitCode.OK);
 			} else {
-				System.out.println("Expected at least four arguments");
+				System.out.println("Expected at least three arguments");
 				
 				System.out.println();
 				m.displayHelp(System.out);
@@ -126,7 +141,7 @@ public class Main extends AbstractUI {
 			}
 		}
 
-		List<String> p = m.getRequired(args);
+		List<String> p = result.getRequired();
 		// remove required arguments
 		File input = new File(p.get(0));
 		//File input = new File(args[0]);
@@ -138,14 +153,21 @@ public class Main extends AbstractUI {
 		final File output = new File(p.get(1)).getAbsoluteFile();
 
 		final String setup = p.get(2);
-		final String context = p.get(3);
-		
+		final String context;
+		{
+			String s = result.getOptional().get("locale");
+			if (s==null || s.equals("")) {
+				s = DEFAULT_LOCALE;
+			}
+			context = s;
+		}
+
 		//File output = new File(args[1]);
 		final HashMap<String, String> props = new HashMap<String, String>();
 		//props.put("debug", "true");
 		//props.put(SystemKeys.TEMP_FILES_DIRECTORY, TEMP_DIR);
 
-		props.putAll(m.getOptional(args));
+		props.putAll(result.getOptional());
 		
 		if (input.isDirectory() && output.isDirectory()) {
 			if ("true".equals(props.get(SystemKeys.WRITE_TEMP_FILES))) {
@@ -219,7 +241,7 @@ public class Main extends AbstractUI {
 					FileOutputStream os = null;
 					try {
 						os = new FileOutputStream(f);
-						PEFConverterFacade.parsePefFile(output, os, null, p);
+						new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(output, os, null, p);
 					} catch (ParserConfigurationException e) {
 						logger.log(Level.FINE, "Parse error when converting to brl", e);
 					} catch (SAXException e) {
@@ -242,7 +264,7 @@ public class Main extends AbstractUI {
 
 	@Override
 	public String getName() {
-		return SystemProperties.SYSTEM_NAME;
+		return "convert";
 	}
 
 	@Override

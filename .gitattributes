@@ -78,6 +78,7 @@ Dotify/src/META-INF/services/org.daisy.dotify.system.TaskSystemFactory -text
 Dotify/src/org/daisy/dotify/Dotify.java -text
 Dotify/src/org/daisy/dotify/SystemKeys.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/SystemProperties.java -text svneol=unset#text/plain
+Dotify/src/org/daisy/dotify/cli/DotifyCLI.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/cli/FormatterCLI.java -text
 Dotify/src/org/daisy/dotify/cli/Main.java -text svneol=unset#text/plain
 Dotify/src/org/daisy/dotify/config/ConfigurationsCatalog.java -text

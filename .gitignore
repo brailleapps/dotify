@@ -1,5 +1,7 @@
+Dotify/.gradle
 Dotify/ant-build/output
 Dotify/bin
+Dotify/build
 DotifyDevtools/ant-build/output
 DotifyDevtools/bin_test
 DotifyShared/dotify-translator.jar
