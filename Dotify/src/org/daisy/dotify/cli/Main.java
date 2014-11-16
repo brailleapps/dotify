@@ -266,6 +266,11 @@ public class Main extends AbstractUI {
 	public String getName() {
 		return "convert";
 	}
+	
+	@Override
+	public String getDescription() {
+		return "Converts documents into braille.";
+	}
 
 	@Override
 	public List<Argument> getRequiredArguments() {

@@ -14,6 +14,11 @@ public class DotifyCLI extends BasicUI {
 		return "dotify";
 	}
 	
+	@Override
+	public String getDescription() {
+		return "Provides translation and formatting of documents into braille as well as tools for managing PEF-files.";
+	}
+	
 	public static void main(String[] args) throws Exception {
 		DotifyCLI ui = new DotifyCLI(args);
 		ui.run();
