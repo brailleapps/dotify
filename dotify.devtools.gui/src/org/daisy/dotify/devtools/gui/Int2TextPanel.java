@@ -1,8 +1,8 @@
 package org.daisy.dotify.devtools.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -26,7 +26,7 @@ public class Int2TextPanel extends MyPanel {
 	private Int2TextTracker tracker;
 	
 	public Int2TextPanel() {
-		super(new GridLayout(2, 1));
+		super(new BorderLayout());
 
 		Font f = new Font(null, Font.BOLD, 26);
 
@@ -45,8 +45,8 @@ public class Int2TextPanel extends MyPanel {
 
 		});
 
-		add(textField);
-		add(new JScrollPane(outputField));
+		add(textField, BorderLayout.PAGE_START);
+		add(new JScrollPane(outputField), BorderLayout.CENTER);
 
 		setPreferredSize(new Dimension(500, 400));
 	}

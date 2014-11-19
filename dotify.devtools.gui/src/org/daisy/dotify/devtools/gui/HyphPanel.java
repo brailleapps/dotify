@@ -10,7 +10,6 @@ import java.util.Collections;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
@@ -21,7 +20,7 @@ public class HyphPanel extends MyPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -8051107255963928066L;
-	private final JTextField textField;
+	private final JTextArea textField;
 	private final JTextArea outputField;
 
 	private HyphTracker tracker;
@@ -36,7 +35,7 @@ public class HyphPanel extends MyPanel {
 		outputField.setFont(f);
 		outputField.setEditable(false);
 
-		textField = new JTextField();
+		textField = new JTextArea();
 		textField.setFont(f);
 
 		textField.addKeyListener(new KeyAdapter() {

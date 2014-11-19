@@ -9,7 +9,10 @@ Service-Component: *
 	dotify.hyphenator.impl;version=latest,\
 	dotify.text.impl;version=latest,\
 	dotify.translator.impl;version=latest,\
-	dotify.formatter.impl;version=latest
+	dotify.formatter.impl;version=latest,\
+	braille-utils.api;version=latest,\
+	braille-utils.impl;version=latest,\
+	net.sf.saxon.saxon-he
 Bundle-Activator: org.daisy.dotify.devtools.gui.GuiActivator
 Include-Resource: / = src/
 -sources: false

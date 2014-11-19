@@ -4,8 +4,11 @@
 
 -resolve.effective: active
 
--runbundles: com.googlecode.texhyphj;version='[1.2.0,1.2.1)',\
-	com.ibm.icu;version='[4.6.0,4.6.1)',\
+-runbundles: biz.aQute.junit;version='[1.2.0,1.2.1)',\
+	braille-utils.api;version=latest,\
+	braille-utils.impl;version=latest,\
+	com.googlecode.texhyphj;version='[1.2.0,1.2.1)',\
+	com.thaiopensource.jing;version='[20120724.0.0,20120724.0.1)',\
 	dotify.api;version=latest,\
 	dotify.common;version=latest,\
 	dotify.devtools.gui;version=latest,\
@@ -14,11 +17,11 @@
 	dotify.text.impl;version=latest,\
 	dotify.translator.impl;version=latest,\
 	javax.xml;version='[1.3.4,1.3.5)',\
-	org.apache.felix.configadmin;version='[1.6.0,1.6.1)',\
+	net.sf.saxon.saxon-he;version='[9.5.1,9.5.2)',\
+	org.apache.felix.configadmin;version='[1.8.0,1.8.1)',\
 	org.apache.felix.gogo.command;version='[0.12.0,0.12.1)',\
 	org.apache.felix.gogo.runtime;version='[0.10.0,0.10.1)',\
 	org.apache.felix.gogo.shell;version='[0.10.0,0.10.1)',\
-	org.apache.felix.log;version='[1.0.1,1.0.2)',\
 	org.apache.felix.scr;version='[1.6.2,1.6.3)',\
 	osgi.enterprise;version='[4.2.0,4.2.1)'
 
@@ -30,5 +33,7 @@
 	osgi.identity;filter:='(osgi.identity=dotify.hyphenator.impl)',\
 	osgi.identity;filter:='(osgi.identity=dotify.text.impl)',\
 	osgi.identity;filter:='(osgi.identity=dotify.translator.impl)',\
-	osgi.identity;filter:='(osgi.identity=dotify.formatter.impl)'
+	osgi.identity;filter:='(osgi.identity=dotify.formatter.impl)',\
+	osgi.identity;filter:='(osgi.identity=braille-utils.impl)',\
+	osgi.identity;filter:='(osgi.identity=net.sf.saxon.saxon-he)'
 -resolve: auto

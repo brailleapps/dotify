@@ -474,6 +474,9 @@ dotify.devtools.gui/.settings/org.eclipse.jdt.core.prefs -text
 dotify.devtools.gui/bnd.bnd -text
 dotify.devtools.gui/build.xml -text
 dotify.devtools.gui/launch.bndrun -text
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/EmbossPanel.java -text svneol=unset#text/plain
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/EmbosserCatalogTracker.java -text svneol=unset#text/plain
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/FactoryPropertiesItem.java -text svneol=unset#text/plain
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/FormatterPanel.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/FormatterTracker.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/GuiActivator.java -text
@@ -484,8 +487,12 @@ dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/Int2TextTracker.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/MainFrame.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/MyPanel.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/MyTracker.java -text
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/PaperCatalogTracker.java -text svneol=unset#text/plain
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/TableCatalogTracker.java -text svneol=unset#text/plain
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/TranslatorPanel.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/TranslatorTracker.java -text
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/ValidatorPanel.java -text svneol=unset#text/plain
+dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/ValidatorTracker.java -text svneol=unset#text/plain
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/WriterTracker.java -text
 dotify.devtools.gui/src/org/daisy/dotify/devtools/gui/resource-files/odt2braille6.ttf -text
 dotify.formatter.impl/.classpath -text

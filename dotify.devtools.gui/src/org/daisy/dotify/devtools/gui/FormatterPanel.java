@@ -1,8 +1,8 @@
 package org.daisy.dotify.devtools.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -40,7 +40,7 @@ public class FormatterPanel extends MyPanel {
 	private WriterTracker wtracker;
 	
 	public FormatterPanel() {
-		super(new GridLayout(2, 1));
+		super(new BorderLayout());
 		
 		input = null;
 
@@ -69,8 +69,8 @@ public class FormatterPanel extends MyPanel {
 			    }
 			}});
 
-		add(chooseFile);
-		add(new JScrollPane(outputField));
+		add(chooseFile, BorderLayout.PAGE_START);
+		add(new JScrollPane(outputField), BorderLayout.CENTER);
 
 		setPreferredSize(new Dimension(500, 400));
 	}
