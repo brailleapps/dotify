@@ -2,6 +2,7 @@ apply plugin: 'application'
 apply plugin: 'maven'
 
 mainClassName = "org.daisy.dotify.cli.DotifyCLI"
+startScripts.applicationName = 'dotify'
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
