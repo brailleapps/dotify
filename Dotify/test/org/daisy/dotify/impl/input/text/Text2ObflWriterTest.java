@@ -31,5 +31,19 @@ public class Text2ObflWriterTest {
 		FileCompare fc = new FileCompare();
 		assertTrue("File not equal", fc.compareXML(new FileInputStream(f), this.getClass().getResourceAsStream("resource-files/expected.obfl")));
 	}
+	
+	@Test
+	public void testTaskBOM() throws IOException, TransformerException {
+		InputStream is = this.getClass().getResourceAsStream("resource-files/input-bom.txt");
+		File f = File.createTempFile("junit-", ".tmp");
+		f.deleteOnExit();
+		// File f = new File("C:\\out.obfl");
+		OutputStream os = new FileOutputStream(f);
+		Text2ObflWriter fw = new Text2ObflWriter(is, os, "utf-8");
+		fw.setRootLang("en");
+		fw.parse();
+		FileCompare fc = new FileCompare();
+		assertTrue("File not equal", fc.compareXML(new FileInputStream(f), this.getClass().getResourceAsStream("resource-files/expected.obfl")));
+	}
 
 }

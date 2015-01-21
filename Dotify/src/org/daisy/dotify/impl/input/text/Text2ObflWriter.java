@@ -76,7 +76,14 @@ class Text2ObflWriter {
 			pw.println("</default-template>");
 			pw.println("</layout-master>");
 			pw.println("<sequence master=\"default\">");
+			boolean first = true;
 			while ((line =lnr.readLine()) != null) {
+				if (first) { //handle possible byte order mark
+					if (line.startsWith("\uFEFF")) {
+						line = line.substring(1);
+					}
+					first = false;
+				}
 				pw.print("<block>");
 				pw.print(line.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll("\"", "&quot;"));
 				if (line.length() == 0) {
