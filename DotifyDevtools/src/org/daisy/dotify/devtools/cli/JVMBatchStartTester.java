@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.daisy.dotify.devtools.jvm.JVMBatchStarter;
+import org.daisy.dotify.devtools.jvm.BatchProcessStarter;
 
 public class JVMBatchStartTester {
 
@@ -28,7 +28,7 @@ public class JVMBatchStartTester {
 
 				}
 			}
-			JVMBatchStarter starter = new JVMBatchStarter(threads);
+			BatchProcessStarter starter = new BatchProcessStarter(threads, true);
 			starter.run(new FileInputStream(pathToCommandsList));
 		} else {
 			System.out.println("Cannot find file: " + args[0]);

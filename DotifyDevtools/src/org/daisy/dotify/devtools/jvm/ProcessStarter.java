@@ -1,6 +1,7 @@
 package org.daisy.dotify.devtools.jvm;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -13,42 +14,58 @@ import java.util.ArrayList;
  * @author Joel Håkansson
  * 
  */
-public class JVMStarter {
+public class ProcessStarter {
 	private static int id = 0;
 	private final PrintStream ps;
-	private final String path;
+	private final static String path;
 	private final String idStr;
-
-	public JVMStarter() {
-		this(System.out);
-	}
-
-	public JVMStarter(OutputStream os) {
-		this(new PrintStream(os));
-	}
-
-	public JVMStarter(PrintStream ps) {
-		this.ps = ps;
-		this.idStr = id + "";
-		id++;
+	
+	static {
 		String separator = System.getProperty("file.separator");
 		path = System.getProperty("java.home") + separator + "bin" + separator + "java";
 	}
 
+	public ProcessStarter() {
+		this(System.out);
+	}
+
+	public ProcessStarter(OutputStream os) {
+		this(new PrintStream(os));
+	}
+
+	public ProcessStarter(PrintStream ps) {
+		this.ps = ps;
+		this.idStr = id + "";
+		id++;
+	}
+	
+	public static String getJavaPath() {
+		return path;
+	}
+	
 	/**
-	 * Starts a second JVM synchronously with the supplied args.
-	 * 
-	 * @param args
-	 *            the args, e.g. -jar path/to/jar
-	 * @throws Exception
+	 * Returns the supplied arguments with the path to java added as the first argument
+	 * @param args the arguments
+	 * @return returns the command
 	 */
-	public void startNewJVMSync(String... args) throws Exception {
+	public static String[] buildJavaCommand(String... args) {
 		ArrayList<String> command = new ArrayList<String>();
 		command.add(path);
 		for (String arg : args) {
 			command.add(arg);
 		}
+		return command.toArray(new String[]{});
+	}
 
+	/**
+	 * Starts a process synchronously with the supplied command.
+	 * 
+	 * @param command
+	 *            the command, e.g. java -jar path/to/jar
+	 * @return returns the return value of the process
+	 * @throws Exception
+	 */
+	public int startProcess(String ... command) throws IOException, InterruptedException {
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.redirectErrorStream(true);
 		Process process = processBuilder.start();
@@ -64,15 +81,9 @@ public class JVMStarter {
 			// ps.println(line);
 		}
 		in.close();
-		process.waitFor();
+		int ret = process.waitFor();
 		ps.println("\nOutput for " + this.getClass().getCanonicalName() + "-" + idStr + "\n" + sb.toString());
-	}
-
-	public static void main(String[] args) throws Exception {
-		System.out.println("Starting a new JVM");
-		JVMStarter jvm = new JVMStarter();
-		jvm.startNewJVMSync(args);
-		System.out.println("Returning from the new JVM...");
+		return ret;
 	}
 
 }

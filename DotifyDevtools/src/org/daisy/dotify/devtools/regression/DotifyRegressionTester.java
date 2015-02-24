@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import org.daisy.braille.pef.PEFFileCompare;
 import org.daisy.braille.tools.FileTools;
-import org.daisy.dotify.devtools.jvm.JVMStarter;
+import org.daisy.dotify.devtools.jvm.ProcessStarter;
 import org.daisy.dotify.devtools.unbrailler.Unbrailler;
 
 class DotifyRegressionTester implements Runnable {
@@ -33,22 +33,30 @@ class DotifyRegressionTester implements Runnable {
 	}
 
 	public void run() {
-		JVMStarter starter = inf.requestStarter();
+		ProcessStarter starter = inf.requestStarter();
 		try {
 			File res = File.createTempFile("reg-test", ".pef");
 			boolean ok = false;
 			try {
 
 				ArrayList<String> command = new ArrayList<String>();
-				command.add("-jar");
+				boolean jar = inf.getPathToCLI().toLowerCase().endsWith(".jar");
+				if (jar) {
+					command.add("-jar");
+				}
 				command.add(inf.getPathToCLI());
+				if (System.getProperty("org.daisy.dotify.devtools.regression.mode", "legacy").equals("convert")) {
+					command.add("convert");
+				}
 				command.add(input.getAbsolutePath());
 				command.add(res.getAbsolutePath());
 				command.add(setup);
 				command.add(locale);
 				res.delete();
 				
-				starter.startNewJVMSync(command.toArray(new String[command.size()]));
+				starter.startProcess(jar?
+							ProcessStarter.buildJavaCommand(command.toArray(new String[command.size()])):
+							command.toArray(new String[command.size()]));
 				if (res.isFile()) {
 					//We have a result
 					PEFFileCompare core = new PEFFileCompare();

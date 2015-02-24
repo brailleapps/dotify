@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.devtools.jvm.JVMStarter;
+import org.daisy.dotify.devtools.jvm.ProcessStarter;
 
 public class DotifyRegressionTesterRunner implements RegressionInterface {
 	private String argsSeparator = "\\t";
@@ -24,7 +24,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 	private int timeout = 60;
 	private int threads;
 	private final File pathToCommandsList;
-	private final List<JVMStarter> pool;
+	private final List<ProcessStarter> pool;
 	private boolean errors;
 
 	public DotifyRegressionTesterRunner(File commandList, String pathToCli, File pathToOutput, String setup, String locale, String table) {
@@ -45,7 +45,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 			System.out.println("Output is not a directory.");
 			System.exit(-2);
 		}
-		pool = Collections.synchronizedList(new ArrayList<JVMStarter>());
+		pool = Collections.synchronizedList(new ArrayList<ProcessStarter>());
 	}
 
 	public int getThreads() {
@@ -105,15 +105,15 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 	}
 
 
-	public JVMStarter requestStarter() {
+	public ProcessStarter requestStarter() {
 		try {
 			return pool.remove(0);
 		} catch (IndexOutOfBoundsException e) {
-			return new JVMStarter();
+			return new ProcessStarter();
 		}
 	}
 
-	public void returnStarter(JVMStarter starter) {
+	public void returnStarter(ProcessStarter starter) {
 		pool.add(starter);
 	}
 

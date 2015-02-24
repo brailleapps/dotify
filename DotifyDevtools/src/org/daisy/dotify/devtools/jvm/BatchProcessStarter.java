@@ -6,17 +6,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
-public class JVMBatchStarter {
+public class BatchProcessStarter {
 	private final int threads;
+	private final boolean javaCommand;
 	private int timeout = 60;
 	private String argsSeparator = "\\t";
 
-	public JVMBatchStarter() {
-		this(0);
+	public BatchProcessStarter(boolean javaCommand) {
+		this(0, javaCommand);
 	}
 
-	public JVMBatchStarter(int threads) {
+	public BatchProcessStarter(int threads, boolean javaCommand) {
 		this.threads = threads;
+		this.javaCommand = javaCommand;
 	}
 
 	public String getArgsSeparator() {
@@ -25,6 +27,10 @@ public class JVMBatchStarter {
 
 	public void setArgsSeparator(String argsSeparator) {
 		this.argsSeparator = argsSeparator;
+	}
+
+	public boolean isJavaCommand() {
+		return javaCommand;
 	}
 
 	/**
@@ -48,11 +54,15 @@ public class JVMBatchStarter {
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 		String line;
 
-		JVMStarterAsync starter = new JVMStarterAsync(this.threads);
+		ProcessStarterAsync starter = new ProcessStarterAsync(this.threads);
 		try {
 			while ((line = in.readLine()) != null) {
 				final String line2 = line;
-				starter.addJob(line2.split(argsSeparator));
+				starter.addProcess(
+						javaCommand?
+							ProcessStarter.buildJavaCommand(line2.split(argsSeparator)):
+							line2.split(argsSeparator)
+						);
 			}
 		} finally {
 			starter.shutdown(timeout * 60, TimeUnit.SECONDS);

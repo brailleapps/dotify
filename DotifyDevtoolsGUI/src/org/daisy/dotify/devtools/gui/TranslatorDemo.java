@@ -26,13 +26,13 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
 import org.daisy.braille.table.BrailleConverter;
-import org.daisy.braille.table.Table;
 import org.daisy.braille.table.TableCatalog;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
+import org.daisy.factory.FactoryProperties;
 
 
 public class TranslatorDemo extends JPanel {
@@ -111,12 +111,12 @@ public class TranslatorDemo extends JPanel {
 			throw new RuntimeException("Cannot translate", e);
 		}
 		TableCatalog tc = TableCatalog.newInstance();
-		Collection<Table> list = tc.list();
+		Collection<FactoryProperties> list = tc.list();
 		int currentTable = 0;
 		String def = userPrefs.get(USER_PREFS_KEY_TABLE, "");
 
 		int i = 0;
-		for (Table t : list) {
+		for (FactoryProperties t : list) {
 			tableSelect.addItem(new TableWrapper(t));
 			if (t.getIdentifier().equals(def)) {
 				currentTable = i;
@@ -290,8 +290,8 @@ mainLayout.createParallelGroup(Alignment.CENTER, false)
     }
     
     private class TableWrapper {
-    	private final Table t;
-    	public TableWrapper(Table t) {
+    	private final FactoryProperties t;
+    	public TableWrapper(FactoryProperties t) {
     		this.t = t;
     	}
 		@Override

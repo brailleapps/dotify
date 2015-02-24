@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import org.daisy.braille.table.BrailleConverter;
 import org.daisy.braille.table.Table;
 import org.daisy.braille.table.TableCatalog;
+import org.daisy.factory.FactoryProperties;
 
 public class Unbrailler {
 	private final XMLInputFactory inFactory;
@@ -25,7 +26,7 @@ public class Unbrailler {
         inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
         inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
         TableCatalog tc = TableCatalog.newInstance();
-        for (Table t : tc.list()) {
+        for (FactoryProperties t : tc.list()) {
         	System.out.println(t.getIdentifier());
         }
 		Table t = tc.get(tableId);
@@ -40,7 +41,7 @@ public class Unbrailler {
 	public static void main(String[] args) throws XMLStreamException, IOException {
 		if (args.length<2) {
 			System.out.println("Expected two arguments, path to input file and table identifier.");
-			for (Table t : TableCatalog.newInstance().list()) {
+			for (FactoryProperties t : TableCatalog.newInstance().list()) {
 				System.out.println(t.getIdentifier());
 			}
 			System.exit(-1);

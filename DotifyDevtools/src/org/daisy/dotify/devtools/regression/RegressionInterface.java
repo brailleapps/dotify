@@ -2,13 +2,13 @@ package org.daisy.dotify.devtools.regression;
 
 import java.io.File;
 
-import org.daisy.dotify.devtools.jvm.JVMStarter;
+import org.daisy.dotify.devtools.jvm.ProcessStarter;
 
 interface RegressionInterface {
 
-	public JVMStarter requestStarter();
+	public ProcessStarter requestStarter();
 
-	public void returnStarter(JVMStarter starter);
+	public void returnStarter(ProcessStarter starter);
 
 	public String getPathToCLI();
 
