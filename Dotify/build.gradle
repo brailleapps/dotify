@@ -8,6 +8,8 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 javadoc.options.encoding = 'UTF-8'
 
+def jenkinsRevision = System.getenv("GIT_COMMIT") ?:"$repositoryRevision"
+
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'
 
@@ -38,7 +40,7 @@ jar.doFirst {
     	attributes ('Built-By': '',				//'${user.name}'
     	'Main-Class': mainClassName,
     	'Built-On': new Date(),					//'${ISO-TODAY}'
-		'Repository-Revision': "$repositoryRevision",
+		'Repository-Revision': "$jenkinsRevision",
 		'Implementation-Title': "$releaseName",
 		'Implementation-Version': "$releaseVersion",
 		'Implementation-URL': "$releaseURL",
