@@ -27,8 +27,6 @@ public class LayoutEngineTest {
 	
 	@Test
 	public void testLayoutEnginge() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
-		//set line separator for this test, as text media writer result is dependent on its value
-		System.setProperty("line.separator", "\r\n");
 		PagedMediaWriterFactory f = PagedMediaWriterFactoryMaker.newInstance().getFactory(MediaTypes.TEXT_MEDIA_TYPE);
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("en",
 				BrailleTranslatorFactory.MODE_BYPASS,
