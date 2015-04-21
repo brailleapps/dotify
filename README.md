@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/joeha480/dotify.svg)](https://travis-ci.org/joeha480/dotify)
+
 # Dotify
 Dotify Braille Translation System is an open source Braille translator written in Java.  Dotify is designed for collaborative, open source braille software development.
 
