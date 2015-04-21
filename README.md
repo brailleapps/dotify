@@ -19,7 +19,7 @@ Dotify does not compromise with braille quality in order to fit a set of predete
 Dotify is Open Source, this means that everyone has the right to use it and change it.
 
 ### Modular
-Dotify aims at a modular design of functional units that can be replaced or integrated into other solutions individually. The core components are compatible with both OSGi and SPI environments.
+Dotify aims at a modular design of functional units that can be replaced or integrated into other solutions individually. The core components are compatible with both OSGi and SPI environments and they will be available for download from [the central repository](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.daisy.dotify%22) shortly.
 
 ## Performance
 About 10 seconds/book or 70 braille pages/second (based on a selection of novels, utilizing a single core of a modern PC and including JVM startup).
