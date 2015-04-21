@@ -1,1 +1,1 @@
-include 'dotify.api'
+include 'dotify.api', 'dotify.common'
