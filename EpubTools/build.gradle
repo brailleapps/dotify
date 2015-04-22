@@ -1,0 +1,31 @@
+apply plugin: "java"
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+sourceSets {
+	main {
+		java { srcDir "src" }
+		resources { srcDir "src" }
+	}
+	test {
+		java { srcDir "test" }
+		resources { srcDir "test" }
+	}
+}
+
+compileJava {
+	options.encoding = "UTF-8"
+	sourceCompatibility = 1.6
+	targetCompatibility = 1.6
+}
+
+compileTestJava {
+	options.encoding = 'UTF-8'
+}
+
+dependencies {
+	compile group: "org.daisy.dotify", name: "dotify.common", version: "1.0-SNAPSHOT"
+}
