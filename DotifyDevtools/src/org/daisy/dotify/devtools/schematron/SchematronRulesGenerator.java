@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * Provides compact java notation for common Schematron patterns.
- * @author Joel Håkansson, TPB
+ * @author Joel Håkansson
  *
  */
 public class SchematronRulesGenerator implements Closeable {
