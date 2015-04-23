@@ -4,8 +4,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-import org.daisy.util.xml.xslt.Stylesheet;
-import org.daisy.util.xml.xslt.XSLTException;
+import org.daisy.dotify.common.xml.XMLTools;
+import org.daisy.dotify.common.xml.XMLToolsException;
 
 /**
  * <p>Task that runs an XSLT conversion.</p>
@@ -17,28 +17,26 @@ import org.daisy.util.xml.xslt.XSLTException;
  */
 public class XsltTask extends ReadWriteTask {
 	final URL url;
-	final String factory;
 	final Map<String, Object> options;
 	
 	/**
-	 * Create a new XSLT task.
+	 * Create a new XSLT task. Use system property javax.xml.transform.TransformerFactory
+	 * to set factory implementation if needed.
 	 * @param name task name
 	 * @param url relative path to XSLT
-	 * @param factory XSLT factory to use
 	 * @param options XSLT parameters
 	 */
-	public XsltTask(String name, URL url, String factory, Map<String, Object> options) {
+	public XsltTask(String name, URL url, Map<String, Object> options) {
 		super(name);
 		this.url = url;
-		this.factory = factory;
 		this.options = options;
 	}
 
 	@Override
 	public void execute(File input, File output) throws InternalTaskException {
 		try {
-			Stylesheet.apply(input.getAbsolutePath(), url, output.getAbsolutePath(), factory, options, null);
-		} catch (XSLTException e) {
+			XMLTools.transform(input.getAbsolutePath(), output.getAbsolutePath(), url, options);
+		} catch (XMLToolsException e) {
 			throw new InternalTaskException("Error: ", e);
 		}
 

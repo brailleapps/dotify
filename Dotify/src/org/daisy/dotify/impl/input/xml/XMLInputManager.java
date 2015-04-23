@@ -208,7 +208,7 @@ class XMLInputManager implements InputManager {
 						}
 						for (String s : schemas) {
 							if (s!=null && s!="") {
-								setup.add(new XsltTask("Input to OBFL converter: " + s, locator.getResource(s), null, xsltParams));
+								setup.add(new XsltTask("Input to OBFL converter: " + s, locator.getResource(s), xsltParams));
 							}
 						}
 					} else {

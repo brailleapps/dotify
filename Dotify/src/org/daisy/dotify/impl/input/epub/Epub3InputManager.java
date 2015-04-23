@@ -18,7 +18,7 @@ public class Epub3InputManager implements InputManager {
 	public List<InternalTask> compile(Map<String, Object> parameters) throws TaskSystemException {
 		ArrayList<InternalTask> ret = new ArrayList<InternalTask>();
 		ret.add(new Epub3Task("Epub to Epub converter"));
-		ret.add(new XsltTask("Epub 3 to OBFL converter", null, null, null));
+		ret.add(new XsltTask("Epub 3 to OBFL converter", null, null));
 		return ret;
 	}
 
