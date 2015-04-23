@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.tools.StringTools;
+import org.daisy.dotify.common.text.StringTools;
 
 /**
  * Provides a way to add a border to a set of paragraphs.

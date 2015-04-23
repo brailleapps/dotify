@@ -15,7 +15,7 @@ import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.api.writer.Row;
-import org.daisy.dotify.tools.StringTools;
+import org.daisy.dotify.common.text.StringTools;
 
 
 

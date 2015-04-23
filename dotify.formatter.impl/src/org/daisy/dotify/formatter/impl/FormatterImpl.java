@@ -18,9 +18,9 @@ import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
-import org.daisy.dotify.text.BreakPoint;
-import org.daisy.dotify.text.BreakPointHandler;
-import org.daisy.dotify.tools.StateObject;
+import org.daisy.dotify.common.io.StateObject;
+import org.daisy.dotify.common.text.BreakPoint;
+import org.daisy.dotify.common.text.BreakPointHandler;
 
 
 /**

@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import se.mtm.common.io.FileIO;
+import org.daisy.dotify.common.io.FileIO;
 
 public class Main {
 

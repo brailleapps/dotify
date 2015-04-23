@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactory;
-import org.daisy.dotify.text.FilterLocale;
 import org.daisy.dotify.tools.AbstractResourceLocator;
 import org.daisy.dotify.tools.ResourceLocator;
 

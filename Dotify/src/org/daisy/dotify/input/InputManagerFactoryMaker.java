@@ -10,7 +10,7 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.common.text.FilterLocale;
 
 /**
  * Provides a factory maker for input manager factories, that is to say a collection of 

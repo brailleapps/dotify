@@ -3,7 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.tools.CompoundIterable;
+import org.daisy.dotify.common.collection.CompoundIterable;
 
 /**
  * Provides a container for a physical volume of braille

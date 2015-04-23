@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
-import org.daisy.dotify.tools.StringTools;
+import org.daisy.dotify.common.text.StringTools;
 
 class PaginatorTools {
 	/**

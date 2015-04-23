@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import se.mtm.common.io.FileIO;
-import se.mtm.common.io.TempFileHandler;
+import org.daisy.dotify.common.io.FileIO;
+import org.daisy.dotify.common.io.TempFileHandler;
 
 /**
  * Utility class to run a list of tasks.

@@ -3,7 +3,7 @@ package org.daisy.dotify.system;
 import java.io.File;
 import java.io.IOException;
 
-import se.mtm.common.io.FileIO;
+import org.daisy.dotify.common.io.FileIO;
 
 /**
  * <p>DuplicatorTask copies the input file both to output and to a separate file.

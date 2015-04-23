@@ -1,10 +1,10 @@
 package org.daisy.dotify.impl.system.common;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemFactory;
 import org.daisy.dotify.system.TaskSystemFactoryException;
-import org.daisy.dotify.text.FilterLocale;
 
 /**
  * Provides a default task system factory for PEF, OBFL and text output.

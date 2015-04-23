@@ -2,8 +2,7 @@ package org.daisy.dotify.impl.input.xml;
 
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.impl.input.xml.XMLInputManagerFactory;
-import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.common.text.FilterLocale;
 import org.junit.Test;
 
 public class XMLInputManagerFactoryTest {

@@ -1,6 +1,6 @@
 package org.daisy.dotify.system;
 
-import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.common.text.FilterLocale;
 
 /**
  * Provides an interface for task system factories. A

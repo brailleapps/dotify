@@ -24,7 +24,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 
-import org.daisy.dotify.text.StringFilter;
+import org.daisy.dotify.common.text.StringFilter;
 import org.daisy.dotify.tools.StaxFilter2;
 
 /**

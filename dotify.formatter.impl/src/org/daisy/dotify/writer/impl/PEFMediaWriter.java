@@ -14,7 +14,7 @@ import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterException;
 import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.api.writer.SectionProperties;
-import org.daisy.dotify.tools.StateObject;
+import org.daisy.dotify.common.io.StateObject;
 
 
 /**

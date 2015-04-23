@@ -27,5 +27,5 @@ compileTestJava {
 }
 
 dependencies {
-	compile group: "org.daisy.dotify", name: "dotify.common", version: "1.0-SNAPSHOT"
+	compile group: "org.daisy.dotify", name: "dotify.common", version: "1.0.0-SNAPSHOT"
 }

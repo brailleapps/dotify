@@ -3,9 +3,9 @@ package org.daisy.dotify.impl.input.text;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactory;
-import org.daisy.dotify.text.FilterLocale;
 
 public class TextInputManagerFactory implements InputManagerFactory {
 	private final Set<String> locales;

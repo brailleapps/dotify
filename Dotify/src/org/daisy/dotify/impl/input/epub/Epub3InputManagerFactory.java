@@ -3,9 +3,9 @@ package org.daisy.dotify.impl.input.epub;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactory;
-import org.daisy.dotify.text.FilterLocale;
 
 public class Epub3InputManagerFactory implements InputManagerFactory {
 	private final Set<String> supportedLocales;

@@ -61,7 +61,7 @@ import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
-import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.common.text.FilterLocale;
 
 /**
  * Provides a parser for OBFL. The parser accepts OBFL input, either

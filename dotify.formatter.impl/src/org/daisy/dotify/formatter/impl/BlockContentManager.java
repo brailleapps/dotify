@@ -13,7 +13,7 @@ import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TranslationException;
-import org.daisy.dotify.tools.StringTools;
+import org.daisy.dotify.common.text.StringTools;
 
 /**
  * BlockHandler is responsible for breaking blocks of text into rows. BlockProperties

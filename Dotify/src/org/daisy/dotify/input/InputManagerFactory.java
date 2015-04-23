@@ -2,7 +2,7 @@ package org.daisy.dotify.input;
 
 import java.util.Set;
 
-import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.common.text.FilterLocale;
 
 /**
  * Provides an interface for input manager factories. An input manager

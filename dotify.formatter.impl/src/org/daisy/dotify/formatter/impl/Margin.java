@@ -3,7 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import org.daisy.dotify.tools.StringTools;
+import org.daisy.dotify.common.text.StringTools;
 
 class Margin extends Stack<MarginComponent> {
 	enum Type {

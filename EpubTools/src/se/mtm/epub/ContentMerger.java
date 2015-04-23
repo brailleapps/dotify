@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import se.mtm.common.io.FileIO;
-import se.mtm.common.xml.XMLTools;
-import se.mtm.common.xml.XMLToolsException;
+import org.daisy.dotify.common.io.FileIO;
+import org.daisy.dotify.common.xml.XMLTools;
+import org.daisy.dotify.common.xml.XMLToolsException;
 
 public class ContentMerger {
 	private final File epub;

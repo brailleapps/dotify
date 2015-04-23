@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.text.FilterLocale;
+import org.daisy.dotify.common.text.FilterLocale;
 
 
 /**

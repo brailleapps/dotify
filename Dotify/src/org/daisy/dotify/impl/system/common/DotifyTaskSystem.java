@@ -11,6 +11,7 @@ import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
+import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
@@ -18,7 +19,6 @@ import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
 import org.daisy.dotify.system.TaskSystem;
 import org.daisy.dotify.system.TaskSystemException;
-import org.daisy.dotify.text.FilterLocale;
 
 
 /**
