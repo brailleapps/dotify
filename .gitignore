@@ -1,3 +1,5 @@
+.gradle
+.settings
 Dotify/.gradle
 Dotify/ant-build/output
 Dotify/bin
