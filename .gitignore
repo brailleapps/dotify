@@ -10,3 +10,5 @@ DotifyShared/dotify-translator.jar
 DotifyTranslator/ant-build/output
 DotifyTranslator/bin
 dotify.api/ant-build/output
+.classpath
+.project
