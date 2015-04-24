@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-import org.daisy.dotify.text.TextFileReader;
-import org.daisy.dotify.text.TextFileReader.LineData;
-import org.daisy.dotify.tools.BrailleNotationConverter;
+import org.daisy.dotify.common.braille.BrailleNotationConverter;
+import org.daisy.dotify.common.text.TextFileReader;
+import org.daisy.dotify.common.text.TextFileReader.LineData;
 
 
 

@@ -3,8 +3,8 @@ package org.daisy.dotify.devtools.converters;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.daisy.dotify.text.TextFileReader;
-import org.daisy.dotify.text.TextFileReader.LineData;
+import org.daisy.dotify.common.text.TextFileReader;
+import org.daisy.dotify.common.text.TextFileReader.LineData;
 
 public class UnicodeNames {
 	private enum UnicodeData {

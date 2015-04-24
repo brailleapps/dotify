@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import org.daisy.dotify.text.TextFileReader;
-import org.daisy.dotify.text.TextFileReader.LineData;
+import org.daisy.dotify.common.text.TextFileReader;
+import org.daisy.dotify.common.text.TextFileReader.LineData;
 
 public class FindRows {
 
