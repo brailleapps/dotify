@@ -14,6 +14,16 @@ targetCompatibility = '1.6'
 group = "org.daisy.dotify"
 version = "3.0-SNAPSHOT"
 
+ext {
+	versions = [
+			'osgi'               : '5.0.0',
+			'junit'              : '4.7',
+			'felix'              : '4.4.1',
+			'paxExam'            : '3.5.0', //4.4.0 requires Java 7
+			'paxUrl'             : '2.3.0',
+	]
+}
+
 sourceSets {
 	main {
 		java {
@@ -26,9 +36,11 @@ sourceSets {
 	test {
 		java {
 			srcDir 'test'
+			srcDir 'integrationtest'
 		}
 		resources {
 			srcDir 'test'
+			srcDir 'integrationtest'
 		}
 	}
 }
@@ -57,7 +69,7 @@ repositories {
 dependencies {
 	//compile group: group, name:'brailleUtils-core', version:'1.0-SNAPSHOT'
 	//compile group: group, name:'brailleUtils-catalog', version:'1.0-SNAPSHOT'
-	compile group: 'org.daisy.braille', name:'brailleUtils-ui', version:'2.0-SNAPSHOT'
+	compile group: 'org.daisy.braille', name:'brailleUtils-ui', version:'2.0.0-SNAPSHOT'
 
 	compile group: group, name:'dotify.hyphenator.impl', version:'1.0-SNAPSHOT'
 	compile group: group, name:'dotify.formatter.impl', version:'1.0-SNAPSHOT'
@@ -69,9 +81,19 @@ dependencies {
 	
 	compile 'xerces:xercesImpl:2.11.0'
 	
-	testCompile group: 'junit', name: 'junit', version: '4.7'
+	testCompile group: 'junit', name: 'junit', version: "$versions.junit"
+    
+    testCompile "javax.inject:javax.inject:1"
+    testCompile "org.ops4j.pax.exam:pax-exam-junit4:$versions.paxExam"
+    testRuntime "org.ops4j.pax.exam:pax-exam-container-native:$versions.paxExam"
+    testRuntime "org.ops4j.pax.exam:pax-exam-link-mvn:$versions.paxExam"
+    testRuntime "org.ops4j.pax.url:pax-url-aether:$versions.paxUrl"
+    testRuntime "org.ops4j.pax.url:pax-url-reference:$versions.paxUrl"
+    testRuntime "org.ops4j.pax.url:pax-url-wrap:$versions.paxUrl"
+    testRuntime "org.apache.felix:org.apache.felix.framework:$versions.felix"
+    testCompile("org.osgi:org.osgi.core:$versions.osgi")
+    testCompile("org.osgi:org.osgi.compendium:$versions.osgi")
 }
-
 task xsltdoc() << {
 	ant {
 		xslt (
