@@ -1,0 +1,64 @@
+apply plugin: "java"
+apply plugin: "maven"
+apply plugin: 'application'
+
+group = "org.daisy.dotify"
+version = "1.0-SNAPSHOT"
+
+mainClassName = "org.daisy.dotify.devtools.gui.DeveloperUtility"
+startScripts.applicationName = 'dotifydevtoolsgui'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+sourceSets {
+    main {
+        java { srcDir "src" }
+        resources { srcDir "src" }
+    }
+    test {
+        java { srcDir "test" }
+        resources { srcDir "test" }
+    }
+}
+
+jar {
+	doFirst {
+		manifest {
+	    	attributes (
+	    	'Built-On': new Date(),					//'${ISO-TODAY}'
+	    	'Main-Class': mainClassName,
+			'Class-Path': configurations.compile.collect { it.getName() }.join(' ')					//'${core.classpath.attribute}'
+			)
+		}
+	}
+	from sourceSets.main.allJava
+	baseName = 'dotify-devtools'
+}
+
+dependencies {
+    compile group: "org.daisy.braille", name: "brailleUtils-core", version: "2.0-SNAPSHOT"
+    compile group: "org.daisy.braille", name: "brailleUtils-catalog", version: "2.0-SNAPSHOT"
+    compile 'org.daisy.dotify:dotify-devtools:1.0-SNAPSHOT'
+    compile 'org.daisy.dotify:dotify.api:1.0.0'
+    runtime "org.daisy.dotify:dotify.translator.impl:1.0-SNAPSHOT"
+    runtime "org.daisy.dotify:dotify.hyphenator.impl:1.0-SNAPSHOT"
+
+    testCompile group: "junit", name: "junit", version: "4.7"
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+}
+
+compileTestJava {
+	options.encoding = 'UTF-8'
+}
+
+buildscript {
+    repositories { mavenCentral() }
+}
