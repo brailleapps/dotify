@@ -15,6 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.common.xml.XMLInfo;
+import org.daisy.dotify.common.xml.XMLTools;
+import org.daisy.dotify.common.xml.XMLToolsException;
 import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.TaskSystemException;
@@ -22,10 +25,6 @@ import org.daisy.dotify.system.ValidatorTask;
 import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.tools.ResourceLocator;
 import org.daisy.dotify.tools.ResourceLocatorException;
-import org.daisy.util.xml.peek.PeekResult;
-import org.daisy.util.xml.peek.Peeker;
-import org.daisy.util.xml.peek.PeekerPool;
-import org.xml.sax.SAXException;
 
 /**
  * <p>Provides a method to determine the input format and load the 
@@ -89,29 +88,22 @@ class XMLInputManager implements InputManager {
 
 		String input = parameters.get(SystemKeys.INPUT).toString();
 		String inputformat = null;
-		Peeker peeker = null;
 		FileInputStream is = null;
 		try {
-			PeekResult peekResult;
-			peeker = PeekerPool.getInstance().acquire();
-			is = new FileInputStream(new File(input));
-			peekResult = peeker.peek(is);
-			String rootNS = peekResult.getRootElementNsUri();
-			String rootElement = peekResult.getRootElementLocalName();
+			XMLInfo peekResult = XMLTools.parseXML(new File(input), true);
+			String rootNS = peekResult.getUri();
+			String rootElement = peekResult.getLocalName();
 			DefaultInputUrlResourceLocator p = DefaultInputUrlResourceLocator.getInstance();
 
 			inputformat = p.getConfigFileName(rootElement, rootNS);
 			if (inputformat !=null && "".equals(inputformat)) {
 				return new ArrayList<InternalTask>();
 			}
-		} catch (SAXException e) {
-			throw new TaskSystemException("SAXException while reading input", e);
+		} catch (XMLToolsException e) {
+			throw new TaskSystemException("XMLToolsException while reading input", e);
 		} catch (IOException e) {
 			throw new TaskSystemException("IOException while reading input", e);
 		}  finally {
-			if (peeker!=null) {
-				PeekerPool.getInstance().release(peeker);
-			}
 			if (is!=null) {
 				try { is.close(); } catch (IOException e) { }
 			}
