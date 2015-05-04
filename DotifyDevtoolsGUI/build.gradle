@@ -35,7 +35,7 @@ jar {
 		}
 	}
 	from sourceSets.main.allJava
-	baseName = 'dotify-devtools'
+	baseName = 'dotify-devtools-gui'
 }
 
 dependencies {

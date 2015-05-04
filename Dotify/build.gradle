@@ -35,9 +35,9 @@ sourceSets {
 
 jar.doFirst {
 	manifest {
-    	attributes ('Built-By': '',				//'${user.name}'
+    	attributes ('Built-By': System.getProperty("user.name"),
     	'Main-Class': mainClassName,
-    	'Built-On': new Date(),					//'${ISO-TODAY}'
+    	'Built-On': new Date().format("yyyy-MM-dd"),
 		'Repository-Revision': "$repositoryRevision",
 		'Implementation-Title': "$releaseName",
 		'Implementation-Version': "$releaseVersion",
@@ -70,3 +70,30 @@ dependencies {
 	
 	testCompile group: 'junit', name: 'junit', version: '4.7'
 }
+
+task xsltdoc() << {
+	ant {
+		xslt (
+			basedir: "src",
+			destdir: (new File(docsDir, "xsltdoc")),
+			style: "build-xslt-doc.xsl",
+			includes: "**/*.xsl",
+			excludes:"lib, ant-build, build-xslt-doc.xsl, build",
+			filenameparameter: "filename"
+		) {
+			mapper (
+				type: "package",
+				from: "*.xsl",
+				to: "*.html"
+			)
+			xmlcatalog {
+				dtd (
+					publicId: "-//W3C//DTD XHTML 1.0 Strict//EN",
+					location: "ant-build/resources/dtd/xhtml10/xhtml1-strict.dtd"
+				)
+			}
+		}
+	}
+}
+
+javadoc.dependsOn(xsltdoc)
