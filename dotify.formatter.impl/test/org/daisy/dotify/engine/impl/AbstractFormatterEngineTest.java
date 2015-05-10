@@ -19,22 +19,15 @@ import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
 import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
-import org.junit.Test;
-public class FormatterEngineTest {
 
-	@Test
-	public void testFormatterEngingeKeep() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
-		testPEF("resource-files/obfl-input-keep.obfl", "resource-files/obfl-keep-expected.pef");
-	}
-
-	private void testPEF(String input, String expected) throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+public abstract class AbstractFormatterEngineTest {
+	void testPEF(String input, String expected, boolean keep) throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine("sv-SE",
 				BrailleTranslatorFactory.MODE_UNCONTRACTED, 
 				PagedMediaWriterFactoryMaker.newInstance().newPagedMediaWriter(MediaTypes.PEF_MEDIA_TYPE));
 
 		File res = File.createTempFile("TestResult", ".tmp");
-		System.err.println(res);
-		res.deleteOnExit();
+		if (!keep) res.deleteOnExit();
 
 		engine.convert(this.getClass().getResourceAsStream(input), new FileOutputStream(res));
 
@@ -49,7 +42,7 @@ public class FormatterEngineTest {
 			e.printStackTrace();
 			fail();
 		} finally {
-			if (!res.delete()) {
+			if (!keep && !res.delete()) {
 				System.err.println("Delete failed.");
 			}
 			if (res.isFile()) {
