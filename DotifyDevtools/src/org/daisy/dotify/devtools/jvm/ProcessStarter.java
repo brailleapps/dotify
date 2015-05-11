@@ -1,6 +1,7 @@
 package org.daisy.dotify.devtools.jvm;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -68,6 +69,11 @@ public class ProcessStarter {
 	public int startProcess(String ... command) throws IOException, InterruptedException {
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.redirectErrorStream(true);
+		File cmd = new File(command[0]);
+		if (cmd.isFile()) {
+			//start in...
+			processBuilder.directory(cmd.getParentFile());
+		}
 		Process process = processBuilder.start();
 		// hook up child process output to parent
 		InputStream lsOut = process.getInputStream();
