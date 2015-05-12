@@ -1,11 +1,11 @@
 #!/bin/bash
 
-branch=`git rev-parse --abbrev-ref HEAD`
+branch=`git rev-parse --abbrev-ref --symbolic-full-name @{u}`
 revision=`git rev-parse HEAD`
 echo "$revision"
 echo "$branch"
 
-if [ $branch = "master" ]; then
+if [ $branch = "origin/master" ]; then
 	echo "On master branch."
 	if [ -n "$SONATYPE_USER" ]; then
 		if [ -n "$SONATYPE_PASSWORD" ]; then
