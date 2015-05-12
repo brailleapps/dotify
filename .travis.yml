@@ -3,7 +3,8 @@ jdk: openjdk6
 after_success: ./upload.sh
 
 env:
-  - secure: "mv2026v6RdPW6TorQsOoclMK7VJAm9hpDAZjH5jmcT8trvqrM4jb6WsLBdCMmos6HmSy03Ftc/TCq+yaGcaf2nBTscoKQsxGd2X2IcOo5dX7ssXk4sz8RXK6tYhH4+05tCJHMDVSpe9ok3929AbtJEAHZboHNcFWWZzDKr9unnQ="
-  - secure: "nMlutC4VILArirlgprfKFoxxfPapOobOVghZU5UjG9xgIWiw2rfcZMTDtg5zccIukxrPdANt7yWultUj84IwburbjHbPz+PcRJZb8S39nBO/sWVXqJiADaUPtaAIV/8pV1GahuwDpG4jFp1VYkfZN0L7103jaREuExSIv6DMEA4="
+  global:
+    - secure: "mv2026v6RdPW6TorQsOoclMK7VJAm9hpDAZjH5jmcT8trvqrM4jb6WsLBdCMmos6HmSy03Ftc/TCq+yaGcaf2nBTscoKQsxGd2X2IcOo5dX7ssXk4sz8RXK6tYhH4+05tCJHMDVSpe9ok3929AbtJEAHZboHNcFWWZzDKr9unnQ="
+    - secure: "nMlutC4VILArirlgprfKFoxxfPapOobOVghZU5UjG9xgIWiw2rfcZMTDtg5zccIukxrPdANt7yWultUj84IwburbjHbPz+PcRJZb8S39nBO/sWVXqJiADaUPtaAIV/8pV1GahuwDpG4jFp1VYkfZN0L7103jaREuExSIv6DMEA4="
 
 
