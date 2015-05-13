@@ -48,7 +48,7 @@ dependencies {
     
 	testRuntime group: group, name:'dotify.hyphenator.impl', version:'1.0-SNAPSHOT'
 	testRuntime group: group, name:'dotify.text.impl', version:'1.+'
-	testRuntime group: group, name:'dotify.translator.impl', version:'1.0-SNAPSHOT'
+	testRuntime group: group, name:'dotify.translator.impl', version:'1.0.0-SNAPSHOT'
 }
 
 compileJava {
