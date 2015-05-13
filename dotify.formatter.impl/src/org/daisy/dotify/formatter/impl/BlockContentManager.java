@@ -255,20 +255,20 @@ class BlockContentManager implements Iterable<RowImpl> {
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel = fcontext.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
-					newRow(listLabel, btr, leftMargin, 0, rdp.getBlockIndentParent());
+					newRow(listLabel, btr, 0, rdp.getBlockIndentParent());
 				} else {
-					newRow(listLabel, btr, leftMargin, rdp.getFirstLineIndent(), rdp.getBlockIndent());
+					newRow(listLabel, btr, rdp.getFirstLineIndent(), rdp.getBlockIndent());
 				}
 				item = null;
 			} else {
-				newRow("", btr, leftMargin, rdp.getFirstLineIndent(), rdp.getBlockIndent());
+				newRow("", btr, rdp.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
 			RowImpl r  = rows.pop();
 			newRow(r, "", btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
-			newRow("", btr, leftMargin, rdp.getTextIndent(), rdp.getBlockIndent());
+			newRow("", btr, rdp.getTextIndent(), rdp.getBlockIndent());
 		}
 	}
 	
@@ -288,12 +288,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return btr;
 	}
 
-	private void newRow(String contentBefore, BrailleTranslatorResult chars, MarginProperties margin, int indent, int blockIndent) {
+	private void newRow(String contentBefore, BrailleTranslatorResult chars, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		String preText = contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
 		RowImpl row = new RowImpl();
-		row.setLeftMargin(margin);
+		row.setLeftMargin(leftMargin);
 		newRow(row, preText, chars, blockIndent);
 	}
 
@@ -302,12 +302,11 @@ class BlockContentManager implements Iterable<RowImpl> {
 		String preTabText = template.getChars().toString();
 		List<Marker> r = template.getMarkers();
 		List<String> a = template.getAnchors();
-		MarginProperties margin = template.getLeftMargin();
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
 
 		int preTextIndent = StringTools.length(preContent);
-		int preContentPos = margin.getContent().length()+preTextIndent;
+		int preContentPos = leftMargin.getContent().length()+preTextIndent;
 		preTabText = preTabText.replaceAll("\u00ad", "");
 		int preTabPos = preContentPos+StringTools.length(preTabText);
 		int postTabTextLen = btr.countRemaining();
@@ -333,7 +332,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 					break;
 			}
 			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				RowImpl row = configureNewRow(preContent + preTabText, margin);
+				RowImpl row = configureNewRow(preContent + preTabText);
 				if (r!=null) {
 					row.addMarkers(r);
 					r = null;
@@ -344,7 +343,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 				preTextIndent = StringTools.length(preContent);
 				preTabText = "";
 				
-				preContentPos = margin.getContent().length()+preTextIndent;
+				preContentPos = leftMargin.getContent().length()+preTextIndent;
 				preTabPos = preContentPos;
 				maxLenText = available-(preContentPos);
 				offset = leaderPos-preTabPos;
@@ -367,9 +366,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 		String next = btr.nextTranslatedRow(maxLenText, force);
 		RowImpl nr;
 		if ("".equals(next) && "".equals(tabSpace)) {
-			nr = configureNewRow(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""), margin);
+			nr = configureNewRow(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""));
 		} else {
-			nr = configureNewRow(preContent + preTabText + tabSpace + next, margin);
+			nr = configureNewRow(preContent + preTabText + tabSpace + next);
 		}
 
 		if (r!=null) {
@@ -382,9 +381,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 		rows.add(nr);
 	}
 	
-	private RowImpl configureNewRow(String chars, MarginProperties margin) {
+	private RowImpl configureNewRow(String chars) {
 		RowImpl row = new RowImpl(chars);
-		row.setLeftMargin(margin);
+		row.setLeftMargin(leftMargin);
 		row.setRightMargin(rightMargin);
 		row.setAlignment(rdp.getAlignment());
 		row.setRowSpacing(rdp.getRowSpacing());
