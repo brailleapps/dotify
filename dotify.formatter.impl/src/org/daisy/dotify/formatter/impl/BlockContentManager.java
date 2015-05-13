@@ -312,18 +312,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 		if (currentLeader!=null) {
 			int leaderPos = currentLeader.getPosition().makeAbsolute(available);
 			int offset = leaderPos-m.preTabPos;
-			int align = 0;
-			switch (currentLeader.getAlignment()) {
-				case LEFT:
-					align = 0;
-					break;
-				case RIGHT:
-					align = m.postTabTextLen;
-					break;
-				case CENTER:
-					align = m.postTabTextLen/2;
-					break;
-			}
+			int align = getLeaderAlign(currentLeader, m.postTabTextLen);
+			
 			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
 				RowImpl row = configureNewRow(m.preContent + m.preTabText);
 				if (r!=null) {
@@ -342,9 +332,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 				Logger.getLogger(this.getClass().getCanonicalName())
 					.fine("Leader position has been passed on an empty row or text does not fit on an empty row, ignoring...");
 			}
+			// discard leader
+			currentLeader = null;
 		}
-		// discard leader
-		currentLeader = null;
 
 		final int maxLenText = m.maxLenText - StringTools.length(tabSpace) - StringTools.length(m.preTabText);
 
@@ -365,6 +355,18 @@ class BlockContentManager implements Iterable<RowImpl> {
 		}
 
 		rows.add(nr);
+	}
+	
+	private static int getLeaderAlign(Leader leader, int length) {
+		switch (leader.getAlignment()) {
+			case LEFT:
+				return 0;
+			case RIGHT:
+				return length;
+			case CENTER:
+				return length/2;
+		}
+		return 0;
 	}
 	
 	private RowImpl configureNewRow(String chars) {
