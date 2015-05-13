@@ -298,55 +298,42 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 
 	//TODO: check leader functionality
-	private void newRow(RowImpl template, String preContent, BrailleTranslatorResult btr, int blockIndent) {
-		String preTabText = template.getChars().toString();
+	private void newRow(RowImpl template, String pre, BrailleTranslatorResult btr, int blockIndent) {
 		List<Marker> r = template.getMarkers();
 		List<String> a = template.getAnchors();
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
-
-		int preTextIndent = StringTools.length(preContent);
-		int preContentPos = leftMargin.getContent().length()+preTextIndent;
-		preTabText = preTabText.replaceAll("\u00ad", "");
-		int preTabPos = preContentPos+StringTools.length(preTabText);
-		int postTabTextLen = btr.countRemaining();
-		int maxLenText = available-(preContentPos);
-		if (maxLenText<1) {
+		RowInfo m = new RowInfo(pre, template.getChars().toString(), btr);
+		if (m.maxLenText<1) {
 			throw new RuntimeException("Cannot continue layout: No space left for characters.");
 		}
 
 		String tabSpace = "";
 		if (currentLeader!=null) {
 			int leaderPos = currentLeader.getPosition().makeAbsolute(available);
-			int offset = leaderPos-preTabPos;
+			int offset = leaderPos-m.preTabPos;
 			int align = 0;
 			switch (currentLeader.getAlignment()) {
 				case LEFT:
 					align = 0;
 					break;
 				case RIGHT:
-					align = postTabTextLen;
+					align = m.postTabTextLen;
 					break;
 				case CENTER:
-					align = postTabTextLen/2;
+					align = m.postTabTextLen/2;
 					break;
 			}
-			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				RowImpl row = configureNewRow(preContent + preTabText);
+			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
+				RowImpl row = configureNewRow(m.preContent + m.preTabText);
 				if (r!=null) {
 					row.addMarkers(r);
 					r = null;
 				}
 				rows.add(row);
 
-				preContent = StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent);
-				preTextIndent = StringTools.length(preContent);
-				preTabText = "";
-				
-				preContentPos = leftMargin.getContent().length()+preTextIndent;
-				preTabPos = preContentPos;
-				maxLenText = available-(preContentPos);
-				offset = leaderPos-preTabPos;
+				m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), "", btr);
+				offset = leaderPos-m.preTabPos;
 			}
 			if (offset - align > 0) {
 				String leaderPattern = fcontext.getTranslator().translate(currentLeader.getPattern()).getTranslatedRemainder();
@@ -359,16 +346,15 @@ class BlockContentManager implements Iterable<RowImpl> {
 		// discard leader
 		currentLeader = null;
 
-		maxLenText -= StringTools.length(tabSpace);
-		maxLenText -= StringTools.length(preTabText);
+		final int maxLenText = m.maxLenText - StringTools.length(tabSpace) - StringTools.length(m.preTabText);
 
-		boolean force = maxLenText >= available - (preContentPos);
+		boolean force = maxLenText >= available - (m.preContentPos);
 		String next = btr.nextTranslatedRow(maxLenText, force);
 		RowImpl nr;
 		if ("".equals(next) && "".equals(tabSpace)) {
-			nr = configureNewRow(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""));
+			nr = configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""));
 		} else {
-			nr = configureNewRow(preContent + preTabText + tabSpace + next);
+			nr = configureNewRow(m.preContent + m.preTabText + tabSpace + next);
 		}
 
 		if (r!=null) {
@@ -388,6 +374,26 @@ class BlockContentManager implements Iterable<RowImpl> {
 		row.setAlignment(rdp.getAlignment());
 		row.setRowSpacing(rdp.getRowSpacing());
 		return row;
+	}
+	
+	private class RowInfo {
+		final String preTabText;
+		final String preContent;
+		final int preTextIndent;
+		final int preContentPos;
+		final int preTabPos;
+		final int postTabTextLen;
+		final int maxLenText;
+		private RowInfo(String preContent, String preTabText, BrailleTranslatorResult btr) {
+			preTabText = preTabText.replaceAll("\u00ad", "");
+			this.preContent = preContent;
+			this.preTextIndent = StringTools.length(preContent);
+			this.preContentPos = leftMargin.getContent().length()+preTextIndent;
+			this.preTabPos = preContentPos+StringTools.length(preTabText);
+			this.postTabTextLen = btr.countRemaining();
+			this.maxLenText = available-(preContentPos);
+			this.preTabText = preTabText;
+		}
 	}
 
 }
