@@ -242,9 +242,13 @@ class BlockContentManager implements Iterable<RowImpl> {
 	public boolean isVolatile() {
 		return isVolatile;
 	}
-
+	
 	private void layout(CharSequence c, String locale) {
 		BrailleTranslatorResult btr = getTranslatedResult(c, locale);
+		layout(btr);
+	}
+
+	private void layout(BrailleTranslatorResult btr) {
 		// process first row, is it a new block or should we continue the current row?
 		if (rows.size()==0) {
 			// add to left margin
@@ -261,7 +265,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			}
 		} else {
 			RowImpl r  = rows.pop();
-			newRow(r.getMarkers(), r.getAnchors(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
+			newRow(r, "", btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
 			newRow("", btr, leftMargin, rdp.getTextIndent(), rdp.getBlockIndent());
@@ -288,12 +292,17 @@ class BlockContentManager implements Iterable<RowImpl> {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		String preText = contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
-		newRow(null, null, margin, preText, "", chars, blockIndent);
+		RowImpl row = new RowImpl();
+		row.setLeftMargin(margin);
+		newRow(row, preText, chars, blockIndent);
 	}
 
 	//TODO: check leader functionality
-	private void newRow(List<Marker> r, List<String> a, MarginProperties margin, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
-
+	private void newRow(RowImpl template, String preContent, BrailleTranslatorResult btr, int blockIndent) {
+		String preTabText = template.getChars().toString();
+		List<Marker> r = template.getMarkers();
+		List<String> a = template.getAnchors();
+		MarginProperties margin = template.getLeftMargin();
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
 
