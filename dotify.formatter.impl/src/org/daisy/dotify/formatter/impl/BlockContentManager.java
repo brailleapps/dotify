@@ -333,11 +333,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 					break;
 			}
 			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				RowImpl row = new RowImpl(preContent + preTabText);
-				row.setLeftMargin(margin);
-				row.setRightMargin(rightMargin);
-				row.setAlignment(rdp.getAlignment());
-				row.setRowSpacing(rdp.getRowSpacing());
+				RowImpl row = configureNewRow(preContent + preTabText, margin);
 				if (r!=null) {
 					row.addMarkers(r);
 					r = null;
@@ -361,6 +357,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 					.fine("Leader position has been passed on an empty row or text does not fit on an empty row, ignoring...");
 			}
 		}
+		// discard leader
+		currentLeader = null;
 
 		maxLenText -= StringTools.length(tabSpace);
 		maxLenText -= StringTools.length(preTabText);
@@ -369,30 +367,28 @@ class BlockContentManager implements Iterable<RowImpl> {
 		String next = btr.nextTranslatedRow(maxLenText, force);
 		RowImpl nr;
 		if ("".equals(next) && "".equals(tabSpace)) {
-			nr = new RowImpl(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""));
+			nr = configureNewRow(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""), margin);
 		} else {
-			nr = new RowImpl(preContent + preTabText + tabSpace + next);
+			nr = configureNewRow(preContent + preTabText + tabSpace + next, margin);
 		}
-		
-		// discard leader
-		currentLeader = null;
 
-		assert nr != null;
 		if (r!=null) {
 			nr.addMarkers(r);
 		}
 		if (a!=null) {
 			nr.addAnchors(a);
 		}
-		nr.setLeftMargin(margin);
-		nr.setRightMargin(rightMargin);
-		nr.setAlignment(rdp.getAlignment());
-		nr.setRowSpacing(rdp.getRowSpacing());
-		/*
-		if (nr.getChars().length()>master.getFlowWidth()) {
-			throw new RuntimeException("Row is too long (" + nr.getChars().length() + "/" + master.getFlowWidth() + ") '" + nr.getChars() + "'");
-		}*/
+
 		rows.add(nr);
+	}
+	
+	private RowImpl configureNewRow(String chars, MarginProperties margin) {
+		RowImpl row = new RowImpl(chars);
+		row.setLeftMargin(margin);
+		row.setRightMargin(rightMargin);
+		row.setAlignment(rdp.getAlignment());
+		row.setRowSpacing(rdp.getRowSpacing());
+		return row;
 	}
 
 }
