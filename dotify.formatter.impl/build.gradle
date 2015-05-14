@@ -45,6 +45,7 @@ dependencies {
     runtime group: 'woodstox', name: 'wstx-lgpl', version: '3.2.7'
     testCompile group: "junit", name: "junit", version: "4.7"
     testCompile group: "org.daisy.braille", name: "brailleUtils-core", version: "2.0-SNAPSHOT"
+    testCompile "org.mockito:mockito-core:1.+"
     
 	testRuntime group: group, name:'dotify.hyphenator.impl', version:'1.0-SNAPSHOT'
 	testRuntime group: group, name:'dotify.text.impl', version:'1.+'
