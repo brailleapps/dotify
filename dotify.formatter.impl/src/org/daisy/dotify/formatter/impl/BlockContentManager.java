@@ -333,15 +333,19 @@ class BlockContentManager implements Iterable<RowImpl> {
 			currentLeader = null;
 		}
 
-		final int maxLenText = m.maxLenText - StringTools.length(tabSpace) - StringTools.length(m.preTabText);
-
-		boolean force = maxLenText >= available - (m.preContentPos);
-		String next = btr.nextTranslatedRow(maxLenText, force);
+		String next = getNext(m, tabSpace, btr);		
 		if ("".equals(next) && "".equals(tabSpace)) {
 			rows.add(configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), m.margin, m.markers, m.anchors));
 		} else {
 			rows.add(configureNewRow(m.preContent + m.preTabText + tabSpace + next, m.margin, m.markers, m.anchors));
 		}
+	}
+	
+	private String getNext(RowInfo m, String tabSpace, BrailleTranslatorResult btr) {
+		final int maxLenText = m.maxLenText - StringTools.length(tabSpace) - StringTools.length(m.preTabText);
+
+		boolean force = maxLenText >= available - (m.preContentPos);
+		return btr.nextTranslatedRow(maxLenText, force);
 	}
 	
 	private static int getLeaderAlign(Leader leader, int length) {
