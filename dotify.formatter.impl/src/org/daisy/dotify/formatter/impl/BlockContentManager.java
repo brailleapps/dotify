@@ -296,15 +296,15 @@ class BlockContentManager implements Iterable<RowImpl> {
 		row.setLeftMargin(leftMargin);
 		newRow(row, preText, chars, blockIndent);
 	}
+	
+	private void newRow(RowImpl template, String pre, BrailleTranslatorResult btr, int blockIndent) {
+		newRow(new RowInfo(pre, template.getChars().toString(), btr, template.getLeftMargin(), template.getMarkers(), template.getAnchors()), btr, blockIndent);
+	}
 
 	//TODO: check leader functionality
-	private void newRow(RowImpl template, String pre, BrailleTranslatorResult btr, int blockIndent) {
-		List<Marker> r = template.getMarkers();
-		List<String> a = template.getAnchors();
-		MarginProperties margin = template.getLeftMargin();
+	private void newRow(RowInfo m, BrailleTranslatorResult btr, int blockIndent) {
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
-		RowInfo m = new RowInfo(pre, template.getChars().toString(), btr, margin);
 		if (m.maxLenText<1) {
 			throw new RuntimeException("Cannot continue layout: No space left for characters.");
 		}
@@ -316,14 +316,19 @@ class BlockContentManager implements Iterable<RowImpl> {
 			int align = getLeaderAlign(currentLeader, m.postTabTextLen);
 			
 			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				RowImpl row = configureNewRow(m.preContent + m.preTabText, margin);
-				if (r!=null) {
-					row.addMarkers(r);
-					r = null;
+				RowImpl row = configureNewRow(m.preContent + m.preTabText, m.margin);
+				if (m.markers!=null) {
+					row.addMarkers(m.markers);
+					//r = null;
+				}
+				if (m.anchors!=null) {
+					row.addAnchors(m.anchors);
+					//a = null;
 				}
 				rows.add(row);
 
-				m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), "", btr, margin);
+				m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), "", btr, m.margin, null, null);
+				//update offset
 				offset = leaderPos-m.preTabPos;
 			}
 			if (offset - align > 0) {
@@ -343,18 +348,17 @@ class BlockContentManager implements Iterable<RowImpl> {
 		String next = btr.nextTranslatedRow(maxLenText, force);
 		RowImpl nr;
 		if ("".equals(next) && "".equals(tabSpace)) {
-			nr = configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), margin);
+			nr = configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), m.margin);
 		} else {
-			nr = configureNewRow(m.preContent + m.preTabText + tabSpace + next, margin);
+			nr = configureNewRow(m.preContent + m.preTabText + tabSpace + next, m.margin);
 		}
 
-		if (r!=null) {
-			nr.addMarkers(r);
+		if (m.markers!=null) {
+			nr.addMarkers(m.markers);
 		}
-		if (a!=null) {
-			nr.addAnchors(a);
+		if (m.anchors!=null) {
+			nr.addAnchors(m.anchors);
 		}
-
 		rows.add(nr);
 	}
 	
@@ -380,6 +384,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 	
 	private class RowInfo {
+		final List<Marker> markers;
+		final List<String> anchors;
 		final String preTabText;
 		final String preContent;
 		final int preTextIndent;
@@ -387,8 +393,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 		final int preTabPos;
 		final int postTabTextLen;
 		final int maxLenText;
-		private RowInfo(String preContent, String preTabText, BrailleTranslatorResult btr, MarginProperties margin) {
+		final MarginProperties margin;
+		private RowInfo(String preContent, String preTabText, BrailleTranslatorResult btr, MarginProperties margin, List<Marker> markers, List<String> anchors) {
 			preTabText = preTabText.replaceAll("\u00ad", "");
+			this.margin = margin;
+			this.markers = markers;
+			this.anchors = anchors;
 			this.preContent = preContent;
 			this.preTextIndent = StringTools.length(preContent);
 			this.preContentPos = margin.getContent().length()+preTextIndent;
