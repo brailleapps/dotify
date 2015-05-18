@@ -58,6 +58,34 @@ public class BlockContentManagerTest {
 		Iterator<RowImpl> i = m.iterator();
 		assertEquals("⠀⠀⠀⠀⠀⠀⠀⠄⠄⠄", i.next().getChars());
 	}
+	
+	@Test
+	public void testNewLine() throws TranslatorConfigurationException {
+		//setup
+		FormatterContext c = new FormatterContext(BrailleTranslatorFactoryMaker.newInstance().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED));
+		Stack<Segment> segments = new Stack<Segment>();
+		segments.push(new TextSegment("... ... ...", new TextProperties.Builder("sv-SE").build()));
+		segments.push(new NewLineSegment());
+		segments.push(new TextSegment("...", new TextProperties.Builder("sv-SE").build()));
+		segments.push(new NewLineSegment());
+		segments.push(new TextSegment("...", new TextProperties.Builder("sv-SE").build()));
+
+		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
+		CrossReferences refs = mock(CrossReferences.class);
+		Context context = new DefaultContext(1, 1);
+		BlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
+
+		//test
+		assertEquals(4, m.getRowCount());
+		Iterator<RowImpl> i = m.iterator();
+		assertEquals("⠀⠄⠄⠄⠀⠄⠄⠄", i.next().getChars());
+		RowImpl r = i.next();
+		assertEquals("⠀⠀⠀⠄⠄⠄", r.getLeftMargin().getContent()+r.getChars());
+		r = i.next();
+		assertEquals("⠀⠀⠀⠄⠄⠄", r.getLeftMargin().getContent()+r.getChars());
+		r = i.next();
+		assertEquals("⠀⠀⠀⠄⠄⠄", r.getLeftMargin().getContent()+r.getChars());
+	}
 
 
 }

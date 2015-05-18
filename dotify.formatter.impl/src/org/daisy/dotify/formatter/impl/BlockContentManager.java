@@ -255,20 +255,20 @@ class BlockContentManager implements Iterable<RowImpl> {
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel = fcontext.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
-					newRow(listLabel, btr, 0, rdp.getBlockIndentParent());
+					newRow(btr, listLabel, 0, rdp.getBlockIndentParent());
 				} else {
-					newRow(listLabel, btr, rdp.getFirstLineIndent(), rdp.getBlockIndent());
+					newRow(btr, listLabel, rdp.getFirstLineIndent(), rdp.getBlockIndent());
 				}
 				item = null;
 			} else {
-				newRow("", btr, rdp.getFirstLineIndent(), rdp.getBlockIndent());
+				newRow(btr, "", rdp.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
 			RowImpl r  = rows.pop();
 			newRow("", r, btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
-			newRow("", btr, rdp.getTextIndent(), rdp.getBlockIndent());
+			newRow(btr, "", rdp.getTextIndent(), rdp.getBlockIndent());
 		}
 	}
 	
@@ -288,13 +288,16 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return btr;
 	}
 
-	private void newRow(String contentBefore, BrailleTranslatorResult chars, int indent, int blockIndent) {
-		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
-		//assert thisIndent >= 0;
-		String preText = contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
+	private void newRow(BrailleTranslatorResult chars, String contentBefore, int indent, int blockIndent) {
 		RowImpl row = new RowImpl();
 		row.setLeftMargin(leftMargin);
-		newRow(preText, row, chars, blockIndent);
+		newRow(getPreText(contentBefore, indent, blockIndent), row, chars, blockIndent);
+	}
+	
+	private String getPreText(String contentBefore, int indent, int blockIndent) {
+		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
+		//assert thisIndent >= 0;
+		return contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
 	}
 	
 	private void newRow(String pre, RowImpl template, BrailleTranslatorResult btr, int blockIndent) {
@@ -343,7 +346,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 	
 	private String getNext(RowInfo m, String tabSpace, BrailleTranslatorResult btr) {
 		final int maxLenText = m.maxLenText - StringTools.length(tabSpace) - StringTools.length(m.preTabText);
-
+		//force on empty line only?
 		boolean force = maxLenText >= available - (m.preContentPos);
 		return btr.nextTranslatedRow(maxLenText, force);
 	}
@@ -376,7 +379,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 		final List<String> anchors;
 		final String preTabText;
 		final String preContent;
-		final int preTextIndent;
 		final int preContentPos;
 		final int preTabPos;
 		final int maxLenText;
@@ -387,8 +389,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			this.markers = markers;
 			this.anchors = anchors;
 			this.preContent = preContent;
-			this.preTextIndent = StringTools.length(preContent);
-			this.preContentPos = margin.getContent().length()+preTextIndent;
+			this.preContentPos = margin.getContent().length()+StringTools.length(preContent);
 			this.preTabPos = preContentPos+StringTools.length(preTabText);
 			this.maxLenText = available-(preContentPos);
 			this.preTabText = preTabText;
