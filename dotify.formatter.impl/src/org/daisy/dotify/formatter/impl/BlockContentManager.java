@@ -316,16 +316,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			int align = getLeaderAlign(currentLeader, m.postTabTextLen);
 			
 			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				RowImpl row = configureNewRow(m.preContent + m.preTabText, m.margin);
-				if (m.markers!=null) {
-					row.addMarkers(m.markers);
-					//r = null;
-				}
-				if (m.anchors!=null) {
-					row.addAnchors(m.anchors);
-					//a = null;
-				}
-				rows.add(row);
+				rows.add(configureNewRow(m.preContent + m.preTabText, m.margin, m.markers, m.anchors));
 
 				m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), "", btr, m.margin, null, null);
 				//update offset
@@ -346,20 +337,11 @@ class BlockContentManager implements Iterable<RowImpl> {
 
 		boolean force = maxLenText >= available - (m.preContentPos);
 		String next = btr.nextTranslatedRow(maxLenText, force);
-		RowImpl nr;
 		if ("".equals(next) && "".equals(tabSpace)) {
-			nr = configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), m.margin);
+			rows.add(configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), m.margin, m.markers, m.anchors));
 		} else {
-			nr = configureNewRow(m.preContent + m.preTabText + tabSpace + next, m.margin);
+			rows.add(configureNewRow(m.preContent + m.preTabText + tabSpace + next, m.margin, m.markers, m.anchors));
 		}
-
-		if (m.markers!=null) {
-			nr.addMarkers(m.markers);
-		}
-		if (m.anchors!=null) {
-			nr.addAnchors(m.anchors);
-		}
-		rows.add(nr);
 	}
 	
 	private static int getLeaderAlign(Leader leader, int length) {
@@ -374,12 +356,14 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return 0;
 	}
 	
-	private RowImpl configureNewRow(String chars, MarginProperties margin) {
+	private RowImpl configureNewRow(String chars, MarginProperties margin, List<Marker> markers, List<String> anchors) {
 		RowImpl row = new RowImpl(chars);
 		row.setLeftMargin(margin);
 		row.setRightMargin(rightMargin);
 		row.setAlignment(rdp.getAlignment());
 		row.setRowSpacing(rdp.getRowSpacing());
+		if (markers!=null) { row.addMarkers(markers); }
+		if (anchors!=null) { row.addAnchors(anchors); }
 		return row;
 	}
 	
