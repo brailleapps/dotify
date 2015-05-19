@@ -301,7 +301,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 	
 	private void newRow(String pre, RowImpl template, BrailleTranslatorResult btr, int blockIndent) {
-		newRow(new RowInfo(pre, template.getChars().toString(), template.getLeftMargin(), template.getMarkers(), template.getAnchors()), btr, blockIndent);
+		newRow(new RowInfo(pre, template.getChars().toString(), template), btr, blockIndent);
 	}
 
 	//TODO: check leader functionality
@@ -320,8 +320,11 @@ class BlockContentManager implements Iterable<RowImpl> {
 			
 			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
 				rows.add(configureNewRow(m.preContent + m.preTabText, m.margin, m.markers, m.anchors));
-
-				m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), "", m.margin, null, null);
+				{
+					RowImpl r = new RowImpl();
+					r.setLeftMargin(m.margin);
+					m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), "", r);
+				}
 				//update offset
 				offset = leaderPos-m.preTabPos;
 			}
@@ -383,11 +386,11 @@ class BlockContentManager implements Iterable<RowImpl> {
 		final int preTabPos;
 		final int maxLenText;
 		final MarginProperties margin;
-		private RowInfo(String preContent, String preTabText, MarginProperties margin, List<Marker> markers, List<String> anchors) {
+		private RowInfo(String preContent, String preTabText, RowImpl r) {
 			preTabText = preTabText.replaceAll("\u00ad", "");
-			this.margin = margin;
-			this.markers = markers;
-			this.anchors = anchors;
+			this.margin = r.getLeftMargin();
+			this.markers = r.getMarkers();
+			this.anchors = r.getAnchors();
 			this.preContent = preContent;
 			this.preContentPos = margin.getContent().length()+StringTools.length(preContent);
 			this.preTabPos = preContentPos+StringTools.length(preTabText);
