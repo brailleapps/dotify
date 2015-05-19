@@ -8,11 +8,19 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.daisy.dotify.common.xml.EntityResolverCache;
+import org.daisy.dotify.common.xml.XMLInfo;
+import org.daisy.dotify.common.xml.XMLTools;
+import org.daisy.dotify.common.xml.XMLToolsException;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.thaiopensource.util.PropertyMap;
 import com.thaiopensource.util.PropertyMapBuilder;
@@ -36,16 +44,51 @@ public class ValidatorTask extends ReadOnlyTask {
 	}
 	
 	public static boolean validate(File input, URL schema) throws ValidatorException {
-		ValidatorTaskErrorHandler errorHandler = new ValidatorTaskErrorHandler();
+		URL url;
 		try {
-			boolean ret = runValidation(input.toURI().toURL(), schema, errorHandler);
-			return ret && !errorHandler.hasError();
+			url = input.toURI().toURL();
 		} catch (MalformedURLException e) {
 			throw new ValidatorException("Validation failed.", e);
 		}
+		boolean ret = true;
+		XMLInfo info;
+		try {
+			info = XMLTools.parseXML(input, true);
+		} catch (XMLToolsException e1) {
+			throw new ValidatorException(e1);
+		}
+		ValidatorTaskErrorHandler errorHandler = new ValidatorTaskErrorHandler();
+		if (info.getSystemId()!=null || info.getPublicId()!=null) {
+			ret &= runDTDValidation(url, errorHandler);
+		}
+		ret &= runSchemaValidation(url, schema, errorHandler);
+		return ret && !errorHandler.hasError();
+
 	}
-	
-	private static boolean runValidation(URL url, URL schema, ErrorHandler errorHandler) {
+
+	private static boolean runDTDValidation(URL url, ErrorHandler errorHandler) {
+		SAXParser saxParser = null;
+		try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			factory.setNamespaceAware(true);
+			factory.setValidating(true);
+			saxParser = factory.newSAXParser();
+			saxParser.getXMLReader().setErrorHandler(errorHandler);
+			saxParser.getXMLReader().setContentHandler(new DefaultHandler());
+			saxParser.getXMLReader().setEntityResolver(new EntityResolverCache());
+			saxParser.getXMLReader().parse(new InputSource(url.openStream()));
+			return true;
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	private static boolean runSchemaValidation(URL url, URL schema, ErrorHandler errorHandler) {
 		
 		PropertyMapBuilder propertyBuilder = new PropertyMapBuilder();
 
@@ -118,7 +161,7 @@ public class ValidatorTask extends ReadOnlyTask {
 				return "";
 			} else { 
 				boolean both = (e.getLineNumber()>=0 && e.getColumnNumber()>=0);
-				return "at "+(e.getLineNumber()>=0?"line: "+e.getLineNumber():"")+
+				return "at ("+(e.getLineNumber()>=0?"line: "+e.getLineNumber():"")+
 						(both?" ":"")+
 						(e.getColumnNumber()>=0?"column: "+e.getColumnNumber():"")
 						+")";
