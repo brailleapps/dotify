@@ -35,7 +35,7 @@ public class XsltTask extends ReadWriteTask {
 	@Override
 	public void execute(File input, File output) throws InternalTaskException {
 		try {
-			XMLTools.transform(input.getAbsolutePath(), output.getAbsolutePath(), url, options);
+			XMLTools.transform(input, output, url, options);
 		} catch (XMLToolsException e) {
 			throw new InternalTaskException("Error: ", e);
 		}

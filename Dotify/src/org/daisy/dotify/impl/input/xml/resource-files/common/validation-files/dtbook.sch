@@ -6,14 +6,14 @@
 	<!-- Rule 1: Disallowed element: note 
 	<sch:pattern name="no_note" id="no_note">
 		<sch:rule context="dtb:note">
-			<sch:assert test="false">[Rule 1] No 'note'</sch:assert>
+			<sch:assert test="false()">[Rule 1] No 'note'</sch:assert>
 		</sch:rule>
 	</sch:pattern>
 	-->
 	<!-- Rule 2: Disallowed element: table -->
 	<sch:pattern name="no_table" id="no_table">
 		<sch:rule context="dtb:table">
-			<sch:assert test="false">[Rule 2] No 'table'</sch:assert>
+			<sch:assert test="false()">[Rule 2] No 'table'</sch:assert>
 		</sch:rule>
 	</sch:pattern>
 	<!-- Rule 3: Document contains an unsupported language -->

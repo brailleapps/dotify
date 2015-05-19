@@ -10,9 +10,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.common.text.StringFilter;
-import org.daisy.util.xml.catalog.CatalogEntityResolver;
-import org.daisy.util.xml.catalog.CatalogExceptionNotRecoverable;
-import org.daisy.util.xml.stax.StaxEntityResolver;
+import org.daisy.dotify.common.xml.EntityResolverCache;
+import org.daisy.dotify.common.xml.XMLResolverAdapter;
 
 /**
  * <p>Task that runs a list of StringFilters on the character data of the input file.</p>
@@ -43,12 +42,7 @@ public class TextNodeTask extends ReadWriteTask {
         inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
         inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
         
-    	try {
-			inFactory.setXMLResolver(new StaxEntityResolver(CatalogEntityResolver.getInstance()));
-		} catch (CatalogExceptionNotRecoverable e1) {
-			e1.printStackTrace();
-		}
-
+		inFactory.setXMLResolver(new XMLResolverAdapter(new EntityResolverCache()));
 		TextNodeFilter tnf = null;
 
 		try {
