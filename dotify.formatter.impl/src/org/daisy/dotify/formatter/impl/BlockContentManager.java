@@ -311,10 +311,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private void newRow(RowInfo m, BrailleTranslatorResult btr, int blockIndent) {
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
-		if (m.maxLenText<1) {
-			throw new RuntimeException("Cannot continue layout: No space left for characters.");
-		}
-
 		String tabSpace = "";
 		if (currentLeader!=null) {
 			int leaderPos = currentLeader.getPosition().makeAbsolute(available);
@@ -351,10 +347,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 	
 	private String getNext(RowInfo m, String tabSpace, BrailleTranslatorResult btr) {
-		final int maxLenText = m.maxLenText - StringTools.length(tabSpace) - StringTools.length(m.preTabText);
-		//force on empty line only?
-		boolean force = maxLenText >= m.maxLenText;
-		return btr.nextTranslatedRow(maxLenText, force);
+		int contentLen = StringTools.length(tabSpace) + m.preTabTextLen;
+		boolean force = contentLen == 0;
+		return btr.nextTranslatedRow(m.maxLenText - contentLen, force);
 	}
 	
 	private static int getLeaderAlign(Leader leader, int length) {
@@ -384,6 +379,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		final List<Marker> markers;
 		final List<String> anchors;
 		final String preTabText;
+		final int preTabTextLen;
 		final String preContent;
 		final int preTabPos;
 		final int maxLenText;
@@ -396,9 +392,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 			this.anchors = r.getAnchors();
 			this.preContent = preContent;
 			int preContentPos = margin.getContent().length()+StringTools.length(preContent);
-			this.preTabPos = preContentPos+StringTools.length(preTabText);
+			this.preTabTextLen = StringTools.length(preTabText);
+			this.preTabPos = preContentPos+preTabTextLen;
 			this.maxLenText = available-(preContentPos);
-			
+			if (this.maxLenText<1) {
+				throw new RuntimeException("Cannot continue layout: No space left for characters.");
+			}
 		}
 	}
 
