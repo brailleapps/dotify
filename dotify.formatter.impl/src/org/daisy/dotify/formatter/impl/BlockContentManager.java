@@ -353,7 +353,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private String getNext(RowInfo m, String tabSpace, BrailleTranslatorResult btr) {
 		final int maxLenText = m.maxLenText - StringTools.length(tabSpace) - StringTools.length(m.preTabText);
 		//force on empty line only?
-		boolean force = maxLenText >= available - (m.preContentPos);
+		boolean force = maxLenText >= m.maxLenText;
 		return btr.nextTranslatedRow(maxLenText, force);
 	}
 	
@@ -385,7 +385,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 		final List<String> anchors;
 		final String preTabText;
 		final String preContent;
-		final int preContentPos;
 		final int preTabPos;
 		final int maxLenText;
 		final MarginProperties margin;
@@ -396,7 +395,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			this.markers = r.getMarkers();
 			this.anchors = r.getAnchors();
 			this.preContent = preContent;
-			this.preContentPos = margin.getContent().length()+StringTools.length(preContent);
+			int preContentPos = margin.getContent().length()+StringTools.length(preContent);
 			this.preTabPos = preContentPos+StringTools.length(preTabText);
 			this.maxLenText = available-(preContentPos);
 			

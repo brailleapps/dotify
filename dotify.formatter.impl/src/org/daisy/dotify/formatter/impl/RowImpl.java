@@ -61,13 +61,10 @@ class RowImpl implements Row {
 	public String getChars() {
 		return chars;
 	}
-	
 
-	
-/*	public void appendChars(CharSequence c) {
-		chars = chars.toString() + c;
-	}*/
-
+	public void setChars(String chars) {
+		this.chars = chars;
+	}
 	/**
 	 * Add a marker to the Row
 	 * @param marker
