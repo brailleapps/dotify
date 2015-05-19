@@ -144,7 +144,7 @@ public class ValidatorTask extends ReadOnlyTask {
 		}
 	
 		public void error(SAXParseException exception) throws SAXException {
-			logger.log(Level.WARNING, "Validation error " + getLineColumn(exception), exception.getMessage());
+			logger.log(Level.WARNING, "Validation error" + getLineColumn(exception) + ": " + exception.getMessage());
 			error = true;
 		}
 	
@@ -161,7 +161,7 @@ public class ValidatorTask extends ReadOnlyTask {
 				return "";
 			} else { 
 				boolean both = (e.getLineNumber()>=0 && e.getColumnNumber()>=0);
-				return "at ("+(e.getLineNumber()>=0?"line: "+e.getLineNumber():"")+
+				return " (at "+(e.getLineNumber()>=0?"line: "+e.getLineNumber():"")+
 						(both?" ":"")+
 						(e.getColumnNumber()>=0?"column: "+e.getColumnNumber():"")
 						+")";
