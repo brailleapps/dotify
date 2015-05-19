@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormattingTypes;
@@ -33,6 +34,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private final RowDataProperties rdp;
 	private final int available;
 
+	private final Pattern softHyphenPattern;
 	private final Context context;
 	private final FormatterContext fcontext;
 	private final MarginProperties leftMargin;
@@ -52,6 +54,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		this.refs = refs;
 		this.fcontext = fcontext;
 		this.currentLeader = null;
+		this.softHyphenPattern = Pattern.compile("\u00ad");
 
 		this.rdp = rdp;
 		this.leftMargin = rdp.getLeftMargin().buildMargin(fcontext.getSpaceCharacter());
@@ -301,7 +304,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 	
 	private void newRow(String pre, RowImpl template, BrailleTranslatorResult btr, int blockIndent) {
-		newRow(new RowInfo(pre, template.getChars().toString(), template), btr, blockIndent);
+		newRow(new RowInfo(pre, template), btr, blockIndent);
 	}
 
 	//TODO: check leader functionality
@@ -323,7 +326,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 				{
 					RowImpl r = new RowImpl();
 					r.setLeftMargin(m.margin);
-					m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), "", r);
+					m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), r);
 				}
 				//update offset
 				offset = leaderPos-m.preTabPos;
@@ -386,8 +389,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 		final int preTabPos;
 		final int maxLenText;
 		final MarginProperties margin;
-		private RowInfo(String preContent, String preTabText, RowImpl r) {
-			preTabText = preTabText.replaceAll("\u00ad", "");
+		private RowInfo(String preContent, RowImpl r) {
+			//don't know if soft hyphens need to be replaced, but we'll keep it for now
+			this.preTabText = softHyphenPattern.matcher(r.getChars().toString()).replaceAll("");
 			this.margin = r.getLeftMargin();
 			this.markers = r.getMarkers();
 			this.anchors = r.getAnchors();
@@ -395,7 +399,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			this.preContentPos = margin.getContent().length()+StringTools.length(preContent);
 			this.preTabPos = preContentPos+StringTools.length(preTabText);
 			this.maxLenText = available-(preContentPos);
-			this.preTabText = preTabText;
+			
 		}
 	}
 
