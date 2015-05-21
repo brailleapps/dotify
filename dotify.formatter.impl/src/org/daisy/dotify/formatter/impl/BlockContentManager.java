@@ -331,7 +331,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			int align = getLeaderAlign(currentLeader, btr.countRemaining());
 			
 			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				rows.add(m.row);//configureNewRow(m.preContent + m.preTabText, m.row.getLeftMargin(), m.row.getMarkers(), m.row.getAnchors()));
+				rows.add(m.row);
 				{
 					RowImpl r = new RowImpl();
 					r.setLeftMargin(m.row.getLeftMargin());
@@ -357,17 +357,18 @@ class BlockContentManager implements Iterable<RowImpl> {
 		String next = getNext(m, tabSpace, btr);		
 		if ("".equals(next) && "".equals(tabSpace)) {
 			m.row.setChars(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""));
-			rows.add(m.row);//configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), m.row.getLeftMargin(), m.row.getMarkers(), m.row.getAnchors()));
+			rows.add(m.row);
 		} else {
 			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
-			rows.add(m.row);//configureNewRow(m.preContent + m.preTabText + tabSpace + next, m.row.getLeftMargin(), m.row.getMarkers(), m.row.getAnchors()));
+			rows.add(m.row);
 		}
 	}
 	
 	private String getNext(RowInfo m, String tabSpace, BrailleTranslatorResult btr) {
 		int contentLen = StringTools.length(tabSpace) + m.preTabTextLen;
 		boolean force = contentLen == 0;
-		return btr.nextTranslatedRow(m.maxLenText - contentLen, force);
+		//don't know if soft hyphens need to be replaced, but we'll keep it for now
+		return softHyphenPattern.matcher(btr.nextTranslatedRow(m.maxLenText - contentLen, force)).replaceAll("");
 	}
 	
 	private static int getLeaderAlign(Leader leader, int length) {
@@ -390,12 +391,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 		final int maxLenText;
 		final RowImpl row;
 		private RowInfo(String preContent, RowImpl r) {
-			//don't know if soft hyphens need to be replaced, but we'll keep it for now
-			this.preTabText = softHyphenPattern.matcher(r.getChars().toString()).replaceAll("");
+			this.preTabText = r.getChars();
 			this.row = r;
-//			this.margin = r.getLeftMargin();
-//			this.markers = r.getMarkers();
-//			this.anchors = r.getAnchors();
 			this.preContent = preContent;
 			int preContentPos = r.getLeftMargin().getContent().length()+StringTools.length(preContent);
 			this.preTabTextLen = StringTools.length(preTabText);
