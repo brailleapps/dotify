@@ -25,6 +25,9 @@ import org.daisy.dotify.common.text.StringTools;
  * @author Joel Håkansson
  */
 class BlockContentManager implements Iterable<RowImpl> {
+	private final static Pattern softHyphenPattern  = Pattern.compile("\u00ad");
+	private final static Pattern trailingWsBraillePattern = Pattern.compile("[\\s\u2800]+\\z");
+
 	private boolean isVolatile;
 	private final ArrayList<Marker> groupMarkers;
 	private final ArrayList<String> groupAnchors;
@@ -34,7 +37,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private final RowDataProperties rdp;
 	private final int available;
 
-	private final Pattern softHyphenPattern;
 	private final Context context;
 	private final FormatterContext fcontext;
 	private final MarginProperties leftMargin;
@@ -54,7 +56,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 		this.refs = refs;
 		this.fcontext = fcontext;
 		this.currentLeader = null;
-		this.softHyphenPattern = Pattern.compile("\u00ad");
 
 		this.rdp = rdp;
 		this.leftMargin = rdp.getLeftMargin().buildMargin(fcontext.getSpaceCharacter());
@@ -356,7 +357,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 
 		String next = getNext(m, tabSpace, btr);		
 		if ("".equals(next) && "".equals(tabSpace)) {
-			m.row.setChars(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""));
+			m.row.setChars(m.preContent + trailingWsBraillePattern.matcher(m.preTabText).replaceAll(""));
 			rows.add(m.row);
 		} else {
 			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
