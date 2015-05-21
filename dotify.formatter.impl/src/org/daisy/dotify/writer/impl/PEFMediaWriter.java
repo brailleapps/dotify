@@ -194,7 +194,24 @@ class PEFMediaWriter implements PagedMediaWriter {
 		if (text == null) {
 			return "";
 		}
-		return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll("\"", "&quot;");
+		StringBuilder sb = new StringBuilder();
+		for (char c : text.toCharArray()) {
+			switch (c) {
+				case '&':
+					sb.append("&amp;");
+					break;
+				case '<':
+					sb.append("&lt;");
+					break;
+				case '"':
+					sb.append("&quot;");
+					break;
+				default:
+					sb.append(c);
+			}
+		}
+		return sb.toString();
+		//return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll("\"", "&quot;");
 	}
 
 	private void closeOpenVolume() {
