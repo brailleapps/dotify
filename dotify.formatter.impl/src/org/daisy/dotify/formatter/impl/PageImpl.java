@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.daisy.dotify.api.formatter.CompoundField;
 import org.daisy.dotify.api.formatter.CurrentPageField;
@@ -25,6 +26,8 @@ import org.daisy.dotify.common.text.StringTools;
  * @author Joel Håkansson
  */
 class PageImpl implements Page {
+	private final static Pattern trailingWs = Pattern.compile("\\s*\\z");
+	private final static Pattern softHyphen = Pattern.compile("\u00ad");
 	private PageSequenceBuilder parent;
 	private final LayoutMaster master;
 	private final FormatterContext fcontext;
@@ -239,7 +242,7 @@ class PageImpl implements Page {
 					res = "";
 					if (row.getChars().length() > 0) {
 						// remove trailing whitespace
-						String chars = row.getChars().replaceAll("\\s*\\z", "");
+						String chars = trailingWs.matcher(row.getChars()).replaceAll("");
 						//if (!TextBorderStyle.NONE.equals(frame)) {
 							res = tb.addBorderToRow(
 									padLeft(master.getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment()), 
@@ -361,7 +364,7 @@ class PageImpl implements Page {
 	private String distribute(FieldList chunks, int width, String padding, BrailleTranslator translator) throws PaginatorToolsException {
 		ArrayList<String> chunkF = new ArrayList<String>();
 		for (Field f : chunks.getFields()) {
-			BrailleTranslatorResult btr = translator.translate(resolveField(f, this).replaceAll("\u00ad", ""));
+			BrailleTranslatorResult btr = translator.translate(softHyphen.matcher(resolveField(f, this)).replaceAll(""));
 			chunkF.add(btr.getTranslatedRemainder());
 		}
 		return PaginatorTools.distribute(chunkF, width, padding, PaginatorTools.DistributeMode.EQUAL_SPACING);
