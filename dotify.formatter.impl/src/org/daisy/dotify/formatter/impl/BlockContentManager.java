@@ -318,10 +318,10 @@ class BlockContentManager implements Iterable<RowImpl> {
 			int align = getLeaderAlign(currentLeader, btr.countRemaining());
 			
 			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				rows.add(configureNewRow(m.preContent + m.preTabText, m.margin, m.markers, m.anchors));
+				rows.add(configureNewRow(m.preContent + m.preTabText, m.row.getLeftMargin(), m.row.getMarkers(), m.row.getAnchors()));
 				{
 					RowImpl r = new RowImpl();
-					r.setLeftMargin(m.margin);
+					r.setLeftMargin(m.row.getLeftMargin());
 					m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), r);
 				}
 				//update offset
@@ -340,9 +340,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 
 		String next = getNext(m, tabSpace, btr);		
 		if ("".equals(next) && "".equals(tabSpace)) {
-			rows.add(configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), m.margin, m.markers, m.anchors));
+			rows.add(configureNewRow(m.preContent + m.preTabText.replaceAll("[\\s\u2800]+\\z", ""), m.row.getLeftMargin(), m.row.getMarkers(), m.row.getAnchors()));
 		} else {
-			rows.add(configureNewRow(m.preContent + m.preTabText + tabSpace + next, m.margin, m.markers, m.anchors));
+			rows.add(configureNewRow(m.preContent + m.preTabText + tabSpace + next, m.row.getLeftMargin(), m.row.getMarkers(), m.row.getAnchors()));
 		}
 	}
 	
@@ -376,22 +376,21 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 	
 	private class RowInfo {
-		final List<Marker> markers;
-		final List<String> anchors;
 		final String preTabText;
 		final int preTabTextLen;
 		final String preContent;
 		final int preTabPos;
 		final int maxLenText;
-		final MarginProperties margin;
+		final RowImpl row;
 		private RowInfo(String preContent, RowImpl r) {
 			//don't know if soft hyphens need to be replaced, but we'll keep it for now
 			this.preTabText = softHyphenPattern.matcher(r.getChars().toString()).replaceAll("");
-			this.margin = r.getLeftMargin();
-			this.markers = r.getMarkers();
-			this.anchors = r.getAnchors();
+			this.row = r;
+//			this.margin = r.getLeftMargin();
+//			this.markers = r.getMarkers();
+//			this.anchors = r.getAnchors();
 			this.preContent = preContent;
-			int preContentPos = margin.getContent().length()+StringTools.length(preContent);
+			int preContentPos = r.getLeftMargin().getContent().length()+StringTools.length(preContent);
 			this.preTabTextLen = StringTools.length(preTabText);
 			this.preTabPos = preContentPos+preTabTextLen;
 			this.maxLenText = available-(preContentPos);
