@@ -322,17 +322,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 			}
 			tabSpace = buildLeader(offset - align);
 		}
-
-		String next = getNext(m, tabSpace, btr);		
-		if ("".equals(next) && "".equals(tabSpace)) {
-			m.row.setChars(m.preContent + trailingWsBraillePattern.matcher(m.preTabText).replaceAll(""));
-			rows.add(m.row);
-		} else {
-			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
-			rows.add(m.row);
-		}
+		breakNextRow(m, btr, tabSpace);
 	}
-	
+
 	private String buildLeader(int len) {
 		try {
 			if (len > 0) {
@@ -349,6 +341,20 @@ class BlockContentManager implements Iterable<RowImpl> {
 		}
 	}
 
+	private void breakNextRow(RowInfo m, BrailleTranslatorResult btr, String tabSpace) {
+		int contentLen = StringTools.length(tabSpace) + m.preTabTextLen;
+		boolean force = contentLen == 0;
+		//don't know if soft hyphens need to be replaced, but we'll keep it for now
+		String next = softHyphenPattern.matcher(btr.nextTranslatedRow(m.maxLenText - contentLen, force)).replaceAll("");
+		if ("".equals(next) && "".equals(tabSpace)) {
+			m.row.setChars(m.preContent + trailingWsBraillePattern.matcher(m.preTabText).replaceAll(""));
+			rows.add(m.row);
+		} else {
+			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
+			rows.add(m.row);
+		}
+	}
+
 	private RowImpl createAndConfigureEmptyNewRow(MarginProperties left) {
 		return createAndConfigureNewEmptyRow(left, rightMargin);
 	}
@@ -358,13 +364,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 		r.setAlignment(rdp.getAlignment());
 		r.setRowSpacing(rdp.getRowSpacing());
 		return r;
-	}
-	
-	private String getNext(RowInfo m, String tabSpace, BrailleTranslatorResult btr) {
-		int contentLen = StringTools.length(tabSpace) + m.preTabTextLen;
-		boolean force = contentLen == 0;
-		//don't know if soft hyphens need to be replaced, but we'll keep it for now
-		return softHyphenPattern.matcher(btr.nextTranslatedRow(m.maxLenText - contentLen, force)).replaceAll("");
 	}
 	
 	private static int getLeaderAlign(Leader leader, int length) {
