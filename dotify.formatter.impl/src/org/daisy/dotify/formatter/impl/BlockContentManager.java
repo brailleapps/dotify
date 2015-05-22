@@ -138,7 +138,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 					RowImpl r = new RowImpl("");
 					MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
 					r.setLeftMargin(ret);
-					r.setRightMargin(rdp.getRightMargin().buildMargin(fcontext.getSpaceCharacter()));
+					r.setRightMargin(rightMargin);
 					r.setAlignment(rdp.getAlignment());
 					r.setRowSpacing(rdp.getRowSpacing());
 					rows.add(r);
