@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ruleset name="ExampleRuleset"
+		xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+	<description>This ruleset should turn off some things</description>
+
+	<rule ref="rulesets/java/logging-java.xml">
+		<!-- Won't do that -->
+		<exclude name="GuardLogStatementJavaUtil"/>
+	</rule>
+
+	<rule ref="rulesets/java/unusedcode.xml">
+		<!-- It's more clear if they are written out -->
+		<exclude name="UnusedModifier"/>
+	</rule>
+
+	<rule ref="rulesets/java/naming.xml">
+		<!-- Better long than non descriptive -->
+		<exclude name="LongVariable"/>
+		<!-- Used in the builder pattern -->
+		<exclude name="AvoidFieldNameMatchingMethodName"/>
+		<!-- Shorter than 3 I could understand, but 5? -->
+		<exclude name="ShortClassName"/>
+		<!-- single characters for counters, won't change that -->
+		<exclude name="ShortVariable"/>
+	</rule>
+	
+	<rule ref="rulesets/java/design.xml">
+		<!-- Don't see why this would be accidental -->
+		<exclude name="UncommentedEmptyConstructor"/>
+	</rule>
+
+</ruleset>
