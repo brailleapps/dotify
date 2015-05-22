@@ -86,10 +86,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		
 		this.skippablePostContentRows = new ArrayList<RowImpl>();
 		for (int i=0; i<rdp.getSpaceAfter();i++) {
-			RowImpl row = new RowImpl("", leftParent, rightParent);
-			row.setAlignment(rdp.getAlignment());
-			row.setRowSpacing(rdp.getRowSpacing());
-			skippablePostContentRows.add(row);
+			skippablePostContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
 		}
 
 		calculateRows(segments);
@@ -135,13 +132,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 				{
 					//flush
 					layout("", null);
-					RowImpl r = new RowImpl("");
 					MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
-					r.setLeftMargin(ret);
-					r.setRightMargin(rightMargin);
-					r.setAlignment(rdp.getAlignment());
-					r.setRowSpacing(rdp.getRowSpacing());
-					rows.add(r);
+					rows.add(createAndConfigureEmptyNewRow(ret));
 					break;
 				}
 				case Text:
@@ -303,12 +295,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 
 	private void newRow(BrailleTranslatorResult chars, String contentBefore, int indent, int blockIndent) {
-		RowImpl row = new RowImpl();
-		row.setLeftMargin(leftMargin);
-		row.setRightMargin(rightMargin);
-		row.setAlignment(rdp.getAlignment());
-		row.setRowSpacing(rdp.getRowSpacing());
-		newRow(getPreText(contentBefore, indent, blockIndent), row, chars, blockIndent);
+		newRow(getPreText(contentBefore, indent, blockIndent), createAndConfigureEmptyNewRow(leftMargin), chars, blockIndent);
 	}
 	
 	private String getPreText(String contentBefore, int indent, int blockIndent) {
@@ -333,14 +320,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			
 			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
 				rows.add(m.row);
-				{
-					RowImpl r = new RowImpl();
-					r.setLeftMargin(m.row.getLeftMargin());
-					r.setRightMargin(rightMargin);
-					r.setAlignment(rdp.getAlignment());
-					r.setRowSpacing(rdp.getRowSpacing());
-					m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), r);
-				}
+				m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), createAndConfigureEmptyNewRow(m.row.getLeftMargin()));
 				//update offset
 				offset = leaderPos-m.preTabPos;
 			}
@@ -363,6 +343,17 @@ class BlockContentManager implements Iterable<RowImpl> {
 			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
 			rows.add(m.row);
 		}
+	}
+
+	private RowImpl createAndConfigureEmptyNewRow(MarginProperties left) {
+		return createAndConfigureNewEmptyRow(left, rightMargin);
+	}
+
+	private RowImpl createAndConfigureNewEmptyRow(MarginProperties left, MarginProperties right) {
+		RowImpl r = new RowImpl("", left, right);
+		r.setAlignment(rdp.getAlignment());
+		r.setRowSpacing(rdp.getRowSpacing());
+		return r;
 	}
 	
 	private String getNext(RowInfo m, String tabSpace, BrailleTranslatorResult btr) {
