@@ -271,7 +271,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 			}
 		} else {
 			RowImpl r  = rows.pop();
-			newRow("", r, btr, rdp.getBlockIndent());
+			newRow(new RowInfo("", r), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
 			newRow(btr, "", rdp.getTextIndent(), rdp.getBlockIndent());
@@ -295,17 +295,13 @@ class BlockContentManager implements Iterable<RowImpl> {
 	}
 
 	private void newRow(BrailleTranslatorResult chars, String contentBefore, int indent, int blockIndent) {
-		newRow(getPreText(contentBefore, indent, blockIndent), createAndConfigureEmptyNewRow(leftMargin), chars, blockIndent);
+		newRow(new RowInfo(getPreText(contentBefore, indent, blockIndent), createAndConfigureEmptyNewRow(leftMargin)), chars, blockIndent);
 	}
 	
 	private String getPreText(String contentBefore, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
 		return contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
-	}
-	
-	private void newRow(String pre, RowImpl template, BrailleTranslatorResult btr, int blockIndent) {
-		newRow(new RowInfo(pre, template), btr, blockIndent);
 	}
 
 	//TODO: check leader functionality
@@ -324,15 +320,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 				//update offset
 				offset = leaderPos-m.preTabPos;
 			}
-			if (offset - align > 0) {
-				String leaderPattern = fcontext.getTranslator().translate(currentLeader.getPattern()).getTranslatedRemainder();
-				tabSpace = StringTools.fill(leaderPattern, offset - align);
-			} else {
-				Logger.getLogger(this.getClass().getCanonicalName())
-					.fine("Leader position has been passed on an empty row or text does not fit on an empty row, ignoring...");
-			}
-			// discard leader
-			currentLeader = null;
+			tabSpace = buildLeader(offset - align);
 		}
 
 		String next = getNext(m, tabSpace, btr);		
@@ -342,6 +330,22 @@ class BlockContentManager implements Iterable<RowImpl> {
 		} else {
 			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
 			rows.add(m.row);
+		}
+	}
+	
+	private String buildLeader(int len) {
+		try {
+			if (len > 0) {
+				String leaderPattern = fcontext.getTranslator().translate(currentLeader.getPattern()).getTranslatedRemainder();
+				return StringTools.fill(leaderPattern, len);
+			} else {
+				Logger.getLogger(this.getClass().getCanonicalName())
+					.fine("Leader position has been passed on an empty row or text does not fit on an empty row, ignoring...");
+				return "";
+			}
+		} finally {
+			// always discard leader
+			currentLeader = null;
 		}
 	}
 
