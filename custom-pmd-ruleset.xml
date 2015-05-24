@@ -30,6 +30,8 @@
 	<rule ref="rulesets/java/design.xml">
 		<!-- Don't see why this would be accidental -->
 		<exclude name="UncommentedEmptyConstructor"/>
+		<!-- used in the builder pattern -->
+		<exclude name="AccessorClassGeneration"/>
 	</rule>
 
 </ruleset>
