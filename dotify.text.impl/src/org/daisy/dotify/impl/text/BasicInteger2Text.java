@@ -4,7 +4,7 @@ import org.daisy.dotify.api.text.Integer2Text;
 import org.daisy.dotify.api.text.IntegerOutOfRange;
 
 class BasicInteger2Text implements Integer2Text {
-	private BasicInt2TextLocalization loc;
+	private final BasicInt2TextLocalization loc;
 
 	BasicInteger2Text(BasicInt2TextLocalization loc) {
 		this.loc = loc;
