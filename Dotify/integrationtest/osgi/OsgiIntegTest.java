@@ -9,6 +9,9 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 
 import javax.inject.Inject;
 
+import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
+import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.api.text.Integer2Text;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
 import org.daisy.dotify.api.text.Integer2TextFactoryMakerService;
@@ -28,8 +31,10 @@ public class OsgiIntegTest {
 		return options(
 			mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.scr").version("1.6.2"),
 			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.api").version("1.0.0"),
+			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.common").version("1.0.0"),
 			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.text.impl").version("1.0.0"),
-			//mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.hyphenator.impl").version("1.0.0-SNAPSHOT"),
+			mavenBundle().groupId("com.googlecode.texhyphj").artifactId("texhyphj").version("1.2"),
+			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.hyphenator.impl").version("1.0-SNAPSHOT"),
 			//mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.formatter.impl").version("1.0-SNAPSHOT"),
 			junitBundles()
 		);
@@ -50,11 +55,23 @@ public class OsgiIntegTest {
 		Integer2Text en = int2textFactory.newInteger2Text("en");
 		assertEquals("two", en.intToText(2));
 	}
-/*	
+
 	@Inject @Filter(timeout=5000)
 	HyphenatorFactoryMakerService hyphenatorFactory;
-*/
 	
+	@Test
+	public void testHyphenatorFactory() {
+		assertNotNull(hyphenatorFactory);
+		assertTrue(hyphenatorFactory.listLocales().size()>=61);
+	}
+	
+	@Test
+	public void testHyphenator() throws HyphenatorConfigurationException {
+		assertNotNull(hyphenatorFactory);
+		HyphenatorInterface h = hyphenatorFactory.newHyphenator("en");
+		assertEquals("hy­phen­a­tion", h.hyphenate("hyphenation"));
+	}
+
 	/*
 	@Inject @Filter(timeout=5000)
 	BrailleTranslatorFactoryMakerService translatorFactory;
