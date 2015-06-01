@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormattingTypes;
@@ -24,6 +25,9 @@ import org.daisy.dotify.common.text.StringTools;
  * @author Joel Håkansson
  */
 class BlockContentManager implements Iterable<RowImpl> {
+	private final static Pattern softHyphenPattern  = Pattern.compile("\u00ad");
+	private final static Pattern trailingWsBraillePattern = Pattern.compile("[\\s\u2800]+\\z");
+
 	private boolean isVolatile;
 	private final ArrayList<Marker> groupMarkers;
 	private final ArrayList<String> groupAnchors;
@@ -66,7 +70,10 @@ class BlockContentManager implements Iterable<RowImpl> {
 		this.leftParent = rdp.getLeftMargin().buildMarginParent(fcontext.getSpaceCharacter());
 		this.rightParent = rdp.getRightMargin().buildMarginParent(fcontext.getSpaceCharacter());
 		for (int i=0; i<rdp.getSpaceBefore();i++) {
-			preContentRows.add(new RowImpl("", leftParent, rightParent));
+			RowImpl row = new RowImpl("", leftParent, rightParent);
+			row.setAlignment(rdp.getAlignment());
+			row.setRowSpacing(rdp.getRowSpacing());
+			preContentRows.add(row);
 		}
 		if (rdp.getLeadingDecoration()!=null) {
 			preContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
@@ -79,7 +86,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		
 		this.skippablePostContentRows = new ArrayList<RowImpl>();
 		for (int i=0; i<rdp.getSpaceAfter();i++) {
-			skippablePostContentRows.add(new RowImpl("", leftParent, rightParent));
+			skippablePostContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
 		}
 
 		calculateRows(segments);
@@ -91,6 +98,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
 		row.setLeftMargin(leftParent);
 		row.setRightMargin(rightParent);
+		row.setAlignment(rdp.getAlignment());
+		row.setRowSpacing(rdp.getRowSpacing());
 		return row;
 	}
 	
@@ -123,11 +132,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 				{
 					//flush
 					layout("", null);
-					RowImpl r = new RowImpl("");
 					MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
-					r.setLeftMargin(ret);
-					r.setRightMargin(rdp.getRightMargin().buildMargin(fcontext.getSpaceCharacter()));
-					rows.add(r);
+					rows.add(createAndConfigureEmptyNewRow(ret));
 					break;
 				}
 				case Text:
@@ -242,29 +248,33 @@ class BlockContentManager implements Iterable<RowImpl> {
 	public boolean isVolatile() {
 		return isVolatile;
 	}
-
+	
 	private void layout(CharSequence c, String locale) {
 		BrailleTranslatorResult btr = getTranslatedResult(c, locale);
+		layout(btr);
+	}
+
+	private void layout(BrailleTranslatorResult btr) {
 		// process first row, is it a new block or should we continue the current row?
 		if (rows.size()==0) {
 			// add to left margin
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel = fcontext.getTranslator().translate(item.getLabel()).getTranslatedRemainder();
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
-					newRow(listLabel, btr, leftMargin, 0, rdp.getBlockIndentParent());
+					newRow(btr, listLabel, 0, rdp.getBlockIndentParent());
 				} else {
-					newRow(listLabel, btr, leftMargin, rdp.getFirstLineIndent(), rdp.getBlockIndent());
+					newRow(btr, listLabel, rdp.getFirstLineIndent(), rdp.getBlockIndent());
 				}
 				item = null;
 			} else {
-				newRow("", btr, leftMargin, rdp.getFirstLineIndent(), rdp.getBlockIndent());
+				newRow(btr, "", rdp.getFirstLineIndent(), rdp.getBlockIndent());
 			}
 		} else {
 			RowImpl r  = rows.pop();
-			newRow(r.getMarkers(), r.getAnchors(), r.getLeftMargin(), "", r.getChars().toString(), btr, rdp.getBlockIndent());
+			newRow(new RowInfo("", r), btr, rdp.getBlockIndent());
 		}
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
-			newRow("", btr, leftMargin, rdp.getTextIndent(), rdp.getBlockIndent());
+			newRow(btr, "", rdp.getTextIndent(), rdp.getBlockIndent());
 		}
 	}
 	
@@ -284,106 +294,109 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return btr;
 	}
 
-	private void newRow(String contentBefore, BrailleTranslatorResult chars, MarginProperties margin, int indent, int blockIndent) {
+	private void newRow(BrailleTranslatorResult chars, String contentBefore, int indent, int blockIndent) {
+		newRow(new RowInfo(getPreText(contentBefore, indent, blockIndent), createAndConfigureEmptyNewRow(leftMargin)), chars, blockIndent);
+	}
+	
+	private String getPreText(String contentBefore, int indent, int blockIndent) {
 		int thisIndent = indent + blockIndent - StringTools.length(contentBefore);
 		//assert thisIndent >= 0;
-		String preText = contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
-		newRow(null, null, margin, preText, "", chars, blockIndent);
+		return contentBefore + StringTools.fill(fcontext.getSpaceCharacter(), thisIndent).toString();
 	}
 
 	//TODO: check leader functionality
-	private void newRow(List<Marker> r, List<String> a, MarginProperties margin, String preContent, String preTabText, BrailleTranslatorResult btr, int blockIndent) {
-
+	private void newRow(RowInfo m, BrailleTranslatorResult btr, int blockIndent) {
 		// [margin][preContent][preTabText][tab][postTabText] 
 		//      preContentPos ^
-
-		int preTextIndent = StringTools.length(preContent);
-		int preContentPos = margin.getContent().length()+preTextIndent;
-		preTabText = preTabText.replaceAll("\u00ad", "");
-		int preTabPos = preContentPos+StringTools.length(preTabText);
-		int postTabTextLen = btr.countRemaining();
-		int maxLenText = available-(preContentPos);
-		if (maxLenText<1) {
-			throw new RuntimeException("Cannot continue layout: No space left for characters.");
-		}
-
 		String tabSpace = "";
 		if (currentLeader!=null) {
 			int leaderPos = currentLeader.getPosition().makeAbsolute(available);
-			int offset = leaderPos-preTabPos;
-			int align = 0;
-			switch (currentLeader.getAlignment()) {
-				case LEFT:
-					align = 0;
-					break;
-				case RIGHT:
-					align = postTabTextLen;
-					break;
-				case CENTER:
-					align = postTabTextLen/2;
-					break;
+			int offset = leaderPos-m.preTabPos;
+			int align = getLeaderAlign(currentLeader, btr.countRemaining());
+			
+			if (m.preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
+				rows.add(m.row);
+				m = new RowInfo(StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent), createAndConfigureEmptyNewRow(m.row.getLeftMargin()));
+				//update offset
+				offset = leaderPos-m.preTabPos;
 			}
-			if (preTabPos>leaderPos || offset - align < 0) { // if tab position has been passed or if text does not fit within row, try on a new row
-				RowImpl row = new RowImpl(preContent + preTabText);
-				row.setLeftMargin(margin);
-				row.setRightMargin(rightMargin);
-				row.setAlignment(rdp.getAlignment());
-				row.setRowSpacing(rdp.getRowSpacing());
-				if (r!=null) {
-					row.addMarkers(r);
-					r = null;
-				}
-				rows.add(row);
+			tabSpace = buildLeader(offset - align);
+		}
+		breakNextRow(m, btr, tabSpace);
+	}
 
-				preContent = StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()+blockIndent);
-				preTextIndent = StringTools.length(preContent);
-				preTabText = "";
-				
-				preContentPos = margin.getContent().length()+preTextIndent;
-				preTabPos = preContentPos;
-				maxLenText = available-(preContentPos);
-				offset = leaderPos-preTabPos;
-			}
-			if (offset - align > 0) {
+	private String buildLeader(int len) {
+		try {
+			if (len > 0) {
 				String leaderPattern = fcontext.getTranslator().translate(currentLeader.getPattern()).getTranslatedRemainder();
-				tabSpace = StringTools.fill(leaderPattern, offset - align);
+				return StringTools.fill(leaderPattern, len);
 			} else {
 				Logger.getLogger(this.getClass().getCanonicalName())
 					.fine("Leader position has been passed on an empty row or text does not fit on an empty row, ignoring...");
+				return "";
+			}
+		} finally {
+			// always discard leader
+			currentLeader = null;
+		}
+	}
+
+	private void breakNextRow(RowInfo m, BrailleTranslatorResult btr, String tabSpace) {
+		int contentLen = StringTools.length(tabSpace) + m.preTabTextLen;
+		boolean force = contentLen == 0;
+		//don't know if soft hyphens need to be replaced, but we'll keep it for now
+		String next = softHyphenPattern.matcher(btr.nextTranslatedRow(m.maxLenText - contentLen, force)).replaceAll("");
+		if ("".equals(next) && "".equals(tabSpace)) {
+			m.row.setChars(m.preContent + trailingWsBraillePattern.matcher(m.preTabText).replaceAll(""));
+			rows.add(m.row);
+		} else {
+			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
+			rows.add(m.row);
+		}
+	}
+
+	private RowImpl createAndConfigureEmptyNewRow(MarginProperties left) {
+		return createAndConfigureNewEmptyRow(left, rightMargin);
+	}
+
+	private RowImpl createAndConfigureNewEmptyRow(MarginProperties left, MarginProperties right) {
+		RowImpl r = new RowImpl("", left, right);
+		r.setAlignment(rdp.getAlignment());
+		r.setRowSpacing(rdp.getRowSpacing());
+		return r;
+	}
+	
+	private static int getLeaderAlign(Leader leader, int length) {
+		switch (leader.getAlignment()) {
+			case LEFT:
+				return 0;
+			case RIGHT:
+				return length;
+			case CENTER:
+				return length/2;
+		}
+		return 0;
+	}
+	
+	private class RowInfo {
+		final String preTabText;
+		final int preTabTextLen;
+		final String preContent;
+		final int preTabPos;
+		final int maxLenText;
+		final RowImpl row;
+		private RowInfo(String preContent, RowImpl r) {
+			this.preTabText = r.getChars();
+			this.row = r;
+			this.preContent = preContent;
+			int preContentPos = r.getLeftMargin().getContent().length()+StringTools.length(preContent);
+			this.preTabTextLen = StringTools.length(preTabText);
+			this.preTabPos = preContentPos+preTabTextLen;
+			this.maxLenText = available-(preContentPos);
+			if (this.maxLenText<1) {
+				throw new RuntimeException("Cannot continue layout: No space left for characters.");
 			}
 		}
-
-		maxLenText -= StringTools.length(tabSpace);
-		maxLenText -= StringTools.length(preTabText);
-
-		boolean force = maxLenText >= available - (preContentPos);
-		String next = btr.nextTranslatedRow(maxLenText, force);
-		RowImpl nr;
-		if ("".equals(next) && "".equals(tabSpace)) {
-			nr = new RowImpl(preContent + preTabText.replaceAll("[\\s\u2800]+\\z", ""));
-		} else {
-			nr = new RowImpl(preContent + preTabText + tabSpace + next);
-		}
-		
-		// discard leader
-		currentLeader = null;
-
-		assert nr != null;
-		if (r!=null) {
-			nr.addMarkers(r);
-		}
-		if (a!=null) {
-			nr.addAnchors(a);
-		}
-		nr.setLeftMargin(margin);
-		nr.setRightMargin(rightMargin);
-		nr.setAlignment(rdp.getAlignment());
-		nr.setRowSpacing(rdp.getRowSpacing());
-		/*
-		if (nr.getChars().length()>master.getFlowWidth()) {
-			throw new RuntimeException("Row is too long (" + nr.getChars().length() + "/" + master.getFlowWidth() + ") '" + nr.getChars() + "'");
-		}*/
-		rows.add(nr);
 	}
 
 }

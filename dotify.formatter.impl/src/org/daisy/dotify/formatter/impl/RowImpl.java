@@ -21,10 +21,6 @@ class RowImpl implements Row {
 	private MarginProperties rightMargin;
 	private Alignment alignment;
 	private Float rowSpacing;
-	/*
-	private int spaceBefore;
-	private int spaceAfter;
-	*/
 	
 	/**
 	 * Create a new Row
@@ -41,10 +37,6 @@ class RowImpl implements Row {
 		this.rightMargin = rightMargin;
 		this.alignment = Alignment.LEFT;
 		this.rowSpacing = null;
-		/*
-		this.spaceBefore = 0;
-		this.spaceAfter = 0;
-		*/
 	}
 
 	/**
@@ -61,13 +53,10 @@ class RowImpl implements Row {
 	public String getChars() {
 		return chars;
 	}
-	
 
-	
-/*	public void appendChars(CharSequence c) {
-		chars = chars.toString() + c;
-	}*/
-
+	public void setChars(String chars) {
+		this.chars = chars;
+	}
 	/**
 	 * Add a marker to the Row
 	 * @param marker
@@ -159,23 +148,5 @@ class RowImpl implements Row {
 	public void setRowSpacing(Float value) {
 		this.rowSpacing = value;
 	}
-	
-/*
-	public int getSpaceBefore() {
-		return spaceBefore;
-	}
-	
-	public int getSpaceAfter() {
-		return spaceAfter;
-	}
-	
-	public void setSpaceBefore(int value) {
-		spaceBefore = value;
-	}
-	
-	public void setSpaceAfter(int value) {
-		spaceAfter = value;
-	}
-	*/
 
 }
