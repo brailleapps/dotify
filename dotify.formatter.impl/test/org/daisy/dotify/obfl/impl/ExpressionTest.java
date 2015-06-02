@@ -2,12 +2,25 @@ package org.daisy.dotify.obfl.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.obfl.Expression;
-import org.daisy.dotify.consumer.obfl.ExpressionFactoryMaker;
+import org.daisy.dotify.api.text.Integer2Text;
+import org.daisy.dotify.api.text.Integer2TextConfigurationException;
+import org.daisy.dotify.api.text.Integer2TextFactoryMakerService;
+import org.daisy.dotify.api.text.IntegerOutOfRange;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 
 public class ExpressionTest {
-	private final Expression e = ExpressionFactoryMaker.newInstance().getFactory().newExpression();
+	private final Expression e;
+	
+	public ExpressionTest() throws Integer2TextConfigurationException, IntegerOutOfRange {
+		Integer2TextFactoryMakerService factory = Mockito.mock(Integer2TextFactoryMakerService.class);
+		Integer2Text en = Mockito.mock(Integer2Text.class);
+		Mockito.when(en.intToText(1)).thenReturn("one");
+		Mockito.when(en.intToText(2)).thenReturn("two");
+		Mockito.when(factory.newInteger2Text("en")).thenReturn(en);
+		e = new ExpressionImpl(factory);
+	}
 	
 	@Test
 	public void testExpression_add_01() {
@@ -113,32 +126,7 @@ public class ExpressionTest {
 
 	@Test
 	public void testExpression_int2text_01() {
-		assertEquals("ett", e.evaluate("(int2text 1 sv-se)"));
-	}
-
-	@Test
-	public void testExpression_int2text_02() {
-		assertEquals("två", e.evaluate("(int2text (round 2.3) sv-se)"));
-	}
-
-	@Test
-	public void testExpression_int2text_03() {
 		assertEquals("two", e.evaluate("(int2text (round 2.3) en)"));
-	}
-
-	@Test
-	public void testExpression_int2text_04() {
-		assertEquals("ett", e.evaluate("(int2text 1.0 sv-se)"));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testExpression_int2text_05() {
-		e.evaluate("(int2text 2.3 sv-se)");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testExpression_int2text_06() {
-		e.evaluate("(int2text 1.0 fi)");
 	}
 
 	@Test
