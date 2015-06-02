@@ -34,7 +34,7 @@ public class OsgiIntegTest {
 			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.common").version("1.0.0"),
 			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.text.impl").version("1.0.0"),
 			mavenBundle().groupId("com.googlecode.texhyphj").artifactId("texhyphj").version("1.2"),
-			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.hyphenator.impl").version("1.0-SNAPSHOT"),
+			mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.hyphenator.impl").version("1.0.0"),
 			//mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.formatter.impl").version("1.0-SNAPSHOT"),
 			junitBundles()
 		);
