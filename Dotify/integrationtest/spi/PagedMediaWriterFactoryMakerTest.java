@@ -1,10 +1,11 @@
-package org.daisy.dotify.consumer.writer;
+package spi;
 
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMakerService;
+import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
 import org.junit.Test;
 
 public class PagedMediaWriterFactoryMakerTest {
