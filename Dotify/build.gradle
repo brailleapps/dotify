@@ -74,7 +74,7 @@ dependencies {
 	compile group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
 	compile group: group, name:'dotify.formatter.impl', version:'1.0-SNAPSHOT'
 	compile group: group, name:'dotify.text.impl', version:'1.0.0'
-	compile group: group, name:'dotify.translator.impl', version:'1.0.0-SNAPSHOT'
+	compile group: group, name:'dotify.translator.impl', version:'1.0.0'
 	
 	compile group: "com.googlecode.texhyphj", name: "texhyphj", version: "1.2"
 	compile "org.daisy.dotify:dotify.common:1.+"
