@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,9 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.daisy.braille.api.factory.Factory;
+import org.daisy.braille.api.factory.FactoryCatalog;
+import org.daisy.braille.api.factory.FactoryProperties;
 import org.daisy.braille.embosser.EmbosserCatalog;
 import org.daisy.braille.embosser.EmbosserFactoryException;
 import org.daisy.braille.embosser.UnsupportedWidthException;
@@ -101,7 +105,9 @@ public class Main extends AbstractUI {
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE, "Sets date in meta data (if available)", Dotify.getDefaultDate(SystemProperties.DEFAULT_DATE_FORMAT)));
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE_FORMAT, "Date format in meta data (if available and date is not specified)", SystemProperties.DEFAULT_DATE_FORMAT));
 		TableCatalog tableCatalog = TableCatalog.newInstance();
-		tableSF = new ShortFormResolver(tableCatalog.list());
+		Collection<String> idents = new ArrayList<String>();
+		for (FactoryProperties p : tableCatalog.list()) { idents.add(p.getIdentifier()); }
+		tableSF = new ShortFormResolver(idents);
 		optionalArgs.add(new OptionalArgument(PEFConverterFacade.KEY_TABLE, "If specified, an ASCII-braille file (.brl) is generated in addition to the PEF-file using the specified braille code table", getDefinitionList(tableCatalog, tableSF), ""));
 		parser.addSwitch(new SwitchArgument('v', VERSION_KEY, META_KEY, VERSION_KEY, "Displays the version of Dotify."));
 		parser.addSwitch(new SwitchArgument('c', CONFIG_KEY, META_KEY, CONFIG_KEY, "Lists known configurations."));
@@ -280,6 +286,21 @@ public class Main extends AbstractUI {
 	@Override
 	public List<OptionalArgument> getOptionalArguments() {
 		return optionalArgs;
+	}
+	
+	
+	/**
+	 * Creates a list of definitions based on the contents of the supplied FactoryCatalog.
+	 * @param catalog the catalog to create definitions for
+	 * @param resolver 
+	 * @return returns a list of definitions
+	 */
+	List<Definition> getDefinitionList(FactoryCatalog<? extends Factory, ? extends FactoryProperties> catalog, ShortFormResolver resolver) {
+		List<Definition> ret = new ArrayList<Definition>();
+		for (String key : resolver.getShortForms()) {
+			ret.add(new Definition(key, catalog.get(resolver.resolve(key)).getDescription()));
+		}
+		return ret;
 	}
 
 }

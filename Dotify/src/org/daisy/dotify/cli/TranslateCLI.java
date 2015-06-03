@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import org.daisy.braille.api.factory.Factory;
+import org.daisy.braille.api.factory.FactoryCatalog;
+import org.daisy.braille.api.factory.FactoryProperties;
 import org.daisy.braille.table.BrailleConverter;
 import org.daisy.braille.table.TableCatalog;
 import org.daisy.cli.AbstractUI;
@@ -37,7 +40,9 @@ public class TranslateCLI extends AbstractUI {
 	public TranslateCLI() {
 		this.reqArgs = new ArrayList<Argument>();
 		TableCatalog tableCatalog = TableCatalog.newInstance();
-		tableSF = new ShortFormResolver(tableCatalog.list());
+		Collection<String> idents = new ArrayList<String>();
+		for (FactoryProperties p : tableCatalog.list()) { idents.add(p.getIdentifier()); }
+		tableSF = new ShortFormResolver(idents);
 		Collection<TranslatorSpecification> tr = BrailleTranslatorFactoryMaker.newInstance().listSpecifications();
 		ArrayList<Definition> translations = new ArrayList<Definition>();
 		for (TranslatorSpecification ts : tr) {
@@ -110,4 +115,18 @@ public class TranslateCLI extends AbstractUI {
 		return reqArgs;
 	}
 
+	
+	/**
+	 * Creates a list of definitions based on the contents of the supplied FactoryCatalog.
+	 * @param catalog the catalog to create definitions for
+	 * @param resolver 
+	 * @return returns a list of definitions
+	 */
+	List<Definition> getDefinitionList(FactoryCatalog<? extends Factory, ? extends FactoryProperties> catalog, ShortFormResolver resolver) {
+		List<Definition> ret = new ArrayList<Definition>();
+		for (String key : resolver.getShortForms()) {
+			ret.add(new Definition(key, catalog.get(resolver.resolve(key)).getDescription()));
+		}
+		return ret;
+	}
 }
