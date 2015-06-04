@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
+import org.daisy.braille.api.factory.FactoryProperties;
 import org.daisy.braille.table.BrailleConverter;
 import org.daisy.braille.table.TableCatalog;
 import org.daisy.dotify.api.translator.BrailleTranslator;
@@ -32,7 +33,6 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.factory.FactoryProperties;
 
 
 public class TranslatorDemo extends JPanel {
