@@ -6,6 +6,7 @@ apply plugin: "org.dm.bundle"
 repositories {
     mavenCentral()
     mavenLocal()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
