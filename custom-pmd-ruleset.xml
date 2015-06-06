@@ -26,6 +26,17 @@
 		<!-- single characters for counters, won't change that -->
 		<exclude name="ShortVariable"/>
 	</rule>
+
+	<rule ref="rulesets/java/naming.xml/VariableNamingConventions">
+		<properties>
+			<!-- 	Private final static variables often do not indicate that they are or should be used 
+				as constants. A final static assignment to a private variable is more likely just an
+				attempt to optimize based on current use within the class. Therefore, forcing a change
+				in case could cloud the intent rather than clarifying it.
+			-->
+			<property name="violationSuppressXPath" value="ancestor::FieldDeclaration[@Private='true' and @Final='true' and @Static='true']"/>
+		</properties>
+	</rule>
 	
 	<rule ref="rulesets/java/design.xml">
 		<!-- Don't see why this would be accidental -->
