@@ -112,27 +112,36 @@ class TabStopString implements Comparable<TabStopString> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		TabStopString other = (TabStopString) obj;
-		if (align != other.align)
+		if (align != other.align) {
 			return false;
+		}
 		if (pattern == null) {
-			if (other.pattern != null)
+			if (other.pattern != null) {
 				return false;
-		} else if (!pattern.equals(other.pattern))
+			}
+		} else if (!pattern.equals(other.pattern)) {
 			return false;
-		if (position != other.position)
+		}
+		if (position != other.position) {
 			return false;
+		}
 		if (text == null) {
-			if (other.text != null)
+			if (other.text != null) {
 				return false;
-		} else if (!text.equals(other.text))
+			}
+		} else if (!text.equals(other.text)) {
 			return false;
+		}
 		return true;
 	}
 	

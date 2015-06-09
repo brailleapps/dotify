@@ -123,15 +123,31 @@ class EvenSizeVolumeSplitterCalculator {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
 		EvenSizeVolumeSplitterCalculator other = (EvenSizeVolumeSplitterCalculator) obj;
-		if (breakpoint != other.breakpoint) return false;
-		if (sheets != other.sheets) return false;
-		if (sheetsPerVolumeBreakpoint != other.sheetsPerVolumeBreakpoint) return false;
-		if (volsWithBpSheets != other.volsWithBpSheets) return false;
-		if (volumes != other.volumes) return false;
+		if (breakpoint != other.breakpoint) {
+			return false;
+		}
+		if (sheets != other.sheets) {
+			return false;
+		}
+		if (sheetsPerVolumeBreakpoint != other.sheetsPerVolumeBreakpoint) {
+			return false;
+		}
+		if (volsWithBpSheets != other.volsWithBpSheets) {
+			return false;
+		}
+		if (volumes != other.volumes) {
+			return false;
+		}
 		return true;
 	}
 	

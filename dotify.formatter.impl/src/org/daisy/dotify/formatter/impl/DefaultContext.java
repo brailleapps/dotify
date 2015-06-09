@@ -58,33 +58,44 @@ class DefaultContext implements Context {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		DefaultContext other = (DefaultContext) obj;
 		if (currentVolume == null) {
-			if (other.currentVolume != null)
+			if (other.currentVolume != null) {
 				return false;
-		} else if (!currentVolume.equals(other.currentVolume))
+			}
+		} else if (!currentVolume.equals(other.currentVolume)) {
 			return false;
+		}
 		if (metaPage == null) {
-			if (other.metaPage != null)
+			if (other.metaPage != null) {
 				return false;
-		} else if (!metaPage.equals(other.metaPage))
+			}
+		} else if (!metaPage.equals(other.metaPage)) {
 			return false;
+		}
 		if (metaVolume == null) {
-			if (other.metaVolume != null)
+			if (other.metaVolume != null) {
 				return false;
-		} else if (!metaVolume.equals(other.metaVolume))
+			}
+		} else if (!metaVolume.equals(other.metaVolume)) {
 			return false;
+		}
 		if (volumeCount == null) {
-			if (other.volumeCount != null)
+			if (other.volumeCount != null) {
 				return false;
-		} else if (!volumeCount.equals(other.volumeCount))
+			}
+		} else if (!volumeCount.equals(other.volumeCount)) {
 			return false;
+		}
 		return true;
 	}
 

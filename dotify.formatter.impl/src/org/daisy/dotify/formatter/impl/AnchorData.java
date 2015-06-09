@@ -30,20 +30,26 @@ class AnchorData {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		AnchorData other = (AnchorData) obj;
-		if (pageIndex != other.pageIndex)
+		if (pageIndex != other.pageIndex) {
 			return false;
+		}
 		if (refs == null) {
-			if (other.refs != null)
+			if (other.refs != null) {
 				return false;
-		} else if (!refs.equals(other.refs))
+			}
+		} else if (!refs.equals(other.refs)) {
 			return false;
+		}
 		return true;
 	}
 
