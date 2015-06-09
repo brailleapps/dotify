@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequence {
+	private static final long serialVersionUID = 4646831324973203983L;
 	private final SequenceProperties props;
 	private BlockSequence ret;
 
@@ -15,11 +16,6 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 		this.props = props;
 		this.ret = null;
 	}
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4646831324973203983L;
 
 	public SequenceProperties getSequenceProperties() {
 		return props;

@@ -39,6 +39,14 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	private final FormatterContext context;
 	private final Stack<BlockSequence> blocks;
 	
+	//CrossReferenceHandler
+	private final Map<Integer, Volume> volumes;
+	private PageStructBuilder ps;
+	private EvenSizeVolumeSplitterCalculator sdc;
+	private boolean isDirty;
+	private boolean volumeForContentSheetChanged;
+	private CrossReferenceHandler crh;
+
 	/**
 	 * Creates a new formatter
 	 */
@@ -314,15 +322,6 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		//TODO: don't return a fixed value
 		return DEFAULT_SPLITTER_MAX;
 	}	
-	
-	//CrossReferenceHandler
-	private final Map<Integer, Volume> volumes;
-	private PageStructBuilder ps;
-	private EvenSizeVolumeSplitterCalculator sdc;
-	private boolean isDirty;
-	private boolean volumeForContentSheetChanged;
-	private CrossReferenceHandler crh;
-	
 	
 	public PageStructBuilder getContents() {
 		return ps;

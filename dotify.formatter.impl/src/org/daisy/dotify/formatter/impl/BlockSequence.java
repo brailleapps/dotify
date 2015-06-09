@@ -6,6 +6,7 @@ package org.daisy.dotify.formatter.impl;
  * @author Joel Håkansson
  */
 class BlockSequence extends FormatterCoreImpl {
+	private static final long serialVersionUID = -6105005856680272131L;
 	private final LayoutMaster master;
 	private final Integer initialPagenum;
 	
@@ -13,8 +14,6 @@ class BlockSequence extends FormatterCoreImpl {
 		this.initialPagenum = initialPagenum;
 		this.master = master;
 	}
-
-	private static final long serialVersionUID = -6105005856680272131L;
 
 	/**
 	 * Gets the layout master for this sequence

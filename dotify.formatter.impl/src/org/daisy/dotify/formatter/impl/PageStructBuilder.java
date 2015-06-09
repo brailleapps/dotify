@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class PageStructBuilder extends PageStruct {
+	private static final long serialVersionUID = 2591429059130956153L;
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 
 	private final FormatterContext context;
@@ -22,8 +23,6 @@ class PageStructBuilder extends PageStruct {
 	/*public StringFilter getFilter() {
 		return filters;
 	}*/
-
-	private static final long serialVersionUID = 2591429059130956153L;
 
 	PageStructBuilder paginate(CrossReferenceHandler crh, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		restart:while (true) {
