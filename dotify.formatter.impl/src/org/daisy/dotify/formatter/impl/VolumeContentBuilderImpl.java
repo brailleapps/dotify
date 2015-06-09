@@ -24,7 +24,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	 */
 	private static final long serialVersionUID = -3736631267650875060L;
 	private final Map<String, TableOfContentsImpl> tocs;
-	private List<FormatterCore> formatters;
+	private final List<FormatterCore> formatters;
 	private TocSequenceEventImpl tocSequence;
 
 	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs) {

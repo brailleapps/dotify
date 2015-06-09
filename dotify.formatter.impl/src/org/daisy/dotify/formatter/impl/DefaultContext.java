@@ -3,7 +3,8 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.Context;
 
 class DefaultContext implements Context {
-	private Integer currentVolume, volumeCount, metaVolume, metaPage;
+	private final Integer currentVolume, volumeCount;
+	private Integer metaVolume, metaPage;
 	
 	public DefaultContext(Integer currentVolume, Integer volumeCount) {
 		this.currentVolume = currentVolume;

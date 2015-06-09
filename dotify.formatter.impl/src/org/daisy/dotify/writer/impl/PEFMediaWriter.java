@@ -35,7 +35,7 @@ class PEFMediaWriter implements PagedMediaWriter {
 	private final static String DC_NAMESPACE_URI = "http://purl.org/dc/elements/1.1/";
 	//private final Pattern nonBraillePattern;
 	private PrintStream pst;
-	private Properties p;
+	private final Properties p;
 	private boolean hasOpenVolume;
 	private boolean hasOpenSection;
 	private boolean hasOpenPage;
@@ -43,7 +43,7 @@ class PEFMediaWriter implements PagedMediaWriter {
 	private int cRows;
 	private int cRowgap;
 	private boolean cDuplex;
-	private StateObject state;
+	private final StateObject state;
 	private int errorCount = 0;
 	
 	/**

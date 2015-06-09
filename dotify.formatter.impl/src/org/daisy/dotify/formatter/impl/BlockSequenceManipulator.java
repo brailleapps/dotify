@@ -14,7 +14,7 @@ class BlockSequenceManipulator {
 	private HashMap<String, Integer> taggedEntries;
 	private final Stack<Block> sequence;
 	//private final SequenceProperties props;
-	private Integer initialPagenum;
+	private final Integer initialPagenum;
 	private final LayoutMaster master;
 	
 	public BlockSequenceManipulator(BlockSequence b) {

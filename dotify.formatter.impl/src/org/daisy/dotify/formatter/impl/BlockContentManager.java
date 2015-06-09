@@ -44,9 +44,9 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private final MarginProperties leftParent;
 	private final MarginProperties rightParent;
 	private Leader currentLeader;
-	private List<RowImpl> preContentRows;
-	private List<RowImpl> postContentRows;
-	private List<RowImpl> skippablePostContentRows;
+	private final List<RowImpl> preContentRows;
+	private final List<RowImpl> postContentRows;
+	private final List<RowImpl> skippablePostContentRows;
 
 	private ListItem item;
 	

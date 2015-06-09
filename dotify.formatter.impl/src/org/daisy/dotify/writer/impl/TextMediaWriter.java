@@ -29,8 +29,8 @@ class TextMediaWriter implements PagedMediaWriter {
 	private int cRows;
 	private int cRowgap;
 	private boolean cDuplex;*/
-	private String encoding;
-	private StateObject state;
+	private final String encoding;
+	private final StateObject state;
 	
 	/**
 	 * Creates a new text media writer using with the specified encoding.

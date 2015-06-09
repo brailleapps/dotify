@@ -13,14 +13,14 @@ import org.daisy.dotify.formatter.impl.Segment.SegmentType;
  */
 
 class Block implements Cloneable {
-	private String blockId;
+	private final String blockId;
 	private FormattingTypes.BreakBefore breakBefore;
 	private FormattingTypes.Keep keep;
 	private int keepWithNext;
 	private int keepWithPreviousSheets;
 	private int keepWithNextSheets;
 	private String id;
-	private Stack<Segment> segments;
+	private final Stack<Segment> segments;
 	private final RowDataProperties.Builder rdp;
 	private BlockContentManager rdm;
 	private BlockPosition verticalPosition;
