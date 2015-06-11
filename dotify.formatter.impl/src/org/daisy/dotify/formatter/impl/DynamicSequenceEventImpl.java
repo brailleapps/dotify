@@ -34,7 +34,7 @@ class DynamicSequenceEventImpl implements VolumeSequence, DynamicSequenceBuilder
 		boolean hasContent = false;
 		for (BlockGroup b : formatters) {
 			List<Block> g = b.getBlocks(context, c, crh);
-			if (g.size()>0) {
+			if (!g.isEmpty()) {
 				if (b.isGenerated()) {
 					hasContent = true;
 				}

@@ -229,7 +229,7 @@ public class ObflParser extends XMLParserBase {
 				border.put(name, value);
 			}
 		}
-		if (border.size()>0) {
+		if (!border.isEmpty()) {
 			border.put(TextBorderFactory.FEATURE_MODE, mode);
 			try {
 				masterConfig.border(maker.newTextBorderStyle(border));
@@ -391,7 +391,7 @@ public class ObflParser extends XMLParserBase {
 				report(event);
 			}
 		}
-		if (fields.size()>0) {
+		if (!fields.isEmpty()) {
 			return new FieldList.Builder(fields).rowSpacing(rowSpacing).build();
 		} else {
 			return null;
@@ -648,7 +648,7 @@ public class ObflParser extends XMLParserBase {
 				border.put(name, att.getValue());
 			}
 		}
-		if (border.size()>0) {
+		if (!border.isEmpty()) {
 			border.put(TextBorderFactory.FEATURE_MODE, mode);
 			try {
 				builder.textBorderStyle(maker.newTextBorderStyle(border));

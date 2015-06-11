@@ -323,7 +323,7 @@ class PageSequenceBuilder extends PageSequence {
 							}
 						}
 					}
-					if (blk.size()>0) {
+					if (!blk.isEmpty()) {
 						newRow(row, blk);
 						//The text volume is reduced if row spacing increased
 						if (currentPage().pageAreaSpaceNeeded() > master.getPageArea().getMaxHeight()) {

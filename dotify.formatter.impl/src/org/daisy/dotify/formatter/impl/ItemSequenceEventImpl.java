@@ -62,7 +62,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 							refs.add(a);
 						}
 					}
-					if (refs.size()>0 && (range == ItemSequenceProperties.Range.DOCUMENT || (i+1)==vars.getCurrentVolume())) {
+					if (!refs.isEmpty() && (range == ItemSequenceProperties.Range.DOCUMENT || (i+1)==vars.getCurrentVolume())) {
 						hasContents = true;
 						{
 							ArrayList<Block> b = new ArrayList<Block>();

@@ -165,7 +165,7 @@ class PageImpl implements Page {
 	}
 	
 	float pageAreaSpaceNeeded() {
-		return (pageArea.size()>0 ? staticAreaSpaceNeeded() + rowsNeeded(pageArea, master.getRowSpacing()) : 0);
+		return (!pageArea.isEmpty() ? staticAreaSpaceNeeded() + rowsNeeded(pageArea, master.getRowSpacing()) : 0);
 	}
 	
 	/**
@@ -174,7 +174,7 @@ class PageImpl implements Page {
 	 * @return
 	 */
 	float spaceNeeded(Iterable<? extends Row> rs) {
-		return rowsNeeded(rs, master.getRowSpacing()) + (pageArea.size()==0 ? staticAreaSpaceNeeded() : 0);
+		return rowsNeeded(rs, master.getRowSpacing()) + (pageArea.isEmpty() ? staticAreaSpaceNeeded() : 0);
 	}
 	
 	int spaceUsedOnPage(int offs) {
@@ -195,19 +195,19 @@ class PageImpl implements Page {
 				PageTemplate t = lm.getTemplate(pagenum);
 				BrailleTranslator filter = fcontext.getTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
-				if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.TOP && pageArea.size() > 0) {
+				if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.TOP && !pageArea.isEmpty()) {
 					ret.addAll(before);
 					ret.addAll(pageArea);
 					ret.addAll(after);
 				}
 				ret.addAll(rows);
 				float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
-				if (t.getFooter().size() > 0 || border != TextBorderStyle.NONE || (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && pageArea.size() > 0)) {
+				if (!t.getFooter().isEmpty() || border != TextBorderStyle.NONE || (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && !pageArea.isEmpty())) {
 					float areaSize = (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM ? pageAreaSpaceNeeded() : 0);
 					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing()) + areaSize) < getFlowHeight() + headerHeight) {
 						ret.add(new RowImpl());
 					}
-					if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && pageArea.size() > 0) {
+					if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && !pageArea.isEmpty()) {
 						ret.addAll(before);
 						ret.addAll(pageArea);
 						ret.addAll(after);
