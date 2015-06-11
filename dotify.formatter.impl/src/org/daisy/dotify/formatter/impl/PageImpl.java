@@ -306,7 +306,7 @@ class PageImpl implements Page {
 	}
 	
 	String padLeft(int w, String text, MarginProperties leftMargin, MarginProperties rightMargin, FormattingTypes.Alignment align) {
-		if (text.equals("") && leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
+		if ("".equals(text) && leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
 			return "";
 		} else {
 			String r = leftMargin.getContent() + StringTools.fill(fcontext.getSpaceCharacter(), align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;

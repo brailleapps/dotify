@@ -217,14 +217,14 @@ public class ObflParser extends XMLParserBase {
 			Attribute atts = i.next();
 			String name = atts.getName().getLocalPart();
 			String value = atts.getValue();
-			if (name.equals("inner-margin")) {
+			if ("inner-margin".equals(name)) {
 				masterConfig.innerMargin(Integer.parseInt(value));
-			} else if (name.equals("outer-margin")) {
+			} else if ("outer-margin".equals(name)) {
 				masterConfig.outerMargin(Integer.parseInt(value));
-			} else if (name.equals("row-spacing")) {
+			} else if ("row-spacing".equals(name)) {
 				masterConfig.rowSpacing(Float.parseFloat(value));
-			} else if (name.equals("duplex")) {
-				masterConfig.duplex(value.equals("true"));
+			} else if ("duplex".equals(name)) {
+				masterConfig.duplex("true".equals(value));
 			}  else if (name.startsWith("border")) {
 				border.put(name, value);
 			}
@@ -266,7 +266,7 @@ public class ObflParser extends XMLParserBase {
 			Attribute atts = i.next();
 			String name = atts.getName().getLocalPart();
 			String value = atts.getValue();
-			if (name.equals("align")) {
+			if ("align".equals(name)) {
 				config.align(PageAreaProperties.Alignment.valueOf(value.toUpperCase()));
 			}
 		}
@@ -369,7 +369,7 @@ public class ObflParser extends XMLParserBase {
 			Attribute atts = i.next();
 			String name = atts.getName().getLocalPart();
 			String value = atts.getValue();
-			if (name.equals("row-spacing")) {
+			if ("row-spacing".equals(name)) {
 				rowSpacing = Float.parseFloat(value);
 			}
 		}
@@ -608,41 +608,41 @@ public class ObflParser extends XMLParserBase {
 		while (atts.hasNext()) {
 			Attribute att = atts.next();
 			String name = att.getName().getLocalPart();
-			if (name.equals("margin-left")) {
+			if ("margin-left".equals(name)) {
 				builder.leftMargin(Integer.parseInt(att.getValue()));
-			} else if (name.equals("margin-right")) {
+			} else if ("margin-right".equals(name)) {
 				builder.rightMargin(Integer.parseInt(att.getValue()));
-			} else if (name.equals("margin-top")) {
+			} else if ("margin-top".equals(name)) {
 				builder.topMargin(Integer.parseInt(att.getValue()));
-			} else if (name.equals("margin-bottom")) {
+			} else if ("margin-bottom".equals(name)) {
 				builder.bottomMargin(Integer.parseInt(att.getValue()));
-			} else if (name.equals("text-indent")) {
+			} else if ("text-indent".equals(name)) {
 				builder.textIndent(Integer.parseInt(att.getValue()));
-			} else if (name.equals("first-line-indent")) {
+			} else if ("first-line-indent".equals(name)) {
 				builder.firstLineIndent(Integer.parseInt(att.getValue()));
-			} else if (name.equals("list-type")) {
+			} else if ("list-type".equals(name)) {
 				builder.listType(FormattingTypes.ListStyle.valueOf(att.getValue().toUpperCase()));
-			} else if (name.equals("break-before")) {
+			} else if ("break-before".equals(name)) {
 				builder.breakBefore(FormattingTypes.BreakBefore.valueOf(att.getValue().toUpperCase()));
-			} else if (name.equals("keep")) {
+			} else if ("keep".equals(name)) {
 				builder.keep(FormattingTypes.Keep.valueOf(att.getValue().toUpperCase()));
-			} else if (name.equals("keep-with-next")) {
+			} else if ("keep-with-next".equals(name)) {
 				builder.keepWithNext(Integer.parseInt(att.getValue()));
-			} else if (name.equals("keep-with-previous-sheets")) {
+			} else if ("keep-with-previous-sheets".equals(name)) {
 				builder.keepWithPreviousSheets(Integer.parseInt(att.getValue()));
-			} else if (name.equals("keep-with-next-sheets")) {
+			} else if ("keep-with-next-sheets".equals(name)) {
 				builder.keepWithNextSheets(Integer.parseInt(att.getValue()));
-			} else if (name.equals("block-indent")) {
+			} else if ("block-indent".equals(name)) {
 				builder.blockIndent(Integer.parseInt(att.getValue()));
-			} else if (name.equals("id")) {
+			} else if ("id".equals(name)) {
 				builder.identifier(att.getValue());
-			} else if (name.equals("align")) {
+			} else if ("align".equals(name)) {
 				builder.align(FormattingTypes.Alignment.valueOf(att.getValue().toUpperCase()));
-			} else if (name.equals("vertical-position")) {
+			} else if ("vertical-position".equals(name)) {
 				builder.verticalPosition(Position.parsePosition(att.getValue()));
-			} else if (name.equals("vertical-align")) {
+			} else if ("vertical-align".equals(name)) {
 				builder.verticalAlignment(VerticalAlignment.valueOf(att.getValue().toUpperCase()));
-			} else if (name.equals("row-spacing")) {
+			} else if ("row-spacing".equals(name)) {
 				builder.rowSpacing(Float.parseFloat(att.getValue()));
 			} else if (name.startsWith("border")) {
 				border.put(name, att.getValue());
@@ -666,11 +666,11 @@ public class ObflParser extends XMLParserBase {
 		while (atts.hasNext()) {
 			Attribute att = atts.next();
 			String name = att.getName().getLocalPart();
-			if (name.equals("align")) {
+			if ("align".equals(name)) {
 				builder.align(Leader.Alignment.valueOf(att.getValue().toUpperCase()));
-			} else if (name.equals("position")) {
+			} else if ("position".equals(name)) {
 				builder.position(Position.parsePosition(att.getValue()));
-			} else if (name.equals("pattern")) {
+			} else if ("pattern".equals(name)) {
 				builder.pattern(att.getValue());
 			} else {
 				report(event);
@@ -1038,7 +1038,7 @@ public class ObflParser extends XMLParserBase {
 	private FilterLocale getLang(XMLEvent event, FilterLocale locale) {
 		String lang = getAttr(event, ObflQName.ATTR_XML_LANG);
 		if (lang!=null) {
-			if (lang.equals("")) {
+			if ("".equals(lang)) {
 				return null;
 			} else {
 				return FilterLocale.parse(lang);
@@ -1050,7 +1050,7 @@ public class ObflParser extends XMLParserBase {
 	private boolean getHyphenate(XMLEvent event, boolean hyphenate) {
 		String hyph = getAttr(event, ObflQName.ATTR_HYPHENATE);
 		if (hyph!=null) {
-			return hyph.equals("true");
+			return "true".equals(hyph);
 		}
 		return hyphenate;
 	}
