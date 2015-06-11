@@ -226,7 +226,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean smallerThan(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])<toNumber(input[i]))) {
+			if (!(toNumber(input[i-1])<toNumber(input[i]))) { //NOPMD it makes sense to write it in this way here, because it maps to the purpose of the method
 				return false;
 			}
 		}
@@ -235,7 +235,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean smallerThanOrEqualTo(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])<=toNumber(input[i]))) {
+			if (!(toNumber(input[i-1])<=toNumber(input[i]))) { //NOPMD it makes sense to write it in this way here, because it maps to the purpose of the method
 				return false;
 			}
 		}
@@ -244,7 +244,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean greaterThan(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])>toNumber(input[i]))) {
+			if (!(toNumber(input[i-1])>toNumber(input[i]))) { //NOPMD it makes sense to write it in this way here, because it maps to the purpose of the method
 				return false;
 			}
 		}
@@ -253,7 +253,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean greaterThanOrEqualTo(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])>=toNumber(input[i]))) {
+			if (!(toNumber(input[i-1])>=toNumber(input[i]))) { //NOPMD it makes sense to write it in this way here, because it maps to the purpose of the method
 				return false;
 			}
 		}
