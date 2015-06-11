@@ -216,7 +216,7 @@ class ExpressionImpl implements Expression {
 			return true;
 		} catch (ClassCastException e) {
 			for (int i=1; i<input.length; i++) { 
-				if (!(input[i-1]).equals((input[i]))) {
+				if (!(input[i-1]).equals(input[i])) {
 					return false;
 				}
 			}
@@ -226,7 +226,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean smallerThan(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])<toNumber((input[i])))) {
+			if (!(toNumber(input[i-1])<toNumber(input[i]))) {
 				return false;
 			}
 		}
@@ -235,7 +235,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean smallerThanOrEqualTo(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])<=toNumber((input[i])))) {
+			if (!(toNumber(input[i-1])<=toNumber(input[i]))) {
 				return false;
 			}
 		}
@@ -244,7 +244,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean greaterThan(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])>toNumber((input[i])))) {
+			if (!(toNumber(input[i-1])>toNumber(input[i]))) {
 				return false;
 			}
 		}
@@ -253,7 +253,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean greaterThanOrEqualTo(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!(toNumber(input[i-1])>=toNumber((input[i])))) {
+			if (!(toNumber(input[i-1])>=toNumber(input[i]))) {
 				return false;
 			}
 		}
@@ -262,7 +262,7 @@ class ExpressionImpl implements Expression {
 	
 	private static boolean and(Object[] input) {
 		for (int i=1; i<input.length; i++) { 
-			if (!((Boolean)(input[i-1]) & (Boolean)((input[i])))) {
+			if (!((Boolean)(input[i-1]) & (Boolean)(input[i]))) {
 				return false;
 			}
 		}
@@ -283,9 +283,9 @@ class ExpressionImpl implements Expression {
 			throw new IllegalArgumentException("Wrong number of arguments: (if arg1 arg2 arg3)");
 		}
 		if ((Boolean)(input[0])) {
-			return (input[1]);
+			return input[1];
 		} else {
-			return (input[2]);
+			return input[2];
 		}
 	}
 	

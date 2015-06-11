@@ -163,7 +163,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	public void insertMarker(Marker m) {
 		//FIXME: this does not work
-		getCurrentBlock().addSegment((new MarkerSegment(m)));
+		getCurrentBlock().addSegment(new MarkerSegment(m));
 	}
 	
 	public void insertAnchor(String ref) {

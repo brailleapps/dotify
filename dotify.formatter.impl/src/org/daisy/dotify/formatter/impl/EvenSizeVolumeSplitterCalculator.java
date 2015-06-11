@@ -54,10 +54,10 @@ class EvenSizeVolumeSplitterCalculator {
 		}
 		if (sheetIndex<sheetsPerVolumeBreakpoint) {
 			// the number of volumes with breakpoint sheets has not passed 
-			return (sheetIndex % breakpoint) == 0;
+			return sheetIndex % breakpoint == 0;
 		} else {
 			// offset the index with the full volumes and use breakpoint - 1 for the rest
-			return ((sheetIndex - sheetsPerVolumeBreakpoint) % (breakpoint - 1)) == 0;
+			return (sheetIndex - sheetsPerVolumeBreakpoint) % (breakpoint - 1) == 0;
 		}
 	}
 	

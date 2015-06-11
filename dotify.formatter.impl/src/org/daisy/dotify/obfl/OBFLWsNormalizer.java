@@ -177,7 +177,7 @@ public class OBFLWsNormalizer extends XMLParserBase {
 						}
 					} else if (followingEvent.isStartElement() && endWSMatch && isPreserveElement(followingEvent.asStartElement().getName())) {
 						post = " ";
-					} else if ((equalsStart(followingEvent, ObflQName.SPAN, ObflQName.STYLE)) && endWSMatch) {
+					} else if (equalsStart(followingEvent, ObflQName.SPAN, ObflQName.STYLE) && endWSMatch) {
 						post = " ";
 					} else if (followingEvent.isStartElement()) {
 						int j = untilEventIsNotForward(events, i + 1, XMLStreamConstants.START_ELEMENT);

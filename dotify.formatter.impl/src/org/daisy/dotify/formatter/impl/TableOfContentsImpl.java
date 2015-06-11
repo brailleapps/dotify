@@ -37,7 +37,7 @@ class TableOfContentsImpl extends FormatterCoreImpl implements TableOfContents  
 	public void startEntry(String refId, BlockProperties props) {
 		String tocId;
 		do {
-			tocId = ""+((int)Math.round((99999999*Math.random())));
+			tocId = ""+((int)Math.round(99999999*Math.random()));
 		} while (containsTocID(tocId));
 		if (refs.put(tocId, refId)!=null) {
 			throw new RuntimeException("Identifier is not unique: " + tocId);

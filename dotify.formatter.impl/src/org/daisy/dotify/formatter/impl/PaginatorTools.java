@@ -31,7 +31,7 @@ class PaginatorTools {
 		for (String s : units) {
 			chunksLength += s.codePointCount(0, s.length());
 		}
-		int totalSpace = (width-chunksLength);
+		int totalSpace = width-chunksLength;
 		int parts = units.size()-1;
 		double target = totalSpace/(double)parts;
 		int used = 0;
