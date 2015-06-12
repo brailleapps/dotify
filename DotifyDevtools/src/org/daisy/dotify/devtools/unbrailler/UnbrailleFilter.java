@@ -9,7 +9,7 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 
-import org.daisy.braille.table.BrailleConverter;
+import org.daisy.braille.api.table.BrailleConverter;
 
 class UnbrailleFilter extends StaxFilter2 {
 	private final static String PEF_NS = "http://www.daisy.org/ns/2008/pef";

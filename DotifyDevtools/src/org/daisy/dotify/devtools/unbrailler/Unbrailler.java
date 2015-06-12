@@ -11,9 +11,9 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.daisy.braille.api.factory.FactoryProperties;
-import org.daisy.braille.table.BrailleConverter;
-import org.daisy.braille.table.Table;
-import org.daisy.braille.table.TableCatalog;
+import org.daisy.braille.api.table.BrailleConverter;
+import org.daisy.braille.api.table.Table;
+import org.daisy.braille.consumer.table.TableCatalog;
 
 public class Unbrailler {
 	private final XMLInputFactory inFactory;

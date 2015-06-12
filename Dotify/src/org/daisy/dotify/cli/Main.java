@@ -14,15 +14,15 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.daisy.braille.api.embosser.EmbosserFactoryException;
 import org.daisy.braille.api.factory.Factory;
 import org.daisy.braille.api.factory.FactoryCatalog;
 import org.daisy.braille.api.factory.FactoryProperties;
-import org.daisy.braille.embosser.EmbosserCatalog;
-import org.daisy.braille.embosser.EmbosserFactoryException;
-import org.daisy.braille.embosser.UnsupportedWidthException;
-import org.daisy.braille.facade.PEFConverterFacade;
+import org.daisy.braille.consumer.embosser.EmbosserCatalog;
+import org.daisy.braille.consumer.table.TableCatalog;
+import org.daisy.braille.pef.PEFConverterFacade;
 import org.daisy.braille.pef.PEFValidator;
-import org.daisy.braille.table.TableCatalog;
+import org.daisy.braille.pef.UnsupportedWidthException;
 import org.daisy.cli.AbstractUI;
 import org.daisy.cli.Argument;
 import org.daisy.cli.CommandParserResult;
