@@ -295,7 +295,7 @@ public class Main extends AbstractUI {
 	 * @param resolver 
 	 * @return returns a list of definitions
 	 */
-	List<Definition> getDefinitionList(FactoryCatalog<? extends Factory, ? extends FactoryProperties> catalog, ShortFormResolver resolver) {
+	List<Definition> getDefinitionList(FactoryCatalog<? extends Factory> catalog, ShortFormResolver resolver) {
 		List<Definition> ret = new ArrayList<Definition>();
 		for (String key : resolver.getShortForms()) {
 			ret.add(new Definition(key, catalog.get(resolver.resolve(key)).getDescription()));
