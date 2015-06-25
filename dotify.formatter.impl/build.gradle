@@ -18,7 +18,7 @@ dependencies {
     testCompile group: "junit", name: "junit", version: "4.7"
     testCompile 'org.daisy.braille:braille-utils.api:2.0.0'
     testCompile 'org.daisy.braille:braille-utils.pef-tools:1.0.0'
-    testCompile "org.mockito:mockito-core:1.+"
+    testCompile "org.mockito:mockito-core:1.10.19"
     
 	testRuntime group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
 	testRuntime group: group, name:'dotify.text.impl', version:'1.0.0'
