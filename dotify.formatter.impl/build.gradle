@@ -5,8 +5,8 @@ apply plugin: "org.dm.bundle"
 
 repositories {
     mavenCentral()
-    mavenLocal()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    //mavenLocal()
+    //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
@@ -16,8 +16,8 @@ dependencies {
 
     runtime group: 'woodstox', name: 'wstx-lgpl', version: '3.2.7'
     testCompile group: "junit", name: "junit", version: "4.7"
-    testCompile group: "org.daisy.braille", name: "braille-utils.api", version: "2.0.0-SNAPSHOT"
-    testCompile 'org.daisy.braille:braille-utils.pef-tools:1.0.0-SNAPSHOT'
+    testCompile 'org.daisy.braille:braille-utils.api:2.0.0'
+    testCompile 'org.daisy.braille:braille-utils.pef-tools:1.0.0'
     testCompile "org.mockito:mockito-core:1.+"
     
 	testRuntime group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
@@ -83,7 +83,7 @@ uploadArchives {
             pom.project {
                 name 'dotify.formatter.impl'
                 packaging 'jar'
-                description 'Dotify Braille Formatter'
+                description 'Dotify Formatter'
                 url 'https://github.com/joeha480/dotify/'
                 scm {
                     connection 'scm:git:https://github.com/joeha480/dotify.git'
