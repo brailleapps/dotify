@@ -54,7 +54,7 @@ jar.doFirst {
 		'Implementation-Title': "$releaseName",
 		'Implementation-Version': "$releaseVersion",
 		'Implementation-URL': "$releaseURL",
-		'Class-Path': configurations.compile.collect { it.getName() }.join(' ')			//'${core.classpath.attribute}'
+		'Class-Path': configurations.runtime.collect { it.getName() }.join(' ')			//'${core.classpath.attribute}'
 		)
 	}
 	from sourceSets.main.allJava
@@ -62,36 +62,35 @@ jar.doFirst {
 }
 
 repositories {
-    mavenCentral()
-    mavenLocal()
+	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
-	compile group: 'org.daisy.braille', name:'brailleUtils-ui', version:'2.0.0-SNAPSHOT'
-	compile 'org.daisy.braille:braille-utils.pef-tools:1.0.0-SNAPSHOT'
+	compile 'org.daisy.braille:brailleUtils-ui:2.0.0-SNAPSHOT'
+	compile 'org.daisy.braille:braille-utils.pef-tools:1.0.0'
+	compile 'org.daisy.dotify:dotify.api:1.0.0'
+	compile 'org.daisy.dotify:dotify.common:1.1.0-SNAPSHOT'
 
-	compile group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
-	compile group: group, name:'dotify.formatter.impl', version:'1.0.0-SNAPSHOT'
-	compile group: group, name:'dotify.text.impl', version:'1.0.0'
-	compile group: group, name:'dotify.translator.impl', version:'1.0.0'
-	
-	compile group: "com.googlecode.texhyphj", name: "texhyphj", version: "1.2"
-	compile "org.daisy.dotify:dotify.common:1.+"
-	
-	compile 'xerces:xercesImpl:2.11.0'
-	
+	runtime 'org.daisy.dotify:dotify.formatter.impl:1.0.0'
+	runtime 'org.daisy.dotify:dotify.hyphenator.impl:1.0.0'
+	runtime 'org.daisy.dotify:dotify.text.impl:1.0.0'
+	runtime 'org.daisy.dotify:dotify.translator.impl:1.0.0'
+	runtime group: "com.googlecode.texhyphj", name: "texhyphj", version: "1.2"
+	runtime 'xerces:xercesImpl:2.11.0'
+
 	testCompile group: 'junit', name: 'junit', version: "$versions.junit"
-    
-    testCompile "javax.inject:javax.inject:1"
-    testCompile "org.ops4j.pax.exam:pax-exam-junit4:$versions.paxExam"
-    testRuntime "org.ops4j.pax.exam:pax-exam-container-native:$versions.paxExam"
-    testRuntime "org.ops4j.pax.exam:pax-exam-link-mvn:$versions.paxExam"
-    testRuntime "org.ops4j.pax.url:pax-url-aether:$versions.paxUrl"
-    testRuntime "org.ops4j.pax.url:pax-url-reference:$versions.paxUrl"
-    testRuntime "org.ops4j.pax.url:pax-url-wrap:$versions.paxUrl"
-    testRuntime "org.apache.felix:org.apache.felix.framework:$versions.felix"
-    testCompile("org.osgi:org.osgi.core:$versions.osgi")
-    testCompile("org.osgi:org.osgi.compendium:$versions.osgi")
+
+	testCompile "javax.inject:javax.inject:1"
+	testCompile "org.ops4j.pax.exam:pax-exam-junit4:$versions.paxExam"
+	testRuntime "org.ops4j.pax.exam:pax-exam-container-native:$versions.paxExam"
+	testRuntime "org.ops4j.pax.exam:pax-exam-link-mvn:$versions.paxExam"
+	testRuntime "org.ops4j.pax.url:pax-url-aether:$versions.paxUrl"
+	testRuntime "org.ops4j.pax.url:pax-url-reference:$versions.paxUrl"
+	testRuntime "org.ops4j.pax.url:pax-url-wrap:$versions.paxUrl"
+	testRuntime "org.apache.felix:org.apache.felix.framework:$versions.felix"
+	testCompile("org.osgi:org.osgi.core:$versions.osgi")
+	testCompile("org.osgi:org.osgi.compendium:$versions.osgi")
 }
 task xsltdoc() << {
 	ant {
