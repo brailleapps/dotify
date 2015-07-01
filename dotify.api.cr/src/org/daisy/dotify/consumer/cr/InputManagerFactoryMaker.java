@@ -1,4 +1,4 @@
-package org.daisy.dotify.input;
+package org.daisy.dotify.consumer.cr;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -3,6 +3,7 @@ package org.daisy.dotify.input;
 import static org.junit.Assert.assertTrue;
 
 import org.daisy.dotify.common.text.FilterLocale;
+import org.daisy.dotify.consumer.cr.InputManagerFactoryMaker;
 import org.junit.Test;
 
 public class InputManagerFactoryMakerTest {

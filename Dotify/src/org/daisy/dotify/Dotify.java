@@ -23,7 +23,7 @@ import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.common.xml.XMLTools;
 import org.daisy.dotify.common.xml.XMLToolsException;
 import org.daisy.dotify.config.ConfigurationsCatalog;
-import org.daisy.dotify.input.InputManagerFactoryMaker;
+import org.daisy.dotify.consumer.cr.InputManagerFactoryMaker;
 import org.daisy.dotify.system.TaskRunner;
 import org.daisy.dotify.system.TaskSystemFactoryMaker;
 import org.daisy.dotify.tools.ResourceLocatorException;
