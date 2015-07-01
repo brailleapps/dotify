@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.daisy.dotify.input.InputManager;
-import org.daisy.dotify.system.InternalTask;
-import org.daisy.dotify.system.TaskSystemException;
+import org.daisy.dotify.api.cr.InputManager;
+import org.daisy.dotify.api.cr.InternalTask;
+import org.daisy.dotify.api.cr.TaskSystemException;
 import org.daisy.dotify.system.XsltTask;
 
 public class Epub3InputManager implements InputManager {

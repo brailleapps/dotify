@@ -3,6 +3,8 @@ package org.daisy.dotify.system;
 import java.io.File;
 import java.io.IOException;
 
+import org.daisy.dotify.api.cr.InternalTaskException;
+import org.daisy.dotify.api.cr.ReadOnlyTask;
 import org.daisy.dotify.common.io.FileIO;
 
 /**

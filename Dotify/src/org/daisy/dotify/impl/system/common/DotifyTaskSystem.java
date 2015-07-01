@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.api.cr.InputManager;
+import org.daisy.dotify.api.cr.InternalTask;
+import org.daisy.dotify.api.cr.TaskSystem;
+import org.daisy.dotify.api.cr.TaskSystemException;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
@@ -13,12 +17,8 @@ import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
-import org.daisy.dotify.input.InputManager;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
-import org.daisy.dotify.system.InternalTask;
 import org.daisy.dotify.system.LayoutEngineTask;
-import org.daisy.dotify.system.TaskSystem;
-import org.daisy.dotify.system.TaskSystemException;
 
 
 /**

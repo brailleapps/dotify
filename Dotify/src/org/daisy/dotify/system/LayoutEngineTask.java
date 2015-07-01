@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.cr.InternalTaskException;
+import org.daisy.dotify.api.cr.ReadWriteTask;
 import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.LayoutEngineException;
 import org.daisy.dotify.api.writer.PagedMediaWriter;

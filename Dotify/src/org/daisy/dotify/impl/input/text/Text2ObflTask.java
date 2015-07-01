@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.ReadWriteTask;
+import org.daisy.dotify.api.cr.InternalTaskException;
+import org.daisy.dotify.api.cr.ReadWriteTask;
 
 class Text2ObflTask extends ReadWriteTask {
 	private final String encoding;

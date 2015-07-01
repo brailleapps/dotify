@@ -2,8 +2,8 @@ package org.daisy.dotify.impl.input.epub;
 
 import java.io.File;
 
-import org.daisy.dotify.system.InternalTaskException;
-import org.daisy.dotify.system.ReadWriteTask;
+import org.daisy.dotify.api.cr.InternalTaskException;
+import org.daisy.dotify.api.cr.ReadWriteTask;
 
 public class Epub3Task extends ReadWriteTask {
 

@@ -34,13 +34,13 @@ import org.daisy.cli.SwitchArgument;
 import org.daisy.dotify.Dotify;
 import org.daisy.dotify.SystemKeys;
 import org.daisy.dotify.SystemProperties;
+import org.daisy.dotify.api.cr.InternalTaskException;
+import org.daisy.dotify.api.cr.TaskSystemFactoryException;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.system.InternalTaskException;
 import org.daisy.dotify.system.TaskRunner;
-import org.daisy.dotify.system.TaskSystemFactoryException;
 import org.xml.sax.SAXException;
 
 /**

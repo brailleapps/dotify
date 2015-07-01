@@ -1,6 +1,5 @@
-package org.daisy.dotify.input;
+package org.daisy.dotify.api.cr;
 
-import org.daisy.dotify.system.TaskSystem;
 
 /**
  * An input manager is a task system that is responsible for converting

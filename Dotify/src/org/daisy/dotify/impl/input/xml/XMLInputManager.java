@@ -15,12 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.api.cr.InputManager;
+import org.daisy.dotify.api.cr.InternalTask;
+import org.daisy.dotify.api.cr.TaskSystemException;
 import org.daisy.dotify.common.xml.XMLInfo;
 import org.daisy.dotify.common.xml.XMLTools;
 import org.daisy.dotify.common.xml.XMLToolsException;
-import org.daisy.dotify.input.InputManager;
-import org.daisy.dotify.system.InternalTask;
-import org.daisy.dotify.system.TaskSystemException;
 import org.daisy.dotify.system.ValidatorTask;
 import org.daisy.dotify.system.XsltTask;
 import org.daisy.dotify.tools.ResourceLocator;

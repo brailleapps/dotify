@@ -1,8 +1,6 @@
-package org.daisy.dotify.input;
+package org.daisy.dotify.api.cr;
 
 import java.util.Set;
-
-import org.daisy.dotify.common.text.FilterLocale;
 
 /**
  * Provides an interface for input manager factories. An input manager
@@ -18,14 +16,14 @@ public interface InputManagerFactory {
 	 * @param locale the locale to test
 	 * @return true if this factory can create instances for the specified locale, false otherwise
 	 */
-	public boolean supportsSpecification(FilterLocale locale, String fileFormat);
+	public boolean supportsSpecification(String locale, String fileFormat);
 	
 	/**
 	 * Returns a new input manager configured for the specified locale.
 	 * @param locale the locale for the new input manager
 	 * @return returns a new input manager
 	 */
-	public InputManager newInputManager(FilterLocale locale, String fileFormat);
+	public InputManager newInputManager(String locale, String fileFormat);
 	
 	/**
 	 * Lists the supported locales.

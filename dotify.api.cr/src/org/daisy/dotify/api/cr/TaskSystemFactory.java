@@ -1,6 +1,5 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.api.cr;
 
-import org.daisy.dotify.common.text.FilterLocale;
 
 /**
  * Provides an interface for task system factories. A
@@ -17,7 +16,7 @@ public interface TaskSystemFactory {
 	 * @param outputFormat the desired output format
 	 * @return returns true if this factory can create instances with the desired properties, false otherwise
 	 */
-	public boolean supportsSpecification(FilterLocale locale, String outputFormat);
+	public boolean supportsSpecification(String locale, String outputFormat);
 	
 	/**
 	 * Creates a new task system with the given properties.
@@ -26,6 +25,6 @@ public interface TaskSystemFactory {
 	 * @return returns a new task system
 	 * @throws TaskSystemFactoryException if a task system with these properties cannot be created
 	 */
-	public TaskSystem newTaskSystem(FilterLocale locale, String outputFormat) throws TaskSystemFactoryException;
+	public TaskSystem newTaskSystem(String locale, String outputFormat) throws TaskSystemFactoryException;
 	
 }
