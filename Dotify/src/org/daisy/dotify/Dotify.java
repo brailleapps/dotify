@@ -24,8 +24,8 @@ import org.daisy.dotify.common.xml.XMLTools;
 import org.daisy.dotify.common.xml.XMLToolsException;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.cr.InputManagerFactoryMaker;
+import org.daisy.dotify.consumer.cr.TaskSystemFactoryMaker;
 import org.daisy.dotify.system.TaskRunner;
-import org.daisy.dotify.system.TaskSystemFactoryMaker;
 import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
@@ -167,7 +167,7 @@ public class Dotify {
 
 		// Run tasks
 		try {
-			TaskSystem ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context);
+			TaskSystem ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context.toString());
 			try {
 				tr.runTasks(input, output, ts, rp);
 			} catch (TaskSystemException e) {

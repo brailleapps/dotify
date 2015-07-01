@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.consumer.cr;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import org.daisy.dotify.api.cr.TaskSystem;
 import org.daisy.dotify.api.cr.TaskSystemFactory;
 import org.daisy.dotify.api.cr.TaskSystemFactoryException;
-import org.daisy.dotify.common.text.FilterLocale;
 
 
 /**
@@ -70,7 +69,7 @@ public class TaskSystemFactoryMaker {
 	/**
 	 *  Gets a task system for the specified output format and context
 	 */
-	public TaskSystem newTaskSystem(String outputFormat, FilterLocale context) throws TaskSystemFactoryException {
-		return getFactory(context.toString(), outputFormat).newTaskSystem(context.toString(), outputFormat);
+	public TaskSystem newTaskSystem(String outputFormat, String context) throws TaskSystemFactoryException {
+		return getFactory(context, outputFormat).newTaskSystem(context, outputFormat);
 	}
 }
