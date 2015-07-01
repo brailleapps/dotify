@@ -8,7 +8,7 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.tools.ResourceLocatorException;
+import org.daisy.dotify.common.io.ResourceLocatorException;
 
 /**
  * Provides a catalog of configurations available to the input system. The catalog 

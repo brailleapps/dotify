@@ -3,7 +3,7 @@ package org.daisy.dotify.config;
 import java.util.Properties;
 import java.util.Set;
 
-import org.daisy.dotify.tools.ResourceLocatorException;
+import org.daisy.dotify.common.io.ResourceLocatorException;
 
 /**
  * Provides an interface for configurations providers. A configurations

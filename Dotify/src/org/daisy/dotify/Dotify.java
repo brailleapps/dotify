@@ -19,6 +19,7 @@ import org.daisy.dotify.api.cr.InternalTaskException;
 import org.daisy.dotify.api.cr.TaskSystem;
 import org.daisy.dotify.api.cr.TaskSystemException;
 import org.daisy.dotify.api.cr.TaskSystemFactoryException;
+import org.daisy.dotify.common.io.ResourceLocatorException;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.common.xml.XMLTools;
 import org.daisy.dotify.common.xml.XMLToolsException;
@@ -26,7 +27,6 @@ import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.cr.InputManagerFactoryMaker;
 import org.daisy.dotify.consumer.cr.TaskSystemFactoryMaker;
 import org.daisy.dotify.system.TaskRunner;
-import org.daisy.dotify.tools.ResourceLocatorException;
 
 /**
  * Provides an entry point for simple embedding of Dotify. To run, call <tt>Dotify.run</tt>.
