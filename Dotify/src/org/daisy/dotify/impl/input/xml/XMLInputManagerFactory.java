@@ -13,6 +13,8 @@ import org.daisy.dotify.api.cr.InputManagerFactory;
 import org.daisy.dotify.tools.AbstractResourceLocator;
 import org.daisy.dotify.tools.ResourceLocator;
 
+import aQute.bnd.annotation.component.Component;
+
 /**
  * Provides an XML input manager factory. This can be used when implementing
  * XML-formats in this package. It is specifically designed to inject the 
@@ -23,6 +25,7 @@ import org.daisy.dotify.tools.ResourceLocator;
  * @author Joel Håkansson
  *
  */
+@Component
 public class XMLInputManagerFactory implements InputManagerFactory {
 	private final Whatever locator;
 	private final Set<String> supportedFormats;

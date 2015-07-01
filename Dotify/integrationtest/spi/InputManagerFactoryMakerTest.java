@@ -1,4 +1,4 @@
-package org.daisy.dotify.input;
+package spi;
 
 import static org.junit.Assert.assertTrue;
 
@@ -26,5 +26,4 @@ public class InputManagerFactoryMakerTest {
 		//Test
 		assertTrue(factory.getFactory(locale.toString(), "xml")!=null);
 	}
-
 }

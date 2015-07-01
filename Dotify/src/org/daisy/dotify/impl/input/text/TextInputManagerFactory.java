@@ -6,6 +6,9 @@ import java.util.Set;
 import org.daisy.dotify.api.cr.InputManager;
 import org.daisy.dotify.api.cr.InputManagerFactory;
 
+import aQute.bnd.annotation.component.Component;
+
+@Component
 public class TextInputManagerFactory implements InputManagerFactory {
 	private final Set<String> locales;
 	private final Set<String> formats;

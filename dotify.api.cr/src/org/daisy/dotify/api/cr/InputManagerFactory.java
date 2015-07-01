@@ -3,9 +3,16 @@ package org.daisy.dotify.api.cr;
 import java.util.Set;
 
 /**
- * Provides an interface for input manager factories. An input manager
- * factory implementation provides input managers for a any number of 
- * supported specifications.
+ * <p>Provides an interface for input manager factories. The purpose of this
+ * interface is to expose an implementation of an InputManager.
+ * An input manager factory implementation provides input managers for
+ * a any number of supported specifications.</p>
+ * 
+ * <p>
+ * To comply with this interface, an implementation must be thread safe and
+ * address both the possibility that only a single instance is created and used
+ * throughout and that new instances are created as desired.
+ * </p>
  * 
  * @author Joel Håkansson
  */
