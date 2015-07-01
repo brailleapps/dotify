@@ -3,9 +3,8 @@ package org.daisy.dotify.impl.input.epub;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.daisy.dotify.common.text.FilterLocale;
-import org.daisy.dotify.input.InputManager;
-import org.daisy.dotify.input.InputManagerFactory;
+import org.daisy.dotify.api.cr.InputManager;
+import org.daisy.dotify.api.cr.InputManagerFactory;
 
 public class Epub3InputManagerFactory implements InputManagerFactory {
 	private final Set<String> supportedLocales;
@@ -29,11 +28,11 @@ public class Epub3InputManagerFactory implements InputManagerFactory {
 		return supportedFileFormats;
 	}
 
-	public boolean supportsSpecification(FilterLocale locale, String fileFormat) {
+	public boolean supportsSpecification(String locale, String fileFormat) {
 		return supportedFileFormats.contains(fileFormat);
 	}
 
-	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
+	public InputManager newInputManager(String locale, String fileFormat) {
 		if (supportsSpecification(locale, fileFormat)) {
 			return new Epub3InputManager();
 		}

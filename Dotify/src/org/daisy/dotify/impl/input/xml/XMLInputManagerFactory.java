@@ -8,9 +8,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.common.text.FilterLocale;
-import org.daisy.dotify.input.InputManager;
-import org.daisy.dotify.input.InputManagerFactory;
+import org.daisy.dotify.api.cr.InputManager;
+import org.daisy.dotify.api.cr.InputManagerFactory;
 import org.daisy.dotify.tools.AbstractResourceLocator;
 import org.daisy.dotify.tools.ResourceLocator;
 
@@ -35,7 +34,7 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 		supportedFormats.add("xml");
 	}
 
-	public boolean supportsSpecification(FilterLocale locale, String fileFormat) {
+	public boolean supportsSpecification(String locale, String fileFormat) {
 		return locator.supportsLocale(locale) && supportedFormats.contains(fileFormat);
 	}
 	
@@ -47,7 +46,7 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 		return supportedFormats;
 	}
 
-	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
+	public InputManager newInputManager(String locale, String fileFormat) {
         return new XMLInputManager(locator.getResourceLocator(locale), new CommonResourceLocator("resource-files/common"));
 	}
 
@@ -96,8 +95,8 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 		 * @param locale the locale to test
 		 * @return returns true if the locale is supported, false otherwise
 		 */
-		public boolean supportsLocale(FilterLocale locale) {
-			return locales.getProperty(locale.toString())!=null;
+		public boolean supportsLocale(String locale) {
+			return locales.getProperty(locale)!=null;
 		}
 		
 		/**
@@ -119,10 +118,10 @@ public class XMLInputManagerFactory implements InputManagerFactory {
 		 * @return returns a resource locator
 		 * @throws IllegalArgumentException if the locale is not supported
 		 */
-		public ResourceLocator getResourceLocator(FilterLocale locale) {
-			String languageFileRelativePath = locales.getProperty(locale.toString());
+		public ResourceLocator getResourceLocator(String locale) {
+			String languageFileRelativePath = locales.getProperty(locale);
 	        if(languageFileRelativePath==null) {
-	        	throw new IllegalArgumentException("Locale not supported: " + locale.toString());
+	        	throw new IllegalArgumentException("Locale not supported: " + locale);
 	        } else {
 	        	return new InputLocalizationResourceLocator(languageFileRelativePath);
 	        }

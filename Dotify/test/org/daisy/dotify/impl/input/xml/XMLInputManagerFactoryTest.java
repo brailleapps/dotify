@@ -23,7 +23,7 @@ public class XMLInputManagerFactoryTest {
 		FilterLocale filter = FilterLocale.parse("en-US");
 		
 		//Test
-		assertTrue(factory.newInputManager(filter, "xml")!=null);
+		assertTrue(factory.newInputManager(filter.toString(), "xml")!=null);
 	}
 
 	
@@ -34,7 +34,7 @@ public class XMLInputManagerFactoryTest {
 		FilterLocale filter = FilterLocale.parse("sv-SE");
 		
 		//Test
-		assertTrue(factory.newInputManager(filter, "xml")!=null);
+		assertTrue(factory.newInputManager(filter.toString(), "xml")!=null);
 	}
 	/*
 	@Test
@@ -54,6 +54,6 @@ public class XMLInputManagerFactoryTest {
 		FilterLocale filter = FilterLocale.parse("fi");
 		
 		//Test
-		assertTrue(factory.newInputManager(filter, "xml")!=null);
+		assertTrue(factory.newInputManager(filter.toString(), "xml")!=null);
 	}
 }

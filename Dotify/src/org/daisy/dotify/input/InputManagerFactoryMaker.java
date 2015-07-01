@@ -10,7 +10,8 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.common.text.FilterLocale;
+import org.daisy.dotify.api.cr.InputManager;
+import org.daisy.dotify.api.cr.InputManagerFactory;
 
 /**
  * Provides a factory maker for input manager factories, that is to say a collection of 
@@ -29,13 +30,13 @@ public abstract class InputManagerFactoryMaker {
 		return new DefaultInputManagerFactoryMaker();
 	}
 
-	public abstract InputManagerFactory getFactory(FilterLocale locale, String fileFormat);
+	public abstract InputManagerFactory getFactory(String locale, String fileFormat);
 	
 	public abstract Set<String> listSupportedLocales();
 
 	public abstract Set<String> listSupportedFileFormats();
 
-	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
+	public InputManager newInputManager(String locale, String fileFormat) {
 		Logger.getLogger(this.getClass().getCanonicalName()).fine("Attempt to locate an input manager for " + locale + "/" + fileFormat);
 		return getFactory(locale, fileFormat).newInputManager(locale, fileFormat);
 	}
@@ -55,11 +56,11 @@ public abstract class InputManagerFactoryMaker {
 			this.map = new HashMap<String, InputManagerFactory>();
 		}
 		
-		private static String toKey(FilterLocale context, String fileFormat) {
+		private static String toKey(String context, String fileFormat) {
 			return context.toString() + "(" + fileFormat + ")";
 		}
 		
-		public InputManagerFactory getFactory(FilterLocale locale, String fileFormat) {
+		public InputManagerFactory getFactory(String locale, String fileFormat) {
 			InputManagerFactory template = map.get(toKey(locale, fileFormat));
 			if (template==null) {
 				for (InputManagerFactory h : filters) {

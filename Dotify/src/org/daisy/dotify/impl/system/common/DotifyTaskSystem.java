@@ -15,7 +15,6 @@ import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
-import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
 import org.daisy.dotify.input.InputManagerFactoryMaker;
 import org.daisy.dotify.system.LayoutEngineTask;
@@ -40,10 +39,10 @@ import org.daisy.dotify.system.LayoutEngineTask;
  */
 public class DotifyTaskSystem implements TaskSystem {
 	private final String outputFormat;
-	private final FilterLocale context;
+	private final String context;
 	private final String name;
 	
-	public DotifyTaskSystem(String name, String outputFormat, FilterLocale context) {
+	public DotifyTaskSystem(String name, String outputFormat, String context) {
 		this.context = context;
 		this.outputFormat = outputFormat;
 		this.name = name;

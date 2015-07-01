@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.cr.TaskSystem;
+import org.daisy.dotify.api.cr.TaskSystemFactory;
+import org.daisy.dotify.api.cr.TaskSystemFactoryException;
 import org.daisy.dotify.common.text.FilterLocale;
 
 
@@ -42,11 +45,11 @@ public class TaskSystemFactoryMaker {
 		return new TaskSystemFactoryMaker();
 	}
 	
-	private static String toKey(FilterLocale context, String outputFormat) {
+	private static String toKey(String context, String outputFormat) {
 		return context.toString() + "(" + outputFormat + ")";
 	}
 	
-	public TaskSystemFactory getFactory(FilterLocale locale, String outputFormat) throws TaskSystemFactoryException {
+	public TaskSystemFactory getFactory(String locale, String outputFormat) throws TaskSystemFactoryException {
 		TaskSystemFactory template = map.get(toKey(locale, outputFormat));
 		if (template==null) {
 			for (TaskSystemFactory h : filters) {
@@ -68,6 +71,6 @@ public class TaskSystemFactoryMaker {
 	 *  Gets a task system for the specified output format and context
 	 */
 	public TaskSystem newTaskSystem(String outputFormat, FilterLocale context) throws TaskSystemFactoryException {
-		return getFactory(context, outputFormat).newTaskSystem(context, outputFormat);
+		return getFactory(context.toString(), outputFormat).newTaskSystem(context.toString(), outputFormat);
 	}
 }

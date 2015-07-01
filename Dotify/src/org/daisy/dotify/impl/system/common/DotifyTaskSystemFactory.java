@@ -1,10 +1,10 @@
 package org.daisy.dotify.impl.system.common;
 
 import org.daisy.dotify.SystemKeys;
+import org.daisy.dotify.api.cr.TaskSystem;
+import org.daisy.dotify.api.cr.TaskSystemFactory;
+import org.daisy.dotify.api.cr.TaskSystemFactoryException;
 import org.daisy.dotify.common.text.FilterLocale;
-import org.daisy.dotify.system.TaskSystem;
-import org.daisy.dotify.system.TaskSystemFactory;
-import org.daisy.dotify.system.TaskSystemFactoryException;
 
 /**
  * Provides a default task system factory for PEF, OBFL and text output.
@@ -13,14 +13,14 @@ import org.daisy.dotify.system.TaskSystemFactoryException;
  */
 public class DotifyTaskSystemFactory implements TaskSystemFactory {
 
-	public boolean supportsSpecification(FilterLocale locale, String outputFormat) {
+	public boolean supportsSpecification(String locale, String outputFormat) {
 		//TODO: remove conditions guard once possible 
-		return locale.equals(FilterLocale.parse("sv-SE")) && 
+		return FilterLocale.parse(locale).equals(FilterLocale.parse("sv-SE")) && 
 				(SystemKeys.PEF_FORMAT.equals(outputFormat) || SystemKeys.OBFL_FORMAT.equals(outputFormat))
 				|| SystemKeys.TEXT_FORMAT.equals(outputFormat);
 	}
 
-	public TaskSystem newTaskSystem(FilterLocale locale, String outputFormat) throws TaskSystemFactoryException {
+	public TaskSystem newTaskSystem(String locale, String outputFormat) throws TaskSystemFactoryException {
 		if (supportsSpecification(locale, outputFormat)) {
 			return new DotifyTaskSystem("Dotify Task System", outputFormat, locale);
 		}

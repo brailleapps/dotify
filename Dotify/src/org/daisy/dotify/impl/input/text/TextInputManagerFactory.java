@@ -3,9 +3,8 @@ package org.daisy.dotify.impl.input.text;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.daisy.dotify.common.text.FilterLocale;
-import org.daisy.dotify.input.InputManager;
-import org.daisy.dotify.input.InputManagerFactory;
+import org.daisy.dotify.api.cr.InputManager;
+import org.daisy.dotify.api.cr.InputManagerFactory;
 
 public class TextInputManagerFactory implements InputManagerFactory {
 	private final Set<String> locales;
@@ -20,12 +19,12 @@ public class TextInputManagerFactory implements InputManagerFactory {
 		this.formats.add("txt");
 	}
 
-	public boolean supportsSpecification(FilterLocale locale, String fileFormat) {
+	public boolean supportsSpecification(String locale, String fileFormat) {
 		return formats.contains(fileFormat);
 	}
 
-	public InputManager newInputManager(FilterLocale locale, String fileFormat) {
-		return new TextInputManager(locale.toString());
+	public InputManager newInputManager(String locale, String fileFormat) {
+		return new TextInputManager(locale);
 	}
 
 	public Set<String> listSupportedLocales() {

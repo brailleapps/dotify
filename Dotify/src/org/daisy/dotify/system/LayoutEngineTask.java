@@ -11,7 +11,6 @@ import org.daisy.dotify.api.cr.ReadWriteTask;
 import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.LayoutEngineException;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
-import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.consumer.engine.FormatterEngineMaker;
 import org.daisy.dotify.system.ObflResourceLocator.ObflResourceIdentifier;
 
@@ -27,7 +26,7 @@ import org.daisy.dotify.system.ObflResourceLocator.ObflResourceIdentifier;
  *
  */
 public class LayoutEngineTask extends ReadWriteTask  {
-	private final FilterLocale locale;
+	private final String locale;
 	private final String mode;
 	private final PagedMediaWriter writer;
 	private final Logger logger;
@@ -38,7 +37,7 @@ public class LayoutEngineTask extends ReadWriteTask  {
 	 * @param translator the translator to use
 	 * @param writer the output writer
 	 */
-	public LayoutEngineTask(String name, FilterLocale locale, String mode, PagedMediaWriter writer) {
+	public LayoutEngineTask(String name, String locale, String mode, PagedMediaWriter writer) {
 		super(name);
 		this.locale = locale;
 		this.mode = mode;
@@ -59,7 +58,7 @@ public class LayoutEngineTask extends ReadWriteTask  {
 				throw new InternalTaskException("Input validation failed.", e);
 			}
 
-			FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine(locale.toString(), mode, writer);
+			FormatterEngine engine = FormatterEngineMaker.newInstance().newFormatterEngine(locale, mode, writer);
 
 			engine.convert(new FileInputStream(input), new FileOutputStream(output));
 
