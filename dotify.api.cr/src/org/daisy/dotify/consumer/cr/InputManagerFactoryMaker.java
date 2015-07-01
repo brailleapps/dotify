@@ -29,7 +29,7 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 	private final Map<String, InputManagerFactory> map;
 	private final Logger logger;
 
-	protected InputManagerFactoryMaker() {
+	public InputManagerFactoryMaker() {
 		logger = Logger.getLogger(InputManagerFactoryMaker.class.getCanonicalName());
 		filters = new ArrayList<InputManagerFactory>();
 		this.map = Collections.synchronizedMap(new HashMap<String, InputManagerFactory>());		
