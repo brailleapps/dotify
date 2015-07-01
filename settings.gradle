@@ -1,3 +1,4 @@
 include 'dotify.api', 'dotify.common', 'dotify.text.impl', 'dotify.translator.impl'
 include 'dotify.hyphenator.impl'
 include 'dotify.formatter.impl'
+include 'dotify.api.cr'
