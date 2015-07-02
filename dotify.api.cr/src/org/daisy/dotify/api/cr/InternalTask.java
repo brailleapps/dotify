@@ -2,14 +2,16 @@ package org.daisy.dotify.api.cr;
 
 
 /**
- * <p>Abstract base class for internal tasks. This class is only
+ * <p>Base class for internal tasks. This class is only
  * intended to be extended by classes in this package. Refer to the 
  * direct subclasses of this class for possible extension points.</p>
  * 
  * @author Joel Håkansson
  */
-public abstract class InternalTask {
+public class InternalTask {
 	protected String name = null;
+
+	protected InternalTask() { }
 
 	/**
 	 * Creates a new internal task with the specfied name. The constructor

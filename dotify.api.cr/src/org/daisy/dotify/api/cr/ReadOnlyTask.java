@@ -9,7 +9,7 @@ import java.io.File;
  * @author Joel Håkansson
  *
  */
-public abstract class ReadOnlyTask extends InternalTask {
+public abstract class ReadOnlyTask extends InternalTask { //NOPMD
 
 	/**
 	 * Creates a new read only task with the specified name

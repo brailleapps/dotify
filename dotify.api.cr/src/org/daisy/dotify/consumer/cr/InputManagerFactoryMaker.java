@@ -78,7 +78,7 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 	}
 		
 	private static String toKey(String context, String fileFormat) {
-		return context.toString() + "(" + fileFormat + ")";
+		return context + "(" + fileFormat + ")";
 	}
 	
 	public InputManagerFactory getFactory(String locale, String fileFormat) {

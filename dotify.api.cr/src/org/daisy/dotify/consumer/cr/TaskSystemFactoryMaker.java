@@ -45,7 +45,7 @@ public class TaskSystemFactoryMaker {
 	}
 	
 	private static String toKey(String context, String outputFormat) {
-		return context.toString() + "(" + outputFormat + ")";
+		return context + "(" + outputFormat + ")";
 	}
 	
 	public TaskSystemFactory getFactory(String locale, String outputFormat) throws TaskSystemFactoryException {

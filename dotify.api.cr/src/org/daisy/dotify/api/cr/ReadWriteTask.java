@@ -8,7 +8,7 @@ import java.io.File;
  * @author Joel Håkansson
  *
  */
-public abstract class ReadWriteTask extends InternalTask {
+public abstract class ReadWriteTask extends InternalTask { //NOPMD
 
 	/**
 	 * Creates a new read/write task with the specified name
