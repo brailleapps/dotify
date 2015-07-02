@@ -2,6 +2,22 @@ package org.daisy.dotify.api.cr;
 
 import java.util.Set;
 
+/**
+ * <p>
+ * Provides an interface for a InputManagerFactoryMaker service. The purpose of
+ * this interface is to expose an implementation of a InputManagerFactoryMaker as
+ * an OSGi service.
+ * </p>
+ * 
+ * <p>
+ * To comply with this interface, an implementation must be thread safe and
+ * address both the possibility that only a single instance is created and used
+ * throughout and that new instances are created as desired.
+ * </p>
+ * 
+ * @author Joel Håkansson
+ * 
+ */
 public interface InputManagerFactoryMakerService {
 
 	/**

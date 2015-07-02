@@ -1,16 +1,21 @@
 package org.daisy.dotify.consumer.cr;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.cr.TaskSystem;
 import org.daisy.dotify.api.cr.TaskSystemFactory;
 import org.daisy.dotify.api.cr.TaskSystemFactoryException;
+import org.daisy.dotify.api.cr.TaskSystemFactoryMakerService;
+
+import aQute.bnd.annotation.component.Component;
+import aQute.bnd.annotation.component.Reference;
 
 
 /**
@@ -21,33 +26,65 @@ import org.daisy.dotify.api.cr.TaskSystemFactoryException;
  * @author Joel Håkansson
  *
  */
-public class TaskSystemFactoryMaker {
+@Component
+public class TaskSystemFactoryMaker implements TaskSystemFactoryMakerService {
 	private final List<TaskSystemFactory> filters;
 	private final Map<String, TaskSystemFactory> map;
 	private final Logger logger;
 
-	private TaskSystemFactoryMaker() {
+	public TaskSystemFactoryMaker() {
 		logger = Logger.getLogger(TaskSystemFactoryMaker.class.getCanonicalName());
-		filters = new ArrayList<TaskSystemFactory>();
-		Iterator<TaskSystemFactory> i = ServiceLoader.load(TaskSystemFactory.class).iterator();
-		while (i.hasNext()) {
-			filters.add(i.next());
-		}
-		this.map = new HashMap<String, TaskSystemFactory>();
+		filters = new CopyOnWriteArrayList<TaskSystemFactory>();
+		this.map = Collections.synchronizedMap(new HashMap<String, TaskSystemFactory>());
 	}
 
+	/**
+	 * <p>
+	 * Creates a new TaskSystemFactoryMaker and populates it using the SPI (java
+	 * service provider interface).
+	 * </p>
+	 * 
+	 * <p>
+	 * In an OSGi context, an instance should be retrieved using the service
+	 * registry. It will be registered under the TaskSystemFactoryMakerService
+	 * interface.
+	 * </p>
+	 * 
+	 * @return returns a new TaskSystemFactoryMaker
+	 */
 	public static TaskSystemFactoryMaker newInstance() {
-		Iterator<TaskSystemFactoryMaker> i = ServiceLoader.load(TaskSystemFactoryMaker.class).iterator();
-		while (i.hasNext()) {
-			return i.next();
+		TaskSystemFactoryMaker ret = new TaskSystemFactoryMaker();
+		{
+			Iterator<TaskSystemFactory> i = ServiceLoader.load(TaskSystemFactory.class).iterator();
+			while (i.hasNext()) {
+				ret.addFactory(i.next());
+			}
 		}
-		return new TaskSystemFactoryMaker();
+		return ret;
+	}
+	
+	@Reference(type = '*')
+	public void addFactory(TaskSystemFactory factory) {
+		logger.finer("Adding factory: " + factory);
+		filters.add(factory);
+	}
+
+	// Unbind reference added automatically from addFactory annotation
+	public void removeFactory(TaskSystemFactory factory) {
+		logger.finer("Removing factory: " + factory);
+		// this is to avoid adding items to the cache that were removed while
+		// iterating
+		synchronized (map) {
+			filters.remove(factory);
+			map.clear();
+		}
 	}
 	
 	private static String toKey(String context, String outputFormat) {
 		return context + "(" + outputFormat + ")";
 	}
 	
+	@Override
 	public TaskSystemFactory getFactory(String locale, String outputFormat) throws TaskSystemFactoryException {
 		TaskSystemFactory template = map.get(toKey(locale, outputFormat));
 		if (template==null) {
@@ -66,9 +103,7 @@ public class TaskSystemFactoryMaker {
 		return template;
 	}
 	
-	/**
-	 *  Gets a task system for the specified output format and context
-	 */
+	@Override
 	public TaskSystem newTaskSystem(String outputFormat, String context) throws TaskSystemFactoryException {
 		return getFactory(context, outputFormat).newTaskSystem(context, outputFormat);
 	}

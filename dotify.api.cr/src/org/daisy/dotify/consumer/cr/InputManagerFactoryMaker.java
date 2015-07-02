@@ -1,6 +1,5 @@
 package org.daisy.dotify.consumer.cr;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.cr.InputManager;
@@ -31,7 +31,7 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 
 	public InputManagerFactoryMaker() {
 		logger = Logger.getLogger(InputManagerFactoryMaker.class.getCanonicalName());
-		filters = new ArrayList<InputManagerFactory>();
+		filters = new CopyOnWriteArrayList<InputManagerFactory>();
 		this.map = Collections.synchronizedMap(new HashMap<String, InputManagerFactory>());		
 	}
 
@@ -76,20 +76,25 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 			map.clear();
 		}
 	}
-		
+
 	private static String toKey(String context, String fileFormat) {
 		return context + "(" + fileFormat + ")";
 	}
 	
+	@Override
 	public InputManagerFactory getFactory(String locale, String fileFormat) {
 		InputManagerFactory template = map.get(toKey(locale, fileFormat));
 		if (template==null) {
-			for (InputManagerFactory h : filters) {
-				if (h.supportsSpecification(locale, fileFormat)) {
-					logger.fine("Found a factory for " + locale + " (" + h.getClass() + ")");
-					map.put(toKey(locale, fileFormat), h);
-					template = h;
-					break;
+			// this is to avoid adding items to the cache that were removed
+			// while iterating
+			synchronized (map) {
+				for (InputManagerFactory h : filters) {
+					if (h.supportsSpecification(locale, fileFormat)) {
+						logger.fine("Found a factory for " + locale + " (" + h.getClass() + ")");
+						map.put(toKey(locale, fileFormat), h);
+						template = h;
+						break;
+					}
 				}
 			}
 		}
@@ -99,11 +104,13 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 		return template;
 	}
 	
+	@Override
 	public InputManager newInputManager(String locale, String fileFormat) {
 		logger.fine("Attempt to locate an input manager for " + locale + "/" + fileFormat);
 		return getFactory(locale, fileFormat).newInputManager(locale, fileFormat);
 	}
 	
+	@Override
 	public Set<String> listSupportedLocales() {
 		HashSet<String> ret = new HashSet<String>();
 		for (InputManagerFactory h : filters) {
@@ -112,6 +119,7 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 		return ret;
 	}
 
+	@Override
 	public Set<String> listSupportedFileFormats() {
 		HashSet<String> ret = new HashSet<String>();
 		for (InputManagerFactory h : filters) {
