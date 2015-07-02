@@ -2,13 +2,8 @@
 .settings
 Dotify/.gradle
 Dotify/ant-build/output
-Dotify/bin
-Dotify/build
 DotifyDevtools/ant-build/output
 DotifyDevtools/bin_test
 DotifyShared/dotify-translator.jar
 DotifyTranslator/ant-build/output
-DotifyTranslator/bin
 dotify.api/ant-build/output
-.classpath
-.project
