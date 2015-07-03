@@ -616,6 +616,14 @@ public class ObflParser extends XMLParserBase {
 				builder.topMargin(Integer.parseInt(att.getValue()));
 			} else if ("margin-bottom".equals(name)) {
 				builder.bottomMargin(Integer.parseInt(att.getValue()));
+			} else if ("padding-left".equals(name)) {
+				builder.leftPadding(Integer.parseInt(att.getValue()));
+			} else if ("padding-right".equals(name)) {
+				builder.rightPadding(Integer.parseInt(att.getValue()));
+			} else if ("padding-top".equals(name)) {
+				builder.topPadding(Integer.parseInt(att.getValue()));
+			} else if ("padding-bottom".equals(name)) {
+				builder.bottomPadding(Integer.parseInt(att.getValue()));
 			} else if ("text-indent".equals(name)) {
 				builder.textIndent(Integer.parseInt(att.getValue()));
 			} else if ("first-line-indent".equals(name)) {
