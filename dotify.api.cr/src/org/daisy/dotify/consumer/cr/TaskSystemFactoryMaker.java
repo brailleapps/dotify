@@ -57,7 +57,9 @@ public class TaskSystemFactoryMaker implements TaskSystemFactoryMakerService {
 		{
 			Iterator<TaskSystemFactory> i = ServiceLoader.load(TaskSystemFactory.class).iterator();
 			while (i.hasNext()) {
-				ret.addFactory(i.next());
+				TaskSystemFactory factory = i.next();
+				factory.setCreatedWithSPI();
+				ret.addFactory(factory);
 			}
 		}
 		return ret;
