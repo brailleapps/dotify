@@ -12,16 +12,21 @@ public class Progress {
 	private double progress = 0;
 	private Date eta; 
 	private long tstamp;
-	private long start;
+	private final long start;
 	double step;
 	
 	/**
 	 * Creates a new instance. The internal stop watch is started immediately.
 	 */
 	public Progress() {
+		this(System.currentTimeMillis());
+	}
+
+	//allows setting the current time, for testing
+	Progress(long now) {
 		progress = 0;
 		eta = new Date();
-		tstamp = System.currentTimeMillis();
+		tstamp = now;
 		start = tstamp;
 		step = -1;
 	}
@@ -49,13 +54,17 @@ public class Progress {
 	 * @throws IllegalStateException if the progress is less than or equal to previous reported value.
 	 */
 	public void updateProgress(double val) {
+		updateProgress(val, System.currentTimeMillis());
+	}
+
+	//allows setting the current time, for testing
+	void updateProgress(double val, long now) {
 		if (val<0 || val>1) {
 			throw new IllegalArgumentException("Value out of range [0, 1]: " + val);
 		}
 		if (val<=progress) {
 			throw new IllegalStateException("Negative or zero progress.");
 		}
-		long now = System.currentTimeMillis();
 		double pD = val - progress;
 		long tD = now - tstamp;
 		if (step > 0) {
@@ -83,7 +92,12 @@ public class Progress {
 	 * @return returns the number of milliseconds since instantiation.
 	 */
 	public long timeSinceStart() {
-		return System.currentTimeMillis()-start;
+		return timeSinceStart(System.currentTimeMillis());
+	}
+	
+	//allows setting the current time, for testing
+	long timeSinceStart(long now) {
+		return now-start;
 	}
 
 }
