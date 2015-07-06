@@ -3,9 +3,9 @@ package org.daisy.dotify.api.cr;
 import java.util.Set;
 
 /**
- * <p>Provides an interface for input manager factories. The purpose of this
- * interface is to expose an implementation of an InputManager.
- * An input manager factory implementation provides input managers for
+ * <p>Provides an interface for task group factories. The purpose of this
+ * interface is to expose an implementation of a task group.
+ * A task group factory implementation provides task groups for
  * a any number of supported specifications.</p>
  * 
  * <p>
@@ -16,7 +16,7 @@ import java.util.Set;
  * 
  * @author Joel Håkansson
  */
-public interface InputManagerFactory {
+public interface TaskGroupFactory {
 	
 	/**
 	 * Returns true if this factory can create instances for the specified locale.
@@ -30,7 +30,7 @@ public interface InputManagerFactory {
 	 * @param locale the locale for the new input manager
 	 * @return returns a new input manager
 	 */
-	public InputManager newInputManager(TaskGroupSpecification specification);
+	public TaskGroup newTaskGroup(TaskGroupSpecification specification);
 
 	/**
 	 * Lists the supported file formats.

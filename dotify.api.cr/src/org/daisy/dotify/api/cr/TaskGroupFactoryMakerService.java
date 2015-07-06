@@ -4,8 +4,8 @@ import java.util.Set;
 
 /**
  * <p>
- * Provides an interface for a InputManagerFactoryMaker service. The purpose of
- * this interface is to expose an implementation of a InputManagerFactoryMaker as
+ * Provides an interface for a TaskGroupFactoryMaker service. The purpose of
+ * this interface is to expose an implementation of a TaskGroupFactoryMaker as
  * an OSGi service.
  * </p>
  * 
@@ -18,23 +18,23 @@ import java.util.Set;
  * @author Joel Håkansson
  * 
  */
-public interface InputManagerFactoryMakerService {
+public interface TaskGroupFactoryMakerService {
 
 	/**
-	 * Gets a InputManagerFactory that supports the specification
+	 * Gets a TaskGroupFactory that supports the specification
 	 * 
 	 * @param specification the specification
-	 * @return returns a input manager factory for the specified locale and format
+	 * @return returns a task group manager factory with the desired specification
 	 */
-	public InputManagerFactory getFactory(TaskGroupSpecification specification);
+	public TaskGroupFactory getFactory(TaskGroupSpecification specification);
 
 	/**
 	 * Creates a new input manager with the specified options.
 	 * @param specification the specification
-	 * @return returns a new input manager
+	 * @return returns a new task group
 	 * @throws IllegalArgumentException if the specified configuration isn't supported
 	 */
-	public InputManager newInputManager(TaskGroupSpecification specification);
+	public TaskGroup newTaskGroup(TaskGroupSpecification specification);
 
 	/**
 	 * Gets a list of supported specifications.

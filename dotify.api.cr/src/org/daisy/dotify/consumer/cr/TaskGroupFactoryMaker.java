@@ -11,9 +11,9 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.cr.InputManager;
-import org.daisy.dotify.api.cr.InputManagerFactory;
-import org.daisy.dotify.api.cr.InputManagerFactoryMakerService;
+import org.daisy.dotify.api.cr.TaskGroup;
+import org.daisy.dotify.api.cr.TaskGroupFactory;
+import org.daisy.dotify.api.cr.TaskGroupFactoryMakerService;
 import org.daisy.dotify.api.cr.TaskGroupSpecification;
 
 import aQute.bnd.annotation.component.Component;
@@ -25,35 +25,35 @@ import aQute.bnd.annotation.component.Reference;
  * @author Joel Håkansson
  */
 @Component
-public class InputManagerFactoryMaker implements InputManagerFactoryMakerService {
-	private final List<InputManagerFactory> filters;
-	private final Map<String, InputManagerFactory> map;
+public class TaskGroupFactoryMaker implements TaskGroupFactoryMakerService {
+	private final List<TaskGroupFactory> filters;
+	private final Map<String, TaskGroupFactory> map;
 	private final Logger logger;
 
-	public InputManagerFactoryMaker() {
-		logger = Logger.getLogger(InputManagerFactoryMaker.class.getCanonicalName());
-		filters = new CopyOnWriteArrayList<InputManagerFactory>();
-		this.map = Collections.synchronizedMap(new HashMap<String, InputManagerFactory>());		
+	public TaskGroupFactoryMaker() {
+		logger = Logger.getLogger(TaskGroupFactoryMaker.class.getCanonicalName());
+		filters = new CopyOnWriteArrayList<TaskGroupFactory>();
+		this.map = Collections.synchronizedMap(new HashMap<String, TaskGroupFactory>());		
 	}
 
 	/**
 	 * <p>
-	 * Creates a new InputManagerFactoryMaker and populates it using the SPI (java
+	 * Creates a new TaskGroupFactoryMaker and populates it using the SPI (java
 	 * service provider interface).
 	 * </p>
 	 * 
 	 * <p>
 	 * In an OSGi context, an instance should be retrieved using the service
-	 * registry. It will be registered under the InputManagerFactoryMakerService
+	 * registry. It will be registered under the TaskGroupFactoryMakerService
 	 * interface.
 	 * </p>
 	 * 
-	 * @return returns a new InputManagerFactoryMaker
+	 * @return returns a new TaskGroupFactoryMaker
 	 */
-	public final static InputManagerFactoryMaker newInstance() {
-		InputManagerFactoryMaker ret = new InputManagerFactoryMaker();
+	public final static TaskGroupFactoryMaker newInstance() {
+		TaskGroupFactoryMaker ret = new TaskGroupFactoryMaker();
 		{
-			Iterator<InputManagerFactory> i = ServiceLoader.load(InputManagerFactory.class).iterator();
+			Iterator<TaskGroupFactory> i = ServiceLoader.load(TaskGroupFactory.class).iterator();
 			while (i.hasNext()) {
 				ret.addFactory(i.next());
 			}
@@ -62,13 +62,13 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 	}
 
 	@Reference(type = '*')
-	public void addFactory(InputManagerFactory factory) {
+	public void addFactory(TaskGroupFactory factory) {
 		logger.finer("Adding factory: " + factory);
 		filters.add(factory);
 	}
 
 	// Unbind reference added automatically from addFactory annotation
-	public void removeFactory(InputManagerFactory factory) {
+	public void removeFactory(TaskGroupFactory factory) {
 		logger.finer("Removing factory: " + factory);
 		// this is to avoid adding items to the cache that were removed while
 		// iterating
@@ -89,14 +89,14 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 	}
 	
 	@Override
-	public InputManagerFactory getFactory(TaskGroupSpecification spec) {
+	public TaskGroupFactory getFactory(TaskGroupSpecification spec) {
 		String specKey = toKey(spec);
-		InputManagerFactory template = map.get(specKey);
+		TaskGroupFactory template = map.get(specKey);
 		if (template==null) {
 			// this is to avoid adding items to the cache that were removed
 			// while iterating
 			synchronized (map) {
-				for (InputManagerFactory h : filters) {
+				for (TaskGroupFactory h : filters) {
 					if (h.supportsSpecification(spec)) {
 						logger.fine("Found a factory for " + specKey + " (" + h.getClass() + ")");
 						map.put(specKey, h);
@@ -107,21 +107,21 @@ public class InputManagerFactoryMaker implements InputManagerFactoryMakerService
 			}
 		}
 		if (template==null) {
-			throw new IllegalArgumentException("Cannot locate an InputManager for " + toKey(spec));
+			throw new IllegalArgumentException("Cannot locate an TaskGroup for " + toKey(spec));
 		}
 		return template;
 	}
 	
 	@Override
-	public InputManager newInputManager(TaskGroupSpecification spec) {
+	public TaskGroup newTaskGroup(TaskGroupSpecification spec) {
 		logger.fine("Attempt to locate an input manager for " + toKey(spec));
-		return getFactory(spec).newInputManager(spec);
+		return getFactory(spec).newTaskGroup(spec);
 	}
 	
 	@Override
 	public Set<TaskGroupSpecification> listSupportedSpecifications() {
 		HashSet<TaskGroupSpecification> ret = new HashSet<TaskGroupSpecification>();
-		for (InputManagerFactory h : filters) {
+		for (TaskGroupFactory h : filters) {
 			ret.addAll(h.listSupportedSpecifications());
 		}
 		return ret;

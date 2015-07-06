@@ -12,6 +12,6 @@ package org.daisy.dotify.api.cr;
  * @author Joel Håkansson
  *
  */
-public interface TaskSystem extends InputManager {
+public interface TaskSystem extends TaskGroup {
 
 }

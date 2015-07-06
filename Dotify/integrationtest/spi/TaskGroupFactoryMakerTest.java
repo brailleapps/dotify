@@ -1,54 +1,34 @@
-package osgi;
+package spi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.ops4j.pax.exam.CoreOptions.junitBundles;
-import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-
-import org.daisy.dotify.api.cr.InputManagerFactoryMakerService;
 import org.daisy.dotify.api.cr.TaskGroupSpecification;
 import org.daisy.dotify.common.text.FilterLocale;
+import org.daisy.dotify.consumer.cr.TaskGroupFactoryMaker;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Configuration;
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
-import org.ops4j.pax.exam.spi.reactors.PerClass;
-import org.ops4j.pax.exam.util.Filter;
 
-import osgi.config.ConfigurationOptions;
+public class TaskGroupFactoryMakerTest {
 
-@RunWith(PaxExam.class)
-@ExamReactorStrategy(PerClass.class)
-public class InputManagerFactoryMakerTest {
-
-	@Configuration
-	public Option[] configure() {
-		return options(
-			ConfigurationOptions.felixDS(),
-			ConfigurationOptions.dotifyTasks(),
-			junitBundles()
-		);
-	}
-
-	@Inject @Filter(timeout=5000)
-	InputManagerFactoryMakerService factory;
-	
 	@Test
 	public void testFactoryExists() {
+		//Setup
+		TaskGroupFactoryMaker factory = TaskGroupFactoryMaker.newInstance();
+		
 		//Test
 		assertNotNull("Factory exists.", factory);
 	}
 	
 	@Test
 	public void testSupportedSpecifications() {
+		//Setup
+		TaskGroupFactoryMaker factory = TaskGroupFactoryMaker.newInstance();
 		Set<TaskGroupSpecification> specs = factory.listSupportedSpecifications();
+
+		//Test
 		assertEquals(10, specs.size());
 		assertTrue(specs.contains(new TaskGroupSpecification("dtbook", "obfl", "sv-SE")));
 		assertTrue(specs.contains(new TaskGroupSpecification("text", "obfl", "sv-SE")));
@@ -66,6 +46,7 @@ public class InputManagerFactoryMakerTest {
 	@Test
 	public void testGetFactoryForSwedish() {
 		//Setup
+		TaskGroupFactoryMaker factory = TaskGroupFactoryMaker.newInstance();
 		FilterLocale locale = FilterLocale.parse("sv-SE");
 		
 		//Test
@@ -79,6 +60,7 @@ public class InputManagerFactoryMakerTest {
 	@Test
 	public void testGetFactoryForEnglish() {
 		//Setup
+		TaskGroupFactoryMaker factory = TaskGroupFactoryMaker.newInstance();
 		FilterLocale locale = FilterLocale.parse("en-US");
 		
 		//Test

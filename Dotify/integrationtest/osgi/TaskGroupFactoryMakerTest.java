@@ -1,34 +1,54 @@
-package spi;
+package osgi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.ops4j.pax.exam.CoreOptions.junitBundles;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.Set;
 
+import javax.inject.Inject;
+
+import org.daisy.dotify.api.cr.TaskGroupFactoryMakerService;
 import org.daisy.dotify.api.cr.TaskGroupSpecification;
 import org.daisy.dotify.common.text.FilterLocale;
-import org.daisy.dotify.consumer.cr.InputManagerFactoryMaker;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Configuration;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
+import org.ops4j.pax.exam.util.Filter;
 
-public class InputManagerFactoryMakerTest {
+import osgi.config.ConfigurationOptions;
 
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
+public class TaskGroupFactoryMakerTest {
+
+	@Configuration
+	public Option[] configure() {
+		return options(
+			ConfigurationOptions.felixDS(),
+			ConfigurationOptions.dotifyTasks(),
+			junitBundles()
+		);
+	}
+
+	@Inject @Filter(timeout=5000)
+	TaskGroupFactoryMakerService factory;
+	
 	@Test
 	public void testFactoryExists() {
-		//Setup
-		InputManagerFactoryMaker factory = InputManagerFactoryMaker.newInstance();
-		
 		//Test
 		assertNotNull("Factory exists.", factory);
 	}
 	
 	@Test
 	public void testSupportedSpecifications() {
-		//Setup
-		InputManagerFactoryMaker factory = InputManagerFactoryMaker.newInstance();
 		Set<TaskGroupSpecification> specs = factory.listSupportedSpecifications();
-
-		//Test
 		assertEquals(10, specs.size());
 		assertTrue(specs.contains(new TaskGroupSpecification("dtbook", "obfl", "sv-SE")));
 		assertTrue(specs.contains(new TaskGroupSpecification("text", "obfl", "sv-SE")));
@@ -46,7 +66,6 @@ public class InputManagerFactoryMakerTest {
 	@Test
 	public void testGetFactoryForSwedish() {
 		//Setup
-		InputManagerFactoryMaker factory = InputManagerFactoryMaker.newInstance();
 		FilterLocale locale = FilterLocale.parse("sv-SE");
 		
 		//Test
@@ -60,7 +79,6 @@ public class InputManagerFactoryMakerTest {
 	@Test
 	public void testGetFactoryForEnglish() {
 		//Setup
-		InputManagerFactoryMaker factory = InputManagerFactoryMaker.newInstance();
 		FilterLocale locale = FilterLocale.parse("en-US");
 		
 		//Test

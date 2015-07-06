@@ -25,7 +25,7 @@ import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.common.xml.XMLTools;
 import org.daisy.dotify.common.xml.XMLToolsException;
 import org.daisy.dotify.config.ConfigurationsCatalog;
-import org.daisy.dotify.consumer.cr.InputManagerFactoryMaker;
+import org.daisy.dotify.consumer.cr.TaskGroupFactoryMaker;
 import org.daisy.dotify.consumer.cr.TaskSystemFactoryMaker;
 import org.daisy.dotify.system.TaskRunner;
 
@@ -85,7 +85,7 @@ public class Dotify {
 		String inputFormat = "";
 		if (inx>-1) {
 			inputFormat = inp.substring(inx + 1);
-			InputManagerFactoryMaker imfm = InputManagerFactoryMaker.newInstance();
+			TaskGroupFactoryMaker imfm = TaskGroupFactoryMaker.newInstance();
 			if (!imfm.listSupportedSpecifications().contains(new TaskGroupSpecification(inputFormat, "obfl", context.toString()))) {
 				logger.fine("No input factory for " + inputFormat);
 				// attempt to detect a supported type
