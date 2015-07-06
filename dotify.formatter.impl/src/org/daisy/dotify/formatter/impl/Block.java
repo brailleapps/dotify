@@ -192,12 +192,28 @@ class Block implements Cloneable {
 		rdp.setLeadingDecoration(value);
 	}
 	
+	public int getTopPadding() {
+		return rdp.getTopPadding();
+	}
+	
+	public void setTopPadding(int value) {
+		rdp.setTopPadding(value);
+	}
+	
 	public SingleLineDecoration getTrailingDecoration() {
 		return rdp.getTrailingDecoration();
 	}
 
 	public void setTrailingDecoration(SingleLineDecoration value) {
 		rdp.setTrailingDecoration(value);
+	}
+	
+	public int getBottomPadding() {
+		return rdp.getBottomPadding();
+	}
+	
+	public void setBottomPadding(int value) {
+		rdp.setBottomPadding(value);
 	}
 	
 	public RowDataProperties getRowDataProperties() {

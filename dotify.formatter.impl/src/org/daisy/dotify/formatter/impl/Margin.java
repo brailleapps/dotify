@@ -41,10 +41,13 @@ class Margin extends Stack<MarginComponent> {
 		ArrayList<String> inp = new ArrayList<String>();
 		int j = 0;
 		for (MarginComponent c : this) {
-			inp.add(StringTools.fill(spaceCharacter, c.getOffset()));
+			inp.add(StringTools.fill(spaceCharacter, c.getOuterOffset()));
 			if (!parent || j<size()-1) {
 				inp.add(c.getBorder());
 				isSpace &= isSpace(spaceCharacter, c.getBorder());
+			}
+			if (!parent) {
+				inp.add(StringTools.fill(spaceCharacter, c.getInnerOffset()));
 			}
 			j++;
 		}

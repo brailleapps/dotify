@@ -78,13 +78,25 @@ class BlockContentManager implements Iterable<RowImpl> {
 		if (rdp.getLeadingDecoration()!=null) {
 			preContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
 		}
+		for (int i=0; i<rdp.getTopPadding(); i++) {
+			MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
+			preContentRows.add(createAndConfigureEmptyNewRow(ret));
+		}
 		this.postContentRows = new ArrayList<RowImpl>();
 
-		if (rdp.getTrailingDecoration()!=null) {
+		this.skippablePostContentRows = new ArrayList<RowImpl>();
+		MarginProperties margin = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
+		if (rdp.getTrailingDecoration()==null) {
+			for (int i=0; i<rdp.getBottomPadding(); i++) {
+				skippablePostContentRows.add(createAndConfigureEmptyNewRow(margin));
+			}
+		} else {
+			for (int i=0; i<rdp.getBottomPadding(); i++) {
+				postContentRows.add(createAndConfigureEmptyNewRow(margin));
+			}
 			postContentRows.add(makeDecorationRow(flowWidth, rdp.getTrailingDecoration(), leftParent, rightParent));
 		}
-		
-		this.skippablePostContentRows = new ArrayList<RowImpl>();
+
 		for (int i=0; i<rdp.getSpaceAfter();i++) {
 			skippablePostContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
 		}

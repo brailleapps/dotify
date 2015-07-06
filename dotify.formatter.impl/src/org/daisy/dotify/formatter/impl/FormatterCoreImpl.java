@@ -60,8 +60,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			lb = t.getLeftBorder();
 			rb = t.getRightBorder();
 		}
-		leftMargin.push(new MarginComponent(lb, p.getLeftMargin()));
-		rightMargin.push(new MarginComponent(rb, p.getRightMargin()));
+		leftMargin.push(new MarginComponent(lb, p.getLeftMargin(), p.getLeftPadding()));
+		rightMargin.push(new MarginComponent(rb, p.getRightMargin(), p.getRightPadding()));
 		if (propsContext.size()>0) {
 			addToBlockIndent(propsContext.peek().getBlockIndent());
 		}
@@ -111,6 +111,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
 			}
 		}
+		getCurrentBlock().setTopPadding(p.getTopPadding());
 		//firstRow = true;
 	}
 
@@ -126,6 +127,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
 			}
 		}
+		getCurrentBlock().setBottomPadding(p.getBottomPadding());
 		getCurrentBlock().addSpaceAfter(p.getBottomMargin());
 		getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		leftMargin.pop();

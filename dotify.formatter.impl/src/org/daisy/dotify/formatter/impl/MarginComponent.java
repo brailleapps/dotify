@@ -2,19 +2,25 @@ package org.daisy.dotify.formatter.impl;
 
 class MarginComponent {
 	private final String border;
-	private final int offset;
+	private final int outer;
+	private final int inner;
 
-	MarginComponent(String border, int offset) {
+	MarginComponent(String border, int outerOffset, int innerOffset) {
 		this.border = border;
-		this.offset = offset;
+		this.outer = outerOffset;
+		this.inner = innerOffset;
 	}
 
 	String getBorder() {
 		return border;
 	}
 
-	int getOffset() {
-		return offset;
+	int getOuterOffset() {
+		return outer;
+	}
+	
+	int getInnerOffset() {
+		return inner;
 	}
 
 }
