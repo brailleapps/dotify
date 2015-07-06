@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
+import org.daisy.dotify.api.cr.TaskGroupSpecification;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.consumer.cr.InputManagerFactoryMaker;
 import org.junit.Test;
@@ -22,32 +23,26 @@ public class InputManagerFactoryMakerTest {
 	}
 	
 	@Test
-	public void testSupportedFileFormats() {
+	public void testSupportedSpecifications() {
 		//Setup
 		InputManagerFactoryMaker factory = InputManagerFactoryMaker.newInstance();
-		Set<String> formats = factory.listSupportedFileFormats();
+		Set<TaskGroupSpecification> specs = factory.listSupportedSpecifications();
 
 		//Test
-		assertEquals(5, formats.size());
-		assertTrue(formats.contains("dtbook"));
-		assertTrue(formats.contains("text"));
-		assertTrue(formats.contains("xml"));
-		assertTrue(formats.contains("txt"));
-		assertTrue(formats.contains("obfl"));	
+		assertEquals(10, specs.size());
+		assertTrue(specs.contains(new TaskGroupSpecification("dtbook", "obfl", "sv-SE")));
+		assertTrue(specs.contains(new TaskGroupSpecification("text", "obfl", "sv-SE")));
+		assertTrue(specs.contains(new TaskGroupSpecification("xml", "obfl", "sv-SE")));
+		assertTrue(specs.contains(new TaskGroupSpecification("txt", "obfl", "sv-SE")));
+		assertTrue(specs.contains(new TaskGroupSpecification("obfl", "obfl", "sv-SE")));
+		
+		assertTrue(specs.contains(new TaskGroupSpecification("dtbook", "obfl", "en-US")));
+		assertTrue(specs.contains(new TaskGroupSpecification("text", "obfl", "en-US")));
+		assertTrue(specs.contains(new TaskGroupSpecification("xml", "obfl", "en-US")));
+		assertTrue(specs.contains(new TaskGroupSpecification("txt", "obfl", "en-US")));
+		assertTrue(specs.contains(new TaskGroupSpecification("obfl", "obfl", "en-US")));
 	}
 	
-	@Test
-	public void testSupportedLocales() {
-		//Setup
-		InputManagerFactoryMaker factory = InputManagerFactoryMaker.newInstance();
-		Set<String> locales = factory.listSupportedLocales();
-
-		//Test
-		assertEquals(2, locales.size());
-		assertTrue(locales.contains("sv-SE"));
-		assertTrue(locales.contains("en-US"));
-	}
-
 	@Test
 	public void testGetFactoryForSwedish() {
 		//Setup
@@ -55,11 +50,11 @@ public class InputManagerFactoryMakerTest {
 		FilterLocale locale = FilterLocale.parse("sv-SE");
 		
 		//Test
-		assertNotNull(factory.getFactory(locale.toString(), "xml"));
-		assertNotNull(factory.getFactory(locale.toString(), "text"));
-		assertNotNull(factory.getFactory(locale.toString(), "obfl"));
-		assertNotNull(factory.getFactory(locale.toString(), "txt"));
-		assertNotNull(factory.getFactory(locale.toString(), "dtbook"));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("xml", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("text", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("obfl", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("txt", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("dtbook", "obfl", locale.toString())));
 	}
 	
 	@Test
@@ -69,10 +64,10 @@ public class InputManagerFactoryMakerTest {
 		FilterLocale locale = FilterLocale.parse("en-US");
 		
 		//Test
-		assertNotNull(factory.getFactory(locale.toString(), "xml"));
-		assertNotNull(factory.getFactory(locale.toString(), "text"));
-		assertNotNull(factory.getFactory(locale.toString(), "obfl"));
-		assertNotNull(factory.getFactory(locale.toString(), "txt"));
-		assertNotNull(factory.getFactory(locale.toString(), "dtbook"));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("xml", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("text", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("obfl", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("txt", "obfl", locale.toString())));
+		assertNotNull(factory.getFactory(new TaskGroupSpecification("dtbook", "obfl", locale.toString())));
 	}
 }

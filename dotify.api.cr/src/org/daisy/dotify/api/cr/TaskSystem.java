@@ -1,7 +1,5 @@
 package org.daisy.dotify.api.cr;
 
-import java.util.List;
-import java.util.Map;
 
 
 
@@ -14,20 +12,6 @@ import java.util.Map;
  * @author Joel Håkansson
  *
  */
-public interface TaskSystem {
-	
-	/**
-	 * Get a descriptive name for the TaskSystem
-	 * @return returns the name for the TaskSystem
-	 */
-	public String getName();
-
-	/**
-	 * Compile the TaskSystem using the supplied parameters
-	 * @param parameters the parameters to pass to the TaskSystem
-	 * @return returns a list of InternalTasks
-	 * @throws TaskSystemException throws TaskSystemException if something goes wrong when compiling the TaskSystem
-	 */
-	public List<InternalTask> compile(Map<String, Object> parameters) throws TaskSystemException;
+public interface TaskSystem extends InputManager {
 
 }

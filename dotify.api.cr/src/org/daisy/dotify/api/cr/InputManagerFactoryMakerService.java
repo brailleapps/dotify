@@ -21,33 +21,25 @@ import java.util.Set;
 public interface InputManagerFactoryMakerService {
 
 	/**
-	 * Gets a InputManagerFactory that supports the specified locale and format.
+	 * Gets a InputManagerFactory that supports the specification
 	 * 
-	 * @param locale the target locale
-	 * @param fileFormat the input file format
+	 * @param specification the specification
 	 * @return returns a input manager factory for the specified locale and format
 	 */
-	public InputManagerFactory getFactory(String locale, String fileFormat);
+	public InputManagerFactory getFactory(TaskGroupSpecification specification);
 
 	/**
 	 * Creates a new input manager with the specified options.
-	 * @param locale the target locale
-	 * @param fileFormat the input file format
+	 * @param specification the specification
 	 * @return returns a new input manager
 	 * @throws IllegalArgumentException if the specified configuration isn't supported
 	 */
-	public InputManager newInputManager(String locale, String fileFormat);
+	public InputManager newInputManager(TaskGroupSpecification specification);
 
 	/**
-	 * Gets a list of supported locales.
-	 * @return returns a list of supported locales
+	 * Gets a list of supported specifications.
+	 * @return returns a list of supported specifications
 	 */
-	public Set<String> listSupportedLocales();
-
-	/**
-	 * Gets a list of supported input formats.
-	 * @return returns a list of supported input formats
-	 */
-	public Set<String> listSupportedFileFormats();
+	public Set<TaskGroupSpecification> listSupportedSpecifications();
 
 }

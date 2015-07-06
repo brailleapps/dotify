@@ -16,6 +16,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.cr.InternalTaskException;
+import org.daisy.dotify.api.cr.TaskGroupSpecification;
 import org.daisy.dotify.api.cr.TaskSystem;
 import org.daisy.dotify.api.cr.TaskSystemException;
 import org.daisy.dotify.api.cr.TaskSystemFactoryException;
@@ -85,7 +86,7 @@ public class Dotify {
 		if (inx>-1) {
 			inputFormat = inp.substring(inx + 1);
 			InputManagerFactoryMaker imfm = InputManagerFactoryMaker.newInstance();
-			if (!imfm.listSupportedFileFormats().contains(inputFormat)) {
+			if (!imfm.listSupportedSpecifications().contains(new TaskGroupSpecification(inputFormat, "obfl", context.toString()))) {
 				logger.fine("No input factory for " + inputFormat);
 				// attempt to detect a supported type
 				try {
