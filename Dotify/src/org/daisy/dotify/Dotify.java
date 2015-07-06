@@ -168,7 +168,7 @@ public class Dotify {
 
 		// Run tasks
 		try {
-			TaskSystem ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(outputformat, context.toString());
+			TaskSystem ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(context.toString(), outputformat);
 			try {
 				tr.runTasks(input, output, ts, rp);
 			} catch (TaskSystemException e) {

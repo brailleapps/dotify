@@ -106,7 +106,7 @@ public class TaskSystemFactoryMaker implements TaskSystemFactoryMakerService {
 	}
 	
 	@Override
-	public TaskSystem newTaskSystem(String outputFormat, String context) throws TaskSystemFactoryException {
+	public TaskSystem newTaskSystem(String context, String outputFormat) throws TaskSystemFactoryException {
 		return getFactory(context, outputFormat).newTaskSystem(context, outputFormat);
 	}
 }
