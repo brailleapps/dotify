@@ -1,40 +1,15 @@
 package spi;
 
-import static org.junit.Assert.assertTrue;
-
-import org.daisy.dotify.api.writer.MediaTypes;
-import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMakerService;
 import org.daisy.dotify.consumer.writer.PagedMediaWriterFactoryMaker;
-import org.junit.Test;
 
-public class PagedMediaWriterFactoryMakerTest {
+import base.PagedMediaWriterFactoryMakerTestbase;
 
-	@Test
-	public void testFactoryExists() {
-		//Setup
-		PagedMediaWriterFactoryMakerService factory = PagedMediaWriterFactoryMaker.newInstance();
-		
-		//Test
-		assertTrue(factory != null);
-	}
-	
-	@Test
-	public void testImplementationForPEFExists() throws PagedMediaWriterConfigurationException {
-		//Setup
-		PagedMediaWriterFactoryMakerService factory = PagedMediaWriterFactoryMaker.newInstance();
-		
-		//Test
-		assertTrue(factory.newPagedMediaWriter(MediaTypes.PEF_MEDIA_TYPE) != null);
-	}
-	
-	@Test
-	public void testImplementationForTextExists() throws PagedMediaWriterConfigurationException {
-		//Setup
-		PagedMediaWriterFactoryMakerService factory = PagedMediaWriterFactoryMaker.newInstance();
-		
-		//Test
-		assertTrue(factory.newPagedMediaWriter(MediaTypes.TEXT_MEDIA_TYPE) != null);
+public class PagedMediaWriterFactoryMakerTest extends PagedMediaWriterFactoryMakerTestbase {
+
+	@Override
+	public PagedMediaWriterFactoryMakerService getPageMedaWriterFMS() {
+		return PagedMediaWriterFactoryMaker.newInstance();
 	}
 	
 }

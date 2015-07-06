@@ -13,7 +13,7 @@ public abstract class ConfigurationOptions {
 	}
 
 	static Option dotifyApi() {
-		return mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.api").version("1.0.0");
+		return mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.api").version("1.1.0");
 	}
 	
 	static Option dotifyCommon() {
@@ -59,6 +59,19 @@ public abstract class ConfigurationOptions {
 		return mavenBundle().groupId("org.daisy.libs").artifactId("saxon-he").version("9.5.1.5");
 	}
 	
+	static Option wstx() {
+		return mavenBundle().groupId("woodstox").artifactId("wstx-lgpl").version("3.2.7");
+	}
+	
+	public static Option dotifyFormatter() {
+		return composite( 
+				dotifyText(), 
+				dotifyHyphenator(), 
+				dotifyTranslator(),
+				wstx(),
+				mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.formatter.impl").version("1.0.0"));
+	}
+	
 	public static Option dotifyTasks() {
 		return composite(
 					dotifyApi(),
@@ -69,6 +82,8 @@ public abstract class ConfigurationOptions {
 					mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.task.impl").version("1.0.0-SNAPSHOT")
 				);
 	}
+	
+
 
 	static Option sonatypeStaging(String group, String artifact, String version) {
 		String path = group.replaceAll("\\.", "/");
