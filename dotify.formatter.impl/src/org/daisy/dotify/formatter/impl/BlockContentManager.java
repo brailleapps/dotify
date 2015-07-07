@@ -35,6 +35,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private final CrossReferences refs;
 	
 	private final RowDataProperties rdp;
+	private final int flowWidth;
 	private final int available;
 
 	private final Context context;
@@ -44,7 +45,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private final MarginProperties leftParent;
 	private final MarginProperties rightParent;
 	private Leader currentLeader;
-	private final List<RowImpl> preContentRows;
 	private final List<RowImpl> postContentRows;
 	private final List<RowImpl> skippablePostContentRows;
 
@@ -60,28 +60,16 @@ class BlockContentManager implements Iterable<RowImpl> {
 		this.rdp = rdp;
 		this.leftMargin = rdp.getLeftMargin().buildMargin(fcontext.getSpaceCharacter());
 		this.rightMargin = rdp.getRightMargin().buildMargin(fcontext.getSpaceCharacter());
+		this.flowWidth = flowWidth;
 		this.available = flowWidth - rightMargin.getContent().length();
 
 		this.item = rdp.getListItem();
 		
 		this.rows = new Stack<RowImpl>();
 		this.context = context;
-		this.preContentRows = new ArrayList<RowImpl>();
+		
 		this.leftParent = rdp.getLeftMargin().buildMarginParent(fcontext.getSpaceCharacter());
 		this.rightParent = rdp.getRightMargin().buildMarginParent(fcontext.getSpaceCharacter());
-		for (int i=0; i<rdp.getOuterSpaceBefore();i++) {
-			RowImpl row = new RowImpl("", leftParent, rightParent);
-			row.setAlignment(rdp.getAlignment());
-			row.setRowSpacing(rdp.getRowSpacing());
-			preContentRows.add(row);
-		}
-		if (rdp.getLeadingDecoration()!=null) {
-			preContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
-		}
-		for (int i=0; i<rdp.getInnerSpaceBefore(); i++) {
-			MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
-			preContentRows.add(createAndConfigureEmptyNewRow(ret));
-		}
 		this.postContentRows = new ArrayList<RowImpl>();
 
 		this.skippablePostContentRows = new ArrayList<RowImpl>();
@@ -219,11 +207,27 @@ class BlockContentManager implements Iterable<RowImpl> {
 		}
 	}
 	
-	public int countPreContentRows() {
-		return preContentRows.size();
-	}
-	
-	public Iterable<RowImpl> getPreContentRows() {
+	/**
+	 * 
+	 * @param margin rdp.getSpaceBefore()
+	 * @return
+	 */
+	public List<RowImpl> getPreContentRows(int margin) {
+		List<RowImpl> preContentRows = new ArrayList<RowImpl>();
+		for (int i=0; i<margin;i++) {
+			RowImpl row = new RowImpl("", leftParent, rightParent);
+			row.setAlignment(rdp.getAlignment());
+			row.setRowSpacing(rdp.getRowSpacing());
+			preContentRows.add(row);
+		}
+		if (rdp.getLeadingDecoration()!=null) {
+			preContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
+		}
+		for (int i=0; i<rdp.getInnerSpaceBefore(); i++) {
+			MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
+			preContentRows.add(createAndConfigureEmptyNewRow(ret));
+		}
+
 		return preContentRows;
 	}
 	

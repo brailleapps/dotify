@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.daisy.dotify.api.formatter.FallbackRule;
+import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
 
@@ -167,18 +168,44 @@ class PageSequenceBuilder extends PageSequence {
 		}
 
 		//layout
-		for (Block g : seq) {
+		int max = 0;
+		int currentPageNumber = -1;
+		for (int x=0; x<seq.size(); x++) {
+			Block g = seq.get(x);
 			BlockDataContext bd = new BlockDataContext(g);
+			//Start new page if needed
+			bd.startNewPageIfNeeded(seq);
+			//if we are on a new page, then the collapsing regions are irrelevant
+			if (currentPageNumber() > currentPageNumber) {
+				max = 0; 
+				currentPageNumber = currentPageNumber();
+			}
+			if (g.isCollapsable()
+					//This is a hack in order to avoid regression.
+					//It retains empty rows at the end of pages in certain cases.
+					//Once collapsing borders have been fully tested, this can be removed
+					&& (x==seq.size()-1 || seq.get(x+1).getBreakBeforeType()!=FormattingTypes.BreakBefore.PAGE)
+					) {
+				max = Math.max(Math.max(max, g.getOuterSpaceBefore()), g.getOuterSpaceAfter());
+				
+				currentPage().addMarkers(bd.rdm.getGroupMarkers());
+				if (bd.rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
+					insertIdentifier(g.getIdentifier());
+				}
+				setKeepWithNextSheets(g.getKeepWithNextSheets());
+				setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
+				continue;
+			}
+			max = Math.max(max, g.getOuterSpaceBefore());
+			List<RowImpl> preContentRows = bd.rdm.getPreContentRows(max);
 			//FIXME: this assumes that row spacing is equal to 1
-			if (bd.rdm.countPreContentRows()+bd.rdm.countPostContentRows()>=currentPage().getFlowHeight()) {
+			if (preContentRows.size()+bd.rdm.countPostContentRows()>=currentPage().getFlowHeight()) {
 				throw new PaginatorException("Group margins too large to fit on an empty page.");
 			}
 
-			//Start new page if needed
-			bd.startNewPageIfNeeded(seq);
 			bd.addVerticalSpace();
 
-			addRows(bd.rdm.getPreContentRows());
+			addRows(preContentRows);
 
 			currentPage().addMarkers(bd.rdm.getGroupMarkers());
 			if (bd.rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
@@ -220,10 +247,11 @@ class PageSequenceBuilder extends PageSequence {
 				addRows(bd.rdm.getSkippablePostContentRows());
 			}
 			//gi++;
+			max = 0;
 		}
 		return true;
 	}
-
+	
 	private void addRows(Iterable<RowImpl> rows) {
 		for (RowImpl r : rows) {
 			newRow(r);
@@ -243,8 +271,8 @@ class PageSequenceBuilder extends PageSequence {
 		}
 
 		private void addVerticalSpace() {
-			if (block.getVerticalPosition() != null) {			
-				int blockSpace = rdm.getRowCount() + block.getOuterSpaceBefore() + block.getInnerSpaceBefore() + block.getOuterSpaceAfter() + block.getInnerSpaceAfter();
+			if (block.getVerticalPosition() != null) {
+				int blockSpace = block.getBlockHeight();
 				int pos = block.getVerticalPosition().getPosition().makeAbsolute(currentPage().getFlowHeight());
 				int t = pos - spaceUsedOnPage(0);
 				if (t > 0) {
@@ -308,7 +336,7 @@ class PageSequenceBuilder extends PageSequence {
 								b.setContext(master.getFlowWidth(), refs, rcontext, context);
 							}
 							for (Block b : c.getBlocks(a)) {
-								for (RowImpl r : b.getBlockContentManager().getPreContentRows()) {
+								for (RowImpl r : b.getBlockContentManager().getPreContentRows(b.getOuterSpaceBefore())) {
 									blk.add(r);
 								}
 								for (RowImpl r : b.getBlockContentManager()) {
