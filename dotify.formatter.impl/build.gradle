@@ -35,6 +35,34 @@ task updateBndVersion() << {
 	file('bnd.bnd').write(contents.replaceAll('Bundle-Version: [\\d\\.A-Za-z\\-]+', "Bundle-Version: $version"), 'UTF-8')
 }
 
+ext.writeTestsOverviewFile = { folderPath, fileName ->
+	def folder = file(folderPath)
+	def f = new File(folder, fileName)
+	f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+	f.append('<?xml-stylesheet href="display.xslt" type="text/xsl" ?>\n')
+	f.append('<tests>\n')
+	FileTree list = fileTree(dir: folder)
+	list.include '*-input.obfl'
+	list.each {
+		def exp = it.name.substring(0, it.name.length()-11) + '-expected.pef'
+		if (new File(folder, exp).exists()) {
+			f.append('<test input="'+it.name+'" expected="' + exp + '"/>'+'\n')
+		}
+	}
+	f.append('</tests>')
+	copy {
+		from('display.xslt')
+		into(folderPath)
+	}
+}
+
+task updateTestsOverviewFile() << {
+	// There are more tests in this folder with another naming standard, but they
+	// don't suit the presentational format and are more of integration tests.
+	// Additional tests should be written based on these.
+	writeTestsOverviewFile('test/org/daisy/dotify/engine/impl/resource-files', 'tests-overview.xml')
+}
+
 bundle {
     instructions << [
         "-include": file('bnd.bnd'),
