@@ -244,7 +244,7 @@ class PageSequenceBuilder extends PageSequence {
 
 		private void addVerticalSpace() {
 			if (block.getVerticalPosition() != null) {			
-				int blockSpace = rdm.getRowCount() + block.getSpaceBefore() + block.getSpaceAfter();
+				int blockSpace = rdm.getRowCount() + block.getSpaceBefore() + block.getTopPadding() + block.getSpaceAfter() + block.getBottomPadding();
 				int pos = block.getVerticalPosition().getPosition().makeAbsolute(currentPage().getFlowHeight());
 				int t = pos - spaceUsedOnPage(0);
 				if (t > 0) {
@@ -290,7 +290,7 @@ class PageSequenceBuilder extends PageSequence {
 			default:;
 			}
 			//FIXME: this assumes that row spacing is equal to 1
-			if (block.getSpaceBefore() > currentPage().getFlowHeight() - spaceUsedOnPage(1)) {
+			if (block.getSpaceBefore() + block.getTopPadding() > currentPage().getFlowHeight() - spaceUsedOnPage(1)) {
 				newPageOnRow();
 			}
 		}
