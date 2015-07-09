@@ -70,8 +70,8 @@ dependencies {
 	compile 'org.daisy.braille:brailleUtils-ui:2.0.0-SNAPSHOT'
 	compile 'org.daisy.braille:braille-utils.pef-tools:1.0.0'
 	compile 'org.daisy.dotify:dotify.api:1.0.0'
-	compile 'org.daisy.dotify:dotify.common:1.1.0-SNAPSHOT'
-	compile 'org.daisy.dotify:dotify.task-api:1.0.0-SNAPSHOT'
+	compile 'org.daisy.dotify:dotify.common:1.1.0'
+	compile 'org.daisy.dotify:dotify.task-api:1.0.0'
 	
 
 	runtime 'org.daisy.dotify:dotify.formatter.impl:1.1.0-SNAPSHOT'
