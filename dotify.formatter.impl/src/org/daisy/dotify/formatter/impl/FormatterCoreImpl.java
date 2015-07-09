@@ -94,7 +94,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				listItem = new ListItem(listLabel, propsContext.peek().getListType());
 			}
 		}
-		c.addSpaceBefore(p.getTopMargin());
+		c.addOuterSpaceBefore(p.getTopMargin());
 		c.setBreakBeforeType(p.getBreakBeforeType());
 		c.setKeepType(p.getKeepType());
 		c.setKeepWithNext(p.getKeepWithNext());
@@ -111,7 +111,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
 			}
 		}
-		getCurrentBlock().setTopPadding(p.getTopPadding());
+		getCurrentBlock().setInnerSpaceBefore(p.getTopPadding());
 		//firstRow = true;
 	}
 
@@ -127,8 +127,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
 			}
 		}
-		getCurrentBlock().setBottomPadding(p.getBottomPadding());
-		getCurrentBlock().addSpaceAfter(p.getBottomMargin());
+		getCurrentBlock().setInnerSpaceAfter(p.getBottomPadding());
+		getCurrentBlock().addOuterSpaceAfter(p.getBottomMargin());
 		getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		leftMargin.pop();
 		rightMargin.pop();

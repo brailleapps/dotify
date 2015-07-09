@@ -69,7 +69,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		this.preContentRows = new ArrayList<RowImpl>();
 		this.leftParent = rdp.getLeftMargin().buildMarginParent(fcontext.getSpaceCharacter());
 		this.rightParent = rdp.getRightMargin().buildMarginParent(fcontext.getSpaceCharacter());
-		for (int i=0; i<rdp.getSpaceBefore();i++) {
+		for (int i=0; i<rdp.getOuterSpaceBefore();i++) {
 			RowImpl row = new RowImpl("", leftParent, rightParent);
 			row.setAlignment(rdp.getAlignment());
 			row.setRowSpacing(rdp.getRowSpacing());
@@ -78,7 +78,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		if (rdp.getLeadingDecoration()!=null) {
 			preContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
 		}
-		for (int i=0; i<rdp.getTopPadding(); i++) {
+		for (int i=0; i<rdp.getInnerSpaceBefore(); i++) {
 			MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
 			preContentRows.add(createAndConfigureEmptyNewRow(ret));
 		}
@@ -87,17 +87,17 @@ class BlockContentManager implements Iterable<RowImpl> {
 		this.skippablePostContentRows = new ArrayList<RowImpl>();
 		MarginProperties margin = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
 		if (rdp.getTrailingDecoration()==null) {
-			for (int i=0; i<rdp.getBottomPadding(); i++) {
+			for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
 				skippablePostContentRows.add(createAndConfigureEmptyNewRow(margin));
 			}
 		} else {
-			for (int i=0; i<rdp.getBottomPadding(); i++) {
+			for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
 				postContentRows.add(createAndConfigureEmptyNewRow(margin));
 			}
 			postContentRows.add(makeDecorationRow(flowWidth, rdp.getTrailingDecoration(), leftParent, rightParent));
 		}
 
-		for (int i=0; i<rdp.getSpaceAfter();i++) {
+		for (int i=0; i<rdp.getOuterSpaceAfter();i++) {
 			skippablePostContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
 		}
 

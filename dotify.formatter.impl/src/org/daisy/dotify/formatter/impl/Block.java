@@ -71,12 +71,12 @@ class Block implements Cloneable {
 	 * rows in this block.
 	 * @return returns the number of empty rows preceding the rows in this block
 	 */
-	public int getSpaceBefore() {
-		return rdp.getSpaceBefore();
+	public int getOuterSpaceBefore() {
+		return rdp.getOuterSpaceBefore();
 	}
 	
-	public int getSpaceAfter() {
-		return rdp.getSpaceAfter();
+	public int getOuterSpaceAfter() {
+		return rdp.getOuterSpaceAfter();
 	}
 	
 	public FormattingTypes.BreakBefore getBreakBeforeType() {
@@ -107,12 +107,12 @@ class Block implements Cloneable {
 		return verticalPosition;
 	}
 	
-	public void addSpaceBefore(int spaceBefore) {
-		rdp.addSpaceBefore(spaceBefore);
+	public void addOuterSpaceBefore(int spaceBefore) {
+		rdp.addOuterSpaceBefore(spaceBefore);
 	}
 	
-	public void addSpaceAfter(int spaceAfter) {
-		rdp.addSpaceAfter(spaceAfter);
+	public void addOuterSpaceAfter(int spaceAfter) {
+		rdp.addOuterSpaceAfter(spaceAfter);
 	}
 	
 	public void setBreakBeforeType(FormattingTypes.BreakBefore breakBefore) {
@@ -192,12 +192,12 @@ class Block implements Cloneable {
 		rdp.setLeadingDecoration(value);
 	}
 	
-	public int getTopPadding() {
-		return rdp.getTopPadding();
+	public int getInnerSpaceBefore() {
+		return rdp.getInnerSpaceBefore();
 	}
 	
-	public void setTopPadding(int value) {
-		rdp.setTopPadding(value);
+	public void setInnerSpaceBefore(int value) {
+		rdp.setInnerSpaceBefore(value);
 	}
 	
 	public SingleLineDecoration getTrailingDecoration() {
@@ -208,12 +208,12 @@ class Block implements Cloneable {
 		rdp.setTrailingDecoration(value);
 	}
 	
-	public int getBottomPadding() {
-		return rdp.getBottomPadding();
+	public int getInnerSpaceAfter() {
+		return rdp.getInnerSpaceAfter();
 	}
 	
-	public void setBottomPadding(int value) {
-		rdp.setBottomPadding(value);
+	public void setInnerSpaceAfter(int value) {
+		rdp.setInnerSpaceAfter(value);
 	}
 	
 	public RowDataProperties getRowDataProperties() {

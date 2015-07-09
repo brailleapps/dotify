@@ -13,10 +13,10 @@ class RowDataProperties {
 	private final int firstLineIndent;
 	private final Alignment align;
 	private final Float rowSpacing;
-	private final int spaceBefore;
-	private final int spaceAfter;
-	private final int topPadding;
-	private final int bottomPadding;
+	private final int outerSpaceBefore;
+	private final int outerSpaceAfter;
+	private final int innerSpaceBefore;
+	private final int innerSpaceAfter;
 	private final SingleLineDecoration leadingDecoration;
 	private final SingleLineDecoration trailingDecoration;
 	
@@ -25,10 +25,10 @@ class RowDataProperties {
 		private int blockIndentParent = 0;
 		private int textIndent = 0;
 		private int firstLineIndent = 0;
-		private int spaceBefore = 0;
-		private int spaceAfter = 0;
-		private int topPadding = 0;
-		private int bottomPadding = 0;
+		private int outerSpaceBefore = 0;
+		private int outerSpaceAfter = 0;
+		private int innerSpaceBefore = 0;
+		private int innerSpaceAfter = 0;
 		private Alignment align = Alignment.LEFT;
 		private Float rowSpacing = null;
 		private Margin leftMargin = new Margin(Type.LEFT);
@@ -86,20 +86,20 @@ class RowDataProperties {
 			return this;
 		}
 		
-		public int getSpaceBefore() {
-			return spaceBefore;
+		public int getOuterSpaceBefore() {
+			return outerSpaceBefore;
 		}
 		
-		public int getSpaceAfter() {
-			return spaceAfter;
+		public int getOuterSpaceAfter() {
+			return outerSpaceAfter;
 		}
 		
-		public void addSpaceBefore(int spaceBefore) {
-			this.spaceBefore += spaceBefore;
+		public void addOuterSpaceBefore(int spaceBefore) {
+			this.outerSpaceBefore += spaceBefore;
 		}
 		
-		public void addSpaceAfter(int spaceAfter) {
-			this.spaceAfter += spaceAfter;
+		public void addOuterSpaceAfter(int spaceAfter) {
+			this.outerSpaceAfter += spaceAfter;
 		}
 		
 		public SingleLineDecoration getLeadingDecoration() {
@@ -110,12 +110,12 @@ class RowDataProperties {
 			this.leadingDecoration = value;
 		}
 		
-		public int getTopPadding() {
-			return topPadding;
+		public int getInnerSpaceBefore() {
+			return innerSpaceBefore;
 		}
 		
-		public void setTopPadding(int value) {
-			this.topPadding = value;
+		public void setInnerSpaceBefore(int value) {
+			this.innerSpaceBefore = value;
 		}
 		
 		public SingleLineDecoration getTrailingDecoration() {
@@ -126,12 +126,12 @@ class RowDataProperties {
 			this.trailingDecoration = value;
 		}
 
-		public int getBottomPadding() {
-			return bottomPadding;
+		public int getInnerSpaceAfter() {
+			return innerSpaceAfter;
 		}
 		
-		public void setBottomPadding(int value) {
-			this.bottomPadding = value;
+		public void setInnerSpaceAfter(int value) {
+			this.innerSpaceAfter = value;
 		}
 
 		public RowDataProperties build() {
@@ -150,10 +150,10 @@ class RowDataProperties {
 		this.firstLineIndent = builder.firstLineIndent;
 		this.align = builder.align;
 		this.rowSpacing = builder.rowSpacing;
-		this.spaceBefore = builder.spaceBefore;
-		this.spaceAfter = builder.spaceAfter;
-		this.topPadding = builder.topPadding;
-		this.bottomPadding = builder.bottomPadding;
+		this.outerSpaceBefore = builder.outerSpaceBefore;
+		this.outerSpaceAfter = builder.outerSpaceAfter;
+		this.innerSpaceBefore = builder.innerSpaceBefore;
+		this.innerSpaceAfter = builder.innerSpaceAfter;
 		this.leadingDecoration = builder.leadingDecoration;
 		this.trailingDecoration = builder.trailingDecoration;
 	}
@@ -197,20 +197,20 @@ class RowDataProperties {
 		return listProps;
 	}
 
-	public int getSpaceBefore() {
-		return spaceBefore;
+	public int getOuterSpaceBefore() {
+		return outerSpaceBefore;
 	}
 
-	public int getSpaceAfter() {
-		return spaceAfter;
+	public int getOuterSpaceAfter() {
+		return outerSpaceAfter;
 	}
 
-	public int getTopPadding() {
-		return topPadding;
+	public int getInnerSpaceBefore() {
+		return innerSpaceBefore;
 	}
 
-	public int getBottomPadding() {
-		return bottomPadding;
+	public int getInnerSpaceAfter() {
+		return innerSpaceAfter;
 	}
 
 	public SingleLineDecoration getLeadingDecoration() {
