@@ -48,7 +48,7 @@ public abstract class ConfigurationOptions {
 	}
 	
 	static Option dotifyApiCR() {
-		return mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.api.cr").version("1.0.0-SNAPSHOT");
+		return mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.task-api").version("1.0.0-SNAPSHOT");
 	}
 	
 	static Option jing() {

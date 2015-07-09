@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
-import org.daisy.dotify.api.cr.TaskGroupFactoryMakerService;
-import org.daisy.dotify.api.cr.TaskGroupSpecification;
+import org.daisy.dotify.api.tasks.TaskGroupFactoryMakerService;
+import org.daisy.dotify.api.tasks.TaskGroupSpecification;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.junit.Test;
 

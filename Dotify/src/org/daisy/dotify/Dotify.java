@@ -15,18 +15,18 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.cr.InternalTaskException;
-import org.daisy.dotify.api.cr.TaskGroupSpecification;
-import org.daisy.dotify.api.cr.TaskSystem;
-import org.daisy.dotify.api.cr.TaskSystemException;
-import org.daisy.dotify.api.cr.TaskSystemFactoryException;
+import org.daisy.dotify.api.tasks.InternalTaskException;
+import org.daisy.dotify.api.tasks.TaskGroupSpecification;
+import org.daisy.dotify.api.tasks.TaskSystem;
+import org.daisy.dotify.api.tasks.TaskSystemException;
+import org.daisy.dotify.api.tasks.TaskSystemFactoryException;
 import org.daisy.dotify.common.io.ResourceLocatorException;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.common.xml.XMLTools;
 import org.daisy.dotify.common.xml.XMLToolsException;
 import org.daisy.dotify.config.ConfigurationsCatalog;
-import org.daisy.dotify.consumer.cr.TaskGroupFactoryMaker;
-import org.daisy.dotify.consumer.cr.TaskSystemFactoryMaker;
+import org.daisy.dotify.consumer.tasks.TaskGroupFactoryMaker;
+import org.daisy.dotify.consumer.tasks.TaskSystemFactoryMaker;
 import org.daisy.dotify.system.TaskRunner;
 
 /**

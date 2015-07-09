@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.daisy.dotify.api.cr.InternalTask;
-import org.daisy.dotify.api.cr.ReadOnlyTask;
-import org.daisy.dotify.api.cr.ReadWriteTask;
-import org.daisy.dotify.api.cr.TaskSystem;
-import org.daisy.dotify.api.cr.TaskSystemException;
+import org.daisy.dotify.api.tasks.InternalTask;
+import org.daisy.dotify.api.tasks.ReadOnlyTask;
+import org.daisy.dotify.api.tasks.ReadWriteTask;
+import org.daisy.dotify.api.tasks.TaskSystem;
+import org.daisy.dotify.api.tasks.TaskSystemException;
 import org.daisy.dotify.common.io.FileIO;
 import org.daisy.dotify.common.io.TempFileHandler;
 

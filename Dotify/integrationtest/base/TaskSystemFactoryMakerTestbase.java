@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.daisy.dotify.SystemKeys;
-import org.daisy.dotify.api.cr.InternalTask;
-import org.daisy.dotify.api.cr.TaskSystem;
-import org.daisy.dotify.api.cr.TaskSystemException;
-import org.daisy.dotify.api.cr.TaskSystemFactoryException;
-import org.daisy.dotify.api.cr.TaskSystemFactoryMakerService;
+import org.daisy.dotify.api.tasks.InternalTask;
+import org.daisy.dotify.api.tasks.TaskSystem;
+import org.daisy.dotify.api.tasks.TaskSystemException;
+import org.daisy.dotify.api.tasks.TaskSystemFactoryException;
+import org.daisy.dotify.api.tasks.TaskSystemFactoryMakerService;
 import org.junit.Test;
 
 public abstract class TaskSystemFactoryMakerTestbase {
