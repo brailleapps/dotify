@@ -97,7 +97,7 @@ public class TranslateCLI extends AbstractUI {
 
 	@Override
 	public String getDescription() {
-		return "Translates text on system in to braille on system out.";
+		return "Translates text on system in to braille on system out";
 	}
 
 	@Override
