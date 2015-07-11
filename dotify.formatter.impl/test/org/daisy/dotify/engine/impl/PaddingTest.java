@@ -14,7 +14,12 @@ public class PaddingTest extends AbstractFormatterEngineTest {
 	
 	@Test
 	public void testPadding_02() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
-		testPEF("resource-files/padding-input-sides-only.obfl", "resource-files/padding-expected-sides-only.pef", false);
+		testPEF("resource-files/padding-sides-only-input.obfl", "resource-files/padding-sides-only-expected.pef", false);
+	}
+	
+	@Test
+	public void testPadding_03() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/padding-nested-input.obfl", "resource-files/padding-nested-expected.pef", false);
 	}
 
 }

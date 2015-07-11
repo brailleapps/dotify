@@ -46,7 +46,7 @@ class Margin extends Stack<MarginComponent> {
 				inp.add(c.getBorder());
 				isSpace &= isSpace(spaceCharacter, c.getBorder());
 			}
-			if (!parent) {
+			if (!parent || j<size()-1) {
 				inp.add(StringTools.fill(spaceCharacter, c.getInnerOffset()));
 			}
 			j++;
