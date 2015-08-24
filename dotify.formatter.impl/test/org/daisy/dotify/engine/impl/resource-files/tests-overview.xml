@@ -8,4 +8,6 @@
 <test input="padding-input.obfl" expected="padding-expected.pef"/>
 <test input="padding-nested-input.obfl" expected="padding-nested-expected.pef"/>
 <test input="padding-sides-only-input.obfl" expected="padding-sides-only-expected.pef"/>
+<test input="vertical-position-dls-input.obfl" expected="vertical-position-dls-expected.pef"/>
+<test input="vertical-position-input.obfl" expected="vertical-position-expected.pef"/>
 </tests>
