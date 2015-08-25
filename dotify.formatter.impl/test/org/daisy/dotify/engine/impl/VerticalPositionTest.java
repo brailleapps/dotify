@@ -13,9 +13,18 @@ public class VerticalPositionTest extends AbstractFormatterEngineTest {
 	}
 	
 	@Test
+	public void testVerticalPositionWithBorders() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/vertical-position-borders-input.obfl", "resource-files/vertical-position-borders-expected.pef", false);
+	}
+	
+	@Test
+	public void testVerticalPositionBefore() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/vertical-position-before-input.obfl", "resource-files/vertical-position-before-expected.pef", false);
+	}
+	
+	@Test
 	public void testVerticalPositionDLS() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/vertical-position-dls-input.obfl", "resource-files/vertical-position-dls-expected.pef", false);
 	}
-
 
 }
