@@ -219,26 +219,6 @@ class Block implements Cloneable {
 	public void setInnerSpaceAfter(int value) {
 		rdp.setInnerSpaceAfter(value);
 	}
-	
-	public RowDataProperties getRowDataProperties() {
-		return rdp.build();
-	}
-	
-	public int getBlockHeight() {
-		return getBlockContentManager().getRowCount() + 
-				getOuterSpaceBefore() + getInnerSpaceBefore() + 
-				getOuterSpaceAfter() + getInnerSpaceAfter() + 
-				(getLeadingDecoration()!=null?1:0)+
-				(getTrailingDecoration()!=null?1:0);
-	}
-	
-	public boolean isCollapsable() {
-		return getBlockContentManager().getRowCount() + 
-				getRowDataProperties().getInnerSpaceAfter() +
-				getRowDataProperties().getInnerSpaceBefore() == 0 
-				&&
-				getLeadingDecoration()==null && getTrailingDecoration()==null;
-	}
 
 	public Object clone() {
     	try {

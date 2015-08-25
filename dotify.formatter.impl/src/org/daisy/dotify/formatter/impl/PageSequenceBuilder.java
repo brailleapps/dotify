@@ -180,7 +180,7 @@ class PageSequenceBuilder extends PageSequence {
 				max = 0; 
 				currentPageNumber = currentPageNumber();
 			}
-			if (g.isCollapsable()
+			if (g.getBlockContentManager().isCollapsable()
 					//This is a hack in order to avoid regression.
 					//It retains empty rows at the end of pages in certain cases.
 					//Once collapsing borders have been fully tested, this can be removed
@@ -272,7 +272,7 @@ class PageSequenceBuilder extends PageSequence {
 
 		private void addVerticalSpace() {
 			if (block.getVerticalPosition() != null) {
-				int blockSpace = block.getBlockHeight();
+				int blockSpace = block.getBlockContentManager().getBlockHeight();
 				int pos = block.getVerticalPosition().getPosition().makeAbsolute(currentPage().getFlowHeight());
 				int t = pos - spaceUsedOnPage(0);
 				if (t > 0) {

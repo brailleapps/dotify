@@ -103,6 +103,22 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return row;
 	}
 	
+	public int getBlockHeight() {
+		return getRowCount() + 
+				rdp.getOuterSpaceBefore() + rdp.getInnerSpaceBefore() + 
+				rdp.getOuterSpaceAfter() + rdp.getInnerSpaceAfter() + 
+				(rdp.getLeadingDecoration()!=null?1:0)+
+				(rdp.getTrailingDecoration()!=null?1:0);
+	}
+	
+	public boolean isCollapsable() {
+		return getRowCount() + 
+				rdp.getInnerSpaceAfter() +
+				rdp.getInnerSpaceBefore() == 0 
+				&&
+				rdp.getLeadingDecoration()==null && rdp.getTrailingDecoration()==null;
+	}
+	
 	/**
 	 * Get markers that are not attached to a row, i.e. markers that proceeds any text contents
 	 * @return returns markers that proceeds this FlowGroups text contents
