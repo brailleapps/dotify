@@ -74,7 +74,7 @@ dependencies {
 	compile 'org.daisy.dotify:dotify.task-api:1.0.0'
 	
 
-	runtime 'org.daisy.dotify:dotify.formatter.impl:1.1.0-SNAPSHOT'
+	runtime 'org.daisy.dotify:dotify.formatter.impl:1.1.1-SNAPSHOT'
 	runtime 'org.daisy.dotify:dotify.hyphenator.impl:1.0.0'
 	runtime 'org.daisy.dotify:dotify.text.impl:1.0.0'
 	runtime 'org.daisy.dotify:dotify.translator.impl:1.0.0'
