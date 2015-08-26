@@ -70,15 +70,11 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 					firstLineIndent(p.getFirstLineIndent()).
 					align(p.getAlignment()).
 					rowSpacing(p.getRowSpacing()).
-					
 					blockIndent(blockIndent).
 					blockIndentParent(blockIndentParent.peek()).
-					leftMargin((Margin)leftMargin.clone()). //.stackMarginComp(formatterContext, false, false)
-					//leftMarginParent((Margin)leftMargin.clone()). //.stackMarginComp(formatterContext, true, false)
-					rightMargin((Margin)rightMargin.clone())//. //.stackMarginComp(formatterContext, false, true)
-					//rightMarginParent((Margin)rightMargin.clone())
-					; //.stackMarginComp(formatterContext, true, true)
-					rdp.addOuterSpaceBefore(p.getTopMargin());
+					leftMargin((Margin)leftMargin.clone()).
+					rightMargin((Margin)rightMargin.clone()).
+					outerSpaceBefore(p.getTopMargin());
 		Block c = newBlock(blockId, rdp.build());
 		if (propsContext.size()>0) {
 			if (propsContext.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
@@ -109,10 +105,10 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
 			if (t.getTopLeftCorner().length()+t.getTopBorder().length()+t.getTopRightCorner().length()>0) {
-				builder.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
+				builder.leadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
 			}
 		}
-		builder.setInnerSpaceBefore(p.getTopPadding());
+		builder.innerSpaceBefore(p.getTopPadding());
 		bi.setRowDataProperties(builder.build());
 		//firstRow = true;
 	}
@@ -127,11 +123,11 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
 			if (t.getBottomLeftCorner().length()+ t.getBottomBorder().length()+ t.getBottomRightCorner().length()>0) {
-				builder.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
+				builder.trailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
 			}
 		}
-		builder.setInnerSpaceAfter(p.getBottomPadding());
-		builder.addOuterSpaceAfter(p.getBottomMargin());
+		builder.innerSpaceAfter(p.getBottomPadding()).
+			outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter()+p.getBottomMargin());
 		bi.setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		bi.setRowDataProperties(builder.build());
 		leftMargin.pop();

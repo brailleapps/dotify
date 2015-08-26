@@ -105,28 +105,34 @@ class RowDataProperties {
 			return this;
 		}
 		
-		public void addOuterSpaceBefore(int spaceBefore) {
-			this.outerSpaceBefore += spaceBefore;
+		public Builder outerSpaceBefore(int value) {
+			this.outerSpaceBefore = value;
+			return this;
 		}
 		
-		public void addOuterSpaceAfter(int spaceAfter) {
-			this.outerSpaceAfter += spaceAfter;
+		public Builder outerSpaceAfter(int value) {
+			this.outerSpaceAfter = value;
+			return this;
 		}
-		
-		public void setLeadingDecoration(SingleLineDecoration value) {
+
+		public Builder leadingDecoration(SingleLineDecoration value) {
 			this.leadingDecoration = value;
+			return this;
 		}
 
-		public void setInnerSpaceBefore(int value) {
+		public Builder innerSpaceBefore(int value) {
 			this.innerSpaceBefore = value;
+			return this;
 		}
 
-		public void setTrailingDecoration(SingleLineDecoration value) {
+		public Builder trailingDecoration(SingleLineDecoration value) {
 			this.trailingDecoration = value;
+			return this;
 		}
 
-		public void setInnerSpaceAfter(int value) {
+		public Builder innerSpaceAfter(int value) {
 			this.innerSpaceAfter = value;
+			return this;
 		}
 
 		public RowDataProperties build() {
