@@ -78,7 +78,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 					rightMargin((Margin)rightMargin.clone())//. //.stackMarginComp(formatterContext, false, true)
 					//rightMarginParent((Margin)rightMargin.clone())
 					; //.stackMarginComp(formatterContext, true, true)
-		Block c = newBlock(blockId, rdp);
+					rdp.addOuterSpaceBefore(p.getTopMargin());
+		Block c = newBlock(blockId, rdp.build());
 		if (propsContext.size()>0) {
 			if (propsContext.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
@@ -94,7 +95,6 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				listItem = new ListItem(listLabel, propsContext.peek().getListType());
 			}
 		}
-		c.addOuterSpaceBefore(p.getTopMargin());
 		c.setBreakBeforeType(p.getBreakBeforeType());
 		c.setKeepType(p.getKeepType());
 		c.setKeepWithNext(p.getKeepWithNext());
@@ -104,14 +104,16 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		c.setVerticalPosition(p.getVerticalPosition());
 		propsContext.push(p);
+		Block bi = getCurrentBlock();
+		RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
-			Block bi = getCurrentBlock();
 			if (t.getTopLeftCorner().length()+t.getTopBorder().length()+t.getTopRightCorner().length()>0) {
-				bi.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
+				builder.setLeadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
 			}
 		}
-		getCurrentBlock().setInnerSpaceBefore(p.getTopPadding());
+		builder.setInnerSpaceBefore(p.getTopPadding());
+		bi.setRowDataProperties(builder.build());
 		//firstRow = true;
 	}
 
@@ -120,16 +122,18 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			addChars("", new TextProperties.Builder(null).build());
 		}
 		BlockProperties p = propsContext.pop();
+		Block bi = getCurrentBlock();
+		RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
 		if (p.getTextBorderStyle()!=null) {
 			TextBorderStyle t = p.getTextBorderStyle();
 			if (t.getBottomLeftCorner().length()+ t.getBottomBorder().length()+ t.getBottomRightCorner().length()>0) {
-				getCurrentBlock()
-				.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
+				builder.setTrailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
 			}
 		}
-		getCurrentBlock().setInnerSpaceAfter(p.getBottomPadding());
-		getCurrentBlock().addOuterSpaceAfter(p.getBottomMargin());
-		getCurrentBlock().setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
+		builder.setInnerSpaceAfter(p.getBottomPadding());
+		builder.addOuterSpaceAfter(p.getBottomMargin());
+		bi.setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
+		bi.setRowDataProperties(builder.build());
 		leftMargin.pop();
 		rightMargin.pop();
 		if (propsContext.size()>0) {
@@ -148,14 +152,14 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 						rightMargin((Margin)rightMargin.clone())//. //.stackMarginComp(formatterContext, false, true)
 						//rightMarginParent((Margin)rightMargin.clone())
 						; //.stackMarginComp(formatterContext, true, true)
-			Block c = newBlock(null, rdp);
+			Block c = newBlock(null, rdp.build());
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);
 		}
 		//firstRow = true;
 	}
 	
-	public Block newBlock(String blockId, RowDataProperties.Builder rdp) {
+	public Block newBlock(String blockId, RowDataProperties rdp) {
 		return this.push(new Block(blockId, rdp));
 	}
 	
@@ -180,7 +184,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		Block bl = getCurrentBlock();
 		if (listItem!=null) {
 			//append to this block
-			bl.setListItem(listItem.getLabel(), listItem.getType());
+			RowDataProperties.Builder builder = new RowDataProperties.Builder(bl.getRowDataProperties());
+			builder.listProperties(new ListItem(listItem.getLabel(), listItem.getType()));
+			bl.setRowDataProperties(builder.build());
 			//list item has been used now, discard
 			listItem = null;
 		}

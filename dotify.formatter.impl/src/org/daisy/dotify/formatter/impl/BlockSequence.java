@@ -63,10 +63,10 @@ class BlockSequence extends FormatterCoreImpl {
 	private int getKeepHeight(int gi) {
 		//FIXME: this assumes that row spacing is equal to 1
 		//FIXME: what about borders?
-		int keepHeight = getBlock(gi).getOuterSpaceBefore()+getBlock(gi).getInnerSpaceBefore()+getBlock(gi).getBlockContentManager().getRowCount();
+		int keepHeight = getBlock(gi).getRowDataProperties().getOuterSpaceBefore()+getBlock(gi).getRowDataProperties().getInnerSpaceBefore()+getBlock(gi).getBlockContentManager().getRowCount();
 		if (getBlock(gi).getKeepWithNext()>0 && gi+1<getBlockCount()) {
-			keepHeight += getBlock(gi).getOuterSpaceAfter()+getBlock(gi).getInnerSpaceAfter()
-						+getBlock(gi+1).getOuterSpaceBefore()+getBlock(gi+1).getInnerSpaceBefore()+getBlock(gi).getKeepWithNext();
+			keepHeight += getBlock(gi).getRowDataProperties().getOuterSpaceAfter()+getBlock(gi).getRowDataProperties().getInnerSpaceAfter()
+						+getBlock(gi+1).getRowDataProperties().getOuterSpaceBefore()+getBlock(gi+1).getRowDataProperties().getInnerSpaceBefore()+getBlock(gi).getKeepWithNext();
 			switch (getBlock(gi+1).getKeepType()) {
 				case ALL:
 					keepHeight += getKeepHeight(gi+1);

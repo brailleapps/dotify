@@ -186,7 +186,7 @@ class PageSequenceBuilder extends PageSequence {
 					//Once collapsing borders have been fully tested, this can be removed
 					&& (x==seq.size()-1 || seq.get(x+1).getBreakBeforeType()!=FormattingTypes.BreakBefore.PAGE)
 					) {
-				max = Math.max(Math.max(max, g.getOuterSpaceBefore()), g.getOuterSpaceAfter());
+				max = Math.max(Math.max(max, g.getRowDataProperties().getOuterSpaceBefore()), g.getRowDataProperties().getOuterSpaceAfter());
 				
 				currentPage().addMarkers(bd.rdm.getGroupMarkers());
 				if (bd.rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
@@ -196,7 +196,7 @@ class PageSequenceBuilder extends PageSequence {
 				setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
 				continue;
 			}
-			max = Math.max(max, g.getOuterSpaceBefore());
+			max = Math.max(max, g.getRowDataProperties().getOuterSpaceBefore());
 			List<RowImpl> preContentRows = bd.rdm.getPreContentRows(max);
 			//FIXME: this assumes that row spacing is equal to 1
 			if (preContentRows.size()+bd.rdm.countPostContentRows()>=currentPage().getFlowHeight()) {
@@ -318,7 +318,7 @@ class PageSequenceBuilder extends PageSequence {
 			default:;
 			}
 			//FIXME: this assumes that row spacing is equal to 1
-			if (block.getOuterSpaceBefore() + block.getInnerSpaceBefore() > currentPage().getFlowHeight() - spaceUsedOnPage(1)) {
+			if (block.getRowDataProperties().getOuterSpaceBefore() + block.getRowDataProperties().getInnerSpaceBefore() > currentPage().getFlowHeight() - spaceUsedOnPage(1)) {
 				newPageOnRow();
 			}
 		}
@@ -336,7 +336,7 @@ class PageSequenceBuilder extends PageSequence {
 								b.setContext(master.getFlowWidth(), refs, rcontext, context);
 							}
 							for (Block b : c.getBlocks(a)) {
-								for (RowImpl r : b.getBlockContentManager().getPreContentRows(b.getOuterSpaceBefore())) {
+								for (RowImpl r : b.getBlockContentManager().getPreContentRows(b.getRowDataProperties().getOuterSpaceBefore())) {
 									blk.add(r);
 								}
 								for (RowImpl r : b.getBlockContentManager()) {

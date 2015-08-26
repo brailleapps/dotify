@@ -25,7 +25,7 @@ class Block implements Cloneable {
 	private int keepWithNextSheets;
 	private String id;
 	private final Stack<Segment> segments;
-	private final RowDataProperties.Builder rdp;
+	private RowDataProperties rdp;
 	private BlockContentManager rdm;
 	private BlockPosition verticalPosition;
 	
@@ -36,7 +36,7 @@ class Block implements Cloneable {
 
 	private Integer metaVolume = null, metaPage = null;
 	
-	Block(String blockId, RowDataProperties.Builder rdp) {
+	Block(String blockId, RowDataProperties rdp) {
 		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
 		this.keep = FormattingTypes.Keep.AUTO;
 		this.keepWithNext = 0;
@@ -66,23 +66,6 @@ class Block implements Cloneable {
 		segments.push(s);
 	}
 	
-	public void setListItem(String label, FormattingTypes.ListStyle type) {
-		rdp.listProperties(new ListItem(label, type));
-	}
-
-	/**
-	 * Gets the number of empty rows that should precede the 
-	 * rows in this block.
-	 * @return returns the number of empty rows preceding the rows in this block
-	 */
-	public int getOuterSpaceBefore() {
-		return rdp.getOuterSpaceBefore();
-	}
-	
-	public int getOuterSpaceAfter() {
-		return rdp.getOuterSpaceAfter();
-	}
-	
 	public FormattingTypes.BreakBefore getBreakBeforeType() {
 		return breakBefore;
 	}
@@ -110,15 +93,7 @@ class Block implements Cloneable {
 	public BlockPosition getVerticalPosition() {
 		return verticalPosition;
 	}
-	
-	public void addOuterSpaceBefore(int spaceBefore) {
-		rdp.addOuterSpaceBefore(spaceBefore);
-	}
-	
-	public void addOuterSpaceAfter(int spaceAfter) {
-		rdp.addOuterSpaceAfter(spaceAfter);
-	}
-	
+
 	public void setBreakBeforeType(FormattingTypes.BreakBefore breakBefore) {
 		this.breakBefore = breakBefore;
 	}
@@ -162,7 +137,7 @@ class Block implements Cloneable {
 			}
 			context.setMetaVolume(metaVolume);
 			context.setMetaPage(metaPage);
-			rdm = new BlockContentManager(flowWidth, segments, rdp.build(), refs, context, fcontext);
+			rdm = new BlockContentManager(flowWidth, segments, rdp, refs, context, fcontext);
 			context.setMetaVolume(null);
 			context.setMetaPage(null);
 		}
@@ -192,32 +167,12 @@ class Block implements Cloneable {
 		return rdp.getLeadingDecoration();
 	}
 	
-	public void setLeadingDecoration(SingleLineDecoration value) {
-		rdp.setLeadingDecoration(value);
+	public RowDataProperties getRowDataProperties() {
+		return rdp;
 	}
 	
-	public int getInnerSpaceBefore() {
-		return rdp.getInnerSpaceBefore();
-	}
-	
-	public void setInnerSpaceBefore(int value) {
-		rdp.setInnerSpaceBefore(value);
-	}
-	
-	public SingleLineDecoration getTrailingDecoration() {
-		return rdp.getTrailingDecoration();
-	}
-
-	public void setTrailingDecoration(SingleLineDecoration value) {
-		rdp.setTrailingDecoration(value);
-	}
-	
-	public int getInnerSpaceAfter() {
-		return rdp.getInnerSpaceAfter();
-	}
-	
-	public void setInnerSpaceAfter(int value) {
-		rdp.setInnerSpaceAfter(value);
+	public void setRowDataProperties(RowDataProperties value) {
+		rdp = value;
 	}
 
 	public Object clone() {

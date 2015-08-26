@@ -41,6 +41,25 @@ class RowDataProperties {
 		public Builder() {
 		}
 		
+		public Builder(RowDataProperties template) {
+			this.blockIndent = template.blockIndent;
+			this.blockIndentParent = template.blockIndentParent;
+			this.leftMargin = template.leftMargin;
+			this.rightMargin = template.rightMargin;
+
+			this.listProps = template.listProps;
+			this.textIndent = template.textIndent;
+			this.firstLineIndent = template.firstLineIndent;
+			this.align = template.align;
+			this.rowSpacing = template.rowSpacing;
+			this.outerSpaceBefore = template.outerSpaceBefore;
+			this.outerSpaceAfter = template.outerSpaceAfter;
+			this.innerSpaceBefore = template.innerSpaceBefore;
+			this.innerSpaceAfter = template.innerSpaceAfter;
+			this.leadingDecoration = template.leadingDecoration;
+			this.trailingDecoration = template.trailingDecoration;
+		}
+		
 		public Builder blockIndent(int value) {
 			blockIndent = value;
 			return this;
@@ -86,14 +105,6 @@ class RowDataProperties {
 			return this;
 		}
 		
-		public int getOuterSpaceBefore() {
-			return outerSpaceBefore;
-		}
-		
-		public int getOuterSpaceAfter() {
-			return outerSpaceAfter;
-		}
-		
 		public void addOuterSpaceBefore(int spaceBefore) {
 			this.outerSpaceBefore += spaceBefore;
 		}
@@ -102,34 +113,18 @@ class RowDataProperties {
 			this.outerSpaceAfter += spaceAfter;
 		}
 		
-		public SingleLineDecoration getLeadingDecoration() {
-			return leadingDecoration;
-		}
-		
 		public void setLeadingDecoration(SingleLineDecoration value) {
 			this.leadingDecoration = value;
 		}
-		
-		public int getInnerSpaceBefore() {
-			return innerSpaceBefore;
-		}
-		
+
 		public void setInnerSpaceBefore(int value) {
 			this.innerSpaceBefore = value;
-		}
-		
-		public SingleLineDecoration getTrailingDecoration() {
-			return trailingDecoration;
 		}
 
 		public void setTrailingDecoration(SingleLineDecoration value) {
 			this.trailingDecoration = value;
 		}
 
-		public int getInnerSpaceAfter() {
-			return innerSpaceAfter;
-		}
-		
 		public void setInnerSpaceAfter(int value) {
 			this.innerSpaceAfter = value;
 		}
