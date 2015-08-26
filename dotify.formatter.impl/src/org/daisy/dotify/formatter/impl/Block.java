@@ -162,10 +162,6 @@ class Block implements Cloneable {
 	public void setMetaPage(Integer metaPage) {
 		this.metaPage = metaPage;
 	}
-
-	public SingleLineDecoration getLeadingDecoration() {
-		return rdp.getLeadingDecoration();
-	}
 	
 	public RowDataProperties getRowDataProperties() {
 		return rdp;
