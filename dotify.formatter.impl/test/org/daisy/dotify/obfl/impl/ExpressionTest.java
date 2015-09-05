@@ -2,24 +2,23 @@ package org.daisy.dotify.obfl.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.obfl.Expression;
-import org.daisy.dotify.api.text.Integer2Text;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
-import org.daisy.dotify.api.text.Integer2TextFactoryMakerService;
 import org.daisy.dotify.api.text.IntegerOutOfRange;
+import org.daisy.dotify.consumer.text.Integer2TextFactoryMaker;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 
 public class ExpressionTest {
 	private final Expression e;
 	
 	public ExpressionTest() throws Integer2TextConfigurationException, IntegerOutOfRange {
+		/*
 		Integer2TextFactoryMakerService factory = Mockito.mock(Integer2TextFactoryMakerService.class);
 		Integer2Text en = Mockito.mock(Integer2Text.class);
 		Mockito.when(en.intToText(1)).thenReturn("one");
 		Mockito.when(en.intToText(2)).thenReturn("two");
-		Mockito.when(factory.newInteger2Text("en")).thenReturn(en);
-		e = new ExpressionImpl(factory);
+		Mockito.when(factory.newInteger2Text("en")).thenReturn(en);*/
+		e = new ExpressionImpl(Integer2TextFactoryMaker.newInstance());
 	}
 	
 	@Test
@@ -127,6 +126,16 @@ public class ExpressionTest {
 	@Test
 	public void testExpression_int2text_01() {
 		assertEquals("two", e.evaluate("(int2text (round 2.3) en)"));
+	}
+	
+	@Test
+	public void testExpression_int2text_02() {
+		assertEquals("Tests that out of range input returns original value", "40000", e.evaluate("(int2text (round 40000) en)"));
+	}
+	
+	@Test
+	public void testExpression_int2text_03() {
+		assertEquals("Tests that unsupported locales returns original value", "2", e.evaluate("(int2text (round 2.3) fi)"));
 	}
 
 	@Test

@@ -340,13 +340,15 @@ class ExpressionImpl implements Expression {
 			throw new IllegalArgumentException("Wrong number of arguments: (int2text integer language-code)");
 		}
 		if (integer2textFactoryMaker == null) {
-			throw new UnsupportedOperationException("Operation not supported in the current configuration.");
+			//throw new UnsupportedOperationException("Operation not supported in the current configuration.");
+			return input[0].toString();
 		}
 		Integer2Text t;
 		try {
 			t = integer2textFactoryMaker.newInteger2Text(input[1].toString());
 		} catch (Integer2TextConfigurationException e) {
-			throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
+			//throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
+			return input[0].toString();
 		}
 		try {
 			if (input[0] instanceof Integer) {
@@ -362,7 +364,8 @@ class ExpressionImpl implements Expression {
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("First argument must be an integer: " + input[0], e);
 		} catch (IntegerOutOfRange e) {
-			throw new IllegalArgumentException("Integer out of range: " + input[0], e);
+			//throw new IllegalArgumentException("Integer out of range: " + input[0], e);
+			return input[0].toString();
 		}
 	}
 
