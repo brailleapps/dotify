@@ -2,66 +2,66 @@ package org.daisy.dotify.impl.text;
 
 import java.text.MessageFormat;
 
-class SvInt2TextLocalization extends BasicInteger2Text {
+class NoInt2TextLocalization extends BasicInteger2Text {
 
 	public String getDefinedValue(int value) throws UndefinedNumberException {
 		switch (value) {
 			case 0:
-				return "noll";
+				return "null";
 			case 1:
 				return "ett";
 			case 2:
-				return "två";
+				return "to";
 			case 3:
 				return "tre";
 			case 4:
-				return "fyra";
+				return "fire";
 			case 5:
 				return "fem";
 			case 6:
-				return "sex";
+				return "seks";
 			case 7:
 				return "sju";
 			case 8:
-				return "åtta";
+				return "åtte";
 			case 9:
-				return "nio";
+				return "ni";
 			case 10:
-				return "tio";
+				return "ti";
 			case 11:
-				return "elva";
+				return "elleve";
 			case 12:
 				return "tolv";
 			case 13:
-				return "tretton";
+				return "tretten";
 			case 14:
-				return "fjorton";
+				return "fjorten";
 			case 15:
-				return "femton";
+				return "femten";
 			case 16:
-				return "sexton";
+				return "seksten";
 			case 17:
-				return "sjutton";
+				return "sytten";
 			case 18:
-				return "arton";
+				return "atten";
 			case 19:
-				return "nitton";
+				return "nitten";
 			case 20:
-				return "tjugo";
+				return "tjue";
 			case 30:
-				return "trettio";
+				return "tretti";
 			case 40:
-				return "fyrtio";
+				return "førti";
 			case 50:
-				return "femtio";
+				return "femti";
 			case 60:
-				return "sextio";
+				return "seksti";
 			case 70:
-				return "sjuttio";
+				return "sytti";
 			case 80:
-				return "åttio";
+				return "åtti";
 			case 90:
-				return "nittio";
+				return "nitti";
 			default:
 				throw new UndefinedNumberException();
 		}
@@ -73,31 +73,30 @@ class SvInt2TextLocalization extends BasicInteger2Text {
 
 	public String formatThousands(String th, String rem) {
 		if ("".equals(rem)) {
-			return MessageFormat.format("{0}tusen", th);
+			return MessageFormat.format("{0} tusen", th);
 		} else {
-			return MessageFormat.format("{0}tusen{1}", th, rem);
+			return MessageFormat.format("{0} tusen {1}", th, rem);
 		}
 	}
 
 	public String formatHundreds(String hu, String rem) {
 		if ("".equals(hu) && "".equals(rem)) {
-			return "hundra";
+			return "hundre";
 		} else if ("".equals(hu)) {
-			return MessageFormat.format("hundra{0}", rem);
+			return MessageFormat.format("hundre og {0}", rem);
 		} else if ("".equals(rem)) {
-			return MessageFormat.format("{0}hundra", hu);
+			return MessageFormat.format("{0} hundre", hu);
 		} else {
-			return MessageFormat.format("{0}hundra{1}", hu, rem);
+			return MessageFormat.format("{0} hundre og {1}", hu, rem);
 		}
 	}
 
 	public String postProcess(String value) {
-		// replace three occurrences of the same character by two
-		return value.replaceAll("(\\w)(\\1{2})", "$2");
+		return value;
 	}
 
 	public String formatTens(String tens, String rem) {
-		return MessageFormat.format("{0}{1}", tens, rem);
+		return MessageFormat.format("{0}{1}", tens, (rem.equals("ett")?"en":rem));
 	}
 
 }

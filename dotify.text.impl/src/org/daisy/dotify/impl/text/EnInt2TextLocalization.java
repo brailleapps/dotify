@@ -2,7 +2,7 @@ package org.daisy.dotify.impl.text;
 
 import java.text.MessageFormat;
 
-class EnInt2TextLocalization implements BasicInt2TextLocalization {
+class EnInt2TextLocalization extends BasicInteger2Text {
 
 	public String getDefinedValue(int value) throws UndefinedNumberException {
 		switch (value) {

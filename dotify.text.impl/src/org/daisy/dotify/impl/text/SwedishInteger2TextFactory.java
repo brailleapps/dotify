@@ -7,7 +7,7 @@ import org.daisy.dotify.api.text.Integer2TextFactory;
 class SwedishInteger2TextFactory implements Integer2TextFactory {
 
 	public Integer2Text newInteger2Text(String locale) throws Integer2TextConfigurationException {
-		return new BasicInteger2Text(new SvInt2TextLocalization());
+		return new SvInt2TextLocalization();
 	}
 
 	public Object getFeature(String key) {
