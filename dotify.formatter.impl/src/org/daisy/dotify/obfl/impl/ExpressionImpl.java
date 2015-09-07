@@ -339,34 +339,37 @@ class ExpressionImpl implements Expression {
 		if (input.length > 2) {
 			throw new IllegalArgumentException("Wrong number of arguments: (int2text integer language-code)");
 		}
-		if (integer2textFactoryMaker == null) {
-			//throw new UnsupportedOperationException("Operation not supported in the current configuration.");
-			return input[0].toString();
-		}
-		Integer2Text t;
-		try {
-			t = integer2textFactoryMaker.newInteger2Text(input[1].toString());
-		} catch (Integer2TextConfigurationException e) {
-			//throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
-			return input[0].toString();
-		}
-		try {
-			if (input[0] instanceof Integer) {
-				return t.intToText((Integer) input[0]);
-			} else {
+		int val = 0;
+		
+		if (input[0] instanceof Integer) {
+			val = (Integer) input[0];
+		} else {
+			try {
 				double d = toNumber(input[0]);
 				if (Math.round(d) == d) {
-					return t.intToText((int) Math.round(d));
+					val = (int) Math.round(d);
 				} else {
 					throw new IllegalArgumentException("First argument must be an integer: " + input[0]);
 				}
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("First argument must be an integer: " + input[0], e);
 			}
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("First argument must be an integer: " + input[0], e);
+		}
+
+		if (integer2textFactoryMaker == null) {
+			//throw new UnsupportedOperationException("Operation not supported in the current configuration.");
+			return Integer.toString(val);
+		}
+		try {
+			Integer2Text  t = integer2textFactoryMaker.newInteger2Text(input[1].toString());
+			return t.intToText(val);
+		} catch (Integer2TextConfigurationException e) {
+			//throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
+			return Integer.toString(val);
 		} catch (IntegerOutOfRange e) {
 			//throw new IllegalArgumentException("Integer out of range: " + input[0], e);
-			return input[0].toString();
-		}
+			return Integer.toString(val);
+		}		
 	}
 
 	private Object concat(Object[] input) {
