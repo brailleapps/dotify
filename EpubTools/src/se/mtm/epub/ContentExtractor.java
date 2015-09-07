@@ -57,15 +57,17 @@ public class ContentExtractor {
 
 	protected void processEntry(ZipEntry entry) throws EPUB3ReaderException {
 		File f = new File(output, entry.getName());
-		if (entry.isDirectory()) {
-			f.mkdirs();
-		} else {
-			f.getParentFile().mkdirs();
-		}
 		try {
-			writeToStream(entry.getSize(), new FileOutputStream(f));
-		} catch (FileNotFoundException e) {
-			throw new EPUB3ReaderException(e);
+			if (entry.isDirectory()) {
+				f.mkdirs();
+			} else {
+				f.getParentFile().mkdirs();
+				try {
+					writeToStream(entry.getSize(), new FileOutputStream(f));
+				} catch (FileNotFoundException e) {
+					throw new EPUB3ReaderException(e);
+				}
+			}
 		} finally {
 			try {
 				zis.closeEntry();

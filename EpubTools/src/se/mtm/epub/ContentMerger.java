@@ -69,7 +69,7 @@ public class ContentMerger {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("content", contentName);
 			try {
-				XMLTools.transform(opfFile, resultFile, this.getClass().getResourceAsStream("resource-files/opf-merge-spine.xslt"), params);
+				XMLTools.transform(opfFile, resultFile, this.getClass().getResource("resource-files/opf-merge-spine.xslt"), params);
 			} catch (XMLToolsException e) {
 				throw new EPUB3ReaderException(e);
 			}
@@ -78,7 +78,7 @@ public class ContentMerger {
 		{
 			Map<String, Object> params = new HashMap<String, Object>();
 			try {
-				XMLTools.transform(opfFile, contentFile, this.getClass().getResourceAsStream("resource-files/opf-merge-content-docs.xslt"), params);
+				XMLTools.transform(opfFile, contentFile, this.getClass().getResource("resource-files/opf-merge-content-docs.xslt"), params);
 			} catch (XMLToolsException e) {
 				throw new EPUB3ReaderException(e);
 			}
