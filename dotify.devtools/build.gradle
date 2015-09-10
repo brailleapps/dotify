@@ -38,7 +38,9 @@ bundle {
 		'Built-By': System.getProperty("user.name"),
         'Built-On': new Date().format('yyyy-MM-dd'),
         'Repository-Revision': "$repositoryRevision",
-        'Repository-URL': "$repositoryURL"
+        'Repository-URL': "$repositoryURL",
+        'Main-Class': mainClassName,
+        'Class-Path': configurations.runtime.collect { it.getName() }.join(' ')	
 	]
 }
 
