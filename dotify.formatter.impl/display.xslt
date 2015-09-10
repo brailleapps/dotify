@@ -32,6 +32,13 @@
 					h1 {
 						margin-top: 2em;
 					}
+					a.internal {
+						color: white;
+						text-decoration: none;
+					}
+					a.internal:hover {
+						color: grey;
+					}
 				</style>
 			</head>
 			<body>
@@ -42,7 +49,7 @@
 	<xsl:template match="tests">
 		<xsl:for-each select="test">
 			<xsl:variable name="input" select="document(@input)"/>
-			<h1><xsl:value-of select="$input/obfl:obfl/obfl:meta/dc:title"/></h1>
+			<h1 id="{@input}"><xsl:value-of select="$input/obfl:obfl/obfl:meta/dc:title"/><a href="#{@input}" class="internal"> &#x00B6;</a></h1>
 			<p><xsl:value-of select="$input/obfl:obfl/obfl:meta/dc:description"/></p>
 			<h2><xsl:value-of select="@input"/></h2>
 			<pre>

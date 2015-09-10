@@ -22,7 +22,7 @@ dependencies {
     
 	testRuntime group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
 	testRuntime group: group, name:'dotify.text.impl', version:'1.0.0'
-	testRuntime group: group, name:'dotify.translator.impl', version:'1.0.0'
+	testRuntime group: group, name:'dotify.translator.impl', version:'1.1.0'
 }
 
 buildscript {

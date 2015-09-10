@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="display.xslt" type="text/xsl" ?>
 <tests>
+<test input="border-center-input.obfl" expected="border-center-expected.pef"/>
+<test input="border-inner-input.obfl" expected="border-inner-expected.pef"/>
+<test input="border-outer-input.obfl" expected="border-outer-expected.pef"/>
 <test input="keep-input.obfl" expected="keep-expected.pef"/>
 <test input="leader-right-input.obfl" expected="leader-right-expected.pef"/>
 <test input="leader-right-multiple-input.obfl" expected="leader-right-multiple-expected.pef"/>
