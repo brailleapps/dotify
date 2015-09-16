@@ -3,9 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterConfigurationException;
 import org.daisy.dotify.api.formatter.FormatterFactory;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
-import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
@@ -20,13 +18,7 @@ public class FormatterFactoryImpl implements FormatterFactory {
 	private BrailleTranslatorFactoryMakerService translatorFactory;
 
 	public Formatter newFormatter(String locale, String mode) {
-		BrailleTranslator t;
-		try {
-			t = translatorFactory.newFactory(locale, mode).newTranslator(locale, mode);
-		} catch (TranslatorConfigurationException e) {
-			t = null;
-		}
-		return new FormatterImpl(t);
+		return new FormatterImpl(translatorFactory, locale, mode);
 	}
 
 	@Reference

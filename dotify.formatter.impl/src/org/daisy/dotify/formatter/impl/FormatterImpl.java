@@ -16,7 +16,7 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
-import org.daisy.dotify.api.translator.BrailleTranslator;
+import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.common.io.StateObject;
 import org.daisy.dotify.common.text.BreakPoint;
@@ -50,8 +50,8 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	/**
 	 * Creates a new formatter
 	 */
-	public FormatterImpl(BrailleTranslator translator) {
-		this(new FormatterContext(translator));
+	public FormatterImpl(BrailleTranslatorFactoryMakerService translatorFactory, String locale, String mode) {
+		this(new FormatterContext(translatorFactory, locale, mode));
 	}
 	
 	public FormatterImpl(FormatterContext context) {

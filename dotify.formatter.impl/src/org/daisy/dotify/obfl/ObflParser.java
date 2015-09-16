@@ -104,7 +104,7 @@ public class ObflParser extends XMLParserBase {
 		this.meta = new ArrayList<MetaDataItem>();
 		formatter.open();
 		XMLEvent event;
-		TextProperties tp = new TextProperties.Builder(this.locale.toString(), mode).hyphenate(hyphGlobal).build();
+		TextProperties tp = new TextProperties.Builder(this.locale.toString()).translationMode(mode).hyphenate(hyphGlobal).build();
 		
 		while (input.hasNext()) {
 			event = input.nextEvent();
@@ -275,7 +275,7 @@ public class ObflParser extends XMLParserBase {
 		}
 		PageAreaBuilder builder = null;
 		// Use global values here, because they are not inherited from anywhere
-		TextProperties tp = new TextProperties.Builder(locale.toString(), mode).hyphenate(hyphGlobal).build();
+		TextProperties tp = new TextProperties.Builder(locale.toString()).translationMode(mode).hyphenate(hyphGlobal).build();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.FALLBACK)) {
@@ -1079,7 +1079,7 @@ public class ObflParser extends XMLParserBase {
 		String loc = getLang(event, defaults.getLocale());
 		boolean hyph = getHyphenate(event, defaults.isHyphenating());
 		String trans = getTranslate(event, defaults.getTranslationMode());
-		return new TextProperties.Builder(loc.toString(), trans).hyphenate(hyph).build();
+		return new TextProperties.Builder(loc.toString()).translationMode(trans).hyphenate(hyph).build();
 	}
 	
 	private String getLang(XMLEvent event, String locale) {

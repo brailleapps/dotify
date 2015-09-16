@@ -198,7 +198,7 @@ class PageImpl implements Page {
 				LayoutMaster lm = master;
 				int pagenum = getPageIndex() + 1;
 				PageTemplate t = lm.getTemplate(pagenum);
-				BrailleTranslator filter = fcontext.getTranslator();
+				BrailleTranslator filter = fcontext.getDefaultTranslator();
 				ret.addAll(renderFields(lm, t.getHeader(), filter));
 				if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.TOP && !pageArea.isEmpty()) {
 					ret.addAll(before);
