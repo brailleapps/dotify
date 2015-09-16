@@ -79,6 +79,7 @@ public class ObflParser extends XMLParserBase {
 	private Formatter formatter;
 	private final FilterLocale locale;
 	private final String mode;
+	private final boolean hyphGlobal;
 	private final FormatterFactory formatterFactory;
 	private final MarkerProcessor mp;
 	private final TextBorderFactoryMakerService maker;
@@ -88,6 +89,8 @@ public class ObflParser extends XMLParserBase {
 	public ObflParser(String locale, String mode, MarkerProcessor mp, FormatterFactory formatterFactory, TextBorderFactoryMakerService maker, ExpressionFactory ef) {
 		this.locale = FilterLocale.parse(locale);
 		this.mode = mode;
+		//TODO: add this to input parameters
+		this.hyphGlobal = true;
 		this.formatterFactory = formatterFactory;
 		this.mp = mp;
 		this.maker = maker;
@@ -101,30 +104,28 @@ public class ObflParser extends XMLParserBase {
 		this.meta = new ArrayList<MetaDataItem>();
 		formatter.open();
 		XMLEvent event;
-		FilterLocale locale = null;
-		boolean hyphenate = true;
+		TextProperties tp = new TextProperties.Builder(this.locale.toString(), mode).hyphenate(hyphGlobal).build();
+		
 		while (input.hasNext()) {
 			event = input.nextEvent();
 			if (equalsStart(event, ObflQName.OBFL)) {
 				String loc = getAttr(event, ObflQName.ATTR_XML_LANG);
 				if (loc==null) {
 					throw new OBFLParserException("Missing xml:lang on root element");
-				} else {
-					locale = FilterLocale.parse(loc);
 				}
-				hyphenate = getHyphenate(event, hyphenate);
+				tp = getTextProperties(event, tp);
 			} else if (equalsStart(event, ObflQName.META)) {
 				parseMeta(event, input);
 			} else if (equalsStart(event, ObflQName.LAYOUT_MASTER)) {
 				parseLayoutMaster(event, input);
 			} else if (equalsStart(event, ObflQName.SEQUENCE)) {
-				parseSequence(event, input, locale, hyphenate);
+				parseSequence(event, input, tp);
 			} else if (equalsStart(event, ObflQName.TABLE_OF_CONTENTS)) {
-				parseTableOfContents(event, input, locale, hyphenate);
+				parseTableOfContents(event, input, tp);
 			} else if (equalsStart(event, ObflQName.VOLUME_TEMPLATE)) {
-				parseVolumeTemplate(event, input, locale, hyphenate);
+				parseVolumeTemplate(event, input, tp);
 			} else if (equalsStart(event, ObflQName.COLLECTION)) {
-				parseCollection(event, input, locale, hyphenate);
+				parseCollection(event, input, tp);
 			} 
 			else {
 				report(event);
@@ -273,16 +274,18 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 		PageAreaBuilder builder = null;
+		// Use global values here, because they are not inherited from anywhere
+		TextProperties tp = new TextProperties.Builder(locale.toString(), mode).hyphenate(hyphGlobal).build();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.FALLBACK)) {
 				parseFallback(event, input, config);
 			} else if (equalsStart(event, ObflQName.BEFORE)) {
 				if (builder==null) { builder = master.setPageArea(config.build()); }
-				parseBeforeAfter(event, input, builder.getBeforeArea(), locale, true);
+				parseBeforeAfter(event, input, builder.getBeforeArea(), tp);
 			} else if (equalsStart(event, ObflQName.AFTER)) {
 				if (builder==null) { builder = master.setPageArea(config.build()); }
-				parseBeforeAfter(event, input, builder.getAfterArea(), locale, true);
+				parseBeforeAfter(event, input, builder.getAfterArea(), tp);
 			} else if (equalsEnd(event, ObflQName.PAGE_AREA)) {
 				if (builder==null) { builder = master.setPageArea(config.build()); }
 				break;
@@ -314,17 +317,16 @@ public class ObflParser extends XMLParserBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void parseBeforeAfter(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+	private void parseBeforeAfter(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+		tp = getTextProperties(event, tp);
 		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+				fc.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, fc, locale, hyph);
-			} else if (processAsBlockContents(fc, event, input, locale, hyph)) {
+				parseBlock(event, input, fc, tp);
+			} else if (processAsBlockContents(fc, event, input, tp)) {
 				//done!
 			}
 			else if (equalsEnd(event, ObflQName.BEFORE, ObflQName.AFTER)) {
@@ -440,10 +442,10 @@ public class ObflParser extends XMLParserBase {
 	}
 	
 	
-	private void parseSequence(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+
+	private void parseSequence(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		String masterName = getAttr(event, "master");
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+		tp = getTextProperties(event, tp);
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
 		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
 		if (initialPageNumber!=null) {
@@ -453,7 +455,7 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, seq, locale, hyph);
+				parseBlock(event, input, seq, tp);
 			}/* else if (equalsStart(event, LEADER)) {
 				parseLeader(event, input);
 			}*/
@@ -466,17 +468,16 @@ public class ObflParser extends XMLParserBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+	private void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+		tp = getTextProperties(event, tp);
 		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+				fc.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, fc, locale, hyph);
-			} else if (processAsBlockContents(fc, event, input, locale, hyph)) {
+				parseBlock(event, input, fc, tp);
+			} else if (processAsBlockContents(fc, event, input, tp)) {
 				//done
 			}
 			else if (equalsEnd(event, ObflQName.BLOCK)) {
@@ -488,15 +489,14 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseSpan(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+	private void parseSpan(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+		tp = getTextProperties(event, tp);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				fc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+				fc.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.STYLE)) {
-				parseStyle(event, input, fc, locale, hyph);
+				parseStyle(event, input, fc, tp);
 			} else if (equalsStart(event, ObflQName.LEADER)) {
 				parseLeader(fc, event, input);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
@@ -515,9 +515,7 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private void parseStyle(XMLEvent event, XMLEventReader input, FormatterCore fc, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		TextProperties tp = new TextProperties.Builder(locale.toString()).hyphenate(hyph).build();
-
+	private void parseStyle(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		parseStyleEvent(fc, event, input, tp);
 	}
 
@@ -712,15 +710,14 @@ public class ObflParser extends XMLParserBase {
 		return getAttr(event, "item");
 	}
 	
-	private void parseTableOfContents(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseTableOfContents(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		String tocName = getAttr(event, ObflQName.ATTR_NAME);
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+		tp = getTextProperties(event, tp);
 		TableOfContents toc = formatter.newToc(tocName);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.TOC_ENTRY)) {
-				parseTocEntry(event, input, toc, locale, hyph);
+				parseTocEntry(event, input, toc, tp);
 			} else if (equalsEnd(event, ObflQName.TABLE_OF_CONTENTS)) {
 				break;
 			} else {
@@ -729,13 +726,13 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseCollection(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseCollection(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		String id = getAttr(event, ObflQName.ATTR_NAME);
 		ContentCollection coll = formatter.newCollection(id); 
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.ITEM)) {
-				parseCollectionItem(event, input, coll, locale, hyph);
+				parseCollectionItem(event, input, coll, tp);
 			} else if (equalsEnd(event, ObflQName.COLLECTION)) {
 				break;
 			} else {
@@ -745,18 +742,17 @@ public class ObflParser extends XMLParserBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void parseTocEntry(XMLEvent event, XMLEventReader input, TableOfContents toc, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseTocEntry(XMLEvent event, XMLEventReader input, TableOfContents toc, TextProperties tp) throws XMLStreamException {
 		String refId = getAttr(event, "ref-id");
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+		tp = getTextProperties(event, tp);
 		toc.startEntry(refId, blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				toc.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+				toc.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.TOC_ENTRY)) {
-				parseTocEntry(event, input, toc, locale, hyph);
-			} else if (processAsBlockContents(toc, event, input, locale, hyph)) {
+				parseTocEntry(event, input, toc, tp);
+			} else if (processAsBlockContents(toc, event, input, tp)) {
 				//done!
 			}
 			else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
@@ -769,20 +765,19 @@ public class ObflParser extends XMLParserBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void parseCollectionItem(XMLEvent event, XMLEventReader input, ContentCollection coll, FilterLocale locale, boolean hyph) throws XMLStreamException {
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+	private void parseCollectionItem(XMLEvent event, XMLEventReader input, ContentCollection coll, TextProperties tp) throws XMLStreamException {
+		tp = getTextProperties(event, tp);
 		coll.startItem(blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				coll.addChars(event.asCharacters().getData(), new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+				coll.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.ITEM)) {
-				parseCollectionItem(event, input, coll, locale, hyph);
+				parseCollectionItem(event, input, coll, tp);
 				Logger.getLogger(this.getClass().getCanonicalName()).warning("Nested collection items.");
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, coll, locale, hyph);
-			} else if (processAsBlockContents(coll, event, input, locale, hyph)) {
+				parseBlock(event, input, coll, tp);
+			} else if (processAsBlockContents(coll, event, input, tp)) {
 				//done!
 			}
 			else if (equalsEnd(event, ObflQName.ITEM)) {
@@ -794,7 +789,7 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private boolean processAsBlockContents(FormatterCore fc, XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private boolean processAsBlockContents(FormatterCore fc, XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		if (equalsStart(event, ObflQName.LEADER)) {
 			parseLeader(fc, event, input);
 			return true;
@@ -806,13 +801,13 @@ public class ObflParser extends XMLParserBase {
 			scanEmptyElement(input, ObflQName.BR);
 			return true;
 		} else if (equalsStart(event, ObflQName.EVALUATE)) {
-			parseEvaluate(fc, event, input, locale, hyph);
+			parseEvaluate(fc, event, input, tp);
 			return true;
 		} else if (equalsStart(event, ObflQName.STYLE)) {
-			parseStyle(event, input, fc, locale, hyph);
+			parseStyle(event, input, fc, tp);
 			return true;
 		} else if (equalsStart(event, ObflQName.SPAN)) {
-			parseSpan(event, input, fc, locale, hyph);
+			parseSpan(event, input, fc, tp);
 			return true;
 		} else if (equalsStart(event, ObflQName.ANCHOR)) {
 			fc.insertAnchor(parseAnchor(event));
@@ -866,14 +861,14 @@ public class ObflParser extends XMLParserBase {
 		fc.insertReference(refId, style);
 	}
 	
-	private void parseEvaluate(FormatterCore fc, XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseEvaluate(FormatterCore fc, XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		String expr = getAttr(event, "expression");
 		scanEmptyElement(input, ObflQName.EVALUATE);
 		OBFLDynamicContent dynamic = new OBFLDynamicContent(expr, ef, true);
-		fc.insertEvaluate(dynamic, new TextProperties.Builder(locale.toString()).hyphenate(hyph).build());
+		fc.insertEvaluate(dynamic, tp);
 	}
 	
-	private void parseVolumeTemplate(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseVolumeTemplate(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		String useWhen = getAttr(event, ObflQName.ATTR_USE_WHEN);
 		String splitterMax = getAttr(event, "sheets-in-volume-max");
 		OBFLCondition condition = new OBFLCondition(useWhen, ef, false);
@@ -886,9 +881,9 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.PRE_CONTENT)) {
-				parsePreVolumeContent(event, input, template.getPreVolumeContentBuilder(), locale, hyph);
+				parsePreVolumeContent(event, input, template.getPreVolumeContentBuilder(), tp);
 			} else if (equalsStart(event, ObflQName.POST_CONTENT)) {
-				parsePostVolumeContent(event, input, template.getPostVolumeContentBuilder(), locale, hyph);
+				parsePostVolumeContent(event, input, template.getPostVolumeContentBuilder(), tp);
 			} else if (equalsEnd(event, ObflQName.VOLUME_TEMPLATE)) {
 				break;
 			} else {
@@ -897,15 +892,15 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parsePreVolumeContent(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parsePreVolumeContent(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, TextProperties tp) throws XMLStreamException {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.SEQUENCE)) {
-				parseVolumeSequence(event, input, template, locale, hyph);
+				parseVolumeSequence(event, input, template, tp);
 			} else if (equalsStart(event, ObflQName.TOC_SEQUENCE)) {
-				parseTocSequence(event, input, template, locale, hyph);
+				parseTocSequence(event, input, template, tp);
 			} else if (equalsStart(event, ObflQName.DYNAMIC_SEQUENCE)) {
-				parseItemSequence(event, input, template, locale, hyph);
+				parseItemSequence(event, input, template, tp);
 			} else if (equalsEnd(event, ObflQName.PRE_CONTENT)) {
 				break;
 			} else {
@@ -914,13 +909,13 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parsePostVolumeContent(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parsePostVolumeContent(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, TextProperties tp) throws XMLStreamException {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.SEQUENCE)) {
-				parseVolumeSequence(event, input, template, locale, hyph);
+				parseVolumeSequence(event, input, template, tp);
 			} else if (equalsStart(event, ObflQName.DYNAMIC_SEQUENCE)) {
-				parseItemSequence(event, input, template, locale, hyph);
+				parseItemSequence(event, input, template, tp);
 			} else if (equalsEnd(event, ObflQName.POST_CONTENT)) {
 				break;
 			} else {
@@ -929,10 +924,9 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private void parseVolumeSequence(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseVolumeSequence(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, TextProperties tp) throws XMLStreamException {
 		String masterName = getAttr(event, "master");
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+		tp = getTextProperties(event, tp);
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
 		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
 		if (initialPageNumber!=null) {
@@ -942,7 +936,7 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, template, locale, hyph);
+				parseBlock(event, input, template, tp);
 			} else if (equalsEnd(event, ObflQName.SEQUENCE)) {
 				break;
 			} else {
@@ -951,11 +945,10 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private void parseTocSequence(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseTocSequence(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, TextProperties tp) throws XMLStreamException {
 		String masterName = getAttr(event, "master");
 		String tocName = getAttr(event, "toc");
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+		tp = getTextProperties(event, tp);
 		TocProperties.TocRange range = TocProperties.TocRange.valueOf(getAttr(event, "range").toUpperCase());
 		TocProperties.Builder builder = new TocProperties.Builder(masterName, tocName, range);
 		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
@@ -968,16 +961,16 @@ public class ObflParser extends XMLParserBase {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.ON_TOC_START)) {
 				template.newOnTocStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
-				parseOnEvent(event, input, template, ObflQName.ON_TOC_START, locale, hyph);
+				parseOnEvent(event, input, template, ObflQName.ON_TOC_START, tp);
 			} else if (equalsStart(event, ObflQName.ON_VOLUME_START)) {
 				template.newOnVolumeStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
-				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_START, locale, hyph);
+				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_START, tp);
 			} else if (equalsStart(event, ObflQName.ON_VOLUME_END)) {
 				template.newOnVolumeEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
-				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_END, locale, hyph);
+				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_END, tp);
 			} else if (equalsStart(event, ObflQName.ON_TOC_END)) {
 				template.newOnTocEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
-				parseOnEvent(event, input, template, ObflQName.ON_TOC_END, locale, hyph);
+				parseOnEvent(event, input, template, ObflQName.ON_TOC_END, tp);
 			}
 			else if (equalsEnd(event, ObflQName.TOC_SEQUENCE)) {
 				break;
@@ -987,10 +980,9 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseItemSequence(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseItemSequence(XMLEvent event, XMLEventReader input, VolumeContentBuilder template, TextProperties tp) throws XMLStreamException {
 		String masterName = getAttr(event, "master");
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
+		tp = getTextProperties(event, tp);
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
 		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
 		if (initialPageNumber!=null) {
@@ -1002,13 +994,13 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.INSERT_REFS_LIST)) {
-				parseRefsList(event, input, dsb, locale, hyph);
+				parseRefsList(event, input, dsb, tp);
 				context = null;
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
 				if (context == null) {
 					 context = dsb.newStaticContext();
 				}
-				parseBlock(event, input, context, locale, hyph);
+				parseBlock(event, input, context, tp);
 			}
 			else if (equalsEnd(event, ObflQName.DYNAMIC_SEQUENCE)) {
 				break;
@@ -1018,11 +1010,9 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseRefsList(XMLEvent event, XMLEventReader input, DynamicSequenceBuilder dsb, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseRefsList(XMLEvent event, XMLEventReader input, DynamicSequenceBuilder dsb, TextProperties tp) throws XMLStreamException {
 		String collection = getAttr(event, "collection");
-		locale = getLang(event, locale);
-		hyph = getHyphenate(event, hyph);
-		
+		tp = getTextProperties(event, tp);
 		ItemSequenceProperties.Range range = ItemSequenceProperties.Range.valueOf(getAttr(event, "range").toUpperCase());
 		ItemSequenceProperties.Builder builder = new ItemSequenceProperties.Builder(collection, range);
 		
@@ -1031,13 +1021,13 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.ON_PAGE_START)) {
-				parseOnEvent(event, input, rlb.newOnPageStart(), ObflQName.ON_PAGE_START, locale, hyph);
+				parseOnEvent(event, input, rlb.newOnPageStart(), ObflQName.ON_PAGE_START, tp);
 			} else if (equalsStart(event, ObflQName.ON_PAGE_END)) {
-				parseOnEvent(event, input, rlb.newOnPageEnd(), ObflQName.ON_PAGE_END, locale, hyph);
+				parseOnEvent(event, input, rlb.newOnPageEnd(), ObflQName.ON_PAGE_END, tp);
 			} else if (equalsStart(event, ObflQName.ON_COLLECTION_START)) {
-				parseOnEvent(event, input, rlb.newOnCollectionStart(), ObflQName.ON_COLLECTION_START, locale, hyph);
+				parseOnEvent(event, input, rlb.newOnCollectionStart(), ObflQName.ON_COLLECTION_START, tp);
 			} else if (equalsStart(event, ObflQName.ON_COLLECTION_END)) {
-				parseOnEvent(event, input, rlb.newOnCollectionEnd(), ObflQName.ON_COLLECTION_END, locale, hyph);
+				parseOnEvent(event, input, rlb.newOnCollectionEnd(), ObflQName.ON_COLLECTION_END, tp);
 			}
 			else if (equalsEnd(event, ObflQName.INSERT_REFS_LIST)) {
 				break;
@@ -1047,11 +1037,11 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private void parseOnEvent(XMLEvent event, XMLEventReader input, FormatterCore fc, QName end, FilterLocale locale, boolean hyph) throws XMLStreamException {
+	private void parseOnEvent(XMLEvent event, XMLEventReader input, FormatterCore fc, QName end, TextProperties tp) throws XMLStreamException {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
-				parseBlock(event, input, fc, locale, hyph);
+				parseBlock(event, input, fc, tp);
 			} else if (equalsEnd(event, end)) {
 				break;
 			} else {
@@ -1085,24 +1075,48 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private FilterLocale getLang(XMLEvent event, FilterLocale locale) {
+	private TextProperties getTextProperties(XMLEvent event, TextProperties defaults) {
+		String loc = getLang(event, defaults.getLocale());
+		boolean hyph = getHyphenate(event, defaults.isHyphenating());
+		String trans = getTranslate(event, defaults.getTranslationMode());
+		return new TextProperties.Builder(loc.toString(), trans).hyphenate(hyph).build();
+	}
+	
+	private String getLang(XMLEvent event, String locale) {
 		String lang = getAttr(event, ObflQName.ATTR_XML_LANG);
 		if (lang!=null) {
 			if ("".equals(lang)) {
 				return null;
 			} else {
-				return FilterLocale.parse(lang);
+				//we're doing the parsing only to get the validation
+				return FilterLocale.parse(lang).toString();
 			}
 		}
 		return locale;
 	}
-	
+
 	private boolean getHyphenate(XMLEvent event, boolean hyphenate) {
 		String hyph = getAttr(event, ObflQName.ATTR_HYPHENATE);
 		if (hyph!=null) {
-			return "true".equals(hyph);
+			if ("".equals(hyph)) {
+				return hyphGlobal;
+			} else {
+				return "true".equals(hyph);
+			}
 		}
 		return hyphenate;
+	}
+
+	private String getTranslate(XMLEvent event, String translate) {
+		String tr = getAttr(event, ObflQName.ATTR_TRANSLATE);
+		if (tr!=null) {
+			if ("".equals(tr)) {
+				return mode;
+			} else {
+				return tr;
+			}
+		}
+		return translate;
 	}
 	
 	public void writeResult(PagedMediaWriter writer) throws IOException {

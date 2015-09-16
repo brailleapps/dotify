@@ -57,6 +57,7 @@ interface ObflQName {
 	
 	 final static QName ATTR_XML_LANG = new QName("http://www.w3.org/XML/1998/namespace", "lang", "xml");
 	 final static QName ATTR_HYPHENATE = new QName("hyphenate");
+	 final static QName ATTR_TRANSLATE = new QName("translate");
 	 final static QName ATTR_PAGE_WIDTH = new QName("page-width");
 	 final static QName ATTR_PAGE_HEIGHT = new QName("page-height");
 	 final static QName ATTR_NAME = new QName("name");
