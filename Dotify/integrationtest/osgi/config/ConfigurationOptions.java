@@ -13,7 +13,7 @@ public abstract class ConfigurationOptions {
 	}
 
 	static Option dotifyApi() {
-		return mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.api").version("1.1.0");
+		return mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.api").version("1.3.0");
 	}
 	
 	static Option dotifyCommon() {
