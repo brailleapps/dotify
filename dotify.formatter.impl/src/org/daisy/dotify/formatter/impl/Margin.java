@@ -72,4 +72,36 @@ class Margin extends Stack<MarginComponent> {
 		}
 		return true;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((t == null) ? 0 : t.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Margin other = (Margin) obj;
+		if (t != other.t) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Margin [t=" + t + ", elements=" + super.toString() + "]";
+	}
+	
 }

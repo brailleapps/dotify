@@ -222,4 +222,120 @@ class RowDataProperties {
 		return trailingDecoration;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((align == null) ? 0 : align.hashCode());
+		result = prime * result + blockIndent;
+		result = prime * result + blockIndentParent;
+		result = prime * result + firstLineIndent;
+		result = prime * result + innerSpaceAfter;
+		result = prime * result + innerSpaceBefore;
+		result = prime * result + ((leadingDecoration == null) ? 0 : leadingDecoration.hashCode());
+		result = prime * result + ((leftMargin == null) ? 0 : leftMargin.hashCode());
+		result = prime * result + ((listProps == null) ? 0 : listProps.hashCode());
+		result = prime * result + outerSpaceAfter;
+		result = prime * result + outerSpaceBefore;
+		result = prime * result + ((rightMargin == null) ? 0 : rightMargin.hashCode());
+		result = prime * result + ((rowSpacing == null) ? 0 : rowSpacing.hashCode());
+		result = prime * result + textIndent;
+		result = prime * result + ((trailingDecoration == null) ? 0 : trailingDecoration.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		RowDataProperties other = (RowDataProperties) obj;
+		if (align != other.align) {
+			return false;
+		}
+		if (blockIndent != other.blockIndent) {
+			return false;
+		}
+		if (blockIndentParent != other.blockIndentParent) {
+			return false;
+		}
+		if (firstLineIndent != other.firstLineIndent) {
+			return false;
+		}
+		if (innerSpaceAfter != other.innerSpaceAfter) {
+			return false;
+		}
+		if (innerSpaceBefore != other.innerSpaceBefore) {
+			return false;
+		}
+		if (leadingDecoration == null) {
+			if (other.leadingDecoration != null) {
+				return false;
+			}
+		} else if (!leadingDecoration.equals(other.leadingDecoration)) {
+			return false;
+		}
+		if (leftMargin == null) {
+			if (other.leftMargin != null) {
+				return false;
+			}
+		} else if (!leftMargin.equals(other.leftMargin)) {
+			return false;
+		}
+		if (listProps == null) {
+			if (other.listProps != null) {
+				return false;
+			}
+		} else if (!listProps.equals(other.listProps)) {
+			return false;
+		}
+		if (outerSpaceAfter != other.outerSpaceAfter) {
+			return false;
+		}
+		if (outerSpaceBefore != other.outerSpaceBefore) {
+			return false;
+		}
+		if (rightMargin == null) {
+			if (other.rightMargin != null) {
+				return false;
+			}
+		} else if (!rightMargin.equals(other.rightMargin)) {
+			return false;
+		}
+		if (rowSpacing == null) {
+			if (other.rowSpacing != null) {
+				return false;
+			}
+		} else if (!rowSpacing.equals(other.rowSpacing)) {
+			return false;
+		}
+		if (textIndent != other.textIndent) {
+			return false;
+		}
+		if (trailingDecoration == null) {
+			if (other.trailingDecoration != null) {
+				return false;
+			}
+		} else if (!trailingDecoration.equals(other.trailingDecoration)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "RowDataProperties [blockIndent=" + blockIndent + ", blockIndentParent=" + blockIndentParent
+				+ ", leftMargin=" + leftMargin + ", rightMargin=" + rightMargin + ", listProps=" + listProps
+				+ ", textIndent=" + textIndent + ", firstLineIndent=" + firstLineIndent + ", align=" + align
+				+ ", rowSpacing=" + rowSpacing + ", outerSpaceBefore=" + outerSpaceBefore + ", outerSpaceAfter="
+				+ outerSpaceAfter + ", innerSpaceBefore=" + innerSpaceBefore + ", innerSpaceAfter=" + innerSpaceAfter
+				+ ", leadingDecoration=" + leadingDecoration + ", trailingDecoration=" + trailingDecoration + "]";
+	}
+
 }

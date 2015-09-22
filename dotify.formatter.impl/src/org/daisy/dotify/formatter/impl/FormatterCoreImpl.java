@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -117,6 +118,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (listItem!=null) {
 			addChars("", new TextProperties.Builder(null).build());
 		}
+		{
 		BlockProperties p = propsContext.pop();
 		Block bi = getCurrentBlock();
 		RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
@@ -130,12 +132,14 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter()+p.getBottomMargin());
 		bi.setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		bi.setRowDataProperties(builder.build());
+		}
 		leftMargin.pop();
 		rightMargin.pop();
 		if (propsContext.size()>0) {
-			Keep keep = propsContext.peek().getKeepType();
-			int next = propsContext.peek().getKeepWithNext();
-			subtractFromBlockIndent(propsContext.peek().getBlockIndent());
+			BlockProperties p = propsContext.peek();
+			Keep keep = p.getKeepType();
+			int next = p.getKeepWithNext();
+			subtractFromBlockIndent(p.getBlockIndent());
 			RowDataProperties.Builder rdp = new RowDataProperties.Builder().
 						textIndent(p.getTextIndent()).
 						firstLineIndent(p.getFirstLineIndent()).
