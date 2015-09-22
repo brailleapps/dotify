@@ -168,7 +168,7 @@ class PageSequenceBuilder extends PageSequence {
 		}
 
 		//layout
-		int max = 0;
+		MarginValue max = new MarginValue();
 		int currentPageNumber = -1;
 		for (int x=0; x<seq.size(); x++) {
 			Block g = seq.get(x);
@@ -177,7 +177,7 @@ class PageSequenceBuilder extends PageSequence {
 			bd.startNewPageIfNeeded(seq);
 			//if we are on a new page, then the collapsing regions are irrelevant
 			if (currentPageNumber() > currentPageNumber) {
-				max = 0; 
+				max = new MarginValue(); 
 				currentPageNumber = currentPageNumber();
 			}
 			if (g.getBlockContentManager().isCollapsable()
@@ -186,7 +186,7 @@ class PageSequenceBuilder extends PageSequence {
 					//Once collapsing borders have been fully tested, this can be removed
 					&& (x==seq.size()-1 || seq.get(x+1).getBreakBeforeType()!=FormattingTypes.BreakBefore.PAGE)
 					) {
-				max = Math.max(Math.max(max, g.getRowDataProperties().getOuterSpaceBefore()), g.getRowDataProperties().getOuterSpaceAfter());
+				max = max(max, new MarginValue(g.getRowDataProperties().getRowSpacing(), Math.max(g.getRowDataProperties().getOuterSpaceBefore(), g.getRowDataProperties().getOuterSpaceAfter())));
 				
 				currentPage().addMarkers(bd.rdm.getGroupMarkers());
 				if (bd.rdm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
@@ -196,8 +196,8 @@ class PageSequenceBuilder extends PageSequence {
 				setKeepWithPreviousSheets(g.getKeepWithPreviousSheets());
 				continue;
 			}
-			max = Math.max(max, g.getRowDataProperties().getOuterSpaceBefore());
-			List<RowImpl> preContentRows = bd.rdm.getPreContentRows(max);
+			max = max(max, new MarginValue(g.getRowDataProperties().getRowSpacing(), g.getRowDataProperties().getOuterSpaceBefore()));
+			List<RowImpl> preContentRows = bd.rdm.getPreContentRows(max.rows, max.rowSpacing);
 			//FIXME: this assumes that row spacing is equal to 1
 			if (preContentRows.size()+bd.rdm.countPostContentRows()>=currentPage().getFlowHeight()) {
 				throw new PaginatorException("Group margins too large to fit on an empty page.");
@@ -247,9 +247,33 @@ class PageSequenceBuilder extends PageSequence {
 				addRows(bd.rdm.getSkippablePostContentRows());
 			}
 			//gi++;
-			max = 0;
+			max = new MarginValue();
 		}
 		return true;
+	}
+	
+	private class MarginValue {
+		private final Float rowSpacing;
+		private final int rows;
+		MarginValue() {
+			this(master.getRowSpacing(), 0);
+		}
+		MarginValue(Float rowSpacing, int rows) {
+			this.rowSpacing = rowSpacing;
+			this.rows = rows;
+		}
+		
+		private float getHeight() {
+			if (rowSpacing==null) {
+				return master.getRowSpacing()*rows;
+			} else {
+				return rowSpacing*rows;
+			}
+		}
+	}
+	
+	private MarginValue max(MarginValue val1, MarginValue val2) {
+		return (val1.getHeight()>val2.getHeight()?val1:val2);
 	}
 	
 	private void addRows(Iterable<RowImpl> rows) {
@@ -336,7 +360,7 @@ class PageSequenceBuilder extends PageSequence {
 								b.setContext(master.getFlowWidth(), refs, rcontext, context);
 							}
 							for (Block b : c.getBlocks(a)) {
-								for (RowImpl r : b.getBlockContentManager().getPreContentRows(b.getRowDataProperties().getOuterSpaceBefore())) {
+								for (RowImpl r : b.getBlockContentManager().getPreContentRows(b.getRowDataProperties().getOuterSpaceBefore(), b.getRowDataProperties().getRowSpacing())) {
 									blk.add(r);
 								}
 								for (RowImpl r : b.getBlockContentManager()) {

@@ -228,12 +228,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 	 * @param margin rdp.getSpaceBefore()
 	 * @return
 	 */
-	public List<RowImpl> getPreContentRows(int margin) {
+	public List<RowImpl> getPreContentRows(int margin, Float marginRowSpacing) {
 		List<RowImpl> preContentRows = new ArrayList<RowImpl>();
 		for (int i=0; i<margin;i++) {
 			RowImpl row = new RowImpl("", leftParent, rightParent);
-			row.setAlignment(rdp.getAlignment());
-			row.setRowSpacing(rdp.getRowSpacing());
+			//row.setAlignment(rdp.getAlignment());
+			row.setRowSpacing(marginRowSpacing);
 			preContentRows.add(row);
 		}
 		if (rdp.getLeadingDecoration()!=null) {
