@@ -43,7 +43,7 @@ public abstract class ConfigurationOptions {
 	public static Option dotifyTranslator() {
 		return composite(
 				dotifyHyphenator(),
-				mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.translator.impl").version("1.0.0")
+				mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.translator.impl").version("1.2.0")
 				);
 	}
 	
@@ -69,7 +69,7 @@ public abstract class ConfigurationOptions {
 				dotifyHyphenator(), 
 				dotifyTranslator(),
 				wstx(),
-				mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.formatter.impl").version("1.0.0"));
+				mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.formatter.impl").version("1.1.3"));
 	}
 	
 	public static Option dotifyTasks() {
