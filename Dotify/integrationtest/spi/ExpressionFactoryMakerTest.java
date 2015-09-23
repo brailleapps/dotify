@@ -35,8 +35,8 @@ public class ExpressionFactoryMakerTest {
 		e.evaluate("(int2text 2.3 sv-se)");
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testExpression_int2text_06() {
-		e.evaluate("(int2text 1.0 fi)");
+		assertEquals("1", e.evaluate("(int2text 1.0 fi)"));
 	}
 }
