@@ -49,6 +49,16 @@ class TextMediaWriter implements PagedMediaWriter {
 		this.state = new StateObject("Writer");
 	}
 
+	@Override
+	public void prepare(List<MetaDataItem> meta) {
+	}
+
+	@Override
+	public void open(OutputStream os) throws PagedMediaWriterException {
+		open(os, null);
+	}
+
+	@Override
 	public void open(OutputStream os, List<MetaDataItem> meta) throws PagedMediaWriterException {
 		state.assertUnopened();
 		state.open();
@@ -62,23 +72,26 @@ class TextMediaWriter implements PagedMediaWriter {
 		hasOpenPage = false;
 	}
 
+	@Override
 	public void newPage() {
 		state.assertOpen();
 		closeOpenPage();
 		hasOpenPage = true;
 	}
 
+	@Override
 	public void newRow(Row row) {
 		state.assertOpen();
 		pst.println(row.getChars());
 	}
 	
+	@Override
 	public void newRow() {
 		state.assertOpen();
 		pst.println();
 	}
 	
-
+	@Override
 	public void newVolume(SectionProperties master) {
 		state.assertOpen();
 		closeOpenVolume();
@@ -90,6 +103,7 @@ class TextMediaWriter implements PagedMediaWriter {
 		hasOpenVolume = true;
 	}
 
+	@Override
 	public void newSection(SectionProperties master) {
 		state.assertOpen();
 		if (!hasOpenVolume) {
@@ -119,6 +133,7 @@ class TextMediaWriter implements PagedMediaWriter {
 		}
 	}
 
+	@Override
 	public void close() {
 		if (state.isClosed()) {
 			return;
@@ -128,6 +143,5 @@ class TextMediaWriter implements PagedMediaWriter {
 		pst.close();
 		state.close();
 	}
-
 
 }

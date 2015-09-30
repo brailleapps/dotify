@@ -7,9 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -23,6 +25,7 @@ import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
+import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterException;
 import org.daisy.dotify.obfl.OBFLParserException;
@@ -41,6 +44,10 @@ import org.daisy.dotify.obfl.ObflParser;
  *
  */
 class LayoutEngineImpl implements FormatterEngine {
+	private final static String DC_NS = "http://purl.org/dc/elements/1.1/";
+	private final static QName DC_IDENTIFIER = new QName(DC_NS, "identifier");
+	private final static QName DC_DATE = new QName(DC_NS, "date");
+	private final static QName DC_FORMAT = new QName(DC_NS, "format");
 	private final String locale;
 	private final String mode;
 	private final PagedMediaWriter writer;
@@ -123,8 +130,16 @@ class LayoutEngineImpl implements FormatterEngine {
 				}
 
 				logger.info("Rendering output...");
-				writer.open(output, obflParser.getMetaData());
-
+				ArrayList<MetaDataItem> meta = new ArrayList<MetaDataItem>();
+				for (MetaDataItem item : obflParser.getMetaData()) {
+					// Filter out identifier, date and format from the OBFL meta data
+					// because the meta data in the OBFL file is about itself, and these properties are not transferable
+					if (!(item.getKey().equals(DC_IDENTIFIER) || item.getKey().equals(DC_DATE) || item.getKey().equals(DC_FORMAT))) {
+						meta.add(item);
+					}
+				}
+				writer.prepare(meta);
+				writer.open(output);
 				obflParser.writeResult(writer);
 
 			} catch (FileNotFoundException e) {

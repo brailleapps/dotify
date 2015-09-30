@@ -4,11 +4,17 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import javax.xml.namespace.QName;
+
+import org.daisy.dotify.api.writer.AttributeItem;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterException;
@@ -23,19 +29,9 @@ import org.daisy.dotify.common.io.StateObject;
  *
  */
 class PEFMediaWriter implements PagedMediaWriter {
-	/**
-	 * Defines a key to set the date in the PEF-file.
-	 */
-	public final static String PROPERTY_DATE = "date";
-	/**
-	 * Defines a key to set the identifier in the PEF-file.
-	 */
-	public final static String PROPERTY_IDENTIFIER = "identifier";
-
 	private final static String DC_NAMESPACE_URI = "http://purl.org/dc/elements/1.1/";
 	//private final Pattern nonBraillePattern;
 	private PrintStream pst;
-	private final Properties p;
 	private boolean hasOpenVolume;
 	private boolean hasOpenSection;
 	private boolean hasOpenPage;
@@ -45,14 +41,13 @@ class PEFMediaWriter implements PagedMediaWriter {
 	private boolean cDuplex;
 	private final StateObject state;
 	private int errorCount = 0;
+	private final List<MetaDataItem> metadata;
 	
 	/**
-	 * Create a new PEFMediaWriter using the supplied Properties. Available properties are:
-	 * "identifier", "date"
+	 * Create a new PEFMediaWriter using the supplied Properties.
 	 * @param p configuration Properties
 	 */
 	public PEFMediaWriter(Properties p) {
-		this.p = p;
 		hasOpenVolume = false;
 		hasOpenSection = false;
 		hasOpenPage = false;
@@ -61,10 +56,26 @@ class PEFMediaWriter implements PagedMediaWriter {
 		cRowgap = 0;
 		cDuplex = true;
 		state = new StateObject("Writer");
+		this.metadata = new ArrayList<MetaDataItem>();
 		//this.nonBraillePattern = Pattern.compile("[^\u2800-\u28FF]+");
 	}
 
-	public void open(OutputStream os, List<MetaDataItem> meta) throws PagedMediaWriterException {
+	@Override
+	public void prepare(List<MetaDataItem> meta) {
+		state.assertUnopened();
+		metadata.addAll(meta);
+	}
+
+	@Override
+	public void open(OutputStream os) throws PagedMediaWriterException {
+		open(os, null);
+	}
+
+	@Override
+	public void open(OutputStream os, List<MetaDataItem> data) throws PagedMediaWriterException {
+		if (data!=null) {
+			metadata.addAll(data);
+		}
 		state.assertUnopened();
 		state.open();
 		try {
@@ -79,32 +90,105 @@ class PEFMediaWriter implements PagedMediaWriter {
 		pst.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		pst.println("<pef version=\"2008-1\" xmlns=\"http://www.daisy.org/ns/2008/pef\">");
 		pst.println("<head>");
-		pst.println("<meta xmlns:dc=\"" + DC_NAMESPACE_URI + "\" " +
-				    "xmlns:generator=\"http://daisymfc.svn.sourceforge.net/viewvc/daisymfc/trunk/dmfc/transformers/org_pef_dtbook2pef/\"" +
-				">");
-		pst.println("<dc:format>application/x-pef+xml</dc:format>");
-		// these could be moved to OBFL-input
-		pst.println("<dc:identifier>" + p.getProperty(PROPERTY_IDENTIFIER, "identifier?") + "</dc:identifier>");
-		pst.println("<dc:date>" + p.getProperty(PROPERTY_DATE, new SimpleDateFormat("yyyy-MM-dd").format(new Date())) + "</dc:date>");
+		List<MetaDataItem> meta = organizeMetadata(metadata);
+		Map<String, String> ns = getNamespaces(meta);
+
+		pst.print("<meta");
+		for (String key : ns.keySet()) {
+			pst.print(" ");
+			pst.print("xmlns:");
+			pst.print(ns.get(key));
+			pst.print("=\"");
+			pst.print(key);
+			pst.print("\"");
+		}
+		pst.println(">");
 
 		if (meta!=null) {
 			for (MetaDataItem item : meta) {
-				if (item.getKey().getNamespaceURI().equals(DC_NAMESPACE_URI)) {
-					if (!(item.getKey().getLocalPart().equals("format")  || item.getKey().getLocalPart().equals("identifier") || item.getKey().getLocalPart().equals("date"))) {
-						Logger.getLogger(this.getClass().getCanonicalName()).fine("adding metadata " + item.getKey() + " " + item.getValue());
-						pst.println("<dc:" + item.getKey().getLocalPart() + ">" + escape(item.getValue()) + "</dc:" + item.getKey().getLocalPart() + ">");
-					}
+				String name = ns.get(item.getKey().getNamespaceURI())+":"+item.getKey().getLocalPart();
+				pst.print("<"+ name);
+				AttributeItem att = item.getAttribute();
+				if (att!=null) {
+					pst.print(" ");
+					pst.print(att.getName());
+					pst.print("=\"");
+					pst.print(escape(att.getValue()));
+					pst.print("\"");
 				}
+				pst.println(">"+ escape(item.getValue()) + "</" + name + ">");
 			}
 		}
-		for (Object key : p.keySet()) {
-			pst.println("<generator:entry key=\"" + key + "\">" + p.get(key) + "</generator:entry>" );
-		}
+
 		pst.println("</meta>");
 		pst.println("</head>");
 		pst.println("<body>");
 	}
-
+	
+	private static List<MetaDataItem> organizeMetadata(List<MetaDataItem> meta) {
+		ArrayList<MetaDataItem> dc = new ArrayList<MetaDataItem>();
+		ArrayList<MetaDataItem> other = new ArrayList<MetaDataItem>();
+		MetaDataItem identifier = null;
+		MetaDataItem date = null;
+		for (MetaDataItem item : meta) {
+			if (DC_NAMESPACE_URI.equals(item.getKey().getNamespaceURI())) {
+				if (item.getKey().getLocalPart().equals("identifier")) {
+					// we'll use the last defined identifier
+					identifier = item;
+				} else if (item.getKey().getLocalPart().equals("date")) {
+					// we'll use the last defined date
+					date = item;
+				} else if (item.getKey().getLocalPart().equals("format")) {
+					// ignore this item
+				} else {
+					dc.add(item);
+				}
+			} else {
+				other.add(item);
+			}
+		}
+		if (identifier == null) {
+			identifier = new MetaDataItem(new QName(DC_NAMESPACE_URI, "identifier", "dc"), "identifier?");
+		}
+		if (date == null) {
+			date = new MetaDataItem(new QName(DC_NAMESPACE_URI, "date", "dc"),  new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		}
+		ArrayList<MetaDataItem> ret = new ArrayList<MetaDataItem>();
+		ret.add(new MetaDataItem(new QName(DC_NAMESPACE_URI, "format", "dc"), "application/x-pef+xml"));
+		ret.add(identifier);
+		ret.add(date);
+		ret.addAll(dc);
+		ret.addAll(other);
+		return ret;
+	}
+	
+	private static Map<String, String> getNamespaces(List<MetaDataItem> meta) {
+		HashMap<String, String> ret = new HashMap<String, String>();
+		HashMap<String, String> prefixes = new HashMap<String, String>();
+		// Go through all items to check if named prefixes are used
+		for (MetaDataItem item : meta) {
+			String value = item.getKey().getPrefix();
+			if (!"".equals(value)) {
+				prefixes.put(item.getKey().getNamespaceURI(), value);
+			}
+		}
+		int i = 1;
+		for (MetaDataItem item : meta) {
+			String value = prefixes.get(item.getKey().getNamespaceURI());
+			if (value==null || "".equals(value)) {
+				do {
+					value = "ns" + i;
+					i++;
+					//Handle the unlikely event that someone used ns[i] as their named namespace above
+				} while (prefixes.containsValue(value));
+				prefixes.put(item.getKey().getNamespaceURI(), value);
+			}
+			ret.put(item.getKey().getNamespaceURI(), value);
+		}
+		return ret;
+	}
+	
+	@Override
 	public void newPage() {
 		state.assertOpen();
 		closeOpenPage();
@@ -128,6 +212,7 @@ class PEFMediaWriter implements PagedMediaWriter {
 		return true;
 	}
 
+	@Override
 	public void newRow(Row row) {
 		state.assertOpen();
 
@@ -146,11 +231,13 @@ class PEFMediaWriter implements PagedMediaWriter {
 		);
 	}
 	
+	@Override
 	public void newRow() {
 		state.assertOpen();
 		pst.println("<row/>");
 	}
 	
+	@Override
 	public void newVolume(SectionProperties master) {
 		state.assertOpen();
 		closeOpenVolume();
@@ -166,6 +253,7 @@ class PEFMediaWriter implements PagedMediaWriter {
 		hasOpenVolume = true;
 	}
 
+	@Override
 	public void newSection(SectionProperties master) {
 		state.assertOpen();
 		if (!hasOpenVolume) {
@@ -240,6 +328,7 @@ class PEFMediaWriter implements PagedMediaWriter {
 		}
 	}
 
+	@Override
 	public void close() {
 		if (state.isClosed()) {
 			return;

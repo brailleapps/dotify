@@ -20,12 +20,25 @@ class PEFMediaWriterFactory implements PagedMediaWriterFactory {
 	}
 
 	public Object getFeature(String key) {
-		return p.get(key);
+		return null;
 	}
 
 	public void setFeature(String key, Object value)
 			throws PagedMediaWriterConfigurationException {
-		p.put(key, value);
+		throw new PEFMediaWriterConfigurationException("Unknown feature: " + key);
+	}
+	
+	private class PEFMediaWriterConfigurationException extends PagedMediaWriterConfigurationException {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -2673985749596696888L;
+
+		public PEFMediaWriterConfigurationException(String message) {
+			super(message);
+		}
+		
 	}
 
 }
