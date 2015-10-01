@@ -23,6 +23,7 @@ public class PEFMediaWriterTest {
 		PEFMediaWriter p = new PEFMediaWriter(new Properties());
 		ArrayList<MetaDataItem> meta = new ArrayList<MetaDataItem>();
 		meta.add(new MetaDataItem(new QName("http://purl.org/dc/elements/1.1/", "identifier"),  "12345"));
+		meta.add(new MetaDataItem(new QName("http://purl.org/dc/elements/1.1/", "date"),  "2015-09-30"));
 		meta.add(new MetaDataItem.Builder(new QName("http://www.example.org/ns/mine/", "entry", "generator"),  "sunny").attribute(new AttributeItem("key", "weather")).build());
 		meta.add(new MetaDataItem(new QName("http://purl.org/dc/elements/1.1/", "publisher"),  "publisher"));
 		p.prepare(meta);
