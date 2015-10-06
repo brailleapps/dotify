@@ -646,6 +646,10 @@ public class ObflParser extends XMLParserBase {
 				builder.breakBefore(FormattingTypes.BreakBefore.valueOf(att.getValue().toUpperCase()));
 			} else if ("keep".equals(name)) {
 				builder.keep(FormattingTypes.Keep.valueOf(att.getValue().toUpperCase()));
+			} else if ("orphans".equals(name)) {
+				builder.orphans(Integer.parseInt(att.getValue()));
+			} else if ("widows".equals(name)) {
+				builder.widows(Integer.parseInt(att.getValue()));
 			} else if ("keep-with-next".equals(name)) {
 				builder.keepWithNext(Integer.parseInt(att.getValue()));
 			} else if ("keep-with-previous-sheets".equals(name)) {
