@@ -5,6 +5,7 @@
 <test input="border-inner-input.obfl" expected="border-inner-expected.pef"/>
 <test input="border-outer-input.obfl" expected="border-outer-expected.pef"/>
 <test input="field-style-input.obfl" expected="field-style-expected.pef"/>
+<test input="hyphenate-input.obfl" expected="hyphenate-expected.pef"/>
 <test input="keep-input.obfl" expected="keep-expected.pef"/>
 <test input="leader-right-input.obfl" expected="leader-right-expected.pef"/>
 <test input="leader-right-multiple-input.obfl" expected="leader-right-multiple-expected.pef"/>
@@ -20,6 +21,7 @@
 <test input="padding-nested-input.obfl" expected="padding-nested-expected.pef"/>
 <test input="padding-sides-only-input.obfl" expected="padding-sides-only-expected.pef"/>
 <test input="row-spacing-input.obfl" expected="row-spacing-expected.pef"/>
+<test input="translate-input.obfl" expected="translate-expected.pef"/>
 <test input="vertical-position-before-input.obfl" expected="vertical-position-before-expected.pef"/>
 <test input="vertical-position-borders-input.obfl" expected="vertical-position-borders-expected.pef"/>
 <test input="vertical-position-dls-input.obfl" expected="vertical-position-dls-expected.pef"/>
