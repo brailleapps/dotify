@@ -291,13 +291,15 @@ class PageImpl implements Page {
 					ret2.add(new RowImpl(tb.getBottomBorder()));
 				}
 			}
-			RowImpl last = ((RowImpl)ret2.get(ret2.size()-1));
-			if (lm.getRowSpacing()!=1) {
-				//set row spacing on the last row to 1.0
-				last.setRowSpacing(1f);
-			} else if (last.getRowSpacing()!=null) {
-				//ignore row spacing on the last row if overall row spacing is 1.0
-				last.setRowSpacing(null);
+			if (ret2.size()>0) {
+				RowImpl last = ((RowImpl)ret2.get(ret2.size()-1));
+				if (lm.getRowSpacing()!=1) {
+					//set row spacing on the last row to 1.0
+					last.setRowSpacing(1f);
+				} else if (last.getRowSpacing()!=null) {
+					//ignore row spacing on the last row if overall row spacing is 1.0
+					last.setRowSpacing(null);
+				}
 			}
 			return ret2;
 		} catch (PaginatorException e) {
