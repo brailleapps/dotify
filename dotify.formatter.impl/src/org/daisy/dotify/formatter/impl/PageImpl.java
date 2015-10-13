@@ -14,7 +14,10 @@ import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.TextBorderStyle;
+import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.common.text.StringTools;
 
@@ -366,29 +369,46 @@ class PageImpl implements Page {
 	private String distribute(FieldList chunks, int width, String padding, BrailleTranslator translator) throws PaginatorToolsException {
 		ArrayList<String> chunkF = new ArrayList<String>();
 		for (Field f : chunks.getFields()) {
-			BrailleTranslatorResult btr = translator.translate(softHyphen.matcher(resolveField(f, this)).replaceAll(""));
-			chunkF.add(btr.getTranslatedRemainder());
+			DefaultTextAttribute.Builder b = new DefaultTextAttribute.Builder(null);
+			String resolved = softHyphen.matcher(resolveField(f, this, b)).replaceAll("");
+			Translatable.Builder tr = Translatable.text(resolved).
+										hyphenate(false);
+			if (resolved.length()>0) {
+				tr.attributes(b.build(resolved.length()));
+			}
+			try {
+				chunkF.add(translator.translate(tr.build()).getTranslatedRemainder());
+			} catch (TranslationException e) {
+				throw new PaginatorToolsException(e);
+			}
 		}
 		return PaginatorTools.distribute(chunkF, width, padding, PaginatorTools.DistributeMode.EQUAL_SPACING);
 	}
 	
-	private static String resolveField(Field field, PageImpl p) {
+	private static String resolveField(Field field, PageImpl p, DefaultTextAttribute.Builder b) {
+		String ret;
+		DefaultTextAttribute.Builder b2 = new DefaultTextAttribute.Builder(field.getTextStyle());
 		if (field instanceof CompoundField) {
-			return resolveCompoundField((CompoundField)field, p);
+			ret = resolveCompoundField((CompoundField)field, p, b2);
 		} else if (field instanceof MarkerReferenceField) {
 			MarkerReferenceField f2 = (MarkerReferenceField)field;
-			return findMarker(p, f2);
+			ret = findMarker(p, f2);
 		} else if (field instanceof CurrentPageField) {
-			return resolveCurrentPageField((CurrentPageField)field, p);
+			ret = resolveCurrentPageField((CurrentPageField)field, p);
 		} else {
-			return field.toString();
+			ret = field.toString();
 		}
+		if (ret.length()>0) {
+			b.add(b2.build(ret.length()));
+		}
+		return ret;
 	}
 
-	private static String resolveCompoundField(CompoundField f, PageImpl p) {
+	private static String resolveCompoundField(CompoundField f, PageImpl p, DefaultTextAttribute.Builder b) {
 		StringBuffer sb = new StringBuffer();
 		for (Field f2 : f) {
-			sb.append(resolveField(f2, p));
+			String res = resolveField(f2, p, b);
+			sb.append(res);
 		}
 		return sb.toString();
 	}
@@ -428,7 +448,7 @@ class PageImpl implements Page {
 	
 	private static String resolveCurrentPageField(CurrentPageField f, PageImpl p) {
 		int pagenum = p.getPageIndex() + 1;
-		return f.getStyle().format(pagenum);
+		return f.getNumeralStyle().format(pagenum);
 	}
 	
 	/**

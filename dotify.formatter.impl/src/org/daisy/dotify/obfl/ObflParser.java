@@ -83,6 +83,7 @@ public class ObflParser extends XMLParserBase {
 	private final MarkerProcessor mp;
 	private final TextBorderFactoryMakerService maker;
 	private final ExpressionFactory ef;
+	private final Logger logger;
 
 	public ObflParser(String locale, String mode, MarkerProcessor mp, FormatterFactory formatterFactory, TextBorderFactoryMakerService maker, ExpressionFactory ef) {
 		this.locale = FilterLocale.parse(locale);
@@ -91,6 +92,7 @@ public class ObflParser extends XMLParserBase {
 		this.mp = mp;
 		this.maker = maker;
 		this.ef = ef;
+		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 	}
 	
 	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
@@ -377,11 +379,12 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.FIELD)) {
+				String textStyle = getAttr(event, "text-style");
 				ArrayList<Field> compound = parseField(event, input);
 				if (compound.size()==1) {
 					fields.add(compound.get(0));
 				} else {
-					CompoundField f = new CompoundField();
+					CompoundField f = new CompoundField(textStyle);
 					f.addAll(compound);
 					fields.add(f);
 				}
@@ -403,18 +406,19 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.STRING)) {
-				compound.add(new StringField(getAttr(event, "value")));
+				compound.add(new StringField(getAttr(event, "value"), getAttr(event, "text-style")));
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
 				//FIXME: add variables...
-				compound.add(new StringField(ef.newExpression().evaluate(getAttr(event, "expression"))));
+				compound.add(new StringField(ef.newExpression().evaluate(getAttr(event, "expression")), getAttr(event, "text-style")));
 			} else if (equalsStart(event, ObflQName.CURRENT_PAGE)) {
-				compound.add(new CurrentPageField(NumeralStyle.valueOf(getAttr(event, "style").replace('-', '_').toUpperCase())));
+				compound.add(new CurrentPageField(getNumeralStyle(event), getAttr(event, "text-style")));
 			} else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
 				compound.add(
 					new MarkerReferenceField(
 							getAttr(event, "marker"), 
 							MarkerSearchDirection.valueOf(getAttr(event, "direction").toUpperCase()),
-							MarkerSearchScope.valueOf(getAttr(event, "scope").replace('-', '_').toUpperCase())
+							MarkerSearchScope.valueOf(getAttr(event, "scope").replace('-', '_').toUpperCase()),
+							getAttr(event, "text-style")
 					)
 				);
 			} else if (equalsEnd(event, ObflQName.FIELD)) {
@@ -661,7 +665,7 @@ public class ObflParser extends XMLParserBase {
 			try {
 				builder.textBorderStyle(maker.newTextBorderStyle(border));
 			} catch (TextBorderConfigurationException e) {
-				Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to add border to block properties: " + border, e);
+				logger.log(Level.WARNING, "Failed to add border to block properties: " + border, e);
 			}
 		}
 		return builder.build();
@@ -811,15 +815,43 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parsePageNumber(FormatterCore fc, XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		String refId = getAttr(event, "ref-id");
+	private NumeralStyle getNumeralStyle(XMLEvent event) {
 		NumeralStyle style = NumeralStyle.DEFAULT;
 		String styleStr = getAttr(event, "style");
 		if (styleStr!=null) {
-			try {
-				style = NumeralStyle.valueOf(styleStr.replace('-', '_').toUpperCase());
-			} catch (Exception e) { }
+			logger.warning("@style has been deprecated. Use @number-format instead." + toLocation(event));
+		} else {
+			styleStr = getAttr(event, "number-format");
 		}
+		try {
+			style = NumeralStyle.valueOf(styleStr.replace('-', '_').toUpperCase());
+		} catch (Exception e) { 
+			if (styleStr!=null) {
+				logger.warning("Unsupported value '" + styleStr + "'" + toLocation(event));
+			}
+		}
+
+		return style;
+	}
+	
+	private String toLocation(XMLEvent event) {
+		Location l = event.getLocation();
+		StringBuilder sb = new StringBuilder();
+		if (l.getLineNumber()>-1) {
+			sb.append("line: ").append(l.getLineNumber());
+		}
+		if (l.getColumnNumber()>-1) {
+			if (sb.length()>0) {
+				sb.append(", ");
+			}
+			sb.append("column: ").append(l.getColumnNumber());
+		}
+		return (sb.length()>0?" (at "+sb.toString()+")":"");
+	}
+	
+	private void parsePageNumber(FormatterCore fc, XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		String refId = getAttr(event, "ref-id");
+		NumeralStyle style = getNumeralStyle(event);
 		scanEmptyElement(input, ObflQName.PAGE_NUMBER);
 		fc.insertReference(refId, style);
 	}

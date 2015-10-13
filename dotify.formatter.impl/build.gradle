@@ -11,18 +11,18 @@ repositories {
 
 dependencies {
     provided group: "biz.aQute.bnd", name: "annotation", version: "2.3.0"
-    compile "org.daisy.dotify:dotify.api:1.4.0"
+    compile "org.daisy.dotify:dotify.api:1.5.0"
     compile "org.daisy.dotify:dotify.common:1.2.0"
 
     runtime group: 'woodstox', name: 'wstx-lgpl', version: '3.2.7'
     testCompile group: "junit", name: "junit", version: "4.7"
     testCompile 'org.daisy.braille:braille-utils.api:2.0.0'
-    testCompile 'org.daisy.braille:braille-utils.pef-tools:1.0.0'
+    testCompile 'org.daisy.braille:braille-utils.pef-tools:1.0.1'
     testCompile "org.mockito:mockito-core:1.10.19"
     
 	testRuntime group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
 	testRuntime group: group, name:'dotify.text.impl', version:'1.0.0'
-	testRuntime group: group, name:'dotify.translator.impl', version:'1.1.0'
+	testRuntime group: group, name:'dotify.translator.impl', version:'1.3.0'
 }
 
 buildscript {

@@ -47,7 +47,7 @@ public class LayoutEngineTest extends AbstractFormatterEngineTest {
 
 	@Test
 	public void testLayoutEngingeDLS() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
-		testPEF("resource-files/obfl-input-dls.obfl", "resource-files/obfl-dls-expected.pef", true);
+		testPEF("resource-files/obfl-input-dls.obfl", "resource-files/obfl-dls-expected.pef", false);
 	}
 	
 	@Test
