@@ -379,7 +379,7 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.FIELD)) {
-				String textStyle = getAttr(event, "text-style");
+				String textStyle = getAttr(event, ObflQName.ATTR_TEXT_STYLE);
 				ArrayList<Field> compound = parseField(event, input);
 				if (compound.size()==1) {
 					fields.add(compound.get(0));
@@ -406,19 +406,19 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.STRING)) {
-				compound.add(new StringField(getAttr(event, "value"), getAttr(event, "text-style")));
+				compound.add(new StringField(getAttr(event, "value"), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
 				//FIXME: add variables...
-				compound.add(new StringField(ef.newExpression().evaluate(getAttr(event, "expression")), getAttr(event, "text-style")));
+				compound.add(new StringField(ef.newExpression().evaluate(getAttr(event, "expression")), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
 			} else if (equalsStart(event, ObflQName.CURRENT_PAGE)) {
-				compound.add(new CurrentPageField(getNumeralStyle(event), getAttr(event, "text-style")));
+				compound.add(new CurrentPageField(getNumeralStyle(event), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
 			} else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
 				compound.add(
 					new MarkerReferenceField(
-							getAttr(event, "marker"), 
+							getAttr(event, ObflQName.ATTR_MARKER), 
 							MarkerSearchDirection.valueOf(getAttr(event, "direction").toUpperCase()),
 							MarkerSearchScope.valueOf(getAttr(event, "scope").replace('-', '_').toUpperCase()),
-							getAttr(event, "text-style")
+							getAttr(event, ObflQName.ATTR_TEXT_STYLE)
 					)
 				);
 			} else if (equalsEnd(event, ObflQName.FIELD)) {
@@ -435,7 +435,7 @@ public class ObflParser extends XMLParserBase {
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
-		String initialPageNumber = getAttr(event, "initial-page-number");
+		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
@@ -924,7 +924,7 @@ public class ObflParser extends XMLParserBase {
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
-		String initialPageNumber = getAttr(event, "initial-page-number");
+		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
@@ -948,7 +948,7 @@ public class ObflParser extends XMLParserBase {
 		hyph = getHyphenate(event, hyph);
 		TocProperties.TocRange range = TocProperties.TocRange.valueOf(getAttr(event, "range").toUpperCase());
 		TocProperties.Builder builder = new TocProperties.Builder(masterName, tocName, range);
-		String initialPageNumber = getAttr(event, "initial-page-number");
+		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
@@ -982,7 +982,7 @@ public class ObflParser extends XMLParserBase {
 		locale = getLang(event, locale);
 		hyph = getHyphenate(event, hyph);
 		SequenceProperties.Builder builder = new SequenceProperties.Builder(masterName);
-		String initialPageNumber = getAttr(event, "initial-page-number");
+		String initialPageNumber = getAttr(event, ObflQName.ATTR_INITIAL_PAGE_NUMBER);
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}

@@ -65,4 +65,8 @@ interface ObflQName {
 	 final static QName ATTR_COLLECTION = new QName("collection");
 	 final static QName ATTR_MAX_HEIGHT = new QName("max-height");
 	 final static QName ATTR_ALIGN = new QName("align");
+	 final static QName ATTR_TEXT_STYLE = new QName("text-style");
+	 final static QName ATTR_MARKER = new QName("marker");
+	 final static QName ATTR_INITIAL_PAGE_NUMBER = new QName("initial-page-number");
+	 
 }
