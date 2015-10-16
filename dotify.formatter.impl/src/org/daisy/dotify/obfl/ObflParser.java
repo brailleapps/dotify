@@ -418,7 +418,8 @@ public class ObflParser extends XMLParserBase {
 							getAttr(event, ObflQName.ATTR_MARKER), 
 							MarkerSearchDirection.valueOf(getAttr(event, "direction").toUpperCase()),
 							MarkerSearchScope.valueOf(getAttr(event, "scope").replace('-', '_').toUpperCase()),
-							getAttr(event, ObflQName.ATTR_TEXT_STYLE)
+							getAttr(event, ObflQName.ATTR_TEXT_STYLE),
+							toInt(getAttr(event, ObflQName.ATTR_START_OFFSET), 0)
 					)
 				);
 			} else if (equalsEnd(event, ObflQName.FIELD)) {
@@ -429,6 +430,15 @@ public class ObflParser extends XMLParserBase {
 		}
 		return compound;
 	}
+	
+	private int toInt(String value, int defaultValue) {
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+	
 	
 	private void parseSequence(XMLEvent event, XMLEventReader input, FilterLocale locale, boolean hyph) throws XMLStreamException {
 		String masterName = getAttr(event, "master");

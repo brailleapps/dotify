@@ -11,6 +11,9 @@
 <test input="leader-right-simple-input.obfl" expected="leader-right-simple-expected.pef"/>
 <test input="margin-input.obfl" expected="margin-expected.pef"/>
 <test input="margin-nested-input.obfl" expected="margin-nested-expected.pef"/>
+<test input="marker-ref-page-input.obfl" expected="marker-ref-page-expected.pef"/>
+<test input="marker-ref-sheet-input.obfl" expected="marker-ref-sheet-expected.pef"/>
+<test input="marker-ref-spread-input.obfl" expected="marker-ref-spread-expected.pef"/>
 <test input="multi-line-footer-input.obfl" expected="multi-line-footer-expected.pef"/>
 <test input="multi-line-header-input.obfl" expected="multi-line-header-expected.pef"/>
 <test input="padding-input.obfl" expected="padding-expected.pef"/>

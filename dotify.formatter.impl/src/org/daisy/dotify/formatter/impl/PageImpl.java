@@ -12,6 +12,8 @@ import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
+import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchDirection;
+import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchScope;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
@@ -324,11 +326,29 @@ class PageImpl implements Page {
 	}
 
 	/**
-	 * Get the number for the page
+	 * Get the page index, offset included, zero based. Don't assume
+	 * getPageIndex() % 2 == getPageOrdinal() % 2
+	 * 
 	 * @return returns the page index in the sequence (zero based)
 	 */
 	public int getPageIndex() {
 		return pageIndex;
+	}
+	
+	/**
+	 * Gets the external page number
+	 * @return the external page number
+	 */
+	public int getPageNumber() {
+		return pageIndex + 1;
+	}
+	
+	/**
+	 * Gets the ordinal number for the page in the page sequence list
+	 * @return returns the ordinal number for the page
+	 */
+	public int getPageOrdinal() {
+		return pageIndex-parent.getPageNumberOffset();
 	}
 
 	public PageSequenceBuilder getParent() {
@@ -392,7 +412,8 @@ class PageImpl implements Page {
 			ret = resolveCompoundField((CompoundField)field, p, b2);
 		} else if (field instanceof MarkerReferenceField) {
 			MarkerReferenceField f2 = (MarkerReferenceField)field;
-			ret = findMarker(p, f2);
+			PageImpl start = p.getPageWithOffset(f2.getOffset(), p.shouldAdjustOutOfBounds(f2));
+			ret = findMarker(start, f2);
 		} else if (field instanceof CurrentPageField) {
 			ret = resolveCurrentPageField((CurrentPageField)field, p);
 		} else {
@@ -414,6 +435,12 @@ class PageImpl implements Page {
 	}
 
 	private static String findMarker(PageImpl page, MarkerReferenceField markerRef) {
+		if (page==null) {
+			return "";
+		}
+		if (markerRef.getSearchScope()==MarkerSearchScope.VOLUME || markerRef.getSearchScope()==MarkerSearchScope.DOCUMENT) {
+			throw new RuntimeException("Marker reference scope not implemented: " + markerRef.getSearchScope());
+		}
 		int dir = 1;
 		int index = 0;
 		int count = 0;
@@ -435,15 +462,74 @@ class PageImpl implements Page {
 			index += dir; 
 			count++;
 		}
-		if (markerRef.getSearchScope() == MarkerReferenceField.MarkerSearchScope.SEQUENCE) {
-			int nextPage = page.getPageIndex() - page.getParent().getPageNumberOffset() + dir;
-			//System.out.println("Next page: "+page.getPageIndex() + " | " + nextPage);
-			if (nextPage < page.getParent().getPageCount() && nextPage >= 0) {
-				PageImpl next = page.getParent().getPage(nextPage);
+		if (markerRef.getSearchScope() == MarkerReferenceField.MarkerSearchScope.SEQUENCE ||
+			markerRef.getSearchScope() == MarkerSearchScope.SHEET && page.isWithinSheetScope(dir) ||
+			markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinSpreadScope(dir)) {
+			PageImpl next = page.getPageWithOffset(dir, false);
+			if (next!=null) {
 				return findMarker(next, markerRef);
 			}
 		}
 		return "";
+	}
+	
+	private boolean shouldAdjustOutOfBounds(MarkerReferenceField markerRef) {
+		if (markerRef.getSearchDirection()==MarkerSearchDirection.FORWARD && markerRef.getOffset()>=0 ||
+			markerRef.getSearchDirection()==MarkerSearchDirection.BACKWARD && markerRef.getOffset()<=0) {
+			return false;
+		} else {
+			switch(markerRef.getSearchScope()) {
+			case PAGE_CONTENT: case PAGE:
+				return false;
+			case SEQUENCE: case VOLUME: case DOCUMENT:
+				return true;
+			case SPREAD:
+				return  isWithinSpreadScope(markerRef.getOffset());				
+			case SHEET:
+				return isWithinSheetScope(markerRef.getOffset()) && 
+						markerRef.getSearchDirection()==MarkerSearchDirection.BACKWARD;
+			default:
+				throw new RuntimeException("Error in code. Missing implementation for value: " + markerRef.getSearchScope());
+			}
+		}
+	}
+	
+	private boolean isWithinSpreadScope(int offset) {
+		return 	offset==0 ||
+				(
+					getParent().getLayoutMaster().duplex() && 
+					(
+						(offset == 1 && getPageOrdinal() % 2 == 1) ||
+						(offset == -1 && getPageOrdinal() % 2 == 0)
+					)
+				);
+	}
+	
+	private boolean isWithinSheetScope(int offset) {
+		return 	offset==0 || 
+				(
+					getParent().getLayoutMaster().duplex() &&
+					(
+						(offset == 1 && getPageOrdinal() % 2 == 0) ||
+						(offset == -1 && getPageOrdinal() % 2 == 1)
+					)
+				);
+	}
+	
+	private PageImpl getPageWithOffset(int offset, boolean adjustOutOfBounds) {
+		if (offset==0) {
+			return this;
+		} else {
+			PageSequenceBuilder parent = getParent();
+			int next = getPageIndex() - parent.getPageNumberOffset() + offset;
+			if (adjustOutOfBounds) {
+				next = Math.min(parent.getPageCount()-1, Math.max(0, next));
+			}
+			if (next < parent.getPageCount() && next >= 0) {
+				return parent.getPage(next);
+			}
+			return null;
+		}
 	}
 	
 	private static String resolveCurrentPageField(CurrentPageField f, PageImpl p) {
