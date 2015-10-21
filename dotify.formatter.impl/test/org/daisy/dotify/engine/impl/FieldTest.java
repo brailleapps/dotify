@@ -9,7 +9,7 @@ public class FieldTest extends AbstractFormatterEngineTest {
 
 	@Test
 	public void testFieldStyle() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
-		testPEF("resource-files/field-style-input.obfl", "resource-files/field-style-expected.pef", true);
+		testPEF("resource-files/field-style-input.obfl", "resource-files/field-style-expected.pef", false);
 	}
 
 }
