@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -61,8 +60,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			lb = t.getLeftBorder();
 			rb = t.getRightBorder();
 		}
-		leftMargin.push(new MarginComponent(lb, p.getLeftMargin(), p.getLeftPadding()));
-		rightMargin.push(new MarginComponent(rb, p.getRightMargin(), p.getRightPadding()));
+		leftMargin.push(new MarginComponent(lb, p.getMargin().getLeftSpacing(), p.getPadding().getLeftSpacing()));
+		rightMargin.push(new MarginComponent(rb, p.getMargin().getRightSpacing(), p.getPadding().getRightSpacing()));
 		if (propsContext.size()>0) {
 			addToBlockIndent(propsContext.peek().getBlockIndent());
 		}
@@ -75,7 +74,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 					blockIndentParent(blockIndentParent.peek()).
 					leftMargin((Margin)leftMargin.clone()).
 					rightMargin((Margin)rightMargin.clone()).
-					outerSpaceBefore(p.getTopMargin());
+					outerSpaceBefore(p.getMargin().getTopSpacing());
 		Block c = newBlock(blockId, rdp.build());
 		if (propsContext.size()>0) {
 			if (propsContext.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
@@ -109,7 +108,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				builder.leadingDecoration(new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner()));
 			}
 		}
-		builder.innerSpaceBefore(p.getTopPadding());
+		builder.innerSpaceBefore(p.getPadding().getTopSpacing());
 		bi.setRowDataProperties(builder.build());
 		//firstRow = true;
 	}
@@ -128,8 +127,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				builder.trailingDecoration(new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner()));
 			}
 		}
-		builder.innerSpaceAfter(p.getBottomPadding()).
-			outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter()+p.getBottomMargin());
+		builder.innerSpaceAfter(p.getPadding().getBottomSpacing()).
+			outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter()+p.getMargin().getBottomSpacing());
 		bi.setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		bi.setRowDataProperties(builder.build());
 		}

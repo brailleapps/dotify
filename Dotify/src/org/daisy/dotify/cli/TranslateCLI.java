@@ -23,6 +23,8 @@ import org.daisy.cli.ShortFormResolver;
 import org.daisy.cli.SwitchArgument;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
@@ -83,10 +85,14 @@ public class TranslateCLI extends AbstractUI {
 			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(System.in));
 			String text;
 			while ((text=lnr.readLine())!=null) {
-				if (bc!=null) {
-					System.out.println(bc.toText(t.translate(text).getTranslatedRemainder()));
-				} else {
-					System.out.println(t.translate(text).getTranslatedRemainder());
+				try {
+					if (bc!=null) {
+						System.out.println(bc.toText(t.translate(Translatable.text(text).build()).getTranslatedRemainder()));
+					} else {
+						System.out.println(t.translate(Translatable.text(text).build()).getTranslatedRemainder());
+					}
+				} catch (TranslationException e) {
+					e.printStackTrace();
 				}
 			}
 		} catch (TranslatorConfigurationException e) {

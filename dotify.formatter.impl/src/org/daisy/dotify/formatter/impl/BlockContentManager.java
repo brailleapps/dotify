@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -12,8 +11,8 @@ import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
-import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.common.text.StringTools;
 
@@ -156,11 +155,11 @@ class BlockContentManager implements Iterable<RowImpl> {
 				case Text:
 				{
 					TextSegment ts = (TextSegment)s;
-					BrailleTranslator t = fcontext.getTranslator(ts.getTextProperties().getTranslationMode());
-					boolean oldValue = t.isHyphenating();
-					t.setHyphenating(ts.getTextProperties().isHyphenating());
-					layout(ts.getText(), ts.getTextProperties().getLocale(), ts.getTextProperties().getTranslationMode());
-					t.setHyphenating(oldValue);
+					layout(
+							Translatable.text(ts.getText()).
+							locale(ts.getTextProperties().getLocale()).
+							hyphenate(ts.getTextProperties().isHyphenating()).build(),
+							ts.getTextProperties().getTranslationMode());
 					break;
 				}
 				case Leader:
@@ -191,10 +190,11 @@ class BlockContentManager implements Iterable<RowImpl> {
 				{
 					isVolatile = true;
 					Evaluate e = (Evaluate)s;
-					boolean oldValue = fcontext.getDefaultTranslator().isHyphenating();
-					fcontext.getDefaultTranslator().setHyphenating(e.getTextProperties().isHyphenating());
-					layout(e.getExpression().render(context), e.getTextProperties().getLocale(), null);
-					fcontext.getDefaultTranslator().setHyphenating(oldValue);
+					layout(Translatable.text(e.getExpression().render(context)).
+							locale(e.getTextProperties().getLocale()).
+							hyphenate(e.getTextProperties().isHyphenating()).
+							build(), 
+							null);
 					break;
 				}
 				case Marker:
@@ -283,9 +283,16 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return isVolatile;
 	}
 	
-	private void layout(CharSequence c, String locale, String mode) {
-		BrailleTranslatorResult btr = getTranslatedResult(c, locale, mode);
-		layout(btr, mode);
+	private void layout(String c, String locale, String mode) {
+		layout(Translatable.text(c).locale(locale).build(), mode);
+	}
+	
+	private void layout(Translatable spec, String mode) {
+		try {
+			layout(fcontext.getTranslator(mode).translate(spec), mode);
+		} catch (TranslationException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void layout(BrailleTranslatorResult btr, String mode) {
@@ -293,7 +300,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 		if (rows.size()==0) {
 			// add to left margin
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
-				String listLabel = fcontext.getTranslator(mode).translate(item.getLabel()).getTranslatedRemainder();
+				String listLabel;
+				try {
+					listLabel = fcontext.getTranslator(mode).translate(Translatable.text(item.getLabel()).build()).getTranslatedRemainder();
+				} catch (TranslationException e) {
+					throw new RuntimeException(e);
+				}
 				if (item.getType()==FormattingTypes.ListStyle.PL) {
 					newRow(btr, listLabel, 0, rdp.getBlockIndentParent(), mode);
 				} else {
@@ -312,23 +324,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 		}
 	}
 	
-	private BrailleTranslatorResult getTranslatedResult(CharSequence c, String locale, String mode) {
-		BrailleTranslator t = fcontext.getTranslator(mode);
-		BrailleTranslatorResult btr;
-		if (locale!=null) {
-			try {
-				btr = t.translate(c.toString(), locale);
-			} catch (TranslationException e) {
-				Logger.getLogger(this.getClass().getCanonicalName())
-					.log(Level.WARNING, "Failed to translate using the specified locale: " + locale + ". Using default", e);
-				btr = t.translate(c.toString());
-			}
-		} else {
-			btr = t.translate(c.toString());
-		}
-		return btr;
-	}
-
 	private void newRow(BrailleTranslatorResult chars, String contentBefore, int indent, int blockIndent, String mode) {
 		newRow(new RowInfo(getPreText(contentBefore, indent, blockIndent), createAndConfigureEmptyNewRow(leftMargin)), chars, blockIndent, mode);
 	}
@@ -363,7 +358,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private String buildLeader(int len, String mode) {
 		try {
 			if (len > 0) {
-				String leaderPattern = fcontext.getTranslator(mode).translate(currentLeader.getPattern()).getTranslatedRemainder();
+				String leaderPattern;
+				try {
+					leaderPattern = fcontext.getTranslator(mode).translate(Translatable.text(currentLeader.getPattern()).build()).getTranslatedRemainder();
+				} catch (TranslationException e) {
+					throw new RuntimeException(e);
+				}
 				return StringTools.fill(leaderPattern, len);
 			} else {
 				Logger.getLogger(this.getClass().getCanonicalName())

@@ -7,6 +7,8 @@ import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
+import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 
 /**
@@ -36,7 +38,11 @@ class FormatterContext {
 		this.collections = new HashMap<String, ContentCollectionImpl>();
 		//margin char can only be a single character, the reason for going through the translator
 		//is because output isn't always braille.
-		this.spaceChar = getDefaultTranslator().translate(" ").getTranslatedRemainder().charAt(0);
+		try {
+			this.spaceChar = getDefaultTranslator().translate(Translatable.text(" ").build()).getTranslatedRemainder().charAt(0);
+		} catch (TranslationException e) {
+			throw new RuntimeException(e);
+		}
 		this.locale = locale;
 	}
 

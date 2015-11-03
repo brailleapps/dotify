@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
+import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.junit.Test;
 
@@ -25,22 +27,22 @@ public abstract class BrailleTranslatorFactoryMakerTestbase {
 	}
 	
 	@Test
-	public void testSwedishUncontractedTranslator() throws TranslatorConfigurationException {
+	public void testSwedishUncontractedTranslator() throws TranslatorConfigurationException, TranslationException {
 		//Setup
 		BrailleTranslatorFactoryMakerService translatorFactory = getBrailleTranslatorFMS();
 		BrailleTranslator bt = translatorFactory.newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
 		//Test
 		assertNotNull(bt);
-		assertEquals("⠼⠁⠃⠉", bt.translate("123").getTranslatedRemainder());
+		assertEquals("⠼⠁⠃⠉", bt.translate(Translatable.text("123").build()).getTranslatedRemainder());
 	}
 
 	@Test
-	public void testEnglishBypassTranslator() throws TranslatorConfigurationException {
+	public void testEnglishBypassTranslator() throws TranslatorConfigurationException, TranslationException {
 		// Setup
 		BrailleTranslatorFactoryMakerService translatorFactory = getBrailleTranslatorFMS();
 		BrailleTranslator bt = translatorFactory.newTranslator("en", BrailleTranslatorFactory.MODE_BYPASS);
 		// Test
 		assertNotNull(bt);
-		assertEquals("123", bt.translate("123").getTranslatedRemainder());
+		assertEquals("123", bt.translate(Translatable.text("123").build()).getTranslatedRemainder());
 	}
 }
