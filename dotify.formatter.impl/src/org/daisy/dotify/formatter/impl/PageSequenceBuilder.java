@@ -16,8 +16,9 @@ class PageSequenceBuilder extends PageSequence {
 	private final CrossReferenceHandler crh;
 	private int keepNextSheets;
 	private PageImpl nextPage;
-	private List<RowImpl> before;
-	private List<RowImpl> after;
+	private PageAreaContent staticAreaContent;
+	private ContentCollectionImpl collection;
+	private PageAreaProperties areaProps;
 
 	PageSequenceBuilder(CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context) {
 		super(seq.getLayoutMaster());
@@ -31,16 +32,7 @@ class PageSequenceBuilder extends PageSequence {
 	private void reset() {
 		this.keepNextSheets = 0;
 		this.nextPage = null;
-		this.before = new ArrayList<RowImpl>();
-		this.after = new ArrayList<RowImpl>();
-	}
 
-	private List<RowImpl> getBefore() {
-		return before;
-	}
-
-	private List<RowImpl> getAfter() {
-		return after;
 	}
 
 	private void newPage() {
@@ -48,7 +40,7 @@ class PageSequenceBuilder extends PageSequence {
 			pages.push(nextPage);
 			nextPage = null;
 		} else {
-			pages.push(new PageImpl(master, context, this, pages.size()+pagesOffset, before, after));
+			pages.push(new PageImpl(master, context, this, pages.size()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter()));
 		}
 		if (keepNextSheets>0) {
 			currentPage().setAllowsVolumeBreak(false);
@@ -65,7 +57,7 @@ class PageSequenceBuilder extends PageSequence {
 			//if new page is already in buffer, flush it.
 			newPage();
 		}
-		nextPage = new PageImpl(master, context, this, pages.size()+pagesOffset, before, after);
+		nextPage = new PageImpl(master, context, this, pages.size()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter());
 	}
 
 	private void setKeepWithPreviousSheets(int value) {
@@ -122,44 +114,35 @@ class PageSequenceBuilder extends PageSequence {
 			throw new IllegalArgumentException("Identifier not unique: " + id);
 		}
 	}
-
-	boolean paginate(int pagesOffset, CrossReferences refs, DefaultContext rcontext) throws PaginatorException  {
+	
+	private void initPagination(int pagesOffset) {
 		if (seq.getInitialPageNumber()!=null) {
 			this.pagesOffset = seq.getInitialPageNumber() - 1;
 		} else {
 			this.pagesOffset = pagesOffset;
 		}
+
+		collection = null;
+		areaProps = seq.getLayoutMaster().getPageArea();
+		if (areaProps!=null) {
+			collection = context.getCollections().get(areaProps.getCollectionId());
+		}
+	}
+
+	boolean paginate(int pagesOffset, CrossReferences refs, DefaultContext rcontext) throws PaginatorException  {
+		initPagination(pagesOffset);
+		
+		BlockContext blockContext = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
+		staticAreaContent = new PageAreaContent(seq.getLayoutMaster().getPageAreaBuilder(), blockContext);
+		
 		newPage();
-
-		ContentCollectionImpl c = null;
-		PageAreaProperties pa = seq.getLayoutMaster().getPageArea();
-		if (pa!=null) {
-			c = context.getCollections().get(pa.getCollectionId());
-		}
-		PageAreaBuilderImpl pab = seq.getLayoutMaster().getPageAreaBuilder();
-		BlockContext bc = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
-		if (pab !=null) {
-			//Assumes before is static
-			for (Block b : pab.getBeforeArea()) {
-				for (RowImpl r : b.getBlockContentManager(bc)) {
-					getBefore().add(r);
-				}
-			}
-
-			//Assumes after is static
-			for (Block b : pab.getAfterArea()) {
-				for (RowImpl r : b.getBlockContentManager(bc)) {
-					getAfter().add(r);
-				}
-			}
-		}
 
 		//layout
 		MarginValue max = new MarginValue();
 		int currentPageNumber = -1;
 		for (int x=0; x<seq.size(); x++) {
 			Block g = seq.get(x);
-			BlockDataContext bd = new BlockDataContext(g, bc);
+			BlockDataContext bd = new BlockDataContext(g, blockContext);
 			//Start new page if needed
 			bd.startNewPageIfNeeded(seq);
 			//if we are on a new page, then the collapsing regions are irrelevant
@@ -167,7 +150,7 @@ class PageSequenceBuilder extends PageSequence {
 				max = new MarginValue(); 
 				currentPageNumber = currentPageNumber();
 			}
-			if (g.getBlockContentManager(bc).isCollapsable()
+			if (g.getBlockContentManager(blockContext).isCollapsable()
 					//This is a hack in order to avoid regression.
 					//It retains empty rows at the end of pages in certain cases.
 					//Once collapsing borders have been fully tested, this can be removed
@@ -200,26 +183,9 @@ class PageSequenceBuilder extends PageSequence {
 			}
 
 			setKeepWithNextSheets(g.getKeepWithNextSheets());
-			if (!bd.addRows(seq.getLayoutMaster(), refs, rcontext, c)) {
-				//reassign collection
-				if (pa!=null) {
-					int i = 0;
-					for (FallbackRule r : pa.getFallbackRules()) {
-						i++;
-						if (r instanceof RenameFallbackRule) {
-							c = context.getCollections().remove(r.applyToCollection());
-							if (context.getCollections().put(((RenameFallbackRule)r).getToCollection(), c)!=null) {
-								throw new PaginatorException("Fallback id already in use:" + ((RenameFallbackRule)r).getToCollection());
-							}							
-						} else {
-							throw new PaginatorException("Unknown fallback rule: " + r);
-						}
-					}
-					if (i==0) {
-						throw new PaginatorException("Failed to fit collection '" + pa.getCollectionId() + "' within the page-area boundaries, and no fallback was defined.");
-					}
-
-				}
+			//add content
+			if (!bd.addRows()) {
+				reassignCollection();
 				//restart formatting
 				return false;
 			}
@@ -237,6 +203,27 @@ class PageSequenceBuilder extends PageSequence {
 			max = new MarginValue();
 		}
 		return true;
+	}
+	
+	private void reassignCollection() throws PaginatorException {
+		//reassign collection
+		if (areaProps!=null) {
+			int i = 0;
+			for (FallbackRule r : areaProps.getFallbackRules()) {
+				i++;
+				if (r instanceof RenameFallbackRule) {
+					collection = context.getCollections().remove(r.applyToCollection());
+					if (context.getCollections().put(((RenameFallbackRule)r).getToCollection(), collection)!=null) {
+						throw new PaginatorException("Fallback id already in use:" + ((RenameFallbackRule)r).getToCollection());
+					}							
+				} else {
+					throw new PaginatorException("Unknown fallback rule: " + r);
+				}
+			}
+			if (i==0) {
+				throw new PaginatorException("Failed to fit collection '" + areaProps.getCollectionId() + "' within the page-area boundaries, and no fallback was defined.");
+			}
+		}
 	}
 	
 	private class MarginValue {
@@ -336,30 +323,11 @@ class PageSequenceBuilder extends PageSequence {
 			}
 		}
 
-		private boolean addRows(LayoutMaster master, CrossReferences refs, DefaultContext rcontext, ContentCollectionImpl c) {
+		private boolean addRows() {
 			boolean first = true;
 			for (RowImpl row : rdm) {
-				if (master.getPageArea()!=null && c!=null) {
-					ArrayList<RowImpl> blk = new ArrayList<RowImpl>();
-					for (String a : row.getAnchors()) {
-						if (!currentPage().getAnchors().contains(a)) {
-							//page doesn't already contains these blocks
-							for (Block b : c.getBlocks(a)) {
-								for (RowImpl r : b.getBlockContentManager(bc).getPreContentRows(b.getRowDataProperties().getOuterSpaceBefore(), b.getRowDataProperties().getRowSpacing())) {
-									blk.add(r);
-								}
-								for (RowImpl r : b.getBlockContentManager(bc)) {
-									blk.add(r);
-								}
-								for (RowImpl r : b.getBlockContentManager(bc).getPostContentRows()) {
-									blk.add(r);
-								}
-								for (RowImpl r : b.getBlockContentManager(bc).getSkippablePostContentRows()) {
-									blk.add(r);
-								}
-							}
-						}
-					}
+				if (master.getPageArea()!=null && collection!=null) {
+					List<RowImpl> blk = getSupplements(row);
 					if (!blk.isEmpty()) {
 						newRow(row, blk);
 						//The text volume is reduced if row spacing increased
@@ -380,6 +348,30 @@ class PageSequenceBuilder extends PageSequence {
 				}
 			}
 			return true;
+		}
+		
+		private List<RowImpl> getSupplements(RowImpl row) {
+			List<RowImpl> blk = new ArrayList<RowImpl>();
+			for (String a : row.getAnchors()) {
+				if (!currentPage().getAnchors().contains(a)) {
+					//page doesn't already contains these blocks
+					for (Block b : collection.getBlocks(a)) {
+						for (RowImpl r : b.getBlockContentManager(bc).getPreContentRows(b.getRowDataProperties().getOuterSpaceBefore(), b.getRowDataProperties().getRowSpacing())) {
+							blk.add(r);
+						}
+						for (RowImpl r : b.getBlockContentManager(bc)) {
+							blk.add(r);
+						}
+						for (RowImpl r : b.getBlockContentManager(bc).getPostContentRows()) {
+							blk.add(r);
+						}
+						for (RowImpl r : b.getBlockContentManager(bc).getSkippablePostContentRows()) {
+							blk.add(r);
+						}
+					}
+				}
+			}
+			return blk;
 		}
 	}
 }
