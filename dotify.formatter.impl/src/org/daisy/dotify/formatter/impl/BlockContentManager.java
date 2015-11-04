@@ -47,6 +47,8 @@ class BlockContentManager implements Iterable<RowImpl> {
 	private Leader currentLeader;
 	private final List<RowImpl> postContentRows;
 	private final List<RowImpl> skippablePostContentRows;
+	private final List<RowImpl> collapsiblePreContentRows;
+	private final List<RowImpl> innerPreContentRows;
 
 	private ListItem item;
 	
@@ -70,6 +72,22 @@ class BlockContentManager implements Iterable<RowImpl> {
 		
 		this.leftParent = rdp.getLeftMargin().buildMarginParent(fcontext.getSpaceCharacter());
 		this.rightParent = rdp.getRightMargin().buildMarginParent(fcontext.getSpaceCharacter());
+		this.collapsiblePreContentRows = new ArrayList<RowImpl>();
+		for (int i=0; i<rdp.getOuterSpaceBefore();i++) {
+			RowImpl row = new RowImpl("", leftParent, rightParent);
+			row.setRowSpacing(rdp.getRowSpacing());
+			collapsiblePreContentRows.add(row);
+		}
+		
+		this.innerPreContentRows = new ArrayList<RowImpl>();
+		if (rdp.getLeadingDecoration()!=null) {
+			innerPreContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
+		}
+		for (int i=0; i<rdp.getInnerSpaceBefore(); i++) {
+			MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
+			innerPreContentRows.add(createAndConfigureEmptyNewRow(ret));
+		}
+		
 		this.postContentRows = new ArrayList<RowImpl>();
 
 		this.skippablePostContentRows = new ArrayList<RowImpl>();
@@ -249,11 +267,19 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return preContentRows;
 	}
 	
+	public List<RowImpl> getCollapsiblePreContentRows() {
+		return collapsiblePreContentRows;
+	}
+	
+	public List<RowImpl> getInnerPreContentRows() {
+		return innerPreContentRows;
+	}
+	
 	public int countPostContentRows() {
 		return postContentRows.size();
 	}
 	
-	public Iterable<RowImpl> getPostContentRows() {
+	public List<RowImpl> getPostContentRows() {
 		return postContentRows;
 	}
 	
@@ -261,7 +287,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return skippablePostContentRows.size();
 	}
 	
-	public Iterable<RowImpl> getSkippablePostContentRows() {
+	public List<RowImpl> getSkippablePostContentRows() {
 		return skippablePostContentRows;
 	}
 
