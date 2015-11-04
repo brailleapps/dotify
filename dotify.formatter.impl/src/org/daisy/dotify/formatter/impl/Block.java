@@ -28,11 +28,7 @@ class Block implements Cloneable {
 	private RowDataProperties rdp;
 	private BlockContentManager rdm;
 	private BlockPosition verticalPosition;
-	
-	private int flowWidth = 0;
-	private CrossReferences refs;
-	private DefaultContext context;
-	private FormatterContext fcontext;
+	private BlockContext context;
 
 	private Integer metaVolume = null, metaPage = null;
 	
@@ -130,29 +126,20 @@ class Block implements Cloneable {
 		return blockId;
 	}
 	
-	public BlockContentManager getBlockContentManager() {
-		if (rdm==null || rdm.isVolatile()) {
-			if (flowWidth<=0 || refs ==null || context == null || fcontext == null) {
-				throw new IllegalStateException("Context not set.");
-			}
-			context.setMetaVolume(metaVolume);
-			context.setMetaPage(metaPage);
-			rdm = new BlockContentManager(flowWidth, segments, rdp, refs, context, fcontext);
-			context.setMetaVolume(null);
-			context.setMetaPage(null);
-		}
-		return rdm;
-	}
-	
-	public void setContext(int flowWidth, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
-		if (this.flowWidth!=flowWidth || this.refs != refs || !context.equals(this.context) || this.fcontext != fcontext) {
+	public BlockContentManager getBlockContentManager(BlockContext context) {
+		if (!context.equals(this.context)) {
 			//invalidate, if existing
 			rdm = null;
 		}
-		this.flowWidth = flowWidth;
-		this.refs = refs;
 		this.context = context;
-		this.fcontext = fcontext;
+		if (rdm==null || rdm.isVolatile()) {
+			context.getContext().setMetaVolume(metaVolume);
+			context.getContext().setMetaPage(metaPage);
+			rdm = new BlockContentManager(context.getFlowWidth(), segments, rdp, context.getRefs(), context.getContext(), context.getFcontext());
+			context.getContext().setMetaVolume(null);
+			context.getContext().setMetaPage(null);
+		}
+		return rdm;
 	}
 
 	public void setMetaVolume(Integer metaVolume) {

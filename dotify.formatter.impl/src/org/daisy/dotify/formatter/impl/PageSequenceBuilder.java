@@ -143,28 +143,21 @@ class PageSequenceBuilder extends PageSequence {
 			c = context.getCollections().get(pa.getCollectionId());
 		}
 		PageAreaBuilderImpl pab = seq.getLayoutMaster().getPageAreaBuilder();
+		BlockContext bc = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
 		if (pab !=null) {
 			//Assumes before is static
 			for (Block b : pab.getBeforeArea()) {
-				b.setContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
-				for (RowImpl r : b.getBlockContentManager()) {
+				for (RowImpl r : b.getBlockContentManager(bc)) {
 					getBefore().add(r);
 				}
 			}
 
 			//Assumes after is static
 			for (Block b : pab.getAfterArea()) {
-				b.setContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
-				for (RowImpl r : b.getBlockContentManager()) {
+				for (RowImpl r : b.getBlockContentManager(bc)) {
 					getAfter().add(r);
 				}
 			}
-		}
-
-
-		//update context
-		for (Block g : seq) {
-			g.setContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
 		}
 
 		//layout
@@ -172,7 +165,7 @@ class PageSequenceBuilder extends PageSequence {
 		int currentPageNumber = -1;
 		for (int x=0; x<seq.size(); x++) {
 			Block g = seq.get(x);
-			BlockDataContext bd = new BlockDataContext(g);
+			BlockDataContext bd = new BlockDataContext(g, bc);
 			//Start new page if needed
 			bd.startNewPageIfNeeded(seq);
 			//if we are on a new page, then the collapsing regions are irrelevant
@@ -180,7 +173,7 @@ class PageSequenceBuilder extends PageSequence {
 				max = new MarginValue(); 
 				currentPageNumber = currentPageNumber();
 			}
-			if (g.getBlockContentManager().isCollapsable()
+			if (g.getBlockContentManager(bc).isCollapsable()
 					//This is a hack in order to avoid regression.
 					//It retains empty rows at the end of pages in certain cases.
 					//Once collapsing borders have been fully tested, this can be removed
@@ -287,16 +280,18 @@ class PageSequenceBuilder extends PageSequence {
 	 */
 	private class BlockDataContext {
 		private final Block block;
+		private final BlockContext bc;
 		private final BlockContentManager rdm;
 
-		private BlockDataContext(Block block) {
+		private BlockDataContext(Block block, BlockContext bc) {
 			this.block = block;
-			this.rdm = block.getBlockContentManager();
+			this.bc = bc;
+			this.rdm = block.getBlockContentManager(bc);
 		}
 
 		private void addVerticalSpace() {
 			if (block.getVerticalPosition() != null) {
-				int blockSpace = block.getBlockContentManager().getBlockHeight();
+				int blockSpace = block.getBlockContentManager(bc).getBlockHeight();
 				int pos = block.getVerticalPosition().getPosition().makeAbsolute(currentPage().getFlowHeight());
 				int t = pos - spaceUsedOnPage(0);
 				if (t > 0) {
@@ -331,7 +326,7 @@ class PageSequenceBuilder extends PageSequence {
 			}
 			switch (block.getKeepType()) {
 			case ALL:
-				int keepHeight = seq.getKeepHeight(block);
+				int keepHeight = seq.getKeepHeight(block, bc);
 				//FIXME: this assumes that row spacing is equal to 1
 				if (hasContent && keepHeight > currentPage().getFlowHeight() - spaceUsedOnPage(0) && keepHeight <= currentPage().getFlowHeight()) {
 					newPage();
@@ -347,7 +342,6 @@ class PageSequenceBuilder extends PageSequence {
 			}
 		}
 
-
 		private boolean addRows(LayoutMaster master, CrossReferences refs, DefaultContext rcontext, ContentCollectionImpl c) {
 			boolean first = true;
 			for (RowImpl row : rdm) {
@@ -357,19 +351,16 @@ class PageSequenceBuilder extends PageSequence {
 						if (!currentPage().getAnchors().contains(a)) {
 							//page doesn't already contains these blocks
 							for (Block b : c.getBlocks(a)) {
-								b.setContext(master.getFlowWidth(), refs, rcontext, context);
-							}
-							for (Block b : c.getBlocks(a)) {
-								for (RowImpl r : b.getBlockContentManager().getPreContentRows(b.getRowDataProperties().getOuterSpaceBefore(), b.getRowDataProperties().getRowSpacing())) {
+								for (RowImpl r : b.getBlockContentManager(bc).getPreContentRows(b.getRowDataProperties().getOuterSpaceBefore(), b.getRowDataProperties().getRowSpacing())) {
 									blk.add(r);
 								}
-								for (RowImpl r : b.getBlockContentManager()) {
+								for (RowImpl r : b.getBlockContentManager(bc)) {
 									blk.add(r);
 								}
-								for (RowImpl r : b.getBlockContentManager().getPostContentRows()) {
+								for (RowImpl r : b.getBlockContentManager(bc).getPostContentRows()) {
 									blk.add(r);
 								}
-								for (RowImpl r : b.getBlockContentManager().getSkippablePostContentRows()) {
+								for (RowImpl r : b.getBlockContentManager(bc).getSkippablePostContentRows()) {
 									blk.add(r);
 								}
 							}

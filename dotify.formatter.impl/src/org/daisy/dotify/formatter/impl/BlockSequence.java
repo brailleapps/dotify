@@ -57,19 +57,19 @@ class BlockSequence extends FormatterCoreImpl {
 	 * @param refs
 	 * @return the minimum number of rows
 	 */
-	public int getKeepHeight(Block block) {
-		return getKeepHeight(this.indexOf(block));
+	public int getKeepHeight(Block block, BlockContext bc) {
+		return getKeepHeight(this.indexOf(block), bc);
 	}
-	private int getKeepHeight(int gi) {
+	private int getKeepHeight(int gi, BlockContext bc) {
 		//FIXME: this assumes that row spacing is equal to 1
 		//FIXME: what about borders?
-		int keepHeight = getBlock(gi).getRowDataProperties().getOuterSpaceBefore()+getBlock(gi).getRowDataProperties().getInnerSpaceBefore()+getBlock(gi).getBlockContentManager().getRowCount();
+		int keepHeight = getBlock(gi).getRowDataProperties().getOuterSpaceBefore()+getBlock(gi).getRowDataProperties().getInnerSpaceBefore()+getBlock(gi).getBlockContentManager(bc).getRowCount();
 		if (getBlock(gi).getKeepWithNext()>0 && gi+1<getBlockCount()) {
 			keepHeight += getBlock(gi).getRowDataProperties().getOuterSpaceAfter()+getBlock(gi).getRowDataProperties().getInnerSpaceAfter()
 						+getBlock(gi+1).getRowDataProperties().getOuterSpaceBefore()+getBlock(gi+1).getRowDataProperties().getInnerSpaceBefore()+getBlock(gi).getKeepWithNext();
 			switch (getBlock(gi+1).getKeepType()) {
 				case ALL:
-					keepHeight += getKeepHeight(gi+1);
+					keepHeight += getKeepHeight(gi+1, bc);
 					break;
 				case AUTO: break;
 				default:;
