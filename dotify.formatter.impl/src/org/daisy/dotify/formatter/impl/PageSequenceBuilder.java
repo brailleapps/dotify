@@ -14,25 +14,37 @@ class PageSequenceBuilder extends PageSequence {
 	private final FormatterContext context;
 	private final BlockSequence seq;
 	private final CrossReferenceHandler crh;
+	private final PageAreaContent staticAreaContent;
+	private final PageAreaProperties areaProps;
+
 	private int keepNextSheets;
 	private PageImpl nextPage;
-	private PageAreaContent staticAreaContent;
 	private ContentCollectionImpl collection;
-	private PageAreaProperties areaProps;
+	private BlockContext blockContext;
 
-	PageSequenceBuilder(CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context) {
+	PageSequenceBuilder(CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, 
+						int pagesOffset, CrossReferences refs, DefaultContext rcontext) {
 		super(seq.getLayoutMaster());
 		this.pageReferences = pageReferences;
 		this.context = context;
 		this.seq = seq;
 		this.crh = crh;
-		reset();
-	}
-	
-	private void reset() {
+		if (seq.getInitialPageNumber()!=null) {
+			this.pagesOffset = seq.getInitialPageNumber() - 1;
+		} else {
+			this.pagesOffset = pagesOffset;
+		}
+
+		this.collection = null;
+		this.areaProps = seq.getLayoutMaster().getPageArea();
+		if (this.areaProps!=null) {
+			this.collection = context.getCollections().get(areaProps.getCollectionId());
+		}
 		this.keepNextSheets = 0;
 		this.nextPage = null;
-
+		
+		this.blockContext = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
+		this.staticAreaContent = new PageAreaContent(seq.getLayoutMaster().getPageAreaBuilder(), blockContext);
 	}
 
 	private void newPage() {
@@ -115,26 +127,7 @@ class PageSequenceBuilder extends PageSequence {
 		}
 	}
 	
-	private void initPagination(int pagesOffset) {
-		if (seq.getInitialPageNumber()!=null) {
-			this.pagesOffset = seq.getInitialPageNumber() - 1;
-		} else {
-			this.pagesOffset = pagesOffset;
-		}
-
-		collection = null;
-		areaProps = seq.getLayoutMaster().getPageArea();
-		if (areaProps!=null) {
-			collection = context.getCollections().get(areaProps.getCollectionId());
-		}
-	}
-
-	boolean paginate(int pagesOffset, CrossReferences refs, DefaultContext rcontext) throws PaginatorException  {
-		initPagination(pagesOffset);
-		
-		BlockContext blockContext = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
-		staticAreaContent = new PageAreaContent(seq.getLayoutMaster().getPageAreaBuilder(), blockContext);
-		
+	boolean paginate() throws PaginatorException  {
 		newPage();
 
 		//layout
