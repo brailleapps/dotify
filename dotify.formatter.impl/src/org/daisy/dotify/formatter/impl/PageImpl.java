@@ -32,7 +32,7 @@ import org.daisy.dotify.common.text.StringTools;
 class PageImpl implements Page {
 	private final static Pattern trailingWs = Pattern.compile("\\s*\\z");
 	private final static Pattern softHyphen = Pattern.compile("\u00ad");
-	private final PageSequenceBuilder parent;
+	private final PageSequence parent;
 	private final LayoutMaster master;
 	private final FormatterContext fcontext;
 	private final List<RowImpl> before;
@@ -49,7 +49,7 @@ class PageImpl implements Page {
 	private boolean isVolBreakAllowed;
 	private int keepPreviousSheets;
 	
-	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequenceBuilder parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
+	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequence parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
 		this.master = master;
 		this.fcontext = fcontext;
 		this.rows = new ArrayList<RowImpl>();
@@ -350,7 +350,7 @@ class PageImpl implements Page {
 		return pageIndex-parent.getPageNumberOffset();
 	}
 
-	public PageSequenceBuilder getParent() {
+	public PageSequence getParent() {
 		return parent;
 	}
 	
@@ -519,7 +519,7 @@ class PageImpl implements Page {
 		if (offset==0) {
 			return this;
 		} else {
-			PageSequenceBuilder parent = getParent();
+			PageSequence parent = getParent();
 			int next = getPageIndex() - parent.getPageNumberOffset() + offset;
 			if (adjustOutOfBounds) {
 				next = Math.min(parent.getPageCount()-1, Math.max(0, next));

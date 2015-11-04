@@ -14,7 +14,6 @@ class PageSequenceBuilder extends PageSequence {
 	private final FormatterContext context;
 	private final BlockSequence seq;
 	private final CrossReferenceHandler crh;
-	private int pagesOffset;
 	private int keepNextSheets;
 	private PageImpl nextPage;
 	private List<RowImpl> before;
@@ -79,11 +78,6 @@ class PageSequenceBuilder extends PageSequence {
 			currentPage().setAllowsVolumeBreak(false);
 		}
 	}
-
-	public int getPageNumberOffset() {
-		return pagesOffset;
-	}
-
 	
 	private PageImpl currentPage() {
 		if (nextPage!=null) {

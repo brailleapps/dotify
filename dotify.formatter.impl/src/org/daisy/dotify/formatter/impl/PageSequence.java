@@ -10,6 +10,7 @@ import java.util.Stack;
 class PageSequence {
 	protected final Stack<PageImpl> pages;
 	protected final LayoutMaster master;
+	protected int pagesOffset;
 	
 	PageSequence(LayoutMaster master) { //, int pageOffset, FormatterFactory formatterFactory) {
 		this.pages = new Stack<PageImpl>();
@@ -42,6 +43,10 @@ class PageSequence {
 
 	public Iterable<PageImpl> getPages() {
 		return pages;
+	}
+	
+	public int getPageNumberOffset() {
+		return pagesOffset;
 	}
 
 }
