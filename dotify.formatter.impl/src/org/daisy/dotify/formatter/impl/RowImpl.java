@@ -148,5 +148,77 @@ class RowImpl implements Row {
 	public void setRowSpacing(Float value) {
 		this.rowSpacing = value;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((alignment == null) ? 0 : alignment.hashCode());
+		result = prime * result + ((anchors == null) ? 0 : anchors.hashCode());
+		result = prime * result + ((chars == null) ? 0 : chars.hashCode());
+		result = prime * result + ((leftMargin == null) ? 0 : leftMargin.hashCode());
+		result = prime * result + ((markers == null) ? 0 : markers.hashCode());
+		result = prime * result + ((rightMargin == null) ? 0 : rightMargin.hashCode());
+		result = prime * result + ((rowSpacing == null) ? 0 : rowSpacing.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		RowImpl other = (RowImpl) obj;
+		if (alignment != other.alignment) {
+			return false;
+		}
+		if (anchors == null) {
+			if (other.anchors != null) {
+				return false;
+			}
+		} else if (!anchors.equals(other.anchors)) {
+			return false;
+		}
+		if (chars == null) {
+			if (other.chars != null) {
+				return false;
+			}
+		} else if (!chars.equals(other.chars)) {
+			return false;
+		}
+		if (leftMargin == null) {
+			if (other.leftMargin != null) {
+				return false;
+			}
+		} else if (!leftMargin.equals(other.leftMargin)) {
+			return false;
+		}
+		if (markers == null) {
+			if (other.markers != null) {
+				return false;
+			}
+		} else if (!markers.equals(other.markers)) {
+			return false;
+		}
+		if (rightMargin == null) {
+			if (other.rightMargin != null) {
+				return false;
+			}
+		} else if (!rightMargin.equals(other.rightMargin)) {
+			return false;
+		}
+		if (rowSpacing == null) {
+			if (other.rowSpacing != null) {
+				return false;
+			}
+		} else if (!rowSpacing.equals(other.rowSpacing)) {
+			return false;
+		}
+		return true;
+	}
 
 }
