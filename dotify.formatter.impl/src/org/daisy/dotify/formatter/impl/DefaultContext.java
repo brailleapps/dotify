@@ -3,12 +3,72 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.Context;
 
 class DefaultContext implements Context {
-	private final Integer currentVolume, volumeCount;
-	private Integer metaVolume, metaPage;
+	private final Integer currentVolume, volumeCount, currentPage, metaVolume, metaPage;
+	
+	static class Builder {
+		private Integer	currentVolume=null, 
+						volumeCount=null,
+						currentPage=null,
+						metaVolume=null,
+						metaPage=null; 
+		
+		Builder() {
+		}
+		
+		private Builder(Context base) {
+			this.currentVolume = base.getCurrentVolume();
+			this.volumeCount = base.getVolumeCount();
+			this.currentPage = base.getCurrentPage();
+			this.metaVolume = base.getMetaVolume();
+			this.metaPage = base.getMetaPage();
+		}
+		
+		Builder currentVolume(Integer value) {
+			this.currentVolume = value;
+			return this;
+		}
+		
+		Builder currentPage(Integer value) {
+			this.currentPage = value;
+			return this;
+		}
+		
+		Builder volumeCount(Integer value) {
+			this.volumeCount = value;
+			return this;
+		}
+		
+		Builder metaVolume(Integer value) {
+			this.metaVolume = value;
+			return this;
+		}
+		
+		Builder metaPage(Integer value) {
+			this.metaPage = value;
+			return this;
+		}
+		
+		DefaultContext build() {
+			return new DefaultContext(this);
+		}
+	}
+	
+	public static DefaultContext.Builder from(Context base) {
+		return new DefaultContext.Builder(base);
+	}
+	
+	private DefaultContext(Builder builder) {
+		this.currentVolume = builder.currentVolume;
+		this.volumeCount = builder.volumeCount;
+		this.currentPage = builder.currentPage;
+		this.metaVolume = builder.metaVolume;
+		this.metaPage = builder.metaPage;
+	}
 	
 	public DefaultContext(Integer currentVolume, Integer volumeCount) {
 		this.currentVolume = currentVolume;
 		this.volumeCount = volumeCount;
+		this.currentPage = null;
 		this.metaVolume = null;
 		this.metaPage = null;
 	} 
@@ -22,38 +82,26 @@ class DefaultContext implements Context {
 	}
 
 	public Integer getCurrentPage() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentPage;
 	}
 
 	public Integer getMetaVolume() {
 		return metaVolume;
-	}
-	
-	public void setMetaVolume(Integer value) {
-		this.metaVolume = value;
 	}
 
 	public Integer getMetaPage() {
 		return metaPage;
 	}
 
-	public void setMetaPage(Integer metaPage) {
-		this.metaPage = metaPage;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((currentVolume == null) ? 0 : currentVolume.hashCode());
-		result = prime * result
-				+ ((metaPage == null) ? 0 : metaPage.hashCode());
-		result = prime * result
-				+ ((metaVolume == null) ? 0 : metaVolume.hashCode());
-		result = prime * result
-				+ ((volumeCount == null) ? 0 : volumeCount.hashCode());
+		result = prime * result + ((currentPage == null) ? 0 : currentPage.hashCode());
+		result = prime * result + ((currentVolume == null) ? 0 : currentVolume.hashCode());
+		result = prime * result + ((metaPage == null) ? 0 : metaPage.hashCode());
+		result = prime * result + ((metaVolume == null) ? 0 : metaVolume.hashCode());
+		result = prime * result + ((volumeCount == null) ? 0 : volumeCount.hashCode());
 		return result;
 	}
 
@@ -69,6 +117,13 @@ class DefaultContext implements Context {
 			return false;
 		}
 		DefaultContext other = (DefaultContext) obj;
+		if (currentPage == null) {
+			if (other.currentPage != null) {
+				return false;
+			}
+		} else if (!currentPage.equals(other.currentPage)) {
+			return false;
+		}
 		if (currentVolume == null) {
 			if (other.currentVolume != null) {
 				return false;

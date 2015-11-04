@@ -156,9 +156,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 							if (nv!=vol) {
 								ArrayList<Block> rr = new ArrayList<Block>();
 								if (nv>0) {
-									//set the meta context for selection evaluation
-									vars.setMetaVolume(nv);
-									Iterable<Block> ib1 = getVolumeEnd(vars);
+									Iterable<Block> ib1 = getVolumeEnd(DefaultContext.from(vars).metaVolume(nv).build());
 									for (Block b1 : ib1) {
 										//set the meta volume for each block, for later evaluation
 										b1.setMetaVolume(nv);
@@ -166,9 +164,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 									}
 								}
 								nv = vol;
-								//set the meta context for selection evaluation
-								vars.setMetaVolume(vol);
-								Iterable<Block> ib1 = getVolumeStart(vars);
+								Iterable<Block> ib1 = getVolumeStart(DefaultContext.from(vars).metaVolume(vol).build());
 								for (Block b1 : ib1) {
 									//set the meta volume for each block, for later evaluation
 									b1.setMetaVolume(vol);

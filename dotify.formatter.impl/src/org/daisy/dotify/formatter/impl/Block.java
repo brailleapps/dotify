@@ -133,11 +133,9 @@ class Block implements Cloneable {
 		}
 		this.context = context;
 		if (rdm==null || rdm.isVolatile()) {
-			context.getContext().setMetaVolume(metaVolume);
-			context.getContext().setMetaPage(metaPage);
-			rdm = new BlockContentManager(context.getFlowWidth(), segments, rdp, context.getRefs(), context.getContext(), context.getFcontext());
-			context.getContext().setMetaVolume(null);
-			context.getContext().setMetaPage(null);
+			rdm = new BlockContentManager(context.getFlowWidth(), segments, rdp, context.getRefs(),
+					DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build(),
+					context.getFcontext());
 		}
 		return rdm;
 	}

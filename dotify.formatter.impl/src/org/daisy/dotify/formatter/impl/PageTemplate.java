@@ -86,38 +86,9 @@ class PageTemplate implements PageTemplateBuilder {
 		if (appliesTo.containsKey(pagenum)) {
 			return appliesTo.get(pagenum);
 		}
-		boolean applies = condition.evaluate(new PageContext(pagenum));
+		boolean applies = condition.evaluate(new DefaultContext.Builder().currentPage(pagenum).build());
 		appliesTo.put(pagenum, applies);
 		return applies;
-	}
-	
-	private class PageContext implements Context {
-		private final Integer page;
-		
-		private PageContext(int pagenum) {
-			this.page = pagenum;
-		}
-
-		public Integer getCurrentVolume() {
-			return null;
-		}
-
-		public Integer getVolumeCount() {
-			return null;
-		}
-
-		public Integer getCurrentPage() {
-			return page;
-		}
-
-		public Integer getMetaVolume() {
-			return null;
-		}
-
-		public Integer getMetaPage() {
-			return null;
-		}
-		
 	}
 
 }
