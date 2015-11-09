@@ -65,11 +65,14 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (propsContext.size()>0) {
 			addToBlockIndent(propsContext.peek().getBlockIndent());
 		}
+
 		RowDataProperties.Builder rdp = new RowDataProperties.Builder().
 					textIndent(p.getTextIndent()).
 					firstLineIndent(p.getFirstLineIndent()).
 					align(p.getAlignment()).
 					rowSpacing(p.getRowSpacing()).
+					orphans(p.getOrphans()).
+					widows(p.getWidows()).
 					blockIndent(blockIndent).
 					blockIndentParent(blockIndentParent.peek()).
 					leftMargin((Margin)leftMargin.clone()).
@@ -144,6 +147,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 						firstLineIndent(p.getFirstLineIndent()).
 						align(p.getAlignment()).
 						rowSpacing(p.getRowSpacing()).
+						orphans(p.getOrphans()).
+						widows(p.getWidows()).
 						blockIndent(blockIndent).
 						blockIndentParent(blockIndentParent.peek()).
 						leftMargin((Margin)leftMargin.clone()). //.stackMarginComp(formatterContext, false, false)

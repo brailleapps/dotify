@@ -12,8 +12,8 @@ public class FormatterCoreImplTest {
 	public void testBlockPropertiesHierarchy() {
 		//Setup
 		FormatterCoreImpl formatter = new FormatterCoreImpl();
-		formatter.startBlock(new BlockProperties.Builder().rowSpacing(1.0f).firstLineIndent(1).build());
-		formatter.startBlock(new BlockProperties.Builder().rowSpacing(2.0f).firstLineIndent(2).build());
+		formatter.startBlock(new BlockProperties.Builder().rowSpacing(1.0f).firstLineIndent(1).orphans(2).widows(2).build());
+		formatter.startBlock(new BlockProperties.Builder().rowSpacing(2.0f).firstLineIndent(2).orphans(3).widows(3).build());
 		formatter.endBlock();
 		formatter.endBlock();
 		
@@ -26,8 +26,8 @@ public class FormatterCoreImplTest {
 		Margin rightInner = (Margin)right.clone();
 		rightInner.add(new MarginComponent("", 0, 0));
 		
-		RowDataProperties expectedOuter = new RowDataProperties.Builder().rowSpacing(1.0f).firstLineIndent(1).leftMargin(left).rightMargin(right).build();
-		RowDataProperties expectedInner = new RowDataProperties.Builder().rowSpacing(2.0f).firstLineIndent(2).leftMargin(leftInner).rightMargin(rightInner).build();
+		RowDataProperties expectedOuter = new RowDataProperties.Builder().rowSpacing(1.0f).firstLineIndent(1).orphans(2).widows(2).leftMargin(left).rightMargin(right).build();
+		RowDataProperties expectedInner = new RowDataProperties.Builder().rowSpacing(2.0f).firstLineIndent(2).orphans(3).widows(3).leftMargin(leftInner).rightMargin(rightInner).build();
 		
 		//Test
 		assertEquals(3, formatter.size());

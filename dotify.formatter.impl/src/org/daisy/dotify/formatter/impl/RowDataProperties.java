@@ -17,6 +17,8 @@ class RowDataProperties {
 	private final int outerSpaceAfter;
 	private final int innerSpaceBefore;
 	private final int innerSpaceAfter;
+	private final int orphans;
+	private final int widows;
 	private final SingleLineDecoration leadingDecoration;
 	private final SingleLineDecoration trailingDecoration;
 	
@@ -29,6 +31,8 @@ class RowDataProperties {
 		private int outerSpaceAfter = 0;
 		private int innerSpaceBefore = 0;
 		private int innerSpaceAfter = 0;
+		private int orphans = 0;
+		private int widows = 0;
 		private Alignment align = Alignment.LEFT;
 		private Float rowSpacing = null;
 		private Margin leftMargin = new Margin(Type.LEFT);
@@ -58,6 +62,8 @@ class RowDataProperties {
 			this.innerSpaceAfter = template.innerSpaceAfter;
 			this.leadingDecoration = template.leadingDecoration;
 			this.trailingDecoration = template.trailingDecoration;
+			this.orphans = template.orphans;
+			this.widows = template.widows;
 		}
 		
 		public Builder blockIndent(int value) {
@@ -134,6 +140,16 @@ class RowDataProperties {
 			this.innerSpaceAfter = value;
 			return this;
 		}
+		
+		public Builder orphans(int value) {
+			this.orphans = value;
+			return this;
+		}
+		
+		public Builder widows(int value) {
+			this.widows = value;
+			return this;
+		}
 
 		public RowDataProperties build() {
 			return new RowDataProperties(this);
@@ -157,6 +173,8 @@ class RowDataProperties {
 		this.innerSpaceAfter = builder.innerSpaceAfter;
 		this.leadingDecoration = builder.leadingDecoration;
 		this.trailingDecoration = builder.trailingDecoration;
+		this.orphans = builder.orphans;
+		this.widows = builder.widows;
 	}
 
 	public int getBlockIndent() {
@@ -221,6 +239,14 @@ class RowDataProperties {
 	public SingleLineDecoration getTrailingDecoration() {
 		return trailingDecoration;
 	}
+	
+	public int getOrphans() {
+		return orphans;
+	}
+	
+	public int getWidows() {
+		return widows;
+	}
 
 	@Override
 	public int hashCode() {
@@ -235,12 +261,14 @@ class RowDataProperties {
 		result = prime * result + ((leadingDecoration == null) ? 0 : leadingDecoration.hashCode());
 		result = prime * result + ((leftMargin == null) ? 0 : leftMargin.hashCode());
 		result = prime * result + ((listProps == null) ? 0 : listProps.hashCode());
+		result = prime * result + orphans;
 		result = prime * result + outerSpaceAfter;
 		result = prime * result + outerSpaceBefore;
 		result = prime * result + ((rightMargin == null) ? 0 : rightMargin.hashCode());
 		result = prime * result + ((rowSpacing == null) ? 0 : rowSpacing.hashCode());
 		result = prime * result + textIndent;
 		result = prime * result + ((trailingDecoration == null) ? 0 : trailingDecoration.hashCode());
+		result = prime * result + widows;
 		return result;
 	}
 
@@ -295,6 +323,9 @@ class RowDataProperties {
 		} else if (!listProps.equals(other.listProps)) {
 			return false;
 		}
+		if (orphans != other.orphans) {
+			return false;
+		}
 		if (outerSpaceAfter != other.outerSpaceAfter) {
 			return false;
 		}
@@ -325,6 +356,9 @@ class RowDataProperties {
 		} else if (!trailingDecoration.equals(other.trailingDecoration)) {
 			return false;
 		}
+		if (widows != other.widows) {
+			return false;
+		}
 		return true;
 	}
 
@@ -335,7 +369,8 @@ class RowDataProperties {
 				+ ", textIndent=" + textIndent + ", firstLineIndent=" + firstLineIndent + ", align=" + align
 				+ ", rowSpacing=" + rowSpacing + ", outerSpaceBefore=" + outerSpaceBefore + ", outerSpaceAfter="
 				+ outerSpaceAfter + ", innerSpaceBefore=" + innerSpaceBefore + ", innerSpaceAfter=" + innerSpaceAfter
-				+ ", leadingDecoration=" + leadingDecoration + ", trailingDecoration=" + trailingDecoration + "]";
+				+ ", orphans=" + orphans + ", widows=" + widows + ", leadingDecoration=" + leadingDecoration
+				+ ", trailingDecoration=" + trailingDecoration + "]";
 	}
 
 }

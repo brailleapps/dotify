@@ -153,6 +153,9 @@ class PageSequenceBuilder2 extends PageSequence {
 
 			int i = 0;
 			List<RowImpl> rl3 = bcm.getPostContentRows();
+			OrphanWidowControl owc = new OrphanWidowControl(g.getRowDataProperties().getOrphans(),
+															g.getRowDataProperties().getWidows(), 
+															bcm.getRowCount());
 			for (RowImpl r : bcm) {
 				i++;
 				if (i==bcm.getRowCount()) {
@@ -160,8 +163,8 @@ class PageSequenceBuilder2 extends PageSequence {
 					keepWithNext = g.getKeepWithNext();
 				}
 				RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing()).add(r).
-						//FIXME: orphans/widows
 						collapsible(false).skippable(false).breakable(
+								owc.allowsBreakAfter(i-1)&&
 								keepWithNext<=0 &&
 								(Keep.AUTO==g.getKeepType() || (i==bcm.getRowCount() && rl3.isEmpty())));
 				if (i==1) { //First item
