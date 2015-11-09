@@ -9,6 +9,7 @@ import org.daisy.dotify.api.formatter.BlockPosition;
 import org.daisy.dotify.api.formatter.FallbackRule;
 import org.daisy.dotify.api.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
+import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
 import org.daisy.dotify.common.layout.SplitPoint;
@@ -170,12 +171,15 @@ class PageSequenceBuilder2 extends PageSequence {
 				}
 				RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing()).add(r).
 						//FIXME: orphans/widows
-						//FIXME: bcm.getGroupAnchors()
 						collapsible(false).skippable(false).breakable(
 								keepWithNext<=0 &&
 								(Keep.AUTO==g.getKeepType() || (i==bcm.getRowCount() && rl3.isEmpty())));
-				if (i==1 && !"".equals(g.getIdentifier())) { //First item
-					rgb.identifier(g.getIdentifier());
+				if (i==1) { 
+					if (!"".equals(g.getIdentifier())) { //First item
+						rgb.identifier(g.getIdentifier());
+					}
+					rgb.markers(bcm.getGroupMarkers());
+					rgb.anchors(bcm.getGroupAnchors());
 				}
 				data.add(rgb.build());
 				keepWithNext--;
@@ -229,6 +233,8 @@ class PageSequenceBuilder2 extends PageSequence {
 					if (rg.getIdentifier()!=null) {
 						insertIdentifier(rg.getIdentifier());
 					}
+					currentPage().addMarkers(rg.getMarkers());
+					//TODO: addGroupAnchors
 					for (RowImpl r : rg.getRows()) {
 						currentPage().newRow(r);
 					}

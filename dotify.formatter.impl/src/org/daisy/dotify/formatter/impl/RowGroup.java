@@ -5,11 +5,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.common.layout.SplitPointUnit;
 
 class RowGroup implements SplitPointUnit {
 	private final List<RowImpl> rows;
+	private final List<Marker> markers;
+	private final List<String> anchors;
 	private final float unitSize, lastUnitSize;
 	private final boolean breakable, skippable, collapsible, lazyCollapse;
 	private final List<String> ids;
@@ -17,6 +20,8 @@ class RowGroup implements SplitPointUnit {
 	
 	static class Builder {
 		private final List<RowImpl> rows;
+		private List<Marker> markers;
+		private List<String> anchors;
 		private final float rowDefault;
 		private boolean breakable = false, skippable = false, collapsible = false;
 		private float overhead = 0;
@@ -25,20 +30,30 @@ class RowGroup implements SplitPointUnit {
 		Builder(float rowDefault, RowImpl ... rows) {
 			this(rowDefault, Arrays.asList(rows));
 		}
+		Builder(float rowDefault) {
+			this(rowDefault, new ArrayList<RowImpl>());
+		}
 		Builder(float rowDefault, List<RowImpl> rows) {
 			this.rows = rows;
 			this.rowDefault = rowDefault;
+			this.markers = new ArrayList<Marker>();
+			this.anchors = new ArrayList<String>();
 		}
-		Builder(float rowDefault) {
-			this.rows = new ArrayList<RowImpl>();
-			this.rowDefault = rowDefault;
-		}
+		
 		Builder add(RowImpl value) {
 			rows.add(value);
 			return this;
 		}
 		Builder addAll(List<RowImpl> value) {
 			rows.addAll(value);
+			return this;
+		}
+		Builder markers(List<Marker> value) {
+			this.markers = value;
+			return this;
+		}
+		Builder anchors(List<String> value) {
+			this.anchors = value;
 			return this;
 		}
 		Builder breakable(boolean value) {
@@ -72,6 +87,8 @@ class RowGroup implements SplitPointUnit {
 	
 	private RowGroup(Builder builder) {
 		this.rows = builder.rows;
+		this.markers = builder.markers;
+		this.anchors = builder.anchors;
 		this.breakable = builder.breakable;
 		this.skippable = builder.skippable;
 		this.collapsible = builder.collapsible;
@@ -179,6 +196,14 @@ class RowGroup implements SplitPointUnit {
 	@Override
 	public float getLastUnitSize() {
 		return lastUnitSize;
+	}
+
+	public List<Marker> getMarkers() {
+		return markers;
+	}
+
+	public List<String> getAnchors() {
+		return anchors;
 	}
 	
 }
