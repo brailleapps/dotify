@@ -12,6 +12,7 @@ import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
+import org.daisy.dotify.common.collection.SplitList;
 import org.daisy.dotify.common.layout.SplitPoint;
 import org.daisy.dotify.common.layout.SplitPointData;
 import org.daisy.dotify.common.layout.SplitPointHandler;
@@ -72,14 +73,6 @@ class PageSequenceBuilder2 extends PageSequence {
 		}
 	}
 
-	private void newPageOnRow() {
-		if (nextPage!=null) {
-			//if new page is already in buffer, flush it.
-			newPage();
-		}
-		nextPage = new PageImpl(master, context, this, pages.size()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter());
-	}
-
 	private void setKeepWithPreviousSheets(int value) {
 		currentPage().setKeepWithPreviousSheets(value);
 	}
@@ -110,14 +103,6 @@ class PageSequenceBuilder2 extends PageSequence {
 	 */
 	private int spaceUsedOnPage(int offs) {
 		return currentPage().spaceUsedOnPage(offs);
-	}
-
-	private void newRow(RowImpl row, List<RowImpl> block) {
-		if (nextPage != null || currentPage().spaceNeeded(block) + currentPage().spaceNeeded() + 1 > currentPage().getFlowHeight()) {
-			newPage();
-		}
-		currentPage().newRow(row);
-		currentPage().addToPageArea(block);
 	}
 
 	private void newRow(RowImpl row) {
@@ -161,12 +146,8 @@ class PageSequenceBuilder2 extends PageSequence {
 				if (!bcm.getGroupAnchors().isEmpty() || !bcm.getGroupMarkers().isEmpty() || !"".equals(g.getIdentifier())
 						|| g.getKeepWithNextSheets()>0 || g.getKeepWithPreviousSheets()>0 ) {
 					RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing(), new ArrayList<RowImpl>());
-					if (!"".equals(g.getIdentifier())) {
-						rgb.identifier(g.getIdentifier());
-					}
-					rgb.keepWithNextSheets(g.getKeepWithNextSheets());
-					rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheets());
-					data.add(rgb.markers(bcm.getGroupMarkers()).anchors(bcm.getGroupAnchors()).build());
+					setProperties(rgb, bcm, g);
+					data.add(rgb.build());
 				}
 			}
 
@@ -183,14 +164,8 @@ class PageSequenceBuilder2 extends PageSequence {
 						collapsible(false).skippable(false).breakable(
 								keepWithNext<=0 &&
 								(Keep.AUTO==g.getKeepType() || (i==bcm.getRowCount() && rl3.isEmpty())));
-				if (i==1) { 
-					if (!"".equals(g.getIdentifier())) { //First item
-						rgb.identifier(g.getIdentifier());
-					}
-					rgb.markers(bcm.getGroupMarkers());
-					rgb.anchors(bcm.getGroupAnchors());
-					rgb.keepWithNextSheets(g.getKeepWithNextSheets());
-					rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheets());
+				if (i==1) { //First item
+					setProperties(rgb, bcm, g);
 				}
 				data.add(rgb.build());
 				keepWithNext--;
@@ -206,6 +181,16 @@ class PageSequenceBuilder2 extends PageSequence {
 			}
 		}
 		return dataGroups;
+	}
+	
+	private void setProperties(RowGroup.Builder rgb, BlockContentManager bcm, Block g) {
+		if (!"".equals(g.getIdentifier())) { 
+			rgb.identifier(g.getIdentifier());
+		}
+		rgb.markers(bcm.getGroupMarkers());
+		rgb.anchors(bcm.getGroupAnchors());
+		rgb.keepWithNextSheets(g.getKeepWithNextSheets());
+		rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheets());
 	}
 	
 	boolean paginate() throws PaginatorException  {
@@ -236,24 +221,26 @@ class PageSequenceBuilder2 extends PageSequence {
 			}
 			boolean force = false;
 			while (data.size()>0) {
+				SplitList<RowGroup> sl = SplitPointHandler.trimLeading(data);
+				for (RowGroup rg : sl.getFirstPart()) {
+					addProperties(rg);
+				}
+				data = sl.getSecondPart();
 				spd = new SplitPointData<>(data, new CollectionData(blockContext));
 				res = sph.split(currentPage().getFlowHeight(), force, spd);
 				force = res.getHead().size()==0;
 				data = res.getTail();
 				for (RowGroup rg : res.getHead()) {
-					if (rg.getIdentifier()!=null) {
-						insertIdentifier(rg.getIdentifier());
-					}
-					currentPage().addMarkers(rg.getMarkers());
-					//TODO: addGroupAnchors
-					setKeepWithNextSheets(rg.getKeepWithNextSheets());
-					setKeepWithPreviousSheets(rg.getKeepWithPreviousSheets());
+					addProperties(rg);
 					for (RowImpl r : rg.getRows()) {
 						currentPage().newRow(r);
 					}
 				}
-				for (RowGroup rgg : res.getSupplements()) {
-					currentPage().addToPageArea(rgg.getRows());
+				for (RowGroup rg : res.getDiscarded()) {
+					addProperties(rg);
+				}
+				for (RowGroup rg : res.getSupplements()) {
+					currentPage().addToPageArea(rg.getRows());
 				}
 				if (master.getPageArea()!=null && collection!=null && currentPage().pageAreaSpaceNeeded() > master.getPageArea().getMaxHeight()) {
 					reassignCollection();
@@ -265,6 +252,16 @@ class PageSequenceBuilder2 extends PageSequence {
 			}
 		}
 		return true;
+	}
+	
+	private void addProperties(RowGroup rg) {
+		if (rg.getIdentifier()!=null) {
+			insertIdentifier(rg.getIdentifier());
+		}
+		currentPage().addMarkers(rg.getMarkers());
+		//TODO: addGroupAnchors
+		setKeepWithNextSheets(rg.getKeepWithNextSheets());
+		setKeepWithPreviousSheets(rg.getKeepWithPreviousSheets());
 	}
 	
 	private void reassignCollection() throws PaginatorException {
