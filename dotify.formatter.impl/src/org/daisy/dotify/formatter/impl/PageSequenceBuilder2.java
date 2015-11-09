@@ -157,8 +157,14 @@ class PageSequenceBuilder2 extends PageSequence {
 										collapsible(false).skippable(false).breakable(false).build());
 			}
 			
-			if (bcm.getRowCount()==0 && !"".equals(g.getIdentifier())) {
-				data.add(new RowGroup.Builder(master.getRowSpacing(), new ArrayList<RowImpl>()).identifier(g.getIdentifier()).build());
+			if (bcm.getRowCount()==0) { //TODO: Does this interfere with collapsing margins? 
+				if (!bcm.getGroupAnchors().isEmpty() || !bcm.getGroupMarkers().isEmpty() || !"".equals(g.getIdentifier())) {
+					RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing(), new ArrayList<RowImpl>());
+					if (!"".equals(g.getIdentifier())) {
+						rgb.identifier(g.getIdentifier());
+					}
+					data.add(rgb.markers(bcm.getGroupMarkers()).anchors(bcm.getGroupAnchors()).build());
+				}
 			}
 
 			int i = 0;
