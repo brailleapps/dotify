@@ -158,11 +158,14 @@ class PageSequenceBuilder2 extends PageSequence {
 			}
 			
 			if (bcm.getRowCount()==0) { //TODO: Does this interfere with collapsing margins? 
-				if (!bcm.getGroupAnchors().isEmpty() || !bcm.getGroupMarkers().isEmpty() || !"".equals(g.getIdentifier())) {
+				if (!bcm.getGroupAnchors().isEmpty() || !bcm.getGroupMarkers().isEmpty() || !"".equals(g.getIdentifier())
+						|| g.getKeepWithNextSheets()>0 || g.getKeepWithPreviousSheets()>0 ) {
 					RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing(), new ArrayList<RowImpl>());
 					if (!"".equals(g.getIdentifier())) {
 						rgb.identifier(g.getIdentifier());
 					}
+					rgb.keepWithNextSheets(g.getKeepWithNextSheets());
+					rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheets());
 					data.add(rgb.markers(bcm.getGroupMarkers()).anchors(bcm.getGroupAnchors()).build());
 				}
 			}
@@ -186,6 +189,8 @@ class PageSequenceBuilder2 extends PageSequence {
 					}
 					rgb.markers(bcm.getGroupMarkers());
 					rgb.anchors(bcm.getGroupAnchors());
+					rgb.keepWithNextSheets(g.getKeepWithNextSheets());
+					rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheets());
 				}
 				data.add(rgb.build());
 				keepWithNext--;
@@ -241,6 +246,8 @@ class PageSequenceBuilder2 extends PageSequence {
 					}
 					currentPage().addMarkers(rg.getMarkers());
 					//TODO: addGroupAnchors
+					setKeepWithNextSheets(rg.getKeepWithNextSheets());
+					setKeepWithPreviousSheets(rg.getKeepWithPreviousSheets());
 					for (RowImpl r : rg.getRows()) {
 						currentPage().newRow(r);
 					}

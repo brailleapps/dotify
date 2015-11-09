@@ -17,6 +17,7 @@ class RowGroup implements SplitPointUnit {
 	private final boolean breakable, skippable, collapsible, lazyCollapse;
 	private final List<String> ids;
 	private final String identifier;
+	private final int keepWithNextSheets, keepWithPreviousSheets;
 	
 	static class Builder {
 		private final List<RowImpl> rows;
@@ -25,6 +26,7 @@ class RowGroup implements SplitPointUnit {
 		private final float rowDefault;
 		private boolean breakable = false, skippable = false, collapsible = false;
 		private float overhead = 0;
+		private int keepWithNextSheets=0, keepWithPreviousSheets=0;
 		private String identifier=null;
 		private boolean lazyCollapse = true;
 		Builder(float rowDefault, RowImpl ... rows) {
@@ -80,6 +82,14 @@ class RowGroup implements SplitPointUnit {
 			this.lazyCollapse = value;
 			return this;
 		}
+		Builder keepWithNextSheets(int value) {
+			this.keepWithNextSheets = value;
+			return this;
+		}
+		Builder keepWithPreviousSheets(int value) {
+			this.keepWithPreviousSheets = value;
+			return this;
+		}
 		RowGroup build() {
 			return new RowGroup(this);
 		}
@@ -100,6 +110,8 @@ class RowGroup implements SplitPointUnit {
 			ids.addAll(r.getAnchors());
 		}
 		this.identifier = builder.identifier;
+		this.keepWithNextSheets = builder.keepWithNextSheets;
+		this.keepWithPreviousSheets = builder.keepWithPreviousSheets;
 	}
 	
 	private static float getRowSpacing(float rowDefault, RowImpl r) {
@@ -204,6 +216,14 @@ class RowGroup implements SplitPointUnit {
 
 	public List<String> getAnchors() {
 		return anchors;
+	}
+
+	public int getKeepWithNextSheets() {
+		return keepWithNextSheets;
+	}
+
+	public int getKeepWithPreviousSheets() {
+		return keepWithPreviousSheets;
 	}
 	
 }
