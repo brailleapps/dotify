@@ -34,11 +34,7 @@
          <block>⠤⠤⠤</block>
          <block>⠤⠤⠤</block>
          <block>⠤⠤⠤</block>
-         <block><block>⠤⠤⠤</block>
-            <block>⠤⠤⠤</block>
-            <block>⠤⠤⠤</block>
-            <block>⠤⠤⠤</block>
-         </block>
+         <block><block orphans="3">⠤⠤⠤<br/>⠤⠤⠤<br/>⠤⠤⠤<br/>⠤⠤⠤</block></block>
       </block>
       <block break-before="page"><block>⠤⠤⠤</block>
          <block>⠤⠤⠤</block>

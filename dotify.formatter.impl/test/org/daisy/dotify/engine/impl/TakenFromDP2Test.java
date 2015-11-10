@@ -33,6 +33,8 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		        "resource-files/test_obfl-to-pef.xprocspec/test_16-expected.pef", false);
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_17-input.obfl",
 		        "resource-files/test_obfl-to-pef.xprocspec/test_17-expected.pef", false);
+		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_18-input.obfl",
+		        "resource-files/test_obfl-to-pef.xprocspec/test_18-expected.pef", false);
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_19-input.obfl",
 		        "resource-files/test_obfl-to-pef.xprocspec/test_19-expected.pef", false);
 	}
@@ -45,6 +47,8 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		        "resource-files/test_format.xprocspec/test_03-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_06-input.obfl",
 		        "resource-files/test_format.xprocspec/test_06-expected.pef", false);
+		testPEF("resource-files/test_format.xprocspec/test_07-input.obfl",
+		        "resource-files/test_format.xprocspec/test_07-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_08-input.obfl",
 		        "resource-files/test_format.xprocspec/test_08-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_09-input.obfl",
@@ -100,7 +104,7 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_05-input.obfl",
 		        "resource-files/test_obfl-to-pef.xprocspec/test_05-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_05-input.obfl",
-		        "resource-files/test_format.xprocspec/test_05-expected.pef", true);
+		        "resource-files/test_format.xprocspec/test_05-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_32-input.obfl",
 		        "resource-files/test_format.xprocspec/test_32-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_33-input.obfl",
@@ -150,11 +154,6 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		// depends on translator that breaks lines according to css line breaking rules
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_10-input.obfl",
 		        "resource-files/test_obfl-to-pef.xprocspec/test_10-expected.pef", false);
-		// pending in test_obfl-to-pef.xprocspec: trying to keep multiple
-		// blocks together. not sure what is the best way to accomplish
-		// that. putting keep="all" on the outer block doesn't work either.
-		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_18-input.obfl",
-		        "resource-files/test_obfl-to-pef.xprocspec/test_18-expected.pef", false);
 		// pending in test_format.xprocspec: centering running
 		// headers/footers. position depends on width of fields in left and
 		// right corner, so centering is not perfect (not sure if this is a
@@ -164,10 +163,6 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		// pending in test_format.xprocspec: is this a page numbering bug?
 		testPEF("resource-files/test_format.xprocspec/test_04-input.obfl",
 		        "resource-files/test_format.xprocspec/test_04-expected.pef", false);
-		// pending in test_format.xprocspec: full page break control: depends
-		// on joel's improvements
-		testPEF("resource-files/test_format.xprocspec/test_07-input.obfl",
-		        "resource-files/test_format.xprocspec/test_07-expected.pef", false);
 		// pending in test_format.xprocspec: nested blocks with margins and
 		// borders: dotify.formatter.impl 1.1.3 broke something
 		testPEF("resource-files/test_format.xprocspec/test_10-input.obfl",
