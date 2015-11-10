@@ -31,6 +31,8 @@ import org.daisy.braille.consumer.table.TableCatalog;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 
@@ -227,7 +229,6 @@ mainLayout.createParallelGroup(Alignment.CENTER, false)
     }
     
     public void updateHyphenating() {
-    	t.setHyphenating(hyphenate.isSelected());
     	updateTranslation();
     }
     
@@ -249,13 +250,18 @@ mainLayout.createParallelGroup(Alignment.CENTER, false)
 		if (textPanel == null) {
 			return;
 		}
-		BrailleTranslatorResult btr = t.translate(textPanel.getText());
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sb2 = new StringBuilder();
-		while (btr.hasNext()) {
-			String braille = btr.nextTranslatedRow(limit, true);
-			sb2.append(braille+"\n");
-			sb.append(conv.toText(braille)+"\n");
+
+		try {
+			BrailleTranslatorResult btr = t.translate(Translatable.text(textPanel.getText()).hyphenate(hyphenate.isSelected()).build());
+			while (btr.hasNext()) {
+				String braille = btr.nextTranslatedRow(limit, true);
+				sb2.append(braille+"\n");
+				sb.append(conv.toText(braille)+"\n");
+			}
+		} catch (TranslationException e) {
+			e.printStackTrace();
 		}
 		/*
 		if (((TableWrapper)tableSelect.getSelectedItem()).t.getIdentifier().equals("org_daisy.EmbosserTableProvider.TableType.UNICODE_BRAILLE")) {

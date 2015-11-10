@@ -135,7 +135,7 @@ public class ExpressionTest {
 	
 	@Test
 	public void testExpression_int2text_03() {
-		assertEquals("Tests that unsupported locales returns original value", "2", e.evaluate("(int2text (round 2.3) fi)"));
+		assertEquals("kaksi", e.evaluate("(int2text (round 2.3) fi)"));
 	}
 
 	@Test
