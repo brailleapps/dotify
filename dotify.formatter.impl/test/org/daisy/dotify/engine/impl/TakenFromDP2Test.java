@@ -71,6 +71,10 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		        "resource-files/test_format.xprocspec/test_23-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_24-input.obfl",
 		        "resource-files/test_format.xprocspec/test_24-expected.pef", false);
+		testPEF("resource-files/test_format.xprocspec/test_25-input.obfl",
+		        "resource-files/test_format.xprocspec/test_25-expected.pef", false);
+		testPEF("resource-files/test_format.xprocspec/test_26-input.obfl",
+		        "resource-files/test_format.xprocspec/test_26-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_27-input.obfl",
 		        "resource-files/test_format.xprocspec/test_27-expected.pef", false);
 		testPEF("resource-files/test_format.xprocspec/test_28-input.obfl",
@@ -179,11 +183,5 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		// whether this is a bug?
 		testPEF("resource-files/test_format.xprocspec/test_21-input.obfl",
 		        "resource-files/test_format.xprocspec/test_21-expected.pef", false);
-		// pending in test_format.xprocspec: collapsing margins
-		testPEF("resource-files/test_format.xprocspec/test_25-input.obfl",
-		        "resource-files/test_format.xprocspec/test_25-expected.pef", false);
-		// pending in test_format.xprocspec: collapsing margins
-		testPEF("resource-files/test_format.xprocspec/test_26-input.obfl",
-		        "resource-files/test_format.xprocspec/test_26-expected.pef", false);
 	}
 }

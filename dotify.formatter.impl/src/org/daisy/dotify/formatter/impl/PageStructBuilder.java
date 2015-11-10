@@ -39,7 +39,7 @@ class PageStructBuilder extends PageStruct {
 
 	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		int offset = getCurrentPageOffset();
-		PageSequenceBuilder psb = new PageSequenceBuilder(crh, seq, this.pageReferences, context, offset, refs, rcontext);
+		PageSequenceBuilder2 psb = new PageSequenceBuilder2(crh, seq, this.pageReferences, context, offset, refs, rcontext);
 		this.push(psb);
 		return psb.paginate();
 	}
@@ -47,7 +47,7 @@ class PageStructBuilder extends PageStruct {
 	private int getCurrentPageOffset() {
 		int offset = 0;
 		if (size()>0) {
-			PageSequenceBuilder prv = (PageSequenceBuilder)peek();
+			PageSequenceBuilder2 prv = (PageSequenceBuilder2)peek();
 			offset = prv.currentPageNumber();
 			if (prv.getLayoutMaster().duplex() && (offset % 2)==1) {
 				offset++;
