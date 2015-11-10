@@ -7,4 +7,4 @@ Service-Component: *
 	dotify.api;version=latest
 Include-Resource: / = src/
 -sources: false
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1-SNAPSHOT
