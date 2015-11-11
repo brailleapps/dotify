@@ -29,6 +29,11 @@ public class DotifyRegressionTesterUI {
 					System.out.println(args[thArg] + " is not an integer.");
 				}
 			}
+			if (args.length >= 8) {
+				int errArg = 7;
+				//This is a bit unusual, but the default value should be true and if the input is misspelled, it should use the default
+				rt.setHaltOnError(!"false".equalsIgnoreCase(args[errArg]));
+			}
 			rt.run();
 		} catch (IOException e) {
 			System.exit(-1);

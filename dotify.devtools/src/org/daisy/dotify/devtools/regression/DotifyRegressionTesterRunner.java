@@ -23,6 +23,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 	private final String setup, locale, table;
 	private int timeout = 60;
 	private int threads;
+	private boolean haltOnError = true;
 	private final File pathToCommandsList;
 	private final List<ProcessStarter> pool;
 	private boolean errors;
@@ -62,6 +63,14 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 		}
 	}
 
+	public boolean isHaltOnError() {
+		return haltOnError;
+	}
+
+	public void setHaltOnError(boolean haltOnError) {
+		this.haltOnError = haltOnError;
+	}
+
 	public void run() throws IOException {
 		errors = false;
 		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(pathToCommandsList)));
@@ -69,7 +78,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 
 		ExecutorService exe = Executors.newFixedThreadPool(threads);
 		try {
-			while ((line = in.readLine()) != null && !errors) {
+			while ((line = in.readLine()) != null && (!errors || !haltOnError)) {
 				final String line2 = line;
 				if (line2.trim().equals("")) {
 					// ignore
@@ -85,7 +94,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 			}
 			exe.shutdown();
 			try {
-				while (!exe.isTerminated() && !errors) {
+				while (!exe.isTerminated() && (!errors || !haltOnError)) {
 					Thread.sleep(1000);
 				}
 				if (errors) {
