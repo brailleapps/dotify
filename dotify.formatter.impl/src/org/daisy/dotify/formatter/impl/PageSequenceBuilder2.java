@@ -126,7 +126,7 @@ class PageSequenceBuilder2 extends PageSequence {
 		int keepWithNext = 0;
 		for (Block g : seq)  {
 			BlockContentManager bcm = g.getBlockContentManager(blockContext);
-			if (dataGroups.isEmpty() || g.getBreakBeforeType()==BreakBefore.PAGE || g.getVerticalPosition()!=null) {
+			if (dataGroups.isEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !data.isEmpty()) || g.getVerticalPosition()!=null) {
 				data = new ArrayList<>();
 				dataGroups.add(new RowGroupSequence(data, g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent())));
 				keepWithNext = -1;
