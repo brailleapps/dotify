@@ -24,11 +24,16 @@ public class Progress {
 
 	//allows setting the current time, for testing
 	Progress(long now) {
-		progress = 0;
 		eta = new Date();
-		tstamp = now;
-		start = tstamp;
+		start = now;
+		reset(start);
+		
+	}
+	
+	private void reset(long now) {
 		step = -1;
+		tstamp = now;
+		progress = 0;
 	}
 	
 	/**
@@ -63,7 +68,7 @@ public class Progress {
 			throw new IllegalArgumentException("Value out of range [0, 1]: " + val);
 		}
 		if (val<=progress) {
-			throw new IllegalStateException("Negative or zero progress.");
+			reset(start);
 		}
 		double pD = val - progress;
 		long tD = now - tstamp;
