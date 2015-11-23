@@ -73,20 +73,8 @@ public class Unbrailler {
 			}
 		}
 	}
-	
-	public boolean convert(File input) {
-		File outputFolder = new File(input.getParentFile(), "unbrailler");
-		if (!outputFolder.isDirectory()) {
-			outputFolder.mkdirs();
-		}
-		return convert(input, outputFolder);
-	}
 
-	public boolean convert(File input, File outputFolder) {
-		if (!outputFolder.isDirectory()) {
-			throw new IllegalArgumentException("Output folder is not a directory: " + outputFolder);
-		}
-		File output = new File(outputFolder, input.getName().substring(0, input.getName().length() - 4) + ".xml");
+	public boolean convert(File input, File output) {
 		try {
 			XMLEventReader r = inFactory.createXMLEventReader(new FileInputStream(input));
 			FileOutputStream os = new FileOutputStream(output);

@@ -16,6 +16,7 @@ class DotifyRegressionTester implements Runnable {
 	private final RegressionInterface inf;
 	private final File input, expected;
 	private final String setup, locale, table, ext;
+	private final boolean folders = true;
 
 	
 	public DotifyRegressionTester(RegressionInterface inf, File input, File expected, String setup, String locale, String table) {
@@ -86,7 +87,7 @@ class DotifyRegressionTester implements Runnable {
 						boolean copyFailed = false;
 						try {
 							// Make sure we at least have the expected copy
-							expectedCopy = new File(inf.testOutputFolder(), "expected-" + input.getName() + ext);
+							expectedCopy = buildResultFile("expected");
 							FileTools.copy(new FileInputStream(expected), new FileOutputStream(expectedCopy));
 						} catch (Exception e) {
 							copyFailed = true;
@@ -95,7 +96,7 @@ class DotifyRegressionTester implements Runnable {
 
 						try {
 							// If that works, see if we can copy the result
-							actual = new File(inf.testOutputFolder(), "actual-" + input.getName() + ext);
+							actual = buildResultFile("actual");
 							FileTools.copy(new FileInputStream(res), new FileOutputStream(actual));
 						} catch (Exception e) {
 							copyFailed = true;
@@ -105,8 +106,8 @@ class DotifyRegressionTester implements Runnable {
 						if (".pef".equalsIgnoreCase(ext) && !copyFailed) {
 							//Now, try to convert this into readable characters
 							Unbrailler ub = new Unbrailler(table);
-							ub.convert(expectedCopy);
-							ub.convert(actual);
+							ub.convert(expectedCopy, new File(buildResultFolder("ub-expected"), replaceSuffix(expectedCopy.getName(), ".xml")));
+							ub.convert(actual, new File(buildResultFolder("ub-actual"), replaceSuffix(actual.getName(), ".xml")));
 						}
 					}
 
@@ -126,6 +127,29 @@ class DotifyRegressionTester implements Runnable {
 			e.printStackTrace();
 		}
 		inf.returnStarter(starter);
+	}
+	
+	private String replaceSuffix(String in, String suffix) {
+		int inx = in.lastIndexOf('.');
+		if (inx>-1) {
+			return in.substring(0, inx) + suffix;
+		} else {
+			return in + suffix;
+		}
+	}
+	
+	private File buildResultFolder(String prefix) {
+		File ret = new File(inf.testOutputFolder(), prefix);
+		ret.mkdirs();
+		return ret;
+	}
+	
+	private File buildResultFile(String prefix) {
+		if (folders) {
+			return new File(buildResultFolder(prefix), replaceSuffix(input.getName(), ext));
+		} else {
+			return new File(inf.testOutputFolder(), prefix + "-" + replaceSuffix(input.getName(), ext));
+		}
 	}
 
 
