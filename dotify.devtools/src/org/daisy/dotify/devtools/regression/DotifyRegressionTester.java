@@ -65,52 +65,57 @@ class DotifyRegressionTester implements Runnable {
 							command.toArray(new String[command.size()]));
 				if (res.isFile()) {
 					//We have a result
-					if (".pef".equalsIgnoreCase(ext)) {
-						PEFFileCompare core = new PEFFileCompare();
-						try {
-							ok = core.compare(res.getAbsoluteFile(), expected);
-						} catch (Exception e) {
-							e.printStackTrace();
+					if (System.getProperty("org.daisy.dotify.devtools.regression.baseline", "compare").equals("update")) {
+						ok = true;
+						//Overwrite baseline
+						FileTools.copy(new FileInputStream(res), new FileOutputStream(expected));
+					} else {
+						if (".pef".equalsIgnoreCase(ext)) {
+							PEFFileCompare core = new PEFFileCompare();
+							try {
+								ok = core.compare(res.getAbsoluteFile(), expected);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} else if (".obfl".equalsIgnoreCase(ext)) {
+							try {
+								//TODO: compare xml
+								ok = -1 == FileIO.diff(new FileInputStream(expected), new FileInputStream(res.getAbsoluteFile()));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
-					} else if (".obfl".equalsIgnoreCase(ext)) {
-						try {
-							//TODO: compare xml
-							ok = -1 == FileIO.diff(new FileInputStream(expected), new FileInputStream(res.getAbsoluteFile()));
-						} catch (Exception e) {
-							e.printStackTrace();
+						if (!ok) { // if not equal, write to output folder
+	
+							File expectedCopy = null;
+							File actual = null;
+							boolean copyFailed = false;
+							try {
+								// Make sure we at least have the expected copy
+								expectedCopy = buildResultFile("expected");
+								FileTools.copy(new FileInputStream(expected), new FileOutputStream(expectedCopy));
+							} catch (Exception e) {
+								copyFailed = true;
+								e.printStackTrace();
+							}
+	
+							try {
+								// If that works, see if we can copy the result
+								actual = buildResultFile("actual");
+								FileTools.copy(new FileInputStream(res), new FileOutputStream(actual));
+							} catch (Exception e) {
+								copyFailed = true;
+								e.printStackTrace();
+							}
+	
+							if (".pef".equalsIgnoreCase(ext) && !copyFailed) {
+								//Now, try to convert this into readable characters
+								Unbrailler ub = new Unbrailler(table);
+								ub.convert(expectedCopy, new File(buildResultFolder("ub-expected"), replaceSuffix(expectedCopy.getName(), ".xml")));
+								ub.convert(actual, new File(buildResultFolder("ub-actual"), replaceSuffix(actual.getName(), ".xml")));
+							}
 						}
 					}
-					if (!ok) { // if not equal, write to output folder
-
-						File expectedCopy = null;
-						File actual = null;
-						boolean copyFailed = false;
-						try {
-							// Make sure we at least have the expected copy
-							expectedCopy = buildResultFile("expected");
-							FileTools.copy(new FileInputStream(expected), new FileOutputStream(expectedCopy));
-						} catch (Exception e) {
-							copyFailed = true;
-							e.printStackTrace();
-						}
-
-						try {
-							// If that works, see if we can copy the result
-							actual = buildResultFile("actual");
-							FileTools.copy(new FileInputStream(res), new FileOutputStream(actual));
-						} catch (Exception e) {
-							copyFailed = true;
-							e.printStackTrace();
-						}
-
-						if (".pef".equalsIgnoreCase(ext) && !copyFailed) {
-							//Now, try to convert this into readable characters
-							Unbrailler ub = new Unbrailler(table);
-							ub.convert(expectedCopy, new File(buildResultFolder("ub-expected"), replaceSuffix(expectedCopy.getName(), ".xml")));
-							ub.convert(actual, new File(buildResultFolder("ub-actual"), replaceSuffix(actual.getName(), ".xml")));
-						}
-					}
-
 				} else if (!expected.isFile()) {
 					//Nothing to compare with, meaning this input should fail.
 					ok = true;
