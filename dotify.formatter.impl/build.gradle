@@ -52,7 +52,7 @@ ext.writeTestsOverviewFile = { folderPath, fileName ->
 	}
 	f.append('</tests>')
 	copy {
-		from('display.xslt')
+		from('build-resources/display.xslt')
 		into(folderPath)
 	}
 }
@@ -62,6 +62,27 @@ task updateTestsOverviewFile() << {
 	// don't suit the presentational format and are more of integration tests.
 	// Additional tests should be written based on these.
 	writeTestsOverviewFile('test/org/daisy/dotify/engine/impl/resource-files', 'tests-overview.xml')
+	ant {
+		xslt (
+			basedir: "test",
+			destdir: (new File("test")),
+			style: "build-resources/display.xslt",
+			includes: "**/tests-overview.xml",
+			filenameparameter: "filename"
+		) {
+			mapper (
+				type: "package",
+				from: "*.xml",
+				to: "*.html"
+			)
+			xmlcatalog {
+				dtd (
+					publicId: "-//W3C//DTD XHTML 1.0 Strict//EN",
+					location: "build-resources/xhtml10/xhtml1-strict.dtd"
+				)
+			}
+		}
+	}
 }
 
 bundle {
