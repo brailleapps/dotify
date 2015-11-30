@@ -23,5 +23,12 @@ This tool can be used to build schematron files using a compact java notation.
 ## PefFileCompareUI ##
 This tool can be used for regression testing. It allows detailed comparing between two folders of pef-files, ignoring meta data.
 
+### Environment variables ###
+org.daisy.dotify.devtools.regression.baseline
+values: update or **compare** (default)
+
+org.daisy.dotify.devtools.regression.mode
+values: convert or **legacy** (default) 
+
 ## Unbrailler ##
 This tool can be used to compare text differences in an xml-editor. A folder is scanned for PEF-files and the braille in each file is replaced by ascii characters for easier debugging.
