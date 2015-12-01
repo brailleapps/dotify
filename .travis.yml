@@ -1,6 +1,8 @@
 language: java
 jdk: oraclejdk7
-after_success: ./upload.sh
+after_success: 
+  - ./upload.sh
+  - ./publish-javadoc.sh
 
 env:
   global:
