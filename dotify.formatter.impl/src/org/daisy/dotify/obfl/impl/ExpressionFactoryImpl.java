@@ -11,10 +11,12 @@ import aQute.bnd.annotation.component.Reference;
 public class ExpressionFactoryImpl implements ExpressionFactory {
 	private Integer2TextFactoryMakerService itf;
 
+	@Override
 	public Expression newExpression() {
 		return new ExpressionImpl(itf);
 	}
 
+	@Override
 	@Reference
 	public void setInteger2TextFactory(Integer2TextFactoryMakerService itf) {
 		this.itf = itf;

@@ -38,6 +38,7 @@ class DotifyRegressionTester implements Runnable {
 		}
 	}
 
+	@Override
 	public void run() {
 		ProcessStarter starter = inf.requestStarter();
 		try {

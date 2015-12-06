@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 class SvInt2TextLocalization extends BasicInteger2Text {
 
+	@Override
 	public String getDefinedValue(int value) throws UndefinedNumberException {
 		switch (value) {
 			case 0:
@@ -67,10 +68,12 @@ class SvInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String formatNegative(String value) {
 		return MessageFormat.format("minus {0}", value);
 	}
 
+	@Override
 	public String formatThousands(String th, String rem) {
 		if ("".equals(rem)) {
 			return MessageFormat.format("{0}tusen", th);
@@ -79,6 +82,7 @@ class SvInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String formatHundreds(String hu, String rem) {
 		if ("".equals(hu) && "".equals(rem)) {
 			return "hundra";
@@ -91,11 +95,13 @@ class SvInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String postProcess(String value) {
 		// replace three occurrences of the same character by two
 		return value.replaceAll("(\\w)(\\1{2})", "$2");
 	}
 
+	@Override
 	public String formatTens(String tens, String rem) {
 		return MessageFormat.format("{0}{1}", tens, rem);
 	}

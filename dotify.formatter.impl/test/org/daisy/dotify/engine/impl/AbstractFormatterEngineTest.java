@@ -27,7 +27,9 @@ public abstract class AbstractFormatterEngineTest {
 				PagedMediaWriterFactoryMaker.newInstance().newPagedMediaWriter(MediaTypes.PEF_MEDIA_TYPE));
 
 		File res = File.createTempFile("TestResult", ".tmp");
-		if (!keep) res.deleteOnExit();
+		if (!keep) {
+			res.deleteOnExit();
+		}
 
 		engine.convert(this.getClass().getResourceAsStream(input), new FileOutputStream(res));
 

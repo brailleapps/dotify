@@ -25,6 +25,7 @@ class TextSegment implements Segment {
 		return tp;
 	}
 
+	@Override
 	public SegmentType getSegmentType() {
 		return SegmentType.Text;
 	}

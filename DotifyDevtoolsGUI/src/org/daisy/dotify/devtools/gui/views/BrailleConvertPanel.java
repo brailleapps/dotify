@@ -40,7 +40,8 @@ public class BrailleConvertPanel extends JPanel {
         JButton button = new JButton();
         button.setText("To Code Points ↓");
         button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonActionPerformed();
             }
         });

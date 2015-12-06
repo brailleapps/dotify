@@ -27,6 +27,7 @@ class Evaluate implements Segment {
 		return props;
 	}
 
+	@Override
 	public SegmentType getSegmentType() {
 		return SegmentType.Evaluate;
 	}

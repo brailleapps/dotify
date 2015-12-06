@@ -185,6 +185,7 @@ class PageImpl implements Page {
 		return (int)Math.ceil(spaceNeeded()) + offs;
 	}
 
+	@Override
 	public List<Row> getRows() {
 
 		try {

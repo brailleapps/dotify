@@ -74,6 +74,7 @@ abstract class BasicInteger2Text implements Integer2Text {
 	 */
 	abstract String postProcess(String value);
 
+	@Override
 	public String intToText(int value) throws IntegerOutOfRange {
 		return postProcess(intToTextInner(value));
 	}

@@ -40,7 +40,8 @@ public class TextConvertPanel extends JPanel implements StringFormatterResult {
 	        JButton button = new JButton();
 	        button.setText("To Code Points ↓");
 	        button.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	            @Override
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
 	                buttonActionPerformed();
 	            }
 	        });
@@ -48,7 +49,8 @@ public class TextConvertPanel extends JPanel implements StringFormatterResult {
 	        JButton button2 = new JButton();
 	        button2.setText("To Characters ↑");
 	        button2.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	            @Override
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
 	                buttonActionPerformed2();
 	            }
 	        });

@@ -20,6 +20,7 @@ public class PEFMediaWriterFactoryService implements
 		mediaTypes.add(MediaTypes.PEF_MEDIA_TYPE);
 	}
 
+	@Override
 	public boolean supportsMediaType(String mediaType) {
 		for (String l : mediaTypes) {
 			if (l.equalsIgnoreCase(mediaType)) {
@@ -29,10 +30,12 @@ public class PEFMediaWriterFactoryService implements
 		return false;
 	}
 
+	@Override
 	public Collection<String> listMediaTypes() {
 		return mediaTypes;
 	}
 
+	@Override
 	public PagedMediaWriterFactory newFactory(String mediaType) {
 		return new PEFMediaWriterFactory();
 	}

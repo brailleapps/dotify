@@ -17,10 +17,12 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 		this.ret = null;
 	}
 
+	@Override
 	public SequenceProperties getSequenceProperties() {
 		return props;
 	}
 
+	@Override
 	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
 		if (ret!=null) {
 			//we can return previous result, because static contents does not depend on context.

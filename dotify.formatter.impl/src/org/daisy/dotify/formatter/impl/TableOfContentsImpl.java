@@ -34,6 +34,7 @@ class TableOfContentsImpl extends FormatterCoreImpl implements TableOfContents  
 		return refs.get(id);
 	}
 
+	@Override
 	public void startEntry(String refId, BlockProperties props) {
 		String tocId;
 		do {
@@ -45,6 +46,7 @@ class TableOfContentsImpl extends FormatterCoreImpl implements TableOfContents  
 		startBlock(props, tocId);
 	}
 	
+	@Override
 	public void endEntry() {
 		endBlock();
 	}

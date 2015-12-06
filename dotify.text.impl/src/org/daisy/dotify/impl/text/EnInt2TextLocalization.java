@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 class EnInt2TextLocalization extends BasicInteger2Text {
 
+	@Override
 	public String getDefinedValue(int value) throws UndefinedNumberException {
 		switch (value) {
 			case 0:
@@ -67,10 +68,12 @@ class EnInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String formatNegative(String value) {
 		return MessageFormat.format("minus {0}", value);
 	}
 
+	@Override
 	public String formatThousands(String th, String rem) {
 		if ("".equals(rem)) {
 			return MessageFormat.format("{0} thousand", th);
@@ -79,6 +82,7 @@ class EnInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String formatHundreds(String hu, String rem) {
 		if ("".equals(hu) && "".equals(rem)) {
 			return "hundred";
@@ -91,10 +95,12 @@ class EnInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String formatTens(String tens, String rem) {
 		return MessageFormat.format("{0}-{1}", tens, rem);
 	}
 
+	@Override
 	public String postProcess(String value) {
 		return value;
 	}

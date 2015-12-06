@@ -534,7 +534,9 @@ public class ObflParser extends XMLParserBase {
 				level ++;
 			} else if (equalsEnd(event, ObflQName.STYLE)) {
 				level --;
-				if (level == 0) break;
+				if (level == 0) {
+					break;
+				}
 			}
 		}
 		

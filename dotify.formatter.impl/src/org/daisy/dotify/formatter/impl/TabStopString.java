@@ -77,10 +77,12 @@ class TabStopString implements Comparable<TabStopString> {
 		return length; 
 	}
 
+	@Override
 	public String toString() {
 		return "{\"" + getText() + "\", " + getPosition() + ", " + getAlignment() + ", \"" + getPattern() + "\"}";
 	}
 
+	@Override
 	public int compareTo(TabStopString o) {
 		if (getPosition()<o.getPosition()) {
 			return -1;

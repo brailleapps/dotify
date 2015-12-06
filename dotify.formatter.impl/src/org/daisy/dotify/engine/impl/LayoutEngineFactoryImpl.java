@@ -23,6 +23,7 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 	private ExpressionFactory ef;
 
 
+	@Override
 	public LayoutEngineImpl newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
 		XMLInputFactory in = XMLInputFactory.newInstance();
 		in.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
@@ -34,6 +35,7 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 		return new LayoutEngineImpl(locale, mode, writer, ff, mpf, tbf, ef, in, xef, of);
 	}
 
+	@Override
 	public <T> void setReference(Class<T> c, T factory) throws FormatterEngineConfigurationException {
 		if (c.equals(FormatterFactory.class)) {
 			setFormatterFactory((FormatterFactory)factory);

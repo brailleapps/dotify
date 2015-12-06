@@ -10,6 +10,7 @@ public class OBFLCondition extends OBFLExpressionBase implements Condition {
 		super(exp, ef, extended);
 	}
 
+	@Override
 	public boolean evaluate() {
 		if (exp==null) {
 			return true;
@@ -18,6 +19,7 @@ public class OBFLCondition extends OBFLExpressionBase implements Condition {
 		}
 	}
 
+	@Override
 	public boolean evaluate(Context context) {
 		if (exp==null) {
 			return true;

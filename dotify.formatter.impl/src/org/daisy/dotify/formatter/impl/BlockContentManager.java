@@ -309,6 +309,7 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return rows.size();
 	}
 
+	@Override
 	public Iterator<RowImpl> iterator() {
 		return rows.iterator();
 	}

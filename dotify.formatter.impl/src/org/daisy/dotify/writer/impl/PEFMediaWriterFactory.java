@@ -14,15 +14,18 @@ class PEFMediaWriterFactory implements PagedMediaWriterFactory {
 		p = new Properties();
 	}
 
+	@Override
 	public PagedMediaWriter newPagedMediaWriter()
 			throws PagedMediaWriterConfigurationException {
 		return new PEFMediaWriter(p);
 	}
 
+	@Override
 	public Object getFeature(String key) {
 		return null;
 	}
 
+	@Override
 	public void setFeature(String key, Object value)
 			throws PagedMediaWriterConfigurationException {
 		throw new PEFMediaWriterConfigurationException("Unknown feature: " + key);

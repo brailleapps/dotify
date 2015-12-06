@@ -85,10 +85,12 @@ public abstract class ConfigurationsCatalog {
 			}
 		}
 		
+		@Override
 		public Set<String> getKeys() {
 			return map.keySet();
 		}
 
+		@Override
 		public Properties getConfiguration(String identifier) throws ResourceLocatorException {
 			ConfigurationsProvider provider = map.get(identifier);
 			if (provider!=null) {

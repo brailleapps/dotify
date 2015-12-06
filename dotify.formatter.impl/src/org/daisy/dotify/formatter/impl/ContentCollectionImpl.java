@@ -51,6 +51,7 @@ class ContentCollectionImpl extends FormatterCoreImpl implements ContentCollecti
 		}
 	}
 
+	@Override
 	public void startItem(BlockProperties props) {
 		String id = props.getIdentifier();
 		if (id!=null) {
@@ -62,6 +63,7 @@ class ContentCollectionImpl extends FormatterCoreImpl implements ContentCollecti
 		startBlock(props);
 	}
 	
+	@Override
 	public void endItem() {
 		endBlock();
 		Item i = items.get(open.pop().id);

@@ -8,6 +8,7 @@ class MarkerSegment extends Marker implements Segment {
 		super(m.getName(), m.getValue());
 	}
 
+	@Override
 	public SegmentType getSegmentType() {
 		return SegmentType.Marker;
 	}

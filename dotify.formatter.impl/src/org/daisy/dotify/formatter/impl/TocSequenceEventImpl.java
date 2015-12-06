@@ -91,10 +91,12 @@ class TocSequenceEventImpl implements VolumeSequence {
 		return getCompoundIterableB(tocEndEvents, vars);
 	}
 
+	@Override
 	public SequenceProperties getSequenceProperties() {
 		return props;
 	}
 
+	@Override
 	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		try {
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(

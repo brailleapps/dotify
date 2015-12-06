@@ -21,6 +21,7 @@ public class SwedishInteger2TextFactoryService implements
 	}
 	
 
+	@Override
 	public boolean supportsLocale(String locale) {
 		for (String l : locales) {
 			if (l.equalsIgnoreCase(locale)) {
@@ -30,10 +31,12 @@ public class SwedishInteger2TextFactoryService implements
 		return false;
 	}
 
+	@Override
 	public Integer2TextFactory newFactory() {
 		return new SwedishInteger2TextFactory();
 	}
 
+	@Override
 	public Collection<String> listLocales() {
 		return locales;
 	}

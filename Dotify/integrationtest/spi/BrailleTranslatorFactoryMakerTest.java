@@ -7,6 +7,7 @@ import base.BrailleTranslatorFactoryMakerTestbase;
 
 public class BrailleTranslatorFactoryMakerTest extends BrailleTranslatorFactoryMakerTestbase {
 	
+	@Override
 	public BrailleTranslatorFactoryMakerService getBrailleTranslatorFMS() {
 		return BrailleTranslatorFactoryMaker.newInstance();
 	}

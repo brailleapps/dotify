@@ -25,6 +25,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 		this.collectionEndEvents = new FormatterCoreImpl();
 	}
 
+	@Override
 	public FormatterCore newOnCollectionStart() {
 		return collectionStartEvents;
 	}
@@ -39,10 +40,12 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 		return pageEndEvents;
 	}
 	
+	@Override
 	public FormatterCore newOnCollectionEnd() {
 		return collectionEndEvents;
 	}
 
+	@Override
 	public List<Block> getBlocks(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ContentCollectionImpl c = context.getCollections().get(collectionID);
 		ArrayList<Block> ret = new ArrayList<Block>();

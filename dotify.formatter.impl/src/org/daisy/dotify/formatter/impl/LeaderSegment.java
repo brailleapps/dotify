@@ -12,6 +12,7 @@ class LeaderSegment extends Leader implements Segment{
 		super(leader);
 	}
 
+	@Override
 	public SegmentType getSegmentType() {
 		return SegmentType.Leader;
 	}

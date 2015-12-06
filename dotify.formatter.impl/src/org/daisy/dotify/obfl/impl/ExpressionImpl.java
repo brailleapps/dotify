@@ -59,6 +59,7 @@ class ExpressionImpl implements Expression {
 		this.integer2textFactoryMaker = integer2textFactoryMaker;
 	}
 	
+	@Override
 	public Object evaluate(String expr) {
 		// init
 		vars = new HashMap<String, Object>();
@@ -70,6 +71,7 @@ class ExpressionImpl implements Expression {
 		return doEvaluate(exprs[exprs.length-1]);
 	}
 	
+	@Override
 	public Object evaluate(String expr, Map<String, String> variables) {
 		if (variables==null) {
 			return evaluate(expr);
@@ -80,6 +82,7 @@ class ExpressionImpl implements Expression {
 		return evaluate(expr);
 	}
 	
+	@Override
 	public Object evaluate(String expr, String ... vars) {
 		for (String var : vars) {
 			String[] v = var.split("=", 2);

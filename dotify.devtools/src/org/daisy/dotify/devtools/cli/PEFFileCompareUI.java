@@ -95,6 +95,7 @@ public class PEFFileCompareUI {
 	private static class PEFFileFilter implements FileFilter {
 
 
+		@Override
 		public boolean accept(File pathname) {
 			return pathname.getName().endsWith(".pef") && !pathname.isDirectory();
 		}

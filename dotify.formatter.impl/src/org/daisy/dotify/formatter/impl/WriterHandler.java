@@ -53,18 +53,22 @@ class WriterHandler {
 			this.lm = lm;
 		}
 
+		@Override
 		public int getPageWidth() {
 			return lm.getPageWidth();
 		}
 
+		@Override
 		public int getPageHeight() {
 			return lm.getPageHeight();
 		}
 
+		@Override
 		public float getRowSpacing() {
 			return lm.getRowSpacing();
 		}
 
+		@Override
 		public boolean duplex() {
 			return lm.duplex();
 		}

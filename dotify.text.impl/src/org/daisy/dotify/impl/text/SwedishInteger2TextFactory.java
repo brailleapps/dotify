@@ -6,14 +6,17 @@ import org.daisy.dotify.api.text.Integer2TextFactory;
 
 class SwedishInteger2TextFactory implements Integer2TextFactory {
 
+	@Override
 	public Integer2Text newInteger2Text(String locale) throws Integer2TextConfigurationException {
 		return new SvInt2TextLocalization();
 	}
 
+	@Override
 	public Object getFeature(String key) {
 		return null;
 	}
 
+	@Override
 	public void setFeature(String key, Object value) throws Integer2TextConfigurationException {
 		throw new SwedishInteger2TextConfigurationException();
 	}

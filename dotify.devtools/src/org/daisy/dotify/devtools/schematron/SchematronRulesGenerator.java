@@ -102,6 +102,7 @@ public class SchematronRulesGenerator implements Closeable {
 		ps.println("	</sch:pattern>");
 	}
 
+	@Override
 	public void close() {
 		ps.println("</sch:schema>");
 	}

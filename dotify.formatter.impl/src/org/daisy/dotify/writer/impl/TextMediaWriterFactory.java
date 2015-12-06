@@ -8,11 +8,13 @@ class TextMediaWriterFactory implements PagedMediaWriterFactory {
 	private final static String FEATURE_ENCODING_KEY = "encoding";
 	private String encoding = "utf-8";
 
+	@Override
 	public PagedMediaWriter newPagedMediaWriter()
 			throws PagedMediaWriterConfigurationException {
 		return new TextMediaWriter(encoding);
 	}
 
+	@Override
 	public Object getFeature(String key) {
 		if (FEATURE_ENCODING_KEY.equals(key)) {
 			return encoding;
@@ -21,6 +23,7 @@ class TextMediaWriterFactory implements PagedMediaWriterFactory {
 		}
 	}
 
+	@Override
 	public void setFeature(String key, Object value)
 			throws PagedMediaWriterConfigurationException {
 		if (FEATURE_ENCODING_KEY.equals(key)) {

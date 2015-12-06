@@ -156,6 +156,7 @@ class Block implements Cloneable {
 		rdp = value;
 	}
 
+	@Override
 	public Object clone() {
     	try {
 	    	Block newObject = (Block)super.clone();

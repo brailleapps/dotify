@@ -18,10 +18,12 @@ class PageAreaBuilderImpl implements PageAreaBuilder {
 		return properties;
 	}
 
+	@Override
 	public FormatterCoreImpl getBeforeArea() {
 		return beforeArea;
 	}
 
+	@Override
 	public FormatterCoreImpl getAfterArea() {
 		return afterArea;
 	}

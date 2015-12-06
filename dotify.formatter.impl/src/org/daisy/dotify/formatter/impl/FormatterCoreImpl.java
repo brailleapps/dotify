@@ -48,10 +48,12 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		this.discardIdentifiers = discardIdentifiers;
 	}
 
+	@Override
 	public void startBlock(BlockProperties p) {
 		startBlock(p, null);
 	}
 
+	@Override
 	public void startBlock(BlockProperties p, String blockId) {
 		String lb = "";
 		String rb = "";
@@ -116,6 +118,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		//firstRow = true;
 	}
 
+	@Override
 	public void endBlock() {
 		if (listItem!=null) {
 			addChars("", new TextProperties.Builder(null).build());
@@ -171,19 +174,23 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		return this.peek();
 	}
 
+	@Override
 	public void insertMarker(Marker m) {
 		//FIXME: this does not work
 		getCurrentBlock().addSegment(new MarkerSegment(m));
 	}
 	
+	@Override
 	public void insertAnchor(String ref) {
 		getCurrentBlock().addSegment(new AnchorSegment(ref));
 	}
 
+	@Override
 	public void insertLeader(Leader leader) {
 		getCurrentBlock().addSegment(new LeaderSegment(leader));
 	}
 
+	@Override
 	public void addChars(CharSequence c, TextProperties p) {
 		Block bl = getCurrentBlock();
 		if (listItem!=null) {
@@ -197,14 +204,17 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		bl.addSegment(new TextSegment(c.toString(), p));
 	}
 
+	@Override
 	public void newLine() {
 		getCurrentBlock().addSegment(new NewLineSegment());
 	}
 
+	@Override
 	public void insertReference(String identifier, NumeralStyle numeralStyle) {
 		getCurrentBlock().addSegment(new PageNumberReferenceSegment(identifier, numeralStyle));
 	}
 
+	@Override
 	public void insertEvaluate(DynamicContent exp, TextProperties t) {
 		getCurrentBlock().addSegment(new Evaluate(exp, t));
 	}

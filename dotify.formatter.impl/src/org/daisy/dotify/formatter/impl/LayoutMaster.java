@@ -27,6 +27,7 @@ class LayoutMaster implements LayoutMasterBuilder {
 		this.pageArea = null;
 	}
 	
+	@Override
 	public PageTemplateBuilder newTemplate(Condition c) {
 		PageTemplate p = new PageTemplate(c);
 		templates.add(p);
@@ -123,6 +124,7 @@ class LayoutMaster implements LayoutMasterBuilder {
 		return props.getOuterMargin();
 	}
 
+	@Override
 	public PageAreaBuilder setPageArea(PageAreaProperties properties) {
 		pageArea = new PageAreaBuilderImpl(properties);
 		return pageArea;

@@ -23,6 +23,7 @@ public class PEFFileCompareTester {
 		// Run pef-compare against baseline and unbraille if different
 		PEFFileBatchCompare fc = new PEFFileBatchCompare(new PEFFileFilter(), new NormalizationResource() {
 
+			@Override
 			public InputStream getNormalizationResourceAsStream() {
 				return this.getClass().getResourceAsStream("resource-files/strip-meta.xsl");
 			}
@@ -58,6 +59,7 @@ public class PEFFileCompareTester {
 
 	private static class PEFFileFilter implements FileFilter {
 
+		@Override
 		public boolean accept(File pathname) {
 			return pathname.getName().endsWith(".pef") && !pathname.isDirectory();
 		}

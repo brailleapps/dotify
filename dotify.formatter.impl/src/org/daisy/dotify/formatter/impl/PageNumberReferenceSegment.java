@@ -8,6 +8,7 @@ class PageNumberReferenceSegment extends PageNumberReference implements Segment 
 		super(refid, style);
 	}
 
+	@Override
 	public SegmentType getSegmentType() {
 		return SegmentType.Reference;
 	}

@@ -33,6 +33,7 @@ public class BrailleFilterFactoryMakerTest extends BrailleFilterFactoryMakerTest
 	@Inject @Filter(timeout=5000)
 	BrailleFilterFactoryMakerService filterFactory;
 	
+	@Override
 	public BrailleFilterFactoryMakerService getBrailleFilterFMS() {
 		return filterFactory;
 	}

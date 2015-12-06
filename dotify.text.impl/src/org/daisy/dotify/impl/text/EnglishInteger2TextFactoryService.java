@@ -19,6 +19,7 @@ public class EnglishInteger2TextFactoryService implements
 		locales.add("en");
 	}
 
+	@Override
 	public boolean supportsLocale(String locale) {
 		for (String l : locales) {
 			if (l.equalsIgnoreCase(locale)) {
@@ -28,10 +29,12 @@ public class EnglishInteger2TextFactoryService implements
 		return false;
 	}
 
+	@Override
 	public Integer2TextFactory newFactory() {
 		return new EnglishInteger2TextFactory();
 	}
 
+	@Override
 	public Collection<String> listLocales() {
 		return locales;
 	}

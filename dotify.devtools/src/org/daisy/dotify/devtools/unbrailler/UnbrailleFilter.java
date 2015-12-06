@@ -24,7 +24,8 @@ class UnbrailleFilter extends StaxFilter2 {
 		this.t = t;
 	}
 	
-    protected StartElement startElement(StartElement event) {
+    @Override
+	protected StartElement startElement(StartElement event) {
     	if (event.getName().equals(row)) {
     		translate = true;
     	}

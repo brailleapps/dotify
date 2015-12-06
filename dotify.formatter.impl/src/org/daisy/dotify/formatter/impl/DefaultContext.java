@@ -73,22 +73,27 @@ class DefaultContext implements Context {
 		this.metaPage = null;
 	} 
 
+	@Override
 	public Integer getCurrentVolume() {
 		return currentVolume;
 	}
 
+	@Override
 	public Integer getVolumeCount() {
 		return volumeCount;
 	}
 
+	@Override
 	public Integer getCurrentPage() {
 		return currentPage;
 	}
 
+	@Override
 	public Integer getMetaVolume() {
 		return metaVolume;
 	}
 
+	@Override
 	public Integer getMetaPage() {
 		return metaPage;
 	}

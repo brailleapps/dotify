@@ -7,6 +7,7 @@ import base.BrailleFilterFactoryMakerTestbase;
 
 public class BrailleFilterFactoryMakerTest extends BrailleFilterFactoryMakerTestbase {
 	
+	@Override
 	public BrailleFilterFactoryMakerService getBrailleFilterFMS() {
 		return BrailleFilterFactoryMaker.newInstance();
 	}

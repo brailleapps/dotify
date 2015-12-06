@@ -23,10 +23,12 @@ class DynamicSequenceEventImpl implements VolumeSequence, DynamicSequenceBuilder
 		this.formatters = new Stack<BlockGroup>();
 	}
 
+	@Override
 	public SequenceProperties getSequenceProperties() {
 		return props;
 	}
 
+	@Override
 	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
 		BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 				context.getMasters().get(getSequenceProperties().getMasterName()), 

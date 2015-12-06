@@ -8,6 +8,7 @@ class AnchorSegment implements Segment {
 		this.referenceID = referenceID;
 	}
 
+	@Override
 	public SegmentType getSegmentType() {
 		return SegmentType.Anchor;
 	}

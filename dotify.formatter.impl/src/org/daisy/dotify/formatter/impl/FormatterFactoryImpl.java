@@ -17,6 +17,7 @@ import aQute.bnd.annotation.component.Reference;
 public class FormatterFactoryImpl implements FormatterFactory {
 	private BrailleTranslatorFactoryMakerService translatorFactory;
 
+	@Override
 	public Formatter newFormatter(String locale, String mode) {
 		return new FormatterImpl(translatorFactory, locale, mode);
 	}
@@ -30,6 +31,7 @@ public class FormatterFactoryImpl implements FormatterFactory {
 		this.translatorFactory = null;
 	}
 	
+	@Override
 	public <T> void setReference(Class<T> c, T reference)
 			throws FormatterConfigurationException {
 		if (c.equals(BrailleTranslatorFactoryMakerService.class)) {

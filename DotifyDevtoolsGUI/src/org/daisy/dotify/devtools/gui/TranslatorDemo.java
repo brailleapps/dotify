@@ -246,7 +246,8 @@ mainLayout.createParallelGroup(Alignment.CENTER, false)
     	updateNeeded = true;
     }
     
-    public synchronized void updateUI() {
+    @Override
+	public synchronized void updateUI() {
 		if (textPanel == null) {
 			return;
 		}

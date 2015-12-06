@@ -50,6 +50,7 @@ class RowImpl implements Row {
 	 * Get the characters on this row
 	 * @return returns the characters on the row
 	 */
+	@Override
 	public String getChars() {
 		return chars;
 	}
@@ -141,6 +142,7 @@ class RowImpl implements Row {
 		this.alignment = alignment;
 	}
 
+	@Override
 	public Float getRowSpacing() {
 		return rowSpacing;
 	}

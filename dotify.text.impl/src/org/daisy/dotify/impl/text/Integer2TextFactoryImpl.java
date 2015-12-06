@@ -49,6 +49,7 @@ class Integer2TextFactoryImpl implements Integer2TextFactory {
 		displayNames = Collections.unmodifiableList(_localeNames);
 	}
 
+	@Override
 	public Integer2Text newInteger2Text(String locale) throws Integer2TextConfigurationException {
 		try {
 			Class<? extends Integer2Text> c = locales.get(locale.toLowerCase(Locale.ENGLISH));
@@ -63,10 +64,12 @@ class Integer2TextFactoryImpl implements Integer2TextFactory {
 		}
 	}
 
+	@Override
 	public Object getFeature(String key) {
 		return null;
 	}
 
+	@Override
 	public void setFeature(String key, Object value) throws Integer2TextConfigurationException {
 		throw new Integer2TextConfigurationExceptionImpl();
 	}

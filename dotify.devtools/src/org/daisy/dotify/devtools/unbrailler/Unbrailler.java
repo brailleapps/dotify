@@ -62,6 +62,7 @@ public class Unbrailler {
 		outputFolder.mkdirs();
 		FilenameFilter ff = new FilenameFilter() {
 
+			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".pef");
 			}};

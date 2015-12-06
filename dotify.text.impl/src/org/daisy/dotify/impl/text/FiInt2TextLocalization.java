@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 class FiInt2TextLocalization extends BasicInteger2Text {
 	private final static String YKSI = "yksi";
 
+	@Override
 	public String getDefinedValue(int value) throws UndefinedNumberException {
 		switch (value) {
 			case 0:
@@ -68,10 +69,12 @@ class FiInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String formatNegative(String value) {
 		return MessageFormat.format("miinus {0}", value);
 	}
 
+	@Override
 	public String formatThousands(String th, String rem) {
 		if (YKSI.equals(th) && "".equals(rem)) {
 			return "tuhat";
@@ -84,6 +87,7 @@ class FiInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String formatHundreds(String hu, String rem) {
 		if (YKSI.equals(hu) && "".equals(rem)) {
 			return "sata";
@@ -96,10 +100,12 @@ class FiInt2TextLocalization extends BasicInteger2Text {
 		}
 	}
 
+	@Override
 	public String postProcess(String value) {
 		return value;
 	}
 
+	@Override
 	public String formatTens(String tens, String rem) {
 		return MessageFormat.format("{0}{1}", tens, rem);
 	}

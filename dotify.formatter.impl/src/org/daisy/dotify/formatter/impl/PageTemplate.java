@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.daisy.dotify.api.formatter.Condition;
-import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.obfl.Expression;
@@ -38,10 +37,12 @@ class PageTemplate implements PageTemplateBuilder {
 		this.appliesTo = new HashMap<Integer, Boolean>();
 	}
 
+	@Override
 	public void addToHeader(FieldList obj) {
 		header.add(obj);
 	}
 	
+	@Override
 	public void addToFooter(FieldList obj) {
 		footer.add(obj);
 	}

@@ -20,6 +20,7 @@ public class TextMediaWriterFactoryService implements
 		mediaTypes.add(MediaTypes.TEXT_MEDIA_TYPE);
 	}
 
+	@Override
 	public boolean supportsMediaType(String mediaType) {
 		for (String l : mediaTypes) {
 			if (l.equalsIgnoreCase(mediaType)) {
@@ -29,10 +30,12 @@ public class TextMediaWriterFactoryService implements
 		return false;
 	}
 
+	@Override
 	public Collection<String> listMediaTypes() {
 		return mediaTypes;
 	}
 
+	@Override
 	public PagedMediaWriterFactory newFactory(String mediaType) {
 		return new TextMediaWriterFactory();
 	}

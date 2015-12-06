@@ -176,6 +176,7 @@ public class CodePointPanel extends JPanel implements StringFormatterResult {
 		listenerList.remove(TextChangedListener.class, listener);
 	}
 	
+	@Override
 	public void setResult(String text) {
 		String input;
 		/*
@@ -202,6 +203,7 @@ public class CodePointPanel extends JPanel implements StringFormatterResult {
 		}
 	}
 
+	@Override
 	public String getResultAsText() {
 		// inputType.setText("Characters:");
 		return CodePointHelper.parse(codeTextField.getText(), getSelectedMode());

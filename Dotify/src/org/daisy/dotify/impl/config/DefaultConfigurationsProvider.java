@@ -50,6 +50,7 @@ public class DefaultConfigurationsProvider extends AbstractResourceLocator imple
 		}
 	}
 
+	@Override
 	public Set<String> getConfigurationKeys() {
 		return urls.keySet();
 	}
@@ -58,6 +59,7 @@ public class DefaultConfigurationsProvider extends AbstractResourceLocator imple
 		return this.getResource(urls.get(identifier));
 	}
 
+	@Override
 	public Properties getConfiguration(String identifier) throws ResourceLocatorException {
 		Properties p = new Properties();
 		URL configURL = getConfigurationURL(identifier);
@@ -73,6 +75,7 @@ public class DefaultConfigurationsProvider extends AbstractResourceLocator imple
 		return p;
 	}
 
+	@Override
 	public String getConfigurationDescription(String identifier) {
 		if (descs == null) {
 			descs = new Properties();

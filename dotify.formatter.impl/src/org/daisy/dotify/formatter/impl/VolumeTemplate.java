@@ -48,10 +48,12 @@ class VolumeTemplate implements VolumeTemplateBuilder {
 		return splitterMax;
 	}
 
+	@Override
 	public VolumeContentBuilder getPreVolumeContentBuilder() {
 		return preVolumeContent;
 	}
 
+	@Override
 	public VolumeContentBuilder getPostVolumeContentBuilder() {
 		return postVolumeContent;
 	}
