@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.FieldList;
+import org.daisy.dotify.api.formatter.MarginRegion;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.obfl.Expression;
 
@@ -19,6 +20,8 @@ class PageTemplate implements PageTemplateBuilder {
 	private final Condition condition;
 	private final List<FieldList> header;
 	private final List<FieldList> footer;
+	private final List<MarginRegion> leftMarginRegion;
+	private final List<MarginRegion> rightMarginRegion;
 	private final HashMap<Integer, Boolean> appliesTo;
 	
 	PageTemplate() {
@@ -34,6 +37,8 @@ class PageTemplate implements PageTemplateBuilder {
 		this.condition = condition;
 		this.header = new ArrayList<FieldList>();
 		this.footer = new ArrayList<FieldList>();
+		this.leftMarginRegion = new ArrayList<>();
+		this.rightMarginRegion = new ArrayList<>();
 		this.appliesTo = new HashMap<Integer, Boolean>();
 	}
 
@@ -90,6 +95,24 @@ class PageTemplate implements PageTemplateBuilder {
 		boolean applies = condition.evaluate(new DefaultContext.Builder().currentPage(pagenum).build());
 		appliesTo.put(pagenum, applies);
 		return applies;
+	}
+
+	@Override
+	public void addToLeftMargin(MarginRegion margin) {
+		leftMarginRegion.add(margin);
+	}
+
+	@Override
+	public void addToRightMargin(MarginRegion margin) {
+		rightMarginRegion.add(margin);
+	}
+
+	List<MarginRegion> getLeftMarginRegion() {
+		return leftMarginRegion;
+	}
+
+	List<MarginRegion> getRightMarginRegion() {
+		return rightMarginRegion;
 	}
 
 }

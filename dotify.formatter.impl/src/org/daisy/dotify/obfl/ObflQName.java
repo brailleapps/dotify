@@ -11,6 +11,9 @@ interface ObflQName {
 	 final static QName DEFAULT_TEMPLATE = new QName(OBFL_NS, "default-template");
 	 final static QName HEADER = new QName(OBFL_NS, "header");
 	 final static QName FOOTER = new QName(OBFL_NS, "footer");
+	 final static QName MARGIN_REGION = new QName(OBFL_NS, "margin-region");
+	 final static QName INDICATORS = new QName(OBFL_NS, "indicators");
+	 final static QName MARKER_INDICATOR = new QName(OBFL_NS, "marker-indicator");
 	 final static QName FIELD = new QName(OBFL_NS, "field");
 	 final static QName STRING = new QName(OBFL_NS, "string");
 	 final static QName EVALUATE = new QName(OBFL_NS, "evaluate");
@@ -70,5 +73,6 @@ interface ObflQName {
 	 final static QName ATTR_START_OFFSET = new QName("start-offset");
 	 final static QName ATTR_MARKER = new QName("marker");
 	 final static QName ATTR_INITIAL_PAGE_NUMBER = new QName("initial-page-number");
+	 final static QName ATTR_WIDTH = new QName("width");
 	 
 }

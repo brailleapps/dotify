@@ -33,7 +33,9 @@ import org.daisy.dotify.api.formatter.ItemSequenceProperties;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.Leader;
+import org.daisy.dotify.api.formatter.MarginRegion;
 import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.MarkerIndicatorRegion;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchDirection;
 import org.daisy.dotify.api.formatter.MarkerReferenceField.MarkerSearchScope;
@@ -241,12 +243,19 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 		LayoutMasterBuilder master = formatter.newLayoutMaster(masterName, masterConfig.build());
+		Integer w = null;
 		while (input.hasNext()) {
 			event=input.nextEvent();
-			if (equalsStart(event, ObflQName.TEMPLATE)) {
-				parseTemplate(master, event, input);
-			} else if (equalsStart(event, ObflQName.DEFAULT_TEMPLATE)) {
-				parseTemplate(master, event, input);
+			if (equalsStart(event, ObflQName.TEMPLATE, ObflQName.DEFAULT_TEMPLATE)) {
+				int wa = parseTemplate(master, event, input);
+				if (w!=null && w!=wa) {
+					throw new XMLStreamException("Due to a limitation in the implementation, "
+							+ "the total width of all margin-regions must be the same in all templates. "
+							+ "For more information, "
+							+ "see https://github.com/joeha480/dotify/issues/148", event.getLocation());
+				} else {
+					w = wa;
+				}
 			} else if (equalsStart(event, ObflQName.PAGE_AREA)) {
 				parsePageArea(master, event, input);
 			} else if (equalsEnd(event, ObflQName.LAYOUT_MASTER)) {
@@ -255,7 +264,6 @@ public class ObflParser extends XMLParserBase {
 				report(event);
 			}
 		}
-
 		//masters.put(masterName, masterConfig.build());
 	}
 	
@@ -338,13 +346,14 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseTemplate(LayoutMasterBuilder master, XMLEvent event, XMLEventReader input) throws XMLStreamException {
+	private int parseTemplate(LayoutMasterBuilder master, XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		PageTemplateBuilder template;
 		if (equalsStart(event, ObflQName.TEMPLATE)) {
 			template = master.newTemplate(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, false));
 		} else {
 			template = master.newTemplate(null);
 		}
+		int width = 0;
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.HEADER)) {
@@ -357,12 +366,23 @@ public class ObflParser extends XMLParserBase {
 				if (fields!=null) {
 					template.addToFooter(fields);
 				}
-			} else if (equalsEnd(event, ObflQName.TEMPLATE) || equalsEnd(event, ObflQName.DEFAULT_TEMPLATE)) {
+			} else if (equalsStart(event, ObflQName.MARGIN_REGION)) {
+				String align = getAttr(event, ObflQName.ATTR_ALIGN);
+				MarginRegion region = parseMarginRegion(event, input);
+				width += region.getWidth();
+				if ("right".equals(align.toLowerCase())) {
+					template.addToRightMargin(region);
+				} else {
+					template.addToLeftMargin(region);
+				}
+			}
+			else if (equalsEnd(event, ObflQName.TEMPLATE) || equalsEnd(event, ObflQName.DEFAULT_TEMPLATE)) {
 				break;
 			} else {
 				report(event);
 			}
 		}
+		return width;
 	}
 	
 	private FieldList parseHeaderFooter(XMLEvent event, XMLEventReader input) throws XMLStreamException {
@@ -431,6 +451,62 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 		return compound;
+	}
+	
+	private MarginRegion parseMarginRegion(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		int width = 1;
+		String value = getAttr(event, ObflQName.ATTR_WIDTH);
+		try {
+			if (value!=null) {
+				width = Integer.parseInt(value);
+			}
+		} catch (NumberFormatException e) {
+			warning(event, "Failed to parse integer: " + value);
+		}
+		MarginRegion ret = null;
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.INDICATORS)) {
+				//this element is optional, it can only occur once
+				ret = parseIndicatorRegion(event, input, width);
+			} else if (equalsEnd(event, ObflQName.MARGIN_REGION)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+		return ret;
+	}
+	
+	private MarginRegion parseIndicatorRegion(XMLEvent event, XMLEventReader input, int width) throws XMLStreamException {
+		MarkerIndicatorRegion.Builder builder = MarkerIndicatorRegion.ofWidth(width);
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.MARKER_INDICATOR)) {
+				String markers = getAttr(event, "markers");
+				String indicator = getAttr(event, "indicator");
+				if (markers==null||"".equals(markers)) {
+					warning(event, "@markers missing / has no value");
+				} else {
+					if (indicator==null||"".equals(indicator)) {
+						warning(event, "@indicator missing / has no value");
+					} else {
+						String[] names = markers.split("\\s+");
+						for (String name : names) {
+							if (!"".equals(name)) {
+								builder.addIndicator(name, indicator);
+							}
+						}
+					}
+				}
+				scanEmptyElement(input, ObflQName.MARKER_INDICATOR);
+			} else if (equalsEnd(event, ObflQName.INDICATORS)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+		return builder.build();
 	}
 	
 	private int toInt(String value, int defaultValue) {
