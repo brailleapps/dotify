@@ -21,6 +21,7 @@ class RowImpl implements Row {
 	private MarginProperties rightMargin;
 	private Alignment alignment;
 	private Float rowSpacing;
+	private boolean adjustedForMargin = false;
 	
 	/**
 	 * Create a new Row
@@ -31,12 +32,24 @@ class RowImpl implements Row {
 	}
 	public RowImpl(String chars, MarginProperties leftMargin, MarginProperties rightMargin) {
 		this.chars = chars;
-		this.markers = new ArrayList<Marker>();
-		this.anchors = new ArrayList<String>();
+		this.markers = new ArrayList<>();
+		this.anchors = new ArrayList<>();
 		this.leftMargin = leftMargin;
 		this.rightMargin = rightMargin;
 		this.alignment = Alignment.LEFT;
 		this.rowSpacing = null;
+	}
+	
+	static RowImpl withRow(RowImpl r) {
+		RowImpl ret = new RowImpl(r.chars);
+		ret.markers = r.markers;
+		ret.anchors = r.anchors;
+		ret.leftMargin = r.leftMargin;
+		ret.rightMargin = r.rightMargin;
+		ret.alignment = r.alignment;
+		ret.rowSpacing = r.rowSpacing;
+		ret.adjustedForMargin = r.adjustedForMargin;
+		return ret;
 	}
 
 	/**
@@ -77,13 +90,24 @@ class RowImpl implements Row {
 	public void addAnchors(List<String> refs) {
 		anchors.addAll(refs);
 	}
+	public void addAnchors(int index, List<String> refs) {
+		anchors.addAll(index, refs);
+	}
 
 	/**
 	 * Add a collection of markers to the Row
-	 * @param m
+	 * @param list
 	 */
-	public void addMarkers(List<Marker> m) {
-		markers.addAll(m);
+	public void addMarkers(List<Marker> list) {
+		markers.addAll(list);
+	}
+	
+	/**
+	 * Add a collection of markers to the Row
+	 * @param list
+	 */
+	public void addMarkers(int index, List<Marker> list) {
+		markers.addAll(0, list);
 	}
 
 	/**
@@ -92,6 +116,15 @@ class RowImpl implements Row {
 	 */
 	public List<Marker> getMarkers() {
 		return markers;
+	}
+	
+	public boolean hasMarkerWithName(String name) {
+		for (Marker m : markers) {
+			if (m.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -150,10 +183,19 @@ class RowImpl implements Row {
 	public void setRowSpacing(Float value) {
 		this.rowSpacing = value;
 	}
+	
+	
+	boolean shouldAdjustForMargin() {
+		return adjustedForMargin;
+	}
+	void setAdjustedForMargin(boolean value) {
+		this.adjustedForMargin = value;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (adjustedForMargin ? 1231 : 1237);
 		result = prime * result + ((alignment == null) ? 0 : alignment.hashCode());
 		result = prime * result + ((anchors == null) ? 0 : anchors.hashCode());
 		result = prime * result + ((chars == null) ? 0 : chars.hashCode());
@@ -175,6 +217,9 @@ class RowImpl implements Row {
 			return false;
 		}
 		RowImpl other = (RowImpl) obj;
+		if (adjustedForMargin != other.adjustedForMargin) {
+			return false;
+		}
 		if (alignment != other.alignment) {
 			return false;
 		}

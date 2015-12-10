@@ -44,6 +44,7 @@ class PageImpl implements Page {
 	private final ArrayList<String> identifiers;
 	private final int pageIndex;
 	private final int flowHeight;
+	private final PageTemplate template;
 	private int contentMarkersBegin;
 	private boolean isVolBreak;
 	private boolean isVolBreakAllowed;
@@ -63,7 +64,7 @@ class PageImpl implements Page {
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
 		this.parent = parent;
-		PageTemplate template = master.getTemplate(pageIndex+1);
+		this.template = master.getTemplate(pageIndex+1);
 		this.flowHeight = master.getPageHeight() - 
 				(int)Math.ceil(getHeight(template.getHeader(), master.getRowSpacing())) -
 				(int)Math.ceil(getHeight(template.getFooter(), master.getRowSpacing())) -
@@ -308,7 +309,7 @@ class PageImpl implements Page {
 			}
 			return ret2;
 		} catch (PaginatorException e) {
-			throw new RuntimeException("Cannot render header/footer", e);
+			throw new RuntimeException("Pagination failed.", e);
 		}
 	}
 	
@@ -584,6 +585,10 @@ class PageImpl implements Page {
 
 	public int keepPreviousSheets() {
 		return keepPreviousSheets;
+	}
+
+	PageTemplate getPageTemplate() {
+		return template;
 	}
 
 }

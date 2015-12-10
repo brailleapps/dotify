@@ -11,6 +11,15 @@ class MarginProperties {
 		this.margin = margin;
 		this.spaceOnly = spaceOnly;
 	}
+	
+	/**
+	 * Creates a new margin with the supplied margin appended. 
+	 * @param mp the margin to append
+	 * @return the new margin
+	 */
+	public MarginProperties append(MarginProperties mp) {
+		return new MarginProperties(getContent()+mp.getContent(), isSpaceOnly()&&mp.isSpaceOnly());
+	}
 
 	public String getContent() {
 		return margin;

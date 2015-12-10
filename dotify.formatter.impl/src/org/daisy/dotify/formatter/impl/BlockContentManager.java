@@ -255,6 +255,12 @@ class BlockContentManager implements Iterable<RowImpl> {
 		if (currentLeader!=null || item!=null) {
 			layout("",  null, null);
 		}
+		if (rows.size()>0) {
+			rows.get(0).addAnchors(0, groupAnchors);
+			groupAnchors.clear();
+			rows.get(0).addMarkers(0, groupMarkers);
+			groupMarkers.clear();
+		}
 	}
 	
 	/**

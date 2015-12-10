@@ -9,8 +9,13 @@ import org.daisy.dotify.api.formatter.BlockPosition;
 import org.daisy.dotify.api.formatter.FallbackRule;
 import org.daisy.dotify.api.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
+import org.daisy.dotify.api.formatter.MarginRegion;
+import org.daisy.dotify.api.formatter.MarkerIndicator;
+import org.daisy.dotify.api.formatter.MarkerIndicatorRegion;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
+import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.common.collection.SplitList;
 import org.daisy.dotify.common.layout.SplitPoint;
 import org.daisy.dotify.common.layout.SplitPointData;
@@ -119,12 +124,26 @@ class PageSequenceBuilder2 extends PageSequence {
 		}
 	}
 	
+	private int getTotalMarginRegionWidth() {
+		int mw = 0;
+		for (MarginRegion mr : seq.getLayoutMaster().getTemplate(1).getLeftMarginRegion()) {
+			mw += mr.getWidth();
+		}
+		for (MarginRegion mr : seq.getLayoutMaster().getTemplate(1).getRightMarginRegion()) {
+			mw += mr.getWidth();
+		}
+		return mw;
+	}
+	
 	private List<RowGroupSequence> buildRowGroups() {
 		List<RowGroupSequence> dataGroups = new ArrayList<>();
 		List<RowGroup> data = new ArrayList<>();
 		int keepWithNext = 0;
+		//TODO: This assumes that all page templates have margin regions that are of the same width 
+		int mw = getTotalMarginRegionWidth(); 
+		BlockContext bc = new BlockContext(seq.getLayoutMaster().getFlowWidth() - mw, blockContext.getRefs(), blockContext.getContext(), blockContext.getFcontext());
 		for (Block g : seq)  {
-			BlockContentManager bcm = g.getBlockContentManager(blockContext);
+			BlockContentManager bcm = g.getBlockContentManager(bc);
 			if (dataGroups.isEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !data.isEmpty()) || g.getVerticalPosition()!=null) {
 				data = new ArrayList<>();
 				dataGroups.add(new RowGroupSequence(data, g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent())));
@@ -157,6 +176,7 @@ class PageSequenceBuilder2 extends PageSequence {
 															bcm.getRowCount());
 			for (RowImpl r : bcm) {
 				i++;
+				r.setAdjustedForMargin(true);
 				if (i==bcm.getRowCount()) {
 					//we're at the last line, this should be kept with the next block's first line
 					keepWithNext = g.getKeepWithNext();
@@ -234,7 +254,17 @@ class PageSequenceBuilder2 extends PageSequence {
 				data = res.getTail();
 				for (RowGroup rg : res.getHead()) {
 					addProperties(rg);
-					for (RowImpl r : rg.getRows()) {
+					for (RowImpl r : rg.getRows()) { 
+						if (r.shouldAdjustForMargin()) {
+							// clone the row as not to append the margins twice
+							r = RowImpl.withRow(r);
+							for (MarginRegion mr : currentPage().getPageTemplate().getLeftMarginRegion()) {
+								r.setLeftMargin(getMarginRegionValue(mr, r, false).append(r.getLeftMargin()));
+							}
+							for (MarginRegion mr : currentPage().getPageTemplate().getRightMarginRegion()) {
+								r.setRightMargin(r.getRightMargin().append(getMarginRegionValue(mr, r, true)));
+							}
+						}
 						currentPage().newRow(r);
 					}
 				}
@@ -254,6 +284,47 @@ class PageSequenceBuilder2 extends PageSequence {
 			}
 		}
 		return true;
+	}
+	
+	private MarginProperties getMarginRegionValue(MarginRegion mr, RowImpl r, boolean rightSide) throws PaginatorException {
+		String ret = "";
+		int w = mr.getWidth();
+		if (mr instanceof MarkerIndicatorRegion) {
+			ret = firstMarkerForRow(r, (MarkerIndicatorRegion)mr);
+			if (ret.length()>0) {
+				try {
+					ret = context.getDefaultTranslator().translate(Translatable.text(ret).build()).getTranslatedRemainder();
+				} catch (TranslationException e) {
+					throw new PaginatorException("Failed to translate: " + ret, e);
+				}
+			}
+			boolean spaceOnly = ret.length()==0;
+			if (ret.length()<w) {
+				StringBuilder sb = new StringBuilder();
+				if (rightSide) {
+					while (sb.length()<w-ret.length()) { sb.append(context.getSpaceCharacter()); }
+					sb.append(ret);
+				} else {
+					sb.append(ret);				
+					while (sb.length()<w) { sb.append(context.getSpaceCharacter()); }
+				}
+				ret = sb.toString();
+			} else if (ret.length()>w) {
+				throw new PaginatorException("Cannot fit " + ret + " into a margin-region of size "+ mr.getWidth());
+			}
+			return new MarginProperties(ret, spaceOnly);
+		} else {
+			throw new PaginatorException("Unsupported margin-region type: " + mr.getClass().getName());
+		}
+	}
+	
+	private String firstMarkerForRow(RowImpl r, MarkerIndicatorRegion mrr) {
+		for (MarkerIndicator mi : mrr.getIndicators()) {
+			if (r.hasMarkerWithName(mi.getName())) {
+				return mi.getIndicator();
+			}
+		}
+		return "";
 	}
 	
 	private void addProperties(RowGroup rg) {
