@@ -48,7 +48,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 	@Override
 	public List<Block> getBlocks(FormatterContext context, DefaultContext vars, CrossReferences crh) {
 		ContentCollectionImpl c = context.getCollections().get(collectionID);
-		ArrayList<Block> ret = new ArrayList<Block>();
+		ArrayList<Block> ret = new ArrayList<>();
 		if (c==null) {
 			return ret;
 		}
@@ -59,7 +59,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 			Iterable<AnchorData> v = crh.getAnchorData(i+1);
 			if (v!=null) {
 				for (AnchorData ad : v) {
-					ArrayList<String> refs = new ArrayList<String>();
+					ArrayList<String> refs = new ArrayList<>();
 					for (String a : ad.getAnchors()) {
 						if (c.containsItemID(a) && !refs.contains(a)) {
 							refs.add(a);
@@ -68,7 +68,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 					if (!refs.isEmpty() && (range == ItemSequenceProperties.Range.DOCUMENT || (i+1)==vars.getCurrentVolume())) {
 						hasContents = true;
 						{
-							ArrayList<Block> b = new ArrayList<Block>();
+							ArrayList<Block> b = new ArrayList<>();
 							for (Block blk : pageStartEvents) {
 								Block bl = (Block)blk.clone();
 								bl.setMetaPage(ad.getPageIndex()+1);
@@ -80,7 +80,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 							ret.addAll(c.getBlocks(key));
 						}
 						{
-							ArrayList<Block> b = new ArrayList<Block>();
+							ArrayList<Block> b = new ArrayList<>();
 							for (Block blk : pageEndEvents) {
 								Block bl = (Block)blk.clone();
 								bl.setMetaPage(ad.getPageIndex()+1);
@@ -97,7 +97,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 			//only add a section if there are notes in it.
 			return ret;
 		}
-		return new ArrayList<Block>();
+		return new ArrayList<>();
 	}
 
 	@Override

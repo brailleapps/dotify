@@ -16,7 +16,7 @@ public class TextMediaWriterFactoryService implements
 	
 	private final static List<String> mediaTypes;
 	static {
-		mediaTypes = new ArrayList<String>();
+		mediaTypes = new ArrayList<>();
 		mediaTypes.add(MediaTypes.TEXT_MEDIA_TYPE);
 	}
 

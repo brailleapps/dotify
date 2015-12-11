@@ -21,7 +21,7 @@ public class BlockContentManagerTest {
 	public void testHangingIndent() throws TranslatorConfigurationException {
 		//setup
 		FormatterContext c = new FormatterContext(BrailleTranslatorFactoryMaker.newInstance(), "sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
-		Stack<Segment> segments = new Stack<Segment>();
+		Stack<Segment> segments = new Stack<>();
 		for (int i=0; i<6; i++) {
 			segments.push(new TextSegment("... ", new TextProperties.Builder("sv-SE").build()));
 		}
@@ -42,7 +42,7 @@ public class BlockContentManagerTest {
 	public void testLeader() throws TranslatorConfigurationException {
 		//setup
 		FormatterContext c = new FormatterContext(BrailleTranslatorFactoryMaker.newInstance(), "sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
-		Stack<Segment> segments = new Stack<Segment>();
+		Stack<Segment> segments = new Stack<>();
 		segments.push(new LeaderSegment(
 				new Leader.Builder().align(org.daisy.dotify.api.formatter.Leader.Alignment.RIGHT).pattern(" ").position(new Position(1.0, true)).build())
 		);
@@ -63,7 +63,7 @@ public class BlockContentManagerTest {
 	public void testNewLine() throws TranslatorConfigurationException {
 		//setup
 		FormatterContext c = new FormatterContext(BrailleTranslatorFactoryMaker.newInstance(), "sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
-		Stack<Segment> segments = new Stack<Segment>();
+		Stack<Segment> segments = new Stack<>();
 		segments.push(new TextSegment("... ... ...", new TextProperties.Builder("sv-SE").build()));
 		segments.push(new NewLineSegment());
 		segments.push(new TextSegment("...", new TextProperties.Builder("sv-SE").build()));

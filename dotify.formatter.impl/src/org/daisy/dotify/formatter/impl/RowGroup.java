@@ -38,8 +38,8 @@ class RowGroup implements SplitPointUnit {
 		Builder(float rowDefault, List<RowImpl> rows) {
 			this.rows = rows;
 			this.rowDefault = rowDefault;
-			this.markers = new ArrayList<Marker>();
-			this.anchors = new ArrayList<String>();
+			this.markers = new ArrayList<>();
+			this.anchors = new ArrayList<>();
 		}
 		
 		Builder add(RowImpl value) {

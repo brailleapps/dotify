@@ -50,7 +50,7 @@ public class ProcessStarter {
 	 * @return returns the command
 	 */
 	public static String[] buildJavaCommand(String... args) {
-		ArrayList<String> command = new ArrayList<String>();
+		ArrayList<String> command = new ArrayList<>();
 		command.add(path);
 		for (String arg : args) {
 			command.add(arg);

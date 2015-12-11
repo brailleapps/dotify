@@ -15,7 +15,7 @@ public class SwedishInteger2TextFactoryService implements
 	
 	private final static List<String> locales;
 	static {
-		locales = new ArrayList<String>();
+		locales = new ArrayList<>();
 		locales.add("sv-SE");
 		locales.add("sv");
 	}

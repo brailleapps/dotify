@@ -15,7 +15,7 @@ class PageStructBuilder extends PageStruct {
 
 	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs) {
 		//this.filters = filters;
-		this.pageReferences = new HashMap<String, PageImpl>();
+		this.pageReferences = new HashMap<>();
 		this.context = context;
 		this.fs = fs;
 	}
@@ -26,7 +26,7 @@ class PageStructBuilder extends PageStruct {
 
 	PageStructBuilder paginate(CrossReferenceHandler crh, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		restart:while (true) {
-			pageReferences = new HashMap<String, PageImpl>();
+			pageReferences = new HashMap<>();
 			clear();
 			for (BlockSequence seq : fs) {
 				if (!newSequence(crh, seq, refs, rcontext)) {

@@ -46,7 +46,7 @@ class DotifyRegressionTester implements Runnable {
 			boolean ok = false;
 			try {
 
-				ArrayList<String> command = new ArrayList<String>();
+				ArrayList<String> command = new ArrayList<>();
 				boolean jar = inf.getPathToCLI().toLowerCase().endsWith(".jar");
 				if (jar) {
 					command.add("-jar");

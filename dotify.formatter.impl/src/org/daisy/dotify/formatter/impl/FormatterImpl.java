@@ -56,15 +56,15 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	
 	public FormatterImpl(FormatterContext context) {
 		this.context = context;
-		this.blocks = new Stack<BlockSequence>();
+		this.blocks = new Stack<>();
 		this.state = new StateObject();
-		this.tocs = new HashMap<String, TableOfContentsImpl>();
-		this.volumeTemplates = new Stack<VolumeTemplate>();
+		this.tocs = new HashMap<>();
+		this.volumeTemplates = new Stack<>();
 		
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 		
 		//CrossReferenceHandler
-		this.volumes = new HashMap<Integer, Volume>();
+		this.volumes = new HashMap<>();
 		this.isDirty = false;
 		this.volumeForContentSheetChanged = false;
 		this.crh = new CrossReferenceHandler();
@@ -138,7 +138,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		int volumeOffset = 0;
 		int volsMin = Integer.MAX_VALUE;
 		int reformatSplitterMax = DEFAULT_SPLITTER_MAX;
-		ArrayList<Volume> ret = new ArrayList<Volume>();
+		ArrayList<Volume> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
 
 		while (!ok) {
@@ -177,7 +177,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
 			totalOverheadCount = 0;
-			ret = new ArrayList<Volume>();
+			ret = new ArrayList<>();
 			int pageIndex = 0;
 			
 			for (int i=1;i<= sdc.getVolumeCount();i++) {
@@ -186,7 +186,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				}
 				
 				Volume volume = getVolume(i);
-				ad = new ArrayList<AnchorData>();
+				ad = new ArrayList<>();
 
 				volume.setPreVolData(updateVolumeContents(i, ad, true));
 
@@ -273,7 +273,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		DefaultContext c = new DefaultContext(volumeNumber, sdc.getVolumeCount());
 		PageStructBuilder ret = null;
 		try {
-			ArrayList<BlockSequence> ib = new ArrayList<BlockSequence>();
+			ArrayList<BlockSequence> ib = new ArrayList<>();
 			for (VolumeTemplate t : volumeTemplates) {
 				if (t.appliesTo(c)) {
 					for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {

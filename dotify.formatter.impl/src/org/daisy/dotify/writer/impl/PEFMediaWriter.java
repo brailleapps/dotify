@@ -56,7 +56,7 @@ class PEFMediaWriter implements PagedMediaWriter {
 		cRowgap = 0;
 		cDuplex = true;
 		state = new StateObject("Writer");
-		this.metadata = new ArrayList<MetaDataItem>();
+		this.metadata = new ArrayList<>();
 		//this.nonBraillePattern = Pattern.compile("[^\u2800-\u28FF]+");
 	}
 
@@ -125,8 +125,8 @@ class PEFMediaWriter implements PagedMediaWriter {
 	}
 	
 	private static List<MetaDataItem> organizeMetadata(List<MetaDataItem> meta) {
-		ArrayList<MetaDataItem> dc = new ArrayList<MetaDataItem>();
-		ArrayList<MetaDataItem> other = new ArrayList<MetaDataItem>();
+		ArrayList<MetaDataItem> dc = new ArrayList<>();
+		ArrayList<MetaDataItem> other = new ArrayList<>();
 		MetaDataItem identifier = null;
 		MetaDataItem date = null;
 		for (MetaDataItem item : meta) {
@@ -152,7 +152,7 @@ class PEFMediaWriter implements PagedMediaWriter {
 		if (date == null) {
 			date = new MetaDataItem(new QName(DC_NAMESPACE_URI, "date", "dc"),  new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		}
-		ArrayList<MetaDataItem> ret = new ArrayList<MetaDataItem>();
+		ArrayList<MetaDataItem> ret = new ArrayList<>();
 		ret.add(new MetaDataItem(new QName(DC_NAMESPACE_URI, "format", "dc"), "application/x-pef+xml"));
 		ret.add(identifier);
 		ret.add(date);
@@ -162,8 +162,8 @@ class PEFMediaWriter implements PagedMediaWriter {
 	}
 	
 	private static Map<String, String> getNamespaces(List<MetaDataItem> meta) {
-		HashMap<String, String> ret = new HashMap<String, String>();
-		HashMap<String, String> prefixes = new HashMap<String, String>();
+		HashMap<String, String> ret = new HashMap<>();
+		HashMap<String, String> prefixes = new HashMap<>();
 		// Go through all items to check if named prefixes are used
 		for (MetaDataItem item : meta) {
 			String value = item.getKey().getPrefix();

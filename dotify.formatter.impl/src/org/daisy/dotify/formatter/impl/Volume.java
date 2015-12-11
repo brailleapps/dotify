@@ -80,11 +80,11 @@ class Volume {
 	 */
 	Iterable<PageSequence> getContents() {
 		if (ret==null) {
-			List<Iterable<PageSequence>> contents = new ArrayList<Iterable<PageSequence>>();
+			List<Iterable<PageSequence>> contents = new ArrayList<>();
 			contents.add(preVolData);
 			contents.add(body);
 			contents.add(postVolData);
-			ret = new CompoundIterable<PageSequence>(contents);
+			ret = new CompoundIterable<>(contents);
 		}
 		return ret;
 	}

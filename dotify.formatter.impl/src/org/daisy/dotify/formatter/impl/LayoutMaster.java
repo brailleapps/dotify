@@ -21,7 +21,7 @@ class LayoutMaster implements LayoutMasterBuilder {
 	private PageAreaBuilderImpl pageArea;
 
 	public LayoutMaster(LayoutMasterProperties props) {
-		this.templates = new ArrayList<PageTemplate>();
+		this.templates = new ArrayList<>();
 		this.props = props;
 		this.defaultPageTemplate = new PageTemplate();
 		this.pageArea = null;

@@ -13,7 +13,7 @@ class PageSequence {
 	protected int pagesOffset;
 	
 	PageSequence(LayoutMaster master) { //, int pageOffset, FormatterFactory formatterFactory) {
-		this.pages = new Stack<PageImpl>();
+		this.pages = new Stack<>();
 		this.master = master;
 	}
 	

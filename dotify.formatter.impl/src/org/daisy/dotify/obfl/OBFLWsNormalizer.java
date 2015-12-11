@@ -95,7 +95,7 @@ public class OBFLWsNormalizer extends XMLParserBase {
 
 	private void parseBlock(XMLEvent event) throws XMLStreamException {
 		QName end = event.asStartElement().getName();
-		List<XMLEvent> events = new ArrayList<XMLEvent>();
+		List<XMLEvent> events = new ArrayList<>();
 		events.add(event);
 		while (input.hasNext()) {
 			event = input.nextEvent();
@@ -124,7 +124,7 @@ public class OBFLWsNormalizer extends XMLParserBase {
 	}
 
 	private List<XMLEvent> modifyWhitespace(List<XMLEvent> events)  {
-		List<XMLEvent> modified = new ArrayList<XMLEvent>();
+		List<XMLEvent> modified = new ArrayList<>();
 		// process
 		for (int i = 0; i < events.size(); i++) {
 			XMLEvent event = events.get(i);

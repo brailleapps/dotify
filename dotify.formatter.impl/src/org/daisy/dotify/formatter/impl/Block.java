@@ -40,7 +40,7 @@ class Block implements Cloneable {
 		this.keepWithNextSheets = 0;
 		this.id = "";
 		this.blockId = blockId;
-		this.segments = new Stack<Segment>();
+		this.segments = new Stack<>();
 		this.rdp = rdp;
 		this.rdm = null;
 		this.verticalPosition = null;

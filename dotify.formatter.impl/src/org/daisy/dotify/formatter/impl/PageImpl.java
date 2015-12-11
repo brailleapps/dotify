@@ -53,14 +53,14 @@ class PageImpl implements Page {
 	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequence parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
 		this.master = master;
 		this.fcontext = fcontext;
-		this.rows = new ArrayList<RowImpl>();
+		this.rows = new ArrayList<>();
 		this.before = before;
 		this.after = after; 
 
-		this.pageArea = new ArrayList<RowImpl>();
-		this.markers = new ArrayList<Marker>();
-		this.anchors = new ArrayList<String>();
-		this.identifiers = new ArrayList<String>();
+		this.pageArea = new ArrayList<>();
+		this.markers = new ArrayList<>();
+		this.anchors = new ArrayList<>();
+		this.identifiers = new ArrayList<>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
 		this.parent = parent;
@@ -194,7 +194,7 @@ class PageImpl implements Page {
 			if (border == null) {
 				border = TextBorderStyle.NONE;
 			}
-			ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
+			ArrayList<RowImpl> ret = new ArrayList<>();
 			{
 				LayoutMaster lm = master;
 				int pagenum = getPageIndex() + 1;
@@ -222,7 +222,7 @@ class PageImpl implements Page {
 				}
 			}
 			LayoutMaster lm = master;
-			ArrayList<Row> ret2 = new ArrayList<Row>();
+			ArrayList<Row> ret2 = new ArrayList<>();
 			{
 				final int pagenum = getPageIndex() + 1;
 				TextBorder tb = null;
@@ -374,7 +374,7 @@ class PageImpl implements Page {
 	
 	
 	private List<RowImpl> renderFields(LayoutMaster lm, List<FieldList> fields, BrailleTranslator translator) throws PaginatorException {
-		ArrayList<RowImpl> ret = new ArrayList<RowImpl>();
+		ArrayList<RowImpl> ret = new ArrayList<>();
 		for (FieldList row : fields) {
 			try {
 				RowImpl r = new RowImpl(distribute(row, lm.getFlowWidth(), fcontext.getSpaceCharacter()+"", translator));
@@ -388,7 +388,7 @@ class PageImpl implements Page {
 	}
 	
 	private String distribute(FieldList chunks, int width, String padding, BrailleTranslator translator) throws PaginatorToolsException {
-		ArrayList<String> chunkF = new ArrayList<String>();
+		ArrayList<String> chunkF = new ArrayList<>();
 		for (Field f : chunks.getFields()) {
 			DefaultTextAttribute.Builder b = new DefaultTextAttribute.Builder(null);
 			String resolved = softHyphen.matcher(resolveField(f, this, b)).replaceAll("");

@@ -1,5 +1,7 @@
 .gradle
 .settings
+.idea
+**/*.iml
 Dotify/.gradle
 Dotify/ant-build/output
 DotifyDevtools/ant-build/output

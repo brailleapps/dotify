@@ -26,8 +26,8 @@ class ContentCollectionImpl extends FormatterCoreImpl implements ContentCollecti
 	
 	public ContentCollectionImpl() {
 		super(true);
-		this.items = new LinkedHashMap<String, Item>();
-		this.open = new Stack<Item>();
+		this.items = new LinkedHashMap<>();
+		this.open = new Stack<>();
 	}
 	
 	public boolean containsItemID(String id) {
@@ -47,7 +47,7 @@ class ContentCollectionImpl extends FormatterCoreImpl implements ContentCollecti
 		if (i!=null) {
 			return subList(i.from, i.to);
 		} else {
-			return new ArrayList<Block>();
+			return new ArrayList<>();
 		}
 	}
 

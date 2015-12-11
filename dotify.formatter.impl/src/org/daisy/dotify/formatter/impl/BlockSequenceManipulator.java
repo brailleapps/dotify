@@ -18,7 +18,7 @@ class BlockSequenceManipulator {
 	private final LayoutMaster master;
 	
 	public BlockSequenceManipulator(BlockSequence b) {
-		this.sequence = new Stack<Block>();
+		this.sequence = new Stack<>();
 		for (Block bb : b) {
 			this.sequence.add(bb);
 		}
@@ -28,7 +28,7 @@ class BlockSequenceManipulator {
 	}
 	
 	public BlockSequenceManipulator(LayoutMaster master, Integer initialPageNumber) {
-		this.sequence = new Stack<Block>();
+		this.sequence = new Stack<>();
 		this.master = master;
 		this.initialPagenum = initialPageNumber;
 		this.taggedEntries = tagSequence(this.sequence);
@@ -54,14 +54,14 @@ class BlockSequenceManipulator {
 	}*/
 	
 	public void insertGroup(Iterable<Block> blocks, String beforeId) {
-		ArrayList<Block> call = new ArrayList<Block>();
+		ArrayList<Block> call = new ArrayList<>();
 		for (Block b : blocks) {
 			call.add(b);
 		}
 		insertGroup(call, beforeId);
 	}
 	public void appendGroup(Iterable<Block> blocks) {
-		ArrayList<Block> call = new ArrayList<Block>();
+		ArrayList<Block> call = new ArrayList<>();
 		for (Block b : blocks) {
 			call.add(b);
 		}
@@ -126,7 +126,7 @@ class BlockSequenceManipulator {
 	}
 	*/
 	private static HashMap<String, Integer> tagSequence(List<Block> seq) {
-		HashMap<String, Integer> entries = new HashMap<String, Integer>();
+		HashMap<String, Integer> entries = new HashMap<>();
 		int i = 0;
 		for (Block group : seq) {
 			if (group.getBlockIdentifier()!=null && !group.getBlockIdentifier().equals("")) {

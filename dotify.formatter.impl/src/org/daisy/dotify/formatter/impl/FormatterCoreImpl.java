@@ -38,12 +38,12 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	
 	public FormatterCoreImpl(boolean discardIdentifiers) {
 		super();
-		this.propsContext = new Stack<BlockProperties>();
+		this.propsContext = new Stack<>();
 		this.leftMargin = new Margin(Type.LEFT);
 		this.rightMargin = new Margin(Type.RIGHT);
 		this.listItem = null;
 		this.blockIndent = 0;
-		this.blockIndentParent = new Stack<Integer>();
+		this.blockIndentParent = new Stack<>();
 		blockIndentParent.add(0);
 		this.discardIdentifiers = discardIdentifiers;
 	}

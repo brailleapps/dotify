@@ -62,7 +62,7 @@ class ExpressionImpl implements Expression {
 	@Override
 	public Object evaluate(String expr) {
 		// init
-		vars = new HashMap<String, Object>();
+		vars = new HashMap<>();
 		// return value
 		String[] exprs = getArgs(expr);
 		for (int i=0; i<exprs.length-1; i++) {
@@ -391,7 +391,7 @@ class ExpressionImpl implements Expression {
 
 	private static String[] getArgs(String expr) {
 		expr = expr.trim();
-		ArrayList<String> ret = new ArrayList<String>();
+		ArrayList<String> ret = new ArrayList<>();
 		int ci = 0;
 		int level = 0;
 		boolean str = false;

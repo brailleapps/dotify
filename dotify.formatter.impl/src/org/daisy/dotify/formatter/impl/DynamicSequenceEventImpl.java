@@ -20,7 +20,7 @@ class DynamicSequenceEventImpl implements VolumeSequence, DynamicSequenceBuilder
 	 */
 	public DynamicSequenceEventImpl(SequenceProperties props) {
 		this.props = props;
-		this.formatters = new Stack<BlockGroup>();
+		this.formatters = new Stack<>();
 	}
 
 	@Override

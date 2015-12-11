@@ -25,10 +25,10 @@ class TocSequenceEventImpl implements VolumeSequence {
 		this.props = props;
 		this.data = data;
 		this.range = range;
-		this.tocStartEvents = new ArrayList<ConditionalBlock>();
-		this.volumeStartEvents = new ArrayList<ConditionalBlock>();
-		this.volumeEndEvents = new ArrayList<ConditionalBlock>();
-		this.tocEndEvents = new ArrayList<ConditionalBlock>();
+		this.tocStartEvents = new ArrayList<>();
+		this.volumeStartEvents = new ArrayList<>();
+		this.volumeEndEvents = new ArrayList<>();
+		this.tocEndEvents = new ArrayList<>();
 	}
 
 	FormatterCore addTocStart(Condition condition) {
@@ -62,7 +62,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 	}
 
 	private static Iterable<Block> getCompoundIterableB(Iterable<ConditionalBlock> events, Context vars) {
-		ArrayList<Block> it = new ArrayList<Block>();
+		ArrayList<Block> it = new ArrayList<>();
 		for (ConditionalBlock ev : events) {
 			if (ev.appliesTo(vars)) {
 				Iterable<Block> tmp = ev.getSequence();
@@ -149,14 +149,14 @@ class TocSequenceEventImpl implements VolumeSequence {
 			} else if (getRange()==TocProperties.TocRange.DOCUMENT) {
 
 				int nv=0;
-				HashMap<String, Iterable<Block>> statics = new HashMap<String, Iterable<Block>>();
+				HashMap<String, Iterable<Block>> statics = new HashMap<>();
 				for (Block b : fsm.getBlocks()) {
 					if (b.getBlockIdentifier()!=null) {
 						String ref = data.getRefForID(b.getBlockIdentifier());
 						Integer vol = crh.getVolumeNumber(ref);
 						if (vol!=null) {
 							if (nv!=vol) {
-								ArrayList<Block> rr = new ArrayList<Block>();
+								ArrayList<Block> rr = new ArrayList<>();
 								if (nv>0) {
 									Iterable<Block> ib1 = getVolumeEnd(DefaultContext.from(vars).metaVolume(nv).build());
 									for (Block b1 : ib1) {

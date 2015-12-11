@@ -89,7 +89,7 @@ class PaginatorTools {
 	}
 
 	public static String distribute(Collection<TabStopString> units) {
-		TreeSet<TabStopString> sortedUnits = new TreeSet<TabStopString>();
+		TreeSet<TabStopString> sortedUnits = new TreeSet<>();
 		sortedUnits.addAll(units);
 		StringBuffer sb = new StringBuffer();
 		int used = 0;

@@ -12,7 +12,7 @@ public class UnicodeNames {
 		private final HashMap<Integer, String> map;
 		
 		private UnicodeData() {
-			map = new HashMap<Integer,String>();
+			map = new HashMap<>();
 			TextFileReader tfr = new TextFileReader.Builder(this.getClass().getResourceAsStream("resource-files/UnicodeData.txt")).regex(";").build();
 			LineData l;
 			try {

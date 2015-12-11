@@ -11,8 +11,8 @@ public class LookupHandler<K, V> {
 	private boolean dirty;
 	
 	LookupHandler() {
-		this.keyValueMap = new HashMap<K, V>();
-		this.requestedKeys = new HashSet<K>();
+		this.keyValueMap = new HashMap<>();
+		this.requestedKeys = new HashSet<>();
 		this.dirty = false;
 	}
 

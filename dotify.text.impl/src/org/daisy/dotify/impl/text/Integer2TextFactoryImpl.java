@@ -37,8 +37,8 @@ class Integer2TextFactoryImpl implements Integer2TextFactory {
 	final static Map<String, Class<? extends Integer2Text>> locales;
 	final static List<String> displayNames;
 	static {
-		List<String> _localeNames = new ArrayList<String>();
-		Map<String, Class<? extends Integer2Text>> _locales = new HashMap<String, Class<? extends Integer2Text>>();
+		List<String> _localeNames = new ArrayList<>();
+		Map<String, Class<? extends Integer2Text>> _locales = new HashMap<>();
 		for (Implementation impl : Implementation.values()) {
 			//Only use lower case keys
 			String name = impl.name().replace('_', '-');

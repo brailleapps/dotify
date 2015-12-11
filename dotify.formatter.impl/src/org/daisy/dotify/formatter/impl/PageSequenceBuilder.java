@@ -344,7 +344,7 @@ class PageSequenceBuilder extends PageSequence {
 		}
 		
 		private List<RowImpl> getSupplements(RowImpl row) {
-			List<RowImpl> blk = new ArrayList<RowImpl>();
+			List<RowImpl> blk = new ArrayList<>();
 			for (String a : row.getAnchors()) {
 				if (!currentPage().getAnchors().contains(a)) {
 					//page doesn't already contains these blocks

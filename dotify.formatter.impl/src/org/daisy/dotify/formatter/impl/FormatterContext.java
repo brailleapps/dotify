@@ -27,15 +27,15 @@ class FormatterContext {
 
 	FormatterContext(BrailleTranslatorFactoryMakerService translatorFactory, String locale, String mode) {
 		this.translatorFactory = translatorFactory;
-		this.cache = new HashMap<String, BrailleTranslator>();
+		this.cache = new HashMap<>();
 		try {
 			this.translator = translatorFactory.newTranslator(locale, mode);
 			cache.put(mode, translator);
 		} catch (TranslatorConfigurationException e) {
 			throw new IllegalArgumentException(e);
 		}
-		this.masters = new HashMap<String, LayoutMaster>();
-		this.collections = new HashMap<String, ContentCollectionImpl>();
+		this.masters = new HashMap<>();
+		this.collections = new HashMap<>();
 		//margin char can only be a single character, the reason for going through the translator
 		//is because output isn't always braille.
 		try {

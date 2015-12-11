@@ -9,8 +9,8 @@ class PageAreaContent {
 
 
 	PageAreaContent(PageAreaBuilderImpl pab, BlockContext bc) {
-		this.before = new ArrayList<RowImpl>();
-		this.after = new ArrayList<RowImpl>();
+		this.before = new ArrayList<>();
+		this.after = new ArrayList<>();
 		if (pab !=null) {
 			//Assumes before is static
 			for (Block b : pab.getBeforeArea()) {

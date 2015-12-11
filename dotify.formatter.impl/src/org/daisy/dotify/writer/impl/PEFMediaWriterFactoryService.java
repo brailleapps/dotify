@@ -16,7 +16,7 @@ public class PEFMediaWriterFactoryService implements
 	
 	private final static List<String> mediaTypes;
 	static {
-		mediaTypes = new ArrayList<String>();
+		mediaTypes = new ArrayList<>();
 		mediaTypes.add(MediaTypes.PEF_MEDIA_TYPE);
 	}
 

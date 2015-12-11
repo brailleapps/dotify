@@ -19,7 +19,7 @@ class TableOfContentsImpl extends FormatterCoreImpl implements TableOfContents  
 	private final LinkedHashMap<String, String> refs;
 	
 	public TableOfContentsImpl() {
-		this.refs = new LinkedHashMap<String, String>();
+		this.refs = new LinkedHashMap<>();
 	}
 	
 	public boolean containsTocID(String id) {

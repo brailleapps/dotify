@@ -15,7 +15,7 @@ public class EnglishInteger2TextFactoryService implements
 	
 	private final static List<String> locales;
 	static {
-		locales = new ArrayList<String>();
+		locales = new ArrayList<>();
 		locales.add("en");
 	}
 

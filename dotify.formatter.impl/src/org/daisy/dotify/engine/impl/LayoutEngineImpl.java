@@ -131,7 +131,7 @@ class LayoutEngineImpl implements FormatterEngine {
 				}
 
 				logger.info("Rendering output...");
-				ArrayList<MetaDataItem> meta = new ArrayList<MetaDataItem>();
+				ArrayList<MetaDataItem> meta = new ArrayList<>();
 				for (MetaDataItem item : obflParser.getMetaData()) {
 					// Filter out identifier, date and format from the OBFL meta data
 					// because the meta data in the OBFL file is about itself, and these properties are not transferable

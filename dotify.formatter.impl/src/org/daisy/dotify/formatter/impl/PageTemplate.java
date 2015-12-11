@@ -35,11 +35,11 @@ class PageTemplate implements PageTemplateBuilder {
 	 */
 	PageTemplate(Condition condition) {
 		this.condition = condition;
-		this.header = new ArrayList<FieldList>();
-		this.footer = new ArrayList<FieldList>();
+		this.header = new ArrayList<>();
+		this.footer = new ArrayList<>();
 		this.leftMarginRegion = new ArrayList<>();
 		this.rightMarginRegion = new ArrayList<>();
-		this.appliesTo = new HashMap<Integer, Boolean>();
+		this.appliesTo = new HashMap<>();
 	}
 
 	@Override

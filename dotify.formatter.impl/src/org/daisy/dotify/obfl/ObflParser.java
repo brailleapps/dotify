@@ -103,7 +103,7 @@ public class ObflParser extends XMLParserBase {
 	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
 		this.formatter = formatterFactory.newFormatter(locale.toString(), mode);
 		//this.masters = new HashMap<String, LayoutMaster>();
-		this.meta = new ArrayList<MetaDataItem>();
+		this.meta = new ArrayList<>();
 		formatter.open();
 		XMLEvent event;
 		TextProperties tp = new TextProperties.Builder(this.locale.toString()).translationMode(mode).hyphenate(hyphGlobal).build();
@@ -217,7 +217,7 @@ public class ObflParser extends XMLParserBase {
 		String masterName = getAttr(event, ObflQName.ATTR_NAME);
 		//LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height, ef);
 		LayoutMasterProperties.Builder masterConfig = new LayoutMasterProperties.Builder(width, height);
-		HashMap<String, Object> border = new HashMap<String, Object>();
+		HashMap<String, Object> border = new HashMap<>();
 		while (i.hasNext()) {
 			Attribute atts = i.next();
 			String name = atts.getName().getLocalPart();
@@ -397,7 +397,7 @@ public class ObflParser extends XMLParserBase {
 				rowSpacing = Float.parseFloat(value);
 			}
 		}
-		ArrayList<Field> fields = new ArrayList<Field>();
+		ArrayList<Field> fields = new ArrayList<>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.FIELD)) {
@@ -424,7 +424,7 @@ public class ObflParser extends XMLParserBase {
 	}
 	
 	private ArrayList<Field> parseField(XMLEvent event, XMLEventReader input) throws XMLStreamException {
-		ArrayList<Field> compound = new ArrayList<Field>();
+		ArrayList<Field> compound = new ArrayList<>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.STRING)) {
@@ -597,8 +597,8 @@ public class ObflParser extends XMLParserBase {
 
 	private void parseStyleEvent(FormatterCore fc, XMLEvent ev, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		//Buffer events and extract text
-		List<XMLEvent> events = new ArrayList<XMLEvent>();
-		List<String> chunks = new ArrayList<String>();
+		List<XMLEvent> events = new ArrayList<>();
+		List<String> chunks = new ArrayList<>();
 		events.add(ev);
 		int level = 1;
 		while (input.hasNext()) {
@@ -694,7 +694,7 @@ public class ObflParser extends XMLParserBase {
 
 	private BlockProperties blockBuilder(Iterator<Attribute> atts) {
 		BlockProperties.Builder builder = new BlockProperties.Builder();
-		HashMap<String, Object> border = new HashMap<String, Object>();
+		HashMap<String, Object> border = new HashMap<>();
 		while (atts.hasNext()) {
 			Attribute att = atts.next();
 			String name = att.getName().getLocalPart();

@@ -368,7 +368,7 @@ class PageSequenceBuilder2 extends PageSequence {
 		private CollectionData(BlockContext c) {
 			this.c = c;
 			this.first = true;
-			this.map = new HashMap<String, RowGroup>();
+			this.map = new HashMap<>();
 		}
 
 		@Override

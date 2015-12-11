@@ -38,7 +38,7 @@ class Margin extends Stack<MarginComponent> {
 
 	private MarginProperties buildMarginProperties(char spaceCharacter, boolean parent) {
 		boolean isSpace = true;
-		ArrayList<String> inp = new ArrayList<String>();
+		ArrayList<String> inp = new ArrayList<>();
 		int j = 0;
 		for (MarginComponent c : this) {
 			inp.add(StringTools.fill(spaceCharacter, c.getOuterOffset()));

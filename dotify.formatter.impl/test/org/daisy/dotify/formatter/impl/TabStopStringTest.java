@@ -13,7 +13,7 @@ public class TabStopStringTest {
 	@Test
 	public void testTabStopStringComparableImpl() {
 		//Setup
-    	TreeSet<TabStopString> ts = new TreeSet<TabStopString>();
+    	TreeSet<TabStopString> ts = new TreeSet<>();
     	ts.add(new TabStopString("Text1", 15));
     	ts.add(new TabStopString("Text2", 13));
     	ts.add(new TabStopString("Text3", 3));

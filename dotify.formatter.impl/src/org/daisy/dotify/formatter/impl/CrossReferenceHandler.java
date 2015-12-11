@@ -7,9 +7,9 @@ class CrossReferenceHandler {
 	private final LookupHandler<Integer, Iterable<AnchorData>> anchorRefs;
 	
 	CrossReferenceHandler() {
-		this.pageRefs = new LookupHandler<String, Integer>();
-		this.volumeRefs = new LookupHandler<String, Integer>();
-		this.anchorRefs = new LookupHandler<Integer, Iterable<AnchorData>>();
+		this.pageRefs = new LookupHandler<>();
+		this.volumeRefs = new LookupHandler<>();
+		this.anchorRefs = new LookupHandler<>();
 	}
 	
 	Integer getVolumeNumber(String refid) {
