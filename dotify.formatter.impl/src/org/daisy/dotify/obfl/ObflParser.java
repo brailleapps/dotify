@@ -634,7 +634,6 @@ public class ObflParser extends XMLParserBase {
 	 * @param input
 	 * @param evr
 	 * @param tp
-	 * @return
 	 * @throws XMLStreamException
 	 */
 	private void parseStyleEventInner(FormatterCore fc, Iterator<XMLEvent> input, Iterator<String> text, TextProperties tp) throws XMLStreamException {
