@@ -142,6 +142,27 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		        "resource-files/test_obfl-to-pef.xprocspec/test_25-expected.pef", false);
 	}
 	@Test
+	public void testObflToPef_26() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_26-input.obfl",
+		        "resource-files/test_obfl-to-pef.xprocspec/test_26-expected.pef", false);
+	}
+	@Test
+	public void testObflToPef_27() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_27-input.obfl",
+		        "resource-files/test_obfl-to-pef.xprocspec/test_27-expected.pef", false);
+	}
+	@Test
+	public void testObflToPef_28() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_28-input.obfl",
+		        "resource-files/test_obfl-to-pef.xprocspec/test_28-expected.pef", false);
+	}
+	@Ignore // regression in dotify 2.0.0-SNAPSHOT?
+	@Test
+	public void testObflToPef_29() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_29-input.obfl",
+		        "resource-files/test_obfl-to-pef.xprocspec/test_29-expected.pef", false);
+	}
+	@Test
 	public void testFormat_01() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/test_format.xprocspec/test_01-input.obfl",
 		        "resource-files/test_format.xprocspec/test_01-expected.pef", false);
@@ -408,5 +429,23 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 	public void testFormat_51() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/test_format.xprocspec/test_51-input.obfl",
 		        "resource-files/test_format.xprocspec/test_51-expected.pef", false);
+	}
+	@Ignore // depends on org.daisy.pipeline.braille.dotify.impl.BrailleFilterFactoryImpl
+	@Test
+	public void testFormat_52() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/test_format.xprocspec/test_52-input.obfl",
+		        "resource-files/test_format.xprocspec/test_52-expected.pef", false);
+	}
+	@Ignore // depends on org.daisy.pipeline.braille.dotify.impl.BrailleFilterFactoryImpl
+	@Test
+	public void testFormat_53() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/test_format.xprocspec/test_53-input.obfl",
+		        "resource-files/test_format.xprocspec/test_53-expected.pef", false);
+	}
+	@Ignore // depends on org.daisy.pipeline.braille.dotify.impl.BrailleFilterFactoryImpl
+	@Test
+	public void testFormat_54() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/test_format.xprocspec/test_54-input.obfl",
+		        "resource-files/test_format.xprocspec/test_54-expected.pef", false);
 	}
 }

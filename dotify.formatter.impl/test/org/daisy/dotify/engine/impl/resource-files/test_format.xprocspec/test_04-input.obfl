@@ -51,11 +51,11 @@
             </block>
    </sequence>
    <sequence master="a">
-      <block break-before="page">⠤⠤⠤
+      <block>⠤⠤⠤
             </block>
    </sequence>
    <sequence master="a" initial-page-number="10">
-      <block break-before="page">⠤⠤⠤
+      <block>⠤⠤⠤
             </block>
       <block break-before="page">⠤⠤⠤
             </block>

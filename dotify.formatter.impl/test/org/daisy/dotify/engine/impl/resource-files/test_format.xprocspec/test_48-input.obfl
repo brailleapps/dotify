@@ -9,16 +9,18 @@
          <header/>
          <footer>
             <field>
-               <marker-reference marker="print-page/prev" direction="forward" scope="page-content" text-style="def:tmp_d2746e3"/>
-               <marker-reference marker="print-page" direction="backward" scope="sequence" text-style="ifndef:tmp_d2746e3"/>
+               <marker-reference marker="print-page/prev" direction="forward" scope="page-content" text-style="def:tmp"/>
+               <marker-reference marker="print-page" direction="backward" scope="sequence" text-style="defifndef:tmp"/>
+               <marker-reference marker="print-page/entry" direction="backward" scope="sequence" text-style="ifndef:tmp"/>
                <marker-reference marker="dash-print-page" direction="backward" scope="page-content"/>
             </field>
             <field>
                <string value=""/>
             </field>
             <field>
-               <marker-reference marker="print-page/prev" direction="forward" scope="page-content" text-style="def:tmp_d2748e3" start-offset="-1"/>
-               <marker-reference marker="print-page" direction="backward" scope="sequence" text-style="ifndef:tmp_d2748e3" start-offset="-1"/>
+               <marker-reference marker="print-page/prev" direction="forward" scope="page-content" text-style="def:tmp" start-offset="-1"/>
+               <marker-reference marker="print-page" direction="backward" scope="sequence" text-style="defifndef:tmp" start-offset="-1"/>
+               <marker-reference marker="print-page/entry" direction="backward" scope="sequence" text-style="ifndef:tmp"/>
                <marker-reference marker="dash-print-page" direction="backward" scope="spread"/>
             </field>
          </footer>
@@ -27,8 +29,9 @@
          <header/>
          <footer>
             <field>
-               <marker-reference marker="print-page/prev" direction="forward" scope="page-content" text-style="def:tmp_d2752e3"/>
-               <marker-reference marker="print-page" direction="backward" scope="sequence" text-style="ifndef:tmp_d2752e3"/>
+               <marker-reference marker="print-page/prev" direction="forward" scope="page-content" text-style="def:tmp"/>
+               <marker-reference marker="print-page" direction="backward" scope="sequence" text-style="defifndef:tmp"/>
+               <marker-reference marker="print-page/entry" direction="backward" scope="sequence" text-style="ifndef:tmp"/>
                <marker-reference marker="dash-print-page" direction="backward" scope="page-content"/>
             </field>
             <field>
@@ -46,7 +49,7 @@
    </layout-master>
    <sequence master="a">
       <!-- begin right page -->
-      <block><marker class="print-page" value="1"/><marker class="dash-print-page" value="⠒1"/>⠁⠁⠁
+      <block><marker class="print-page/prev" value="​"/><marker class="print-page" value="1"/><marker class="dash-print-page/prev" value="​"/><marker class="dash-print-page" value="⠒1"/>⠁⠁⠁
             </block>
       <block>⠁⠁⠁</block>
       <block>⠁⠁⠁</block>
