@@ -126,7 +126,6 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_22-input.obfl",
 		        "resource-files/test_obfl-to-pef.xprocspec/test_22-expected.pef", false);
 	}
-	@Ignore // pagination bugs
 	@Test
 	public void testObflToPef_23() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_23-input.obfl",
@@ -137,7 +136,6 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_24-input.obfl",
 		        "resource-files/test_obfl-to-pef.xprocspec/test_24-expected.pef", false);
 	}
-	@Ignore // pagination bugs
 	@Test
 	public void testObflToPef_25() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/test_obfl-to-pef.xprocspec/test_25-input.obfl",

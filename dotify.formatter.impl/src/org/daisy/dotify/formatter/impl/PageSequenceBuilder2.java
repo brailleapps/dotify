@@ -185,7 +185,9 @@ class PageSequenceBuilder2 extends PageSequence {
 						collapsible(false).skippable(false).breakable(
 								owc.allowsBreakAfter(i-1)&&
 								keepWithNext<=0 &&
-								(Keep.AUTO==g.getKeepType() || (i==bcm.getRowCount() && rl3.isEmpty())));
+								(Keep.AUTO==g.getKeepType() || i==bcm.getRowCount()) &&
+								(i<bcm.getRowCount() || rl3.isEmpty())
+								);
 				if (i==1) { //First item
 					setProperties(rgb, bcm, g);
 				}
@@ -194,7 +196,7 @@ class PageSequenceBuilder2 extends PageSequence {
 			}
 			if (!rl3.isEmpty()) {
 				data.add(new RowGroup.Builder(master.getRowSpacing(), rl3).
-					collapsible(false).skippable(false).breakable(false).build());
+					collapsible(false).skippable(false).breakable(keepWithNext<0).build());
 			}
 			List<RowImpl> rl4 = bcm.getSkippablePostContentRows();
 			if (!rl4.isEmpty()) {
