@@ -1,3 +1,8 @@
+Import-Package:  \
+	org.daisy.dotify.api.engine; provide:=true,\
+	org.daisy.dotify.api.formatter; provide:=true,\
+	org.daisy.dotify.api.obfl; provide:=true,\
+	org.daisy.dotify.api.writer; provide:=true, *
 Private-Package: org.daisy.dotify.engine.impl,\
 	org.daisy.dotify.formatter.impl,\
 	org.daisy.dotify.obfl.impl,\
