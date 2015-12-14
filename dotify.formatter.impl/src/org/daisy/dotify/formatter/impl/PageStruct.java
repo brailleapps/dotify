@@ -1,21 +1,23 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.Iterator;
 import java.util.Stack;
 
 /**
  * Provides a page oriented structure
  * @author Joel Håkansson
  */
-class PageStruct extends Stack<PageSequence> {
+class PageStruct implements Iterable<PageSequence> {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4273679615162808108L;
+	private final Stack<PageSequence> seqs;
+	
+	PageStruct() {
+		seqs = new Stack<>();
+	}
 
 	int countPages() {
 		int size = 0;
-		for (PageSequence ps : this) {
+		for (PageSequence ps : seqs) {
 			size += ps.getPageCount();
 		}
 		return size;
@@ -23,7 +25,7 @@ class PageStruct extends Stack<PageSequence> {
 
 	int countSheets() {
 		int sheets = 0;
-		for (PageSequence seq : this) {
+		for (PageSequence seq : seqs) {
 			LayoutMaster lm = seq.getLayoutMaster();
 			if (lm.duplex()) {
 				sheets += (int)Math.ceil(seq.getPageCount()/2d);
@@ -43,7 +45,7 @@ class PageStruct extends Stack<PageSequence> {
 	String buildBreakpointString() {
 		StringBuilder res = new StringBuilder();
 		boolean volBreakAllowed = true;
-		for (PageSequence seq : this) {
+		for (PageSequence seq : seqs) {
 			StringBuilder sb = new StringBuilder();
 			LayoutMaster lm = seq.getLayoutMaster();
 			int pageIndex=0;
@@ -82,6 +84,22 @@ class PageStruct extends Stack<PageSequence> {
 		}
 	}
 	
+	boolean add(PageSequence seq) {
+		return seqs.add(seq);
+	}
+	
+	boolean empty() {
+		return seqs.empty();
+	}
+	
+	PageSequence peek() {
+		return seqs.peek();
+	}
+	
+	int size() {
+		return seqs.size();
+	}
+	
 	/**
 	 * Makes a new sub structure starting from the pageIndex with the specified
 	 * number of sheets
@@ -97,7 +115,7 @@ class PageStruct extends Stack<PageSequence> {
 		PageImpl p;
 		int offs = 0;
 		int i;
-		process:for (PageSequence ps : this) {
+		process:for (PageSequence ps : seqs) {
 			while (pageIndex-offs < ps.getPageCount()) {
 				p = ps.getPage(pageIndex-offs);
 				if (pageIndex<countPages()) {
@@ -132,6 +150,11 @@ class PageStruct extends Stack<PageSequence> {
 			offs += ps.getPageCount();
 		}
 		return body;
+	}
+
+	@Override
+	public Iterator<PageSequence> iterator() {
+		return seqs.iterator();
 	}
 
 

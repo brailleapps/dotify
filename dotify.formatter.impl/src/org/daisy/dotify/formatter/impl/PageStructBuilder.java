@@ -32,7 +32,7 @@ class PageStructBuilder {
 	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		int offset = getCurrentPageOffset();
 		PageSequenceBuilder2 psb = new PageSequenceBuilder2(crh, seq, this.pageReferences, context, offset, refs, rcontext);
-		struct.push(psb);
+		struct.add(psb);
 		return psb.paginate();
 	}
 	
