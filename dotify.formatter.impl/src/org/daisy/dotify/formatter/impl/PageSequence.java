@@ -46,6 +46,10 @@ class PageSequence {
 		return pages;
 	}
 	
+	int currentPageNumber() {
+		return peek().getPageIndex()+1;
+	}
+	
 	public int getPageNumberOffset() {
 		return pageOffset;
 	}

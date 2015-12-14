@@ -22,7 +22,7 @@ import org.daisy.dotify.common.layout.SplitPointData;
 import org.daisy.dotify.common.layout.SplitPointHandler;
 import org.daisy.dotify.common.layout.Supplements;
 
-class PageSequenceBuilder2 extends PageSequence {
+class PageSequenceBuilder2 {
 	private final Map<String, PageImpl> pageReferences;
 	private final FormatterContext context;
 	private final BlockSequence seq;
@@ -34,10 +34,11 @@ class PageSequenceBuilder2 extends PageSequence {
 	private PageImpl nextPage;
 	private ContentCollectionImpl collection;
 	private BlockContext blockContext;
+	private final PageSequence ps;
 
 	PageSequenceBuilder2(CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, 
 						int pagesOffset, CrossReferences refs, DefaultContext rcontext) {
-		super(seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:pagesOffset);
+		ps = new PageSequence(seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:pagesOffset);
 		this.pageReferences = pageReferences;
 		this.context = context;
 		this.seq = seq;
@@ -55,17 +56,21 @@ class PageSequenceBuilder2 extends PageSequence {
 		this.staticAreaContent = new PageAreaContent(seq.getLayoutMaster().getPageAreaBuilder(), blockContext);
 	}
 
+	PageSequence getPs() {
+		return ps;
+	}
+
 	private void newPage() {
 		if (nextPage!=null) {
-			addPage(nextPage);
+			ps.addPage(nextPage);
 			nextPage = null;
 		} else {
-			addPage(new PageImpl(getLayoutMaster(), context, this, getPageCount()+getPageNumberOffset(), staticAreaContent.getBefore(), staticAreaContent.getAfter()));
+			ps.addPage(new PageImpl(ps.getLayoutMaster(), context, ps, ps.getPageCount()+ps.getPageNumberOffset(), staticAreaContent.getBefore(), staticAreaContent.getAfter()));
 		}
 		if (keepNextSheets>0) {
 			currentPage().setAllowsVolumeBreak(false);
 		}
-		if (!getLayoutMaster().duplex() || getPageCount()%2==0) {
+		if (!ps.getLayoutMaster().duplex() || ps.getPageCount()%2==0) {
 			if (keepNextSheets>0) {
 				keepNextSheets--;
 			}
@@ -87,12 +92,8 @@ class PageSequenceBuilder2 extends PageSequence {
 		if (nextPage!=null) {
 			return nextPage;
 		} else {
-			return peek();
+			return ps.peek();
 		}
-	}
-	
-	int currentPageNumber() {
-		return currentPage().getPageIndex()+1;
 	}
 
 	/**
@@ -146,19 +147,19 @@ class PageSequenceBuilder2 extends PageSequence {
 			}
 			List<RowImpl> rl1 = bcm.getCollapsiblePreContentRows();
 			if (!rl1.isEmpty()) {
-				data.add(new RowGroup.Builder(getLayoutMaster().getRowSpacing(), rl1).
+				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl1).
 										collapsible(true).skippable(false).breakable(false).build());
 			}
 			List<RowImpl> rl2 = bcm.getInnerPreContentRows();
 			if (!rl2.isEmpty()) {
-				data.add(new RowGroup.Builder(getLayoutMaster().getRowSpacing(), rl2).
+				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl2).
 										collapsible(false).skippable(false).breakable(false).build());
 			}
 			
 			if (bcm.getRowCount()==0) { //TODO: Does this interfere with collapsing margins? 
 				if (!bcm.getGroupAnchors().isEmpty() || !bcm.getGroupMarkers().isEmpty() || !"".equals(g.getIdentifier())
 						|| g.getKeepWithNextSheets()>0 || g.getKeepWithPreviousSheets()>0 ) {
-					RowGroup.Builder rgb = new RowGroup.Builder(getLayoutMaster().getRowSpacing(), new ArrayList<RowImpl>());
+					RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), new ArrayList<RowImpl>());
 					setProperties(rgb, bcm, g);
 					data.add(rgb.build());
 				}
@@ -176,7 +177,7 @@ class PageSequenceBuilder2 extends PageSequence {
 					//we're at the last line, this should be kept with the next block's first line
 					keepWithNext = g.getKeepWithNext();
 				}
-				RowGroup.Builder rgb = new RowGroup.Builder(getLayoutMaster().getRowSpacing()).add(r).
+				RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing()).add(r).
 						collapsible(false).skippable(false).breakable(
 								owc.allowsBreakAfter(i-1)&&
 								keepWithNext<=0 &&
@@ -190,12 +191,12 @@ class PageSequenceBuilder2 extends PageSequence {
 				keepWithNext--;
 			}
 			if (!rl3.isEmpty()) {
-				data.add(new RowGroup.Builder(getLayoutMaster().getRowSpacing(), rl3).
+				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl3).
 					collapsible(false).skippable(false).breakable(keepWithNext<0).build());
 			}
 			List<RowImpl> rl4 = bcm.getSkippablePostContentRows();
 			if (!rl4.isEmpty()) {
-				data.add(new RowGroup.Builder(getLayoutMaster().getRowSpacing(), rl4).
+				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl4).
 					collapsible(true).skippable(true).breakable(keepWithNext<0).build());
 			}
 		}
@@ -223,7 +224,7 @@ class PageSequenceBuilder2 extends PageSequence {
 		for (RowGroupSequence rgs : dataGroups) {
 			List<RowGroup> data = rgs.getGroup();
 			if (rgs.getBlockPosition()!=null) {
-				if (isSequenceEmpty()) {
+				if (ps.isSequenceEmpty()) {
 					newPage();
 				}
 				float size = 0;
@@ -271,7 +272,7 @@ class PageSequenceBuilder2 extends PageSequence {
 				for (RowGroup rg : res.getSupplements()) {
 					currentPage().addToPageArea(rg.getRows());
 				}
-				if (getLayoutMaster().getPageArea()!=null && collection!=null && currentPage().pageAreaSpaceNeeded() > getLayoutMaster().getPageArea().getMaxHeight()) {
+				if (ps.getLayoutMaster().getPageArea()!=null && collection!=null && currentPage().pageAreaSpaceNeeded() > ps.getLayoutMaster().getPageArea().getMaxHeight()) {
 					reassignCollection();
 					return false;
 				}
@@ -371,7 +372,7 @@ class PageSequenceBuilder2 extends PageSequence {
 			if (collection!=null) {
 				RowGroup ret = map.get(id);
 				if (ret==null) {
-					RowGroup.Builder b = new RowGroup.Builder(getLayoutMaster().getRowSpacing());
+					RowGroup.Builder b = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing());
 					for (Block g : collection.getBlocks(id)) {
 						BlockContentManager bcm = g.getBlockContentManager(c);
 						b.addAll(bcm.getCollapsiblePreContentRows());
@@ -414,7 +415,7 @@ class PageSequenceBuilder2 extends PageSequence {
 					advance = t;
 					break;
 				}
-				return (int)Math.floor(advance / getLayoutMaster().getRowSpacing());
+				return (int)Math.floor(advance / ps.getLayoutMaster().getRowSpacing());
 			}
 		}
 		return 0;
