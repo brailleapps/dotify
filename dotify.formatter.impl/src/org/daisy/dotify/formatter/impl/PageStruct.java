@@ -129,7 +129,7 @@ class PageStruct implements Iterable<PageSequence> {
 					if (sheets + i<=contentSheets) {
 						if (body.empty() || originalSeq != ps) {
 							originalSeq = ps;
-							body.add(new PageSequence(originalSeq.getLayoutMaster())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
+							body.add(new PageSequence(originalSeq.getLayoutMaster(), originalSeq.getPageNumberOffset())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
 							pagesInSeq = 0;
 						}
 						((PageSequence)body.peek()).addPage(p);

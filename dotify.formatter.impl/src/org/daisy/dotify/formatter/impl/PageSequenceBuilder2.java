@@ -37,16 +37,11 @@ class PageSequenceBuilder2 extends PageSequence {
 
 	PageSequenceBuilder2(CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, 
 						int pagesOffset, CrossReferences refs, DefaultContext rcontext) {
-		super(seq.getLayoutMaster());
+		super(seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:pagesOffset);
 		this.pageReferences = pageReferences;
 		this.context = context;
 		this.seq = seq;
 		this.crh = crh;
-		if (seq.getInitialPageNumber()!=null) {
-			this.pagesOffset = seq.getInitialPageNumber() - 1;
-		} else {
-			this.pagesOffset = pagesOffset;
-		}
 
 		this.collection = null;
 		this.areaProps = seq.getLayoutMaster().getPageArea();
@@ -65,7 +60,7 @@ class PageSequenceBuilder2 extends PageSequence {
 			addPage(nextPage);
 			nextPage = null;
 		} else {
-			addPage(new PageImpl(getLayoutMaster(), context, this, getPageCount()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter()));
+			addPage(new PageImpl(getLayoutMaster(), context, this, getPageCount()+getPageNumberOffset(), staticAreaContent.getBefore(), staticAreaContent.getAfter()));
 		}
 		if (keepNextSheets>0) {
 			currentPage().setAllowsVolumeBreak(false);
