@@ -36,9 +36,8 @@ class PageSequenceBuilder2 {
 	private BlockContext blockContext;
 	private final PageSequence ps;
 
-	PageSequenceBuilder2(CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, 
-						int pagesOffset, CrossReferences refs, DefaultContext rcontext) {
-		ps = new PageSequence(seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:pagesOffset);
+	PageSequenceBuilder2(PageSequence ps, CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, CrossReferences refs, DefaultContext rcontext) {
+		this.ps = ps;
 		this.pageReferences = pageReferences;
 		this.context = context;
 		this.seq = seq;
@@ -54,10 +53,6 @@ class PageSequenceBuilder2 {
 		
 		this.blockContext = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
 		this.staticAreaContent = new PageAreaContent(seq.getLayoutMaster().getPageAreaBuilder(), blockContext);
-	}
-
-	PageSequence getPs() {
-		return ps;
 	}
 
 	private void newPage() {
