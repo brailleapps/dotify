@@ -49,10 +49,10 @@ class PageSequenceBuilder extends PageSequence {
 
 	private void newPage() {
 		if (nextPage!=null) {
-			pages.push(nextPage);
+			addPage(nextPage);
 			nextPage = null;
 		} else {
-			pages.push(new PageImpl(master, context, this, pages.size()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter()));
+			addPage(new PageImpl(getLayoutMaster(), context, this, getPageCount()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter()));
 		}
 		if (keepNextSheets>0) {
 			currentPage().setAllowsVolumeBreak(false);
@@ -69,7 +69,7 @@ class PageSequenceBuilder extends PageSequence {
 			//if new page is already in buffer, flush it.
 			newPage();
 		}
-		nextPage = new PageImpl(master, context, this, pages.size()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter());
+		nextPage = new PageImpl(getLayoutMaster(), context, this, getPageCount()+pagesOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter());
 	}
 
 	private void setKeepWithPreviousSheets(int value) {
@@ -87,7 +87,7 @@ class PageSequenceBuilder extends PageSequence {
 		if (nextPage!=null) {
 			return nextPage;
 		} else {
-			return pages.peek();
+			return peek();
 		}
 	}
 	
@@ -223,7 +223,7 @@ class PageSequenceBuilder extends PageSequence {
 		private final Float rowSpacing;
 		private final int rows;
 		MarginValue() {
-			this(master.getRowSpacing(), 0);
+			this(getLayoutMaster().getRowSpacing(), 0);
 		}
 		MarginValue(Float rowSpacing, int rows) {
 			this.rowSpacing = rowSpacing;
@@ -232,7 +232,7 @@ class PageSequenceBuilder extends PageSequence {
 		
 		private float getHeight() {
 			if (rowSpacing==null) {
-				return master.getRowSpacing()*rows;
+				return getLayoutMaster().getRowSpacing()*rows;
 			} else {
 				return rowSpacing*rows;
 			}
@@ -319,12 +319,12 @@ class PageSequenceBuilder extends PageSequence {
 		private boolean addRows() {
 			boolean first = true;
 			for (RowImpl row : rdm) {
-				if (master.getPageArea()!=null && collection!=null) {
+				if (getLayoutMaster().getPageArea()!=null && collection!=null) {
 					List<RowImpl> blk = getSupplements(row);
 					if (!blk.isEmpty()) {
 						newRow(row, blk);
 						//The text volume is reduced if row spacing increased
-						if (currentPage().pageAreaSpaceNeeded() > master.getPageArea().getMaxHeight()) {
+						if (currentPage().pageAreaSpaceNeeded() > getLayoutMaster().getPageArea().getMaxHeight()) {
 							return false;
 						}
 					} else {

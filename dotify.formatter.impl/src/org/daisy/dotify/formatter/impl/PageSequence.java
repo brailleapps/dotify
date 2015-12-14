@@ -8,8 +8,8 @@ import java.util.Stack;
  * @author Joel Håkansson
  */
 class PageSequence {
-	protected final Stack<PageImpl> pages;
-	protected final LayoutMaster master;
+	private final Stack<PageImpl> pages;
+	private final LayoutMaster master;
 	protected int pagesOffset;
 	
 	PageSequence(LayoutMaster master) { //, int pageOffset, FormatterFactory formatterFactory) {
@@ -47,6 +47,14 @@ class PageSequence {
 	
 	public int getPageNumberOffset() {
 		return pagesOffset;
+	}
+	
+	boolean isSequenceEmpty() {
+		return pages.isEmpty();
+	}
+	
+	PageImpl peek() {
+		return pages.peek();
 	}
 
 }
