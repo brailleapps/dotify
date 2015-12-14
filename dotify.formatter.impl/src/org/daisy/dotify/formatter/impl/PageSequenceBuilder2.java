@@ -31,7 +31,6 @@ class PageSequenceBuilder2 {
 	private final PageAreaProperties areaProps;
 
 	private int keepNextSheets;
-	private PageImpl nextPage;
 	private ContentCollectionImpl collection;
 	private BlockContext blockContext;
 	private final PageSequence ps;
@@ -49,19 +48,13 @@ class PageSequenceBuilder2 {
 			this.collection = context.getCollections().get(areaProps.getCollectionId());
 		}
 		this.keepNextSheets = 0;
-		this.nextPage = null;
 		
 		this.blockContext = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
 		this.staticAreaContent = new PageAreaContent(seq.getLayoutMaster().getPageAreaBuilder(), blockContext);
 	}
 
 	private void newPage() {
-		if (nextPage!=null) {
-			ps.addPage(nextPage);
-			nextPage = null;
-		} else {
-			ps.addPage(new PageImpl(ps.getLayoutMaster(), context, ps, ps.getPageCount()+ps.getPageNumberOffset(), staticAreaContent.getBefore(), staticAreaContent.getAfter()));
-		}
+		ps.addPage(new PageImpl(ps.getLayoutMaster(), context, ps, ps.getPageCount()+ps.getPageNumberOffset(), staticAreaContent.getBefore(), staticAreaContent.getAfter()));
 		if (keepNextSheets>0) {
 			currentPage().setAllowsVolumeBreak(false);
 		}
@@ -84,11 +77,7 @@ class PageSequenceBuilder2 {
 	}
 	
 	private PageImpl currentPage() {
-		if (nextPage!=null) {
-			return nextPage;
-		} else {
-			return ps.peek();
-		}
+		return ps.peek();
 	}
 
 	/**
@@ -101,7 +90,7 @@ class PageSequenceBuilder2 {
 	}
 
 	private void newRow(RowImpl row) {
-		if (spaceUsedOnPage(1) > currentPage().getFlowHeight() || nextPage != null) {
+		if (spaceUsedOnPage(1) > currentPage().getFlowHeight()) {
 			newPage();
 		}
 		currentPage().newRow(row);
