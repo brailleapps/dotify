@@ -41,7 +41,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	
 	//CrossReferenceHandler
 	private final Map<Integer, Volume> volumes;
-	private PageStructBuilder ps;
+	private PageStruct ps;
 	private EvenSizeVolumeSplitterCalculator sdc;
 	private boolean isDirty;
 	private boolean volumeForContentSheetChanged;
@@ -269,9 +269,9 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	}
 
 
-	private PageStructBuilder updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
+	private PageStruct updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
 		DefaultContext c = new DefaultContext(volumeNumber, sdc.getVolumeCount());
-		PageStructBuilder ret = null;
+		PageStruct ret = null;
 		try {
 			ArrayList<BlockSequence> ib = new ArrayList<>();
 			for (VolumeTemplate t : volumeTemplates) {
@@ -323,7 +323,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		return DEFAULT_SPLITTER_MAX;
 	}	
 	
-	public PageStructBuilder getContents() {
+	public PageStruct getContents() {
 		return ps;
 	}
 	

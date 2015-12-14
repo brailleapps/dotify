@@ -12,8 +12,8 @@ import org.daisy.dotify.common.collection.CompoundIterable;
 class Volume {
 	private CompoundIterable<PageSequence> ret;
 	private Iterable<PageSequence> body;
-	private PageStructBuilder preVolData;
-	private PageStructBuilder postVolData;
+	private PageStruct preVolData;
+	private PageStruct postVolData;
 	private final int volumeNumber;
 	private int preVolSize;
 	private int postVolSize;
@@ -27,7 +27,7 @@ class Volume {
 		this.targetVolSize = 0;
 	}
 	
-	public PageStructBuilder getPreVolData() {
+	public PageStruct getPreVolData() {
 		return preVolData;
 	}
 
@@ -40,18 +40,18 @@ class Volume {
 		this.body = body;
 	}
 
-	public void setPreVolData(PageStructBuilder preVolData) {
+	public void setPreVolData(PageStruct preVolData) {
 		ret = null;
 		//use the highest value to avoid oscillation
 		preVolSize = Math.max(preVolSize, preVolData.countSheets());
 		this.preVolData = preVolData;
 	}
 
-	public PageStructBuilder getPostVolData() {
+	public PageStruct getPostVolData() {
 		return postVolData;
 	}
 
-	public void setPostVolData(PageStructBuilder postVolData) {
+	public void setPostVolData(PageStruct postVolData) {
 		ret = null;
 		//use the highest value to avoid oscillation
 		postVolSize = Math.max(postVolSize, postVolData.countSheets());
