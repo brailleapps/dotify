@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 import org.daisy.dotify.api.formatter.CompoundField;
@@ -24,7 +25,7 @@ import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.common.text.StringTools;
 
 
-
+//FIXME: scope spread is currently implemented using document wide scope, i.e. across volume boundaries. This is wrong, but is better than the previous sequence scope.
 /**
  * Provides a page object.
  * 
@@ -418,7 +419,12 @@ class PageImpl implements Page {
 			ret = resolveCompoundField((CompoundField)field, p, b2);
 		} else if (field instanceof MarkerReferenceField) {
 			MarkerReferenceField f2 = (MarkerReferenceField)field;
-			PageImpl start = p.getPageWithOffset(f2.getOffset(), p.shouldAdjustOutOfBounds(f2));
+			PageImpl start;
+			if (f2.getSearchScope()==MarkerSearchScope.SPREAD) {
+				start = p.getPageInDocumentWithOffset(f2.getOffset(), p.shouldAdjustOutOfBounds(f2));
+			} else {
+				start = p.getPageInSequenceWithOffset(f2.getOffset(), p.shouldAdjustOutOfBounds(f2));
+			}
 			ret = findMarker(start, f2);
 		} else if (field instanceof CurrentPageField) {
 			ret = resolveCurrentPageField((CurrentPageField)field, p);
@@ -468,15 +474,20 @@ class PageImpl implements Page {
 			index += dir; 
 			count++;
 		}
+		PageImpl next = null;
 		if (markerRef.getSearchScope() == MarkerReferenceField.MarkerSearchScope.SEQUENCE ||
-			markerRef.getSearchScope() == MarkerSearchScope.SHEET && page.isWithinSheetScope(dir) ||
-			markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinSpreadScope(dir)) {
-			PageImpl next = page.getPageWithOffset(dir, false);
-			if (next!=null) {
-				return findMarker(next, markerRef);
-			}
+			markerRef.getSearchScope() == MarkerSearchScope.SHEET && page.isWithinSheetScope(dir) //||
+			//markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinSequenceSpreadScope(dir)
+			) {
+			next = page.getPageInSequenceWithOffset(dir, false);
+		} else if (markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinDocumentSpreadScope(dir)) {
+			next = page.getPageInDocumentWithOffset(dir, false);
 		}
-		return "";
+		if (next!=null) {
+			return findMarker(next, markerRef);
+		} else {
+			return "";
+		}
 	}
 	
 	private boolean shouldAdjustOutOfBounds(MarkerReferenceField markerRef) {
@@ -490,7 +501,8 @@ class PageImpl implements Page {
 			case SEQUENCE: case VOLUME: case DOCUMENT:
 				return true;
 			case SPREAD:
-				return  isWithinSpreadScope(markerRef.getOffset());				
+				//return  isWithinSequenceSpreadScope(markerRef.getOffset());				
+				return  isWithinDocumentSpreadScope(markerRef.getOffset());
 			case SHEET:
 				return isWithinSheetScope(markerRef.getOffset()) && 
 						markerRef.getSearchDirection()==MarkerSearchDirection.BACKWARD;
@@ -499,8 +511,13 @@ class PageImpl implements Page {
 			}
 		}
 	}
-	
-	private boolean isWithinSpreadScope(int offset) {
+
+	/*
+	 * This method is unused at the moment, but could be activated once additional scopes are added to the API,
+	 * namely SPREAD_WITHIN_SEQUENCE
+	 */
+	@SuppressWarnings("unused") 
+	private boolean isWithinSequenceSpreadScope(int offset) {
 		return 	offset==0 ||
 				(
 					getSequenceParent().getLayoutMaster().duplex() && 
@@ -509,6 +526,23 @@ class PageImpl implements Page {
 						(offset == -1 && getPageOrdinal() % 2 == 0)
 					)
 				);
+	}
+	
+	private boolean isWithinDocumentSpreadScope(int offset) {
+		if (offset==0) {
+			return true;
+		} else {
+			PageImpl n = getPageInDocumentWithOffset(offset, false);
+			if (n==null) { 
+				return ((offset == 1 && getPageOrdinal() % 2 == 1) ||
+						(offset == -1 && getPageOrdinal() % 2 == 0));
+			} else {
+				return (
+						(offset == 1 && getPageOrdinal() % 2 == 1 && getSequenceParent().getLayoutMaster().duplex()==true) ||
+						(offset == -1 && getPageOrdinal() % 2 == 0 && n.getSequenceParent().getLayoutMaster().duplex()==true && n.getPageOrdinal() % 2 == 1)
+					);
+			}
+		}
 	}
 	
 	private boolean isWithinSheetScope(int offset) {
@@ -522,7 +556,7 @@ class PageImpl implements Page {
 				);
 	}
 	
-	private PageImpl getPageWithOffset(int offset, boolean adjustOutOfBounds) {
+	private PageImpl getPageInSequenceWithOffset(int offset, boolean adjustOutOfBounds) {
 		if (offset==0) {
 			return this;
 		} else {
@@ -533,6 +567,23 @@ class PageImpl implements Page {
 			}
 			if (next < parent.getPageCount() && next >= 0) {
 				return parent.getPage(next);
+			}
+			return null;
+		}
+	}
+	
+	private PageImpl getPageInDocumentWithOffset(int offset, boolean adjustOutOfBounds) {
+		if (offset==0) {
+			return this;
+		} else {
+			Stack<PageImpl> documentScope = getSequenceParent().getParent().getPages();
+			int next = getSequenceParent().getGlobalStartIndex()+getPageOrdinal()+offset;
+			int size = documentScope.size();
+			if (adjustOutOfBounds) {
+				next = Math.min(size-1, Math.max(0, next));
+			}
+			if (next < size && next >= 0) {
+				return documentScope.get(next);
 			}
 			return null;
 		}

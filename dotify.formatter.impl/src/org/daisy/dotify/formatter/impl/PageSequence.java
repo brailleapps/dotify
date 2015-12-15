@@ -77,4 +77,12 @@ class PageSequence {
 		return pages.get(toIndex-1);
 	}
 
+	/**
+	 * Gets the index for the first page in this sequence, counting all preceding pages in the document, zero-based. 
+	 * @return returns the first index
+	 */
+	int getGlobalStartIndex() {
+		return fromIndex;
+	}
+
 }
