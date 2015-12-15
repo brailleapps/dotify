@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.lang.ref.WeakReference;
 import java.util.Stack;
 
 /**
@@ -9,13 +10,15 @@ import java.util.Stack;
  */
 class PageSequence {
 	private final Stack<PageImpl> pages;
+	private final WeakReference<PageStruct> parent;
 	private final LayoutMaster master;
 	private final int pageOffset;
 	private final int fromIndex;
 	private int toIndex;
 	
-	PageSequence(Stack<PageImpl> pages, LayoutMaster master, int pageOffset) { //, int pageOffset, FormatterFactory formatterFactory) {
-		this.pages = pages;
+	PageSequence(PageStruct parent, LayoutMaster master, int pageOffset) { //, int pageOffset, FormatterFactory formatterFactory) {
+		this.pages = parent.getPages();
+		this.parent = new WeakReference<>(parent);
 		this.master = master;
 		this.pageOffset = pageOffset;
 		this.fromIndex = pages.size();
@@ -25,6 +28,10 @@ class PageSequence {
 	void addPage(PageImpl p) {
 		pages.add(p);
 		toIndex++;
+	}
+	
+	PageStruct getParent() {
+		return parent.get();
 	}
 
 	/**

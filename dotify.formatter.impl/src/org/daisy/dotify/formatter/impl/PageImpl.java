@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -32,7 +33,7 @@ import org.daisy.dotify.common.text.StringTools;
 class PageImpl implements Page {
 	private final static Pattern trailingWs = Pattern.compile("\\s*\\z");
 	private final static Pattern softHyphen = Pattern.compile("\u00ad");
-	private final PageSequence parent;
+	private final WeakReference<PageSequence> parent;
 	private final LayoutMaster master;
 	private final FormatterContext fcontext;
 	private final List<RowImpl> before;
@@ -63,7 +64,7 @@ class PageImpl implements Page {
 		this.identifiers = new ArrayList<>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
-		this.parent = parent;
+		this.parent = new WeakReference<>(parent);
 		this.template = master.getTemplate(pageIndex+1);
 		this.flowHeight = master.getPageHeight() - 
 				(int)Math.ceil(getHeight(template.getHeader(), master.getRowSpacing())) -
@@ -349,11 +350,15 @@ class PageImpl implements Page {
 	 * @return returns the ordinal number for the page
 	 */
 	public int getPageOrdinal() {
-		return pageIndex-parent.getPageNumberOffset();
+		return pageIndex-getSequenceParent().getPageNumberOffset();
 	}
 
-	public PageSequence getParent() {
-		return parent;
+	public PageSequence getSequenceParent() {
+		return parent.get();
+	}
+	
+	PageStruct getStructParent() {
+		return getSequenceParent().getParent();
 	}
 	
 	/**
@@ -498,7 +503,7 @@ class PageImpl implements Page {
 	private boolean isWithinSpreadScope(int offset) {
 		return 	offset==0 ||
 				(
-					getParent().getLayoutMaster().duplex() && 
+					getSequenceParent().getLayoutMaster().duplex() && 
 					(
 						(offset == 1 && getPageOrdinal() % 2 == 1) ||
 						(offset == -1 && getPageOrdinal() % 2 == 0)
@@ -509,7 +514,7 @@ class PageImpl implements Page {
 	private boolean isWithinSheetScope(int offset) {
 		return 	offset==0 || 
 				(
-					getParent().getLayoutMaster().duplex() &&
+					getSequenceParent().getLayoutMaster().duplex() &&
 					(
 						(offset == 1 && getPageOrdinal() % 2 == 0) ||
 						(offset == -1 && getPageOrdinal() % 2 == 1)
@@ -521,7 +526,7 @@ class PageImpl implements Page {
 		if (offset==0) {
 			return this;
 		} else {
-			PageSequence parent = getParent();
+			PageSequence parent = getSequenceParent();
 			int next = getPageIndex() - parent.getPageNumberOffset() + offset;
 			if (adjustOutOfBounds) {
 				next = Math.min(parent.getPageCount()-1, Math.max(0, next));
