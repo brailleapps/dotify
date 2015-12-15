@@ -11,15 +11,20 @@ class PageSequence {
 	private final Stack<PageImpl> pages;
 	private final LayoutMaster master;
 	private final int pageOffset;
+	private final int fromIndex;
+	private int toIndex;
 	
-	PageSequence(LayoutMaster master, int pageOffset) { //, int pageOffset, FormatterFactory formatterFactory) {
-		this.pages = new Stack<>();
+	PageSequence(Stack<PageImpl> pages, LayoutMaster master, int pageOffset) { //, int pageOffset, FormatterFactory formatterFactory) {
+		this.pages = pages;
 		this.master = master;
 		this.pageOffset = pageOffset;
+		this.fromIndex = pages.size();
+		this.toIndex = pages.size();
 	}
 	
 	void addPage(PageImpl p) {
 		pages.add(p);
+		toIndex++;
 	}
 
 	/**
@@ -35,15 +40,18 @@ class PageSequence {
 	 * @return returns the number of pages in this sequence
 	 */
 	public int getPageCount() {
-		return pages.size();
+		return toIndex-fromIndex;
 	}
 
 	public PageImpl getPage(int index) {
-		return pages.get(index);
+		if (index<0 || index>=getPageCount()) {
+			throw new ArrayIndexOutOfBoundsException(index);
+		}
+		return pages.get(index+fromIndex);
 	}
 
 	public Iterable<PageImpl> getPages() {
-		return pages;
+		return pages.subList(fromIndex, toIndex);
 	}
 	
 	int currentPageNumber() {
@@ -55,11 +63,11 @@ class PageSequence {
 	}
 	
 	boolean isSequenceEmpty() {
-		return pages.isEmpty();
+		return toIndex-fromIndex == 0;
 	}
 	
 	PageImpl peek() {
-		return pages.peek();
+		return pages.get(toIndex-1);
 	}
 
 }

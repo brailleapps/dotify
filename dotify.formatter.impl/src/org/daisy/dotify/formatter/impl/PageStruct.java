@@ -10,9 +10,11 @@ import java.util.Stack;
 class PageStruct implements Iterable<PageSequence> {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Stack<PageSequence> seqs;
+	private final Stack<PageImpl> pages;
 	
 	PageStruct() {
 		seqs = new Stack<>();
+		pages = new Stack<>();
 	}
 
 	int countPages() {
@@ -100,6 +102,10 @@ class PageStruct implements Iterable<PageSequence> {
 		return seqs.size();
 	}
 	
+	Stack<PageImpl> getPages() {
+		return pages;
+	}
+	
 	/**
 	 * Makes a new sub structure starting from the pageIndex with the specified
 	 * number of sheets
@@ -129,7 +135,7 @@ class PageStruct implements Iterable<PageSequence> {
 					if (sheets + i<=contentSheets) {
 						if (body.empty() || originalSeq != ps) {
 							originalSeq = ps;
-							body.add(new PageSequence(originalSeq.getLayoutMaster(), originalSeq.getPageNumberOffset())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
+							body.add(new PageSequence(body.pages, originalSeq.getLayoutMaster(), originalSeq.getPageNumberOffset())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
 							pagesInSeq = 0;
 						}
 						((PageSequence)body.peek()).addPage(p);
