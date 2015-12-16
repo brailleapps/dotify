@@ -147,7 +147,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			} catch (PaginatorException e) {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
-			final int contents = ps.countSheets(); 
+			final int contents = PageStruct.countSheets(ps); 
 			this.sdc = new EvenSizeVolumeSplitterCalculator(contents, reformatSplitterMax);
 			// make a preliminary calculation based on contents only
 			
@@ -212,9 +212,9 @@ public class FormatterImpl implements Formatter, CrossReferences {
 					logger.fine("Sheets  in volume " + i + ": " + (contentSheets+volume.getOverhead()) + 
 							", content:" + contentSheets +
 							", overhead:" + volume.getOverhead());
-					PageStruct body = ps.substruct(pageIndex, contentSheets);
-					pageIndex += body.countPages();
-					int sheetsInVolume = body.countSheets() + volume.getOverhead();
+					Iterable<PageSequence> body = ps.substruct(pageIndex, contentSheets);
+					pageIndex += PageStruct.countPages(body);
+					int sheetsInVolume = PageStruct.countSheets(body) + volume.getOverhead();
 					if (sheetsInVolume>volume.getTargetSize()) {
 						ok2 = false;
 						logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
@@ -239,7 +239,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			}
 			if (volBreaks.hasNext()) {
 				ok2 = false;
-				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(ps.countPages()-pageIndex));
+				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
 				if (!isDirty()) {
 					if (volumeOffset < 1) {
 						//First check to see if the page increase can will be handled automatically without increasing volume offset 
@@ -253,7 +253,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 					}
 				}
 			}
-			if (!isDirty() && pageIndex==ps.countPages() && ok2) {
+			if (!isDirty() && pageIndex==PageStruct.countPages(ps) && ok2) {
 				//everything fits
 				ok = true;
 			} else if (j>9) {

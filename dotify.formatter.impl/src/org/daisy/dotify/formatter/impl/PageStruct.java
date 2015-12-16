@@ -17,7 +17,7 @@ class PageStruct implements Iterable<PageSequence> {
 		pages = new Stack<>();
 	}
 
-	int countPages() {
+	static int countPages(Iterable<PageSequence> seqs) {
 		int size = 0;
 		for (PageSequence ps : seqs) {
 			size += ps.getPageCount();
@@ -25,7 +25,7 @@ class PageStruct implements Iterable<PageSequence> {
 		return size;
 	}
 
-	int countSheets() {
+	static int countSheets(Iterable<PageSequence> seqs) {
 		int sheets = 0;
 		for (PageSequence seq : seqs) {
 			LayoutMaster lm = seq.getLayoutMaster();
@@ -113,7 +113,7 @@ class PageStruct implements Iterable<PageSequence> {
 	 * @param contentSheets the number of sheets
 	 * @return
 	 */
-	PageStruct substruct(int pageIndex, int contentSheets) {
+	Iterable<PageSequence> substruct(int pageIndex, int contentSheets) {
 		PageStruct body = new PageStruct();
 		PageSequence originalSeq = null;
 		int sheets = 0;
@@ -124,7 +124,7 @@ class PageStruct implements Iterable<PageSequence> {
 		process:for (PageSequence ps : seqs) {
 			while (pageIndex-offs < ps.getPageCount()) {
 				p = ps.getPage(pageIndex-offs);
-				if (pageIndex<countPages()) {
+				if (pageIndex<countPages(this)) {
 
 					//new sheet needed for this page?
 					if (originalSeq != ps || !ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {
