@@ -21,90 +21,90 @@ public class ObflWsXsltTest {
 
 	@Test
 	public void testWsNormalizer_01() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-01.xml", "resource-files/ws-test-expected-01.xml", "01");
+		int ret = testWsNormalizer("resource-files/ws-test-input-01.xml", "resource-files/ws-test-expected-01.xml", "01", false);
 		assertTrue("Compare (Toc) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_02() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-02.xml", "resource-files/ws-test-expected-02.xml", "02");
+		int ret = testWsNormalizer("resource-files/ws-test-input-02.xml", "resource-files/ws-test-expected-02.xml", "02", false);
 		assertTrue("Compare (Block) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_03() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-03.xml", "resource-files/ws-test-expected-03.xml", "03");
+		int ret = testWsNormalizer("resource-files/ws-test-input-03.xml", "resource-files/ws-test-expected-03.xml", "03", false);
 		assertTrue("Compare (Span) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_04() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-04.xml", "resource-files/ws-test-expected-04.xml", "04");
+		int ret = testWsNormalizer("resource-files/ws-test-input-04.xml", "resource-files/ws-test-expected-04.xml", "04", false);
 		assertTrue("Compare (Line breaks) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_05() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-05.xml", "resource-files/ws-test-expected-05.xml", "05");
+		int ret = testWsNormalizer("resource-files/ws-test-input-05.xml", "resource-files/ws-test-expected-05.xml", "05", false);
 		assertTrue("Compare (Leader) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_06() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-06.xml", "resource-files/ws-test-expected-06.xml", "06");
+		int ret = testWsNormalizer("resource-files/ws-test-input-06.xml", "resource-files/ws-test-expected-06.xml", "06", false);
 		assertTrue("Compare (Evaluate) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_07() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-07.xml", "resource-files/ws-test-expected-07.xml", "07");
+		int ret = testWsNormalizer("resource-files/ws-test-input-07.xml", "resource-files/ws-test-expected-07.xml", "07", false);
 		assertTrue("Compare (Page number) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_08() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-08.xml", "resource-files/ws-test-expected-08.xml", "08");
+		int ret = testWsNormalizer("resource-files/ws-test-input-08.xml", "resource-files/ws-test-expected-08.xml", "08", false);
 		assertTrue("Compare (Marker) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_09() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-09.xml", "resource-files/ws-test-expected-09.xml", "09");
+		int ret = testWsNormalizer("resource-files/ws-test-input-09.xml", "resource-files/ws-test-expected-09.xml", "09", false);
 		assertTrue("Compare (Anchor) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_10() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-10.xml", "resource-files/ws-test-expected-10.xml", "10");
+		int ret = testWsNormalizer("resource-files/ws-test-input-10.xml", "resource-files/ws-test-expected-10.xml", "10", false);
 		assertTrue("Compare (Style) failed at byte: " + ret, ret == -1);
 	}
 
 	@Test
 	public void testWsNormalizer_11() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-11.xml", "resource-files/ws-test-expected-11.xml", "11");
+		int ret = testWsNormalizer("resource-files/ws-test-input-11.xml", "resource-files/ws-test-expected-11.xml", "11", false);
 		assertTrue("Compare (NBSP) failed at byte: " + ret, ret == -1);
 	}
 	
 	@Test
 	public void testWsNormalizer_12() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-12.xml", "resource-files/ws-test-expected-12.xml", "12");
+		int ret = testWsNormalizer("resource-files/ws-test-input-12.xml", "resource-files/ws-test-expected-12.xml", "12", false);
 		assertTrue("Compare (Before/After) failed at byte: " + ret, ret == -1);
 	}
 	
 	@Test
 	public void testWsNormalizer_13() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-13.xml", "resource-files/ws-test-expected-13.xml", "13");
+		int ret = testWsNormalizer("resource-files/ws-test-input-13.xml", "resource-files/ws-test-expected-13.xml", "13", false);
 		assertTrue("Compare (Before/After) failed at byte: " + ret, ret == -1);
 	}
 	
 	@Test
 	public void testWsNormalizer_14() throws IOException, XMLStreamException {
-		int ret = testWsNormalizer("resource-files/ws-test-input-14.xml", "resource-files/ws-test-expected-14.xml", "14");
+		int ret = testWsNormalizer("resource-files/ws-test-input-14.xml", "resource-files/ws-test-expected-14.xml", "14", false);
 		assertTrue("Compare (Item) failed at byte: " + ret, ret == -1);
 	}
 
 	// Helpers
-	public int testWsNormalizer(String input, String expected, String id) throws IOException, XMLStreamException {
+	public int testWsNormalizer(String input, String expected, String id, boolean keep) throws IOException, XMLStreamException {
 		
 		File in = File.createTempFile("TestInput-"+id+"-", ".tmp");
 		copy(this.getClass().getResourceAsStream(input), new FileOutputStream(in));
@@ -127,10 +127,10 @@ public class ObflWsXsltTest {
 			e.printStackTrace();
 		}
 		
-		if (!normalizedFile.delete()) {
+		if (!keep && !normalizedFile.delete()) {
 			normalizedFile.deleteOnExit();
 		}
-		if (!in.delete()) {
+		if (!keep && !in.delete()) {
 			in.deleteOnExit();
 		}
 		
