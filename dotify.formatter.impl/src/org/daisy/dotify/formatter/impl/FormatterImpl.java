@@ -213,7 +213,9 @@ public class FormatterImpl implements Formatter, CrossReferences {
 							", content:" + contentSheets +
 							", overhead:" + volume.getOverhead());
 					Iterable<PageSequence> body = ps.substruct(pageIndex, contentSheets);
-					pageIndex += PageStruct.countPages(body);
+					int pageCount = PageStruct.countPages(body);
+					ps.setVolumeScope(i, pageIndex, pageIndex+pageCount);
+					pageIndex += pageCount;
 					int sheetsInVolume = PageStruct.countSheets(body) + volume.getOverhead();
 					if (sheetsInVolume>volume.getTargetSize()) {
 						ok2 = false;

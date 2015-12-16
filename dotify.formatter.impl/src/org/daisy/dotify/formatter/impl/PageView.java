@@ -32,7 +32,7 @@ class PageView {
 		return pages.get(index+fromIndex);
 	}
 
-	public Iterable<PageImpl> getPages() {
+	public List<PageImpl> getPages() {
 		return pages.subList(fromIndex, toIndex);
 	}
 
@@ -42,6 +42,10 @@ class PageView {
 	
 	PageImpl peek() {
 		return pages.get(toIndex-1);
+	}
+	
+	int toLocalIndex(int globalIndex) {
+		return globalIndex-fromIndex;
 	}
 	
 	/**

@@ -1,6 +1,8 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -11,10 +13,12 @@ class PageStruct implements Iterable<PageSequence> {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final Stack<PageSequence> seqs;
 	private final Stack<PageImpl> pages;
+	private final Map<Integer, PageView> volumeViews;
 	
 	PageStruct() {
 		seqs = new Stack<>();
 		pages = new Stack<>();
+		volumeViews = new HashMap<>();
 	}
 
 	static int countPages(Iterable<PageSequence> seqs) {
@@ -106,6 +110,14 @@ class PageStruct implements Iterable<PageSequence> {
 		return pages;
 	}
 	
+	PageView getPageView() {
+		return new PageView(pages, 0, pages.size());
+	}
+	
+	PageView getContentsInVolume(int volumeNumber) {
+		return volumeViews.get(volumeNumber);
+	}
+	
 	/**
 	 * Makes a new sub structure starting from the pageIndex with the specified
 	 * number of sheets
@@ -156,6 +168,14 @@ class PageStruct implements Iterable<PageSequence> {
 			offs += ps.getPageCount();
 		}
 		return body;
+	}
+	
+	void setVolumeScope(int volumeNumber, int fromIndex, int toIndex) {
+		PageView pw = new PageView(pages, fromIndex, toIndex);
+		for (PageImpl p : pw.getPages()) {
+			p.setVolumeNumber(volumeNumber);
+		}
+		volumeViews.put(volumeNumber, pw);
 	}
 
 	@Override

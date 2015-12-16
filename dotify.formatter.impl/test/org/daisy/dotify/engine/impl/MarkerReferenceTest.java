@@ -23,6 +23,11 @@ public class MarkerReferenceTest extends AbstractFormatterEngineTest {
 	}
 	
 	@Test
+	public void testSpreadVolumeMarker() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/marker-ref-spread-volume-input.obfl", "resource-files/marker-ref-spread-volume-expected.pef", false);
+	}
+	
+	@Test
 	public void testSheetMarker() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/marker-ref-sheet-input.obfl", "resource-files/marker-ref-sheet-expected.pef", false);
 	}

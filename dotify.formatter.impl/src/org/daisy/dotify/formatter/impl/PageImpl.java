@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.regex.Pattern;
 
 import org.daisy.dotify.api.formatter.CompoundField;
@@ -47,10 +46,13 @@ class PageImpl implements Page {
 	private final int pageIndex;
 	private final int flowHeight;
 	private final PageTemplate template;
+	private final int pageId;
 	private int contentMarkersBegin;
 	private boolean isVolBreak;
 	private boolean isVolBreakAllowed;
 	private int keepPreviousSheets;
+	private int volumeNumber;
+	
 	
 	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequence parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
 		this.master = master;
@@ -74,6 +76,8 @@ class PageImpl implements Page {
 		this.isVolBreak = false;
 		this.isVolBreakAllowed = true;
 		this.keepPreviousSheets = 0;
+		this.volumeNumber = 0;
+		this.pageId = parent.getGlobalStartIndex()+getPageOrdinal();
 	}
 	
 	static float getHeight(List<FieldList> list, float def) {
@@ -353,6 +357,10 @@ class PageImpl implements Page {
 	public int getPageOrdinal() {
 		return pageIndex-getSequenceParent().getPageNumberOffset();
 	}
+	
+	int getPageId() {
+		return pageId;
+	}
 
 	public PageSequence getSequenceParent() {
 		return parent.get();
@@ -421,7 +429,7 @@ class PageImpl implements Page {
 			MarkerReferenceField f2 = (MarkerReferenceField)field;
 			PageImpl start;
 			if (f2.getSearchScope()==MarkerSearchScope.SPREAD) {
-				start = p.getPageInDocumentWithOffset(f2.getOffset(), p.shouldAdjustOutOfBounds(f2));
+				start = p.getPageInVolumeWithOffset(f2.getOffset(), p.shouldAdjustOutOfBounds(f2));
 			} else {
 				start = p.getPageInSequenceWithOffset(f2.getOffset(), p.shouldAdjustOutOfBounds(f2));
 			}
@@ -480,8 +488,9 @@ class PageImpl implements Page {
 			//markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinSequenceSpreadScope(dir)
 			) {
 			next = page.getPageInSequenceWithOffset(dir, false);
-		} else if (markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinDocumentSpreadScope(dir)) {
-			next = page.getPageInDocumentWithOffset(dir, false);
+		} //else if (markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinDocumentSpreadScope(dir)) {
+			else if (markerRef.getSearchScope() == MarkerSearchScope.SPREAD && page.isWithinVolumeSpreadScope(dir)) {
+			next = page.getPageInVolumeWithOffset(dir, false);
 		}
 		if (next!=null) {
 			return findMarker(next, markerRef);
@@ -502,7 +511,8 @@ class PageImpl implements Page {
 				return true;
 			case SPREAD:
 				//return  isWithinSequenceSpreadScope(markerRef.getOffset());				
-				return  isWithinDocumentSpreadScope(markerRef.getOffset());
+				//return  isWithinDocumentSpreadScope(markerRef.getOffset());
+				return isWithinVolumeSpreadScope(markerRef.getOffset());
 			case SHEET:
 				return isWithinSheetScope(markerRef.getOffset()) && 
 						markerRef.getSearchDirection()==MarkerSearchDirection.BACKWARD;
@@ -528,20 +538,38 @@ class PageImpl implements Page {
 				);
 	}
 	
+	/*
+	 * This method is unused at the moment, but could be activated if additional scopes are added to the API,
+	 * namely SPREAD_WITHIN_DOCUMENT
+	 */
+	@SuppressWarnings("unused")
 	private boolean isWithinDocumentSpreadScope(int offset) {
 		if (offset==0) {
 			return true;
 		} else {
 			PageImpl n = getPageInDocumentWithOffset(offset, false);
-			if (n==null) { 
-				return ((offset == 1 && getPageOrdinal() % 2 == 1) ||
-						(offset == -1 && getPageOrdinal() % 2 == 0));
-			} else {
-				return (
-						(offset == 1 && getPageOrdinal() % 2 == 1 && getSequenceParent().getLayoutMaster().duplex()==true) ||
-						(offset == -1 && getPageOrdinal() % 2 == 0 && n.getSequenceParent().getLayoutMaster().duplex()==true && n.getPageOrdinal() % 2 == 1)
-					);
-			}
+			return isWithinSpreadScope(offset, n);
+		}
+	}
+	
+	private boolean isWithinVolumeSpreadScope(int offset) {
+		if (offset==0) {
+			return true;
+		} else {
+			PageImpl n = getPageInVolumeWithOffset(offset, false);
+			return isWithinSpreadScope(offset, n);
+		}
+	}
+	
+	private boolean isWithinSpreadScope(int offset, PageImpl n) {
+		if (n==null) { 
+			return ((offset == 1 && getPageOrdinal() % 2 == 1) ||
+					(offset == -1 && getPageOrdinal() % 2 == 0));
+		} else {
+			return (
+					(offset == 1 && getPageOrdinal() % 2 == 1 && getSequenceParent().getLayoutMaster().duplex()==true) ||
+					(offset == -1 && getPageOrdinal() % 2 == 0 && n.getSequenceParent().getLayoutMaster().duplex()==true && n.getPageOrdinal() % 2 == 1)
+				);
 		}
 	}
 	
@@ -572,18 +600,36 @@ class PageImpl implements Page {
 		}
 	}
 	
+	private PageImpl getPageInVolumeWithOffset(int offset, boolean adjustOutOfBounds) {
+		if (offset==0) {
+			return this;
+		} else {
+			return getPageInScope(getSequenceParent().getParent().getContentsInVolume(getVolumeNumber()), offset, adjustOutOfBounds);
+		}
+	}
+
 	private PageImpl getPageInDocumentWithOffset(int offset, boolean adjustOutOfBounds) {
 		if (offset==0) {
 			return this;
 		} else {
-			Stack<PageImpl> documentScope = getSequenceParent().getParent().getPages();
-			int next = getSequenceParent().getGlobalStartIndex()+getPageOrdinal()+offset;
-			int size = documentScope.size();
-			if (adjustOutOfBounds) {
-				next = Math.min(size-1, Math.max(0, next));
-			}
-			if (next < size && next >= 0) {
-				return documentScope.get(next);
+			return getPageInScope(getSequenceParent().getParent().getPageView(), offset, adjustOutOfBounds);
+		}
+	}
+	
+	private PageImpl getPageInScope(PageView pageView, int offset, boolean adjustOutOfBounds) {
+		if (offset==0) {
+			return this;
+		} else {
+			if (pageView!=null) {
+				List<PageImpl> scope = pageView.getPages();
+				int next = pageView.toLocalIndex(getPageId())+offset;
+				int size = scope.size();
+				if (adjustOutOfBounds) {
+					next = Math.min(size-1, Math.max(0, next));
+				}
+				if (next < size && next >= 0) {
+					return scope.get(next);
+				}
 			}
 			return null;
 		}
@@ -645,6 +691,14 @@ class PageImpl implements Page {
 
 	PageTemplate getPageTemplate() {
 		return template;
+	}
+
+	int getVolumeNumber() {
+		return volumeNumber;
+	}
+
+	void setVolumeNumber(int volumeNumber) {
+		this.volumeNumber = volumeNumber;
 	}
 
 }
