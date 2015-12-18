@@ -30,7 +30,7 @@ subprojects {
 
 	javadoc {
 		options.encoding = 'UTF-8'
-		options.links('http://docs.oracle.com/javase/6/docs/api/')
+		options.links('http://docs.oracle.com/javase/7/docs/api/')
 	}
 	
 	pmd {
