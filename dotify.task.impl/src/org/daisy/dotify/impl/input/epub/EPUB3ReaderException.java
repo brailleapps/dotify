@@ -1,4 +1,4 @@
-package se.mtm.epub;
+package org.daisy.dotify.impl.input.epub;
 
 public class EPUB3ReaderException extends Exception {
 

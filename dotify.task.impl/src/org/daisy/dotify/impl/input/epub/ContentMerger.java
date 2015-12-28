@@ -1,4 +1,4 @@
-package se.mtm.epub;
+package org.daisy.dotify.impl.input.epub;
 
 import java.io.File;
 import java.io.IOException;

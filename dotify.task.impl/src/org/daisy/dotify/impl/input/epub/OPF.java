@@ -1,4 +1,4 @@
-package se.mtm.epub;
+package org.daisy.dotify.impl.input.epub;
 
 import java.util.List;
 import java.util.Map;
