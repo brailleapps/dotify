@@ -23,6 +23,10 @@ public class ContentMerger {
 		this.epub = epub;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 	}
+	
+	public static void copyMerged(File epub, File output) throws EPUB3ReaderException {
+		new ContentMerger(epub).copyMerged(output);
+	}
 
 	public void copyMerged(File output) throws EPUB3ReaderException {
 		output.mkdirs();

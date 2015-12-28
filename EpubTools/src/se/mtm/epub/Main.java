@@ -29,25 +29,13 @@ public class Main {
 		}
 		Logger logger = Logger.getLogger(Main.class.getCanonicalName());
 		File unpacked = FileIO.createTempDir();
-
 		try {
-
 			logger.info("Unpacking...");
-			try {
-				ContentExtractor ext = new ContentExtractor();
-				ext.unpack(new FileInputStream(epub), unpacked);
-			} catch (FileNotFoundException e) {
-				throw new EPUB3ReaderException(e);
-			}
-
-			ContentMerger cm = new ContentMerger(unpacked);
-			cm.copyMerged(new File(args[1]));
-
+			ContentExtractor.unpack(new FileInputStream(epub), unpacked);
+			ContentMerger.copyMerged(unpacked, new File(args[1]));
 		} finally {
 			logger.info("Deleting temp folder: " + unpacked);
 			FileIO.deleteRecursive(unpacked);
 		}
-
 	}
-
 }

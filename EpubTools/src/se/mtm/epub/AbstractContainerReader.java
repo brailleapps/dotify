@@ -10,9 +10,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class AbstractContainerReader {
+class AbstractContainerReader {
 
-	protected Document readFromStreamAsXML(File f) throws EPUB3ReaderException {
+	Document readFromStreamAsXML(File f) throws EPUB3ReaderException {
 		try {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			return db.parse(f);

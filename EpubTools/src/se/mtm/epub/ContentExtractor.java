@@ -10,19 +10,22 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ContentExtractor {
-	private ZipInputStream zis;
-	private File output;
+	private final ZipInputStream zis;
+	private final File output;
 
-	public ContentExtractor() throws FileNotFoundException {
-	}
-
-	public void unpack(InputStream input, File output) throws EPUB3ReaderException {
+	private ContentExtractor(InputStream input, File output) throws EPUB3ReaderException {
 		this.output = output;
 		if (!output.isDirectory()) {
 			throw new EPUB3ReaderException("Path must be a directory.");
 		}
-		zis = new ZipInputStream(input);
+		this.zis = new ZipInputStream(input);
+	}
 
+	public static void unpack(InputStream input, File output) throws EPUB3ReaderException {
+		new ContentExtractor(input, output).unpack();
+	}
+	
+	private void unpack() throws EPUB3ReaderException {
 		try {
 			ZipEntry entry;
 			try {
