@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.tasks.InternalTask;
-import org.daisy.dotify.api.tasks.ReadOnlyTask;
-import org.daisy.dotify.api.tasks.ReadWriteTask;
 import org.daisy.dotify.api.tasks.TaskSystem;
 import org.daisy.dotify.api.tasks.TaskSystemException;
 import org.daisy.dotify.common.io.FileIO;
@@ -87,61 +85,67 @@ public class TaskRunner {
 		int i = 0;
 		NumberFormat nf = NumberFormat.getPercentInstance();
 		//FIXME: implement temp file handling as per issue #47
-		TempFileHandler fj = new TempFileHandler(input, output);
-		ArrayList<File> tempFiles = new ArrayList<File>();
-		for (InternalTask task : tasks) {
-			if (task instanceof ReadWriteTask) {
-				logger.info("Running (r/w) " + task.getName());
-				((ReadWriteTask)task).execute(fj.getInput(), fj.getOutput());
-				if (writeTempFiles) {
-					tempFiles.add(writeTempFile(fj.getOutput(), taskSystem.getName(), task.getName(), i));
-				}
-				fj.reset();
-			} else if (task instanceof ReadOnlyTask) {
-				logger.info("Running (r) " + task.getName());
-				((ReadOnlyTask)task).execute(fj.getInput());
-			} else {
-				logger.warning("Unknown task type, skipping.");
+		DefaultTempFileWriter tempWriter = (writeTempFiles?new DefaultTempFileWriter(taskSystem.getName()):null);
+		try (TempFileHandler fj = new TempFileHandler(input, output)) {
+			TaskRunnerCore itr = new TaskRunnerCore(fj, tempWriter);
+			for (InternalTask task : tasks) {
+				itr.runTask(task);
+				i++;
+				progress.updateProgress(i/(double)tasks.size());
+				logger.info(nf.format(progress.getProgress()) + " done. ETA " + progress.getETA());
+				//progress(i/tasks.size());
 			}
-			i++;
-			progress.updateProgress(i/(double)tasks.size());
-			logger.info(nf.format(progress.getProgress()) + " done. ETA " + progress.getETA());
-			//progress(i/tasks.size());
 		}
-		fj.close();
-		if (!keepTempFilesOnSuccess) {
+		if (!keepTempFilesOnSuccess && tempWriter!=null) {
 			// Process were successful, delete temp files
+			tempWriter.deleteTempFiles();
+		}
+		logger.info("\"" + taskSystem.getName() + "\" finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
+	}
+	
+
+	private class DefaultTempFileWriter implements TempFileWriter {
+		private final String name;
+		private final List<File> tempFiles;
+		
+		private DefaultTempFileWriter(String name) {
+			this.name = name;
+			this.tempFiles = new ArrayList<File>();
+		}
+		
+		@Override
+		public void writeTempFile(File source, String taskName, int i) throws IOException {
+			String it = ""+(i+1);
+			while (it.length()<3) {
+				it = "0" + it;
+			}
+			String fileName = (identifier + "-"
+							+ truncate(name, 20) + "-" 
+							+ it + "-" 
+							+ truncate(taskName, 20)
+						).toLowerCase().replaceAll("[^a-zA-Z0-9@\\-]+", "_");
+			fileName += ".tmp";
+			File f = new File(tempFilesFolder, fileName);
+			logger.fine("Writing debug file: " + f);
+			FileIO.copyFile(source, f);
+			tempFiles.add(f);
+		}
+		
+		private String truncate(String str, int pos) {
+			if (str.length()>pos) {
+				return str.substring(0, pos);
+			} else {
+				return str;
+			}
+		}
+		
+		private void deleteTempFiles() {
 			for (File f : tempFiles) {
 				if (!f.delete()) {
 					f.deleteOnExit();
 				}
 			}
 		}
-		logger.info("\"" + taskSystem.getName() + "\" finished in " + Math.round(progress.timeSinceStart()/100d)/10d + " s");
 	}
-	
-	private File writeTempFile(File source, String taskSystemName, String taskName, int i) throws IOException {
-		String it = ""+(i+1);
-		while (it.length()<3) {
-			it = "0" + it; 
-		}
-		String fileName = (identifier + "-"
-						+ truncate(taskSystemName, 20) + "-" 
-						+ it + "-" 
-						+ truncate(taskName, 20)
-					).toLowerCase().replaceAll("[^a-zA-Z0-9@\\-]+", "_");
-		fileName += ".tmp";
-		File f = new File(tempFilesFolder, fileName);
-		logger.fine("Writing debug file: " + f);
-		FileIO.copyFile(source, f);
-		return f;
-	}
-	
-	private String truncate(String str, int pos) {
-		if (str.length()>pos) {
-			return str.substring(0, pos);
-		} else {
-			return str;
-		}
-	}
+
 }
