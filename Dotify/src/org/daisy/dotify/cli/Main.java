@@ -40,7 +40,7 @@ import org.daisy.dotify.api.translator.TranslatorSpecification;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.tasks.runner.TaskRunner;
+import org.daisy.dotify.tasks.runner.DefaultTempFileWriter;
 import org.xml.sax.SAXException;
 
 /**
@@ -101,7 +101,7 @@ public class Main extends AbstractUI {
 			vals.add(new Definition("false", "does not output temp files"));
 			optionalArgs.add(new OptionalArgument(SystemKeys.WRITE_TEMP_FILES, "Writes temp files", vals, "false"));
 		}
-		optionalArgs.add(new OptionalArgument(SystemKeys.TEMP_FILES_DIRECTORY, "Path to temp files directory", TaskRunner.TEMP_DIR));
+		optionalArgs.add(new OptionalArgument(SystemKeys.TEMP_FILES_DIRECTORY, "Path to temp files directory", DefaultTempFileWriter.TEMP_DIR));
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE, "Sets date in meta data (if available)", Dotify.getDefaultDate(SystemProperties.DEFAULT_DATE_FORMAT)));
 		optionalArgs.add(new OptionalArgument(SystemKeys.DATE_FORMAT, "Date format in meta data (if available and date is not specified)", SystemProperties.DEFAULT_DATE_FORMAT));
 		TableCatalog tableCatalog = TableCatalog.newInstance();

@@ -27,6 +27,7 @@ import org.daisy.dotify.common.xml.XMLToolsException;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.tasks.TaskGroupFactoryMaker;
 import org.daisy.dotify.consumer.tasks.TaskSystemFactoryMaker;
+import org.daisy.dotify.tasks.runner.DefaultTempFileWriter;
 import org.daisy.dotify.tasks.runner.TaskRunner;
 
 /**
@@ -153,15 +154,6 @@ public class Dotify {
 				map.put(key.toString(), p.get(key).toString());
 			}
 		}
-		
-		TaskRunner tr = new TaskRunner();
-		tr.setWriteTempFiles(d.writeTempFiles);
-		tr.setKeepTempFilesOnSuccess(d.keepTempFilesOnSuccess);
-		if (tempFilesDirectory!=null && !"".equals(tempFilesDirectory)) {
-			tr.setTempFilesFolder(new File(tempFilesDirectory));
-		}
-
-		tr.setIdentifier("Dotify@" + Integer.toHexString((int)(System.currentTimeMillis()-1261440000000l)));
 
 		// Load setup
 		Map<String, Object> rp = d.loadSetup(map, setup, outputformat, context);
@@ -170,7 +162,17 @@ public class Dotify {
 		try {
 			TaskSystem ts = TaskSystemFactoryMaker.newInstance().newTaskSystem(context.toString(), outputformat);
 			try {
-				tr.runTasks(input, output, ts, rp);
+				logger.info("About to run with parameters " + rp);
+				TaskRunner.withName(ts.getName())
+						.writeTempFiles(d.writeTempFiles)
+						.keepTempFiles(d.keepTempFilesOnSuccess)
+						.tempFileWriter(
+								new DefaultTempFileWriter.Builder()
+								.prefix("Dotify@" + Integer.toHexString((int)(System.currentTimeMillis()-1261440000000l)))
+								.tempFilesFolder(tempFilesDirectory)
+								.build()
+						).build()
+						.runTasks(input, output, ts.compile(rp));
 			} catch (TaskSystemException e) {
 				throw new RuntimeException("Unable to run '" +ts.getName() + "' with parameters " + rp, e);
 			}
