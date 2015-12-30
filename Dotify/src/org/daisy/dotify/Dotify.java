@@ -168,7 +168,7 @@ public class Dotify {
 						.keepTempFiles(d.keepTempFilesOnSuccess)
 						.tempFileWriter(
 								new DefaultTempFileWriter.Builder()
-								.prefix("Dotify@" + Integer.toHexString((int)(System.currentTimeMillis()-1261440000000l)))
+								.prefix("Dotify")
 								.tempFilesFolder(tempFilesDirectory)
 								.build()
 						).build()
