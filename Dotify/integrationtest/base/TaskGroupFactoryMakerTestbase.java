@@ -31,17 +31,19 @@ public abstract class TaskGroupFactoryMakerTestbase {
 		Set<TaskGroupSpecification> specs = factory.listSupportedSpecifications();
 
 		//Test
-		assertEquals(10, specs.size());
+		assertEquals(12, specs.size());
 		assertTrue(specs.contains(new TaskGroupSpecification("dtbook", "obfl", "sv-SE")));
 		assertTrue(specs.contains(new TaskGroupSpecification("text", "obfl", "sv-SE")));
 		assertTrue(specs.contains(new TaskGroupSpecification("xml", "obfl", "sv-SE")));
 		assertTrue(specs.contains(new TaskGroupSpecification("txt", "obfl", "sv-SE")));
+		assertTrue(specs.contains(new TaskGroupSpecification("epub", "obfl", "sv-SE")));
 		assertTrue(specs.contains(new TaskGroupSpecification("obfl", "obfl", "sv-SE")));
 		
 		assertTrue(specs.contains(new TaskGroupSpecification("dtbook", "obfl", "en-US")));
 		assertTrue(specs.contains(new TaskGroupSpecification("text", "obfl", "en-US")));
 		assertTrue(specs.contains(new TaskGroupSpecification("xml", "obfl", "en-US")));
 		assertTrue(specs.contains(new TaskGroupSpecification("txt", "obfl", "en-US")));
+		assertTrue(specs.contains(new TaskGroupSpecification("epub", "obfl", "en-US")));
 		assertTrue(specs.contains(new TaskGroupSpecification("obfl", "obfl", "en-US")));
 	}
 	

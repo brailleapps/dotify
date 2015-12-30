@@ -14,8 +14,8 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 
-import osgi.config.ConfigurationOptions;
 import base.TaskSystemFactoryMakerTestbase;
+import osgi.config.ConfigurationOptions;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -26,6 +26,7 @@ public class TaskSystemFactoryMakerTest extends TaskSystemFactoryMakerTestbase {
 		return options(
 			ConfigurationOptions.felixDS(),
 			ConfigurationOptions.dotifyTasks(),
+			ConfigurationOptions.dotifyTaskRunner(),
 			ConfigurationOptions.dotifyFormatter(),
 			junitBundles()
 		);

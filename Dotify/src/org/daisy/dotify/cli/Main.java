@@ -40,7 +40,7 @@ import org.daisy.dotify.api.translator.TranslatorSpecification;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
-import org.daisy.dotify.system.TaskRunner;
+import org.daisy.dotify.tasks.runner.TaskRunner;
 import org.xml.sax.SAXException;
 
 /**

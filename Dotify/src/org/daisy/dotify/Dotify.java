@@ -27,7 +27,7 @@ import org.daisy.dotify.common.xml.XMLToolsException;
 import org.daisy.dotify.config.ConfigurationsCatalog;
 import org.daisy.dotify.consumer.tasks.TaskGroupFactoryMaker;
 import org.daisy.dotify.consumer.tasks.TaskSystemFactoryMaker;
-import org.daisy.dotify.system.TaskRunner;
+import org.daisy.dotify.tasks.runner.TaskRunner;
 
 /**
  * Provides an entry point for simple embedding of Dotify. To run, call <tt>Dotify.run</tt>.

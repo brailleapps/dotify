@@ -9,4 +9,4 @@
  * 
  * @author Joel Håkansson
  */
-package org.daisy.dotify.system;
+package org.daisy.dotify.tasks.runner;

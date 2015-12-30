@@ -1,4 +1,4 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.tasks.runner;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,7 +1,8 @@
-package org.daisy.dotify.system;
+package org.daisy.dotify.tasks.runner;
 
 import static org.junit.Assert.assertEquals;
 
+import org.daisy.dotify.tasks.runner.Progress;
 import org.junit.Test;
 
 public class ProgressTest {
