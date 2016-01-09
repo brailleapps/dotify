@@ -53,6 +53,7 @@ public class Main extends AbstractUI {
 	private final static String META_KEY = "meta";
 	private final static String VERSION_KEY = "version";
 	private final static String CONFIG_KEY = "configs";
+	private final static String WATCH_KEY = "watch";
 
 	private final List<Argument> reqArgs;
 	private final List<OptionalArgument> optionalArgs;
@@ -109,6 +110,7 @@ public class Main extends AbstractUI {
 		for (FactoryProperties p : tableCatalog.list()) { idents.add(p.getIdentifier()); }
 		tableSF = new ShortFormResolver(idents);
 		optionalArgs.add(new OptionalArgument(PEFConverterFacade.KEY_TABLE, "If specified, an ASCII-braille file (.brl) is generated in addition to the PEF-file using the specified braille code table", getDefinitionList(tableCatalog, tableSF), ""));
+		parser.addSwitch(new SwitchArgument('w', WATCH_KEY, WATCH_KEY, "true", "Keeps the conversion in sync by watching the input file for changes and rerunning the conversion automatically when the input is modified."));
 		parser.addSwitch(new SwitchArgument('v', VERSION_KEY, META_KEY, VERSION_KEY, "Displays the version of Dotify."));
 		parser.addSwitch(new SwitchArgument('c', CONFIG_KEY, META_KEY, CONFIG_KEY, "Lists known configurations."));
 	}
@@ -176,6 +178,10 @@ public class Main extends AbstractUI {
 		props.putAll(result.getOptional());
 		
 		if (input.isDirectory() && output.isDirectory()) {
+			if (result.getOptional().get(WATCH_KEY)!=null) {
+				Logger logger = Logger.getLogger(Main.class.getCanonicalName());
+				logger.warning("'" + WATCH_KEY + "' is not implemented for batch mode.");
+			}
 			if ("true".equals(props.get(SystemKeys.WRITE_TEMP_FILES))) {
 				Main.exitWithCode(ExitCode.ILLEGAL_ARGUMENT_VALUE, "Cannot write debug files in batch mode.");
 			}
@@ -215,7 +221,21 @@ public class Main extends AbstractUI {
 		} else if (input.isDirectory()) { 
 			Main.exitWithCode(ExitCode.ILLEGAL_ARGUMENT_VALUE, "If input is a directory, output must be an existing directory too.");
 		} else {
-			m.runDotify(input, output, setup, context, props);
+			if (result.getOptional().get(WATCH_KEY)!=null) {
+				long modified = 0;
+				while (input.exists()) {
+					if (modified<input.lastModified()) {
+						modified = input.lastModified();
+						m.runDotify(input, output, setup, context, props);
+					}
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+					}
+				}
+			} else {
+				m.runDotify(input, output, setup, context, props);
+			}
 		}
 	}
 	
