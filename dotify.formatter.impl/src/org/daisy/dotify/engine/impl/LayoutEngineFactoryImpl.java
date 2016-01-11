@@ -1,9 +1,5 @@
 package org.daisy.dotify.engine.impl;
 
-import javax.xml.stream.XMLEventFactory;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-
 import org.daisy.dotify.api.engine.FormatterEngineConfigurationException;
 import org.daisy.dotify.api.engine.FormatterEngineFactoryService;
 import org.daisy.dotify.api.formatter.FormatterFactory;
@@ -18,25 +14,19 @@ import aQute.bnd.annotation.component.Reference;
 
 @Component
 public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
-	private FormatterFactory ff;
-	private MarkerProcessorFactoryMakerService mpf;
-	private TextBorderFactoryMakerService tbf;
-	private ExpressionFactory ef;
+	private FactoryManager factoryManager;
 
-
-	@Override
-	public LayoutEngineImpl newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
-		XMLInputFactory in = XMLInputFactory.newInstance();
-		in.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-		in.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-		in.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-		in.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-		XMLEventFactory xef = XMLEventFactory.newInstance();
-		XMLOutputFactory of = XMLOutputFactory.newInstance();
-		return new LayoutEngineImpl(locale, mode, writer, ff, mpf, tbf, ef, in, xef, of);
+	public LayoutEngineFactoryImpl() {
+		factoryManager = new FactoryManager();
 	}
 
 	@Override
+	public LayoutEngineImpl newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
+		return new LayoutEngineImpl(locale, mode, writer, factoryManager);
+	}
+
+	@Override
+	@Deprecated
 	public <T> void setReference(Class<T> c, T factory) throws FormatterEngineConfigurationException {
 		if (c.equals(FormatterFactory.class)) {
 			setFormatterFactory((FormatterFactory)factory);
@@ -56,38 +46,38 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 	// FIXME: not a service
 	@Reference
 	public void setFormatterFactory(FormatterFactory formatterFactory) {
-		this.ff = formatterFactory;
+		factoryManager.setFormatterFactory(formatterFactory);
 	}
 
 	public void unsetFormatterFactory(FormatterFactory formatterFactory) {
-		this.ff = null;
+		factoryManager.setFormatterFactory(null);
 	}
 
 	@Reference
 	public void setMarkerProcessor(MarkerProcessorFactoryMakerService mp) {
-		this.mpf = mp;
+		factoryManager.setMarkerProcessorFactory(mp);
 	}
 
 	public void unsetMarkerProcessor(MarkerProcessorFactoryMakerService mp) {
-		this.mpf = null;
+		factoryManager.setMarkerProcessorFactory(null);
 	}
 
 	@Reference
 	public void setTextBorderFactoryMaker(TextBorderFactoryMakerService tbf) {
-		this.tbf = tbf;
+		factoryManager.setTextBorderFactory(tbf);
 	}
 
 	public void unsetTextBorderFactoryMaker(TextBorderFactoryMakerService tbf) {
-		this.tbf = null;
+		factoryManager.setTextBorderFactory(null);
 	}
 
 	@Reference
 	public void setExpressionFactory(ExpressionFactory ef) {
-		this.ef = ef;
+		factoryManager.setExpressionFactory(ef);
 	}
 
 	public void unsetExpressionFactory(ExpressionFactory ef) {
-		this.ef = null;
+		factoryManager.setExpressionFactory(null);
 	}
 
 	@Override

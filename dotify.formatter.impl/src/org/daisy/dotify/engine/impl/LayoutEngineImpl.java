@@ -12,19 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventFactory;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.LayoutEngineException;
-import org.daisy.dotify.api.formatter.FormatterFactory;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
-import org.daisy.dotify.api.translator.MarkerProcessor;
-import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
-import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
-import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterException;
@@ -53,13 +44,7 @@ class LayoutEngineImpl implements FormatterEngine {
 	private final PagedMediaWriter writer;
 	private final Logger logger;
 	private boolean normalize;
-	private final FormatterFactory ff;
-	private final MarkerProcessorFactoryMakerService mpf;
-	private final TextBorderFactoryMakerService tbf;
-	private final ExpressionFactory ef;
-	private final XMLInputFactory in;
-	private final XMLEventFactory xef;
-	private final XMLOutputFactory of;
+	private final FactoryManager fm;
 	
 	/**
 	 * Creates a new instance of LayoutEngineTask.
@@ -67,20 +52,14 @@ class LayoutEngineImpl implements FormatterEngine {
 	 * @param translator the translator to use
 	 * @param writer the output writer
 	 */
-	public LayoutEngineImpl(String locale, String mode, PagedMediaWriter writer, FormatterFactory ff, MarkerProcessorFactoryMakerService mpf, TextBorderFactoryMakerService tbf, ExpressionFactory ef, XMLInputFactory in, XMLEventFactory xef, XMLOutputFactory of) {
+	public LayoutEngineImpl(String locale, String mode, PagedMediaWriter writer, FactoryManager fm) {
 		this.locale = locale;
 		this.mode = mode;
 		//this.locale = locale;
 		this.writer = writer;
 		this.logger = Logger.getLogger(LayoutEngineImpl.class.getCanonicalName());
 		this.normalize = true;
-		this.ff = ff;
-		this.mpf = mpf;
-		this.tbf = tbf;
-		this.ef = ef;
-		this.of = of;
-		this.xef = xef;
-		this.in = in;
+		this.fm = fm;
 	}
 
 	public boolean isNormalizing() {
@@ -100,8 +79,8 @@ class LayoutEngineImpl implements FormatterEngine {
 				try {
 					f = File.createTempFile("temp", ".tmp");
 					f.deleteOnExit();
-					OBFLWsNormalizer normalizer = new OBFLWsNormalizer(in.createXMLEventReader(input), xef, new FileOutputStream(f));
-					normalizer.parse(of);
+					OBFLWsNormalizer normalizer = new OBFLWsNormalizer(fm.getXmlInputFactory().createXMLEventReader(input), fm.getXmlEventFactory(), new FileOutputStream(f));
+					normalizer.parse(fm.getXmlOutputFactory());
 					try {
 						input.close();
 					} catch (Exception e) {
@@ -115,14 +94,8 @@ class LayoutEngineImpl implements FormatterEngine {
 			try {
 				logger.info("Parsing input...");
 
-				MarkerProcessor mp;
-				try {
-					mp = mpf.newMarkerProcessor(locale, mode);
-				} catch (MarkerProcessorConfigurationException e) {
-					throw new IllegalArgumentException(e);
-				}
-				ObflParser obflParser = new ObflParser(locale, mode, mp, ff, tbf, ef);
-				obflParser.parse(in.createXMLEventReader(input));
+				ObflParser obflParser = new ObflParser(locale, mode, fm);
+				obflParser.parse(fm.getXmlInputFactory().createXMLEventReader(input));
 
 				try {
 					input.close();

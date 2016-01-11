@@ -6,16 +6,30 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.daisy.dotify.api.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.api.formatter.BlockProperties;
@@ -27,7 +41,6 @@ import org.daisy.dotify.api.formatter.Field;
 import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterCore;
-import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.ItemSequenceProperties;
@@ -47,6 +60,7 @@ import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.formatter.Position;
 import org.daisy.dotify.api.formatter.ReferenceListBuilder;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
+import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.StringField;
 import org.daisy.dotify.api.formatter.TableCellProperties;
@@ -57,17 +71,19 @@ import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
-import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.Border;
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.MarkerProcessor;
+import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
-import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.common.text.FilterLocale;
+import org.daisy.dotify.engine.impl.FactoryManager;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * Provides a parser for OBFL. The parser accepts OBFL input, either
@@ -86,26 +102,29 @@ public class ObflParser extends XMLParserBase {
 	private final FilterLocale locale;
 	private final String mode;
 	private final boolean hyphGlobal;
-	private final FormatterFactory formatterFactory;
 	private final MarkerProcessor mp;
-	private final TextBorderFactoryMakerService maker;
-	private final ExpressionFactory ef;
 	private final Logger logger;
+	private final FactoryManager fm;
 
-	public ObflParser(String locale, String mode, MarkerProcessor mp, FormatterFactory formatterFactory, TextBorderFactoryMakerService maker, ExpressionFactory ef) {
+	Map<String, Transformer> xslts = new HashMap<>();
+	Map<String, List<TempData>> renderers = new HashMap<>();
+
+	public ObflParser(String locale, String mode, FactoryManager fm) {
 		this.locale = FilterLocale.parse(locale);
 		this.mode = mode;
 		//TODO: add this to input parameters
 		this.hyphGlobal = true;
-		this.formatterFactory = formatterFactory;
-		this.mp = mp;
-		this.maker = maker;
-		this.ef = ef;
+		try {
+			this.mp = fm.getMarkerProcessorFactory().newMarkerProcessor(locale, mode);
+		} catch (MarkerProcessorConfigurationException e) {
+			throw new IllegalArgumentException(e);
+		}
+		this.fm = fm;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 	}
 	
 	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
-		this.formatter = formatterFactory.newFormatter(locale.toString(), mode);
+		this.formatter = fm.getFormatterFactory().newFormatter(locale.toString(), mode);
 		//this.masters = new HashMap<String, LayoutMaster>();
 		this.meta = new ArrayList<>();
 		formatter.open();
@@ -132,7 +151,11 @@ public class ObflParser extends XMLParserBase {
 				parseVolumeTemplate(event, input, tp);
 			} else if (equalsStart(event, ObflQName.COLLECTION)) {
 				parseCollection(event, input, tp);
-			} 
+			} else if (equalsStart(event, ObflQName.XML_PROCESSOR)) {
+				parseProcessor(event, input, xslts);
+			} else if (equalsStart(event, ObflQName.RENDERER)) {
+				parseRenderer(event, input, renderers);
+			}
 			else {
 				report(event);
 			}
@@ -184,17 +207,17 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private void report(XMLEvent event) {
+	static void report(XMLEvent event) {
 		if (event.isEndElement()) {
 			// ok
 		} else if (event.isStartElement()) {
 			String msg = "Unsupported context for element: " + event.asStartElement().getName() + buildLocationMsg(event.getLocation());
 			//throw new UnsupportedOperationException(msg);
-			Logger.getLogger(this.getClass().getCanonicalName()).warning(msg);
+			Logger.getLogger(ObflParser.class.getCanonicalName()).warning(msg);
 		} else if (event.isStartDocument() || event.isEndDocument()) {
 			// ok
 		} else {
-			Logger.getLogger(this.getClass().getCanonicalName()).warning(event.toString());
+			Logger.getLogger(ObflParser.class.getCanonicalName()).warning(event.toString());
 		}
 	}
 
@@ -202,7 +225,7 @@ public class ObflParser extends XMLParserBase {
 		Logger.getLogger(this.getClass().getCanonicalName()).warning(msg + buildLocationMsg(event.getLocation()));
 	}
 
-	public String buildLocationMsg(Location location) {
+	public static String buildLocationMsg(Location location) {
 		int line = -1;
 		int col = -1;
 		if (location != null) {
@@ -241,7 +264,7 @@ public class ObflParser extends XMLParserBase {
 		if (!border.isEmpty()) {
 			border.put(TextBorderFactory.FEATURE_MODE, mode);
 			try {
-				masterConfig.border(maker.newTextBorderStyle(border));
+				masterConfig.border(fm.getTextBorderFactory().newTextBorderStyle(border));
 			} catch (TextBorderConfigurationException e) {
 				Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to add border to block properties: " + border, e);
 			}
@@ -352,7 +375,7 @@ public class ObflParser extends XMLParserBase {
 	private int parseTemplate(LayoutMasterBuilder master, XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		PageTemplateBuilder template;
 		if (equalsStart(event, ObflQName.TEMPLATE)) {
-			template = master.newTemplate(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, false));
+			template = master.newTemplate(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), fm.getExpressionFactory(), false));
 		} else {
 			template = master.newTemplate(null);
 		}
@@ -434,7 +457,7 @@ public class ObflParser extends XMLParserBase {
 				compound.add(new StringField(getAttr(event, "value"), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
 			} else if (equalsStart(event, ObflQName.EVALUATE)) {
 				//FIXME: add variables...
-				compound.add(new StringField(ef.newExpression().evaluate(getAttr(event, "expression")), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
+				compound.add(new StringField(fm.getExpressionFactory().newExpression().evaluate(getAttr(event, "expression")), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
 			} else if (equalsStart(event, ObflQName.CURRENT_PAGE)) {
 				compound.add(new CurrentPageField(getNumeralStyle(event), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
 			} else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
@@ -541,6 +564,9 @@ public class ObflParser extends XMLParserBase {
 			else if (equalsStart(event, ObflQName.TABLE)) {
 				parseTable(event, input, seq, tp);
 			}
+			else if (equalsStart(event, ObflQName.XML_DATA)) {
+				parseXMLData(seq, event, input, tp);
+			}
 			else if (equalsEnd(event, ObflQName.SEQUENCE)) {
 				break;
 			} else {
@@ -548,8 +574,127 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 	}
+	private void parseXMLData(FormatterCore fc, XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
+		String renderer = getAttr(event, "renderer");
+		DOMResult dr;
+		try {
+			Document d = fm.getDocumentBuilderFactory().newDocumentBuilder().newDocument();
+			dr = new DOMResult(d);
+	        XMLEventWriter ew = fm.getXmlOutputFactory().createXMLEventWriter(dr);
+			while (input.hasNext()) {
+				event=input.nextEvent();
+				if (equalsEnd(event, ObflQName.XML_DATA)) {
+					break;
+				} else {
+					ew.add(event);
+				}
+			}
+			ew.close();
+			
+			XMLDataRenderer qtd = filterRenderers(renderers.get(renderer), d, tp);
+			fc.insertDynamicLayout(qtd);
+		} catch (ParserConfigurationException | TransformerFactoryConfigurationError | FactoryConfigurationError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Filters the scenarios to only return those that apply to this data set
+	 * @param tdl
+	 * @param node
+	 * @param tp
+	 * @return
+	 * @throws ParserConfigurationException 
+	 */
+	private XMLDataRenderer filterRenderers(List<TempData> tdl, Node node, TextProperties tp) throws ParserConfigurationException {
+		List<RenderingScenario> qtd = new ArrayList<>();
+		{
+			XPath x = fm.getXpathFactory().newXPath();
+			for (TempData td : tdl) {
+				if (td.qualifier!=null) {
+					x.setNamespaceContext(td.nc);
+					try {
+						if ((Boolean)x.evaluate(td.qualifier, node, XPathConstants.BOOLEAN)) {
+							qtd.add(new XSLTRenderingScenario(this, td.processor, node, tp, fm.getExpressionFactory().newExpression(), td.cost));
+						}
+					} catch (XPathExpressionException e) {
+						e.printStackTrace();
+					}
+				} else {
+					qtd.add(new XSLTRenderingScenario(this, td.processor, node, tp, fm.getExpressionFactory().newExpression(), td.cost));
+				}
+			}
+		}
+		return new XMLDataRenderer(qtd);
+	}
+	
+	private void parseProcessor(XMLEvent event, XMLEventReader input, Map<String, Transformer> xslts) {
+		String name = getAttr(event, ObflQName.ATTR_NAME);
+		DOMResult dr;
+		try {
+			Document d = fm.getDocumentBuilderFactory().newDocumentBuilder().newDocument();
+			dr = new DOMResult(d);
+	        XMLEventWriter ew = fm.getXmlOutputFactory().createXMLEventWriter(dr);
+			while (input.hasNext()) {
+				event=input.nextEvent();
+				if (equalsEnd(event, ObflQName.XML_PROCESSOR)) {
+					break;
+				} else if (event.getEventType()==XMLEvent.COMMENT) {
+					//ignore
+				} else {
+					ew.add(event);
+				}
+			}
+			try {
+				TransformerFactory tf = fm.getTransformerFactory();
+				xslts.put(name, tf.newTransformer(new DOMSource(dr.getNode())));
+			} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+				//FIXME: throw what?
+				throw new RuntimeException(e);
+			}
+		} catch (ParserConfigurationException | XMLStreamException e) {
+			//FIXME: throw what?
+			throw new RuntimeException(e);
+		}
+	}
 
-	private void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+	private void parseRenderer(XMLEvent event, XMLEventReader input, Map<String, List<TempData>> renderers) throws XMLStreamException {
+		String name = getAttr(event, ObflQName.ATTR_NAME);
+		List<TempData> opts = new ArrayList<>();
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.RENDERING_SCENARIO)) {
+				NamespaceContext nc = event.asStartElement().getNamespaceContext();
+				//System.out.println(nc.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX));
+				String processor = getAttr(event, ObflQName.ATTR_PROCESSOR);
+				String qualifier = getAttr(event, ObflQName.ATTR_QUALIFIER);
+				String cost = getAttr(event, ObflQName.ATTR_COST);
+				scanEmptyElement(input, ObflQName.RENDERING_SCENARIO);
+				opts.add(new TempData(xslts.get(processor), nc, qualifier, cost));
+			} else if (equalsEnd(event, ObflQName.RENDERER)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+		renderers.put(name, opts);
+	}
+	
+	final class TempData {
+		private final NamespaceContext nc;
+		private final Transformer processor;
+		private final String qualifier;
+		private final String cost;
+		TempData(Transformer p, NamespaceContext nc, String qualifier, String cost) {
+			this.processor = p;
+			this.nc = nc;
+			this.qualifier = qualifier;
+			this.cost = cost;
+		}
+	}
+
+	void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);
 		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
 		while (input.hasNext()) {
@@ -558,6 +703,8 @@ public class ObflParser extends XMLParserBase {
 				fc.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
 				parseBlock(event, input, fc, tp);
+			} else if (equalsStart(event, ObflQName.XML_DATA)) {
+				parseXMLData(fc, event, input, tp);
 			} else if (processAsBlockContents(fc, event, input, tp)) {
 				//done
 			}
@@ -757,7 +904,7 @@ public class ObflParser extends XMLParserBase {
 		if (!border.isEmpty()) {
 			border.put(TextBorderFactory.FEATURE_MODE, mode);
 			try {
-				builder.textBorderStyle(maker.newTextBorderStyle(border));
+				builder.textBorderStyle(fm.getTextBorderFactory().newTextBorderStyle(border));
 			} catch (TextBorderConfigurationException e) {
 				logger.log(Level.WARNING, "Failed to add border to block properties: " + border, e);
 			}
@@ -809,7 +956,7 @@ public class ObflParser extends XMLParserBase {
 		return getAttr(event, "item");
 	}
 	
-	private void parseTable(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
+	void parseTable(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
 		int tableColSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_COL_SPACING), 0);
 		int tableRowSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_ROW_SPACING), 0);
 		int preferredEmptySpace = toInt(getAttr(event, ObflQName.ATTR_TABLE_PREFERRED_EMPTY_SPACE), 2);
@@ -988,7 +1135,7 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private boolean processAsBlockContents(FormatterCore fc, XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
+	boolean processAsBlockContents(FormatterCore fc, XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		if (equalsStart(event, ObflQName.LEADER)) {
 			parseLeader(fc, event, input);
 			return true;
@@ -1063,14 +1210,14 @@ public class ObflParser extends XMLParserBase {
 	private void parseEvaluate(FormatterCore fc, XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		String expr = getAttr(event, "expression");
 		scanEmptyElement(input, ObflQName.EVALUATE);
-		OBFLDynamicContent dynamic = new OBFLDynamicContent(expr, ef, true);
+		OBFLDynamicContent dynamic = new OBFLDynamicContent(expr, fm.getExpressionFactory(), true);
 		fc.insertEvaluate(dynamic, tp);
 	}
 	
 	private void parseVolumeTemplate(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
 		String useWhen = getAttr(event, ObflQName.ATTR_USE_WHEN);
 		String splitterMax = getAttr(event, "sheets-in-volume-max");
-		OBFLCondition condition = new OBFLCondition(useWhen, ef, false);
+		OBFLCondition condition = new OBFLCondition(useWhen, fm.getExpressionFactory(), false);
 		condition.setVolumeCountVariable(getAttr(event, "volume-count-variable"));
 		condition.setVolumeNumberVariable(getAttr(event, "volume-number-variable"));
 		VolumeTemplateProperties vtp = new VolumeTemplateProperties.Builder(Integer.parseInt(splitterMax))
@@ -1159,16 +1306,16 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.ON_TOC_START)) {
-				template.newOnTocStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
+				template.newOnTocStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), fm.getExpressionFactory(), true));
 				parseOnEvent(event, input, template, ObflQName.ON_TOC_START, tp);
 			} else if (equalsStart(event, ObflQName.ON_VOLUME_START)) {
-				template.newOnVolumeStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
+				template.newOnVolumeStart(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), fm.getExpressionFactory(), true));
 				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_START, tp);
 			} else if (equalsStart(event, ObflQName.ON_VOLUME_END)) {
-				template.newOnVolumeEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
+				template.newOnVolumeEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), fm.getExpressionFactory(), true));
 				parseOnEvent(event, input, template, ObflQName.ON_VOLUME_END, tp);
 			} else if (equalsStart(event, ObflQName.ON_TOC_END)) {
-				template.newOnTocEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), ef, true));
+				template.newOnTocEnd(new OBFLCondition(getAttr(event, ObflQName.ATTR_USE_WHEN), fm.getExpressionFactory(), true));
 				parseOnEvent(event, input, template, ObflQName.ON_TOC_END, tp);
 			}
 			else if (equalsEnd(event, ObflQName.TOC_SEQUENCE)) {
@@ -1324,6 +1471,10 @@ public class ObflParser extends XMLParserBase {
 
 	public List<MetaDataItem> getMetaData() {
 		return meta;
+	}
+	
+	FactoryManager getFactoryManager() {
+		return fm;
 	}
 
 }

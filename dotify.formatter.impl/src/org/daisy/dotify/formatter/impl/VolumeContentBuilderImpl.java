@@ -8,6 +8,7 @@ import java.util.Stack;
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.DynamicContent;
+import org.daisy.dotify.api.formatter.DynamicRenderer;
 import org.daisy.dotify.api.formatter.DynamicSequenceBuilder;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.Leader;
@@ -146,6 +147,11 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 		DynamicSequenceEventImpl dsb = new DynamicSequenceEventImpl(props);
 		add(dsb);
 		return dsb;
+	}
+
+	@Override
+	public void insertDynamicLayout(DynamicRenderer renderer) {
+		current().insertDynamicLayout(renderer);
 	}
 
 }

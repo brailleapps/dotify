@@ -19,6 +19,8 @@ interface ObflQName {
 	 final static QName EVALUATE = new QName(OBFL_NS, "evaluate");
 	 final static QName CURRENT_PAGE = new QName(OBFL_NS, "current-page");
 	 final static QName MARKER_REFERENCE = new QName(OBFL_NS, "marker-reference");
+	 final static QName XML_DATA = new QName(OBFL_NS, "xml-data");
+	 final static QName XML_PROCESSOR_RESULT = new QName(OBFL_NS, "xml-processor-result");
 	 final static QName BLOCK = new QName(OBFL_NS, "block");
 	 final static QName SPAN = new QName(OBFL_NS, "span");
 	final static QName STYLE = new QName(OBFL_NS, "style");
@@ -57,6 +59,10 @@ interface ObflQName {
 	 
 	 final static QName COLLECTION = new QName(OBFL_NS, "collection");
 	 final static QName ITEM = new QName(OBFL_NS, "item");
+	 
+	 final static QName XML_PROCESSOR = new QName(OBFL_NS, "xml-processor");
+	 final static QName RENDERER = new QName(OBFL_NS, "renderer");
+	 final static QName RENDERING_SCENARIO = new QName(OBFL_NS, "rendering-scenario");
 	
 	 final static QName ATTR_XML_LANG = new QName("http://www.w3.org/XML/1998/namespace", "lang", "xml");
 	 final static QName ATTR_HYPHENATE = new QName("hyphenate");
@@ -74,6 +80,9 @@ interface ObflQName {
 	 final static QName ATTR_MARKER = new QName("marker");
 	 final static QName ATTR_INITIAL_PAGE_NUMBER = new QName("initial-page-number");
 	 final static QName ATTR_WIDTH = new QName("width");
+	 final static QName ATTR_PROCESSOR = new QName("processor");
+	 final static QName ATTR_QUALIFIER = new QName("qualifier");
+	 final static QName ATTR_COST = new QName("cost");
 	 
 	final static QName TABLE = new QName(OBFL_NS, "table");
 	final static QName THEAD = new QName(OBFL_NS, "thead");

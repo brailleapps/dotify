@@ -2,15 +2,20 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.List;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.DynamicContent;
+import org.daisy.dotify.api.formatter.DynamicRenderer;
 import org.daisy.dotify.api.formatter.FormatterCore;
+import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
+import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.formatter.impl.Margin.Type;
@@ -20,6 +25,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	 * 
 	 */
 	private static final long serialVersionUID = -7775469339792146048L;
+	private final static Logger logger = Logger.getLogger(FormatterCoreImpl.class.getCanonicalName());
 	protected final Stack<BlockProperties> propsContext;
 	private Margin leftMargin;
 	private Margin rightMargin;
@@ -27,6 +33,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	private Stack<Integer> blockIndentParent;
 	private int blockIndent;
 	private ListItem listItem;
+	private RenderingScenario scenario;
 	
 	private final boolean discardIdentifiers;
 
@@ -46,6 +53,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		this.blockIndentParent = new Stack<>();
 		blockIndentParent.add(0);
 		this.discardIdentifiers = discardIdentifiers;
+		this.scenario = null;
 	}
 
 	@Override
@@ -167,7 +175,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	}
 	
 	public Block newBlock(String blockId, RowDataProperties rdp) {
-		return this.push(new RegularBlock(blockId, rdp));
+		return this.push(new RegularBlock(blockId, rdp, scenario));
 	}
 	
 	public Block getCurrentBlock() {
@@ -239,6 +247,23 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	@Override
 	public boolean isGenerated() {
 		return false;
+	}
+
+	@Override
+	public void insertDynamicLayout(DynamicRenderer renderer) {
+		for (RenderingScenario rs : renderer.getScenarios()) {
+			try {
+				scenario = rs;
+				//this is a downcast, which is generally unsafe, but it will work
+				//here if it is used correctly, in other words, not calling table
+				//methods from inside a block
+				rs.renderScenario((FormatterSequence)this);
+			} catch (Exception e) {
+				//FIXME: if the scenario fails here, it should be excluded from evaluation later (otherwise it might win) 
+				logger.log(Level.INFO, "Failed to render scenario.", e);
+			}
+		}
+		scenario = null;
 	}
 	
 }

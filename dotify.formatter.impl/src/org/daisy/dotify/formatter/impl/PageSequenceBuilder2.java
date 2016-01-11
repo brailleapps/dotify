@@ -14,6 +14,7 @@ import org.daisy.dotify.api.formatter.MarkerIndicator;
 import org.daisy.dotify.api.formatter.MarkerIndicatorRegion;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
+import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.common.collection.SplitList;
@@ -116,76 +117,81 @@ class PageSequenceBuilder2 {
 	}
 	
 	private List<RowGroupSequence> buildRowGroups() {
-		List<RowGroupSequence> dataGroups = new ArrayList<>();
-		List<RowGroup> data = new ArrayList<>();
-		int keepWithNext = 0;
+		PageSequenceRecorder rec = new PageSequenceRecorder();
+
 		//TODO: This assumes that all page templates have margin regions that are of the same width 
-		int mw = getTotalMarginRegionWidth(); 
+		final int mw = getTotalMarginRegionWidth(); 
 		BlockContext bc = new BlockContext(seq.getLayoutMaster().getFlowWidth() - mw, blockContext.getRefs(), blockContext.getContext(), blockContext.getFcontext());
 		for (Block g : seq)  {
-			AbstractBlockContentManager bcm = g.getBlockContentManager(bc);
-			if (dataGroups.isEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !data.isEmpty()) || g.getVerticalPosition()!=null) {
-				data = new ArrayList<>();
-				dataGroups.add(new RowGroupSequence(data, g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent())));
-				keepWithNext = -1;
-			}
-			List<RowImpl> rl1 = bcm.getCollapsiblePreContentRows();
-			if (!rl1.isEmpty()) {
-				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl1).
-										collapsible(true).skippable(false).breakable(false).build());
-			}
-			List<RowImpl> rl2 = bcm.getInnerPreContentRows();
-			if (!rl2.isEmpty()) {
-				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl2).
-										collapsible(false).skippable(false).breakable(false).build());
-			}
-			
-			if (bcm.getRowCount()==0) { //TODO: Does this interfere with collapsing margins? 
-				if (!bcm.getGroupAnchors().isEmpty() || !bcm.getGroupMarkers().isEmpty() || !"".equals(g.getIdentifier())
-						|| g.getKeepWithNextSheets()>0 || g.getKeepWithPreviousSheets()>0 ) {
-					RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), new ArrayList<RowImpl>());
-					setProperties(rgb, bcm, g);
-					data.add(rgb.build());
+			rec.processBlock(g);
+			try {
+				AbstractBlockContentManager bcm = g.getBlockContentManager(bc);
+				if (rec.data.dataGroups.isEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !rec.data.data.isEmpty()) || g.getVerticalPosition()!=null) {
+					rec.data.data = new ArrayList<>();
+					rec.data.dataGroups.add(new RowGroupSequence(rec.data.data, g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent())));
+					rec.data.keepWithNext = -1;
 				}
-			}
-
-			int i = 0;
-			List<RowImpl> rl3 = bcm.getPostContentRows();
-			OrphanWidowControl owc = new OrphanWidowControl(g.getRowDataProperties().getOrphans(),
-															g.getRowDataProperties().getWidows(), 
-															bcm.getRowCount());
-			for (RowImpl r : bcm) {
-				i++;
-				r.setAdjustedForMargin(true);
-				if (i==bcm.getRowCount()) {
-					//we're at the last line, this should be kept with the next block's first line
-					keepWithNext = g.getKeepWithNext();
+				List<RowImpl> rl1 = bcm.getCollapsiblePreContentRows();
+				if (!rl1.isEmpty()) {
+					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl1).
+											collapsible(true).skippable(false).breakable(false).build());
 				}
-				RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing()).add(r).
-						collapsible(false).skippable(false).breakable(
-								r.allowsBreakAfter()&&
-								owc.allowsBreakAfter(i-1)&&
-								keepWithNext<=0 &&
-								(Keep.AUTO==g.getKeepType() || i==bcm.getRowCount()) &&
-								(i<bcm.getRowCount() || rl3.isEmpty())
-								);
-				if (i==1) { //First item
-					setProperties(rgb, bcm, g);
+				List<RowImpl> rl2 = bcm.getInnerPreContentRows();
+				if (!rl2.isEmpty()) {
+					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl2).
+											collapsible(false).skippable(false).breakable(false).build());
 				}
-				data.add(rgb.build());
-				keepWithNext--;
-			}
-			if (!rl3.isEmpty()) {
-				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl3).
-					collapsible(false).skippable(false).breakable(keepWithNext<0).build());
-			}
-			List<RowImpl> rl4 = bcm.getSkippablePostContentRows();
-			if (!rl4.isEmpty()) {
-				data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl4).
-					collapsible(true).skippable(true).breakable(keepWithNext<0).build());
+				
+				if (bcm.getRowCount()==0) { //TODO: Does this interfere with collapsing margins? 
+					if (!bcm.getGroupAnchors().isEmpty() || !bcm.getGroupMarkers().isEmpty() || !"".equals(g.getIdentifier())
+							|| g.getKeepWithNextSheets()>0 || g.getKeepWithPreviousSheets()>0 ) {
+						RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), new ArrayList<RowImpl>());
+						setProperties(rgb, bcm, g);
+						rec.data.data.add(rgb.build());
+					}
+				}
+	
+				int i = 0;
+				List<RowImpl> rl3 = bcm.getPostContentRows();
+				OrphanWidowControl owc = new OrphanWidowControl(g.getRowDataProperties().getOrphans(),
+																g.getRowDataProperties().getWidows(), 
+																bcm.getRowCount());
+				for (RowImpl r : bcm) {
+					i++;
+					r.setAdjustedForMargin(true);
+					if (i==bcm.getRowCount()) {
+						//we're at the last line, this should be kept with the next block's first line
+						rec.data.keepWithNext = g.getKeepWithNext();
+					}
+					RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing()).add(r).
+							collapsible(false).skippable(false).breakable(
+									r.allowsBreakAfter()&&
+									owc.allowsBreakAfter(i-1)&&
+									rec.data.keepWithNext<=0 &&
+									(Keep.AUTO==g.getKeepType() || i==bcm.getRowCount()) &&
+									(i<bcm.getRowCount() || rl3.isEmpty())
+									);
+					if (i==1) { //First item
+						setProperties(rgb, bcm, g);
+					}
+					rec.data.data.add(rgb.build());
+					rec.data.keepWithNext--;
+				}
+				if (!rl3.isEmpty()) {
+					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl3).
+						collapsible(false).skippable(false).breakable(rec.data.keepWithNext<0).build());
+				}
+				List<RowImpl> rl4 = bcm.getSkippablePostContentRows();
+				if (!rl4.isEmpty()) {
+					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl4).
+						collapsible(true).skippable(true).breakable(rec.data.keepWithNext<0).build());
+				}
+			} catch (Exception e) {
+				rec.invalidateScenario(e);
 			}
 		}
-		return dataGroups;
+		rec.finishBlockProcessing();
+		return rec.data.dataGroups;
 	}
 	
 	private void setProperties(RowGroup.Builder rgb, AbstractBlockContentManager bcm, Block g) {

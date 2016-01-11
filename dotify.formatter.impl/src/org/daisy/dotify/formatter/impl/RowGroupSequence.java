@@ -30,5 +30,13 @@ class RowGroupSequence {
 	public RowImpl getEmptyRow() {
 		return emptyRow;
 	}
+	
+	float calcSequenceSize() {
+		float ret = 0;
+		for (RowGroup rg : getGroup()) {
+			ret += rg.getUnitSize();
+		}
+		return ret;
+	}
 
 }

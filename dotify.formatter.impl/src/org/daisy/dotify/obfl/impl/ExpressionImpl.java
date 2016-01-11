@@ -102,14 +102,21 @@ class ExpressionImpl implements Expression {
 		return evaluate(expr);
 	}
 	
+	@Override
 	public void setVariable(String key, Object value) {
 		globalVars.put("$"+key, value);
 	}
 	
+	@Override
 	public void removeVariable(String key) {
 		globalVars.remove("$"+key);
 	}
-	
+
+	@Override
+	public void removeAllVariables() {
+		globalVars.clear();
+	}
+
 	private Object doEval1(String expr) {
 		if (expr.startsWith("\"") && expr.endsWith("\"")) {
 			return expr.substring(1, expr.length()-1);
