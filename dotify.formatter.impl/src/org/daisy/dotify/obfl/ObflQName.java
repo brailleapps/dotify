@@ -75,4 +75,15 @@ interface ObflQName {
 	 final static QName ATTR_INITIAL_PAGE_NUMBER = new QName("initial-page-number");
 	 final static QName ATTR_WIDTH = new QName("width");
 	 
+	final static QName TABLE = new QName(OBFL_NS, "table");
+	final static QName THEAD = new QName(OBFL_NS, "thead");
+	final static QName TBODY = new QName(OBFL_NS, "tbody");
+	final static QName TR = new QName(OBFL_NS, "tr");
+	final static QName TD = new QName(OBFL_NS, "td");
+	
+	final static QName ATTR_TABLE_COL_SPACING = new QName("table-col-spacing");
+	final static QName ATTR_TABLE_ROW_SPACING = new QName("table-row-spacing");
+	final static QName ATTR_COL_SPAN = new QName("col-span");
+	final static QName ATTR_ROW_SPAN = new QName("row-span");
+	 
 }
