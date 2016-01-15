@@ -40,4 +40,8 @@ public class TextMediaWriterFactoryService implements
 		return new TextMediaWriterFactory();
 	}
 
+	@Override
+	public void setCreatedWithSPI() {
+	}
+
 }

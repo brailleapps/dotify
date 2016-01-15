@@ -28,6 +28,7 @@ import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormatterFactory;
+import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.ItemSequenceProperties;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
@@ -48,13 +49,16 @@ import org.daisy.dotify.api.formatter.ReferenceListBuilder;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
 import org.daisy.dotify.api.formatter.SequenceProperties;
 import org.daisy.dotify.api.formatter.StringField;
+import org.daisy.dotify.api.formatter.TableCellProperties;
 import org.daisy.dotify.api.formatter.TableOfContents;
+import org.daisy.dotify.api.formatter.TableProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
+import org.daisy.dotify.api.translator.Border;
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.TextAttribute;
@@ -323,8 +327,7 @@ public class ObflParser extends XMLParserBase {
 		pap.addFallback(new RenameFallbackRule(from, to));
 		scanEmptyElement(input, ObflQName.RENAME);
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	private void parseBeforeAfter(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);
 		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
@@ -527,7 +530,7 @@ public class ObflParser extends XMLParserBase {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
-		FormatterCore seq = formatter.newSequence(builder.build());
+		FormatterSequence seq = formatter.newSequence(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
@@ -545,8 +548,7 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	private void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);
 		fc.startBlock(blockBuilder(event.asStartElement().getAttributes()));
@@ -694,11 +696,11 @@ public class ObflParser extends XMLParserBase {
 		return ret.build(len);
 	}
 
-	private BlockProperties blockBuilder(Iterator<Attribute> atts) {
+	private BlockProperties blockBuilder(Iterator<?> atts) {
 		BlockProperties.Builder builder = new BlockProperties.Builder();
 		HashMap<String, Object> border = new HashMap<>();
 		while (atts.hasNext()) {
-			Attribute att = atts.next();
+			Attribute att = (Attribute)atts.next();
 			String name = att.getName().getLocalPart();
 			if ("margin-left".equals(name)) {
 				builder.leftMargin(Integer.parseInt(att.getValue()));
@@ -763,6 +765,19 @@ public class ObflParser extends XMLParserBase {
 		return builder.build();
 	}
 	
+	private Border borderBuilder(Iterator<?> atts) {
+		BorderBuilder builder = new BorderBuilder();
+		while (atts.hasNext()) {
+			Attribute att = (Attribute)atts.next();
+			String name = att.getName().getLocalPart();
+			if (name.startsWith("border")) {
+				builder.put(name, att.getValue());
+			}
+		}
+		return builder.build();
+	}
+	
+	
 	private void parseLeader(FormatterCore fc, XMLEvent event, XMLEventReader input) throws XMLStreamException {
 		Leader.Builder builder = new Leader.Builder();
 		@SuppressWarnings("unchecked")
@@ -794,16 +809,25 @@ public class ObflParser extends XMLParserBase {
 		return getAttr(event, "item");
 	}
 	
-	private void parseTable(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
-		String colSpacing = getAttr(event, ObflQName.ATTR_TABLE_COL_SPACING);
-		String rowSpacing = getAttr(event, ObflQName.ATTR_TABLE_ROW_SPACING);
+	private void parseTable(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
+		int tableColSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_COL_SPACING), 0);
+		int tableRowSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_ROW_SPACING), 0);
+		BlockProperties bp = blockBuilder(event.asStartElement().getAttributes());
+		Border b = borderBuilder(event.asStartElement().getAttributes());
+		TableProperties.Builder tableProps = new TableProperties.Builder()
+				.tableColSpacing(tableColSpacing)
+				.tableRowSpacing(tableRowSpacing)
+				.margin(bp.getMargin())
+				.padding(bp.getPadding())
+				.border(b);
+		fc.startTable(tableProps.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.THEAD)) {
 				parseTHeadTBody(event, input, fc, tp);
 			} else if (equalsStart(event, ObflQName.TBODY)) {
 				parseTHeadTBody(event, input, fc, tp);
-			} else if (equalsStart(event, ObflQName.TR)) {				
+			} else if (equalsStart(event, ObflQName.TR)) {
 				parseTR(event, input, fc, tp);
 			}
 			else if (equalsEnd(event, ObflQName.TABLE)) {
@@ -814,7 +838,12 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseTHeadTBody(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+	private void parseTHeadTBody(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
+		if (equalsStart(event, ObflQName.THEAD)) {
+			fc.beginsTableHeader();
+		} else {
+			fc.beginsTableBody();
+		}
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.TR)) {
@@ -827,7 +856,8 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseTR(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+	private void parseTR(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
+		fc.beginsTableRow();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.TD)) {
@@ -841,17 +871,26 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseTD(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+	private void parseTD(XMLEvent event, XMLEventReader input, FormatterSequence fs, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);
-		String colSpan = getAttr(event, ObflQName.ATTR_COL_SPAN);
-		String rowSpan = getAttr(event, ObflQName.ATTR_ROW_SPAN);
-		// blockBuilder(event.asStartElement().getAttributes())
+		int colSpan = toInt(getAttr(event, ObflQName.ATTR_COL_SPAN), 1);
+		int rowSpan = toInt(getAttr(event, ObflQName.ATTR_ROW_SPAN), 1);
+		BlockProperties bp = blockBuilder(event.asStartElement().getAttributes());
+		Border b = borderBuilder(event.asStartElement().getAttributes());
+		TableCellProperties tcp = new TableCellProperties.Builder()
+				.colSpan(colSpan)
+				.rowSpan(rowSpan)
+				.padding(bp.getPadding())
+				.textBlockProperties(bp.getTextBlockProperties())
+				.border(b)
+				.build();
+		FormatterCore fc = fs.beginsTableCell(tcp);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
-				//fc.addChars(event.asCharacters().getData(), tp);
+				fc.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.BLOCK)) {
-				//parseBlock(event, input, fc, tp);
+				parseBlock(event, input, fc, tp);
 			} else if (processAsBlockContents(fc, event, input, tp)) {
 				//done
 			}
@@ -894,7 +933,6 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void parseTocEntry(XMLEvent event, XMLEventReader input, TableOfContents toc, TextProperties tp) throws XMLStreamException {
 		String refId = getAttr(event, "ref-id");
 		tp = getTextProperties(event, tp);
@@ -916,8 +954,7 @@ public class ObflParser extends XMLParserBase {
 			}
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	private void parseCollectionItem(XMLEvent event, XMLEventReader input, ContentCollection coll, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);
 		coll.startItem(blockBuilder(event.asStartElement().getAttributes()));

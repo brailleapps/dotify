@@ -1,14 +1,20 @@
 package org.daisy.dotify.formatter.impl;
 
+import org.daisy.dotify.api.formatter.FormatterCore;
+import org.daisy.dotify.api.formatter.FormatterSequence;
+import org.daisy.dotify.api.formatter.TableCellProperties;
+import org.daisy.dotify.api.formatter.TableProperties;
+
 /**
  * Provides an interface for a sequence of block contents.
  * 
  * @author Joel Håkansson
  */
-class BlockSequence extends FormatterCoreImpl {
+class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 	private static final long serialVersionUID = -6105005856680272131L;
 	private final LayoutMaster master;
 	private final Integer initialPagenum;
+	private Table table;
 	
 	public BlockSequence(Integer initialPagenum, LayoutMaster master) {
 		this.initialPagenum = initialPagenum;
@@ -77,6 +83,39 @@ class BlockSequence extends FormatterCoreImpl {
 		}
 		return keepHeight;
 	}
+	
+	@Override
+	public void startTable(TableProperties props) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is already open.");
+		}
+		table = new Table();
+	}
 
+	@Override
+	public void beginsTableHeader() {
+		//no action, header is assumed in the implementation
+	}
+
+	@Override
+	public void beginsTableBody() {
+		table.beginsTableBody();
+	}
+
+	@Override
+	public void beginsTableRow() {
+		table.beginsTableRow();
+		
+	}
+
+	@Override
+	public FormatterCore beginsTableCell(TableCellProperties props) {
+		return table.beginsTableCell(props);
+	}
+
+	@Override
+	public void endTable() {
+		table = null;
+	}
 
 }

@@ -40,4 +40,8 @@ public class PEFMediaWriterFactoryService implements
 		return new PEFMediaWriterFactory();
 	}
 
+	@Override
+	public void setCreatedWithSPI() {
+	}
+
 }

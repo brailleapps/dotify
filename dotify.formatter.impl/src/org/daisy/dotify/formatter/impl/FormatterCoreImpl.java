@@ -69,10 +69,10 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		}
 
 		RowDataProperties.Builder rdp = new RowDataProperties.Builder().
-					textIndent(p.getTextIndent()).
-					firstLineIndent(p.getFirstLineIndent()).
-					align(p.getAlignment()).
-					rowSpacing(p.getRowSpacing()).
+					textIndent(p.getTextBlockProperties().getTextIndent()).
+					firstLineIndent(p.getTextBlockProperties().getFirstLineIndent()).
+					align(p.getTextBlockProperties().getAlignment()).
+					rowSpacing(p.getTextBlockProperties().getRowSpacing()).
 					orphans(p.getOrphans()).
 					widows(p.getWidows()).
 					blockIndent(blockIndent).
@@ -100,7 +100,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		c.setKeepType(p.getKeepType());
 		c.setKeepWithNext(p.getKeepWithNext());
 		if (!discardIdentifiers) {
-			c.setIdentifier(p.getIdentifier());
+			c.setIdentifier(p.getTextBlockProperties().getIdentifier());
 		}
 		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		c.setVerticalPosition(p.getVerticalPosition());
@@ -146,10 +146,10 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			int next = p.getKeepWithNext();
 			subtractFromBlockIndent(p.getBlockIndent());
 			RowDataProperties.Builder rdp = new RowDataProperties.Builder().
-						textIndent(p.getTextIndent()).
-						firstLineIndent(p.getFirstLineIndent()).
-						align(p.getAlignment()).
-						rowSpacing(p.getRowSpacing()).
+						textIndent(p.getTextBlockProperties().getTextIndent()).
+						firstLineIndent(p.getTextBlockProperties().getFirstLineIndent()).
+						align(p.getTextBlockProperties().getAlignment()).
+						rowSpacing(p.getTextBlockProperties().getRowSpacing()).
 						orphans(p.getOrphans()).
 						widows(p.getWidows()).
 						blockIndent(blockIndent).

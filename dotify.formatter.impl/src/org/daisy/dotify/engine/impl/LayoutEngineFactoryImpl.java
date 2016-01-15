@@ -11,6 +11,7 @@ import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
+import org.daisy.dotify.formatter.impl.SPIHelper;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
@@ -87,6 +88,14 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 
 	public void unsetExpressionFactory(ExpressionFactory ef) {
 		this.ef = null;
+	}
+
+	@Override
+	public void setCreatedWithSPI() {
+		setFormatterFactory(SPIHelper.getFormatterFactory());
+		setMarkerProcessor(SPIHelper.getMarkerProcessorFactoryMaker());
+		setTextBorderFactoryMaker(SPIHelper.getTextBorderFactoryMaker());
+		setExpressionFactory(SPIHelper.getExpressionFactory());		
 	}
 
 }

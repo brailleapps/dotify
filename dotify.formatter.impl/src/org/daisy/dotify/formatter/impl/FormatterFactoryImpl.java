@@ -42,4 +42,9 @@ public class FormatterFactoryImpl implements FormatterFactory {
 		
 	}
 
+	@Override
+	public void setCreatedWithSPI() {
+		setTranslator(SPIHelper.getBrailleTranslatorFactoryMaker());
+	}
+
 }

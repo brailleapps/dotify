@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.ContentCollection;
 import org.daisy.dotify.api.formatter.Formatter;
-import org.daisy.dotify.api.formatter.FormatterCore;
+import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.formatter.SequenceProperties;
@@ -71,7 +71,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	}
 	
 	@Override
-	public FormatterCore newSequence(SequenceProperties p) {
+	public FormatterSequence newSequence(SequenceProperties p) {
 		state.assertOpen();
 		BlockSequence currentSequence = new BlockSequence(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
 		blocks.push(currentSequence);
