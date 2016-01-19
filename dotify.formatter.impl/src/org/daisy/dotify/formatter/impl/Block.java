@@ -4,7 +4,6 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
 import org.daisy.dotify.api.formatter.FormattingTypes;
-import org.daisy.dotify.formatter.impl.Segment.SegmentType;
 
 /**
  * <p>Provides a block of rows and the properties associated with it.<p>
@@ -16,7 +15,9 @@ import org.daisy.dotify.formatter.impl.Segment.SegmentType;
  * @author Joel Håkansson
  */
 
-class Block implements Cloneable {
+abstract class Block implements Cloneable {
+	private BlockContext context;
+	private AbstractBlockContentManager rdm;
 	private final String blockId;
 	private FormattingTypes.BreakBefore breakBefore;
 	private FormattingTypes.Keep keep;
@@ -24,13 +25,11 @@ class Block implements Cloneable {
 	private int keepWithPreviousSheets;
 	private int keepWithNextSheets;
 	private String id;
-	private final Stack<Segment> segments;
-	private RowDataProperties rdp;
-	private BlockContentManager rdm;
+	protected final Stack<Segment> segments;
+	protected RowDataProperties rdp;
 	private BlockPosition verticalPosition;
-	private BlockContext context;
+	protected Integer metaVolume = null, metaPage = null;
 
-	private Integer metaVolume = null, metaPage = null;
 	
 	Block(String blockId, RowDataProperties rdp) {
 		this.breakBefore = FormattingTypes.BreakBefore.AUTO;
@@ -42,25 +41,13 @@ class Block implements Cloneable {
 		this.blockId = blockId;
 		this.segments = new Stack<>();
 		this.rdp = rdp;
-		this.rdm = null;
 		this.verticalPosition = null;
+		this.rdm = null;
 	}
 	
-	public void addSegment(Segment s) {
-		segments.add(s);
-	}
+	public abstract void addSegment(Segment s);
 
-	public void addSegment(TextSegment s) {
-		if (segments.size() > 0 && segments.peek().getSegmentType() == SegmentType.Text) {
-			TextSegment ts = ((TextSegment) segments.peek());
-			if (ts.getTextProperties().equals(s.getTextProperties())) {
-				// Logger.getLogger(this.getClass().getCanonicalName()).finer("Appending chars to existing text segment.");
-				ts.setText(ts.getText() + "" + s.getText());
-				return;
-			}
-		}
-		segments.push(s);
-	}
+	public abstract void addSegment(TextSegment s);
 	
 	public FormattingTypes.BreakBefore getBreakBeforeType() {
 		return breakBefore;
@@ -126,19 +113,19 @@ class Block implements Cloneable {
 		return blockId;
 	}
 	
-	public BlockContentManager getBlockContentManager(BlockContext context) {
+	public AbstractBlockContentManager getBlockContentManager(BlockContext context) {
 		if (!context.equals(this.context)) {
 			//invalidate, if existing
 			rdm = null;
 		}
 		this.context = context;
 		if (rdm==null || rdm.isVolatile()) {
-			rdm = new BlockContentManager(context.getFlowWidth(), segments, rdp, context.getRefs(),
-					DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build(),
-					context.getFcontext());
+			rdm = newBlockContentManager(context);
 		}
 		return rdm;
 	}
+	
+	protected abstract AbstractBlockContentManager newBlockContentManager(BlockContext context);
 
 	public void setMetaVolume(Integer metaVolume) {
 		this.metaVolume = metaVolume;

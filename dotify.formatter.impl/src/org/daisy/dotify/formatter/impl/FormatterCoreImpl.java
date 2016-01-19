@@ -167,7 +167,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	}
 	
 	public Block newBlock(String blockId, RowDataProperties rdp) {
-		return this.push(new Block(blockId, rdp));
+		return this.push(new RegularBlock(blockId, rdp));
 	}
 	
 	public Block getCurrentBlock() {

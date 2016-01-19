@@ -28,7 +28,7 @@ public class BlockContentManagerTest {
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
 		CrossReferences refs = mock(CrossReferences.class);
 		Context context = new DefaultContext(1, 1);
-		BlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
+		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
 		//test
 		assertEquals(3, m.getRowCount());
@@ -51,7 +51,7 @@ public class BlockContentManagerTest {
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
 		CrossReferences refs = mock(CrossReferences.class);
 		Context context = new DefaultContext(1, 1);
-		BlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
+		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
 		//test
 		assertEquals(1, m.getRowCount());
@@ -73,7 +73,7 @@ public class BlockContentManagerTest {
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
 		CrossReferences refs = mock(CrossReferences.class);
 		Context context = new DefaultContext(1, 1);
-		BlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
+		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
 		//test
 		assertEquals(4, m.getRowCount());

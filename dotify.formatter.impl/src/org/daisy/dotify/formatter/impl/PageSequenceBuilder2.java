@@ -123,7 +123,7 @@ class PageSequenceBuilder2 {
 		int mw = getTotalMarginRegionWidth(); 
 		BlockContext bc = new BlockContext(seq.getLayoutMaster().getFlowWidth() - mw, blockContext.getRefs(), blockContext.getContext(), blockContext.getFcontext());
 		for (Block g : seq)  {
-			BlockContentManager bcm = g.getBlockContentManager(bc);
+			AbstractBlockContentManager bcm = g.getBlockContentManager(bc);
 			if (dataGroups.isEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !data.isEmpty()) || g.getVerticalPosition()!=null) {
 				data = new ArrayList<>();
 				dataGroups.add(new RowGroupSequence(data, g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent())));
@@ -187,7 +187,7 @@ class PageSequenceBuilder2 {
 		return dataGroups;
 	}
 	
-	private void setProperties(RowGroup.Builder rgb, BlockContentManager bcm, Block g) {
+	private void setProperties(RowGroup.Builder rgb, AbstractBlockContentManager bcm, Block g) {
 		if (!"".equals(g.getIdentifier())) { 
 			rgb.identifier(g.getIdentifier());
 		}
@@ -358,7 +358,7 @@ class PageSequenceBuilder2 {
 				if (ret==null) {
 					RowGroup.Builder b = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing());
 					for (Block g : collection.getBlocks(id)) {
-						BlockContentManager bcm = g.getBlockContentManager(c);
+						AbstractBlockContentManager bcm = g.getBlockContentManager(c);
 						b.addAll(bcm.getCollapsiblePreContentRows());
 						b.addAll(bcm.getInnerPreContentRows());
 						for (RowImpl r : bcm) {

@@ -24,44 +24,27 @@ import org.daisy.dotify.common.text.StringTools;
  * 
  * @author Joel Håkansson
  */
-class BlockContentManager implements Iterable<RowImpl> {
+class BlockContentManager extends AbstractBlockContentManager {
 	private final static Pattern softHyphenPattern  = Pattern.compile("\u00ad");
 	private final static Pattern trailingWsBraillePattern = Pattern.compile("[\\s\u2800]+\\z");
 
-	private boolean isVolatile;
-	private final ArrayList<Marker> groupMarkers;
-	private final ArrayList<String> groupAnchors;
 	private final Stack<RowImpl> rows;
 	private final CrossReferences refs;
-	
-	private final RowDataProperties rdp;
 	private final int flowWidth;
 	private final int available;
-
 	private final Context context;
-	private final FormatterContext fcontext;
-	private final MarginProperties leftMargin;
-	private final MarginProperties rightMargin;
-	private final MarginProperties leftParent;
-	private final MarginProperties rightParent;
+
 	private Leader currentLeader;
 	private final List<RowImpl> postContentRows;
 	private final List<RowImpl> skippablePostContentRows;
-	private final List<RowImpl> collapsiblePreContentRows;
 	private final List<RowImpl> innerPreContentRows;
 
 	private ListItem item;
 	
 	BlockContentManager(int flowWidth, Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs, Context context, FormatterContext fcontext) {
-		this.groupMarkers = new ArrayList<>();
-		this.groupAnchors = new ArrayList<>();
+		super(rdp, fcontext);
 		this.refs = refs;
-		this.fcontext = fcontext;
 		this.currentLeader = null;
-
-		this.rdp = rdp;
-		this.leftMargin = rdp.getLeftMargin().buildMargin(fcontext.getSpaceCharacter());
-		this.rightMargin = rdp.getRightMargin().buildMargin(fcontext.getSpaceCharacter());
 		this.flowWidth = flowWidth;
 		this.available = flowWidth - rightMargin.getContent().length();
 
@@ -69,15 +52,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 		
 		this.rows = new Stack<>();
 		this.context = context;
-		
-		this.leftParent = rdp.getLeftMargin().buildMarginParent(fcontext.getSpaceCharacter());
-		this.rightParent = rdp.getRightMargin().buildMarginParent(fcontext.getSpaceCharacter());
-		this.collapsiblePreContentRows = new ArrayList<>();
-		for (int i=0; i<rdp.getOuterSpaceBefore();i++) {
-			RowImpl row = new RowImpl("", leftParent, rightParent);
-			row.setRowSpacing(rdp.getRowSpacing());
-			collapsiblePreContentRows.add(row);
-		}
 		
 		this.innerPreContentRows = new ArrayList<>();
 		if (rdp.getLeadingDecoration()!=null) {
@@ -149,26 +123,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 				leftMargin.isSpaceOnly() &&
 				rightMargin.isSpaceOnly() &&
 				rdp.getLeadingDecoration()==null && rdp.getTrailingDecoration()==null;
-	}
-	
-	/**
-	 * Get markers that are not attached to a row, i.e. markers that proceeds any text contents
-	 * @return returns markers that proceeds this FlowGroups text contents
-	 */
-	public ArrayList<Marker> getGroupMarkers() {
-		return groupMarkers;
-	}
-	
-	public ArrayList<String> getGroupAnchors() {
-		return groupAnchors;
-	}
-	
-	public MarginProperties getLeftMarginParent() {
-		return leftParent;
-	}
-	
-	public MarginProperties getRightMarginParent() {
-		return rightParent;
 	}
 	
 	private void calculateRows(Stack<Segment> segments) {
@@ -287,10 +241,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 		return preContentRows;
 	}
 	
-	public List<RowImpl> getCollapsiblePreContentRows() {
-		return collapsiblePreContentRows;
-	}
-	
 	public List<RowImpl> getInnerPreContentRows() {
 		return innerPreContentRows;
 	}
@@ -318,16 +268,6 @@ class BlockContentManager implements Iterable<RowImpl> {
 	@Override
 	public Iterator<RowImpl> iterator() {
 		return rows.iterator();
-	}
-
-	/**
-	 * Returns true if this RowDataManager contains objects that makes the formatting volatile,
-	 * i.e. prone to change due to for example cross references.
-	 * @return returns true if, and only if, the RowDataManager should be discarded if a new pass is requested,
-	 * false otherwise
-	 */
-	public boolean isVolatile() {
-		return isVolatile;
 	}
 	
 	private void layout(String c, String locale, String mode) {
