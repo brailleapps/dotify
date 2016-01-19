@@ -89,7 +89,9 @@ class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 		if (table!=null) {
 			throw new IllegalStateException("A table is already open.");
 		}
-		table = new Table();
+		//FIXME: row data properties from start block
+		table = new Table(new RowDataProperties.Builder().build());
+		add(table);
 	}
 
 	@Override
@@ -105,7 +107,6 @@ class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 	@Override
 	public void beginsTableRow() {
 		table.beginsTableRow();
-		
 	}
 
 	@Override
