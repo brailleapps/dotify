@@ -57,6 +57,7 @@ public class Main extends AbstractUI {
 	private final static String WATCH_KEY = "watch";
 	
 	private final static int DEFAULT_POLL_TIME = 5000;
+	private final static int MIN_POLL_TIME = 250;
 
 	private final List<Argument> reqArgs;
 	private final List<OptionalArgument> optionalArgs;
@@ -227,8 +228,10 @@ public class Main extends AbstractUI {
 			if (pollWaitStr!=null) {
 				int pollWait = DEFAULT_POLL_TIME;
 				try {
-					pollWait = Integer.parseInt(pollWaitStr);
-				} catch (NumberFormatException e) {}
+					pollWait = Math.max(Integer.parseInt(pollWaitStr), MIN_POLL_TIME);
+				} catch (NumberFormatException e) {
+					logger.warning("Could not parse " + WATCH_KEY + " value '" + pollWaitStr + "' as an integer.");
+				}
 				logger.fine("Poll time is " + pollWait);
 				long modified = 0;
 				while (input.exists()) {
