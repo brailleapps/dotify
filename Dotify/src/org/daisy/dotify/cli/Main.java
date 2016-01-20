@@ -48,12 +48,15 @@ import org.xml.sax.SAXException;
  * @author Joel Håkansson
  */
 public class Main extends AbstractUI {
+	private final static Logger logger = Logger.getLogger(Main.class.getCanonicalName());
 	//private final static String DEFAULT_TEMPLATE = "A4-w32";
 	private final static String DEFAULT_LOCALE = Locale.getDefault().toString().replaceAll("_", "-");
 	private final static String META_KEY = "meta";
 	private final static String VERSION_KEY = "version";
 	private final static String CONFIG_KEY = "configs";
 	private final static String WATCH_KEY = "watch";
+	
+	private final static int DEFAULT_POLL_TIME = 5000;
 
 	private final List<Argument> reqArgs;
 	private final List<OptionalArgument> optionalArgs;
@@ -110,7 +113,7 @@ public class Main extends AbstractUI {
 		for (FactoryProperties p : tableCatalog.list()) { idents.add(p.getIdentifier()); }
 		tableSF = new ShortFormResolver(idents);
 		optionalArgs.add(new OptionalArgument(PEFConverterFacade.KEY_TABLE, "If specified, an ASCII-braille file (.brl) is generated in addition to the PEF-file using the specified braille code table", getDefinitionList(tableCatalog, tableSF), ""));
-		parser.addSwitch(new SwitchArgument('w', WATCH_KEY, WATCH_KEY, "true", "Keeps the conversion in sync by watching the input file for changes and rerunning the conversion automatically when the input is modified."));
+		parser.addSwitch(new SwitchArgument('w', WATCH_KEY, WATCH_KEY, "" + DEFAULT_POLL_TIME, "Keeps the conversion in sync by watching the input file for changes and rerunning the conversion automatically when the input is modified."));
 		parser.addSwitch(new SwitchArgument('v', VERSION_KEY, META_KEY, VERSION_KEY, "Displays the version of Dotify."));
 		parser.addSwitch(new SwitchArgument('c', CONFIG_KEY, META_KEY, CONFIG_KEY, "Lists known configurations."));
 	}
@@ -179,7 +182,6 @@ public class Main extends AbstractUI {
 		
 		if (input.isDirectory() && output.isDirectory()) {
 			if (result.getOptional().get(WATCH_KEY)!=null) {
-				Logger logger = Logger.getLogger(Main.class.getCanonicalName());
 				logger.warning("'" + WATCH_KEY + "' is not implemented for batch mode.");
 			}
 			if ("true".equals(props.get(SystemKeys.WRITE_TEMP_FILES))) {
@@ -206,9 +208,9 @@ public class Main extends AbstractUI {
 						try {
 					m.runDotify(f, new File(output, f.getName() + "." + ext), setup, context, props);
 						} catch (InternalTaskException e) {
-							Logger.getLogger(Main.class.getCanonicalName()).log(Level.WARNING, "Failed to process " + f, e);
+							logger.log(Level.WARNING, "Failed to process " + f, e);
 						} catch (IOException e) {
-							Logger.getLogger(Main.class.getCanonicalName()).log(Level.WARNING, "Failed to read " + f, e);
+							logger.log(Level.WARNING, "Failed to read " + f, e);
 						}
 					//}});
 			}
@@ -221,15 +223,22 @@ public class Main extends AbstractUI {
 		} else if (input.isDirectory()) { 
 			Main.exitWithCode(ExitCode.ILLEGAL_ARGUMENT_VALUE, "If input is a directory, output must be an existing directory too.");
 		} else {
-			if (result.getOptional().get(WATCH_KEY)!=null) {
+			String pollWaitStr = result.getOptional().get(WATCH_KEY);
+			if (pollWaitStr!=null) {
+				int pollWait = DEFAULT_POLL_TIME;
+				try {
+					pollWait = Integer.parseInt(pollWaitStr);
+				} catch (NumberFormatException e) {}
+				logger.fine("Poll time is " + pollWait);
 				long modified = 0;
 				while (input.exists()) {
 					if (modified<input.lastModified()) {
 						modified = input.lastModified();
 						m.runDotify(input, output, setup, context, props);
+						logger.info("Waiting for changes in " + input);
 					}
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(pollWait);
 					} catch (InterruptedException e) {
 					}
 				}
@@ -250,7 +259,6 @@ public class Main extends AbstractUI {
 			format = output.getName().substring(i+1);
 		}
 		if (format.equalsIgnoreCase(SystemKeys.PEF_FORMAT)) {
-			Logger logger = Logger.getLogger(Main.class.getCanonicalName());
 			logger.info("Validating output...");
 			PEFValidator validator = new PEFValidator();
 			if (!validator.validate(output.toURI().toURL())) {
