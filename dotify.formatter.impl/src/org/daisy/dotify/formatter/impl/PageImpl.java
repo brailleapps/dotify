@@ -191,6 +191,37 @@ class PageImpl implements Page {
 	int spaceUsedOnPage(int offs) {
 		return (int)Math.ceil(spaceNeeded()) + offs;
 	}
+	
+	private List<RowImpl> buildPageRows(TextBorderStyle border) throws PaginatorException {
+		ArrayList<RowImpl> ret = new ArrayList<>();
+		{
+			LayoutMaster lm = master;
+			int pagenum = getPageIndex() + 1;
+			PageTemplate t = lm.getTemplate(pagenum);
+			BrailleTranslator filter = fcontext.getDefaultTranslator();
+			ret.addAll(renderFields(lm, t.getHeader(), filter));
+			if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.TOP && !pageArea.isEmpty()) {
+				ret.addAll(before);
+				ret.addAll(pageArea);
+				ret.addAll(after);
+			}
+			ret.addAll(rows);
+			float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
+			if (!t.getFooter().isEmpty() || border != TextBorderStyle.NONE || (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && !pageArea.isEmpty())) {
+				float areaSize = (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM ? pageAreaSpaceNeeded() : 0);
+				while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing()) + areaSize) < getFlowHeight() + headerHeight) {
+					ret.add(new RowImpl());
+				}
+				if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && !pageArea.isEmpty()) {
+					ret.addAll(before);
+					ret.addAll(pageArea);
+					ret.addAll(after);
+				}
+				ret.addAll(renderFields(lm, t.getFooter(), filter));
+			}
+		}
+		return ret;
+	}
 
 	@Override
 	public List<Row> getRows() {
@@ -200,33 +231,8 @@ class PageImpl implements Page {
 			if (border == null) {
 				border = TextBorderStyle.NONE;
 			}
-			ArrayList<RowImpl> ret = new ArrayList<>();
-			{
-				LayoutMaster lm = master;
-				int pagenum = getPageIndex() + 1;
-				PageTemplate t = lm.getTemplate(pagenum);
-				BrailleTranslator filter = fcontext.getDefaultTranslator();
-				ret.addAll(renderFields(lm, t.getHeader(), filter));
-				if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.TOP && !pageArea.isEmpty()) {
-					ret.addAll(before);
-					ret.addAll(pageArea);
-					ret.addAll(after);
-				}
-				ret.addAll(rows);
-				float headerHeight = getHeight(t.getHeader(), lm.getRowSpacing());
-				if (!t.getFooter().isEmpty() || border != TextBorderStyle.NONE || (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && !pageArea.isEmpty())) {
-					float areaSize = (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM ? pageAreaSpaceNeeded() : 0);
-					while (Math.ceil(rowsNeeded(ret, lm.getRowSpacing()) + areaSize) < getFlowHeight() + headerHeight) {
-						ret.add(new RowImpl());
-					}
-					if (lm.getPageArea()!=null && lm.getPageArea().getAlignment()==PageAreaProperties.Alignment.BOTTOM && !pageArea.isEmpty()) {
-						ret.addAll(before);
-						ret.addAll(pageArea);
-						ret.addAll(after);
-					}
-					ret.addAll(renderFields(lm, t.getFooter(), filter));
-				}
-			}
+			List<RowImpl> ret = buildPageRows(border);
+			
 			LayoutMaster lm = master;
 			ArrayList<Row> ret2 = new ArrayList<>();
 			{
@@ -257,7 +263,7 @@ class PageImpl implements Page {
 						String chars = trailingWs.matcher(row.getChars()).replaceAll("");
 						//if (!TextBorderStyle.NONE.equals(frame)) {
 							res = tb.addBorderToRow(
-									padLeft(master.getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment()), 
+									padLeft(master.getFlowWidth(), chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment(), fcontext.getSpaceCharacter()), 
 									"");
 						//} else {
 						//	res = StringTools.fill(getMarginCharacter(), pageMargin + row.getLeftMargin()) + chars;
@@ -319,15 +325,20 @@ class PageImpl implements Page {
 		}
 	}
 	
-	String padLeft(int w, String text, MarginProperties leftMargin, MarginProperties rightMargin, FormattingTypes.Alignment align) {
+	static String padLeft(int w, RowImpl row, char space) {
+		String chars = trailingWs.matcher(row.getChars()).replaceAll("");
+		return padLeft(w, chars, row.getLeftMargin(), row.getRightMargin(), row.getAlignment(), space);
+	}
+	
+	static String padLeft(int w, String text, MarginProperties leftMargin, MarginProperties rightMargin, FormattingTypes.Alignment align, char space) {
 		if ("".equals(text) && leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
 			return "";
 		} else {
-			String r = leftMargin.getContent() + StringTools.fill(fcontext.getSpaceCharacter(), align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;
+			String r = leftMargin.getContent() + StringTools.fill(space, align.getOffset(w - (leftMargin.getContent().length() + rightMargin.getContent().length() + text.length()))) + text;
 			if (rightMargin.isSpaceOnly()) {
 				return r;
 			} else {
-				return r + StringTools.fill(fcontext.getSpaceCharacter(), w - r.length() - rightMargin.getContent().length()) + rightMargin.getContent();
+				return r + StringTools.fill(space, w - r.length() - rightMargin.getContent().length()) + rightMargin.getContent();
 			}
 		}
 	}
