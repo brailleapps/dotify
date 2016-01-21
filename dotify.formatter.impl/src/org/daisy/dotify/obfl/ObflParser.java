@@ -535,6 +535,9 @@ public class ObflParser extends XMLParserBase {
 			}/* else if (equalsStart(event, LEADER)) {
 				parseLeader(event, input);
 			}*/
+			else if (equalsStart(event, ObflQName.TABLE)) {
+				parseTable(event, input, seq, tp);
+			}
 			else if (equalsEnd(event, ObflQName.SEQUENCE)) {
 				break;
 			} else {
@@ -789,6 +792,75 @@ public class ObflParser extends XMLParserBase {
 	
 	private String parseAnchor(XMLEvent event) {
 		return getAttr(event, "item");
+	}
+	
+	private void parseTable(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+		String colSpacing = getAttr(event, ObflQName.ATTR_TABLE_COL_SPACING);
+		String rowSpacing = getAttr(event, ObflQName.ATTR_TABLE_ROW_SPACING);
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.THEAD)) {
+				parseTHeadTBody(event, input, fc, tp);
+			} else if (equalsStart(event, ObflQName.TBODY)) {
+				parseTHeadTBody(event, input, fc, tp);
+			} else if (equalsStart(event, ObflQName.TR)) {				
+				parseTR(event, input, fc, tp);
+			}
+			else if (equalsEnd(event, ObflQName.TABLE)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+	
+	private void parseTHeadTBody(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.TR)) {
+				parseTR(event, input, fc, tp);
+			} else if (equalsEnd(event, ObflQName.THEAD, ObflQName.TBODY)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+	
+	private void parseTR(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.TD)) {
+				parseTD(event, input, fc, tp);
+			}
+			else if (equalsEnd(event, ObflQName.TR)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+	
+	private void parseTD(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
+		tp = getTextProperties(event, tp);
+		String colSpan = getAttr(event, ObflQName.ATTR_COL_SPAN);
+		String rowSpan = getAttr(event, ObflQName.ATTR_ROW_SPAN);
+		// blockBuilder(event.asStartElement().getAttributes())
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (event.isCharacters()) {
+				//fc.addChars(event.asCharacters().getData(), tp);
+			} else if (equalsStart(event, ObflQName.BLOCK)) {
+				//parseBlock(event, input, fc, tp);
+			} else if (processAsBlockContents(fc, event, input, tp)) {
+				//done
+			}
+			else if (equalsEnd(event, ObflQName.TD)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
 	}
 	
 	private void parseTableOfContents(XMLEvent event, XMLEventReader input, TextProperties tp) throws XMLStreamException {
