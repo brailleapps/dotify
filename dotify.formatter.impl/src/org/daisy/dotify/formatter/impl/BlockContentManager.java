@@ -1,8 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -30,81 +28,24 @@ class BlockContentManager extends AbstractBlockContentManager {
 
 	private final Stack<RowImpl> rows;
 	private final CrossReferences refs;
-	private final int flowWidth;
 	private final int available;
 	private final Context context;
 
 	private Leader currentLeader;
-	private final List<RowImpl> postContentRows;
-	private final List<RowImpl> skippablePostContentRows;
-	private final List<RowImpl> innerPreContentRows;
-
 	private ListItem item;
 	
 	BlockContentManager(int flowWidth, Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs, Context context, FormatterContext fcontext) {
-		super(rdp, fcontext);
+		super(flowWidth, rdp, fcontext);
 		this.refs = refs;
 		this.currentLeader = null;
-		this.flowWidth = flowWidth;
 		this.available = flowWidth - rightMargin.getContent().length();
 
 		this.item = rdp.getListItem();
 		
 		this.rows = new Stack<>();
 		this.context = context;
-		
-		this.innerPreContentRows = new ArrayList<>();
-		if (rdp.getLeadingDecoration()!=null) {
-			innerPreContentRows.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
-		}
-		for (int i=0; i<rdp.getInnerSpaceBefore(); i++) {
-			MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
-			innerPreContentRows.add(createAndConfigureEmptyNewRow(ret));
-		}
-		
-		this.postContentRows = new ArrayList<>();
-
-		this.skippablePostContentRows = new ArrayList<>();
-		MarginProperties margin = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
-		if (rdp.getTrailingDecoration()==null) {
-			if (leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
-				for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
-					skippablePostContentRows.add(createAndConfigureEmptyNewRow(margin));
-				}
-			} else {
-				for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
-					postContentRows.add(createAndConfigureEmptyNewRow(margin));
-				}
-			}
-		} else {
-			for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
-				postContentRows.add(createAndConfigureEmptyNewRow(margin));
-			}
-			postContentRows.add(makeDecorationRow(flowWidth, rdp.getTrailingDecoration(), leftParent, rightParent));
-		}
-		
-		if (leftParent.isSpaceOnly() && rightParent.isSpaceOnly()) {
-			for (int i=0; i<rdp.getOuterSpaceAfter();i++) {
-				skippablePostContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
-			}
-		} else {
-			for (int i=0; i<rdp.getOuterSpaceAfter();i++) {
-				postContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
-			}
-		}
 
 		calculateRows(segments);
-	}
-
-	private RowImpl makeDecorationRow(int flowWidth, SingleLineDecoration d, MarginProperties leftParent, MarginProperties rightParent) {
-		int w = flowWidth - rightParent.getContent().length() - leftParent.getContent().length();
-		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
-		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
-		row.setLeftMargin(leftParent);
-		row.setRightMargin(rightParent);
-		row.setAlignment(rdp.getAlignment());
-		row.setRowSpacing(rdp.getRowSpacing());
-		return row;
 	}
 	
 	public int getBlockHeight() {
@@ -221,7 +162,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 	 * 
 	 * @param margin rdp.getSpaceBefore()
 	 * @return
-	 */
+	 *//*
 	public List<RowImpl> getPreContentRows(int margin, Float marginRowSpacing) {
 		List<RowImpl> preContentRows = new ArrayList<>();
 		for (int i=0; i<margin;i++) {
@@ -239,27 +180,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 		}
 
 		return preContentRows;
-	}
-	
-	public List<RowImpl> getInnerPreContentRows() {
-		return innerPreContentRows;
-	}
-	
-	public int countPostContentRows() {
-		return postContentRows.size();
-	}
-	
-	public List<RowImpl> getPostContentRows() {
-		return postContentRows;
-	}
-	
-	public int countSkippablePostContentRows() {
-		return skippablePostContentRows.size();
-	}
-	
-	public List<RowImpl> getSkippablePostContentRows() {
-		return skippablePostContentRows;
-	}
+	}*/
 
 	public int getRowCount() {
 		return rows.size();
@@ -375,17 +296,6 @@ class BlockContentManager extends AbstractBlockContentManager {
 			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
 			rows.add(m.row);
 		}
-	}
-
-	private RowImpl createAndConfigureEmptyNewRow(MarginProperties left) {
-		return createAndConfigureNewEmptyRow(left, rightMargin);
-	}
-
-	private RowImpl createAndConfigureNewEmptyRow(MarginProperties left, MarginProperties right) {
-		RowImpl r = new RowImpl("", left, right);
-		r.setAlignment(rdp.getAlignment());
-		r.setRowSpacing(rdp.getRowSpacing());
-		return r;
 	}
 	
 	private static int getLeaderAlign(Leader leader, int length) {

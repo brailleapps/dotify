@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.common.text.StringTools;
 
 public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 	protected boolean isVolatile;
+	protected final int flowWidth;
 	protected final RowDataProperties rdp;
 	protected final FormatterContext fcontext;
 	protected final MarginProperties leftParent;
@@ -16,8 +18,12 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 	protected final ArrayList<Marker> groupMarkers;
 	protected final ArrayList<String> groupAnchors;
 	private final List<RowImpl> collapsiblePreContentRows;
+	private final List<RowImpl> innerPreContentRows;
+	private final List<RowImpl> postContentRows;
+	private final List<RowImpl> skippablePostContentRows;
 	
-	AbstractBlockContentManager(RowDataProperties rdp, FormatterContext fcontext) {
+	AbstractBlockContentManager(int flowWidth, RowDataProperties rdp, FormatterContext fcontext) {
+		this.flowWidth = flowWidth;
 		this.leftParent = rdp.getLeftMargin().buildMarginParent(fcontext.getSpaceCharacter());
 		this.rightParent = rdp.getRightMargin().buildMarginParent(fcontext.getSpaceCharacter());
 		this.leftMargin = rdp.getLeftMargin().buildMargin(fcontext.getSpaceCharacter());
@@ -26,7 +32,38 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 		this.rdp = rdp;
 		this.groupMarkers = new ArrayList<>();
 		this.groupAnchors = new ArrayList<>();
-		this.collapsiblePreContentRows = makeCollapsiblePreContentRows(rdp, leftParent, rightParent);
+		this.collapsiblePreContentRows = makeCollapsiblePreContentRows(rdp, leftParent, rightParent);	
+		this.innerPreContentRows = makeInnerPreContentRows();
+		this.postContentRows = new ArrayList<>();
+
+		this.skippablePostContentRows = new ArrayList<>();
+		MarginProperties margin = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
+		if (rdp.getTrailingDecoration()==null) {
+			if (leftMargin.isSpaceOnly() && rightMargin.isSpaceOnly()) {
+				for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
+					skippablePostContentRows.add(createAndConfigureEmptyNewRow(margin));
+				}
+			} else {
+				for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
+					postContentRows.add(createAndConfigureEmptyNewRow(margin));
+				}
+			}
+		} else {
+			for (int i=0; i<rdp.getInnerSpaceAfter(); i++) {
+				postContentRows.add(createAndConfigureEmptyNewRow(margin));
+			}
+			postContentRows.add(makeDecorationRow(flowWidth, rdp.getTrailingDecoration(), leftParent, rightParent));
+		}
+		
+		if (leftParent.isSpaceOnly() && rightParent.isSpaceOnly()) {
+			for (int i=0; i<rdp.getOuterSpaceAfter();i++) {
+				skippablePostContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
+			}
+		} else {
+			for (int i=0; i<rdp.getOuterSpaceAfter();i++) {
+				postContentRows.add(createAndConfigureNewEmptyRow(leftParent, rightParent));
+			}
+		}
 	}
 	
 	private static List<RowImpl> makeCollapsiblePreContentRows(RowDataProperties rdp, MarginProperties leftParent, MarginProperties rightParent) {
@@ -37,6 +74,40 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 			ret.add(row);
 		}
 		return ret;
+	}
+	
+	private List<RowImpl> makeInnerPreContentRows() {
+		ArrayList<RowImpl> ret = new ArrayList<>();
+		if (rdp.getLeadingDecoration()!=null) {
+			ret.add(makeDecorationRow(flowWidth, rdp.getLeadingDecoration(), leftParent, rightParent));
+		}
+		for (int i=0; i<rdp.getInnerSpaceBefore(); i++) {
+			MarginProperties margin = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
+			ret.add(createAndConfigureEmptyNewRow(margin));
+		}
+		return ret;
+	}
+	
+	protected RowImpl makeDecorationRow(int flowWidth, SingleLineDecoration d, MarginProperties leftParent, MarginProperties rightParent) {
+		int w = flowWidth - rightParent.getContent().length() - leftParent.getContent().length();
+		int aw = w-d.getLeftCorner().length()-d.getRightCorner().length();
+		RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
+		row.setLeftMargin(leftParent);
+		row.setRightMargin(rightParent);
+		row.setAlignment(rdp.getAlignment());
+		row.setRowSpacing(rdp.getRowSpacing());
+		return row;
+	}
+	
+	protected RowImpl createAndConfigureEmptyNewRow(MarginProperties left) {
+		return createAndConfigureNewEmptyRow(left, rightMargin);
+	}
+
+	protected RowImpl createAndConfigureNewEmptyRow(MarginProperties left, MarginProperties right) {
+		RowImpl r = new RowImpl("", left, right);
+		r.setAlignment(rdp.getAlignment());
+		r.setRowSpacing(rdp.getRowSpacing());
+		return r;
 	}
 	
 	public abstract int getRowCount();
@@ -62,7 +133,25 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 		return collapsiblePreContentRows;
 	}
 
-	public abstract  List<RowImpl> getInnerPreContentRows();
+	public List<RowImpl> getInnerPreContentRows() {
+		return innerPreContentRows;
+	}
+
+	/*public int countPostContentRows() {
+		return postContentRows.size();
+	}*/
+	
+	public List<RowImpl> getPostContentRows() {
+		return postContentRows;
+	}
+	/*
+	public int countSkippablePostContentRows() {
+		return skippablePostContentRows.size();
+	}*/
+	
+	public List<RowImpl> getSkippablePostContentRows() {
+		return skippablePostContentRows;
+	}
 
 	/**
 	 * Get markers that are not attached to a row, i.e. markers that proceeds any text contents
@@ -75,9 +164,5 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 	public ArrayList<String> getGroupAnchors() {
 		return groupAnchors;
 	}
-	
-	public abstract  List<RowImpl> getPostContentRows();
-	public abstract  List<RowImpl> getSkippablePostContentRows();
-	//public Iterable<RowImpl> iterable();
 	
 }
