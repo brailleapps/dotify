@@ -69,4 +69,90 @@ public class TableTest extends AbstractFormatterEngineTest {
 		testPEF("resource-files/dp2/table-colspan-fill-input.obfl",
 		        "resource-files/dp2/table-colspan-fill-expected.pef", false);
 	}
+	
+	@Test
+	public void testTables() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-input.obfl", "resource-files/table/tables-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableWithColspan() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-colspan-input.obfl", "resource-files/table/tables-colspan-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableWithRowspan() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-rowspan-input.obfl", "resource-files/table/tables-rowspan-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableWithMultilineCells() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-multiline-input.obfl", "resource-files/table/tables-multiline-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableColSpacing2() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-col-spacing-input.obfl", "resource-files/table/tables-col-spacing-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableLeaderAlign() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-leader-input.obfl", "resource-files/table/tables-leader-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableLeader2Colspacing() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-leader2-input.obfl", "resource-files/table/tables-leader2-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableLeader3Colspacing() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-leader3-input.obfl", "resource-files/table/tables-leader3-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableAlign() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-align-input.obfl", "resource-files/table/tables-align-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableBorder() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-borders-input.obfl", "resource-files/table/tables-borders-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableKeepRow() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-keep-row-input.obfl", "resource-files/table/tables-keep-row-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableRowSpacing() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-row-spacing-input.obfl", "resource-files/table/tables-row-spacing-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableShrink() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-shrink-input.obfl", "resource-files/table/tables-shrink-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableMarker() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-marker-input.obfl", "resource-files/table/tables-marker-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableAnchor() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-anchor-input.obfl", "resource-files/table/tables-anchor-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableCellBorder() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-border-input.obfl", "resource-files/table/tables-border-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableCellBorder2() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-border2-input.obfl", "resource-files/table/tables-border2-expected.pef", false);
+	}
+	
 }
