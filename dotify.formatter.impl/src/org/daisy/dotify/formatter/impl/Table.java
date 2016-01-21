@@ -61,7 +61,7 @@ class Table extends Block {
 		MarginProperties leftMargin = rdp.getLeftMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		MarginProperties rightMargin = rdp.getRightMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		for (TableRow row : rows) {
-			List<List<RowImpl>> cellData = new ArrayList<>(); 
+			List<CellData> cellData = new ArrayList<>(); 
 			for (TableCell cell : row) {
 				List<Block> blocks = cell.getBlocks(context.getFcontext(), dc, context.getRefs());
 				List<RowImpl> rowData = new ArrayList<>();
@@ -78,22 +78,22 @@ class Table extends Block {
 					rowData.addAll(bcm.getPostContentRows());
 					rowData.addAll(bcm.getSkippablePostContentRows());
 				}
-				cellData.add(rowData);
+				cellData.add(new CellData(rowData, cell.getColSpan()));
 			}
 			// render into rows
 			for (int i=0; ; i++) {
 				boolean empty = true;
 				StringBuilder tableRow = new StringBuilder();
 				for (int j=0; j<cellData.size(); j++) {
-					List<RowImpl> cr = cellData.get(j);
+					CellData cr = cellData.get(j);
 					String data = "";
-					if (i<cr.size()) {
+					if (i<cr.rows.size()) {
 						empty = false;
 						//FIXME: get additional properties, such as left margin etc.
-						data = cr.get(i).getChars();
+						data = cr.rows.get(i).getChars();
 					}
 					//fill
-					int length = columnWidth - data.length();
+					int length = columnWidth*cr.colSpan - data.length();
 					//FIXME: left alignment is assumed?
 					tableRow.append(data);
 					// Only append after intermediary columns 
@@ -109,6 +109,15 @@ class Table extends Block {
 			}
 		}
 		return new TableBlockContentManager(context.getFlowWidth(), result, rdp, context.getFcontext());
+	}
+	
+	private static class CellData {
+		private final List<RowImpl> rows;
+		private final int colSpan;
+		CellData(List<RowImpl> rows, int colSpan) {
+			this.rows = rows;
+			this.colSpan = colSpan;
+		}
 	}
 	
 	private int countColumns() {
