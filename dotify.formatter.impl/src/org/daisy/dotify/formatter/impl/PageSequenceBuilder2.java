@@ -163,6 +163,7 @@ class PageSequenceBuilder2 {
 				}
 				RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing()).add(r).
 						collapsible(false).skippable(false).breakable(
+								r.allowsBreakAfter()&&
 								owc.allowsBreakAfter(i-1)&&
 								keepWithNext<=0 &&
 								(Keep.AUTO==g.getKeepType() || i==bcm.getRowCount()) &&

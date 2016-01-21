@@ -22,6 +22,7 @@ class RowImpl implements Row {
 	private Alignment alignment;
 	private Float rowSpacing;
 	private boolean adjustedForMargin = false;
+	private boolean allowsBreakAfter = true;
 	
 	/**
 	 * Create a new Row
@@ -191,12 +192,21 @@ class RowImpl implements Row {
 	void setAdjustedForMargin(boolean value) {
 		this.adjustedForMargin = value;
 	}
+	
+	boolean allowsBreakAfter() {
+		return allowsBreakAfter;
+	}
+	
+	void setAllowsBreakAfter(boolean value) {
+		this.allowsBreakAfter = value;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (adjustedForMargin ? 1231 : 1237);
 		result = prime * result + ((alignment == null) ? 0 : alignment.hashCode());
+		result = prime * result + (allowsBreakAfter ? 1231 : 1237);
 		result = prime * result + ((anchors == null) ? 0 : anchors.hashCode());
 		result = prime * result + ((chars == null) ? 0 : chars.hashCode());
 		result = prime * result + ((leftMargin == null) ? 0 : leftMargin.hashCode());
@@ -221,6 +231,9 @@ class RowImpl implements Row {
 			return false;
 		}
 		if (alignment != other.alignment) {
+			return false;
+		}
+		if (allowsBreakAfter != other.allowsBreakAfter) {
 			return false;
 		}
 		if (anchors == null) {
