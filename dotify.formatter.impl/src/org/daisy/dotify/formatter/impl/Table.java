@@ -6,14 +6,17 @@ import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.TableCellProperties;
+import org.daisy.dotify.api.formatter.TableProperties;
 import org.daisy.dotify.common.text.StringTools;
 
 class Table extends Block {
 	private int headerRows;
 	private final Stack<TableRow> rows;
+	private final TableProperties tableProps;
 
-	Table(RowDataProperties props) {
-		super(null, props);
+	Table(TableProperties tableProps, RowDataProperties rdp) {
+		super(null, rdp);
+		this.tableProps = tableProps;
 		headerRows = 0;
 		rows = new Stack<>();
 	}
@@ -55,7 +58,9 @@ class Table extends Block {
 
 	@Override
 	protected AbstractBlockContentManager newBlockContentManager(BlockContext context) {
-		int columnWidth = context.getFlowWidth() / countColumns();
+		// FIXME: add row-span support
+		int columnCount = countColumns();
+		int columnWidth = (context.getFlowWidth() - tableProps.getTableColSpacing()*(columnCount-1)) / columnCount;
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
 		List<RowImpl> result = new ArrayList<RowImpl>();
 		MarginProperties leftMargin = rdp.getLeftMargin().buildMargin(context.getFcontext().getSpaceCharacter());
@@ -90,14 +95,13 @@ class Table extends Block {
 					if (i<cr.rows.size()) {
 						empty = false;
 						//FIXME: get additional properties, such as left margin etc.
-						data = cr.rows.get(i).getChars();
+						// Align
+						data = PageImpl.padLeft(columnWidth*cr.colSpan, cr.rows.get(i), context.getFcontext().getSpaceCharacter());
 					}
-					//fill
-					int length = columnWidth*cr.colSpan - data.length();
-					//FIXME: left alignment is assumed?
 					tableRow.append(data);
-					// Only append after intermediary columns 
+					// Fill (only after intermediary columns) 
 					if (j<cellData.size()-1) {
+						int length = (columnWidth+tableProps.getTableColSpacing())*cr.colSpan - data.length();
 						tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
 					}
 				}

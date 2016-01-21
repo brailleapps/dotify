@@ -90,7 +90,7 @@ class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 			throw new IllegalStateException("A table is already open.");
 		}
 		//FIXME: row data properties from start block
-		table = new Table(new RowDataProperties.Builder().build());
+		table = new Table(props, new RowDataProperties.Builder().build());
 		add(table);
 	}
 
