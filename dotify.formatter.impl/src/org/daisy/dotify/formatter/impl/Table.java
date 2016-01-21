@@ -89,6 +89,7 @@ class Table extends Block {
 				cellData.add(new CellData(rowData, cell.getColSpan()));
 			}
 			// render into rows
+			boolean tableRowHasData = false;
 			for (int i=0; ; i++) {
 				boolean empty = true;
 				StringBuilder tableRow = new StringBuilder();
@@ -111,8 +112,15 @@ class Table extends Block {
 				if (empty) {
 					break;
 				} else {
-					result.add(new RowImpl(tableRow.toString(), leftMargin, rightMargin));
+					tableRowHasData = true;
+					RowImpl r = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
+					//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
+					r.setAllowsBreakAfter(false);
+					result.add(r);
 				}
+			}
+			if (tableRowHasData) {
+				result.get(result.size()-1).setAllowsBreakAfter(true);
 			}
 		}
 		return new TableBlockContentManager(context.getFlowWidth(), result, rdp, context.getFcontext());
