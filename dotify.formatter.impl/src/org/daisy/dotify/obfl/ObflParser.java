@@ -820,6 +820,12 @@ public class ObflParser extends XMLParserBase {
 				.margin(bp.getMargin())
 				.padding(bp.getPadding())
 				.border(b);
+		String rowSpacingStr = getAttr(event, "row-spacing");
+		if (rowSpacingStr!=null) {
+			try { 
+				tableProps.rowSpacing(Float.parseFloat(rowSpacingStr));
+			} catch (NumberFormatException e) {}
+		}
 		fc.startTable(tableProps.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
@@ -831,6 +837,7 @@ public class ObflParser extends XMLParserBase {
 				parseTR(event, input, fc, tp);
 			}
 			else if (equalsEnd(event, ObflQName.TABLE)) {
+				fc.endTable();
 				break;
 			} else {
 				report(event);

@@ -17,6 +17,9 @@ class Table extends Block {
 	Table(TableProperties tableProps, RowDataProperties rdp) {
 		super(null, rdp);
 		this.tableProps = tableProps;
+		if (tableProps.getTableRowSpacing()>0) {
+			throw new UnsupportedOperationException("Table row spacing > 0 is not implemented.");
+		}
 		headerRows = 0;
 		rows = new Stack<>();
 	}
@@ -58,7 +61,6 @@ class Table extends Block {
 
 	@Override
 	protected AbstractBlockContentManager newBlockContentManager(BlockContext context) {
-		// FIXME: add row-span support
 		int columnCount = countColumns();
 		MarginProperties leftMargin = rdp.getLeftMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		MarginProperties rightMargin = rdp.getRightMargin().buildMargin(context.getFcontext().getSpaceCharacter());
@@ -71,6 +73,10 @@ class Table extends Block {
 		for (TableRow row : rows) {
 			List<CellData> cellData = new ArrayList<>(); 
 			for (TableCell cell : row) {
+				// FIXME: add row-span support
+				if (cell.getRowSpan()>1) {
+					throw new UnsupportedOperationException("Table cell with row span > 1 is not implemented.");
+				}
 				List<Block> blocks = cell.getBlocks(context.getFcontext(), dc, context.getRefs());
 				List<RowImpl> rowData = new ArrayList<>();
 				for (Block block : blocks) {
@@ -114,6 +120,7 @@ class Table extends Block {
 				} else {
 					tableRowHasData = true;
 					RowImpl r = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
+					r.setRowSpacing(tableProps.getRowSpacing());
 					//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
 					r.setAllowsBreakAfter(false);
 					result.add(r);
