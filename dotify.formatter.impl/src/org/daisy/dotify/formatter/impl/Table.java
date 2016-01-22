@@ -69,6 +69,11 @@ class Table extends Block {
 				- rightMargin.getContent().length() 
 				- tableProps.getTableColSpacing()*(columnCount-1)) / columnCount;
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
+		List<RowImpl> result = renderTable(columnWidth, context, dc, leftMargin, rightMargin);
+		return new TableBlockContentManager(context.getFlowWidth(), result, rdp, context.getFcontext());
+	}
+	
+	private List<RowImpl> renderTable(int columnWidth, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		List<RowImpl> result = new ArrayList<RowImpl>();
 		for (TableRow row : rows) {
 			List<CellData> cellData = new ArrayList<>(); 
@@ -130,7 +135,7 @@ class Table extends Block {
 				result.get(result.size()-1).setAllowsBreakAfter(true);
 			}
 		}
-		return new TableBlockContentManager(context.getFlowWidth(), result, rdp, context.getFcontext());
+		return result;
 	}
 	
 	private static class CellData {
