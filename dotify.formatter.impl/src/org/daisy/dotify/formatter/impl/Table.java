@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -68,15 +69,18 @@ class Table extends Block {
 				- leftMargin.getContent().length() 
 				- rightMargin.getContent().length() 
 				- tableProps.getTableColSpacing()*(columnCount-1)) / columnCount;
+		int[] cw = new int[columnCount];
+		Arrays.fill(cw, columnWidth);
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
-		List<RowImpl> result = renderTable(columnWidth, context, dc, leftMargin, rightMargin);
+		List<RowImpl> result = renderTable(cw, context, dc, leftMargin, rightMargin);
 		return new TableBlockContentManager(context.getFlowWidth(), result, rdp, context.getFcontext());
 	}
 	
-	private List<RowImpl> renderTable(int columnWidth, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
+	private List<RowImpl> renderTable(int[] columnWidth, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		List<RowImpl> result = new ArrayList<RowImpl>();
 		for (TableRow row : rows) {
-			List<CellData> cellData = new ArrayList<>(); 
+			List<CellData> cellData = new ArrayList<>();
+			int ci = 0;
 			for (TableCell cell : row) {
 				// FIXME: add row-span support
 				if (cell.getRowSpan()>1) {
@@ -84,9 +88,14 @@ class Table extends Block {
 				}
 				List<Block> blocks = cell.getBlocks(context.getFcontext(), dc, context.getRefs());
 				List<RowImpl> rowData = new ArrayList<>();
+				int flowWidth = 0;
+				for (int j = 0; j<cell.getColSpan(); j++) {
+					flowWidth += columnWidth[ci];
+					ci++;
+				}
 				for (Block block : blocks) {
 					AbstractBlockContentManager bcm = block.getBlockContentManager(
-							new BlockContext(columnWidth*cell.getColSpan(), context.getRefs(), dc, context.getFcontext())
+							new BlockContext(flowWidth, context.getRefs(), dc, context.getFcontext())
 							);
 					//FIXME: get additional data from bcm
 					rowData.addAll(bcm.getCollapsiblePreContentRows());
@@ -97,7 +106,7 @@ class Table extends Block {
 					rowData.addAll(bcm.getPostContentRows());
 					rowData.addAll(bcm.getSkippablePostContentRows());
 				}
-				cellData.add(new CellData(rowData, cell.getColSpan()));
+				cellData.add(new CellData(rowData, cell.getColSpan(), flowWidth));
 			}
 			// render into rows
 			boolean tableRowHasData = false;
@@ -109,14 +118,13 @@ class Table extends Block {
 					String data = "";
 					if (i<cr.rows.size()) {
 						empty = false;
-						//FIXME: get additional properties, such as left margin etc.
 						// Align
-						data = PageImpl.padLeft(columnWidth*cr.colSpan, cr.rows.get(i), context.getFcontext().getSpaceCharacter());
+						data = PageImpl.padLeft(cr.cellWidth, cr.rows.get(i), context.getFcontext().getSpaceCharacter());
 					}
 					tableRow.append(data);
 					// Fill (only after intermediary columns) 
 					if (j<cellData.size()-1) {
-						int length = (columnWidth+tableProps.getTableColSpacing())*cr.colSpan - data.length();
+						int length = cr.cellWidth+(tableProps.getTableColSpacing())*cr.colSpan - data.length();
 						tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
 					}
 				}
@@ -141,9 +149,11 @@ class Table extends Block {
 	private static class CellData {
 		private final List<RowImpl> rows;
 		private final int colSpan;
-		CellData(List<RowImpl> rows, int colSpan) {
+		private final int cellWidth;
+		CellData(List<RowImpl> rows, int colSpan, int cellWidth) {
 			this.rows = rows;
 			this.colSpan = colSpan;
+			this.cellWidth = cellWidth;
 		}
 	}
 	
