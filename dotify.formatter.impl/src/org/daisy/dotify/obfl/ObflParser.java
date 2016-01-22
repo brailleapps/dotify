@@ -812,11 +812,13 @@ public class ObflParser extends XMLParserBase {
 	private void parseTable(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
 		int tableColSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_COL_SPACING), 0);
 		int tableRowSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_ROW_SPACING), 0);
+		int preferredEmptySpace = toInt(getAttr(event, ObflQName.ATTR_TABLE_PREFERRED_EMPTY_SPACE), 2);
 		BlockProperties bp = blockBuilder(event.asStartElement().getAttributes());
 		Border b = borderBuilder(event.asStartElement().getAttributes());
 		TableProperties.Builder tableProps = new TableProperties.Builder()
 				.tableColSpacing(tableColSpacing)
 				.tableRowSpacing(tableRowSpacing)
+				.preferredEmptySpace(preferredEmptySpace)
 				.margin(bp.getMargin())
 				.padding(bp.getPadding())
 				.border(b);

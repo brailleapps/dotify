@@ -83,6 +83,7 @@ interface ObflQName {
 	
 	final static QName ATTR_TABLE_COL_SPACING = new QName("table-col-spacing");
 	final static QName ATTR_TABLE_ROW_SPACING = new QName("table-row-spacing");
+	final static QName ATTR_TABLE_PREFERRED_EMPTY_SPACE = new QName("preferred-empty-space");
 	final static QName ATTR_COL_SPAN = new QName("col-span");
 	final static QName ATTR_ROW_SPAN = new QName("row-span");
 	 
