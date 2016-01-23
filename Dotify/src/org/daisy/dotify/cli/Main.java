@@ -237,7 +237,13 @@ public class Main extends AbstractUI {
 				while (input.exists()) {
 					if (modified<input.lastModified()) {
 						modified = input.lastModified();
-						m.runDotify(input, output, setup, context, props);
+						try {
+							//delete the output so that it is not there if something goes wrong
+							output.delete();
+							m.runDotify(input, output, setup, context, props);
+						} catch (Exception e) { 
+							logger.log(Level.SEVERE, "A severe error occurred.", e);
+						}
 						logger.info("Waiting for changes in " + input);
 					}
 					try {

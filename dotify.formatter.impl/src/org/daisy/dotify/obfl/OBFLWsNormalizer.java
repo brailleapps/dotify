@@ -46,6 +46,12 @@ public class OBFLWsNormalizer extends XMLParserBase {
 		while (input.hasNext()) {
 			try {
 				event = input.nextEvent();
+			} catch (XMLStreamException e) {
+				// if something goes wrong when reading the next input, it is possible
+				// to get stuck in an endless loop if we keep calling nextEvent.
+				throw new RuntimeException(e);
+			}
+			try {
 				if (event.getEventType() == XMLStreamConstants.START_DOCUMENT) {
 					StartDocument sd = (StartDocument) event;
 					if (sd.encodingSet()) {
