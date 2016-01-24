@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -20,6 +21,7 @@ import javax.swing.event.ChangeListener;
 import org.osgi.framework.BundleContext;
 
 public class MainFrame extends JFrame {
+	private final Logger logger = Logger.getLogger(MainFrame.class.getCanonicalName());
 	/**
 	 * 
 	 */
@@ -49,6 +51,7 @@ public class MainFrame extends JFrame {
 		loc = new JTextField();
 		loc.addKeyListener(new KeyAdapter() {
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 				updateLocale();
 			}
@@ -73,13 +76,13 @@ public class MainFrame extends JFrame {
 			
 			@Override
 			public void windowLostFocus(WindowEvent arg0) {
-				System.out.println("LOst");
+				logger.finer("Window focus lost.");
 				
 			}
 			
 			@Override
 			public void windowGainedFocus(WindowEvent arg0) {
-				System.out.println("GAINED");
+				logger.finer("Window focus gained.");
 				updateSelectedPane();
 				
 			}
