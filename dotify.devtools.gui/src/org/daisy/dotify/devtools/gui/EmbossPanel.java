@@ -11,13 +11,13 @@ import java.util.Collections;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import org.daisy.braille.embosser.Embosser;
-import org.daisy.braille.embosser.EmbosserCatalogService;
-import org.daisy.braille.table.TableCatalogService;
-import org.daisy.factory.FactoryProperties;
-import org.daisy.factory.FactoryPropertiesComparator;
-import org.daisy.paper.Paper;
-import org.daisy.paper.PaperCatalogService;
+import org.daisy.braille.api.embosser.Embosser;
+import org.daisy.braille.api.embosser.EmbosserCatalogService;
+import org.daisy.braille.api.factory.FactoryProperties;
+import org.daisy.braille.api.factory.FactoryPropertiesComparator;
+import org.daisy.braille.api.paper.Paper;
+import org.daisy.braille.api.paper.PaperCatalogService;
+import org.daisy.braille.api.table.TableCatalogService;
 import org.osgi.framework.BundleContext;
 
 public class EmbossPanel extends MyPanel {
@@ -164,10 +164,12 @@ public class EmbossPanel extends MyPanel {
 		poptions.addActionListener(plistener);
 	}
 	
+	@Override
 	protected void updateResult() {
 
 	}
 
+	@Override
 	public void openTracking(BundleContext context) {
 		tctracker = new TableCatalogTracker(context);
 		tctracker.open();
@@ -177,6 +179,7 @@ public class EmbossPanel extends MyPanel {
 		ectracker.open();
 	}
 
+	@Override
 	public void closeTracking() {
 		tctracker.close();
 		pctracker.close();

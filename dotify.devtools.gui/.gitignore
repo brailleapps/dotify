@@ -2,3 +2,6 @@
 /build/
 /.settings/
 /.gradle/
+/felix-cache/
+/lib/
+/bundles/

@@ -1,6 +1,6 @@
 package org.daisy.dotify.devtools.gui;
 
-import org.daisy.validator.ValidatorFactoryService;
+import org.daisy.braille.api.validator.ValidatorFactoryService;
 import org.osgi.framework.BundleContext;
 
 public class ValidatorTracker extends MyTracker<ValidatorFactoryService> {

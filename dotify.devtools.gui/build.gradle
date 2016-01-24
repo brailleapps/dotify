@@ -1,0 +1,120 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'distribution'
+
+//custom plugins
+apply plugin: "org.dm.bundle"
+
+//mainClassName = "org.daisy.dotify.devtools.osgi.OSGiLauncher"
+//startScripts.applicationName = 'devtoolsgui'
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+group = "org.daisy.dotify"
+version = "1.0-SNAPSHOT"
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+		}
+		resources {
+			srcDir 'src'
+		}
+	}
+	test {
+		java {
+			srcDir 'test'
+		}
+		resources {
+			srcDir 'test'
+		}
+	}
+}
+
+configurations {
+	launcher
+}
+
+jar {
+	doFirst {
+		manifest {
+	    	attributes ('Built-By': '',				//'${user.name}'
+    		'Built-On': new Date(),					//'${ISO-TODAY}'
+			)
+		}
+	}
+	from sourceSets.main.allJava
+	baseName = 'devtools.gui'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+	compile group: 'org.daisy.braille', name:'braille-utils.ui', version:'2.0.0-SNAPSHOT'
+	
+	compile 'org.daisy.dotify:dotify.api:1.2.0'
+	runtime group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
+	runtime group: group, name:'dotify.formatter.impl', version:'1.1.2'
+	runtime group: group, name:'dotify.text.impl', version:'1.0.0'
+	runtime group: group, name:'dotify.translator.impl', version:'1.0.0'
+	
+	runtime group: "com.googlecode.texhyphj", name: "texhyphj", version: "1.2"
+	
+	//compile group: 'org.eclipse.osgi', name: 'org.eclipse.osgi', version:'3.7.1'
+	compile("org.osgi:org.osgi.core:5.0.0")
+	runtime("org.osgi:org.osgi.compendium:5.0.0")
+	runtime("org.apache.felix:org.apache.felix.scr:1.6.2")
+	runtime('org.osgi:org.osgi.enterprise:4.2.0')
+	launcher('org.daisy.dotify:osgi-launcher:0.1.0-SNAPSHOT')
+	launcher("org.apache.felix:org.apache.felix.framework:4.4.1")
+}
+
+buildscript {
+    repositories {
+    	mavenCentral()
+    	mavenLocal()
+    }
+    dependencies { classpath group: "org.dm.gradle", name: "gradle-bundle-plugin", version: "0.6.4" }
+}
+
+task runOSGi(type: JavaExec, dependsOn: 'installDist') {
+	def path = "$buildDir/install/$project.name"
+	main = "org.daisy.dotify.devtools.osgi.OSGiLauncher"
+	//workingDir = "$path"
+	classpath = files {file("$path/framework").listFiles() } //configurations.runtime + jar.outputs.files.getFiles()
+	args "$path/bundles";
+}
+
+clean.doFirst {
+	delete 'felix-cache'
+}
+
+bundle {
+    instructions << [
+     	//must use file() to resolve against the build.gradle in Eclipse
+        "-include": file('bnd.bnd'),
+    ]
+}
+
+installDist.dependsOn('jar')
+
+distributions {
+	main {
+		contents {
+			from (configurations.runtime+jar.outputs.files.getFiles()) {
+				into 'bundles'
+			}
+			from (configurations.launcher) {
+				into 'framework'
+			}
+		}
+	}
+}

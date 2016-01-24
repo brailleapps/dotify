@@ -1,6 +1,6 @@
 package org.daisy.dotify.devtools.gui;
 
-import org.daisy.braille.table.TableCatalogService;
+import org.daisy.braille.api.table.TableCatalogService;
 import org.osgi.framework.BundleContext;
 
 public class TableCatalogTracker extends MyTracker<TableCatalogService> {

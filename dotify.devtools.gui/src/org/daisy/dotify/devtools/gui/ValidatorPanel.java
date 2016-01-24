@@ -20,10 +20,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.daisy.braille.api.validator.Validator;
+import org.daisy.braille.api.validator.ValidatorFactoryService;
 import org.daisy.braille.pef.PEFBook;
 import org.daisy.braille.pef.PEFValidator;
-import org.daisy.validator.Validator;
-import org.daisy.validator.ValidatorFactoryService;
 import org.osgi.framework.BundleContext;
 import org.xml.sax.SAXException;
 
@@ -75,6 +75,7 @@ public class ValidatorPanel extends MyPanel {
 		setPreferredSize(new Dimension(500, 400));
 	}
 
+	@Override
 	protected void updateResult() {
 		ValidatorFactoryService t = tracker.get();
 		if (t == null) {
@@ -124,11 +125,13 @@ public class ValidatorPanel extends MyPanel {
 		}
 	}
 
+	@Override
 	public void openTracking(BundleContext context) {
 		tracker = new ValidatorTracker(context);
 		tracker.open();
 	}
 
+	@Override
 	public void closeTracking() {
 		tracker.close();
 	}

@@ -21,15 +21,15 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import org.daisy.braille.table.BrailleConverter;
-import org.daisy.braille.table.Table;
-import org.daisy.braille.table.TableCatalogService;
+import org.daisy.braille.api.factory.FactoryProperties;
+import org.daisy.braille.api.factory.FactoryPropertiesComparator;
+import org.daisy.braille.api.table.BrailleConverter;
+import org.daisy.braille.api.table.Table;
+import org.daisy.braille.api.table.TableCatalogService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.factory.FactoryProperties;
-import org.daisy.factory.FactoryPropertiesComparator;
 import org.osgi.framework.BundleContext;
 
 public class TranslatorPanel extends MyPanel {
@@ -75,6 +75,7 @@ public class TranslatorPanel extends MyPanel {
 
 		textField.addKeyListener(new KeyAdapter() {
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 				updateResult();
 			}
@@ -135,6 +136,7 @@ public class TranslatorPanel extends MyPanel {
 		options.addActionListener(listener);
 	}
 	
+	@Override
 	protected void updateResult() {
 		String loc = getTargetLocale();
 		if (loc==null || loc.equals("")) {
@@ -183,6 +185,7 @@ public class TranslatorPanel extends MyPanel {
 		return null;
 	}
 
+	@Override
 	public void openTracking(BundleContext context) {
 		tracker = new TranslatorTracker(context);
 		tracker.open();
@@ -190,6 +193,7 @@ public class TranslatorPanel extends MyPanel {
 		tctracker.open();
 	}
 
+	@Override
 	public void closeTracking() {
 		tracker.close();
 		tctracker.close();
