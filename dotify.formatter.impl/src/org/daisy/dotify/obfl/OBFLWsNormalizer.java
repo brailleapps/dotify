@@ -268,12 +268,12 @@ public class OBFLWsNormalizer extends XMLParserBase {
 	}
 	
 	private boolean beginsMixedContent(XMLEvent event) {
-		return equalsStart(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER);
+		return equalsStart(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER, ObflQName.TD);
 			   
 	}
 	
 	private boolean endsMixedContent(XMLEvent event) {
-		return equalsEnd(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER);
+		return equalsEnd(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER, ObflQName.TD);
 	}
 
 	/**
