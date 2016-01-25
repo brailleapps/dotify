@@ -9,6 +9,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
+import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.TableCellProperties;
 import org.daisy.dotify.api.formatter.TableProperties;
 import org.daisy.dotify.common.text.StringTools;
@@ -224,13 +225,18 @@ class Table extends Block {
 			for (int i=0; ; i++) {
 				boolean empty = true;
 				StringBuilder tableRow = new StringBuilder();
+				List<Marker> markers = new ArrayList<>();
+				List<String> anchors = new ArrayList<>();
 				for (int j=0; j<cellData.size(); j++) {
 					CellData cr = cellData.get(j);
 					String data = "";
 					if (i<cr.rows.size()) {
 						empty = false;
+						RowImpl r = cr.rows.get(i);
 						// Align
-						data = PageImpl.padLeft(cr.cellWidth, cr.rows.get(i), context.getFcontext().getSpaceCharacter());
+						data = PageImpl.padLeft(cr.cellWidth, r, context.getFcontext().getSpaceCharacter());
+						markers.addAll(r.getMarkers());
+						anchors.addAll(r.getAnchors());
 					}
 					tableRow.append(data);
 					// Fill (only after intermediary columns) 
@@ -244,6 +250,8 @@ class Table extends Block {
 				} else {
 					tableRowHasData = true;
 					RowImpl r = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
+					r.addMarkers(markers);
+					r.addAnchors(anchors);
 					r.setRowSpacing(tableProps.getRowSpacing());
 					//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
 					r.setAllowsBreakAfter(false);
