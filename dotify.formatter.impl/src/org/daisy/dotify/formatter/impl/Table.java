@@ -23,6 +23,7 @@ class Table extends Block {
 	private final Stack<TableRow> rows;
 	private final TableProperties tableProps;
 	private Map<String, Result> resultCache;
+	private final String h = "x";
 
 	Table(TableProperties tableProps, RowDataProperties rdp) {
 		super(null, rdp);
@@ -73,24 +74,23 @@ class Table extends Block {
 	protected AbstractBlockContentManager newBlockContentManager(BlockContext context) {
 		int columnCount = countColumns();
 		int rowCount = countRows();
-		//int[] colSpace = calcSpacings(new ColumnSpaceCalculator(rowCount, columnCount));
+		int[] colSpace = calcSpacings(new ColumnSpaceCalculator(rowCount, columnCount));
 		//int[] rowSpace = calcSpacings(new RowSpaceCalculator(rowCount, columnCount));
 		MarginProperties leftMargin = rdp.getLeftMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		MarginProperties rightMargin = rdp.getRightMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		int columnWidth = (context.getFlowWidth() 
 				- leftMargin.getContent().length() 
-				- rightMargin.getContent().length() 
-				
-		- tableProps.getTableColSpacing()*(columnCount-1))/ columnCount;
-		/*for (int i : colSpace) {
+				- rightMargin.getContent().length()
+				); //- tableProps.getTableColSpacing()*(columnCount-1))/ columnCount;
+		for (int i : colSpace) {
 			columnWidth -= i; 
 		}
-		columnWidth = columnWidth / columnCount;*/
+		columnWidth = columnWidth / columnCount;
 		int[] currentColumnWidth = new int[columnCount];
 		Arrays.fill(currentColumnWidth, columnWidth);
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
 		resultCache = new HashMap<>();
-		Result r = minimizeCost(currentColumnWidth, -1, tableProps.getPreferredEmtpySpace(), context, dc, leftMargin, rightMargin);
+		Result r = minimizeCost(currentColumnWidth, colSpace, -1, tableProps.getPreferredEmtpySpace(), context, dc, leftMargin, rightMargin);
 		/*
 		TableCost costFunc = new TableCostImpl(spacePreferred);
 		List<RowImpl> result = renderTable(currentColumnWidth, costFunc, context, dc, leftMargin, rightMargin);
@@ -123,20 +123,20 @@ class Table extends Block {
 		return new TableBlockContentManager(context.getFlowWidth(), r.rows, rdp, context.getFcontext());
 	}
 	
-	private Result minimizeCost(int[] columnWidth, int direction, int spacePreferred, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
+	private Result minimizeCost(int[] columnWidth, int[] colSpacing, int direction, int spacePreferred, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		int columnCount = columnWidth.length;
 		int[] currentColumnWidth = Arrays.copyOf(columnWidth, columnWidth.length);
 		Result[] results = new Result[columnCount];
 		Result currentResult;
 		//base result
-		currentResult = renderTableWithCache(spacePreferred, currentColumnWidth, context, dc, leftMargin, rightMargin);
+		currentResult = renderTableWithCache(spacePreferred, currentColumnWidth, colSpacing, context, dc, leftMargin, rightMargin);
 		while (true) {
 			// render all possibilities
 			for (int i=0; i<columnCount; i++) {
 				if (currentColumnWidth[i]>=1) {
 					// change value
 					currentColumnWidth[i] = currentColumnWidth[i] + direction;
-					results[i] = renderTableWithCache(spacePreferred, currentColumnWidth, context, dc, leftMargin, rightMargin);
+					results[i] = renderTableWithCache(spacePreferred, currentColumnWidth, colSpacing, context, dc, leftMargin, rightMargin);
 					// restore value
 					currentColumnWidth[i] = currentColumnWidth[i] - direction;
 				}
@@ -172,14 +172,14 @@ class Table extends Block {
 		return ret;
 	}
 	
-	private Result renderTableWithCache(int spacePreferred, int[] columnWidth, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
+	private Result renderTableWithCache(int spacePreferred, int[] columnWidth, int[] colSpacing, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		String key = toKey(columnWidth);
 		Result r = resultCache.get(key);
 		if (r==null) {
 			logger.finest("Calculating new result for key: " + key);
 			r = new Result();
 			r.cost = new TableCostImpl(spacePreferred);
-			r.rows = renderTable(columnWidth, r.cost, context, dc, leftMargin, rightMargin);
+			r.rows = renderTable(columnWidth, colSpacing, r.cost, context, dc, leftMargin, rightMargin);
 			r.widths = Arrays.copyOf(columnWidth, columnWidth.length);
 			logger.finest("Cost for solution: " + r.cost.getCost());
 			resultCache.put(toKey(columnWidth), r);
@@ -197,13 +197,14 @@ class Table extends Block {
 		return ret.toString();
 	}
 	
-	private List<RowImpl> renderTable(int[] columnWidth, TableCost costFunc, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
+	private List<RowImpl> renderTable(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		List<RowImpl> result = new ArrayList<RowImpl>();
 		for (TableRow row : rows) {
 			List<CellData> cellData = new ArrayList<>();
 			int ci = 0;
 			for (TableCell cell : row) {
 				// FIXME: add row-span support
+				int startIndex = ci;
 				if (cell.getRowSpan()>1) {
 					throw new UnsupportedOperationException("Table cell with row span > 1 is not implemented.");
 				}
@@ -211,6 +212,9 @@ class Table extends Block {
 				List<RowImpl> rowData = new ArrayList<>();
 				int flowWidth = 0;
 				for (int j = 0; j<cell.getColSpan(); j++) {
+					if (j>0) { //also implies ci>=0
+						flowWidth += colSpacing[ci-1];
+					}
 					flowWidth += columnWidth[ci];
 					ci++;
 				}
@@ -227,7 +231,7 @@ class Table extends Block {
 					rowData.addAll(bcm.getPostContentRows());
 					rowData.addAll(bcm.getSkippablePostContentRows());
 				}
-				cellData.add(new CellData(rowData, cell.getColSpan(), flowWidth));
+				cellData.add(new CellData(rowData, cell.getColSpan(), flowWidth, startIndex));
 				costFunc.addCell(rowData, flowWidth);
 				
 			}
@@ -241,18 +245,18 @@ class Table extends Block {
 				for (int j=0; j<cellData.size(); j++) {
 					CellData cr = cellData.get(j);
 					String data = "";
-					if (i<cr.rows.size()) {
+					if (i<cr.getRows().size()) {
 						empty = false;
-						RowImpl r = cr.rows.get(i);
+						RowImpl r = cr.getRows().get(i);
 						// Align
-						data = PageImpl.padLeft(cr.cellWidth, r, context.getFcontext().getSpaceCharacter());
+						data = PageImpl.padLeft(cr.getCellWidth(), r, context.getFcontext().getSpaceCharacter());
 						markers.addAll(r.getMarkers());
 						anchors.addAll(r.getAnchors());
 					}
 					tableRow.append(data);
 					// Fill (only after intermediary columns) 
 					if (j<cellData.size()-1) {
-						int length = cr.cellWidth+(tableProps.getTableColSpacing())*cr.colSpan - data.length();
+						int length = cr.getCellWidth()+colSpacing[cr.getStartIndex()+cr.getColSpan()-1] - data.length();
 						tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
 					}
 				}
@@ -282,12 +286,15 @@ class Table extends Block {
 		int[] ret = new int[it.inner-1];
 		Arrays.fill(ret, 0);
 		TableCell cell1;
-		for (int outer=0;outer<it.outer-1;outer++) {
+		for (TableRow r : rows) {
 			int index = -1;
-			for (int inner=0;inner<it.inner-1;inner++) {
-				cell1 = comp.getFirstCell(outer, inner);
-				index += Math.max(comp.getSpan(cell1), 1);
-				ret[index] = Math.max(ret[index], comp.getSpacingValue(cell1, comp.getSecondCell(outer, inner))); 
+			cell1 = null;
+			for (TableCell c : r) {
+				if (cell1!=null) {
+					index += Math.max(comp.getSpan(cell1), 1);
+					ret[index] = Math.max(ret[index], comp.getSpacingValue(cell1, c));
+				}
+				cell1 = c;
 			}
 		}
 		return ret;
@@ -351,14 +358,22 @@ class Table extends Block {
 		
 		@Override
 		public int getSpacingValue(TableCell cell1, TableCell cell2) {
-			int b1 = getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
-			int b2 = getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b1 = cell1.getBorder()!=null && getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b2 = cell2.getBorder()!=null && getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
 			if (getTableSpacing()>0) {
 				return b1 + b2 + getTableSpacing();					
 			} else {
 				return Math.max(b1, b2);
 			}
 		}
+	}
+	
+	String getSharedColumnString(TableCell cell1, TableCell cell2, BlockContext context) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(cell1.getBorder()!=null && cell1.getBorder().getRight().getStyle()!=Style.NONE?h:"");
+		sb.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), tableProps.getTableColSpacing()));
+		sb.append(cell2.getBorder()!=null && cell2.getBorder().getLeft().getStyle()!=Style.NONE?h:"");
+		return sb.toString();
 	}
 	
 	private class RowSpaceCalculator implements GridSpaceCalculator {
@@ -401,8 +416,8 @@ class Table extends Block {
 		
 		@Override
 		public int getSpacingValue(TableCell cell1, TableCell cell2) {
-			int b1 = getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
-			int b2 = getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b1 = cell1.getBorder()!=null && getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b2 = cell2.getBorder()!=null && getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
 			if (getTableSpacing()>0) {
 				return b1 + b2 + getTableSpacing();					
 			} else {
@@ -412,17 +427,7 @@ class Table extends Block {
 		
 	}
 
-	private static class CellData {
-		private final List<RowImpl> rows;
-		private final int colSpan;
-		private final int cellWidth;
 
-		CellData(List<RowImpl> rows, int colSpan, int cellWidth) {
-			this.rows = rows;
-			this.colSpan = colSpan;
-			this.cellWidth = cellWidth;
-		}
-	}
 	
 	private int countColumns() {
 		int cc = 0;
