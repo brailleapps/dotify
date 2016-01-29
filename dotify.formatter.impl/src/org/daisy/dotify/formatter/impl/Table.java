@@ -12,6 +12,9 @@ import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.TableCellProperties;
 import org.daisy.dotify.api.formatter.TableProperties;
+import org.daisy.dotify.api.translator.Border;
+import org.daisy.dotify.api.translator.BorderSpecification;
+import org.daisy.dotify.api.translator.BorderSpecification.Style;
 import org.daisy.dotify.common.text.StringTools;
 
 class Table extends Block {
@@ -69,12 +72,20 @@ class Table extends Block {
 	@Override
 	protected AbstractBlockContentManager newBlockContentManager(BlockContext context) {
 		int columnCount = countColumns();
+		int rowCount = countRows();
+		int[] colSpace = calcSpacings(new ColumnSpaceCalculator(rowCount, columnCount));
+		int[] rowSpace = calcSpacings(new RowSpaceCalculator(rowCount, columnCount));
 		MarginProperties leftMargin = rdp.getLeftMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		MarginProperties rightMargin = rdp.getRightMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		int columnWidth = (context.getFlowWidth() 
 				- leftMargin.getContent().length() 
 				- rightMargin.getContent().length() 
-				- tableProps.getTableColSpacing()*(columnCount-1)) / columnCount;
+				); 
+		//- tableProps.getTableColSpacing()*(columnCount-1)
+		for (int i : colSpace) {
+			columnWidth -= i; 
+		}
+		columnWidth = columnWidth / columnCount;
 		int[] currentColumnWidth = new int[columnCount];
 		Arrays.fill(currentColumnWidth, columnWidth);
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
@@ -265,7 +276,142 @@ class Table extends Block {
 		costFunc.completeTable(result);
 		return result;
 	}
+
+	private int[] calcSpacings(GridSpaceCalculator comp) {
+		Iterators it = comp.getIterator();
+		int[] ret = new int[it.inner-1];
+		Arrays.fill(ret, 0);
+		TableCell cell1;
+		for (int outer=0;outer<it.outer-1;outer++) {
+			int index = -1;
+			for (int inner=0;inner<it.inner-1;inner++) {
+				cell1 = comp.getFirstCell(outer, inner);
+				index += Math.max(comp.getSpan(cell1), 1);
+				ret[index] = Math.max(ret[index], comp.getSpacingValue(cell1, comp.getSecondCell(outer, inner))); 
+			}
+		}
+		return ret;
+	}
 	
+	private static class Iterators {
+		private final int inner, outer;
+		Iterators(int outer, int inner) {
+			this.outer = outer;
+			this.inner = inner;
+		}
+	}
+	
+	private static interface GridSpaceCalculator {
+		Iterators getIterator();
+		TableCell getFirstCell(int outer, int inner);
+		TableCell getSecondCell(int outer, int inner);
+		int getSpan(TableCell cell);
+		int getSpacingValue(TableCell cell1, TableCell cell2);
+	}
+	
+	private class ColumnSpaceCalculator implements GridSpaceCalculator {
+		private final int rowCount, colCount;
+		
+		public ColumnSpaceCalculator(int rowCount, int colCount) {
+			this.rowCount = rowCount;
+			this.colCount = colCount;
+		}
+		
+		@Override
+		public Iterators getIterator() {
+			return new Iterators(rowCount, colCount);
+		}
+
+		@Override
+		public TableCell getFirstCell(int outer, int inner) {
+			return rows.get(outer).cells.get(inner);
+		}
+		
+		public BorderSpecification getBorderBefore(Border border) {
+			return border.getLeft();
+		}
+
+		public BorderSpecification getBorderAfter(Border border) {
+			return border.getRight();
+		}
+
+		@Override
+		public TableCell getSecondCell(int outer, int inner) {
+			return rows.get(outer).cells.get(inner+1);
+		}
+
+		@Override
+		public int getSpan(TableCell cell) {
+			return cell.getColSpan();
+		}
+
+		public int getTableSpacing() {
+			return tableProps.getTableColSpacing();
+		}
+		
+		@Override
+		public int getSpacingValue(TableCell cell1, TableCell cell2) {
+			int b1 = getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b2 = getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
+			if (getTableSpacing()>0) {
+				return b1 + b2 + getTableSpacing();					
+			} else {
+				return Math.max(b1, b2);
+			}
+		}
+	}
+	
+	private class RowSpaceCalculator implements GridSpaceCalculator {
+		private final int rowCount, colCount;
+		public RowSpaceCalculator(int rowCount, int colCount) {
+			this.rowCount = rowCount;
+			this.colCount = colCount;
+		}
+		@Override
+		public Iterators getIterator() {
+			return new Iterators(colCount, rowCount);
+		}
+
+		@Override
+		public TableCell getFirstCell(int outer, int inner) {
+			return rows.get(inner).cells.get(outer);
+		}
+
+		public BorderSpecification getBorderBefore(Border border) {
+			return border.getTop();
+		}
+
+		public BorderSpecification getBorderAfter(Border border) {
+			return border.getBottom();
+		}
+
+		@Override
+		public TableCell getSecondCell(int outer, int inner) {
+			return rows.get(inner+1).cells.get(outer);
+		}
+
+		@Override
+		public int getSpan(TableCell cell) {
+			return cell.getRowSpan();
+		}
+
+		public int getTableSpacing() {
+			return tableProps.getTableRowSpacing();
+		}
+		
+		@Override
+		public int getSpacingValue(TableCell cell1, TableCell cell2) {
+			int b1 = getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b2 = getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
+			if (getTableSpacing()>0) {
+				return b1 + b2 + getTableSpacing();					
+			} else {
+				return Math.max(b1, b2);
+			}
+		}
+		
+	}
+
 	private static class CellData {
 		private final List<RowImpl> rows;
 		private final int colSpan;
@@ -284,6 +430,16 @@ class Table extends Block {
 		// if subsequent rows differ, report it as an error
 		for (TableCell c : rows.get(0)) {
 			cc += Math.max(c.getColSpan(), 1);
+		}
+		return cc;
+	}
+	
+	private int countRows() {
+		int cc = 0;
+		// calculate the number of rows based on the first colum
+		// if subsequent columns differ, report it as an error
+		for (TableRow r : rows) {
+			cc += Math.max(r.cells.get(0).getRowSpan(), 1);
 		}
 		return cc;
 	}

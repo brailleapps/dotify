@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.TableCellProperties;
+import org.daisy.dotify.api.translator.Border;
 
 class TableCell extends FormatterCoreImpl {
 	/**
@@ -8,6 +9,7 @@ class TableCell extends FormatterCoreImpl {
 	 */
 	private static final long serialVersionUID = -673589204065659433L;
 	private final int rowSpan, colSpan;
+	private final Border border;
 
 	TableCell(TableCellProperties props) {
 		this(props, false);
@@ -17,6 +19,7 @@ class TableCell extends FormatterCoreImpl {
 		super(discardIdentifiers);
 		this.rowSpan = props.getRowSpan();
 		this.colSpan = props.getColSpan();
+		this.border = props.getBorder();
 	}
 
 	int getRowSpan() {
@@ -27,5 +30,7 @@ class TableCell extends FormatterCoreImpl {
 		return colSpan;
 	}
 
-
+	Border getBorder() {
+		return border;
+	}
 }

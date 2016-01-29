@@ -10,7 +10,7 @@ import org.daisy.dotify.api.formatter.TableCellProperties;
 import org.daisy.dotify.api.formatter.TextBlockProperties;
 
 class TableRow implements Iterable<TableCell> {
-	private final Stack<TableCell> cells;
+	final Stack<TableCell> cells;
 
 	TableRow() {
 		cells = new Stack<>();
