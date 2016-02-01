@@ -5,18 +5,17 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import org.daisy.dotify.api.formatter.BlockProperties;
-import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.TableCellProperties;
 import org.daisy.dotify.api.formatter.TextBlockProperties;
 
 class TableRow implements Iterable<TableCell> {
-	final Stack<TableCell> cells;
+	private final Stack<TableCell> cells;
 
 	TableRow() {
 		cells = new Stack<>();
 	}
 	
-	FormatterCore beginsTableCell(TableCellProperties props) {
+	TableCell beginsTableCell(TableCellProperties props) {
 		TableCell fc = new TableCell(props);
 		TextBlockProperties tbp = props.getTextBlockProperties();
 		fc.startBlock(new BlockProperties.Builder()
@@ -50,6 +49,14 @@ class TableRow implements Iterable<TableCell> {
 		if (!cells.empty()) {
 			cells.peek().endBlock();
 		}
+	}
+	
+	int cellCount() {
+		return cells.size();
+	}
+	
+	TableCell getCell(int index) {
+		return cells.get(0);
 	}
 
 	@Override

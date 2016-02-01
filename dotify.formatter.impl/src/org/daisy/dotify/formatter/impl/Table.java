@@ -20,7 +20,7 @@ import org.daisy.dotify.common.text.StringTools;
 class Table extends Block {
 	private final static Logger logger = Logger.getLogger(Table.class.getCanonicalName());
 	private int headerRows;
-	private final Stack<TableRow> rows;
+	private final TableData td;
 	private final TableProperties tableProps;
 	private Map<String, Result> resultCache;
 	private final String h = "x";
@@ -32,42 +32,29 @@ class Table extends Block {
 			throw new UnsupportedOperationException("Table row spacing > 0 is not implemented.");
 		}
 		headerRows = 0;
-		rows = new Stack<>();
+		td = new TableData();
 	}
 
 	public void beginsTableBody() {
-		headerRows = rows.size();
+		headerRows = td.getRowCount();
 	}
 
 	public void beginsTableRow() {
-		if (!rows.empty()) {
-			rows.peek().endsTableCell();
-		}
-		TableRow ret = new TableRow();
-		rows.add(ret);
+		td.beginsTableRow();
 	}
 
 	public FormatterCore beginsTableCell(TableCellProperties props) {
-		return rows.peek().beginsTableCell(props);
-	}
-
-	/**
-	 * 
-	 * @return
-	 * @throws IllegalStateException
-	 */
-	private TableCell getCurrentCell() {
-		return rows.peek().getCurrentCell();
+		return td.beginsTableCell(props);
 	}
 
 	@Override
 	public void addSegment(TextSegment s) {
-		((FormatterCoreImpl)getCurrentCell()).getCurrentBlock().addSegment(s);
+		((FormatterCoreImpl)td.getCurrentCell()).getCurrentBlock().addSegment(s);
 	}
 	
 	@Override
 	public void addSegment(Segment s) {
-		((FormatterCoreImpl)getCurrentCell()).getCurrentBlock().addSegment(s);
+		((FormatterCoreImpl)td.getCurrentCell()).getCurrentBlock().addSegment(s);
 	}
 
 	@Override
@@ -199,7 +186,7 @@ class Table extends Block {
 	
 	private List<RowImpl> renderTable(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		List<RowImpl> result = new ArrayList<RowImpl>();
-		for (TableRow row : rows) {
+		for (TableRow row : td) {
 			List<CellData> cellData = new ArrayList<>();
 			int ci = 0;
 			for (TableCell cell : row) {
@@ -286,7 +273,7 @@ class Table extends Block {
 		int[] ret = new int[it.inner-1];
 		Arrays.fill(ret, 0);
 		TableCell cell1;
-		for (TableRow r : rows) {
+		for (TableRow r : td) {
 			int index = -1;
 			cell1 = null;
 			for (TableCell c : r) {
@@ -331,7 +318,7 @@ class Table extends Block {
 
 		@Override
 		public TableCell getFirstCell(int outer, int inner) {
-			return rows.get(outer).cells.get(inner);
+			return td.getRow(outer).getCell(inner);
 		}
 		
 		public BorderSpecification getBorderBefore(Border border) {
@@ -344,7 +331,7 @@ class Table extends Block {
 
 		@Override
 		public TableCell getSecondCell(int outer, int inner) {
-			return rows.get(outer).cells.get(inner+1);
+			return td.getRow(outer).getCell(inner+1);
 		}
 
 		@Override
@@ -389,7 +376,7 @@ class Table extends Block {
 
 		@Override
 		public TableCell getFirstCell(int outer, int inner) {
-			return rows.get(inner).cells.get(outer);
+			return td.getRow(inner).getCell(outer);
 		}
 
 		public BorderSpecification getBorderBefore(Border border) {
@@ -402,7 +389,7 @@ class Table extends Block {
 
 		@Override
 		public TableCell getSecondCell(int outer, int inner) {
-			return rows.get(inner+1).cells.get(outer);
+			return td.getRow(inner+1).getCell(outer);
 		}
 
 		@Override
@@ -433,7 +420,7 @@ class Table extends Block {
 		int cc = 0;
 		// calculate the number of columns based on the first row
 		// if subsequent rows differ, report it as an error
-		for (TableCell c : rows.get(0)) {
+		for (TableCell c : td.getRow(0)) {
 			cc += Math.max(c.getColSpan(), 1);
 		}
 		return cc;
@@ -443,8 +430,8 @@ class Table extends Block {
 		int cc = 0;
 		// calculate the number of rows based on the first colum
 		// if subsequent columns differ, report it as an error
-		for (TableRow r : rows) {
-			cc += Math.max(r.cells.get(0).getRowSpan(), 1);
+		for (TableRow r : td) {
+			cc += Math.max(r.getCell(0).getRowSpan(), 1);
 		}
 		return cc;
 	}
