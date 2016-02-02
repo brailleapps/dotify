@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
@@ -15,6 +14,7 @@ import org.daisy.dotify.api.formatter.TableProperties;
 import org.daisy.dotify.api.translator.Border;
 import org.daisy.dotify.api.translator.BorderSpecification;
 import org.daisy.dotify.api.translator.BorderSpecification.Style;
+import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.common.text.StringTools;
 
 class Table extends Block {
@@ -23,16 +23,17 @@ class Table extends Block {
 	private final TableData td;
 	private final TableProperties tableProps;
 	private Map<String, Result> resultCache;
-	private final String h = "x";
+	private final TableBorderHandler tbh;
 
-	Table(TableProperties tableProps, RowDataProperties rdp) {
+	Table(TableProperties tableProps, RowDataProperties rdp, TextBorderFactoryMakerService tbf, String mode) {
 		super(null, rdp);
 		this.tableProps = tableProps;
 		if (tableProps.getTableRowSpacing()>0) {
 			throw new UnsupportedOperationException("Table row spacing > 0 is not implemented.");
 		}
-		headerRows = 0;
-		td = new TableData();
+		this.headerRows = 0;
+		this.td = new TableData();
+		this.tbh = new TableBorderHandler(tableProps.getTableColSpacing(), tbf, mode);
 	}
 
 	public void beginsTableBody() {
@@ -227,9 +228,18 @@ class Table extends Block {
 					// Fill (only after intermediary columns)
 					//FIXME: this doesn't work if the last column on the preceding row is a cell with rowspan > 1
 					if (j<cellData.size()-1) {
-						//getSharedColumnString(cellData.getInfo().getBorder(), cell2, context);
-						int length = cr.getCellWidth()+colSpacing[cr.getInfo().getEndPoint().getCol()] - data.length();
-						tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
+						TableCell c = td.cellForGrid(cr.getInfo().getStartingPoint().getRow(), cr.getInfo().getEndPoint().getCol()+1);
+						String border;
+						if (c==null) {
+							border = "";
+						} else {
+							border = tbh.getSharedColumnString(cr.getInfo().getBorder(), c.getInfo().getBorder(), context);
+						}
+						int length = cr.getCellWidth()+colSpacing[cr.getInfo().getEndPoint().getCol()] - data.length() - border.length();
+						if (length>0) {
+							tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
+						}
+						tableRow.append(border);
 					}
 				}
 				if (empty) {
@@ -340,13 +350,7 @@ class Table extends Block {
 		}
 	}
 	
-	String getSharedColumnString(Border cell1, Border cell2, BlockContext context) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(cell1!=null && cell1.getRight().getStyle()!=Style.NONE?h:"");
-		sb.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), tableProps.getTableColSpacing()));
-		sb.append(cell2!=null && cell2.getLeft().getStyle()!=Style.NONE?h:"");
-		return sb.toString();
-	}
+
 	
 	private class RowSpaceCalculator implements GridSpaceCalculator {
 		private final int rowCount, colCount;

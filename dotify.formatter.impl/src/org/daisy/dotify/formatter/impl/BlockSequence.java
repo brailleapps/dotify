@@ -145,7 +145,7 @@ class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 				rdp.trailingDecoration(new SingleLineDecoration(borderStyle.getBottomLeftCorner(), borderStyle.getBottomBorder(), borderStyle.getBottomRightCorner()));
 			}
 		}
-		table = new Table(props, rdp.build());
+		table = new Table(props, rdp.build(), fc.getTextBorderFactoryMakerService(), fc.getTranslatorMode());
 		add(table);
 	}
 
