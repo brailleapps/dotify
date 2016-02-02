@@ -10,13 +10,15 @@ import org.daisy.dotify.api.formatter.TableCellProperties;
 
 class TableData implements Iterable<TableRow> {
 	private final Stack<TableRow> rows;
-	private Map<GridPoint, TableCell> grid;
-	private int rh, gy;
+	private final Map<GridPoint, TableCell> grid;
+	private int rh, gy, rMax, cMax;
 
 	TableData() {
 		rows = new Stack<>();
 		grid = new HashMap<>();
 		rh = 0;
+		rMax = 0;
+		cMax = 0;
 		gy = 0;
 	}
 	
@@ -26,6 +28,7 @@ class TableData implements Iterable<TableRow> {
 		}
 		gy += rh;
 		rh = 1;
+		rMax = 1;
 		TableRow ret = new TableRow();
 		rows.add(ret);
 		
@@ -33,11 +36,13 @@ class TableData implements Iterable<TableRow> {
 
 	FormatterCore beginsTableCell(TableCellProperties props) {
 		rh = Math.min(rh, props.getRowSpan());
+		rMax = Math.max(rMax, props.getRowSpan());
 		int r = gy;
-		int c = rows.peek().cellCount();
+		int c = rows.peek().cellCount(); // this is just a starting point, we know for sure that c cannot be less than this
 		while (grid.get(new GridPoint(r, c))!=null) {
 			c++;
 		}
+		cMax = Math.max(cMax, c+props.getColSpan());
 		TableCell ret = rows.peek().beginsTableCell(props, new GridPoint(r, c));
 		for (int i=0; i<props.getRowSpan(); i++) {
 			for (int j=0; j<props.getColSpan(); j++) {
@@ -86,5 +91,12 @@ class TableData implements Iterable<TableRow> {
 		return rows.iterator();
 	}
 
+	public int getGridHeight() {
+		return gy+rMax;
+	}
+	
+	public int getGridWidth() {
+		return cMax;
+	}
 
 }

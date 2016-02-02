@@ -190,10 +190,6 @@ class Table extends Block {
 		for (TableRow row : td) {
 			List<CellData> cellData = new ArrayList<>();
 			for (TableCell cell : row) {
-				// FIXME: add row-span support
-				if (cell.getInfo().getRowSpan()>1) {
-					throw new UnsupportedOperationException("Table cell with row span > 1 is not implemented.");
-				}
 				int flowWidth = 0;
 				int ci = cell.getInfo().getStartingPoint().getCol();
 				for (int j=0; j<cell.getInfo().getColSpan(); j++) {
@@ -206,28 +202,34 @@ class Table extends Block {
 				cellData.add(cd);
 				costFunc.addCell(cd.getRows(), flowWidth);
 			}
+		}
+		
+		for (int r=0; r<td.getGridHeight(); r++) {
 			// render into rows
 			boolean tableRowHasData = false;
-			for (;;) { //while true
+content:	for (;;) { //while content
 				boolean empty = true;
 				StringBuilder tableRow = new StringBuilder();
 				List<Marker> markers = new ArrayList<>();
 				List<String> anchors = new ArrayList<>();
-				for (int j=0; j<cellData.size(); j++) {
-					CellData cr = cellData.get(j);
+				for (int j=0; j<td.getGridWidth(); j++) {
+					CellData cr = td.cellForGrid(r, j).getRendered();
 					String data = "";
-					if (cr.getRowIterator().hasNext()) { //FIXME: row span here
-						empty = false;
-						RowImpl r = cr.getRowIterator().next();
+					if (cr.getRowIterator().hasNext()) {
+						// allow row change if the cell ends in another grid row
+						//FIXME: row span
+						if (cr.getInfo().getEndPoint().getRow()<=r) {
+							empty = false;
+						}
+						RowImpl row = cr.getRowIterator().next();
 						// Align
-						data = PageImpl.padLeft(cr.getCellWidth(), r, context.getFcontext().getSpaceCharacter());
-						markers.addAll(r.getMarkers());
-						anchors.addAll(r.getAnchors());
+						data = PageImpl.padLeft(cr.getCellWidth(), row, context.getFcontext().getSpaceCharacter());
+						markers.addAll(row.getMarkers());
+						anchors.addAll(row.getAnchors());
 					}
 					tableRow.append(data);
 					// Fill (only after intermediary columns)
-					//FIXME: this doesn't work if the last column on the preceding row is a cell with rowspan > 1
-					if (j<cellData.size()-1) {
+					if (cr.getInfo().getEndPoint().getCol()+1<td.getGridWidth()) {
 						TableCell c = td.cellForGrid(cr.getInfo().getStartingPoint().getRow(), cr.getInfo().getEndPoint().getCol()+1);
 						String border;
 						if (c==null) {
@@ -241,18 +243,19 @@ class Table extends Block {
 						}
 						tableRow.append(border);
 					}
+					j += cr.getInfo().getColSpan()-1;
 				}
 				if (empty) {
-					break;
+					break content;
 				} else {
 					tableRowHasData = true;
-					RowImpl r = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
-					r.addMarkers(markers);
-					r.addAnchors(anchors);
-					r.setRowSpacing(tableProps.getRowSpacing());
+					RowImpl row = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
+					row.addMarkers(markers);
+					row.addAnchors(anchors);
+					row.setRowSpacing(tableProps.getRowSpacing());
 					//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
-					r.setAllowsBreakAfter(false);
-					result.add(r);
+					row.setAllowsBreakAfter(false);
+					result.add(row);
 				}
 			}
 			if (tableRowHasData) {
