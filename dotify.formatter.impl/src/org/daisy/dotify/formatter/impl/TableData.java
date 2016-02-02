@@ -10,7 +10,7 @@ import org.daisy.dotify.api.formatter.TableCellProperties;
 
 class TableData implements Iterable<TableRow> {
 	private final Stack<TableRow> rows;
-	private Map<Point, TableCell> grid;
+	private Map<GridPoint, TableCell> grid;
 	private int rh, gy;
 
 	TableData() {
@@ -35,13 +35,18 @@ class TableData implements Iterable<TableRow> {
 		rh = Math.min(rh, props.getRowSpan());
 		int r = gy;
 		int c = rows.peek().cellCount();
-		while (grid.get(new Point(r, c))!=null) {
+		while (grid.get(new GridPoint(r, c))!=null) {
 			c++;
 		}
-		TableCell ret = rows.peek().beginsTableCell(props);
+		TableCell ret = rows.peek().beginsTableCell(props, new GridPoint(r, c));
 		for (int i=0; i<props.getRowSpan(); i++) {
 			for (int j=0; j<props.getColSpan(); j++) {
-				grid.put(new Point(r+i, c+j), ret);
+				GridPoint p = new GridPoint(r+i, c+j);
+				if (grid.containsKey(p)) {
+					//TODO: throw checked exception? OR auto fix table
+					throw new RuntimeException("Conflicting col-span/row-span.");
+				}
+				grid.put(p, ret);
 			}
 		}
 		return ret;
@@ -52,7 +57,7 @@ class TableData implements Iterable<TableRow> {
 	}
 	
 	TableCell cellForGrid(int r, int c) {
-		return grid.get(new Point(r, c));
+		return grid.get(new GridPoint(r, c));
 	}
 	
 	TableCell cellForIndex(int r, int c) {
@@ -81,48 +86,5 @@ class TableData implements Iterable<TableRow> {
 		return rows.iterator();
 	}
 
-	private static class Point {
-		private final int row,  col;
-		
-		Point(int r, int c) {
-			this.row = r;
-			this.col = c;
-		}
 
-		@Override
-		public String toString() {
-			return "Coord [row=" + row + ", col=" + col + "]";
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + col;
-			result = prime * result + row;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			Point other = (Point) obj;
-			if (col != other.col) {
-				return false;
-			}
-			if (row != other.row) {
-				return false;
-			}
-			return true;
-		}
-		
-	}
 }

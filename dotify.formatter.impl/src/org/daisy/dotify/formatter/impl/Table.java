@@ -188,43 +188,26 @@ class Table extends Block {
 		List<RowImpl> result = new ArrayList<RowImpl>();
 		for (TableRow row : td) {
 			List<CellData> cellData = new ArrayList<>();
-			int ci = 0;
 			for (TableCell cell : row) {
 				// FIXME: add row-span support
-				int startIndex = ci;
-				if (cell.getRowSpan()>1) {
+				if (cell.getInfo().getRowSpan()>1) {
 					throw new UnsupportedOperationException("Table cell with row span > 1 is not implemented.");
 				}
-				List<Block> blocks = cell.getBlocks(context.getFcontext(), dc, context.getRefs());
-				List<RowImpl> rowData = new ArrayList<>();
 				int flowWidth = 0;
-				for (int j = 0; j<cell.getColSpan(); j++) {
-					if (j>0) { //also implies ci>=0
-						flowWidth += colSpacing[ci-1];
+				int ci = cell.getInfo().getStartingPoint().getCol();
+				for (int j=0; j<cell.getInfo().getColSpan(); j++) {
+					if (j>0) {
+						flowWidth += colSpacing[ci-1+j];
 					}
-					flowWidth += columnWidth[ci];
-					ci++;
+					flowWidth += columnWidth[ci+j];
 				}
-				for (Block block : blocks) {
-					AbstractBlockContentManager bcm = block.getBlockContentManager(
-							new BlockContext(flowWidth, context.getRefs(), dc, context.getFcontext())
-							);
-					//FIXME: get additional data from bcm
-					rowData.addAll(bcm.getCollapsiblePreContentRows());
-					rowData.addAll(bcm.getInnerPreContentRows());
-					for (RowImpl r2 : bcm) {
-						rowData.add(r2);
-					}
-					rowData.addAll(bcm.getPostContentRows());
-					rowData.addAll(bcm.getSkippablePostContentRows());
-				}
-				cellData.add(new CellData(rowData, cell.getColSpan(), flowWidth, startIndex));
-				costFunc.addCell(rowData, flowWidth);
-				
+				CellData cd = cell.render(context.getFcontext(), dc, context.getRefs(), flowWidth);
+				cellData.add(cd);
+				costFunc.addCell(cd.getRows(), flowWidth);
 			}
 			// render into rows
 			boolean tableRowHasData = false;
-			for (int i=0; ; i++) {
+			for (;;) { //while true
 				boolean empty = true;
 				StringBuilder tableRow = new StringBuilder();
 				List<Marker> markers = new ArrayList<>();
@@ -232,18 +215,20 @@ class Table extends Block {
 				for (int j=0; j<cellData.size(); j++) {
 					CellData cr = cellData.get(j);
 					String data = "";
-					if (i<cr.getRows().size()) {
+					if (cr.getRowIterator().hasNext()) { //FIXME: row span here
 						empty = false;
-						RowImpl r = cr.getRows().get(i);
+						RowImpl r = cr.getRowIterator().next();
 						// Align
 						data = PageImpl.padLeft(cr.getCellWidth(), r, context.getFcontext().getSpaceCharacter());
 						markers.addAll(r.getMarkers());
 						anchors.addAll(r.getAnchors());
 					}
 					tableRow.append(data);
-					// Fill (only after intermediary columns) 
+					// Fill (only after intermediary columns)
+					//FIXME: this doesn't work if the last column on the preceding row is a cell with rowspan > 1
 					if (j<cellData.size()-1) {
-						int length = cr.getCellWidth()+colSpacing[cr.getStartIndex()+cr.getColSpan()-1] - data.length();
+						//getSharedColumnString(cellData.getInfo().getBorder(), cell2, context);
+						int length = cr.getCellWidth()+colSpacing[cr.getInfo().getEndPoint().getCol()] - data.length();
 						tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
 					}
 				}
@@ -336,7 +321,7 @@ class Table extends Block {
 
 		@Override
 		public int getSpan(TableCell cell) {
-			return cell.getColSpan();
+			return cell.getInfo().getColSpan();
 		}
 
 		public int getTableSpacing() {
@@ -345,8 +330,8 @@ class Table extends Block {
 		
 		@Override
 		public int getSpacingValue(TableCell cell1, TableCell cell2) {
-			int b1 = cell1.getBorder()!=null && getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
-			int b2 = cell2.getBorder()!=null && getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b1 = cell1.getInfo().getBorder()!=null && getBorderAfter(cell1.getInfo().getBorder()).getStyle()!=Style.NONE?1:0;
+			int b2 = cell2.getInfo().getBorder()!=null && getBorderBefore(cell2.getInfo().getBorder()).getStyle()!=Style.NONE?1:0;
 			if (getTableSpacing()>0) {
 				return b1 + b2 + getTableSpacing();					
 			} else {
@@ -355,11 +340,11 @@ class Table extends Block {
 		}
 	}
 	
-	String getSharedColumnString(TableCell cell1, TableCell cell2, BlockContext context) {
+	String getSharedColumnString(Border cell1, Border cell2, BlockContext context) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(cell1.getBorder()!=null && cell1.getBorder().getRight().getStyle()!=Style.NONE?h:"");
+		sb.append(cell1!=null && cell1.getRight().getStyle()!=Style.NONE?h:"");
 		sb.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), tableProps.getTableColSpacing()));
-		sb.append(cell2.getBorder()!=null && cell2.getBorder().getLeft().getStyle()!=Style.NONE?h:"");
+		sb.append(cell2!=null && cell2.getLeft().getStyle()!=Style.NONE?h:"");
 		return sb.toString();
 	}
 	
@@ -394,7 +379,7 @@ class Table extends Block {
 
 		@Override
 		public int getSpan(TableCell cell) {
-			return cell.getRowSpan();
+			return cell.getInfo().getRowSpan();
 		}
 
 		public int getTableSpacing() {
@@ -403,8 +388,8 @@ class Table extends Block {
 		
 		@Override
 		public int getSpacingValue(TableCell cell1, TableCell cell2) {
-			int b1 = cell1.getBorder()!=null && getBorderAfter(cell1.getBorder()).getStyle()!=Style.NONE?1:0;
-			int b2 = cell2.getBorder()!=null && getBorderBefore(cell2.getBorder()).getStyle()!=Style.NONE?1:0;
+			int b1 = cell1.getInfo().getBorder()!=null && getBorderAfter(cell1.getInfo().getBorder()).getStyle()!=Style.NONE?1:0;
+			int b2 = cell2.getInfo().getBorder()!=null && getBorderBefore(cell2.getInfo().getBorder()).getStyle()!=Style.NONE?1:0;
 			if (getTableSpacing()>0) {
 				return b1 + b2 + getTableSpacing();					
 			} else {
@@ -421,7 +406,7 @@ class Table extends Block {
 		// calculate the number of columns based on the first row
 		// if subsequent rows differ, report it as an error
 		for (TableCell c : td.getRow(0)) {
-			cc += Math.max(c.getColSpan(), 1);
+			cc += Math.max(c.getInfo().getColSpan(), 1);
 		}
 		return cc;
 	}
@@ -431,7 +416,7 @@ class Table extends Block {
 		// calculate the number of rows based on the first colum
 		// if subsequent columns differ, report it as an error
 		for (TableRow r : td) {
-			cc += Math.max(r.getCell(0).getRowSpan(), 1);
+			cc += Math.max(r.getCell(0).getInfo().getRowSpan(), 1);
 		}
 		return cc;
 	}

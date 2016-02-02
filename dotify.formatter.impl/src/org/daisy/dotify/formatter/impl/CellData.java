@@ -1,35 +1,43 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 class CellData {
 	private final List<RowImpl> rows;
-	private final int colSpan;
+	private final TableCellInfo info;
 	private final int cellWidth;
-	private final int startIndex;
+	private Iterator<RowImpl> rowsIterator;
 
-	CellData(List<RowImpl> rows, int colSpan, int cellWidth, int startIndex) {
+	CellData(List<RowImpl> rows, int cellWidth, TableCellInfo info) {
 		this.rows = rows;
-		this.colSpan = colSpan;
+		this.info = info;
 		this.cellWidth = cellWidth;
-		this.startIndex = startIndex;
+		this.rowsIterator = rows.iterator();
 	}
-
-	public List<RowImpl> getRows() {
+	
+	List<RowImpl> getRows() {
 		return rows;
 	}
 
-	public int getColSpan() {
-		return colSpan;
-	}
-
-	public int getCellWidth() {
-		return cellWidth;
-	}
-
-	public int getStartIndex() {
-		return startIndex;
+	/**
+	 * Gets a consumable row iterator
+	 * @return
+	 */
+	Iterator<RowImpl> getRowIterator() {
+		return rowsIterator;
 	}
 	
+	void restartIterator() {
+		rowsIterator = rows.iterator();
+	}
+
+	int getCellWidth() {
+		return cellWidth;
+	}
+	
+	TableCellInfo getInfo() {
+		return info;
+	}
 	
 }

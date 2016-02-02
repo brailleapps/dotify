@@ -15,8 +15,8 @@ class TableRow implements Iterable<TableCell> {
 		cells = new Stack<>();
 	}
 	
-	TableCell beginsTableCell(TableCellProperties props) {
-		TableCell fc = new TableCell(props);
+	TableCell beginsTableCell(TableCellProperties props, GridPoint p) {
+		TableCell fc = new TableCell(props, p);
 		TextBlockProperties tbp = props.getTextBlockProperties();
 		fc.startBlock(new BlockProperties.Builder()
 				.bottomPadding(props.getPadding().getBottomSpacing())
