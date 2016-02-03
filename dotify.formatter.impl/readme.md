@@ -1,7 +1,7 @@
 # Introduction #
 dotify.formatter.impl contains an implementation of the formatter interfaces of [dotify.api](https://github.com/joeha480/dotify/tree/master/dotify.api).
 
-[Here](https://rawgit.com/joeha480/dotify/master/dotify.formatter.impl/test/org.daisy.dotify.engine.impl.resource-files.tests-overview.html) are a few OBFL examples.
+[Here](http://joeha480.github.io/dotify.formatter.impl/tests/org.daisy.dotify.engine.impl.resource-files.tests-overview.html) are a few OBFL examples.
 
 ## How to add tests to dotify.formatter.impl
 
