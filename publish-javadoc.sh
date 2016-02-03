@@ -7,6 +7,7 @@ if [ "$TRAVIS_REPO_SLUG" == "joeha480/dotify" ] && [ "$TRAVIS_PULL_REQUEST" == "
   cp -R dotify.api/build/docs/javadoc $HOME/dotify.api
   cp -R dotify.common/build/docs/javadoc $HOME/dotify.common
   cp -R dotify.task-api/build/docs/javadoc $HOME/dotify.task-api
+  cp -R dotify.formatter.impl/build/docs $HOME/dotify.formatter.impl
 
   cd $HOME
   git config --global user.email "travis@travis-ci.org"
@@ -17,10 +18,12 @@ if [ "$TRAVIS_REPO_SLUG" == "joeha480/dotify" ] && [ "$TRAVIS_PULL_REQUEST" == "
   git rm -rf ./dotify.api
   git rm -rf ./dotify.common
   git rm -rf ./dotify.task-api
+  git rm -rf ./dotify.formatter.impl
   
   cp -Rf $HOME/dotify.api ./dotify.api
   cp -Rf $HOME/dotify.common ./dotify.common
   cp -Rf $HOME/dotify.task-api ./dotify.task-api
+  cp -Rf $HOME/dotify.formatter.impl ./dotify.formatter.impl
   
   git add -f .
   git commit -m "Lastest successful travis build of dotify ($TRAVIS_BUILD_NUMBER) auto-pushed to joeha480.github.io"

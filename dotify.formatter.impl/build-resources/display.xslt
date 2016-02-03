@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:obfl="http://www.daisy.org/ns/2011/obfl" xmlns:pef="http://www.daisy.org/ns/2008/pef" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
+	<xsl:param name="timestamp"/>
+
 	<xsl:template match="/">
 		<html>
 			<head>
@@ -42,6 +44,7 @@
 				</style>
 			</head>
 			<body>
+				<p>Updated: <xsl:value-of select="$timestamp"/></p>
 				<xsl:apply-templates/>
 			</body>		
 		</html>

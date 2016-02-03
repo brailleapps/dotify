@@ -51,21 +51,20 @@ ext.writeTestsOverviewFile = { folderPath, fileName ->
 		}
 	}
 	f.append('</tests>')
-	copy {
-		from('build-resources/display.xslt')
-		into(folderPath)
-	}
+	return f
 }
+
+javadoc.dependsOn('updateTestsOverviewFile')
 
 task updateTestsOverviewFile() << {
 	// There are more tests in this folder with another naming standard, but they
 	// don't suit the presentational format and are more of integration tests.
 	// Additional tests should be written based on these.
-	writeTestsOverviewFile('test/org/daisy/dotify/engine/impl/resource-files', 'tests-overview.xml')
+	def r = writeTestsOverviewFile('test/org/daisy/dotify/engine/impl/resource-files', 'tests-overview.xml')
 	ant {
 		xslt (
 			basedir: "test",
-			destdir: (new File("test")),
+			destdir: (new File("${buildDir}/docs/tests")),
 			style: "build-resources/display.xslt",
 			includes: "**/tests-overview.xml",
 			filenameparameter: "filename"
@@ -81,8 +80,13 @@ task updateTestsOverviewFile() << {
 					location: "build-resources/xhtml10/xhtml1-strict.dtd"
 				)
 			}
+			param (
+				name: 'timestamp', 
+				expression: new Date().format("yyyy-MM-dd'T'HH:mmXXX")
+			)
 		}
 	}
+	r.delete()
 }
 
 bundle {
