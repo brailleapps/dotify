@@ -41,6 +41,13 @@
 					a.internal:hover {
 						color: grey;
 					}
+					.example {
+					    padding: .5em;
+    					border-left-width: .5em;
+    					border-left-style: solid;
+ 						border-color: #e0cb52;
+  						background-color: #fcfaee;
+					}
 				</style>
 			</head>
 			<body>
@@ -55,12 +62,12 @@
 			<h1 id="{@input}"><xsl:value-of select="$input/obfl:obfl/obfl:meta/dc:title"/><a href="#{@input}" class="internal"> &#x00B6;</a></h1>
 			<p><xsl:value-of select="$input/obfl:obfl/obfl:meta/dc:description"/></p>
 			<h2><xsl:value-of select="@input"/></h2>
-			<pre>
+			<pre class="example">
 				<xsl:apply-templates select="$input" mode="display-element"/>
 			</pre>
 			<h2><xsl:value-of select="@expected"/></h2>
 			<xsl:variable name="expected" select="document(@expected)"/>
-			<pre>
+			<pre class="example">
 				<xsl:apply-templates select="$expected/pef:pef" mode="display-element"/>
 			</pre>
 		</xsl:for-each>
