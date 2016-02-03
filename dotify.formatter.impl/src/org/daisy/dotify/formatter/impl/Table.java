@@ -37,6 +37,7 @@ class Table extends Block {
 	}
 
 	public void beginsTableBody() {
+		//FIXME: add check here that the table header has complete rows, i.e. no open rowspans 
 		headerRows = td.getRowCount();
 	}
 
@@ -187,8 +188,52 @@ class Table extends Block {
 	
 	private List<RowImpl> renderTable(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		List<RowImpl> result = new ArrayList<RowImpl>();
+		updateRendering(columnWidth, colSpacing, costFunc, context, dc);
+		for (int r=0; r<td.getGridHeight(); r++) {
+			// render into rows
+			boolean tableRowHasData = false;
+			while (hasMoreContent(r)) { //while content
+				RowImpl row = getResultRow(r, context, columnWidth, colSpacing, leftMargin, rightMargin, FillStyle.EMPTY);
+				//TODO: this will keep the whole table row together (if possible), but it could be more advanced
+				row.setAllowsBreakAfter(false);
+				result.add(row);
+				tableRowHasData = true;
+			}
+			boolean addBorder = hasBorderItems(r);
+			if (addBorder && r<td.getGridHeight()-1) {
+				// row borders
+				if (tableProps.getTableRowSpacing()>0) {
+					{
+						// separate, do this border
+						RowImpl row = getResultRow(r, context, columnWidth, colSpacing, leftMargin, rightMargin, FillStyle.THIS_BORDER);
+						if (row!=null) { result.add(row); }
+					}{
+						// space
+						RowImpl row = getResultRow(r, context, columnWidth, colSpacing, leftMargin, rightMargin, FillStyle.EMPTY);
+						if (row!=null) { result.add(row); }
+					}
+				} else {
+					// merged
+					RowImpl row = getResultRow(r, context, columnWidth, colSpacing, leftMargin, rightMargin, FillStyle.MERGE);
+					//row.setAllowsBreakAfter(false);
+					if (row!=null) { result.add(row); }
+				}
+			}
+			if (tableRowHasData) {
+				result.get(result.size()-1).setAllowsBreakAfter(true);
+			}
+			if (addBorder && r<td.getGridHeight()-1 && tableProps.getTableRowSpacing()>0) {
+				// separate, do next border
+				RowImpl row = getResultRow(r, context, columnWidth, colSpacing, leftMargin, rightMargin, FillStyle.NEXT_BORDER);
+				if (row!=null) { result.add(row); }
+			}
+		}
+		costFunc.completeTable(result);
+		return result;
+	}
+	
+	private void updateRendering(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc) {
 		for (TableRow row : td) {
-			List<CellData> cellData = new ArrayList<>();
 			for (TableCell cell : row) {
 				int flowWidth = 0;
 				int ci = cell.getInfo().getStartingPoint().getCol();
@@ -199,38 +244,9 @@ class Table extends Block {
 					flowWidth += columnWidth[ci+j];
 				}
 				CellData cd = cell.render(context.getFcontext(), dc, context.getRefs(), flowWidth);
-				cellData.add(cd);
 				costFunc.addCell(cd.getRows(), flowWidth);
 			}
 		}
-		
-		for (int r=0; r<td.getGridHeight(); r++) {
-			// render into rows
-			boolean tableRowHasData = false;
-			while (hasMoreContent(r)) { //while content
-				RowImpl row = getResultRow(r, context, colSpacing, leftMargin, rightMargin);
-				row.setRowSpacing(tableProps.getRowSpacing());
-				//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
-				row.setAllowsBreakAfter(false);
-				result.add(row);
-				tableRowHasData = true;
-			}
-			// row borders
-			if (tableProps.getTableRowSpacing()>0) {
-				// separate, do this border
-				// space
-			} else {
-				// merged
-			}
-			if (tableRowHasData) {
-				result.get(result.size()-1).setAllowsBreakAfter(true);
-			}
-			if (tableProps.getTableRowSpacing()>0) {
-				// separate, do next border
-			}
-		}
-		costFunc.completeTable(result);
-		return result;
 	}
 	
 	private boolean hasMoreContent(int r) {
@@ -247,7 +263,34 @@ class Table extends Block {
 		return false;
 	}
 	
-	private RowImpl getResultRow(int r, BlockContext context, int[] colSpacing, MarginProperties leftMargin, MarginProperties rightMargin) {
+	private boolean hasBorderItems(int r) {
+		TableCell cx, cy;
+		for (int x=0; x<td.getGridWidth(); x++) {
+			cx = td.cellForGrid(r, x);
+			cy = td.cellForGrid(r+1, x);
+			if ((	cx!=null &&
+					cx.getInfo().getEndPoint().getRow()==r && 
+					cx.getInfo().getBorder()!=null &&
+					cx.getInfo().getBorder().getBottom().getStyle()!=Style.NONE) ||
+				(	cy!=null &&
+					cy.getInfo().getStartingPoint().getRow()==r+1 &&
+					cy.getInfo().getBorder()!=null &&
+					cy.getInfo().getBorder().getTop().getStyle()!=Style.NONE)
+				) {
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	enum FillStyle {
+		EMPTY,
+		THIS_BORDER,
+		NEXT_BORDER,
+		MERGE
+	}
+	
+	private RowImpl getResultRow(int r, BlockContext context, int[] columnWidth, int[] colSpacing, MarginProperties leftMargin, MarginProperties rightMargin, FillStyle f) {
 		CellData cr;
 		StringBuilder tableRow = new StringBuilder();
 		List<Marker> markers = new ArrayList<>();
@@ -261,6 +304,36 @@ class Table extends Block {
 				data = PageImpl.padLeft(cr.getCellWidth(), row, context.getFcontext().getSpaceCharacter());
 				markers.addAll(row.getMarkers());
 				anchors.addAll(row.getAnchors());
+			} else {
+				StringBuilder d = new StringBuilder();
+				Border cx = null, cy = null;
+				for (int x=j; x<cr.getInfo().getColSpan()+j; x++) {
+					char fill = context.getFcontext().getSpaceCharacter();
+					if (f==FillStyle.EMPTY) {
+						cx = null;
+						cy = null;
+					} else {
+						if (f==FillStyle.THIS_BORDER) {
+							cx = td.cellForGrid(r, x).getInfo().getBorder();
+							cy = null;
+						} else if (f==FillStyle.NEXT_BORDER) {
+							cx = null;
+							cy = td.cellForGrid(r+1, x).getInfo().getBorder();
+						} else if (f==FillStyle.MERGE) {
+							cx = td.cellForGrid(r, x).getInfo().getBorder();
+							cy = td.cellForGrid(r+1, x).getInfo().getBorder();
+						}
+						String t = tbh.mergedRowStyles(cx, cy);
+						if (t.length()>1) {
+							logger.warning("Expected a single border character, the result will be incorrect.");
+						}
+						if (t.length()>=1) {
+							fill = t.charAt(0);
+						}
+						d.append(StringTools.fill(fill, columnWidth[x]));
+					}
+				}
+				data = d.toString();
 			}
 			tableRow.append(data);
 			// Fill (only after intermediary columns)
@@ -272,6 +345,7 @@ class Table extends Block {
 				} else {
 					border = tbh.getSharedColumnString(cr.getInfo().getBorder(), c.getInfo().getBorder(), context);
 				}
+				//FIXME: length calculation incorrect if border is separated
 				int length = cr.getCellWidth()+colSpacing[cr.getInfo().getEndPoint().getCol()] - data.length() - border.length();
 				if (length>0) {
 					tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
@@ -280,10 +354,10 @@ class Table extends Block {
 			}
 			j += cr.getInfo().getColSpan()-1;
 		}
-		
 		RowImpl row = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
 		row.addMarkers(markers);
 		row.addAnchors(anchors);
+		row.setRowSpacing(tableProps.getRowSpacing());
 		return row;
 	}
 
