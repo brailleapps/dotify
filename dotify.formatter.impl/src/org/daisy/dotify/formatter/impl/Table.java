@@ -207,69 +207,84 @@ class Table extends Block {
 		for (int r=0; r<td.getGridHeight(); r++) {
 			// render into rows
 			boolean tableRowHasData = false;
-content:	for (;;) { //while content
-				boolean empty = true;
-				StringBuilder tableRow = new StringBuilder();
-				List<Marker> markers = new ArrayList<>();
-				List<String> anchors = new ArrayList<>();
-				CellData cr;
-				//This seems redundant, but the row iterator is different each time we're here
-				//and we need to know beforehand if there is any content left
-				for (int x=0; x<td.getGridWidth(); x++) {
-					cr = td.cellForGrid(r, x).getRendered();
-					if (cr.getInfo().getEndPoint().getRow()<=r && cr.getRowIterator().hasNext()) {
-						empty = false;
-					}
-				}
-				if (empty) {
-					break content;
-				}
-				for (int j=0; j<td.getGridWidth(); j++) {
-					cr = td.cellForGrid(r, j).getRendered();
-					String data = "";
-					if (cr.getRowIterator().hasNext()) {
-						// allow row change if the cell ends in another grid row
-						//FIXME: row span
-						
-						RowImpl row = cr.getRowIterator().next();
-						// Align
-						data = PageImpl.padLeft(cr.getCellWidth(), row, context.getFcontext().getSpaceCharacter());
-						markers.addAll(row.getMarkers());
-						anchors.addAll(row.getAnchors());
-					}
-					tableRow.append(data);
-					// Fill (only after intermediary columns)
-					if (cr.getInfo().getEndPoint().getCol()+1<td.getGridWidth()) {
-						TableCell c = td.cellForGrid(cr.getInfo().getStartingPoint().getRow(), cr.getInfo().getEndPoint().getCol()+1);
-						String border;
-						if (c==null) {
-							border = "";
-						} else {
-							border = tbh.getSharedColumnString(cr.getInfo().getBorder(), c.getInfo().getBorder(), context);
-						}
-						int length = cr.getCellWidth()+colSpacing[cr.getInfo().getEndPoint().getCol()] - data.length() - border.length();
-						if (length>0) {
-							tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
-						}
-						tableRow.append(border);
-					}
-					j += cr.getInfo().getColSpan()-1;
-				}
-				tableRowHasData = true;
-				RowImpl row = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
-				row.addMarkers(markers);
-				row.addAnchors(anchors);
+			while (hasMoreContent(r)) { //while content
+				RowImpl row = getResultRow(r, context, colSpacing, leftMargin, rightMargin);
 				row.setRowSpacing(tableProps.getRowSpacing());
 				//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
 				row.setAllowsBreakAfter(false);
 				result.add(row);
+				tableRowHasData = true;
+			}
+			// row borders
+			if (tableProps.getTableRowSpacing()>0) {
+				// separate, do this border
+				// space
+			} else {
+				// merged
 			}
 			if (tableRowHasData) {
 				result.get(result.size()-1).setAllowsBreakAfter(true);
 			}
+			if (tableProps.getTableRowSpacing()>0) {
+				// separate, do next border
+			}
 		}
 		costFunc.completeTable(result);
 		return result;
+	}
+	
+	private boolean hasMoreContent(int r) {
+		CellData cr;
+		//This seems redundant, but the row iterator is different each time we're here
+		//and we need to know beforehand if there is any content left
+		for (int x=0; x<td.getGridWidth(); x++) {
+			cr = td.cellForGrid(r, x).getRendered();
+			// allow row change if the cell ends in another grid row
+			if (cr.getInfo().getEndPoint().getRow()<=r && cr.getRowIterator().hasNext()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private RowImpl getResultRow(int r, BlockContext context, int[] colSpacing, MarginProperties leftMargin, MarginProperties rightMargin) {
+		CellData cr;
+		StringBuilder tableRow = new StringBuilder();
+		List<Marker> markers = new ArrayList<>();
+		List<String> anchors = new ArrayList<>();
+		for (int j=0; j<td.getGridWidth(); j++) {
+			cr = td.cellForGrid(r, j).getRendered();
+			String data = "";
+			if (cr.getRowIterator().hasNext()) {
+				RowImpl row = cr.getRowIterator().next();
+				// Align
+				data = PageImpl.padLeft(cr.getCellWidth(), row, context.getFcontext().getSpaceCharacter());
+				markers.addAll(row.getMarkers());
+				anchors.addAll(row.getAnchors());
+			}
+			tableRow.append(data);
+			// Fill (only after intermediary columns)
+			if (cr.getInfo().getEndPoint().getCol()+1<td.getGridWidth()) {
+				TableCell c = td.cellForGrid(cr.getInfo().getStartingPoint().getRow(), cr.getInfo().getEndPoint().getCol()+1);
+				String border;
+				if (c==null) {
+					border = "";
+				} else {
+					border = tbh.getSharedColumnString(cr.getInfo().getBorder(), c.getInfo().getBorder(), context);
+				}
+				int length = cr.getCellWidth()+colSpacing[cr.getInfo().getEndPoint().getCol()] - data.length() - border.length();
+				if (length>0) {
+					tableRow.append(StringTools.fill(context.getFcontext().getSpaceCharacter(), length));
+				}
+				tableRow.append(border);
+			}
+			j += cr.getInfo().getColSpan()-1;
+		}
+		
+		RowImpl row = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
+		row.addMarkers(markers);
+		row.addAnchors(anchors);
+		return row;
 	}
 
 	private int[] calcSpacings(GridSpaceCalculator comp) {
