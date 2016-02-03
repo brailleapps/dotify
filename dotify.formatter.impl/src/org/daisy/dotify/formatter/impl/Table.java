@@ -212,15 +212,25 @@ content:	for (;;) { //while content
 				StringBuilder tableRow = new StringBuilder();
 				List<Marker> markers = new ArrayList<>();
 				List<String> anchors = new ArrayList<>();
+				CellData cr;
+				//This seems redundant, but the row iterator is different each time we're here
+				//and we need to know beforehand if there is any content left
+				for (int x=0; x<td.getGridWidth(); x++) {
+					cr = td.cellForGrid(r, x).getRendered();
+					if (cr.getInfo().getEndPoint().getRow()<=r && cr.getRowIterator().hasNext()) {
+						empty = false;
+					}
+				}
+				if (empty) {
+					break content;
+				}
 				for (int j=0; j<td.getGridWidth(); j++) {
-					CellData cr = td.cellForGrid(r, j).getRendered();
+					cr = td.cellForGrid(r, j).getRendered();
 					String data = "";
 					if (cr.getRowIterator().hasNext()) {
 						// allow row change if the cell ends in another grid row
 						//FIXME: row span
-						if (cr.getInfo().getEndPoint().getRow()<=r) {
-							empty = false;
-						}
+						
 						RowImpl row = cr.getRowIterator().next();
 						// Align
 						data = PageImpl.padLeft(cr.getCellWidth(), row, context.getFcontext().getSpaceCharacter());
@@ -245,18 +255,14 @@ content:	for (;;) { //while content
 					}
 					j += cr.getInfo().getColSpan()-1;
 				}
-				if (empty) {
-					break content;
-				} else {
-					tableRowHasData = true;
-					RowImpl row = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
-					row.addMarkers(markers);
-					row.addAnchors(anchors);
-					row.setRowSpacing(tableProps.getRowSpacing());
-					//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
-					row.setAllowsBreakAfter(false);
-					result.add(row);
-				}
+				tableRowHasData = true;
+				RowImpl row = new RowImpl(tableRow.toString(), leftMargin, rightMargin);
+				row.addMarkers(markers);
+				row.addAnchors(anchors);
+				row.setRowSpacing(tableProps.getRowSpacing());
+				//FIXME: this will keep the whole table row together (if possible), but it could be more advanced
+				row.setAllowsBreakAfter(false);
+				result.add(row);
 			}
 			if (tableRowHasData) {
 				result.get(result.size()-1).setAllowsBreakAfter(true);
