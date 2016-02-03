@@ -11,7 +11,7 @@
       </default-template>
    </layout-master>
    <sequence master="main">
-      <table col-spacing="1">
+      <table table-col-spacing="1" preferred-empty-space="0">
          <tr>
             <td border-bottom-style="solid" border-bottom-width="1" border-bottom-align="center">⠿⠿⠿</td>
             <td border-bottom-style="solid" border-bottom-width="1" border-bottom-align="center">⠿⠿⠿⠿</td>
@@ -20,11 +20,11 @@
          <tr>
             <td>⠿⠿⠿⠿</td>
             <td>⠿⠿⠿</td>
-            <td>⠿⠿</td>
+            <td>⠿⠿⠿</td>
          </tr>
          <tr>
             <td>⠿⠿⠿</td>
-            <td>⠿⠿⠿</td>
+            <td>⠿⠿</td>
             <td>⠿⠿⠿</td>
          </tr>
       </table>
