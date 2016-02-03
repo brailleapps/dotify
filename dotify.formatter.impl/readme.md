@@ -15,9 +15,7 @@ testPEF("resource-files/foo-input.obfl", "resource-files/foo-expected.pef", fals
 in a class that extends `AbstractFormatterEngineTest`. Tests are run
 with `gradle test`.
 
-If you want the tests to be included in the overview page at
-`test/org/daisy/dotify/engine/impl/resource-files/tests-overview.xml`,
+If you want the tests to be included in the overview page (linked to above)
 the OBFL and PEF files need to be placed in
 `test/org/daisy/dotify/engine/impl/resource-files` and named according
-to the pattern `foo-input.obfl`/`foo-expected.pef`. The page can be
-updated with `gradle updateTestsOverviewFile`.
+to the pattern `foo-input.obfl`/`foo-expected.pef`.
