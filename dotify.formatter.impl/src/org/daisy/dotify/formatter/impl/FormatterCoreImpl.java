@@ -20,7 +20,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	 * 
 	 */
 	private static final long serialVersionUID = -7775469339792146048L;
-	private final Stack<BlockProperties> propsContext;
+	protected final Stack<BlockProperties> propsContext;
 	private Margin leftMargin;
 	private Margin rightMargin;
 	

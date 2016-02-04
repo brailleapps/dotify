@@ -60,11 +60,14 @@ class Table extends Block {
 	protected AbstractBlockContentManager newBlockContentManager(BlockContext context) {
 		// FIXME: add row-span support
 		int columnCount = countColumns();
-		int columnWidth = (context.getFlowWidth() - tableProps.getTableColSpacing()*(columnCount-1)) / columnCount;
-		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
-		List<RowImpl> result = new ArrayList<RowImpl>();
 		MarginProperties leftMargin = rdp.getLeftMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		MarginProperties rightMargin = rdp.getRightMargin().buildMargin(context.getFcontext().getSpaceCharacter());
+		int columnWidth = (context.getFlowWidth() 
+				- leftMargin.getContent().length() 
+				- rightMargin.getContent().length() 
+				- tableProps.getTableColSpacing()*(columnCount-1)) / columnCount;
+		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
+		List<RowImpl> result = new ArrayList<RowImpl>();
 		for (TableRow row : rows) {
 			List<CellData> cellData = new ArrayList<>(); 
 			for (TableCell cell : row) {
