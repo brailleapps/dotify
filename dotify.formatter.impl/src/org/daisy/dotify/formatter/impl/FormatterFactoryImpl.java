@@ -4,6 +4,7 @@ import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterConfigurationException;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
+import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
@@ -16,10 +17,11 @@ import aQute.bnd.annotation.component.Reference;
 @Component
 public class FormatterFactoryImpl implements FormatterFactory {
 	private BrailleTranslatorFactoryMakerService translatorFactory;
+	private TextBorderFactoryMakerService borderFactory;
 
 	@Override
 	public Formatter newFormatter(String locale, String mode) {
-		return new FormatterImpl(translatorFactory, locale, mode);
+		return new FormatterImpl(translatorFactory, borderFactory, locale, mode);
 	}
 
 	@Reference
@@ -29,6 +31,15 @@ public class FormatterFactoryImpl implements FormatterFactory {
 
 	public void unsetTranslator() {
 		this.translatorFactory = null;
+	}
+	
+	@Reference
+	public void setTextBorderFactory(TextBorderFactoryMakerService borderFactory) {
+		this.borderFactory = borderFactory;
+	}
+	
+	public void unsetTextBorderFactory() {
+		this.borderFactory = null;
 	}
 	
 	@Override
@@ -45,6 +56,7 @@ public class FormatterFactoryImpl implements FormatterFactory {
 	@Override
 	public void setCreatedWithSPI() {
 		setTranslator(SPIHelper.getBrailleTranslatorFactoryMaker());
+		setTextBorderFactory(SPIHelper.getTextBorderFactoryMaker());
 	}
 
 }

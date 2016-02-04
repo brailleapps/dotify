@@ -17,6 +17,7 @@ import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
+import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.common.io.StateObject;
 import org.daisy.dotify.common.text.BreakPoint;
@@ -50,8 +51,8 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	/**
 	 * Creates a new formatter
 	 */
-	public FormatterImpl(BrailleTranslatorFactoryMakerService translatorFactory, String locale, String mode) {
-		this(new FormatterContext(translatorFactory, locale, mode));
+	public FormatterImpl(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, String locale, String mode) {
+		this(new FormatterContext(translatorFactory, tbf, locale, mode));
 	}
 	
 	public FormatterImpl(FormatterContext context) {
@@ -73,7 +74,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	@Override
 	public FormatterSequence newSequence(SequenceProperties p) {
 		state.assertOpen();
-		BlockSequence currentSequence = new BlockSequence(p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
+		BlockSequence currentSequence = new BlockSequence(context, p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
 		blocks.push(currentSequence);
 		return currentSequence;
 	}

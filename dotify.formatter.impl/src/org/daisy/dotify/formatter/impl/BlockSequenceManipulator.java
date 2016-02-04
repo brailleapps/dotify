@@ -35,7 +35,8 @@ class BlockSequenceManipulator {
 	}
 
 	private BlockSequence newSequence(List<Block> c) {
-		BlockSequence ret = new BlockSequence(initialPagenum, master);
+		//FIXME: this will break if the returned sequence attempts to use some methods 
+		BlockSequence ret = new BlockSequence(null, initialPagenum, master);
 		ret.addAll(c);
 		return ret;
 	}

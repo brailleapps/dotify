@@ -73,19 +73,19 @@ class Table extends Block {
 	protected AbstractBlockContentManager newBlockContentManager(BlockContext context) {
 		int columnCount = countColumns();
 		int rowCount = countRows();
-		int[] colSpace = calcSpacings(new ColumnSpaceCalculator(rowCount, columnCount));
-		int[] rowSpace = calcSpacings(new RowSpaceCalculator(rowCount, columnCount));
+		//int[] colSpace = calcSpacings(new ColumnSpaceCalculator(rowCount, columnCount));
+		//int[] rowSpace = calcSpacings(new RowSpaceCalculator(rowCount, columnCount));
 		MarginProperties leftMargin = rdp.getLeftMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		MarginProperties rightMargin = rdp.getRightMargin().buildMargin(context.getFcontext().getSpaceCharacter());
 		int columnWidth = (context.getFlowWidth() 
 				- leftMargin.getContent().length() 
 				- rightMargin.getContent().length() 
-				); 
-		//- tableProps.getTableColSpacing()*(columnCount-1)
-		for (int i : colSpace) {
+				
+		- tableProps.getTableColSpacing()*(columnCount-1))/ columnCount;
+		/*for (int i : colSpace) {
 			columnWidth -= i; 
 		}
-		columnWidth = columnWidth / columnCount;
+		columnWidth = columnWidth / columnCount;*/
 		int[] currentColumnWidth = new int[columnCount];
 		Arrays.fill(currentColumnWidth, columnWidth);
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
