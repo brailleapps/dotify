@@ -19,6 +19,7 @@ import org.daisy.dotify.common.text.StringTools;
 
 class Table extends Block {
 	private final static Logger logger = Logger.getLogger(Table.class.getCanonicalName());
+	@SuppressWarnings("unused")
 	private int headerRows;
 	private final TableData td;
 	private final TableProperties tableProps;
@@ -70,7 +71,7 @@ class Table extends Block {
 		int columnWidth = (context.getFlowWidth() 
 				- leftMargin.getContent().length() 
 				- rightMargin.getContent().length()
-				); //- tableProps.getTableColSpacing()*(columnCount-1))/ columnCount;
+				);
 		for (int i : colSpace) {
 			columnWidth -= i; 
 		}
@@ -80,35 +81,6 @@ class Table extends Block {
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
 		resultCache = new HashMap<>();
 		Result r = minimizeCost(currentColumnWidth, colSpace, -1, tableProps.getPreferredEmtpySpace(), context, dc, leftMargin, rightMargin);
-		/*
-		TableCost costFunc = new TableCostImpl(spacePreferred);
-		List<RowImpl> result = renderTable(currentColumnWidth, costFunc, context, dc, leftMargin, rightMargin);
-		boolean costReduced = true;
-		int[] minColumnWidth = new int[columnCount];
-		Arrays.fill(minColumnWidth, columnWidth);
-		while (costReduced) {
-			costReduced = false;
-			for (int i=0; i<columnCount; i++) {
-				if (minColumnWidth[i]>currentColumnWidth[i]-1) {
-					currentColumnWidth[i]--;
-					TableCost costFunc2 = new TableCostImpl(spacePreferred);
-					List<RowImpl> result2 = renderTable(currentColumnWidth, costFunc2, context, dc, leftMargin, rightMargin);
-					minColumnWidth[i]=currentColumnWidth[i];
-					if (costFunc2.getCost()<costFunc.getCost()) {
-						result = result2;
-						costFunc = costFunc2;
-						costReduced = true;
-					} else {
-						//restore column
-						currentColumnWidth[i]++;
-					}
-					System.out.println("COST: " + costFunc.getCost());
-				} else {
-					System.out.println("NO CALC");
-				}
-			}
-		}*/
-		
 		return new TableBlockContentManager(context.getFlowWidth(), r.rows, rdp, context.getFcontext());
 	}
 	
@@ -447,9 +419,8 @@ class Table extends Block {
 			}
 		}
 	}
-	
 
-	
+	@SuppressWarnings("unused")
 	private class RowSpaceCalculator implements GridSpaceCalculator {
 		private final int rowCount, colCount;
 		public RowSpaceCalculator(int rowCount, int colCount) {
@@ -501,8 +472,6 @@ class Table extends Block {
 		
 	}
 
-
-	
 	private int countColumns() {
 		int cc = 0;
 		// calculate the number of columns based on the first row
