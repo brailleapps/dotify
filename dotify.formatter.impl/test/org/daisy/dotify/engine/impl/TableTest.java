@@ -9,25 +9,24 @@ import org.junit.Test;
 
 public class TableTest extends AbstractFormatterEngineTest {
 	
-	@Ignore // not implemented yet
 	@Test
 	public void testSimpleTable() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/simple-table-input.obfl",
 		        "resource-files/dp2/simple-table-expected.pef", false);
 	}
-	@Ignore // not implemented yet
+
 	@Test
 	public void testTableColSpacing() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/table-col-spacing-input.obfl",
 		        "resource-files/dp2/table-col-spacing-expected.pef", false);
 	}
-	@Ignore // not implemented yet
+
 	@Test
 	public void testTableHeaderUnderline() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/table-header-underline-input.obfl",
 		        "resource-files/dp2/table-header-underline-expected.pef", false);
 	}
-	@Ignore // not implemented yet
+
 	@Test
 	public void testTableFixedWidth() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/table-fixed-width-input.obfl",
@@ -51,13 +50,13 @@ public class TableTest extends AbstractFormatterEngineTest {
 		testPEF("resource-files/dp2/table-header-repeat-input.obfl",
 		        "resource-files/dp2/table-header-repeat-expected.pef", false);
 	}
-	@Ignore // not implemented yet
+
 	@Test
 	public void testTableLeaders() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/table-leaders-input.obfl",
 		        "resource-files/dp2/table-leaders-expected.pef", false);
 	}
-	@Ignore // not implemented yet
+
 	@Test
 	public void testTableColspan() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/table-colspan-input.obfl",
