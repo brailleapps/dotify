@@ -4,6 +4,10 @@ after_success:
   - ./upload.sh
   - ./publish-javadoc.sh
 
+cache:
+  directories:
+  - ~/.gradle
+
 env:
   global:
     - secure: "mv2026v6RdPW6TorQsOoclMK7VJAm9hpDAZjH5jmcT8trvqrM4jb6WsLBdCMmos6HmSy03Ftc/TCq+yaGcaf2nBTscoKQsxGd2X2IcOo5dX7ssXk4sz8RXK6tYhH4+05tCJHMDVSpe9ok3929AbtJEAHZboHNcFWWZzDKr9unnQ="
