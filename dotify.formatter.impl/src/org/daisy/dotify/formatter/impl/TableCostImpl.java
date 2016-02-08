@@ -4,7 +4,7 @@ import java.util.List;
 
 public class TableCostImpl implements TableCost {
 	private final int spacePreferred;
-	private int cost;
+	private double cost;
 
 	public TableCostImpl(int spacePreferred) {
 		this.spacePreferred = spacePreferred;
@@ -12,7 +12,7 @@ public class TableCostImpl implements TableCost {
 	}
 
 	@Override
-	public int getCost() {
+	public double getCost() {
 		return cost;
 	}
 
@@ -30,8 +30,8 @@ public class TableCostImpl implements TableCost {
 	}
 
 	@Override
-	public void completeTable(List<RowImpl> rows) {
-		cost += 10*rows.size();
+	public void completeTable(List<RowImpl> rows, int columnCount) {
+		cost += columnCount*rows.size();
 	}
 
 }

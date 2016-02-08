@@ -227,7 +227,7 @@ class Table extends Block {
 				if (row!=null) { result.add(row); }
 			}
 		}
-		costFunc.completeTable(result);
+		costFunc.completeTable(result, td.getGridWidth());
 		return result;
 	}
 	
