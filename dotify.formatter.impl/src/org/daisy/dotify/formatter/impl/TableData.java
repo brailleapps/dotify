@@ -68,15 +68,6 @@ class TableData implements Iterable<TableRow> {
 	TableCell cellForIndex(int r, int c) {
 		return getRow(r).getCell(c);
 	}
-	
-	/*
-	int getGridWidth() {
-		return 0;
-	}
-	
-	int getGridHeight() {
-		return 0;
-	}*/
 	 
 	int getRowCount() {
 		return rows.size();

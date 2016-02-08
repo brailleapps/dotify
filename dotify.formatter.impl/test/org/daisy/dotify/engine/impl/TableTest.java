@@ -96,7 +96,7 @@ public class TableTest extends AbstractFormatterEngineTest {
 	
 	@Test
 	public void testTableLeaderAlign() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
-		testPEF("resource-files/table/tables-leader-input.obfl", "resource-files/table/tables-leader-expected.pef", true);
+		testPEF("resource-files/table/tables-leader-input.obfl", "resource-files/table/tables-leader-expected.pef", false);
 	}
 	
 	@Test
