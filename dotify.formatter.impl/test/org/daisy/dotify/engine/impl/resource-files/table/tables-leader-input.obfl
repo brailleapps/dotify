@@ -15,6 +15,7 @@
 				<td>⠁⠁</td>
 				<td><leader position="50%" pattern="⠤" align="center"/>⠁⠁<leader position="100%" pattern="⠤" align="right"/></td>
 			</tr>
+			<tr><td></td><td>⠁⠁⠁⠁⠁⠁</td></tr>
 		</table>
 	</sequence>
 </obfl>

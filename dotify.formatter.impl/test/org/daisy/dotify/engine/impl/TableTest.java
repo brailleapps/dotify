@@ -32,7 +32,7 @@ public class TableTest extends AbstractFormatterEngineTest {
 		testPEF("resource-files/dp2/table-fixed-width-input.obfl",
 		        "resource-files/dp2/table-fixed-width-expected.pef", false);
 	}
-	@Ignore // not implemented yet
+
 	@Test
 	public void testTableAutoColumnWidth() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/table-auto-column-width-input.obfl",
@@ -96,7 +96,7 @@ public class TableTest extends AbstractFormatterEngineTest {
 	
 	@Test
 	public void testTableLeaderAlign() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
-		testPEF("resource-files/table/tables-leader-input.obfl", "resource-files/table/tables-leader-expected.pef", false);
+		testPEF("resource-files/table/tables-leader-input.obfl", "resource-files/table/tables-leader-expected.pef", true);
 	}
 	
 	@Test

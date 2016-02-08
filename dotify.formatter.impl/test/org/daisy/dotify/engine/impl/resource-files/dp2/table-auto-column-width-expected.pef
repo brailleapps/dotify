@@ -11,10 +11,10 @@
       <volume rows="5" cols="20" rowgap="0" duplex="true">
          <section>
             <page>
-               <row>⠿⠿⠿⠀⠀⠀⠿⠿⠿⠀⠀⠀⠀⠀⠀⠿⠿⠿⠀⠀</row>
-               <row>⠒⠒⠒⠒⠒⠀⠒⠒⠒⠒⠒⠒⠒⠒⠀⠒⠒⠒⠒⠒</row>
-               <row>⠿⠿⠿⠀⠀⠀⠿⠿⠿⠿⠿⠿⠿⠀⠀⠿⠿⠿⠀⠀</row>
-               <row>⠿⠿⠿⠀⠀⠀⠿⠿⠿⠀⠀⠀⠀⠀⠀⠿⠿⠿⠀⠀</row>
+               <row>⠿⠿⠿⠀⠀⠀⠿⠿⠿⠀⠀⠀⠀⠀⠿⠿⠿</row>
+               <row>⠒⠒⠒⠒⠒⠀⠒⠒⠒⠒⠒⠒⠒⠀⠒⠒⠒⠒⠒</row>
+               <row>⠿⠿⠿⠀⠀⠀⠿⠿⠿⠿⠿⠿⠿⠀⠿⠿⠿</row>
+               <row>⠿⠿⠿⠀⠀⠀⠿⠿⠿⠀⠀⠀⠀⠀⠿⠿⠿</row>
             </page>
          </section>
       </volume>

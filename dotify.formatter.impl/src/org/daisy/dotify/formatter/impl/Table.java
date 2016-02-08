@@ -1,5 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,41 +76,64 @@ class Table extends Block {
 		for (int i : colSpace) {
 			columnWidth -= i; 
 		}
-		columnWidth = columnWidth / columnCount;
+		//columnWidth = columnWidth / columnCount;
 		int[] currentColumnWidth = new int[columnCount];
 		Arrays.fill(currentColumnWidth, columnWidth);
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
 		resultCache = new HashMap<>();
-		Result r = minimizeCost(currentColumnWidth, colSpace, -1, tableProps.getPreferredEmtpySpace(), context, dc, leftMargin, rightMargin);
+		Result r = minimizeCost(currentColumnWidth, colSpace, tableProps.getPreferredEmtpySpace(), context, dc, leftMargin, rightMargin);
 		return new TableBlockContentManager(context.getFlowWidth(), r.rows, rdp, context.getFcontext());
 	}
 	
-	private Result minimizeCost(int[] columnWidth, int[] colSpacing, int direction, int spacePreferred, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
+	private Result minimizeCost(int[] columnWidth, int[] colSpacing, int spacePreferred, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		int columnCount = columnWidth.length;
 		int[] currentColumnWidth = Arrays.copyOf(columnWidth, columnWidth.length);
 		Result[] results = new Result[columnCount];
-		Result currentResult;
 		//base result
-		currentResult = renderTableWithCache(spacePreferred, currentColumnWidth, colSpacing, context, dc, leftMargin, rightMargin);
+		Result currentResult = renderTableWithCache(tableProps.getPreferredEmtpySpace(), currentColumnWidth, colSpacing, context, dc, leftMargin, rightMargin);
+		int x = 0;
 		while (true) {
 			// render all possibilities
 			for (int i=0; i<columnCount; i++) {
 				if (currentColumnWidth[i]>=1) {
 					// change value
-					currentColumnWidth[i] = currentColumnWidth[i] + direction;
+					currentColumnWidth[i] = currentColumnWidth[i] - 1;
 					results[i] = renderTableWithCache(spacePreferred, currentColumnWidth, colSpacing, context, dc, leftMargin, rightMargin);
 					// restore value
-					currentColumnWidth[i] = currentColumnWidth[i] - direction;
+					currentColumnWidth[i] = currentColumnWidth[i] + 1;
+				} else {
+					results[i] = null;
 				}
 			}
 			// select
-			Result min = min(currentResult, results);
-			if (min!=currentResult) {
+			int tableWidth = 0;
+			for (int j=0; j<td.getGridWidth(); j++) {
+				if (j>0) {
+					tableWidth += colSpacing[j-1];
+				}
+				tableWidth += currentColumnWidth[j];
+			}
+			Result min;
+			if (tableWidth<=context.getFlowWidth()) {
+				min = min(currentResult, results);
+			} else {
+				//since reduction is required at this point, choose the best new solution (even if it is worse than the current)
+				int start = x;
+				while (results[x]==null) {
+					x = (x+1) % columnCount;
+					if (x==start) {
+						throw new RuntimeException("Failed to solve table.");
+					}
+				}
+				min = min(results[x], results);
+				x = (x+1) % columnCount;
+			}
+			if (min==currentResult && tableWidth<=context.getFlowWidth()) {
+				break;
+			} else {
 				currentResult = min;
 				currentColumnWidth = min.widths;
-			} else {
-				break;
-			}
+			} 
 		}
 		return currentResult;
 	}
@@ -128,7 +152,10 @@ class Table extends Block {
 		for (int i=0; i<values.length; i++) {
 			//System.out.println("COST: " + values[i].cost.getCost());
 			//if new value is less than existing value, replace it
-			ret = values[i].cost.getCost()<ret.cost.getCost()?values[i]:ret;
+			Result x = values[i];
+			if (x!=null) {
+				ret = x.cost.getCost()<ret.cost.getCost()?x:ret;
+			}
 		}
 		return ret;
 	}
