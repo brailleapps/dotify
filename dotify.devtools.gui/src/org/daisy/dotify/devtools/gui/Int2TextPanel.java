@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
 import org.daisy.dotify.api.text.Integer2TextFactoryMakerService;
 import org.daisy.dotify.api.text.IntegerOutOfRange;
-import org.osgi.framework.BundleContext;
 
 public class Int2TextPanel extends MyPanel {
 	/**
@@ -22,11 +21,11 @@ public class Int2TextPanel extends MyPanel {
 	private static final long serialVersionUID = -8051107255963928066L;
 	private final JTextField textField;
 	private final JTextArea outputField;
-
-	private Int2TextTracker tracker;
+	private final FactoryContext context;
 	
-	public Int2TextPanel() {
+	public Int2TextPanel(FactoryContext context) {
 		super(new BorderLayout());
+		this.context = context;
 
 		Font f = new Font(null, Font.BOLD, 26);
 
@@ -39,6 +38,7 @@ public class Int2TextPanel extends MyPanel {
 
 		textField.addKeyListener(new KeyAdapter() {
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 				updateResult();
 			}
@@ -51,12 +51,13 @@ public class Int2TextPanel extends MyPanel {
 		setPreferredSize(new Dimension(500, 400));
 	}
 
+	@Override
 	protected void updateResult() {
 		if (getTargetLocale()==null || getTargetLocale().equals("")) {
 			outputField.setText("No locale selected");
 		} else {
 
-				Integer2TextFactoryMakerService t = tracker.get();
+				Integer2TextFactoryMakerService t = context.getInteger2TextFactoryMakerService();
 				if (t == null) {
 					outputField.setText("No conversion");
 				} else {
@@ -82,15 +83,6 @@ public class Int2TextPanel extends MyPanel {
 				}
 
 		}
-	}
-
-	public void openTracking(BundleContext context) {
-		tracker = new Int2TextTracker(context);
-		tracker.open();
-	}
-
-	public void closeTracking() {
-		tracker.close();
 	}
 
 }

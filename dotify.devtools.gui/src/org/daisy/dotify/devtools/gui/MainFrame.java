@@ -18,8 +18,6 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.osgi.framework.BundleContext;
-
 public class MainFrame extends JFrame {
 	private final Logger logger = Logger.getLogger(MainFrame.class.getCanonicalName());
 	/**
@@ -33,7 +31,7 @@ public class MainFrame extends JFrame {
 	final TranslatorPanel panel3;
 	final EmbossPanel panel6;
 	
-	public MainFrame() {
+	public MainFrame(FactoryContext context) {
 		//getContentPane().set
 		super("Dotify/Braille Utils live OSGi test GUI");
 		setLayout(new BorderLayout());
@@ -41,12 +39,12 @@ public class MainFrame extends JFrame {
 
 		panels = new ArrayList<MyPanel>();
 		
-		Int2TextPanel panel1 = new Int2TextPanel();
-		HyphPanel panel2 = new HyphPanel();
-		panel3 = new TranslatorPanel();
-		FormatterPanel panel4 = new FormatterPanel();
-		ValidatorPanel panel5 = new ValidatorPanel();
-		panel6 = new EmbossPanel();
+		Int2TextPanel panel1 = new Int2TextPanel(context);
+		HyphPanel panel2 = new HyphPanel(context);
+		panel3 = new TranslatorPanel(context);
+		FormatterPanel panel4 = new FormatterPanel(context);
+		ValidatorPanel panel5 = new ValidatorPanel(context);
+		panel6 = new EmbossPanel(context);
 		
 		loc = new JTextField();
 		loc.addKeyListener(new KeyAdapter() {
@@ -106,18 +104,6 @@ public class MainFrame extends JFrame {
 	private void addPanel(String desc, JComponent panel, MyPanel p) {
 		panel.add(p, desc);
 		panels.add(p);
-	}
-	
-	protected void openTracking(BundleContext context) {
-		for (MyPanel p : panels) {
-			p.openTracking(context);
-		}
-	}
-
-	protected void closeTracking() {
-		for (MyPanel p : panels) {
-			p.closeTracking();
-		}
 	}
 	
 	private void updateLocale() {

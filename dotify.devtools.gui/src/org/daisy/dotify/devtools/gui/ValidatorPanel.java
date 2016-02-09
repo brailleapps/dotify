@@ -24,7 +24,6 @@ import org.daisy.braille.api.validator.Validator;
 import org.daisy.braille.api.validator.ValidatorFactoryService;
 import org.daisy.braille.pef.PEFBook;
 import org.daisy.braille.pef.PEFValidator;
-import org.osgi.framework.BundleContext;
 import org.xml.sax.SAXException;
 
 public class ValidatorPanel extends MyPanel {
@@ -35,12 +34,12 @@ public class ValidatorPanel extends MyPanel {
 	private final JButton chooseFile;
 	private final JFileChooser chooser;
 	private final JTextArea outputField;
+	private final FactoryContext context;
 	private File input;
-
-	private ValidatorTracker tracker;
 	
-	public ValidatorPanel() {
+	public ValidatorPanel(FactoryContext context) {
 		super(new BorderLayout());
+		this.context = context;
 		
 		input = null;
 
@@ -77,7 +76,7 @@ public class ValidatorPanel extends MyPanel {
 
 	@Override
 	protected void updateResult() {
-		ValidatorFactoryService t = tracker.get();
+		ValidatorFactoryService t = context.getValidatorFactoryService();
 		if (t == null) {
 			outputField.setText("No formatter detected");
 		} else if (input==null) {
@@ -123,17 +122,6 @@ public class ValidatorPanel extends MyPanel {
 				outputField.setText(e.toString());
 			}
 		}
-	}
-
-	@Override
-	public void openTracking(BundleContext context) {
-		tracker = new ValidatorTracker(context);
-		tracker.open();
-	}
-
-	@Override
-	public void closeTracking() {
-		tracker.close();
 	}
 
 }

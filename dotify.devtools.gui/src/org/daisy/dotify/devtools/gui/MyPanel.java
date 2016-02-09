@@ -4,8 +4,6 @@ import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
 
-import org.osgi.framework.BundleContext;
-
 public abstract class MyPanel extends JPanel {
 	
 
@@ -30,10 +28,6 @@ public abstract class MyPanel extends JPanel {
 	public MyPanel(LayoutManager layout) {
 		super(layout);
 	}
-
-	public abstract void openTracking(BundleContext context);
-	
-	public abstract void closeTracking();
 	
 	public String getTargetLocale() {
 		return locale;

@@ -11,11 +11,13 @@ import org.osgi.framework.BundleContext;
 
 public class GuiActivator implements BundleActivator {
 	private MainFrame frame;
+	private OsgiFactoryContext factoryContext;
 
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		frame = new MainFrame();
+		factoryContext = new OsgiFactoryContext();
+		frame = new MainFrame(factoryContext);
 		frame.pack();
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
@@ -28,13 +30,13 @@ public class GuiActivator implements BundleActivator {
 				}
 			}
 		});
-		frame.openTracking(context);
+		factoryContext.openTracking(context);
 		frame.setVisible(true);
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		frame.setVisible(false);
-		frame.closeTracking();
+		factoryContext.closeTracking();
 	}
 }

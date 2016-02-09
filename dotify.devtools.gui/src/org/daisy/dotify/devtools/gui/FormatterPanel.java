@@ -24,7 +24,6 @@ import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactoryService;
-import org.osgi.framework.BundleContext;
 
 public class FormatterPanel extends MyPanel {
 	/**
@@ -34,13 +33,12 @@ public class FormatterPanel extends MyPanel {
 	private final JButton chooseFile;
 	private final JFileChooser chooser;
 	private final JTextArea outputField;
+	private final FactoryContext context;
 	private File input;
-
-	private FormatterTracker tracker;
-	private WriterTracker wtracker;
 	
-	public FormatterPanel() {
+	public FormatterPanel(FactoryContext context) {
 		super(new BorderLayout());
+		this.context = context;
 		
 		input = null;
 
@@ -75,13 +73,13 @@ public class FormatterPanel extends MyPanel {
 		setPreferredSize(new Dimension(500, 400));
 	}
 
+	@Override
 	protected void updateResult() {
 		if (getTargetLocale()==null || getTargetLocale().equals("")) {
 			outputField.setText("No locale selected");
 		} else {
-
-				FormatterEngineFactoryService t = tracker.get();
-				PagedMediaWriterFactoryService w = wtracker.get();
+				FormatterEngineFactoryService t = context.getFormatterEngineFactoryService();
+				PagedMediaWriterFactoryService w = context.getPagedMediaWriterFactoryService();
 				if (t == null) {
 					outputField.setText("No formatter detected");
 				} if (w == null) {
@@ -113,18 +111,6 @@ public class FormatterPanel extends MyPanel {
 				}
 
 		}
-	}
-
-	public void openTracking(BundleContext context) {
-		tracker = new FormatterTracker(context);
-		tracker.open();
-		wtracker = new WriterTracker(context);
-		wtracker.open();
-	}
-
-	public void closeTracking() {
-		tracker.close();
-		wtracker.close();
 	}
 
 }

@@ -32,7 +32,6 @@ import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.osgi.framework.BundleContext;
 
 public class TranslatorPanel extends MyPanel {
 	/**
@@ -43,15 +42,15 @@ public class TranslatorPanel extends MyPanel {
 	private final JTextArea outputField;
 	private final JComboBox options;
 	private final ActionListener listener;
+	private final FactoryContext context;
 
-	private TranslatorTracker tracker;
-	private TableCatalogTracker tctracker;
 	private BrailleConverter bc;
 	private int factoryIndex;
 	
 	
-	public TranslatorPanel() {
+	public TranslatorPanel(FactoryContext context) {
 		setLayout(new GridLayout(2, 1));
+		this.context = context;
 
 		Font f = new Font(null, Font.BOLD, 26);
 
@@ -122,7 +121,7 @@ public class TranslatorPanel extends MyPanel {
 	void updateTableList() {
 		options.removeActionListener(listener);
 		options.removeAllItems();
-		TableCatalogService tt = tctracker.get();
+		TableCatalogService tt = context.getTableCatalogService();
 		if (tt != null) {
 			ArrayList<FactoryProperties> sorted = new ArrayList<FactoryProperties>(tt.list());
 			Collections.sort(sorted, new FactoryPropertiesComparator());
@@ -144,7 +143,7 @@ public class TranslatorPanel extends MyPanel {
 		if (loc==null || loc.equals("")) {
 			outputField.setText("No locale selected");
 		} else {
-			BrailleTranslatorFactoryMakerService t = tracker.get();
+			BrailleTranslatorFactoryMakerService t = context.getBrailleTranslatorFactoryMakerService();
 			if (t == null) {
 				outputField.setText("No conversion");
 			} else {
@@ -163,7 +162,7 @@ public class TranslatorPanel extends MyPanel {
 						}
 
 					} catch (TranslatorConfigurationException e1) {
-						outputField.setText("Specification not supported. " + tracker.size());
+						outputField.setText("Specification not supported."); //TODO: support this again + tracker.size());
 					} catch (TranslationException e) {
 						outputField.setText("Failed to translate.");
 					}
@@ -173,7 +172,7 @@ public class TranslatorPanel extends MyPanel {
 	}
 	
 	private BrailleConverter newConverter(FactoryProperties fpp) {
-		TableCatalogService tt = tctracker.get();
+		TableCatalogService tt = context.getTableCatalogService();
 		if (tt != null) {
 			if (fpp==null) {
 				Collection<FactoryProperties> fp = tt.list();
@@ -187,20 +186,6 @@ public class TranslatorPanel extends MyPanel {
 			}							
 		}
 		return null;
-	}
-
-	@Override
-	public void openTracking(BundleContext context) {
-		tracker = new TranslatorTracker(context);
-		tracker.open();
-		tctracker = new TableCatalogTracker(context);
-		tctracker.open();
-	}
-
-	@Override
-	public void closeTracking() {
-		tracker.close();
-		tctracker.close();
 	}
 
 }

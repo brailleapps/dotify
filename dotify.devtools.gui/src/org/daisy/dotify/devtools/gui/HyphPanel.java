@@ -13,7 +13,6 @@ import javax.swing.JTextArea;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
-import org.osgi.framework.BundleContext;
 
 public class HyphPanel extends MyPanel {
 	/**
@@ -22,12 +21,11 @@ public class HyphPanel extends MyPanel {
 	private static final long serialVersionUID = -8051107255963928066L;
 	private final JTextArea textField;
 	private final JTextArea outputField;
-
-	private HyphTracker tracker;
-
+	private final FactoryContext context;
 	
-	public HyphPanel() {
+	public HyphPanel(FactoryContext context) {
 		setLayout(new GridLayout(2, 1));
+		this.context = context;
 
 		Font f = new Font(null, Font.BOLD, 26);
 
@@ -40,6 +38,7 @@ public class HyphPanel extends MyPanel {
 
 		textField.addKeyListener(new KeyAdapter() {
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 				updateResult();
 			}
@@ -52,11 +51,12 @@ public class HyphPanel extends MyPanel {
 		setPreferredSize(new Dimension(500, 400));
 	}
 	
+	@Override
 	protected void updateResult() {
 		if (getTargetLocale()==null || getTargetLocale().equals("")) {
 			outputField.setText("No locale selected");
 		} else {
-			HyphenatorFactoryMakerService t = tracker.get();
+			HyphenatorFactoryMakerService t = context.getHyphenatorFactoryMakerService();
 			if (t == null) {
 				outputField.setText("No conversion");
 			} else {
@@ -78,15 +78,6 @@ public class HyphPanel extends MyPanel {
 				}
 			}
 		}
-	}
-
-	public void openTracking(BundleContext context) {
-		tracker = new HyphTracker(context);
-		tracker.open();
-	}
-
-	public void closeTracking() {
-		tracker.close();
 	}
 
 }

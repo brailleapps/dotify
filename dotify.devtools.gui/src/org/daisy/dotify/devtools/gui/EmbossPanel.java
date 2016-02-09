@@ -18,7 +18,6 @@ import org.daisy.braille.api.factory.FactoryPropertiesComparator;
 import org.daisy.braille.api.paper.Paper;
 import org.daisy.braille.api.paper.PaperCatalogService;
 import org.daisy.braille.api.table.TableCatalogService;
-import org.osgi.framework.BundleContext;
 
 public class EmbossPanel extends MyPanel {
 	/**
@@ -28,10 +27,8 @@ public class EmbossPanel extends MyPanel {
 	private final JComboBox toptions;
 	private final JComboBox poptions;
 	private final JComboBox eoptions;
+	private final FactoryContext context;
 
-	private TableCatalogTracker tctracker;
-	private PaperCatalogTracker pctracker;
-	private EmbosserCatalogTracker ectracker;
 	private int tfactoryIndex;
 	private int pfactoryIndex;
 	private int efactoryIndex;
@@ -41,9 +38,9 @@ public class EmbossPanel extends MyPanel {
 	
 	private Embosser embosser;
 
-	public EmbossPanel() {
+	public EmbossPanel(FactoryContext context) {
 		setLayout(new GridLayout(2, 1));
-		
+		this.context = context;
 		toptions = new JComboBox();		
 		poptions = new JComboBox();
 		eoptions = new JComboBox();
@@ -101,7 +98,7 @@ public class EmbossPanel extends MyPanel {
 	private void updateEmbosserList() {
 		eoptions.removeActionListener(elistener);
 		eoptions.removeAllItems();
-		EmbosserCatalogService tt = ectracker.get();
+		EmbosserCatalogService tt = context.getEmbosserCatalogService();
 		if (tt != null) {
 			ArrayList<FactoryProperties> sorted = new ArrayList<FactoryProperties>(tt.list());
 			Collections.sort(sorted, new FactoryPropertiesComparator());
@@ -122,7 +119,7 @@ public class EmbossPanel extends MyPanel {
 	private void updateTableList() {
 		toptions.removeActionListener(tlistener);
 		toptions.removeAllItems();
-		TableCatalogService tt = tctracker.get();
+		TableCatalogService tt = context.getTableCatalogService();
 		if (tt != null) {
 			ArrayList<FactoryProperties> sorted;
 			if (embosser!=null) {
@@ -146,7 +143,7 @@ public class EmbossPanel extends MyPanel {
 	private void updatePaperList() {
 		poptions.removeActionListener(plistener);
 		poptions.removeAllItems();
-		PaperCatalogService tt = pctracker.get();
+		PaperCatalogService tt = context.getPaperCatalogService();
 		if (tt != null) {
 			ArrayList<Paper> sorted = new ArrayList<Paper>(tt.list());
 			Collections.sort(sorted, new FactoryPropertiesComparator());
@@ -167,23 +164,6 @@ public class EmbossPanel extends MyPanel {
 	@Override
 	protected void updateResult() {
 
-	}
-
-	@Override
-	public void openTracking(BundleContext context) {
-		tctracker = new TableCatalogTracker(context);
-		tctracker.open();
-		pctracker = new PaperCatalogTracker(context);
-		pctracker.open();
-		ectracker = new EmbosserCatalogTracker(context);
-		ectracker.open();
-	}
-
-	@Override
-	public void closeTracking() {
-		tctracker.close();
-		pctracker.close();
-		ectracker.close();
 	}
 
 }
