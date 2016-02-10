@@ -23,7 +23,7 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.writer.MediaTypes;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
-import org.daisy.dotify.api.writer.PagedMediaWriterFactoryService;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMakerService;
 
 public class FormatterPanel extends MyPanel {
 	/**
@@ -79,7 +79,7 @@ public class FormatterPanel extends MyPanel {
 			outputField.setText("No locale selected");
 		} else {
 				FormatterEngineFactoryService t = context.getFormatterEngineFactoryService();
-				PagedMediaWriterFactoryService w = context.getPagedMediaWriterFactoryService();
+				PagedMediaWriterFactoryMakerService w = context.getPagedMediaWriterFactoryService();
 				if (t == null) {
 					outputField.setText("No formatter detected");
 				} if (w == null) {
@@ -92,7 +92,7 @@ public class FormatterPanel extends MyPanel {
 						outputField.setText("File doesn't exist " + input);
 					} else {
 						try {
-							PagedMediaWriter pw = w.newFactory(MediaTypes.PEF_MEDIA_TYPE).newPagedMediaWriter();
+							PagedMediaWriter pw = w.newPagedMediaWriter(MediaTypes.PEF_MEDIA_TYPE);
 							FormatterEngine e = t.newFormatterEngine(getTargetLocale(), BrailleTranslatorFactory.MODE_UNCONTRACTED, pw);
 							File out = new File(input.getParentFile(), input.getName()+".pef");
 						

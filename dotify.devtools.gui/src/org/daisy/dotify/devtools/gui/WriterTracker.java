@@ -1,12 +1,12 @@
 package org.daisy.dotify.devtools.gui;
 
-import org.daisy.dotify.api.writer.PagedMediaWriterFactoryService;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMakerService;
 import org.osgi.framework.BundleContext;
 
-public class WriterTracker extends MyTracker<PagedMediaWriterFactoryService> {
+public class WriterTracker extends MyTracker<PagedMediaWriterFactoryMakerService> {
 
 	public WriterTracker(BundleContext context) {
-		super(context, PagedMediaWriterFactoryService.class.getName());
+		super(context, PagedMediaWriterFactoryMakerService.class.getName());
 	}
 
 }

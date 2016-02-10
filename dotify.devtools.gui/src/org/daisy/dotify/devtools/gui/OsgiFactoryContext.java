@@ -8,7 +8,7 @@ import org.daisy.dotify.api.engine.FormatterEngineFactoryService;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.text.Integer2TextFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
-import org.daisy.dotify.api.writer.PagedMediaWriterFactoryService;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMakerService;
 import org.osgi.framework.BundleContext;
 
 public class OsgiFactoryContext implements FactoryContext {
@@ -96,7 +96,7 @@ public class OsgiFactoryContext implements FactoryContext {
 	}
 
 	@Override
-	public PagedMediaWriterFactoryService getPagedMediaWriterFactoryService() {
+	public PagedMediaWriterFactoryMakerService getPagedMediaWriterFactoryService() {
 		return wtracker.get();
 	}
 
