@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -12,25 +13,19 @@ import javax.xml.stream.XMLStreamException;
 
 import org.daisy.braille.api.factory.FactoryProperties;
 import org.daisy.braille.api.table.BrailleConverter;
-import org.daisy.braille.api.table.Table;
-import org.daisy.braille.consumer.table.TableCatalog;
+import org.daisy.braille.api.table.TableCatalogService;
 
 public class Unbrailler {
 	private final XMLInputFactory inFactory;
 	private final BrailleConverter bc;
 	
-	public Unbrailler(String tableId) {
+	public Unbrailler(BrailleConverter bc) {
         inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
         inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
         inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
         inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
-        TableCatalog tc = TableCatalog.newInstance();
-        for (FactoryProperties t : tc.list()) {
-        	System.out.println(t.getIdentifier());
-        }
-		Table t = tc.get(tableId);
-        this.bc = t.newBrailleConverter();
+        this.bc = bc;
 	}
 
 	/**
@@ -39,18 +34,33 @@ public class Unbrailler {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws XMLStreamException, IOException {
+		TableCatalogService tcs = invokeStatic("org.daisy.braille.consumer.table.TableCatalog", "newInstance");
 		if (args.length<2) {
 			System.out.println("Expected two arguments, path to input file and table identifier.");
-			for (FactoryProperties t : TableCatalog.newInstance().list()) {
+			for (FactoryProperties t : tcs.list()) {
 				System.out.println(t.getIdentifier());
 			}
 			System.exit(-1);
 		}
 		File input = new File(args[0]);
 
-		Unbrailler ub = new Unbrailler(args[1]);
+		
+		Unbrailler ub = new Unbrailler(tcs.newTable(args[1]).newBrailleConverter());
 
 		ub.run(input);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static <T> T invokeStatic(String clazz, String method) {
+		T instance = null;
+		try {
+			Class<?> cls = Class.forName(clazz);
+			Method m = cls.getMethod(method);
+			instance = (T)m.invoke(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return instance;
 	}
 
 	public void run(File inputFolder) {

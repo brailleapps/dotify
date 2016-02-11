@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import org.daisy.braille.api.table.BrailleConverter;
 import org.daisy.braille.pef.FileTools;
 import org.daisy.braille.pef.PEFFileCompare;
 import org.daisy.dotify.common.io.FileIO;
@@ -15,11 +16,12 @@ import org.daisy.dotify.devtools.unbrailler.Unbrailler;
 class DotifyRegressionTester implements Runnable {
 	private final RegressionInterface inf;
 	private final File input, expected;
-	private final String setup, locale, table, ext;
+	private final String setup, locale, ext;
+	private final BrailleConverter table;
 	private final boolean folders = true;
 
 	
-	public DotifyRegressionTester(RegressionInterface inf, File input, File expected, String setup, String locale, String table) {
+	public DotifyRegressionTester(RegressionInterface inf, File input, File expected, String setup, String locale, BrailleConverter table) {
 		this.inf = inf;
 		if (!input.isFile()) {
 			throw new IllegalArgumentException("Input does not exist or is not a file: " + input);

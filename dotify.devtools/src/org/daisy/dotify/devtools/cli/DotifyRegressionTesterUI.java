@@ -2,7 +2,9 @@ package org.daisy.dotify.devtools.cli;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
+import org.daisy.braille.api.table.TableCatalogService;
 import org.daisy.dotify.devtools.regression.DotifyRegressionTesterRunner;
 
 public class DotifyRegressionTesterUI {
@@ -20,7 +22,8 @@ public class DotifyRegressionTesterUI {
 			System.exit(-1);
 		}
 		try {
-			DotifyRegressionTesterRunner rt = new DotifyRegressionTesterRunner(new File(args[0]), args[1], new File(args[2]), args[3], args[4], args[5]);
+			TableCatalogService tcs = invokeStatic("org.daisy.braille.consumer.table.TableCatalog", "newInstance");
+			DotifyRegressionTesterRunner rt = new DotifyRegressionTesterRunner(new File(args[0]), args[1], new File(args[2]), args[3], args[4], tcs.newTable(args[5]).newBrailleConverter());
 			if (args.length >= 7) {
 				int thArg = 6;
 				try {
@@ -40,4 +43,16 @@ public class DotifyRegressionTesterUI {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	private static <T> T invokeStatic(String clazz, String method) {
+		T instance = null;
+		try {
+			Class<?> cls = Class.forName(clazz);
+			Method m = cls.getMethod(method);
+			instance = (T)m.invoke(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return instance;
+	}
 }

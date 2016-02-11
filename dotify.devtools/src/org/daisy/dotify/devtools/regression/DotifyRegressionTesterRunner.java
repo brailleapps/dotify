@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import org.daisy.braille.api.table.BrailleConverter;
 import org.daisy.dotify.devtools.jvm.ProcessStarter;
 
 public class DotifyRegressionTesterRunner implements RegressionInterface {
@@ -20,7 +21,8 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 	private final String pathToDotifyCli;
 	private final int maxThreads;
 	private final File pathToOutput;
-	private final String setup, locale, table;
+	private final String setup, locale;
+	private final BrailleConverter table;
 	private int timeout = 60;
 	private int threads;
 	private boolean haltOnError = true;
@@ -28,7 +30,7 @@ public class DotifyRegressionTesterRunner implements RegressionInterface {
 	private final List<ProcessStarter> pool;
 	private boolean errors;
 
-	public DotifyRegressionTesterRunner(File commandList, String pathToCli, File pathToOutput, String setup, String locale, String table) {
+	public DotifyRegressionTesterRunner(File commandList, String pathToCli, File pathToOutput, String setup, String locale, BrailleConverter table) {
 		this.pathToCommandsList = commandList;
 		this.pathToDotifyCli = pathToCli;
 		this.maxThreads = Runtime.getRuntime().availableProcessors();
