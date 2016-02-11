@@ -51,24 +51,35 @@ import org.daisy.dotify.api.text.IntegerOutOfRange;
  * @author Joel Håkansson
  */
 class ExpressionImpl implements Expression {
-	private HashMap<String, Object> vars;
+	private HashMap<String, Object> localVars;
+	private Map<String, Object> globalVars;
 	private final Integer2TextFactoryMakerService integer2textFactoryMaker;
 
 	public ExpressionImpl(Integer2TextFactoryMakerService integer2textFactoryMaker) {
 		// = Integer2TextFactoryMaker.newInstance();
 		this.integer2textFactoryMaker = integer2textFactoryMaker;
+		this.globalVars = new HashMap<>();
 	}
 	
 	@Override
 	public Object evaluate(String expr) {
-		// init
-		vars = new HashMap<>();
+		localVars = new HashMap<>(globalVars);
 		// return value
 		String[] exprs = getArgs(expr);
 		for (int i=0; i<exprs.length-1; i++) {
 			doEvaluate(exprs[i]);
 		}
-		return doEvaluate(exprs[exprs.length-1]);
+		return toReturnType(doEvaluate(exprs[exprs.length-1]));
+	}
+	
+	private Object toReturnType(Object ret) {
+		if (ret instanceof Double) {
+			Double d = (Double)ret;
+			if (d.intValue()==d) {
+				return d.intValue();
+			}
+		} 
+		return ret;
 	}
 	
 	@Override
@@ -91,12 +102,20 @@ class ExpressionImpl implements Expression {
 		return evaluate(expr);
 	}
 	
+	public void setVariable(String key, Object value) {
+		globalVars.put("$"+key, value);
+	}
+	
+	public void removeVariable(String key) {
+		globalVars.remove("$"+key);
+	}
+	
 	private Object doEval1(String expr) {
 		if (expr.startsWith("\"") && expr.endsWith("\"")) {
 			return expr.substring(1, expr.length()-1);
 		}
-		if (vars.containsKey(expr)) {
-			return vars.get(expr);
+		if (localVars.containsKey(expr)) {
+			return localVars.get(expr);
 		}
 		try {
 			return toNumber(expr);
@@ -334,7 +353,7 @@ class ExpressionImpl implements Expression {
 		if (input.length>2) {
 			throw new IllegalArgumentException("Wrong number of arguments: (set key value)");
 		}
-		vars.put("$"+input[0].toString(), input[1]);
+		localVars.put("$"+input[0].toString(), input[1]);
 		return input[1];
 	}
 
@@ -378,7 +397,7 @@ class ExpressionImpl implements Expression {
 	private Object concat(Object[] input) {
 		StringBuilder sb = new StringBuilder();
 		for (Object o : input) {
-			sb.append(o);
+			sb.append(toReturnType(o));
 		}
 		return sb.toString();
 	}

@@ -23,27 +23,27 @@ public class ExpressionTest {
 	
 	@Test
 	public void testExpression_add_01() {
-		assertEquals(10d, e.evaluate("(+ 7 3)"));
+		assertEquals(10, e.evaluate("(+ 7 3)"));
 	}
 	@Test
 	public void testExpression_add_02() {
-		assertEquals(15d, e.evaluate("(+ 7 3) (+ 4 11)"));
+		assertEquals(15, e.evaluate("(+ 7 3) (+ 4 11)"));
 	}
 	@Test
 	public void testExpression_add_03() {
-		assertEquals(24d, e.evaluate("(* 4 (+ 1 1 1) 2)"));
+		assertEquals(24, e.evaluate("(* 4 (+ 1 1 1) 2)"));
 	}
 	@Test
 	public void testExpression_add_04() {
-		assertEquals(1d, e.evaluate("( % (+ (* 12  2) 1) 2)"));
+		assertEquals(1, e.evaluate("( % (+ (* 12  2) 1) 2)"));
 	}
 	@Test
 	public void testExpression_divide_01() {
-		assertEquals(10d, e.evaluate("(/ 50 5)"));
+		assertEquals(10, e.evaluate("(/ 50 5)"));
 	}
 	@Test
 	public void testExpression_divide_02() {
-		assertEquals(1d, e.evaluate("(/ 20 5 4)"));
+		assertEquals(1, e.evaluate("(/ 20 5 4)"));
 	}
 	@Test
 	public void testExpression_divide_03() {
@@ -51,7 +51,7 @@ public class ExpressionTest {
 	}
 	@Test
 	public void testExpression_modulo_01() {
-		assertEquals(2d, e.evaluate("(% 8 3)"));
+		assertEquals(2, e.evaluate("(% 8 3)"));
 	}
 	@Test
 	public void testExpression_equals_01() {
@@ -107,20 +107,29 @@ public class ExpressionTest {
 	}
 	@Test
 	public void testExpression_if_01() {
-		assertEquals(17d, e.evaluate("(+ (if (= 1 0) 18 17) 0)"));
+		assertEquals(17, e.evaluate("(+ (if (= 1 0) 18 17) 0)"));
 	}
 	@Test
 	public void testExpression_if_02() {
-		assertEquals(18d, e.evaluate("(if (< 1 3) 18 17)"));
+		assertEquals(18, e.evaluate("(if (< 1 3) 18 17)"));
 	}
 	//assertEquals("2011", e.evaluate("(now \"yyyy\")"));// stupid test
 	@Test
 	public void testExpression_var_01() {
-		assertEquals(36, e.evaluate("(set var 3) (set var1 12) (round (* $var $var1))"));
+		assertEquals(36, e.evaluate("(set var 3) (set var1 12) (* $var $var1)"));
 	}
 	@Test
 	public void testExpression_var_02() {
-		assertEquals(144, e.evaluate("(set var 3) (set var 12) (round (* $var $var))"));
+		assertEquals(144, e.evaluate("(set var 3) (set var 12) (* $var $var)"));
+	}
+	
+	@Test
+	public void testExpression_var_03() {
+		ExpressionImpl e2 = new ExpressionImpl(Integer2TextFactoryMaker.newInstance());
+		e2.setVariable("v1", 1);
+		e2.setVariable("v2", 2);
+		assertEquals(3, e2.evaluate("(+ $v1 $v2)"));
+		
 	}
 
 	@Test
@@ -145,12 +154,12 @@ public class ExpressionTest {
 
 	@Test
 	public void testExpression_concat_02() {
-		assertEquals("value is 1", e.evaluate("(concat \"value is \" (round 1))"));
+		assertEquals("value is 1", e.evaluate("(concat \"value is \" 1)"));
 	}
 	
 	@Test
 	public void testExpression_format_01() {
-		assertEquals("value is 1", e.evaluate("(format \"value is {0}\" (round 1))"));
+		assertEquals("value is 1", e.evaluate("(format \"value is {0}\" 1)"));
 	}
 	
 	@Test
