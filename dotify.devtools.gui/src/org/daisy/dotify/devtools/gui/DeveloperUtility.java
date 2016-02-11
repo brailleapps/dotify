@@ -33,7 +33,7 @@ public class DeveloperUtility extends javax.swing.JFrame {
 		tabbedPane.addTab("Code Points", null, panel1, "Convert characters to codepoints");
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-		JComponent panel2 = new TranslatorDemo();
+		JComponent panel2 = new TranslatorDemo(new SpiFactoryContext());
 		tabbedPane.addTab("Translator", null, panel2, "Translate into braille");
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 

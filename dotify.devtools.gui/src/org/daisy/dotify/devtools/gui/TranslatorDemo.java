@@ -27,14 +27,13 @@ import javax.swing.LayoutStyle;
 
 import org.daisy.braille.api.factory.FactoryProperties;
 import org.daisy.braille.api.table.BrailleConverter;
-import org.daisy.braille.consumer.table.TableCatalog;
+import org.daisy.braille.api.table.TableCatalogService;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.dotify.consumer.translator.BrailleTranslatorFactoryMaker;
 
 
 public class TranslatorDemo extends JPanel {
@@ -57,13 +56,13 @@ public class TranslatorDemo extends JPanel {
 	private int limit;
 	private volatile boolean updateNeeded;
 	private final Preferences userPrefs;
-	
+	private final FactoryContext context;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3237476094594239863L;
 
-	public TranslatorDemo() {
+	public TranslatorDemo(FactoryContext context) {
 		this.textPanel = new JTextArea(5, 40);
 		this.textPanelScroll = new JScrollPane(textPanel);
 		this.braillePanel = new JTextArea(10, 40);
@@ -74,6 +73,7 @@ public class TranslatorDemo extends JPanel {
 		this.hyphenate = new JCheckBox("Hyphenate");
 		this.translate = new JCheckBox("As text");
 		this.userPrefs = Preferences.userNodeForPackage(TranslatorDemo.class);
+		this.context = context;
 
 		this.limitBox = new JTextField(3);
 		this.limit = 30;
@@ -108,11 +108,11 @@ public class TranslatorDemo extends JPanel {
         braille2Panel.setFont(odtFont.deriveFont(24f));
         
 		try {
-			t = BrailleTranslatorFactoryMaker.newInstance().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+			t = context.getBrailleTranslatorFactoryMakerService().newTranslator("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED);
 		} catch (TranslatorConfigurationException e) {
 			throw new RuntimeException("Cannot translate", e);
 		}
-		TableCatalog tc = TableCatalog.newInstance();
+		TableCatalogService tc = context.getTableCatalogService();
 		Collection<FactoryProperties> list = tc.list();
 		int currentTable = 0;
 		String def = userPrefs.get(USER_PREFS_KEY_TABLE, "");
@@ -128,7 +128,7 @@ public class TranslatorDemo extends JPanel {
 		tableSelect.addActionListener(new TableSelectActionListener());
 
 		tableSelect.setSelectedIndex(currentTable);
-        //conv = TableCatalog.newInstance().get("se_tpb.CXTableProvider.TableType.SV_SE_CX").newBrailleConverter();
+
 		hyphenate.addActionListener(new HyphenateActionListener());
 		hyphenate.setSelected(true);
 		//hyphenate.setBackground(Color.BLACK);
@@ -238,7 +238,7 @@ mainLayout.createParallelGroup(Alignment.CENTER, false)
 
     public void updateConverter() {
     	String id = ((TableWrapper)tableSelect.getSelectedItem()).t.getIdentifier();
-    	conv = TableCatalog.newInstance().get(id).newBrailleConverter();
+    	conv = context.getTableCatalogService().newTable(id).newBrailleConverter();
     	updateTranslation();
     }
     

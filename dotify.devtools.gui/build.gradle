@@ -61,7 +61,7 @@ dependencies {
 	compile group: 'org.daisy.braille', name:'braille-utils.ui', version:'2.0.0-SNAPSHOT'
 	
 	compile 'org.daisy.dotify:dotify.api:2.2.0'
-	compile 'org.daisy.dotify:dotify.devtools:1.0.0-SNAPSHOT'
+	compile 'org.daisy.dotify:dotify.devtools:2.0.0-SNAPSHOT'
 	runtime group: group, name:'dotify.hyphenator.impl', version:'2.0.1'
 	runtime group: group, name:'dotify.formatter.impl', version:'2.1.0-SNAPSHOT'
 	runtime group: group, name:'dotify.text.impl', version:'2.0.0'
