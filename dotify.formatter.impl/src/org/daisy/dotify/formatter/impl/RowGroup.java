@@ -114,6 +114,29 @@ class RowGroup implements SplitPointUnit {
 		this.keepWithPreviousSheets = builder.keepWithPreviousSheets;
 	}
 	
+	/**
+	 * Creates a deep copy of the supplied instance
+	 * @param template the instance to copy
+	 */
+	RowGroup(RowGroup template) {
+		this.rows = new ArrayList<>();
+		for (RowImpl r : template.rows) {
+			rows.add(new RowImpl(r));
+		}
+		this.markers = new ArrayList<>(template.markers);
+		this.anchors = new ArrayList<>(template.anchors);
+		this.breakable = template.breakable;
+		this.skippable = template.skippable;
+		this.collapsible = template.collapsible;
+		this.unitSize = template.unitSize;
+		this.lastUnitSize = template.lastUnitSize;
+		this.ids = new ArrayList<>(template.ids);
+		this.lazyCollapse = template.lazyCollapse;
+		this.identifier = template.identifier;
+		this.keepWithNextSheets = template.keepWithNextSheets;
+		this.keepWithPreviousSheets = template.keepWithPreviousSheets;
+	}
+	
 	private static float getRowSpacing(float rowDefault, RowImpl r) {
 		return (r.getRowSpacing()!=null?r.getRowSpacing():rowDefault);
 	}

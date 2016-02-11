@@ -33,7 +33,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	private Stack<Integer> blockIndentParent;
 	private int blockIndent;
 	private ListItem listItem;
-	private RenderingScenario scenario;
+	protected RenderingScenario scenario;
 	
 	private final boolean discardIdentifiers;
 

@@ -23,13 +23,13 @@ class PageSequenceRecorder {
 	}
 	
 	private void saveState(String id) {
-		states.put(id, data.copy());
+		states.put(id, new PageSequenceRecorderData(data));
 	}
 	
 	private void restoreState(String id) {
 		PageSequenceRecorderData state = states.get(id);
 		if (state!=null) {
-			data = state.copy();
+			data = new PageSequenceRecorderData(state);
 		}
 	}
 	
@@ -52,10 +52,7 @@ class PageSequenceRecorder {
 				}
 			}
 			if (current==null) {
-				height = 0;
-				for (RowGroupSequence rgs : data.dataGroups) {
-					height += rgs.calcSequenceSize();
-				}
+				height = data.calcSize();
 				cost = Double.MAX_VALUE;
 				clearState(scenario);
 				saveState(baseline);

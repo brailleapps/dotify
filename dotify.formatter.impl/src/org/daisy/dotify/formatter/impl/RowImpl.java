@@ -43,6 +43,25 @@ class RowImpl implements Row {
 		this.leaderSpace = 0;
 	}
 	
+	/**
+	 * Creates a deep copy of the supplied instance
+	 * @param template the instance to copy
+	 */
+	RowImpl(RowImpl template) {
+		this.chars = template.chars;
+		this.leftMargin = template.leftMargin;
+		this.rightMargin = template.rightMargin;
+		this.markers = new ArrayList<>(template.markers);
+		this.anchors = new ArrayList<>(template.anchors);
+		this.leftMargin = template.leftMargin;
+		this.rightMargin = template.rightMargin;
+		this.alignment = template.alignment;
+		this.rowSpacing = template.rowSpacing;
+		this.adjustedForMargin = template.adjustedForMargin;
+		this.leaderSpace = template.leaderSpace;
+	}
+
+	@Deprecated
 	static RowImpl withRow(RowImpl r) {
 		RowImpl ret = new RowImpl(r.chars);
 		ret.markers = r.markers;

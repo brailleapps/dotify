@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.Marker;
+import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.formatter.TableCellProperties;
 import org.daisy.dotify.api.formatter.TableProperties;
 import org.daisy.dotify.api.translator.Border;
@@ -26,8 +27,8 @@ class Table extends Block {
 	private Map<String, Result> resultCache;
 	private final TableBorderHandler tbh;
 
-	Table(TableProperties tableProps, RowDataProperties rdp, TextBorderFactoryMakerService tbf, String mode) {
-		super(null, rdp);
+	Table(TableProperties tableProps, RowDataProperties rdp, TextBorderFactoryMakerService tbf, String mode, RenderingScenario rs) {
+		super(null, rdp, rs);
 		this.tableProps = tableProps;
 		if (tableProps.getTableRowSpacing()>0) {
 			throw new UnsupportedOperationException("Table row spacing > 0 is not implemented.");

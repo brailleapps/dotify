@@ -126,19 +126,18 @@ class PageSequenceBuilder2 {
 			rec.processBlock(g);
 			try {
 				AbstractBlockContentManager bcm = g.getBlockContentManager(bc);
-				if (rec.data.dataGroups.isEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !rec.data.data.isEmpty()) || g.getVerticalPosition()!=null) {
-					rec.data.data = new ArrayList<>();
-					rec.data.dataGroups.add(new RowGroupSequence(rec.data.data, g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent())));
+				if (rec.data.isDataGroupsEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !rec.data.isDataEmpty()) || g.getVerticalPosition()!=null) {
+					rec.data.newRowGroupSequence(g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent()));
 					rec.data.keepWithNext = -1;
 				}
 				List<RowImpl> rl1 = bcm.getCollapsiblePreContentRows();
 				if (!rl1.isEmpty()) {
-					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl1).
+					rec.data.addRowGroup(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl1).
 											collapsible(true).skippable(false).breakable(false).build());
 				}
 				List<RowImpl> rl2 = bcm.getInnerPreContentRows();
 				if (!rl2.isEmpty()) {
-					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl2).
+					rec.data.addRowGroup(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl2).
 											collapsible(false).skippable(false).breakable(false).build());
 				}
 				
@@ -147,7 +146,7 @@ class PageSequenceBuilder2 {
 							|| g.getKeepWithNextSheets()>0 || g.getKeepWithPreviousSheets()>0 ) {
 						RowGroup.Builder rgb = new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), new ArrayList<RowImpl>());
 						setProperties(rgb, bcm, g);
-						rec.data.data.add(rgb.build());
+						rec.data.addRowGroup(rgb.build());
 					}
 				}
 	
@@ -174,16 +173,16 @@ class PageSequenceBuilder2 {
 					if (i==1) { //First item
 						setProperties(rgb, bcm, g);
 					}
-					rec.data.data.add(rgb.build());
+					rec.data.addRowGroup(rgb.build());
 					rec.data.keepWithNext--;
 				}
 				if (!rl3.isEmpty()) {
-					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl3).
+					rec.data.addRowGroup(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl3).
 						collapsible(false).skippable(false).breakable(rec.data.keepWithNext<0).build());
 				}
 				List<RowImpl> rl4 = bcm.getSkippablePostContentRows();
 				if (!rl4.isEmpty()) {
-					rec.data.data.add(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl4).
+					rec.data.addRowGroup(new RowGroup.Builder(ps.getLayoutMaster().getRowSpacing(), rl4).
 						collapsible(true).skippable(true).breakable(rec.data.keepWithNext<0).build());
 				}
 			} catch (Exception e) {
@@ -191,7 +190,7 @@ class PageSequenceBuilder2 {
 			}
 		}
 		rec.finishBlockProcessing();
-		return rec.data.dataGroups;
+		return rec.data.getRowGroupSequences();
 	}
 	
 	private void setProperties(RowGroup.Builder rgb, AbstractBlockContentManager bcm, Block g) {
