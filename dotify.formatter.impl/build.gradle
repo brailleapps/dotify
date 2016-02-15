@@ -14,7 +14,7 @@ dependencies {
     compile "org.daisy.dotify:dotify.api:2.2.0"
     compile "org.daisy.dotify:dotify.common:2.0.1"
 
-    runtime group: 'woodstox', name: 'wstx-lgpl', version: '3.2.7'
+    runtime 'com.fasterxml.woodstox:woodstox-core:5.0.2'
     testCompile group: "junit", name: "junit", version: "4.7"
     testCompile 'org.daisy.braille:braille-utils.api:2.0.0'
     testCompile 'org.daisy.braille:braille-utils.pef-tools:1.0.1'
