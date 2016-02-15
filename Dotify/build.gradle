@@ -71,7 +71,7 @@ dependencies {
 	compile 'org.daisy.braille:braille-utils.pef-tools:1.0.1'
 	compile 'org.daisy.dotify:dotify.api:2.1.0'
 	compile 'org.daisy.dotify:dotify.common:2.0.1'
-	compile 'org.daisy.dotify:dotify.task-runner:1.0.0-SNAPSHOT'
+	compile 'org.daisy.dotify:dotify.task-runner:1.0.0'
 	
 
 	runtime 'org.daisy.dotify:dotify.formatter.impl:2.0.0'
