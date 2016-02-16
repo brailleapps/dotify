@@ -4,11 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.management.RuntimeErrorException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -81,45 +81,21 @@ public class XSLTRenderingScenario implements RenderingScenario {
 				}
 			}
 		} catch (Exception e) {
-			//FIXME:do something
+			//FIXME:do something better
+			throw new RuntimeException(e);
 		}
 	}
 	
-	  public static Document newDocumentFromInputStream(InputStream in, DocumentBuilderFactory factory) {
-		    DocumentBuilder builder = null;
-		    Document ret = null;
-
-		    try {
-		      builder = factory.newDocumentBuilder();
-		      builder.setErrorHandler(new ErrorHandler() {
-
-				@Override
-				public void warning(SAXParseException exception) throws SAXException {
-					logger.log(Level.WARNING, "a", exception);
-				}
-
-				@Override
-				public void error(SAXParseException exception) throws SAXException {
-					logger.log(Level.WARNING, "b", exception);
-				}
-
-				@Override
-				public void fatalError(SAXParseException exception) throws SAXException { 
-					logger.log(Level.SEVERE, "A fatal error occurred when reading xml.", exception);
-				}});
-		    } catch (ParserConfigurationException e) {
-		      e.printStackTrace();
-		    }
-
-		    try {
-		      ret = builder.parse(new InputSource(in));
-		    } catch (SAXException e) {
-		      e.printStackTrace();
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		    }
-		    return ret;
-	  }
+	private static Document newDocumentFromInputStream(InputStream in, DocumentBuilderFactory factory) {
+		Document ret = null;
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			ret = builder.parse(new InputSource(in));
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			throw new RuntimeException(e);
+		}
+		return ret;
+	}
 
 	@Override
 	public double calculateCost(Map<String, Double> variables) {

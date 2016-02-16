@@ -259,11 +259,18 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				//methods from inside a block
 				rs.renderScenario((FormatterSequence)this);
 			} catch (Exception e) {
-				//FIXME: if the scenario fails here, it should be excluded from evaluation later (otherwise it might win) 
 				logger.log(Level.INFO, "Failed to render scenario.", e);
+				//if the scenario fails here, it should be excluded from evaluation later (otherwise it might win)
+				while (size()>0 && peek().getRenderingScenario()==rs) {
+					pop();
+				}
 			}
 		}
 		scenario = null;
+		//TODO: The following is a quick workaround for a scenario grouping problem that should be solved in a better way. 
+		//		It prevents consecutive dynamic renderers to be viewed as scenarios for the same dynamic renderer (leading to data loss).
+		startBlock(new BlockProperties.Builder().build());
+		endBlock();
 	}
 	
 }
