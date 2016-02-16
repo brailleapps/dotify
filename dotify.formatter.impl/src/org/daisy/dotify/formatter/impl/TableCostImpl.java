@@ -20,7 +20,7 @@ public class TableCostImpl implements TableCost {
 	public void addCell(List<RowImpl> rows, int cellWidth) {
 		int len = 0;
 		for (RowImpl r : rows) {
-			len = Math.max(r.getChars().length()+r.getLeftMargin().getContent().length()+r.getRightMargin().getContent().length(), len);
+			len = Math.max(r.getWidth(), len);
 		}
 		cost += rows.isEmpty()?0:preferredSpaceCost(len, cellWidth);
 	}

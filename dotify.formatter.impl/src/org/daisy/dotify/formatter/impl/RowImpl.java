@@ -23,6 +23,7 @@ class RowImpl implements Row {
 	private Float rowSpacing;
 	private boolean adjustedForMargin = false;
 	private boolean allowsBreakAfter = true;
+	private int leaderSpace;
 	
 	/**
 	 * Create a new Row
@@ -39,6 +40,7 @@ class RowImpl implements Row {
 		this.rightMargin = rightMargin;
 		this.alignment = Alignment.LEFT;
 		this.rowSpacing = null;
+		this.leaderSpace = 0;
 	}
 	
 	static RowImpl withRow(RowImpl r) {
@@ -50,6 +52,7 @@ class RowImpl implements Row {
 		ret.alignment = r.alignment;
 		ret.rowSpacing = r.rowSpacing;
 		ret.adjustedForMargin = r.adjustedForMargin;
+		ret.leaderSpace = r.leaderSpace;
 		return ret;
 	}
 
@@ -72,6 +75,19 @@ class RowImpl implements Row {
 	public void setChars(String chars) {
 		this.chars = chars;
 	}
+	
+	public void setLeaderSpace(int value) {
+		this.leaderSpace = value;
+	}
+	
+	public int getLeaderSpace() {
+		return leaderSpace;
+	}
+
+	public int getWidth() {
+		return chars.length()+leftMargin.getContent().length()+rightMargin.getContent().length();
+	}
+	
 	/**
 	 * Add a marker to the Row
 	 * @param marker
@@ -209,6 +225,7 @@ class RowImpl implements Row {
 		result = prime * result + (allowsBreakAfter ? 1231 : 1237);
 		result = prime * result + ((anchors == null) ? 0 : anchors.hashCode());
 		result = prime * result + ((chars == null) ? 0 : chars.hashCode());
+		result = prime * result + leaderSpace;
 		result = prime * result + ((leftMargin == null) ? 0 : leftMargin.hashCode());
 		result = prime * result + ((markers == null) ? 0 : markers.hashCode());
 		result = prime * result + ((rightMargin == null) ? 0 : rightMargin.hashCode());
@@ -248,6 +265,9 @@ class RowImpl implements Row {
 				return false;
 			}
 		} else if (!chars.equals(other.chars)) {
+			return false;
+		}
+		if (leaderSpace != other.leaderSpace) {
 			return false;
 		}
 		if (leftMargin == null) {

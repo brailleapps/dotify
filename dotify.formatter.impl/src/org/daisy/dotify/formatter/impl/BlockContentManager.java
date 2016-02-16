@@ -294,6 +294,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 			rows.add(m.row);
 		} else {
 			m.row.setChars(m.preContent + m.preTabText + tabSpace + next);
+			m.row.setLeaderSpace(m.row.getLeaderSpace()+tabSpace.length());
 			rows.add(m.row);
 		}
 	}
