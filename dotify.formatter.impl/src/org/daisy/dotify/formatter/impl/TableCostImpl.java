@@ -18,15 +18,23 @@ public class TableCostImpl implements TableCost {
 
 	@Override
 	public void addCell(List<RowImpl> rows, int cellWidth) {
-		int len = 0;
-		for (RowImpl r : rows) {
-			len = Math.max(r.getWidth(), len);
+		if (rows.size()==1) {
+			// only calculate preferred empty space if it's a single row
+			RowImpl r = rows.get(0);
+			cost += preferredSpaceCost(r.getWidth()-r.getLeaderSpace(), cellWidth);
+		} else if (rows.size()>1) {
+			double rc = rows.size()-1;
+			// cost is increased with a longer last line, because we prefer if the row count goes down
+			RowImpl r = rows.get(rows.size()-1);
+			rc += ((r.getWidth()-r.getLeaderSpace())/(double)cellWidth);
+			cost += rc/10d;
+		} else {
+			cost += preferredSpaceCost(0, cellWidth);
 		}
-		cost += rows.isEmpty()?0:preferredSpaceCost(len, cellWidth);
 	}
 
-	private int preferredSpaceCost(int r, int cellWidth) { 
-		return Math.abs((cellWidth-r)-spacePreferred);
+	private double preferredSpaceCost(int r, int cellWidth) { 
+		return Math.abs((cellWidth-r)-spacePreferred)/(double)cellWidth;
 	}
 
 	@Override
