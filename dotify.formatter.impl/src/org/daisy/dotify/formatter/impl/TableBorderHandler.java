@@ -1,7 +1,6 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;

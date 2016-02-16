@@ -53,7 +53,7 @@ class ContentCollectionImpl extends FormatterCoreImpl implements ContentCollecti
 
 	@Override
 	public void startItem(BlockProperties props) {
-		String id = props.getIdentifier();
+		String id = props.getTextBlockProperties().getIdentifier();
 		if (id!=null) {
 			open.push(new Item(id, size()));
 			if (items.put(id, open.peek())!=null) {

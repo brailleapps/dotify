@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
