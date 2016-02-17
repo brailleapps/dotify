@@ -29,13 +29,9 @@ public class DeveloperUtility extends javax.swing.JFrame {
 
 		JTabbedPane tabbedPane = new JTabbedPane();
 
-		JComponent panel1 = new CodePointUtility();
-		tabbedPane.addTab("Code Points", null, panel1, "Convert characters to codepoints");
-		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-
 		JComponent panel2 = new TranslatorDemo(new SpiFactoryContext());
 		tabbedPane.addTab("Translator", null, panel2, "Translate into braille");
-		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 
 		add(tabbedPane);
         //Display the window.

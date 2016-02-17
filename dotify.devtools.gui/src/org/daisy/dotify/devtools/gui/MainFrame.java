@@ -61,6 +61,10 @@ public class MainFrame extends JFrame {
 
 		});
 		pane = new JTabbedPane();
+		JComponent panel11 = new CodePointUtility();
+		pane.addTab("Code Points", null, panel11, "Convert characters to codepoints");
+		pane.setMnemonicAt(0, KeyEvent.VK_1);
+		
 		addPanel("Numbers", pane, panel1);
 		addPanel("Hyphenation", pane, panel2);
 		addPanel("Translation", pane, panel3);
