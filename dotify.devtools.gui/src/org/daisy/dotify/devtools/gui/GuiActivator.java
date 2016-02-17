@@ -1,9 +1,6 @@
 package org.daisy.dotify.devtools.gui;
 
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.UIManager;
 
 import org.osgi.framework.BundleActivator;
@@ -18,18 +15,6 @@ public class GuiActivator implements BundleActivator {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		factoryContext = new OsgiFactoryContext();
 		frame = new MainFrame("Dotify/Braille Utils live OSGi test GUI", factoryContext);
-		frame.pack();
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				try {
-					//context.getBundle().stop();
-					System.exit(0);
-				} catch (Exception e1) {//BundleException e1) {
-					// Ignore
-				}
-			}
-		});
 		factoryContext.openTracking(context);
 		frame.setVisible(true);
 	}

@@ -2,6 +2,7 @@ package org.daisy.dotify.devtools.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -34,8 +35,12 @@ public class MainFrame extends JFrame {
 	public MainFrame(String title, FactoryContext context) {
 		//getContentPane().set
 		super(title);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(600, 400));
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth()*0.5;
+		double height = screenSize.getHeight()*0.7;
+		setPreferredSize(new Dimension(Math.max(600, (int)width), Math.max(400, (int)height)));
 
 		panels = new ArrayList<MyPanel>();
 		
@@ -91,6 +96,8 @@ public class MainFrame extends JFrame {
 		north.add(loc, BorderLayout.CENTER);
 		add(north, BorderLayout.NORTH);
 		add(pane, BorderLayout.CENTER);
+		pack();
+		setLocationRelativeTo(null);
 	}
 	
 	private void updateSelectedPane() {
