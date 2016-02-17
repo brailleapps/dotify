@@ -21,6 +21,7 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 	private final List<RowImpl> innerPreContentRows;
 	private final List<RowImpl> postContentRows;
 	private final List<RowImpl> skippablePostContentRows;
+	protected int minWidth;
 	
 	AbstractBlockContentManager(int flowWidth, RowDataProperties rdp, FormatterContext fcontext) {
 		this.flowWidth = flowWidth;
@@ -35,6 +36,7 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 		this.collapsiblePreContentRows = makeCollapsiblePreContentRows(rdp, leftParent, rightParent);	
 		this.innerPreContentRows = makeInnerPreContentRows();
 		this.postContentRows = new ArrayList<>();
+		this.minWidth = flowWidth-leftMargin.getContent().length()-rightMargin.getContent().length();
 
 		this.skippablePostContentRows = new ArrayList<>();
 		MarginProperties margin = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
@@ -151,6 +153,14 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 	
 	public List<RowImpl> getSkippablePostContentRows() {
 		return skippablePostContentRows;
+	}
+	
+	/**
+	 * Gets the minimum width available for content (excluding margins)
+	 * @return returns the available width, in characters
+	 */
+	int getMinimumAvailableWidth() {
+		return minWidth;
 	}
 
 	/**

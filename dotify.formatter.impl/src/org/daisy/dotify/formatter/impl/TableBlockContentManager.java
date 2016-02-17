@@ -6,8 +6,9 @@ import java.util.List;
 public class TableBlockContentManager extends AbstractBlockContentManager {
 	private final List<RowImpl> rows;
 
-	public TableBlockContentManager(int flowWidth, List<RowImpl> rows, RowDataProperties rdp, FormatterContext fcontext) {
+	public TableBlockContentManager(int flowWidth, int minWidth, List<RowImpl> rows, RowDataProperties rdp, FormatterContext fcontext) {
 		super(flowWidth, rdp, fcontext);
+		this.minWidth = minWidth;
 		this.rows = rows;
 	}
 	

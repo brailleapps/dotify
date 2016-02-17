@@ -123,9 +123,9 @@ class PageSequenceBuilder2 {
 		final int mw = getTotalMarginRegionWidth(); 
 		BlockContext bc = new BlockContext(seq.getLayoutMaster().getFlowWidth() - mw, blockContext.getRefs(), blockContext.getContext(), blockContext.getFcontext());
 		for (Block g : seq)  {
-			rec.processBlock(g);
 			try {
-				AbstractBlockContentManager bcm = g.getBlockContentManager(bc);
+				AbstractBlockContentManager bcm = rec.processBlock(g, bc);
+
 				if (rec.data.isDataGroupsEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !rec.data.isDataEmpty()) || g.getVerticalPosition()!=null) {
 					rec.data.newRowGroupSequence(g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent()));
 					rec.data.keepWithNext = -1;

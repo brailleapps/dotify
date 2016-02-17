@@ -21,5 +21,15 @@ public class XMLDataTest extends AbstractFormatterEngineTest {
 	public void testXMLData_03() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/xml-data3-input.obfl", "resource-files/xml-data3-expected.pef", false);
 	}
+	
+	@Test
+	public void testXMLData_04() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/xml-data4-input.obfl", "resource-files/xml-data4-expected.pef", false);
+	}
+	
+	@Test
+	public void testXMLData_05() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/xml-data5-input.obfl", "resource-files/xml-data5-expected.pef", false);
+	}
 
 }

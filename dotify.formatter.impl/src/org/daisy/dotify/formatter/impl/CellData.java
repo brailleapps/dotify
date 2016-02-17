@@ -7,12 +7,14 @@ class CellData {
 	private final List<RowImpl> rows;
 	private final TableCellInfo info;
 	private final int cellWidth;
+	private final int minWidth;
 	private Iterator<RowImpl> rowsIterator;
 
-	CellData(List<RowImpl> rows, int cellWidth, TableCellInfo info) {
+	CellData(List<RowImpl> rows, int cellWidth, TableCellInfo info, int minWidth) {
 		this.rows = rows;
 		this.info = info;
 		this.cellWidth = cellWidth;
+		this.minWidth = minWidth;
 		this.rowsIterator = rows.iterator();
 	}
 	
@@ -35,7 +37,11 @@ class CellData {
 	int getCellWidth() {
 		return cellWidth;
 	}
-	
+
+	int getMinWidth() {
+		return minWidth;
+	}
+
 	TableCellInfo getInfo() {
 		return info;
 	}

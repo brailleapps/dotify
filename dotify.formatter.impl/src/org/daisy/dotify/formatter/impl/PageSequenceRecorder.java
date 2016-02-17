@@ -15,6 +15,7 @@ class PageSequenceRecorder {
 	private RenderingScenario invalid = null;
 	private double cost = 0;
 	private float height = 0;
+	private float minWidth = 0;
 	private Map<String, PageSequenceRecorderData> states;
 
 	PageSequenceRecorder() {
@@ -42,11 +43,12 @@ class PageSequenceRecorder {
 	 * @param g
 	 * @param rec
 	 */
-	void processBlock(Block g) {
+	AbstractBlockContentManager processBlock(Block g, BlockContext context) {
+		AbstractBlockContentManager ret = g.getBlockContentManager(context);
 		if (g.getRenderingScenario()!=null) {
 			if (invalid!=null) {
 				if (g.getRenderingScenario()==invalid) {
-					return;
+					return ret;
 				} else {
 					invalid = null;
 				}
@@ -54,31 +56,36 @@ class PageSequenceRecorder {
 			if (current==null) {
 				height = data.calcSize();
 				cost = Double.MAX_VALUE;
+				minWidth = ret.getMinimumAvailableWidth();
 				clearState(scenario);
 				saveState(baseline);
 				current = g.getRenderingScenario();
-			} else if (current!=g.getRenderingScenario()) {
-				//TODO: measure, evaluate
-				float size = data.calcSize()-height;
-				double ncost = current.calculateCost(setParams(size, 10d));
-				if (ncost<cost) {
-					//if better, store
-					cost = ncost;
-					saveState(scenario);
-				}
-				restoreState(baseline);
-				current = g.getRenderingScenario();
-			} // we're rendering the current scenario
+			} else {
+				minWidth = Math.min(minWidth, ret.getMinimumAvailableWidth());
+				if (current!=g.getRenderingScenario()) {
+					//TODO: measure, evaluate
+					float size = data.calcSize()-height;
+					double ncost = current.calculateCost(setParams(size, minWidth));
+					if (ncost<cost) {
+						//if better, store
+						cost = ncost;
+						saveState(scenario);
+					}
+					restoreState(baseline);
+					current = g.getRenderingScenario();
+				} // we're rendering the current scenario
+			}
 		} else {
 			finishBlockProcessing();
 		}
+		return ret;
 	}
 	
 	void finishBlockProcessing() {
 		if (current!=null) {
 			//if not better
 			float size = data.calcSize()-height;
-			double ncost = current.calculateCost(setParams(size, 10d));
+			double ncost = current.calculateCost(setParams(size, minWidth));
 			if (ncost>cost) {
 				restoreState(scenario);
 			}

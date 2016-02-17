@@ -82,7 +82,7 @@ class Table extends Block {
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
 		resultCache = new HashMap<>();
 		Result r = minimizeCost(currentColumnWidth, colSpace, tableProps.getPreferredEmtpySpace(), context, dc, leftMargin, rightMargin);
-		return new TableBlockContentManager(context.getFlowWidth(), r.rows, rdp, context.getFcontext());
+		return new TableBlockContentManager(context.getFlowWidth(), r.minWidth, r.rows, rdp, context.getFcontext());
 	}
 	
 	private Result minimizeCost(int[] columnWidth, int[] colSpacing, int spacePreferred, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
@@ -142,6 +142,7 @@ class Table extends Block {
 		List<RowImpl> rows;
 		TableCost cost;
 		int[] widths;
+		int minWidth;
 	}
 	
 	private static Result min(Result v, Result ... values) {
@@ -165,10 +166,7 @@ class Table extends Block {
 		Result r = resultCache.get(key);
 		if (r==null) {
 			logger.finest("Calculating new result for key: " + key);
-			r = new Result();
-			r.cost = new TableCostImpl(spacePreferred);
-			r.rows = renderTable(columnWidth, colSpacing, r.cost, context, dc, leftMargin, rightMargin);
-			r.widths = Arrays.copyOf(columnWidth, columnWidth.length);
+			r = renderTable(columnWidth, colSpacing, context, dc, leftMargin, rightMargin, spacePreferred); 
 			logger.finest("Cost for solution: " + r.cost.getCost());
 			resultCache.put(toKey(columnWidth), r);
 		} else {
@@ -185,9 +183,11 @@ class Table extends Block {
 		return ret.toString();
 	}
 	
-	private List<RowImpl> renderTable(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
+	private Result renderTable(int[] columnWidth, int[] colSpacing, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin, int spacePreferred) {
+		Result ret = new Result();
+		ret.cost = new TableCostImpl(spacePreferred);
 		List<RowImpl> result = new ArrayList<RowImpl>();
-		updateRendering(columnWidth, colSpacing, costFunc, context, dc);
+		ret.minWidth = updateRendering(columnWidth, colSpacing, ret.cost, context, dc);
 		for (int r=0; r<td.getGridHeight(); r++) {
 			// render into rows
 			boolean tableRowHasData = false;
@@ -227,11 +227,14 @@ class Table extends Block {
 				if (row!=null) { result.add(row); }
 			}
 		}
-		costFunc.completeTable(result, td.getGridWidth());
-		return result;
+		ret.cost.completeTable(result, td.getGridWidth());
+		ret.rows = result;
+		ret.widths = Arrays.copyOf(columnWidth, columnWidth.length);
+		return ret;
 	}
 	
-	private void updateRendering(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc) {
+	private int updateRendering(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc) {
+		int minWidth = context.getFlowWidth();
 		for (TableRow row : td) {
 			for (TableCell cell : row) {
 				int flowWidth = 0;
@@ -243,9 +246,11 @@ class Table extends Block {
 					flowWidth += columnWidth[ci+j];
 				}
 				CellData cd = cell.render(context.getFcontext(), dc, context.getRefs(), flowWidth);
+				minWidth = Math.min(cd.getMinWidth(), minWidth);
 				costFunc.addCell(cd.getRows(), flowWidth);
 			}
 		}
+		return minWidth;
 	}
 	
 	private boolean hasMoreContent(int r) {
