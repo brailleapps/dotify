@@ -5,10 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.management.RuntimeErrorException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,16 +16,15 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.daisy.dotify.api.formatter.FormatterException;
 import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.obfl.Expression;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 public class XSLTRenderingScenario implements RenderingScenario {
 	private final ObflParser parser;
@@ -37,7 +33,6 @@ public class XSLTRenderingScenario implements RenderingScenario {
 	private final TextProperties tp;
 	private final Expression ev;
 	private final String exp;
-	private final static Logger logger = Logger.getLogger(XSLTRenderingScenario.class.getCanonicalName());
 
 	public XSLTRenderingScenario(ObflParser parser, Transformer t, Node node, TextProperties tp, Expression ev, String exp) {
 		this.parser = parser;
@@ -49,7 +44,7 @@ public class XSLTRenderingScenario implements RenderingScenario {
 	}
 
 	@Override
-	public void renderScenario(FormatterSequence formatter) {
+	public void renderScenario(FormatterSequence formatter) throws FormatterException {
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			t.transform(new DOMSource(node), new StreamResult(os));
@@ -80,19 +75,20 @@ public class XSLTRenderingScenario implements RenderingScenario {
 					ObflParser.report(event);
 				}
 			}
+		} catch (FormatterException e) {
+			throw e;
 		} catch (Exception e) {
-			//FIXME:do something better
-			throw new RuntimeException(e);
+			throw new FormatterException(e);
 		}
 	}
 	
-	private static Document newDocumentFromInputStream(InputStream in, DocumentBuilderFactory factory) {
+	private static Document newDocumentFromInputStream(InputStream in, DocumentBuilderFactory factory) throws FormatterException {
 		Document ret = null;
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			ret = builder.parse(new InputSource(in));
 		} catch (ParserConfigurationException | SAXException | IOException e) {
-			throw new RuntimeException(e);
+			throw new FormatterException(e);
 		}
 		return ret;
 	}

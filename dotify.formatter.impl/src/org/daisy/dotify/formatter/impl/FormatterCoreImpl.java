@@ -9,6 +9,7 @@ import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.DynamicRenderer;
 import org.daisy.dotify.api.formatter.FormatterCore;
+import org.daisy.dotify.api.formatter.FormatterException;
 import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
@@ -258,10 +259,11 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				//here if it is used correctly, in other words, not calling table
 				//methods from inside a block
 				rs.renderScenario((FormatterSequence)this);
-			} catch (Exception e) {
+			} catch (FormatterException e) {
 				logger.log(Level.INFO, "Failed to render scenario.", e);
 				//if the scenario fails here, it should be excluded from evaluation later (otherwise it might win)
 				while (size()>0 && peek().getRenderingScenario()==rs) {
+					//FIXME: this isn't enough, because other properties in this object may need to be rewound as well
 					pop();
 				}
 			}
