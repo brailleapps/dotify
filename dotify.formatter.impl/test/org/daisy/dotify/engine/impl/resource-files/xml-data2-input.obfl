@@ -1,7 +1,7 @@
 <obfl xmlns="http://www.daisy.org/ns/2011/obfl" version="2011-1" xml:lang="en">
 	<meta xmlns:dc="http://purl.org/dc/elements/1.1/">
-		<dc:title>Collapsing margins test</dc:title>
-		<dc:description>Tests that margins collapse properly.</dc:description>
+		<dc:title>XML Data 2</dc:title>
+		<dc:description>[add description]</dc:description>
 	</meta>
 	<layout-master name="body" page-width="14" page-height="6" duplex="false">
 		<default-template>
