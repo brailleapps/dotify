@@ -87,7 +87,7 @@ public abstract class ConfigurationOptions {
 		return composite(
 					dotifyCommon(),
 					dotifyApiCR(),
-					mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.task-runner").version("1.0.0")
+					mavenBundle().groupId("org.daisy.dotify").artifactId("dotify.task-runner").version("1.0.1")
 				);
 	}
 	
