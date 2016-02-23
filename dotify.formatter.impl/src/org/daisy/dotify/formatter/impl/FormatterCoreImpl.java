@@ -1,6 +1,8 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,14 +12,19 @@ import org.daisy.dotify.api.formatter.DynamicContent;
 import org.daisy.dotify.api.formatter.DynamicRenderer;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormatterException;
-import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.FormattingTypes.Keep;
 import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.formatter.RenderingScenario;
+import org.daisy.dotify.api.formatter.TableCellProperties;
+import org.daisy.dotify.api.formatter.TableProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
+import org.daisy.dotify.api.translator.Border;
+import org.daisy.dotify.api.translator.TextBorderConfigurationException;
+import org.daisy.dotify.api.translator.TextBorderFactory;
+import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.daisy.dotify.formatter.impl.Margin.Type;
 
@@ -37,15 +44,17 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	protected RenderingScenario scenario;
 	
 	private final boolean discardIdentifiers;
-
+	private Table table;
+	protected final FormatterCoreContext fc;
 	// TODO: fix recursive keep problem
 	// TODO: Implement floating elements
-	public FormatterCoreImpl() {
-		this(false);
+	public FormatterCoreImpl(FormatterCoreContext fc) {
+		this(fc, false);
 	}
 	
-	public FormatterCoreImpl(boolean discardIdentifiers) {
+	public FormatterCoreImpl(FormatterCoreContext fc, boolean discardIdentifiers) {
 		super();
+		this.fc = fc;
 		this.propsContext = new Stack<>();
 		this.leftMargin = new Margin(Type.LEFT);
 		this.rightMargin = new Margin(Type.RIGHT);
@@ -258,7 +267,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				//this is a downcast, which is generally unsafe, but it will work
 				//here if it is used correctly, in other words, not calling table
 				//methods from inside a block
-				rs.renderScenario((FormatterSequence)this);
+				rs.renderScenario((FormatterCore)this);
 			} catch (FormatterException e) {
 				logger.log(Level.INFO, "Failed to render scenario.", e);
 				//if the scenario fails here, it should be excluded from evaluation later (otherwise it might win)
@@ -273,6 +282,82 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		//		It prevents consecutive dynamic renderers to be viewed as scenarios for the same dynamic renderer (leading to data loss).
 		startBlock(new BlockProperties.Builder().build());
 		endBlock();
+	}
+	
+	@Override
+	public void startTable(TableProperties props) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is already open.");
+		}
+		if (!propsContext.empty()) {
+			throw new IllegalStateException("Tables are not allowed inside blocks.");
+		}
+		//FIXME: row data properties
+		String lb = "";
+		String rb = "";
+		TextBorderStyle borderStyle = null;
+		if (props.getBorder()!=null) {
+			Border b = props.getBorder();
+			TextBorderFactoryMakerService tbf = fc.getTextBorderFactoryMakerService();
+			Map<String, Object> features = new HashMap<String, Object>();
+			features.put(TextBorderFactory.FEATURE_MODE, fc.getTranslatorMode());
+			features.put("border", b);
+			try {
+				borderStyle = tbf.newTextBorderStyle(features);
+			} catch (TextBorderConfigurationException e) {
+				logger.log(Level.WARNING, "Failed to add border: " + b, e);
+			}
+		}
+		if (borderStyle!=null) {
+			lb = borderStyle.getLeftBorder();
+			rb = borderStyle.getRightBorder();
+		}
+		Margin leftMargin = new Margin(Type.LEFT);
+		Margin rightMargin = new Margin(Type.RIGHT);
+		leftMargin.add(new MarginComponent(lb, props.getMargin().getLeftSpacing(), props.getPadding().getLeftSpacing()));
+		rightMargin.add(new MarginComponent(rb, props.getMargin().getRightSpacing(), props.getPadding().getRightSpacing()));
+		RowDataProperties.Builder rdp = new RowDataProperties.Builder()
+				.leftMargin((Margin)leftMargin.clone())
+				.rightMargin((Margin)rightMargin.clone())
+				.outerSpaceBefore(props.getMargin().getTopSpacing())
+				.outerSpaceAfter(props.getMargin().getBottomSpacing())
+				.innerSpaceBefore(props.getPadding().getTopSpacing())
+				.innerSpaceAfter(props.getPadding().getBottomSpacing());
+		if (borderStyle!=null) {
+			if (borderStyle.getTopLeftCorner().length()+borderStyle.getTopBorder().length()+borderStyle.getTopRightCorner().length()>0) {
+				rdp.leadingDecoration(new SingleLineDecoration(borderStyle.getTopLeftCorner(), borderStyle.getTopBorder(), borderStyle.getTopRightCorner()));
+			}
+			if (borderStyle.getBottomLeftCorner().length()+ borderStyle.getBottomBorder().length()+ borderStyle.getBottomRightCorner().length()>0) {
+				rdp.trailingDecoration(new SingleLineDecoration(borderStyle.getBottomLeftCorner(), borderStyle.getBottomBorder(), borderStyle.getBottomRightCorner()));
+			}
+		}
+		table = new Table(fc, props, rdp.build(), fc.getTextBorderFactoryMakerService(), fc.getTranslatorMode(), scenario);
+		add(table);
+	}
+
+	@Override
+	public void beginsTableHeader() {
+		//no action, header is assumed in the implementation
+	}
+
+	@Override
+	public void beginsTableBody() {
+		table.beginsTableBody();
+	}
+
+	@Override
+	public void beginsTableRow() {
+		table.beginsTableRow();
+	}
+
+	@Override
+	public FormatterCore beginsTableCell(TableCellProperties props) {
+		return table.beginsTableCell(props);
+	}
+
+	@Override
+	public void endTable() {
+		table = null;
 	}
 	
 }

@@ -15,12 +15,12 @@ class TableCell extends FormatterCoreImpl {
 	private CellData rendered;
 
 
-	TableCell(TableCellProperties props, GridPoint p) {
-		this(props, false, p);
+	TableCell(FormatterCoreContext fc, TableCellProperties props, GridPoint p) {
+		this(fc, props, false, p);
 	}
 	
-	TableCell(TableCellProperties props, boolean discardIdentifiers, GridPoint p) {
-		super(discardIdentifiers);
+	TableCell(FormatterCoreContext fc, TableCellProperties props, boolean discardIdentifiers, GridPoint p) {
+		super(fc, discardIdentifiers);
 		this.info = new TableCellInfo(props, p);
 		this.rendered = null;
 	}

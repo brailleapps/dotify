@@ -15,6 +15,8 @@ import org.daisy.dotify.api.formatter.Leader;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.formatter.SequenceProperties;
+import org.daisy.dotify.api.formatter.TableCellProperties;
+import org.daisy.dotify.api.formatter.TableProperties;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.api.formatter.VolumeContentBuilder;
@@ -27,8 +29,10 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	private final Map<String, TableOfContentsImpl> tocs;
 	private final List<FormatterCore> formatters;
 	private TocSequenceEventImpl tocSequence;
+	private final FormatterCoreContext fc;
 
-	public VolumeContentBuilderImpl(Map<String, TableOfContentsImpl> tocs) {
+	public VolumeContentBuilderImpl(FormatterCoreContext fc, Map<String, TableOfContentsImpl> tocs) {
+		this.fc = fc;
 		this.tocs = tocs;
 		this.formatters = new ArrayList<>();
 		this.tocSequence = null;
@@ -36,7 +40,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 
 	@Override
 	public void newSequence(SequenceProperties props) {
-		StaticSequenceEventImpl volSeq = new StaticSequenceEventImpl(props);
+		StaticSequenceEventImpl volSeq = new StaticSequenceEventImpl(fc, props);
 		formatters.add(volSeq);
 		tocSequence = null;
 		add(volSeq);
@@ -44,7 +48,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 
 	@Override
 	public void newTocSequence(TocProperties props) {
-		tocSequence = new TocSequenceEventImpl(props, tocs.get(props.getTocName()), props.getRange(), null);
+		tocSequence = new TocSequenceEventImpl(fc, props, tocs.get(props.getTocName()), props.getRange(), null);
 		add(tocSequence);
 	}
 
@@ -144,7 +148,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 
 	@Override
 	public DynamicSequenceBuilder newDynamicSequence(SequenceProperties props) {
-		DynamicSequenceEventImpl dsb = new DynamicSequenceEventImpl(props);
+		DynamicSequenceEventImpl dsb = new DynamicSequenceEventImpl(fc, props);
 		add(dsb);
 		return dsb;
 	}
@@ -152,6 +156,36 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 	@Override
 	public void insertDynamicLayout(DynamicRenderer renderer) {
 		current().insertDynamicLayout(renderer);
+	}
+
+	@Override
+	public void startTable(TableProperties props) {
+		current().startTable(props);
+	}
+
+	@Override
+	public void beginsTableHeader() {
+		current().beginsTableHeader();
+	}
+
+	@Override
+	public void beginsTableBody() {
+		current().beginsTableBody();
+	}
+
+	@Override
+	public void beginsTableRow() {
+		current().beginsTableRow();
+	}
+
+	@Override
+	public FormatterCore beginsTableCell(TableCellProperties props) {
+		return current().beginsTableCell(props);
+	}
+
+	@Override
+	public void endTable() {
+		current().endTable();
 	}
 
 }

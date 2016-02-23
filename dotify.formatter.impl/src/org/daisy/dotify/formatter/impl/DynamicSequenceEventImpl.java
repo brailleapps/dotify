@@ -11,14 +11,16 @@ import org.daisy.dotify.api.formatter.SequenceProperties;
 
 class DynamicSequenceEventImpl implements VolumeSequence, DynamicSequenceBuilder {
 	private final SequenceProperties props;
-	private final Stack<BlockGroup> formatters;  
+	private final Stack<BlockGroup> formatters;
+	private final FormatterCoreContext fc;
 
 	
 	/**
 	 * Creates a new sequence event
 	 * @param props
 	 */
-	public DynamicSequenceEventImpl(SequenceProperties props) {
+	public DynamicSequenceEventImpl(FormatterCoreContext fc, SequenceProperties props) {
+		this.fc = fc;
 		this.props = props;
 		this.formatters = new Stack<>();
 	}
@@ -52,14 +54,14 @@ class DynamicSequenceEventImpl implements VolumeSequence, DynamicSequenceBuilder
 
 	@Override
 	public FormatterCore newStaticContext() {
-		FormatterCoreImpl n = new FormatterCoreImpl();
+		FormatterCoreImpl n = new FormatterCoreImpl(fc);
 		formatters.add(n);
 		return n;
 	}
 
 	@Override
 	public ReferenceListBuilder newReferencesListContext(ItemSequenceProperties props) {
-		ItemSequenceEventImpl n = new ItemSequenceEventImpl(props.getRange(), props.getCollectionID());
+		ItemSequenceEventImpl n = new ItemSequenceEventImpl(fc, props.getRange(), props.getCollectionID());
 		formatters.add(n);
 		return n;
 	}

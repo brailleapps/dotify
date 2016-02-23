@@ -24,8 +24,8 @@ class ContentCollectionImpl extends FormatterCoreImpl implements ContentCollecti
 	private final Map<String, Item> items;
 	private final Stack<Item> open;
 	
-	public ContentCollectionImpl() {
-		super(true);
+	public ContentCollectionImpl(FormatterCoreContext fc) {
+		super(fc, true);
 		this.items = new LinkedHashMap<>();
 		this.open = new Stack<>();
 	}

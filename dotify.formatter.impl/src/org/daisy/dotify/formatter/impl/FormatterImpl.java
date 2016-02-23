@@ -102,14 +102,14 @@ public class FormatterImpl implements Formatter, CrossReferences {
 
 	@Override
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
-		VolumeTemplate template = new VolumeTemplate(tocs, props.getCondition(), props.getSplitterMax());
+		VolumeTemplate template = new VolumeTemplate(context, tocs, props.getCondition(), props.getSplitterMax());
 		volumeTemplates.push(template);
 		return template;
 	}
 
 	@Override
 	public TableOfContents newToc(String tocName) {
-		TableOfContentsImpl toc = new TableOfContentsImpl();
+		TableOfContentsImpl toc = new TableOfContentsImpl(context);
 		tocs.put(tocName, toc);
 		return toc;
 	}

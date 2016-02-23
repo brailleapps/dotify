@@ -41,7 +41,6 @@ import org.daisy.dotify.api.formatter.Field;
 import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterCore;
-import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.ItemSequenceProperties;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
@@ -553,7 +552,7 @@ public class ObflParser extends XMLParserBase {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
-		FormatterSequence seq = formatter.newSequence(builder.build());
+		FormatterCore seq = formatter.newSequence(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
@@ -956,7 +955,7 @@ public class ObflParser extends XMLParserBase {
 		return getAttr(event, "item");
 	}
 	
-	void parseTable(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
+	void parseTable(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		int tableColSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_COL_SPACING), 0);
 		int tableRowSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_ROW_SPACING), 0);
 		int preferredEmptySpace = toInt(getAttr(event, ObflQName.ATTR_TABLE_PREFERRED_EMPTY_SPACE), 2);
@@ -994,7 +993,7 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseTHeadTBody(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
+	private void parseTHeadTBody(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		if (equalsStart(event, ObflQName.THEAD)) {
 			fc.beginsTableHeader();
 		} else {
@@ -1012,7 +1011,7 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseTR(XMLEvent event, XMLEventReader input, FormatterSequence fc, TextProperties tp) throws XMLStreamException {
+	private void parseTR(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		fc.beginsTableRow();
 		while (input.hasNext()) {
 			event=input.nextEvent();
@@ -1027,7 +1026,7 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseTD(XMLEvent event, XMLEventReader input, FormatterSequence fs, TextProperties tp) throws XMLStreamException {
+	private void parseTD(XMLEvent event, XMLEventReader input, FormatterCore fs, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);
 		int colSpan = toInt(getAttr(event, ObflQName.ATTR_COL_SPAN), 1);
 		int rowSpan = toInt(getAttr(event, ObflQName.ATTR_ROW_SPAN), 1);
@@ -1283,6 +1282,10 @@ public class ObflParser extends XMLParserBase {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.BLOCK)) {
 				parseBlock(event, input, template, tp);
+			} else if (equalsStart(event, ObflQName.TABLE)) {
+				parseTable(event, input, template, tp);
+			} else if (equalsStart(event, ObflQName.XML_DATA)) {
+				parseXMLData(template, event, input, tp);
 			} else if (equalsEnd(event, ObflQName.SEQUENCE)) {
 				break;
 			} else {

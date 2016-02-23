@@ -12,8 +12,10 @@ class TableData implements Iterable<TableRow> {
 	private final Stack<TableRow> rows;
 	private final Map<GridPoint, TableCell> grid;
 	private int rh, gy, rMax, cMax;
+	private final FormatterCoreContext fc;
 
-	TableData() {
+	TableData(FormatterCoreContext fc) {
+		this.fc = fc;
 		rows = new Stack<>();
 		grid = new HashMap<>();
 		rh = 0;
@@ -29,7 +31,7 @@ class TableData implements Iterable<TableRow> {
 		gy += rh;
 		rh = 1;
 		rMax = 1;
-		TableRow ret = new TableRow();
+		TableRow ret = new TableRow(fc);
 		rows.add(ret);
 		
 	}

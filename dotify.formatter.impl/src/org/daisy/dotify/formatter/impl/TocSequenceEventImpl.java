@@ -20,8 +20,10 @@ class TocSequenceEventImpl implements VolumeSequence {
 	private final ArrayList<ConditionalBlock> volumeStartEvents;
 	private final ArrayList<ConditionalBlock> volumeEndEvents;
 	private final ArrayList<ConditionalBlock> tocEndEvents;
+	private final FormatterCoreContext fc;
 	
-	public TocSequenceEventImpl(SequenceProperties props, TableOfContentsImpl data, TocProperties.TocRange range, String volEventVar) {
+	public TocSequenceEventImpl(FormatterCoreContext fc, SequenceProperties props, TableOfContentsImpl data, TocProperties.TocRange range, String volEventVar) {
+		this.fc = fc;
 		this.props = props;
 		this.data = data;
 		this.range = range;
@@ -33,26 +35,26 @@ class TocSequenceEventImpl implements VolumeSequence {
 
 	FormatterCore addTocStart(Condition condition) {
 		// we don't need a layout master here, because it will be replaced before rendering below
-		FormatterCoreImpl f = new FormatterCoreImpl();
+		FormatterCoreImpl f = new FormatterCoreImpl(fc);
 		tocStartEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}
 
 	FormatterCore addVolumeStartEvents(Condition condition) {
-		FormatterCoreImpl f = new FormatterCoreImpl();
+		FormatterCoreImpl f = new FormatterCoreImpl(fc);
 		volumeStartEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}
 	
 	FormatterCore addVolumeEndEvents(Condition condition) {
-		FormatterCoreImpl f = new FormatterCoreImpl();
+		FormatterCoreImpl f = new FormatterCoreImpl(fc);
 		volumeEndEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}
 	
 	FormatterCore addTocEnd(Condition condition) {
 		// we don't need a layout master here, because it will be replaced before rendering below
-		FormatterCoreImpl f = new FormatterCoreImpl();
+		FormatterCoreImpl f = new FormatterCoreImpl(fc);
 		tocEndEvents.add(new ConditionalBlock(f, condition));
 		return f;
 	}

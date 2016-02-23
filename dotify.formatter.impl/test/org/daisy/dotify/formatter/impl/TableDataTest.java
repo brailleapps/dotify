@@ -8,7 +8,7 @@ public class TableDataTest {
 
 	@Test
 	public void testTableData() {
-		TableData td = new TableData();
+		TableData td = new TableData(null);
 		td.beginsTableRow();
 		Object a1 = td.beginsTableCell(new TableCellProperties.Builder().rowSpan(2).colSpan(2).build());
 		Object a2 = td.beginsTableCell(new TableCellProperties.Builder().build());

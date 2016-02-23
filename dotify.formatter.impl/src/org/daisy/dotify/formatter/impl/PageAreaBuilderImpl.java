@@ -8,10 +8,10 @@ class PageAreaBuilderImpl implements PageAreaBuilder {
 	private final FormatterCoreImpl beforeArea;
 	private final FormatterCoreImpl afterArea;
 
-	PageAreaBuilderImpl(PageAreaProperties properties) {
+	PageAreaBuilderImpl(FormatterCoreContext fc, PageAreaProperties properties) {
 		this.properties = properties;
-		this.beforeArea = new FormatterCoreImpl();
-		this.afterArea = new FormatterCoreImpl();
+		this.beforeArea = new FormatterCoreImpl(fc);
+		this.afterArea = new FormatterCoreImpl(fc);
 	}
 	
 	PageAreaProperties getProperties() {

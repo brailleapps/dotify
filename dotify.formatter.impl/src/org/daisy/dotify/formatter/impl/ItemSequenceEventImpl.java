@@ -16,13 +16,13 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 	private final FormatterCoreImpl pageEndEvents;
 	private final FormatterCoreImpl collectionEndEvents;
 	
-	public ItemSequenceEventImpl(ItemSequenceProperties.Range range, String collectionID) {
+	public ItemSequenceEventImpl(FormatterCoreContext fc, ItemSequenceProperties.Range range, String collectionID) {
 		this.collectionID = collectionID;
 		this.range = range;
-		this.collectionStartEvents = new FormatterCoreImpl();
-		this.pageStartEvents = new FormatterCoreImpl();
-		this.pageEndEvents = new FormatterCoreImpl();
-		this.collectionEndEvents = new FormatterCoreImpl();
+		this.collectionStartEvents = new FormatterCoreImpl(fc);
+		this.pageStartEvents = new FormatterCoreImpl(fc);
+		this.pageEndEvents = new FormatterCoreImpl(fc);
+		this.collectionEndEvents = new FormatterCoreImpl(fc);
 	}
 
 	@Override

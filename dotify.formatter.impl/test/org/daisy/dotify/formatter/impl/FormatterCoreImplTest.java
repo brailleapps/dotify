@@ -11,7 +11,7 @@ public class FormatterCoreImplTest {
 	@Test
 	public void testBlockPropertiesHierarchy() {
 		//Setup
-		FormatterCoreImpl formatter = new FormatterCoreImpl();
+		FormatterCoreImpl formatter = new FormatterCoreImpl(null);
 		formatter.startBlock(new BlockProperties.Builder().rowSpacing(1.0f).firstLineIndent(1).orphans(2).widows(2).build());
 		formatter.startBlock(new BlockProperties.Builder().rowSpacing(2.0f).firstLineIndent(2).orphans(3).widows(3).build());
 		formatter.endBlock();

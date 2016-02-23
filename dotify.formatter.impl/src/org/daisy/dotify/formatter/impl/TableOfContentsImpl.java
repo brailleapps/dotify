@@ -18,7 +18,8 @@ class TableOfContentsImpl extends FormatterCoreImpl implements TableOfContents  
 	private static final long serialVersionUID = -2198713822437968076L;
 	private final LinkedHashMap<String, String> refs;
 	
-	public TableOfContentsImpl() {
+	public TableOfContentsImpl(FormatterCoreContext fc) {
+		super(fc);
 		this.refs = new LinkedHashMap<>();
 	}
 	

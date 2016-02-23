@@ -27,14 +27,14 @@ class Table extends Block {
 	private Map<String, Result> resultCache;
 	private final TableBorderHandler tbh;
 
-	Table(TableProperties tableProps, RowDataProperties rdp, TextBorderFactoryMakerService tbf, String mode, RenderingScenario rs) {
+	Table(FormatterCoreContext fc, TableProperties tableProps, RowDataProperties rdp, TextBorderFactoryMakerService tbf, String mode, RenderingScenario rs) {
 		super(null, rdp, rs);
 		this.tableProps = tableProps;
 		if (tableProps.getTableRowSpacing()>0) {
 			throw new UnsupportedOperationException("Table row spacing > 0 is not implemented.");
 		}
 		this.headerRows = 0;
-		this.td = new TableData();
+		this.td = new TableData(fc);
 		this.tbh = new TableBorderHandler(tableProps.getTableColSpacing(), tbf, mode);
 	}
 

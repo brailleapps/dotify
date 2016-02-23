@@ -17,20 +17,18 @@ import org.daisy.dotify.api.translator.TranslatorConfigurationException;
  * @author Joel Håkansson
  *
  */
-class FormatterContext {
+class FormatterContext extends FormatterCoreContext {
 	private final String locale;
-	private final String mode;
 	private final BrailleTranslator translator;
 	private final BrailleTranslatorFactoryMakerService translatorFactory;
-	private final TextBorderFactoryMakerService tbf;
 	private final Map<String, BrailleTranslator> cache;
 	private final Map<String, LayoutMaster> masters;
 	private final Map<String, ContentCollectionImpl> collections;
 	private final char spaceChar;
 
 	FormatterContext(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, String locale, String mode) {
+		super(tbf, mode);
 		this.translatorFactory = translatorFactory;
-		this.tbf = tbf;
 		this.cache = new HashMap<>();
 		try {
 			this.translator = translatorFactory.newTranslator(locale, mode);
@@ -48,15 +46,10 @@ class FormatterContext {
 			throw new RuntimeException(e);
 		}
 		this.locale = locale;
-		this.mode = mode;
 	}
 
 	BrailleTranslator getDefaultTranslator() {
 		return translator;
-	}
-	
-	String getTranslatorMode() {
-		return mode;
 	}
 	
 	BrailleTranslator getTranslator(String mode) {
@@ -76,13 +69,13 @@ class FormatterContext {
 	}
 	
 	LayoutMasterBuilder newLayoutMaster(String name, LayoutMasterProperties properties) {
-		LayoutMaster master = new LayoutMaster(properties);
+		LayoutMaster master = new LayoutMaster(this, properties);
 		masters.put(name, master);
 		return master;
 	}
 	
 	ContentCollectionImpl newContentCollection(String collectionId) {
-		ContentCollectionImpl collection = new ContentCollectionImpl();
+		ContentCollectionImpl collection = new ContentCollectionImpl(this);
 		collections.put(collectionId, collection);
 		return collection;
 	}
@@ -99,7 +92,4 @@ class FormatterContext {
 		return spaceChar;
 	}
 
-	TextBorderFactoryMakerService getTextBorderFactoryMakerService() {
-		return tbf;
-	}
 }

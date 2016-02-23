@@ -16,8 +16,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormatterException;
-import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.obfl.Expression;
@@ -44,7 +44,7 @@ public class XSLTRenderingScenario implements RenderingScenario {
 	}
 
 	@Override
-	public void renderScenario(FormatterSequence formatter) throws FormatterException {
+	public void renderScenario(FormatterCore formatter) throws FormatterException {
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			t.transform(new DOMSource(node), new StreamResult(os));

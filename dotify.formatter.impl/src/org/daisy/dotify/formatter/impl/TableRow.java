@@ -10,13 +10,15 @@ import org.daisy.dotify.api.formatter.TextBlockProperties;
 
 class TableRow implements Iterable<TableCell> {
 	private final Stack<TableCell> cells;
+	private final FormatterCoreContext context;
 
-	TableRow() {
+	TableRow(FormatterCoreContext fc) {
+		this.context = fc;
 		cells = new Stack<>();
 	}
 	
 	TableCell beginsTableCell(TableCellProperties props, GridPoint p) {
-		TableCell fc = new TableCell(props, p);
+		TableCell fc = new TableCell(context, props, p);
 		TextBlockProperties tbp = props.getTextBlockProperties();
 		fc.startBlock(new BlockProperties.Builder()
 				.bottomPadding(props.getPadding().getBottomSpacing())

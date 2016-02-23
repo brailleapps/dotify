@@ -12,7 +12,8 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 	 * Creates a new sequence event
 	 * @param props
 	 */
-	public StaticSequenceEventImpl(SequenceProperties props) {
+	public StaticSequenceEventImpl(FormatterCoreContext fc, SequenceProperties props) {
+		super(fc);
 		this.props = props;
 		this.ret = null;
 	}

@@ -19,8 +19,10 @@ class LayoutMaster implements LayoutMasterBuilder {
 	private final ArrayList<PageTemplate> templates;
 	private final PageTemplate defaultPageTemplate;
 	private PageAreaBuilderImpl pageArea;
+	private final FormatterCoreContext fc;
 
-	public LayoutMaster(LayoutMasterProperties props) {
+	public LayoutMaster(FormatterCoreContext fc, LayoutMasterProperties props) {
+		this.fc = fc;
 		this.templates = new ArrayList<>();
 		this.props = props;
 		this.defaultPageTemplate = new PageTemplate();
@@ -126,7 +128,7 @@ class LayoutMaster implements LayoutMasterBuilder {
 
 	@Override
 	public PageAreaBuilder setPageArea(PageAreaProperties properties) {
-		pageArea = new PageAreaBuilderImpl(properties);
+		pageArea = new PageAreaBuilderImpl(fc, properties);
 		return pageArea;
 	}
 }
