@@ -135,6 +135,11 @@ public class TableTest extends AbstractFormatterEngineTest {
 	}
 	
 	@Test
+	public void testTableShrink_02() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-shrink2-input.obfl", "resource-files/table/tables-shrink2-expected.pef", false);
+	}
+	
+	@Test
 	public void testTableMarker() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/table/tables-marker-input.obfl", "resource-files/table/tables-marker-expected.pef", false);
 	}

@@ -98,7 +98,12 @@ class Table extends Block {
 				if (currentColumnWidth[i]>=1) {
 					// change value
 					currentColumnWidth[i] = currentColumnWidth[i] - 1;
-					results[i] = renderTableWithCache(spacePreferred, currentColumnWidth, colSpacing, context, dc, leftMargin, rightMargin);
+					try {
+						results[i] = renderTableWithCache(spacePreferred, currentColumnWidth, colSpacing, context, dc, leftMargin, rightMargin);
+					} catch (Exception e) {
+						// if rendering fails, invalidate this solution but continue
+						results[i] = null;
+					}
 					// restore value
 					currentColumnWidth[i] = currentColumnWidth[i] + 1;
 				} else {
