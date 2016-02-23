@@ -168,14 +168,20 @@ class Table extends Block {
 	
 	private Result renderTableWithCache(int spacePreferred, int[] columnWidth, int[] colSpacing, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
 		String key = toKey(columnWidth);
-		Result r = resultCache.get(key);
-		if (r==null) {
-			logger.finest("Calculating new result for key: " + key);
-			r = renderTable(columnWidth, colSpacing, context, dc, leftMargin, rightMargin, spacePreferred); 
-			logger.finest("Cost for solution: " + r.cost.getCost());
-			resultCache.put(toKey(columnWidth), r);
-		} else {
+		Result r = null;
+		if (resultCache.containsKey(key)) {
+			// r may be null afterwards
+			r = resultCache.get(key);
 			logger.finest("Using cached result with key: " + key);
+		} else {
+			logger.finest("Calculating new result for key: " + key);
+			try {
+				r = renderTable(columnWidth, colSpacing, context, dc, leftMargin, rightMargin, spacePreferred); 
+				logger.finest("Cost for solution: " + r.cost.getCost());
+			} finally {
+				// Also put failing results in the resultCache to prevent them from being attempted again (this is why finally is used)
+				resultCache.put(toKey(columnWidth), r);
+			}			
 		}
 		return r;
 	}
