@@ -17,7 +17,7 @@ public class GuiActivator implements BundleActivator {
 	public void start(final BundleContext context) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		factoryContext = new OsgiFactoryContext();
-		frame = new MainFrame(factoryContext);
+		frame = new MainFrame("Dotify/Braille Utils live OSGi test GUI", factoryContext);
 		frame.pack();
 		frame.addWindowListener(new WindowAdapter() {
 			@Override

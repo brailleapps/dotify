@@ -31,9 +31,9 @@ public class MainFrame extends JFrame {
 	final TranslatorPanel panel3;
 	final EmbossPanel panel6;
 	
-	public MainFrame(FactoryContext context) {
+	public MainFrame(String title, FactoryContext context) {
 		//getContentPane().set
-		super("Dotify/Braille Utils live OSGi test GUI");
+		super(title);
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(600, 400));
 
