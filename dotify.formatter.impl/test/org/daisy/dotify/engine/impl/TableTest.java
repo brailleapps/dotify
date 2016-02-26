@@ -159,4 +159,29 @@ public class TableTest extends AbstractFormatterEngineTest {
 		testPEF("resource-files/table/tables-border2-input.obfl", "resource-files/table/tables-border2-expected.pef", false);
 	}
 	
+	@Test
+	public void testTableMissingCell() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-missing-cell-input.obfl", "resource-files/table/tables-missing-cell-expected.pef", false);
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testTableMissingCell2() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-missing-cell2-input.obfl", "resource-files/table/tables-missing-cell2-expected.pef", false);
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testTableMissingCell3() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-missing-cell3-input.obfl", "resource-files/table/tables-missing-cell3-expected.pef", false);
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testTableMissingCell4() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-missing-cell4-input.obfl", "resource-files/table/tables-missing-cell4-expected.pef", false);
+	}
+	
+	@Test
+	public void testTableMissingCell5() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/tables-missing-cell5-input.obfl", "resource-files/table/tables-missing-cell5-expected.pef", false);
+	}
+	
 }

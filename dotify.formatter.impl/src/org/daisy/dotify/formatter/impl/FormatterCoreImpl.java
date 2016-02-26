@@ -357,6 +357,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public void endTable() {
+		table.closeTable();
 		table = null;
 	}
 	

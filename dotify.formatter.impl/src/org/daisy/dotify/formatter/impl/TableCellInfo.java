@@ -28,10 +28,18 @@ class TableCellInfo {
 		return border;
 	}
 	
+	/**
+	 * Starting point, inclusive
+	 * @return
+	 */
 	GridPoint getStartingPoint() {
 		return start;
 	}
 	
+	/**
+	 * End point, inclusive.
+	 * @return
+	 */
 	GridPoint getEndPoint() {
 		return end;
 	}

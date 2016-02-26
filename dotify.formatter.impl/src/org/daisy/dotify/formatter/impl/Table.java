@@ -46,6 +46,10 @@ class Table extends Block {
 	public void beginsTableRow() {
 		td.beginsTableRow();
 	}
+	
+	void closeTable() {
+		td.closeTable();
+	}
 
 	public FormatterCore beginsTableCell(TableCellProperties props) {
 		return td.beginsTableCell(props);
