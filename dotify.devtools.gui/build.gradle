@@ -60,11 +60,11 @@ repositories {
 dependencies {
 	compile group: 'org.daisy.braille', name:'braille-utils.ui', version:'2.0.0-SNAPSHOT'
 	
-	compile 'org.daisy.dotify:dotify.api:1.2.0'
-	runtime group: group, name:'dotify.hyphenator.impl', version:'1.0.0'
-	runtime group: group, name:'dotify.formatter.impl', version:'1.1.2'
-	runtime group: group, name:'dotify.text.impl', version:'1.0.0'
-	runtime group: group, name:'dotify.translator.impl', version:'1.0.0'
+	compile 'org.daisy.dotify:dotify.api:2.2.0'
+	runtime group: group, name:'dotify.hyphenator.impl', version:'2.0.1'
+	runtime group: group, name:'dotify.formatter.impl', version:'2.1.0-SNAPSHOT'
+	runtime group: group, name:'dotify.text.impl', version:'2.0.0'
+	runtime group: group, name:'dotify.translator.impl', version:'2.1.0'
 	
 	runtime group: "com.googlecode.texhyphj", name: "texhyphj", version: "1.2"
 	

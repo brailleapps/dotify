@@ -29,6 +29,8 @@ import org.daisy.braille.api.table.TableCatalogService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
+import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.osgi.framework.BundleContext;
 
@@ -151,7 +153,7 @@ public class TranslatorPanel extends MyPanel {
 				} else {
 					try {
 						outputField.setText("");
-						BrailleTranslatorResult btr = t.newTranslator(loc, BrailleTranslatorFactory.MODE_UNCONTRACTED).translate(textField.getText());
+						BrailleTranslatorResult btr = t.newTranslator(loc, BrailleTranslatorFactory.MODE_UNCONTRACTED).translate(Translatable.text(textField.getText()).build());
 						while (btr.hasNext()) {
 							String str = btr.nextTranslatedRow(30, true);
 							if (bc!=null) {
@@ -162,6 +164,8 @@ public class TranslatorPanel extends MyPanel {
 
 					} catch (TranslatorConfigurationException e1) {
 						outputField.setText("Specification not supported. " + tracker.size());
+					} catch (TranslationException e) {
+						outputField.setText("Failed to translate.");
 					}
 				}
 			}
