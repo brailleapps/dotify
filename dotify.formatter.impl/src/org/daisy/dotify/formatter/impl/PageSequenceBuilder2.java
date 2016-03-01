@@ -14,7 +14,6 @@ import org.daisy.dotify.api.formatter.MarkerIndicator;
 import org.daisy.dotify.api.formatter.MarkerIndicatorRegion;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
-import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.common.collection.SplitList;
@@ -238,6 +237,14 @@ class PageSequenceBuilder2 {
 				data = sl.getSecondPart();
 				spd = new SplitPointData<>(data, new CollectionData(blockContext));
 				res = sph.split(currentPage().getFlowHeight(), force, spd);
+				if (res.getHead().size()==0 && force) {
+					if (firstUnitHasSupplements(spd) && hasPageAreaCollection()) {
+						reassignCollection();
+						return false;
+					} else {
+						throw new RuntimeException("A layout unit was too big for the page.");
+					}
+				}
 				force = res.getHead().size()==0;
 				data = res.getTail();
 				for (RowGroup rg : res.getHead()) {
@@ -262,7 +269,7 @@ class PageSequenceBuilder2 {
 				for (RowGroup rg : res.getSupplements()) {
 					currentPage().addToPageArea(rg.getRows());
 				}
-				if (ps.getLayoutMaster().getPageArea()!=null && collection!=null && currentPage().pageAreaSpaceNeeded() > ps.getLayoutMaster().getPageArea().getMaxHeight()) {
+				if (hasPageAreaCollection() && currentPage().pageAreaSpaceNeeded() > ps.getLayoutMaster().getPageArea().getMaxHeight()) {
 					reassignCollection();
 					return false;
 				}
@@ -272,6 +279,14 @@ class PageSequenceBuilder2 {
 			}
 		}
 		return true;
+	}
+	
+	private boolean firstUnitHasSupplements(SplitPointData<RowGroup> spd) {
+		return !spd.getUnits().isEmpty() && !spd.getUnits().get(0).getSupplementaryIDs().isEmpty();
+	}
+	
+	private boolean hasPageAreaCollection() {
+		return ps.getLayoutMaster().getPageArea()!=null && collection!=null;
 	}
 	
 	private MarginProperties getMarginRegionValue(MarginRegion mr, RowImpl r, boolean rightSide) throws PaginatorException {
