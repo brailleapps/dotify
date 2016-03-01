@@ -49,11 +49,9 @@
 			<xsl:text disable-output-escaping="yes">&lt;/</xsl:text><xsl:value-of select="local-name()"/>
 			<xsl:text disable-output-escaping="yes">></xsl:text>
 		</xsl:for-each>
-		<!--
-		<xml-data renderer="table-renderer"> -->
+		<xml-data renderer="table-renderer">
 			<xsl:copy-of select="."/>
-		<!-- 
-		</xml-data> -->
+		</xml-data>
 		<xsl:for-each select="ancestor::obfl:*[ancestor::obfl:sequence and not(descendant-or-self::obfl:xml-data)]">
 			<xsl:text disable-output-escaping="yes">&lt;</xsl:text><xsl:value-of select="local-name()"/>
 			<xsl:for-each select="@*[not(name()='id')]">
