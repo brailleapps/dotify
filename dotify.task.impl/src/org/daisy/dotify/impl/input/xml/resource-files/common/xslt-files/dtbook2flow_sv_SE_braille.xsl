@@ -592,7 +592,7 @@
 			<xsl:element name="obfl:rendering-scenario" namespace="http://www.daisy.org/ns/2011/obfl" >
 				<xsl:attribute name="qualifier">4>/obfl:table/obfl:tr[1]/(count(obfl:td[not(@col-span)])+sum(obfl:tr[1]/obfl:td[@col-span]/@col-span))</xsl:attribute>
 				<xsl:attribute name="processor">identity</xsl:attribute>
-				<xsl:attribute name="cost">(+ (- {$page-width} $min-block-width) $total-height)</xsl:attribute>
+				<xsl:attribute name="cost">(+ (- <xsl:value-of select="$page-width"/> $min-block-width) $total-height)</xsl:attribute>
 			</xsl:element>
 			<rendering-scenario processor="table-as-block" cost="(+ (- {$page-width} $min-block-width) $total-height))"/>
 		</renderer>
