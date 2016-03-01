@@ -38,6 +38,10 @@ class PageSequenceRecorder {
 		states.remove(id);
 	}
 	
+	private boolean hasState(String id) {
+		return states.containsKey(id);
+	}
+	
 	/**
 	 * Process a new block for a scenario
 	 * @param g
@@ -46,12 +50,9 @@ class PageSequenceRecorder {
 	AbstractBlockContentManager processBlock(Block g, BlockContext context) {
 		AbstractBlockContentManager ret = g.getBlockContentManager(context);
 		if (g.getRenderingScenario()!=null) {
-			if (invalid!=null) {
-				if (g.getRenderingScenario()==invalid) {
-					return ret;
-				} else {
-					invalid = null;
-				}
+			if (invalid!=null && g.getRenderingScenario()==invalid) {
+				//we're still in the same scenario
+				return ret;
 			}
 			if (current==null) {
 				height = data.calcSize();
@@ -60,20 +61,30 @@ class PageSequenceRecorder {
 				clearState(scenario);
 				saveState(baseline);
 				current = g.getRenderingScenario();
+				invalid = null;
 			} else {
-				minWidth = Math.min(minWidth, ret.getMinimumAvailableWidth());
 				if (current!=g.getRenderingScenario()) {
-					//TODO: measure, evaluate
-					float size = data.calcSize()-height;
-					double ncost = current.calculateCost(setParams(size, minWidth));
-					if (ncost<cost) {
-						//if better, store
-						cost = ncost;
-						saveState(scenario);
+					if (invalid!=null) {
+						invalid = null;
+						if (hasState(scenario)) {
+							restoreState(scenario);
+						} else {
+							restoreState(baseline);
+						}
+					} else {
+						//TODO: measure, evaluate
+						float size = data.calcSize()-height;
+						double ncost = current.calculateCost(setParams(size, minWidth));
+						if (ncost<cost) {
+							//if better, store
+							cost = ncost;
+							saveState(scenario);
+						}
+						restoreState(baseline);
 					}
-					restoreState(baseline);
 					current = g.getRenderingScenario();
 				} // we're rendering the current scenario
+				minWidth = Math.min(minWidth, ret.getMinimumAvailableWidth());
 			}
 		} else {
 			finishBlockProcessing();
@@ -83,11 +94,20 @@ class PageSequenceRecorder {
 	
 	void finishBlockProcessing() {
 		if (current!=null) {
-			//if not better
-			float size = data.calcSize()-height;
-			double ncost = current.calculateCost(setParams(size, minWidth));
-			if (ncost>cost) {
-				restoreState(scenario);
+			if (invalid!=null) {
+				invalid = null;
+				if (hasState(scenario)) {
+					restoreState(scenario);
+				} else {
+					throw new RuntimeException("Failed to render any scenario.");
+				}
+			} else {
+				//if not better
+				float size = data.calcSize()-height;
+				double ncost = current.calculateCost(setParams(size, minWidth));
+				if (ncost>cost) {
+					restoreState(scenario);
+				}
 			}
 			current = null;
 			invalid = null;
@@ -105,8 +125,6 @@ class PageSequenceRecorder {
 		if (current==null) {
 			throw new RuntimeException(e);
 		} else {
-			restoreState(baseline);
-			current = null;
 			invalid = current;
 		}
 	}
