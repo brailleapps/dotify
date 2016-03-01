@@ -106,7 +106,7 @@ public class ObflParser extends XMLParserBase {
 	private final FactoryManager fm;
 
 	Map<String, Transformer> xslts = new HashMap<>();
-	Map<String, List<TempData>> renderers = new HashMap<>();
+	Map<String, List<RendererInfo>> renderers = new HashMap<>();
 
 	public ObflParser(String locale, String mode, FactoryManager fm) {
 		this.locale = FilterLocale.parse(locale);
@@ -606,22 +606,22 @@ public class ObflParser extends XMLParserBase {
 	 * @return
 	 * @throws ParserConfigurationException 
 	 */
-	private XMLDataRenderer filterRenderers(List<TempData> tdl, Node node, TextProperties tp) throws ParserConfigurationException {
+	private XMLDataRenderer filterRenderers(List<RendererInfo> tdl, Node node, TextProperties tp) throws ParserConfigurationException {
 		List<RenderingScenario> qtd = new ArrayList<>();
 		{
 			XPath x = fm.getXpathFactory().newXPath();
-			for (TempData td : tdl) {
-				if (td.qualifier!=null) {
-					x.setNamespaceContext(td.nc);
+			for (RendererInfo td : tdl) {
+				if (td.getQualifier()!=null) {
+					x.setNamespaceContext(td.getNamespaceContext());
 					try {
-						if ((Boolean)x.evaluate(td.qualifier, node, XPathConstants.BOOLEAN)) {
-							qtd.add(new XSLTRenderingScenario(this, td.processor, node, tp, fm.getExpressionFactory().newExpression(), td.cost));
+						if ((Boolean)x.evaluate(td.getQualifier(), node, XPathConstants.BOOLEAN)) {
+							qtd.add(new XSLTRenderingScenario(this, td.getProcessor(), node, tp, fm.getExpressionFactory().newExpression(), td.getCost()));
 						}
 					} catch (XPathExpressionException e) {
 						e.printStackTrace();
 					}
 				} else {
-					qtd.add(new XSLTRenderingScenario(this, td.processor, node, tp, fm.getExpressionFactory().newExpression(), td.cost));
+					qtd.add(new XSLTRenderingScenario(this, td.getProcessor(), node, tp, fm.getExpressionFactory().newExpression(), td.getCost()));
 				}
 			}
 		}
@@ -658,9 +658,9 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 
-	private void parseRenderer(XMLEvent event, XMLEventReader input, Map<String, List<TempData>> renderers) throws XMLStreamException {
+	private void parseRenderer(XMLEvent event, XMLEventReader input, Map<String, List<RendererInfo>> renderers) throws XMLStreamException {
 		String name = getAttr(event, ObflQName.ATTR_NAME);
-		List<TempData> opts = new ArrayList<>();
+		List<RendererInfo> opts = new ArrayList<>();
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.RENDERING_SCENARIO)) {
@@ -670,7 +670,7 @@ public class ObflParser extends XMLParserBase {
 				String qualifier = getAttr(event, ObflQName.ATTR_QUALIFIER);
 				String cost = getAttr(event, ObflQName.ATTR_COST);
 				scanEmptyElement(input, ObflQName.RENDERING_SCENARIO);
-				opts.add(new TempData(xslts.get(processor), nc, qualifier, cost));
+				opts.add(new RendererInfo(xslts.get(processor), nc, qualifier, cost));
 			} else if (equalsEnd(event, ObflQName.RENDERER)) {
 				break;
 			} else {
@@ -680,18 +680,6 @@ public class ObflParser extends XMLParserBase {
 		renderers.put(name, opts);
 	}
 	
-	final class TempData {
-		private final NamespaceContext nc;
-		private final Transformer processor;
-		private final String qualifier;
-		private final String cost;
-		TempData(Transformer p, NamespaceContext nc, String qualifier, String cost) {
-			this.processor = p;
-			this.nc = nc;
-			this.qualifier = qualifier;
-			this.cost = cost;
-		}
-	}
 
 	void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);
