@@ -69,18 +69,18 @@ repositories {
 dependencies {
 	compile 'org.daisy.braille:brailleUtils-ui:2.0.0-SNAPSHOT'
 	compile 'org.daisy.braille:braille-utils.pef-tools:1.0.1'
-	compile 'org.daisy.dotify:dotify.api:2.1.0'
-	compile 'org.daisy.dotify:dotify.common:2.0.1'
+	compile 'org.daisy.dotify:dotify.api:2.4.0'
+	compile 'org.daisy.dotify:dotify.common:2.0.2'
 	compile 'org.daisy.dotify:dotify.task-runner:1.0.1'
 	
 
-	runtime 'org.daisy.dotify:dotify.formatter.impl:2.0.0'
+	runtime 'org.daisy.dotify:dotify.formatter.impl:2.1.0'
 	runtime 'org.daisy.dotify:dotify.hyphenator.impl:2.0.1'
 	runtime 'org.daisy.dotify:dotify.text.impl:2.0.0'
-	runtime 'org.daisy.dotify:dotify.translator.impl:2.0.1'
-	runtime 'org.daisy.dotify:dotify.task.impl:2.1.0-SNAPSHOT'
+	runtime 'org.daisy.dotify:dotify.translator.impl:2.1.1'
+	runtime 'org.daisy.dotify:dotify.task.impl:2.1.0'
 	runtime group: "com.googlecode.texhyphj", name: "texhyphj", version: "1.2"
-	runtime 'xerces:xercesImpl:2.11.0'
+	//runtime 'xerces:xercesImpl:2.11.0'
 
 	testCompile group: 'junit', name: 'junit', version: "$versions.junit"
 
