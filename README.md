@@ -1,6 +1,9 @@
 [![Build Status](https://travis-ci.org/joeha480/dotify.svg)](https://travis-ci.org/joeha480/dotify)
 
-Note: Future releases of Dotify CLI will be found at https://github.com/brailleapps/dotify-cli
+**Future releases of Dotify CLI will be found at https://github.com/brailleapps/dotify-cli**
+
+Note: Dotify will be split up into smaller repos (at https://github.com/brailleapps) very soon. This repo will only be retained for archival purposes.
+For more information, see https://github.com/joeha480/dotify/issues/175
 
 
 # Dotify
@@ -22,7 +25,7 @@ Dotify does not compromise with braille quality in order to fit a set of predete
 Dotify is Open Source, this means that everyone has the right to use it and change it.
 
 ### Modular
-Dotify aims at a modular design of functional units that can be replaced or integrated into other solutions individually. The core components are compatible with both OSGi and SPI environments and they will be available for download from [the central repository](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.daisy.dotify%22) shortly.
+Dotify aims at a modular design of functional units that can be replaced or integrated into other solutions individually. The core components are compatible with both OSGi and SPI environments and are available for download from [the central repository](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.daisy.dotify%22).
 
 ## Performance
 About 10 seconds/book or 70 braille pages/second (based on a selection of novels, utilizing a single core of a modern PC and including JVM startup).
