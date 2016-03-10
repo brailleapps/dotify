@@ -9,3 +9,5 @@ DotifyDevtools/bin_test
 DotifyShared/dotify-translator.jar
 DotifyTranslator/ant-build/output
 dotify.api/ant-build/output
+dotify.formatter.impl/test/org/daisy/dotify/engine/impl/DebugTest.java
+dotify.formatter.impl/test/org/daisy/dotify/engine/impl/resource-files/debug/
