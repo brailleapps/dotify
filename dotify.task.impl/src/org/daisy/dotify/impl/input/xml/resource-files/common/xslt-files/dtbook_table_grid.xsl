@@ -3,7 +3,8 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	exclude-result-prefixes="dtb xs">
+	xmlns:dotify="http://brailleapps.github.io/ns/dotify"
+	exclude-result-prefixes="dtb xs dotify">
 
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:param name="debug" select="false()" as="xs:boolean"/>
@@ -142,14 +143,8 @@
 		<!-- TODO: Check that count (@row-@col distinct values) = count(*) -->
 		<xsl:copy-of select="$result"/>
 		<summary>
-			<xsl:attribute name="grid-width">
-				<xsl:call-template name="getGridWidth">
-					<xsl:with-param name="grid" select="$result"/>
-				</xsl:call-template>
-			</xsl:attribute>
-			<xsl:call-template name="getValidSplitPoints">
-				<xsl:with-param name="grid" select="$result"/>
-			</xsl:call-template>
+			<xsl:attribute name="grid-width" select="dotify:calculateGridWidth($result)"/>
+			<xsl:copy-of select="dotify:getValidSplitPoints($result)"/>
 		</summary>
 	</xsl:template>
 	
@@ -218,15 +213,24 @@
 	</xsl:template>
 	
 	<!-- Returns true if a column is a valid split point -->
-	<xsl:template name="isValidSplitPoint">
-		<xsl:param name="grid" required="yes"/>
-		<xsl:param name="split" required="yes"/>
+	<xsl:function name="dotify:isValidSplitPoint">
+		<xsl:param name="grid"/>
+		<xsl:param name="split"/>
 		<xsl:choose>
 			<xsl:when test="count($grid/cell[@col=$split])=count($grid/cell[@col=$split and @col-offset=0])">true</xsl:when>
 			<xsl:otherwise>false</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:function>
 	
+	<!-- Function wrapper for getValidSplitPoints template -->
+	<xsl:function name="dotify:getValidSplitPoints">
+		<xsl:param name="grid"/>
+		<xsl:call-template name="getValidSplitPoints">
+			<xsl:with-param name="grid" select="$grid"/>
+		</xsl:call-template>
+	</xsl:function>
+	
+	<!-- Returns all valid split points-->
 	<xsl:template name="getValidSplitPoints">
 		<xsl:param name="grid" required="yes"/>
 		<xsl:param name="split" select="1"/>
@@ -242,10 +246,20 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<!-- Gets the grid width -->
-	<xsl:template name="getGridWidth">
-		<xsl:param name="grid" required="yes"/>
+	<!-- Returns the grid width -->
+	<xsl:function name="dotify:calculateGridWidth">
+		<xsl:param name="grid"/>
 		<xsl:value-of select="count($grid/cell[@row=1])"/>
-	</xsl:template>
+	</xsl:function>
+	
+	<!-- Returns a print out of the grid information -->
+	<xsl:function name="dotify:gridAsString">
+		<xsl:param name="grid"/>
+		<xsl:for-each select="$grid/cell"><xsl:for-each select="@*"><xsl:value-of select="name()"/>=<xsl:value-of select="."/>
+				<xsl:text>&#x09;</xsl:text>
+			</xsl:for-each>
+			<xsl:text>&#x0a;</xsl:text>
+		</xsl:for-each>
+	</xsl:function>
 
 </xsl:stylesheet>
