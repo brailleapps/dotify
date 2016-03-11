@@ -599,7 +599,7 @@
 	<xsl:template match="dtb:table">
 		<xml-data renderer="table-renderer" xmlns:dotify="http://brailleapps.github.io/ns/dotify">
 			<dotify:node>
-				<block keep="all" keep-with-next="1"><xsl:value-of select="concat('gg ', $l10ntable, ' ')"/><leader position="100%" pattern="g"/></block>
+				<block keep="all" keep-with-next="1"><xsl:value-of select="concat('== ', $l10ntable, ' ')"/><leader position="100%" pattern="="/></block>
 				<xsl:variable name="table">
 					<xsl:apply-templates select="." mode="splitTable">
 						<xsl:with-param name="maxColumns" select="$table-split-columns"/>
@@ -612,7 +612,7 @@
 						<block keep="all" keep-with-next="1"><xsl:value-of select="concat(':: ', $l10ntablepart, ' ')"/><leader position="100%" pattern=":"/></block>
 					</xsl:if>
 				</xsl:for-each>
-				<block><leader align="right" position="100%" pattern="g"/></block>
+				<block><leader align="right" position="100%" pattern="="/></block>
 			</dotify:node>
 		</xml-data>
 	</xsl:template>
