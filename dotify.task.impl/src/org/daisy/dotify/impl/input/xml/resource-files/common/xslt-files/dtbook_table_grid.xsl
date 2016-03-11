@@ -32,27 +32,12 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="dtb:table" mode="verifySplitPoints">
+	<xsl:template match="dtb:table" mode="tableSplitIterator">
 		<xsl:param name="grid" required="yes"/>
 		<xsl:param name="start" select="1"/>
 		<xsl:param name="size" select="1"/>
-		<xsl:variable name="valid" as="xs:boolean">
-			<xsl:call-template name="isValidSplitPoint">
-				<xsl:with-param name="grid" select="$grid"/>
-				<xsl:with-param name="split" select="$start"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!-- TODO: Support adjusting of the split point in case of conflicting colspan -->
-		<xsl:if test="not($valid)">
-			<xsl:message terminate="yes">Cannot split table.</xsl:message>
-		</xsl:if>
 		<xsl:variable name="end" select="$start+$size"/>
-		<xsl:variable name="grid-width" as="xs:integer">
-			<xsl:call-template name="getGridWidth">
-				<xsl:with-param name="grid" select="$grid"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<xsl:if test="$start&lt;=$grid-width">
+		<xsl:if test="$start&lt;=$grid/summary/@grid-width">
 			<xsl:apply-templates select="." mode="makeSplitTable">
 				<xsl:with-param name="grid" select="$grid"/>
 				<xsl:with-param name="start" select="$start"/>
