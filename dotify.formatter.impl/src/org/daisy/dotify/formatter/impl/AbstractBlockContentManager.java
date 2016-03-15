@@ -112,6 +112,8 @@ public abstract class AbstractBlockContentManager implements Iterable<RowImpl> {
 		return r;
 	}
 	
+	abstract int getForceBreakCount();
+	
 	public abstract int getRowCount();
 	/**
 	 * Returns true if this RowDataManager contains objects that makes the formatting volatile,

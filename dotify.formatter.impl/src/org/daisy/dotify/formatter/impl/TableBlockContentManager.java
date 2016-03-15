@@ -5,11 +5,13 @@ import java.util.List;
 
 public class TableBlockContentManager extends AbstractBlockContentManager {
 	private final List<RowImpl> rows;
+	private final int forceCount;
 
-	public TableBlockContentManager(int flowWidth, int minWidth, List<RowImpl> rows, RowDataProperties rdp, FormatterContext fcontext) {
+	public TableBlockContentManager(int flowWidth, int minWidth, int forceCount, List<RowImpl> rows, RowDataProperties rdp, FormatterContext fcontext) {
 		super(flowWidth, rdp, fcontext);
 		this.minWidth = minWidth;
 		this.rows = rows;
+		this.forceCount = forceCount;
 	}
 	
 	@Override
@@ -20,6 +22,11 @@ public class TableBlockContentManager extends AbstractBlockContentManager {
 	@Override
 	public int getRowCount() {
 		return rows.size();
+	}
+
+	@Override
+	int getForceBreakCount() {
+		return forceCount;
 	}
 
 }

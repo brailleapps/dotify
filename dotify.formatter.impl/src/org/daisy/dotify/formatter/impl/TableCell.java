@@ -33,10 +33,12 @@ class TableCell extends FormatterCoreImpl {
 		List<RowImpl> rowData = new ArrayList<>();
 		List<Block> blocks = getBlocks(context, c, crh);
 		int minWidth = flowWidth;
+		int forceCount = 0;
 		for (Block block : blocks) {
 			AbstractBlockContentManager bcm = block.getBlockContentManager(
 					new BlockContext(flowWidth, crh, c, context)
 					);
+			forceCount += bcm.getForceBreakCount();
 			minWidth = Math.min(bcm.getMinimumAvailableWidth(), minWidth);
 			rowData.addAll(bcm.getCollapsiblePreContentRows());
 			rowData.addAll(bcm.getInnerPreContentRows());
@@ -46,7 +48,7 @@ class TableCell extends FormatterCoreImpl {
 			rowData.addAll(bcm.getPostContentRows());
 			rowData.addAll(bcm.getSkippablePostContentRows());
 		}
-		rendered = new CellData(rowData, flowWidth, info, minWidth);
+		rendered = new CellData(rowData, flowWidth, info, minWidth, forceCount);
 		return rendered;
 	}
 

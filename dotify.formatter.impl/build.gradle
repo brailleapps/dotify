@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     provided group: "biz.aQute.bnd", name: "annotation", version: "2.3.0"
-    compile "org.daisy.dotify:dotify.api:2.4.0"
+    compile "org.daisy.dotify:dotify.api:2.5.0"
     compile "org.daisy.dotify:dotify.common:2.0.2"
 
     runtime 'com.fasterxml.woodstox:woodstox-core:5.0.2'
@@ -22,7 +22,7 @@ dependencies {
     
 	testRuntime group: group, name:'dotify.hyphenator.impl', version:'2.0.1'
 	testRuntime group: group, name:'dotify.text.impl', version:'2.0.0'
-	testRuntime group: group, name:'dotify.translator.impl', version:'2.1.1'
+	testRuntime group: group, name:'dotify.translator.impl', version:'2.2.0'
 }
 
 buildscript {

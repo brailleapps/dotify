@@ -33,6 +33,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 
 	private Leader currentLeader;
 	private ListItem item;
+	private int forceCount;
 	
 	BlockContentManager(int flowWidth, Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs, Context context, FormatterContext fcontext) {
 		super(flowWidth, rdp, fcontext);
@@ -230,6 +231,9 @@ class BlockContentManager extends AbstractBlockContentManager {
 		while (btr.hasNext()) { //LayoutTools.length(chars.toString())>0
 			newRow(btr, "", rdp.getTextIndent(), rdp.getBlockIndent(), mode);
 		}
+		if (btr.supportsMetric(BrailleTranslatorResult.METRIC_FORCED_BREAK)) {
+			forceCount += btr.getMetric(BrailleTranslatorResult.METRIC_FORCED_BREAK);
+		}
 	}
 	
 	private void newRow(BrailleTranslatorResult chars, String contentBefore, int indent, int blockIndent, String mode) {
@@ -330,6 +334,11 @@ class BlockContentManager extends AbstractBlockContentManager {
 				throw new RuntimeException("Cannot continue layout: No space left for characters.");
 			}
 		}
+	}
+
+	@Override
+	int getForceBreakCount() {
+		return forceCount;
 	}
 
 }

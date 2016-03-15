@@ -16,6 +16,7 @@ class PageSequenceRecorder {
 	private double cost = 0;
 	private float height = 0;
 	private float minWidth = 0;
+	private double forceCount = 0;
 	private Map<String, PageSequenceRecorderData> states;
 
 	PageSequenceRecorder() {
@@ -58,6 +59,7 @@ class PageSequenceRecorder {
 				height = data.calcSize();
 				cost = Double.MAX_VALUE;
 				minWidth = ret.getMinimumAvailableWidth();
+				forceCount = 0;
 				clearState(scenario);
 				saveState(baseline);
 				current = g.getRenderingScenario();
@@ -74,16 +76,19 @@ class PageSequenceRecorder {
 					} else {
 						//TODO: measure, evaluate
 						float size = data.calcSize()-height;
-						double ncost = current.calculateCost(setParams(size, minWidth));
+						double ncost = current.calculateCost(setParams(size, minWidth, forceCount));
 						if (ncost<cost) {
 							//if better, store
 							cost = ncost;
 							saveState(scenario);
 						}
 						restoreState(baseline);
+						minWidth = ret.getMinimumAvailableWidth();
+						forceCount = 0;
 					}
 					current = g.getRenderingScenario();
 				} // we're rendering the current scenario
+				forceCount += ret.getForceBreakCount();
 				minWidth = Math.min(minWidth, ret.getMinimumAvailableWidth());
 			}
 		} else {
@@ -104,7 +109,7 @@ class PageSequenceRecorder {
 			} else {
 				//if not better
 				float size = data.calcSize()-height;
-				double ncost = current.calculateCost(setParams(size, minWidth));
+				double ncost = current.calculateCost(setParams(size, minWidth, forceCount));
 				if (ncost>cost) {
 					restoreState(scenario);
 				}
@@ -129,10 +134,12 @@ class PageSequenceRecorder {
 		}
 	}
 
-	private Map<String, Double> setParams(double height, double minBlockWidth) {
+	private static Map<String, Double> setParams(double height, double minBlockWidth, double forceCount) {
 		Map<String, Double> params = new HashMap<>();
 		params.put("total-height", height);
 		params.put("min-block-width", minBlockWidth);
+		params.put("forced-break-count", forceCount);
+		System.out.println(params);
 		return params;
 	}
 

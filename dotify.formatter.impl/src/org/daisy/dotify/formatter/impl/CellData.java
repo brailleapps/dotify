@@ -8,13 +8,15 @@ class CellData {
 	private final TableCellInfo info;
 	private final int cellWidth;
 	private final int minWidth;
+	private final int forceCount;
 	private Iterator<RowImpl> rowsIterator;
 
-	CellData(List<RowImpl> rows, int cellWidth, TableCellInfo info, int minWidth) {
+	CellData(List<RowImpl> rows, int cellWidth, TableCellInfo info, int minWidth, int forceCount) {
 		this.rows = rows;
 		this.info = info;
 		this.cellWidth = cellWidth;
 		this.minWidth = minWidth;
+		this.forceCount = forceCount;
 		this.rowsIterator = rows.iterator();
 	}
 	
@@ -44,6 +46,10 @@ class CellData {
 
 	TableCellInfo getInfo() {
 		return info;
+	}
+	
+	int getForceCount() {
+		return forceCount;
 	}
 	
 }

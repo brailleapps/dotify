@@ -86,7 +86,7 @@ class Table extends Block {
 		DefaultContext dc = DefaultContext.from(context.getContext()).metaVolume(metaVolume).metaPage(metaPage).build();
 		resultCache = new HashMap<>();
 		Result r = minimizeCost(currentColumnWidth, colSpace, tableProps.getPreferredEmtpySpace(), context, dc, leftMargin, rightMargin);
-		return new TableBlockContentManager(context.getFlowWidth(), r.minWidth, r.rows, rdp, context.getFcontext());
+		return new TableBlockContentManager(context.getFlowWidth(), r.minWidth, r.forceCount, r.rows, rdp, context.getFcontext());
 	}
 	
 	private Result minimizeCost(int[] columnWidth, int[] colSpacing, int spacePreferred, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin) {
@@ -152,6 +152,7 @@ class Table extends Block {
 		TableCost cost;
 		int[] widths;
 		int minWidth;
+		int forceCount;
 	}
 	
 	private static Result min(Result v, Result ... values) {
@@ -199,10 +200,8 @@ class Table extends Block {
 	}
 	
 	private Result renderTable(int[] columnWidth, int[] colSpacing, BlockContext context, DefaultContext dc, MarginProperties leftMargin, MarginProperties rightMargin, int spacePreferred) {
-		Result ret = new Result();
-		ret.cost = new TableCostImpl(spacePreferred);
 		List<RowImpl> result = new ArrayList<RowImpl>();
-		ret.minWidth = updateRendering(columnWidth, colSpacing, ret.cost, context, dc);
+		Result ret = updateRendering(columnWidth, colSpacing, new TableCostImpl(spacePreferred), context, dc);
 		for (int r=0; r<td.getGridHeight(); r++) {
 			// render into rows
 			boolean tableRowHasData = false;
@@ -248,8 +247,11 @@ class Table extends Block {
 		return ret;
 	}
 	
-	private int updateRendering(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc) {
+	private Result updateRendering(int[] columnWidth, int[] colSpacing, TableCost costFunc, BlockContext context, DefaultContext dc) {
+		Result ret = new Result();
+		ret.cost = costFunc;
 		int minWidth = context.getFlowWidth();
+		int forceCount = 0;
 		for (TableRow row : td) {
 			for (TableCell cell : row) {
 				int flowWidth = 0;
@@ -262,10 +264,13 @@ class Table extends Block {
 				}
 				CellData cd = cell.render(context.getFcontext(), dc, context.getRefs(), flowWidth);
 				minWidth = Math.min(cd.getMinWidth(), minWidth);
+				forceCount += cd.getForceCount();
 				costFunc.addCell(cd.getRows(), flowWidth);
 			}
 		}
-		return minWidth;
+		ret.forceCount = forceCount;
+		ret.minWidth = minWidth;
+		return ret;
 	}
 	
 	private boolean hasMoreContent(int r) {
