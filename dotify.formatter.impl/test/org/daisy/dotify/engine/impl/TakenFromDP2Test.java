@@ -150,7 +150,6 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		testPEF("resource-files/dp2/marker-reference-across-sequence-workaround-input.obfl",
 		        "resource-files/dp2/marker-reference-across-sequence-workaround-expected.pef", false);
 	}
-	@Ignore // issue https://github.com/joeha480/dotify/issues/143
 	@Test
 	public void testMarkerReferenceSpreadAcrossSequence() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/marker-reference-spread-across-sequence-input.obfl",
