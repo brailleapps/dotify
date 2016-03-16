@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.obfl.Expression;
@@ -51,6 +53,7 @@ import org.daisy.dotify.api.text.IntegerOutOfRange;
  * @author Joel Håkansson
  */
 class ExpressionImpl implements Expression {
+	private final static Logger logger = Logger.getLogger(ExpressionImpl.class.getCanonicalName());
 	private HashMap<String, Object> localVars;
 	private Map<String, Object> globalVars;
 	private final Integer2TextFactoryMakerService integer2textFactoryMaker;
@@ -386,19 +389,19 @@ class ExpressionImpl implements Expression {
 		}
 
 		if (integer2textFactoryMaker == null) {
-			//throw new UnsupportedOperationException("Operation not supported in the current configuration.");
+			logger.warning("int2text operation is not supported in the current configuration.");
 			return Integer.toString(val);
 		}
 		try {
 			Integer2Text  t = integer2textFactoryMaker.newInteger2Text(input[1].toString());
 			return t.intToText(val);
 		} catch (Integer2TextConfigurationException e) {
-			//throw new IllegalArgumentException("Unsupported locale: " + input[1], e);
+			logger.log(Level.WARNING, "Unsupported locale: " + input[1], e);
 			return Integer.toString(val);
 		} catch (IntegerOutOfRange e) {
-			//throw new IllegalArgumentException("Integer out of range: " + input[0], e);
+			logger.log(Level.WARNING, "Integer out of range: " + input[0], e);
 			return Integer.toString(val);
-		}		
+		}
 	}
 
 	private Object concat(Object[] input) {
