@@ -42,10 +42,8 @@
                 <marker class="foo" value="2"/>
                 ⠁⠁⠁⠁⠁
               </block>
-   </sequence>
-   <!-- right page -->
-   <sequence master="a">
-      <block>⠁⠁⠁⠁⠁
+      <block break-before="page">​<!-- right page -->
+                ⠁⠁⠁⠁⠁
               </block>
    </sequence>
 </obfl>

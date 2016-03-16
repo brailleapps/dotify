@@ -153,7 +153,7 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 	@Test
 	public void testMarkerReferenceSpreadAcrossSequence() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/marker-reference-spread-across-sequence-input.obfl",
-		        "resource-files/dp2/marker-reference-spread-across-sequence-expected.pef", true);
+		        "resource-files/dp2/marker-reference-spread-across-sequence-expected.pef", false);
 	}
 	@Test
 	public void testMarkerReferenceSpreadAcrossVolume() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
