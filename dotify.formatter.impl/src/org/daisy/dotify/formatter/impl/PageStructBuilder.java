@@ -38,15 +38,16 @@ class PageStructBuilder {
 	}
 	
 	private int getCurrentPageOffset() {
-		int offset = 0;
 		if (struct.size()>0) {
 			PageSequence prv = (PageSequence)struct.peek();
-			offset = prv.currentPageNumber();
-			if (prv.getLayoutMaster().duplex() && (offset % 2)==1) {
-				offset++;
+			if (prv.getLayoutMaster().duplex() && (prv.getPageCount() % 2)==1) {
+				return prv.getPageNumberOffset() + prv.getPageCount() + 1;
+			} else {
+				return prv.getPageNumberOffset() + prv.getPageCount();
 			}
+		} else {
+			return 0;
 		}
-		return offset;
 	}
 
 }

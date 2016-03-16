@@ -195,11 +195,10 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		testPEF("resource-files/dp2/various-page-widths-input.obfl",
 		        "resource-files/dp2/various-page-widths-expected.pef", false);
 	}
-	@Ignore // page numbering bug, possibly related to possibly related to https://github.com/joeha480/dotify/issues/134
 	@Test
 	public void testCurrentPageVariousPositions() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/current-page-various-positions-input.obfl",
-		        "resource-files/dp2/current-page-various-positions-expected.pef", true);
+		        "resource-files/dp2/current-page-various-positions-expected.pef", false);
 	}
 	@Test
 	public void testCurrentPageVariousNumberFormats() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
@@ -313,5 +312,15 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 	public void testVolumeTemplateVariousSheetsInVolumeMax() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/volume-template-various-sheets-in-volume-max-input.obfl",
 		        "resource-files/dp2/volume-template-various-sheets-in-volume-max-expected.pef", false);
+	}
+	@Test
+	public void testSheetCalculationInitialPageNumber() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/dp2/sheet-calculation-initial-page-number-input.obfl",
+		        "resource-files/dp2/sheet-calculation-initial-page-number-expected.pef", false);
+	}
+	@Test
+	public void testMarkerReferenceSpreadInitialPageNumber() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/dp2/marker-reference-spread-initial-page-number-input.obfl",
+		        "resource-files/dp2/marker-reference-spread-initial-page-number-expected.pef", false);
 	}
 }
