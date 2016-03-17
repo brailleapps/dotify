@@ -265,7 +265,7 @@ class Table extends Block {
 				CellData cd = cell.render(context.getFcontext(), dc, context.getRefs(), flowWidth);
 				minWidth = Math.min(cd.getMinWidth(), minWidth);
 				forceCount += cd.getForceCount();
-				costFunc.addCell(cd.getRows(), flowWidth);
+				costFunc.addCell(cd.getRows(), flowWidth, cd.getForceCount());
 			}
 		}
 		ret.forceCount = forceCount;

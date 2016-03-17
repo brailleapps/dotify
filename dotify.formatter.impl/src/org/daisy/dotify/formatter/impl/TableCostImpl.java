@@ -17,7 +17,7 @@ public class TableCostImpl implements TableCost {
 	}
 
 	@Override
-	public void addCell(List<RowImpl> rows, int cellWidth) {
+	public void addCell(List<RowImpl> rows, int cellWidth, int forceCount) {
 		if (rows.size()==1) {
 			// only calculate preferred empty space if it's a single row
 			RowImpl r = rows.get(0);
@@ -31,6 +31,7 @@ public class TableCostImpl implements TableCost {
 		} else {
 			cost += preferredSpaceCost(0, cellWidth);
 		}
+		cost += 10*forceCount;
 	}
 
 	private double preferredSpaceCost(int r, int cellWidth) { 
