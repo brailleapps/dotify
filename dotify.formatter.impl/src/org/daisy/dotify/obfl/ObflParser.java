@@ -101,9 +101,9 @@ public class ObflParser extends XMLParserBase {
 	private final FilterLocale locale;
 	private final String mode;
 	private final boolean hyphGlobal;
-	private final MarkerProcessor mp;
 	private final Logger logger;
 	private final FactoryManager fm;
+	private MarkerProcessor mp;
 
 	Map<String, Transformer> xslts = new HashMap<>();
 	Map<String, List<RendererInfo>> renderers = new HashMap<>();
@@ -113,11 +113,6 @@ public class ObflParser extends XMLParserBase {
 		this.mode = mode;
 		//TODO: add this to input parameters
 		this.hyphGlobal = true;
-		try {
-			this.mp = fm.getMarkerProcessorFactory().newMarkerProcessor(locale, mode);
-		} catch (MarkerProcessorConfigurationException e) {
-			throw new IllegalArgumentException(e);
-		}
 		this.fm = fm;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 	}
@@ -754,11 +749,18 @@ public class ObflParser extends XMLParserBase {
 				}
 			}
 		}
-		
+
 		//Build text attributes
 		Iterator<XMLEvent> evs = events.iterator();
 		TextAttribute t = processTextAttributes(evs.next(), evs);
 		
+		if (mp==null) {
+			try {
+				this.mp = fm.getMarkerProcessorFactory().newMarkerProcessor(locale.toString(), mode);
+			} catch (MarkerProcessorConfigurationException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
 		//Add markers to text
 		String[] updated = mp.processAttributesRetain(t, chunks.toArray(new String[chunks.size()]));
 		
