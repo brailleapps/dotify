@@ -86,7 +86,7 @@
 				<xsl:if test="count($node/node())=0">&#x2014;</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
-				<aobfl:style name="table-cell-continued">&#x00a0;</aobfl:style>
+				<aobfl:style name="table-cell-continued"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
