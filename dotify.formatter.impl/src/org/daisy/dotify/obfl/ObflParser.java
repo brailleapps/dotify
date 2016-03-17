@@ -777,6 +777,7 @@ public class ObflParser extends XMLParserBase {
 	 */
 	private void parseStyleEventInner(FormatterCore fc, Iterator<XMLEvent> input, Iterator<String> text, TextProperties tp) throws XMLStreamException {
 		//Play back the events
+		boolean hasEvents = false;
 		while (input.hasNext()) {
 			XMLEvent event = input.next();
 			if (event.isCharacters()) {
@@ -793,6 +794,12 @@ public class ObflParser extends XMLParserBase {
 				break;
 			} else {
 				report(event);
+			}
+			hasEvents = true;
+		}
+		if (!hasEvents) {
+			while (text.hasNext()) {
+				fc.addChars(text.next(), tp);
 			}
 		}
 	}
