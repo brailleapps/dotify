@@ -139,7 +139,6 @@ class PageSequenceRecorder {
 		params.put("total-height", height);
 		params.put("min-block-width", minBlockWidth);
 		params.put("forced-break-count", forceCount);
-		System.out.println(params);
 		return params;
 	}
 

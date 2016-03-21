@@ -99,7 +99,6 @@ public class XSLTRenderingScenario implements RenderingScenario {
 			ev.setVariable(key, ((Double)variables.get(key)));
 		}
 		Double ret = Double.parseDouble(ev.evaluate(exp).toString());
-		System.out.println(ret);
 		return ret;
 	}
 }
