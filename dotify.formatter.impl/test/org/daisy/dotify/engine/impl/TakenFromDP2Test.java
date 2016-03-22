@@ -21,7 +21,6 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		testPEF("resource-files/dp2/page-number-reference-other-sequence-input.obfl",
 		        "resource-files/dp2/page-number-reference-other-sequence-expected.pef", false);
 	}
-	@Ignore // issue with leader (https://github.com/joeha480/obfl/issues/31)
 	@Test
 	public void testPageNumberFollowsLeader() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/dp2/page-number-follows-leader-input.obfl",

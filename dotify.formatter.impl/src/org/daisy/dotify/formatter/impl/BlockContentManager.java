@@ -1,6 +1,8 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -12,6 +14,7 @@ import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
+import org.daisy.dotify.api.translator.UnsupportedMetricException;
 import org.daisy.dotify.common.text.StringTools;
 
 /**
@@ -75,7 +78,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 				case NewLine:
 				{
 					//flush
-					layout("", null, null);
+					layoutLeader();
 					MarginProperties ret = new MarginProperties(leftMargin.getContent()+StringTools.fill(fcontext.getSpaceCharacter(), rdp.getTextIndent()), leftMargin.isSpaceOnly());
 					rows.add(createAndConfigureEmptyNewRow(ret));
 					break;
@@ -83,7 +86,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 				case Text:
 				{
 					TextSegment ts = (TextSegment)s;
-					layout(
+					layoutAfterLeader(
 							Translatable.text(ts.getText()).
 							locale(ts.getTextProperties().getLocale()).
 							hyphenate(ts.getTextProperties().isHyphenating()).build(),
@@ -93,7 +96,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 				case Leader:
 				{
 					if (currentLeader!=null) {
-						layout("", null, null);
+						layoutLeader();
 					}
 					currentLeader= (Leader)s;
 					break;
@@ -108,9 +111,9 @@ class BlockContentManager extends AbstractBlockContentManager {
 					}
 					//TODO: translate references using custom language?
 					if (page==null) {
-						layout("??",  null, null);
+						layoutAfterLeader(Translatable.text("??").locale(null).build(), null);
 					} else {
-						layout("" + rs.getNumeralStyle().format(page), null, null);
+						layoutAfterLeader(Translatable.text("" + rs.getNumeralStyle().format(page)).locale(null).build(), null);
 					}
 					break;
 				}
@@ -118,7 +121,8 @@ class BlockContentManager extends AbstractBlockContentManager {
 				{
 					isVolatile = true;
 					Evaluate e = (Evaluate)s;
-					layout(Translatable.text(e.getExpression().render(context)).
+					layoutAfterLeader(
+							Translatable.text(e.getExpression().render(context)).
 							locale(e.getTextProperties().getLocale()).
 							hyphenate(e.getTextProperties().isHyphenating()).
 							build(), 
@@ -149,7 +153,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 		}
 		
 		if (currentLeader!=null || item!=null) {
-			layout("",  null, null);
+			layoutLeader();
 		}
 		if (rows.size()>0) {
 			rows.get(0).addAnchors(0, groupAnchors);
@@ -159,6 +163,37 @@ class BlockContentManager extends AbstractBlockContentManager {
 		}
 	}
 	
+	private List<BrailleTranslatorResult> layoutAfterLeader = null;
+	private String currentLeaderMode = null;
+	
+	private void layoutAfterLeader(Translatable spec, String mode) {
+		if (currentLeader!=null) {
+			if (layoutAfterLeader == null) {
+				layoutAfterLeader = new ArrayList<BrailleTranslatorResult>();
+				// use the mode of the first following segment to translate the leader pattern
+				currentLeaderMode = mode;
+			}
+			try {
+				layoutAfterLeader.add(fcontext.getTranslator(mode).translate(spec));
+			} catch (TranslationException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			layout(spec, mode);
+		}
+	}
+	
+	private void layoutLeader() {
+		if (currentLeader!=null) {
+			// layout() sets currentLeader to null
+			if (layoutAfterLeader == null) {
+				layout("", null, null);
+			} else {
+				layout(new AggregatedBrailleTranslatorResult(layoutAfterLeader), currentLeaderMode);
+			}
+		}
+	}
+
 	/**
 	 * 
 	 * @param margin rdp.getSpaceBefore()
@@ -340,5 +375,78 @@ class BlockContentManager extends AbstractBlockContentManager {
 	int getForceBreakCount() {
 		return forceCount;
 	}
+	
+	private static class AggregatedBrailleTranslatorResult implements BrailleTranslatorResult {
+		
+		private final List<BrailleTranslatorResult> results;
+		private BrailleTranslatorResult current;
+		private int currentIndex = 0;
+		
+		public AggregatedBrailleTranslatorResult(List<BrailleTranslatorResult> results) {
+			this.results = results;
+			this.current = results.get(0);
+			this.currentIndex = 0;
+		}
 
+		public String nextTranslatedRow(int limit, boolean force) {
+			String row = "";
+			while (limit > row.length()) {
+				row += current.nextTranslatedRow(limit - row.length(), force);
+				if (!current.hasNext() && currentIndex + 1 < results.size()) {
+					current = results.get(++currentIndex);
+				} else {
+					break;
+				}
+			}
+			return row;
+		}
+
+		public String getTranslatedRemainder() {
+			String remainder = "";
+			for (int i = currentIndex; i < results.size(); i++) {
+				remainder += results.get(i).getTranslatedRemainder();
+			}
+			return remainder;
+		}
+
+		public int countRemaining() {
+			int remaining = 0;
+			for (int i = currentIndex; i < results.size(); i++) {
+				remaining += results.get(i).countRemaining();
+			}
+			return remaining;
+		}
+
+		public boolean hasNext() {
+			if (current.hasNext()) {
+				return true;
+			} else {
+				while (currentIndex + 1 < results.size()) {
+					current = results.get(++currentIndex);
+					if (current.hasNext()) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		
+		public boolean supportsMetric(String metric) {
+			return METRIC_FORCED_BREAK.equals(metric)
+					|| METRIC_HYPHEN_COUNT.equals(metric);
+		}
+
+		public double getMetric(String metric) {
+			if (METRIC_FORCED_BREAK.equals(metric)
+					|| METRIC_HYPHEN_COUNT.equals(metric)) {
+				int count = 0;
+				for (int i = currentIndex; i >= 0; i--) {
+					count += results.get(i).getMetric(metric);
+				}
+				return count;
+			} else {
+				throw new UnsupportedMetricException("Metric not supported: " + metric);
+			}
+		}
+	}
 }
