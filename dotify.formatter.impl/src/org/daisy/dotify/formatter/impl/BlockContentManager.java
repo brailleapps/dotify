@@ -432,16 +432,22 @@ class BlockContentManager extends AbstractBlockContentManager {
 		}
 		
 		public boolean supportsMetric(String metric) {
-			for (int i = 0; i <= currentIndex; i++) {
-				if (!results.get(i).supportsMetric(metric))
-					return false;
+			// since we cannot assume that the individual results of any metric can be added, we only support the following known cases
+			if (METRIC_FORCED_BREAK.equals(metric) || METRIC_HYPHEN_COUNT.equals(metric)) {
+				for (int i = 0; i <= currentIndex; i++) {
+					if (!results.get(i).supportsMetric(metric)) {
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return false;
 			}
-			return true;
 		}
 
 		public double getMetric(String metric) {
-			if (METRIC_FORCED_BREAK.equals(metric)
-					|| METRIC_HYPHEN_COUNT.equals(metric)) {
+			// since we cannot assume that the individual results of any metric can be added, we only support the following known cases
+			if (METRIC_FORCED_BREAK.equals(metric) || METRIC_HYPHEN_COUNT.equals(metric)) {
 				int count = 0;
 				for (int i = 0; i <= currentIndex; i++) {
 					count += results.get(i).getMetric(metric);
