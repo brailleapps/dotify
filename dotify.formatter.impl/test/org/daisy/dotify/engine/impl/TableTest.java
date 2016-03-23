@@ -193,4 +193,9 @@ public class TableTest extends AbstractFormatterEngineTest {
 		testPEF("resource-files/table/tables-missing-cell5-input.obfl", "resource-files/table/tables-missing-cell5-expected.pef", false);
 	}
 	
+	@Test @Ignore //Test for https://github.com/joeha480/dotify/issues/177
+	public void testTableInBlock() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/table/table-in-block-input.obfl", "resource-files/table/table-in-block-expected.pef", false);
+	}
+	
 }

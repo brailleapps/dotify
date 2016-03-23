@@ -687,6 +687,8 @@ public class ObflParser extends XMLParserBase {
 				parseBlock(event, input, fc, tp);
 			} else if (equalsStart(event, ObflQName.XML_DATA)) {
 				parseXMLData(fc, event, input, tp);
+			} else if (equalsStart(event, ObflQName.TABLE)) {
+				parseTable(event, input, fc, tp);
 			} else if (processAsBlockContents(fc, event, input, tp)) {
 				//done
 			}
