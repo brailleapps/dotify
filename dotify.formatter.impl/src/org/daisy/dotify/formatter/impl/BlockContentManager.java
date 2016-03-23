@@ -432,15 +432,18 @@ class BlockContentManager extends AbstractBlockContentManager {
 		}
 		
 		public boolean supportsMetric(String metric) {
-			return METRIC_FORCED_BREAK.equals(metric)
-					|| METRIC_HYPHEN_COUNT.equals(metric);
+			for (int i = 0; i <= currentIndex; i++) {
+				if (!results.get(i).supportsMetric(metric))
+					return false;
+			}
+			return true;
 		}
 
 		public double getMetric(String metric) {
 			if (METRIC_FORCED_BREAK.equals(metric)
 					|| METRIC_HYPHEN_COUNT.equals(metric)) {
 				int count = 0;
-				for (int i = currentIndex; i >= 0; i--) {
+				for (int i = 0; i <= currentIndex; i++) {
 					count += results.get(i).getMetric(metric);
 				}
 				return count;
