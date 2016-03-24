@@ -27,7 +27,7 @@
              margin-top="1"
              margin-bottom="1"
              margin-left="1"
-             margin-right="1"><table><tr><td>⠿⠿⠿⠿</td></tr></table></block>
+             margin-right="1"><table preferred-empty-space="20"><tr><td align="center">⠿⠿⠿⠿</td></tr></table></block>
     </block>
     <block align="center"
            margin-left="1"
@@ -61,7 +61,7 @@
                  margin-top="1"
                  margin-bottom="1"
                  margin-left="1"
-                 margin-right="1"><table><tr><td>⠿⠿⠿⠿</td></tr></table></block>
+                 margin-right="1"><table preferred-empty-space="20"><tr><td align="center">⠿⠿⠿⠿</td></tr></table></block>
         </block>
       </block>
     </block>

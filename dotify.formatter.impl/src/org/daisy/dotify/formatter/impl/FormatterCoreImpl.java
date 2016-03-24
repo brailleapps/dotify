@@ -73,6 +73,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public void startBlock(BlockProperties p, String blockId) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		String lb = "";
 		String rb = "";
 		if (p.getTextBorderStyle()!=null) {
@@ -138,6 +141,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public void endBlock() {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		if (listItem!=null) {
 			addChars("", new TextProperties.Builder(null).build());
 		}
@@ -194,22 +200,33 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public void insertMarker(Marker m) {
-		//FIXME: this does not work
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		getCurrentBlock().addSegment(new MarkerSegment(m));
 	}
 	
 	@Override
 	public void insertAnchor(String ref) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		getCurrentBlock().addSegment(new AnchorSegment(ref));
 	}
 
 	@Override
 	public void insertLeader(Leader leader) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		getCurrentBlock().addSegment(new LeaderSegment(leader));
 	}
 
 	@Override
 	public void addChars(CharSequence c, TextProperties p) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		Block bl = getCurrentBlock();
 		if (listItem!=null) {
 			//append to this block
@@ -224,16 +241,25 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public void newLine() {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		getCurrentBlock().addSegment(new NewLineSegment());
 	}
 
 	@Override
 	public void insertReference(String identifier, NumeralStyle numeralStyle) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		getCurrentBlock().addSegment(new PageNumberReferenceSegment(identifier, numeralStyle));
 	}
 
 	@Override
 	public void insertEvaluate(DynamicContent exp, TextProperties t) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		getCurrentBlock().addSegment(new Evaluate(exp, t));
 	}
 	
@@ -261,6 +287,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public void insertDynamicLayout(DynamicRenderer renderer) {
+		if (table!=null) {
+			throw new IllegalStateException("A table is open.");
+		}
 		for (RenderingScenario rs : renderer.getScenarios()) {
 			try {
 				scenario = rs;
@@ -289,10 +318,6 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (table!=null) {
 			throw new IllegalStateException("A table is already open.");
 		}
-		if (!propsContext.empty()) {
-			throw new IllegalStateException("Tables are not allowed inside blocks.");
-		}
-		//FIXME: row data properties
 		String lb = "";
 		String rb = "";
 		TextBorderStyle borderStyle = null;
@@ -312,13 +337,17 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			lb = borderStyle.getLeftBorder();
 			rb = borderStyle.getRightBorder();
 		}
-		Margin leftMargin = new Margin(Type.LEFT);
-		Margin rightMargin = new Margin(Type.RIGHT);
-		leftMargin.add(new MarginComponent(lb, props.getMargin().getLeftSpacing(), props.getPadding().getLeftSpacing()));
-		rightMargin.add(new MarginComponent(rb, props.getMargin().getRightSpacing(), props.getPadding().getRightSpacing()));
+		Margin leftMargin = (Margin)this.leftMargin.clone();
+		Margin rightMargin = (Margin)this.rightMargin.clone();
+		leftMargin.add(new MarginComponent(lb, props.getMargin().getLeftSpacing(), props.getPadding().getLeftSpacing()));//
+		rightMargin.add(new MarginComponent(rb, props.getMargin().getRightSpacing(), props.getPadding().getRightSpacing()));//
 		RowDataProperties.Builder rdp = new RowDataProperties.Builder()
-				.leftMargin((Margin)leftMargin.clone())
-				.rightMargin((Margin)rightMargin.clone())
+				//text properties are not relevant here, since a table block doesn't support mixed content
+				//textIndent, firstLineIndent, align, orphans, widows, blockIndent and blockIndentParent
+				//rowSpacing is handled by the table itself
+				.leftMargin(leftMargin)
+				.rightMargin(rightMargin)
+				//all margins are set here, because the table is an opaque block
 				.outerSpaceBefore(props.getMargin().getTopSpacing())
 				.outerSpaceAfter(props.getMargin().getBottomSpacing())
 				.innerSpaceBefore(props.getPadding().getTopSpacing())
@@ -333,6 +362,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		}
 		table = new Table(fc, props, rdp.build(), fc.getTextBorderFactoryMakerService(), fc.getTranslatorMode(), scenario);
 		add(table);
+		//no need to create and configure a regular block (as is done in startBlock)
+		//if there is a list item, we ignore it
+		//no need to push context
 	}
 
 	@Override
@@ -357,6 +389,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public void endTable() {
+		//margins were cloned before adding the table's margins
 		table.closeTable();
 		table = null;
 	}
