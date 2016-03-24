@@ -9,6 +9,8 @@ package org.daisy.dotify.formatter.impl;
 class VariablesHandler {
 	private final LookupHandler<String, Integer> variables;
 	private final static String VOLUMES_KEY = "volumes";
+	private final static String SHEETS_IN_VOLUME = "sheets-in-volume-";
+	private final static String SHEETS_IN_DOCUMENT = "sheets-in-document";
 	
 	VariablesHandler() {
 		this.variables = new LookupHandler<>();
@@ -17,6 +19,14 @@ class VariablesHandler {
 	void setVolumeCount(int volumes) {
 		variables.put(VOLUMES_KEY, volumes);
 	}
+	
+	void setSheetsInVolume(int volume, int value) {
+		variables.put(SHEETS_IN_VOLUME+volume, value);
+	}
+	
+	void setSheetsInDocument(int value) {
+		variables.put(SHEETS_IN_DOCUMENT, value);
+	}
 
 	/**
 	 * Gets the number of volumes.
@@ -24,6 +34,14 @@ class VariablesHandler {
 	 */
 	int getVolumeCount() {
 		return variables.get(VOLUMES_KEY, 1);
+	}
+	
+	int getSheetsInVolume(int volume) {
+		return variables.get(SHEETS_IN_VOLUME+volume, 0);
+	}
+
+	int getSheetsInDocument() {
+		return variables.get(SHEETS_IN_DOCUMENT, 0);
 	}
 	
 	boolean isDirty() {

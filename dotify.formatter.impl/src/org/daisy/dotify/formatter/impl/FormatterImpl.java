@@ -195,6 +195,7 @@ public class FormatterImpl implements Formatter {
 							", overhead:" + volume.getOverhead());
 					volume.setBody(contents);					
 					volume.setPostVolData(updateVolumeContents(i, ad, false));
+					crh.getVariables().setSheetsInVolume(i, contentSheets + volume.getOverhead());
 					crh.setAnchorData(i, ad);
 
 					ret.add(volume);
@@ -205,6 +206,7 @@ public class FormatterImpl implements Formatter {
 				sheetCount += volumeProvider.getRemaining().size();
 				totalPageCount += countPages(volumeProvider.getRemaining());
 			}
+			crh.getVariables().setSheetsInDocument(sheetCount + totalOverheadCount);
 			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
 			splitter.updateSheetCount(sheetCount + totalOverheadCount);
 			if (volumeProvider.hasNext()) {
@@ -237,7 +239,12 @@ public class FormatterImpl implements Formatter {
 	}
 
 	private PageStruct updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
-		DefaultContext c = new DefaultContext(volumeNumber, crh.getVariables().getVolumeCount());
+		DefaultContext c = new DefaultContext.Builder()
+						.currentVolume(volumeNumber)
+						.volumeCount(crh.getVariables().getVolumeCount())
+						.sheetsInVolume(crh.getVariables().getSheetsInVolume(volumeNumber))
+						.sheetsInDocument(crh.getVariables().getSheetsInDocument())
+						.build();
 		PageStruct ret = null;
 		try {
 			ArrayList<BlockSequence> ib = new ArrayList<>();
