@@ -60,9 +60,6 @@ public class FactoryManager {
 	}
 
 	public XMLEventFactory getXmlEventFactory() {
-		if (xmlEventFactory==null) {
-			setXmlEventFactory(XMLEventFactory.newInstance());
-		}
 		return xmlEventFactory;
 	}
 
@@ -71,9 +68,6 @@ public class FactoryManager {
 	}
 
 	public XMLOutputFactory getXmlOutputFactory() {
-		if (xmlOutputFactory==null) {
-			setXmlOutputFactory(XMLOutputFactory.newInstance());
-		}
 		return xmlOutputFactory;
 	}
 
@@ -82,14 +76,6 @@ public class FactoryManager {
 	}
 
 	public XMLInputFactory getXmlInputFactory() {
-		if (xmlInputFactory==null) {
-			XMLInputFactory in = XMLInputFactory.newInstance();
-			in.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-			in.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-			in.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-			in.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-			setXmlInputFactory(in);
-		}
 		return xmlInputFactory;
 	}
 
@@ -98,9 +84,6 @@ public class FactoryManager {
 	}
 
 	public DocumentBuilderFactory getDocumentBuilderFactory() {
-		if (documentBuilderFactory==null) {
-			setDocumentBuilderFactory(DocumentBuilderFactory.newInstance());
-		}
 		return documentBuilderFactory;
 	}
 
@@ -109,9 +92,6 @@ public class FactoryManager {
 	}
 
 	public XPathFactory getXpathFactory() {
-		if (xpathFactory==null) {
-			setXpathFactory(XPathFactory.newInstance());
-		}
 		return xpathFactory;
 	}
 
@@ -120,9 +100,6 @@ public class FactoryManager {
 	}
 
 	public TransformerFactory getTransformerFactory() {
-		if (transformerFactory==null) {
-			setTransformerFactory(TransformerFactory.newInstance());
-		}
 		return transformerFactory;
 	}
 
