@@ -7,8 +7,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.xpath.XPathFactory;
 
+import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.FormatterEngineConfigurationException;
 import org.daisy.dotify.api.engine.FormatterEngineFactoryService;
+import org.daisy.dotify.api.formatter.FormatterConfiguration;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
@@ -26,9 +28,8 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 	public LayoutEngineFactoryImpl() {
 		factoryManager = new FactoryManager();
 	}
-
-	@Override
-	public LayoutEngineImpl newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
+	
+	private void setupFactoryManager() {
 		//FIXME: all calls to newInstance below are OSGi violations that should be fixed.
 		if (factoryManager.getTransformerFactory()==null) {
 			factoryManager.setTransformerFactory(new net.sf.saxon.TransformerFactoryImpl());
@@ -53,7 +54,18 @@ public class LayoutEngineFactoryImpl implements FormatterEngineFactoryService {
 		if (factoryManager.getXmlEventFactory()==null) {
 			factoryManager.setXmlEventFactory(XMLEventFactory.newInstance());
 		}
+	}
+
+	@Override
+	public LayoutEngineImpl newFormatterEngine(String locale, String mode, PagedMediaWriter writer) {
+		setupFactoryManager();
 		return new LayoutEngineImpl(locale, mode, writer, factoryManager);
+	}
+
+	@Override
+	public FormatterEngine newFormatterEngine(FormatterConfiguration config, PagedMediaWriter writer) {
+		setupFactoryManager();
+		return new LayoutEngineImpl(config, writer, factoryManager);
 	}
 
 	@Override

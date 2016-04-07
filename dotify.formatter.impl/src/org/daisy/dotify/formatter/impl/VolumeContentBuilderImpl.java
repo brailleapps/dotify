@@ -188,4 +188,14 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
 		current().endTable();
 	}
 
+	@Override
+	public void startStyle(String style) {
+		current().startStyle(style);
+	}
+
+	@Override
+	public void endStyle() {
+		current().endStyle();
+	}
+
 }

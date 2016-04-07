@@ -419,7 +419,7 @@ class PageImpl implements Page {
 		for (Field f : chunks.getFields()) {
 			DefaultTextAttribute.Builder b = new DefaultTextAttribute.Builder(null);
 			String resolved = softHyphen.matcher(resolveField(f, this, b)).replaceAll("");
-			Translatable.Builder tr = Translatable.text(resolved).
+			Translatable.Builder tr = Translatable.text(fcontext.getConfiguration().isMarkingCapitalLetters()?resolved:resolved.toLowerCase()).
 										hyphenate(false);
 			if (resolved.length()>0) {
 				tr.attributes(b.build(resolved.length()));

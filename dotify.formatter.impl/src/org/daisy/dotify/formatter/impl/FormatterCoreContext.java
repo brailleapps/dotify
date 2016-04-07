@@ -1,22 +1,27 @@
 package org.daisy.dotify.formatter.impl;
 
+import org.daisy.dotify.api.formatter.FormatterConfiguration;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 
 class FormatterCoreContext {
 	private final TextBorderFactoryMakerService tbf;
-	private final String mode;
+	private final FormatterConfiguration config;
 
-	FormatterCoreContext(TextBorderFactoryMakerService tbf, String mode) {
+	FormatterCoreContext(TextBorderFactoryMakerService tbf, FormatterConfiguration config) {
 		this.tbf = tbf;
-		this.mode = mode;
+		this.config = config;
 	}
 
 	String getTranslatorMode() {
-		return mode;
+		return config.getTranslationMode();
 	}
 
 	TextBorderFactoryMakerService getTextBorderFactoryMakerService() {
 		return tbf;
+	}
+	
+	FormatterConfiguration getConfiguration() {
+		return config;
 	}
 
 }

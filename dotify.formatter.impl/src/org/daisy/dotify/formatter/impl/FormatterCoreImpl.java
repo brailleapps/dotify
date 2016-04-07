@@ -393,5 +393,17 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		table.closeTable();
 		table = null;
 	}
+
+	@Override
+	public void startStyle(String style) {
+		//FIXME: implement
+		throw new UnsupportedOperationException("Not implemented.");
+	}
+
+	@Override
+	public void endStyle() {
+		//FIXME: implement
+		throw new UnsupportedOperationException("Not implemented.");
+	}
 	
 }

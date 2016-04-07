@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.daisy.dotify.api.formatter.FormatterConfiguration;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
@@ -18,7 +19,6 @@ import org.daisy.dotify.api.translator.TranslatorConfigurationException;
  *
  */
 class FormatterContext extends FormatterCoreContext {
-	private final String locale;
 	private final BrailleTranslator translator;
 	private final BrailleTranslatorFactoryMakerService translatorFactory;
 	private final Map<String, BrailleTranslator> cache;
@@ -26,13 +26,13 @@ class FormatterContext extends FormatterCoreContext {
 	private final Map<String, ContentCollectionImpl> collections;
 	private final char spaceChar;
 
-	FormatterContext(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, String locale, String mode) {
-		super(tbf, mode);
+	FormatterContext(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, FormatterConfiguration config) {
+		super(tbf, config);
 		this.translatorFactory = translatorFactory;
 		this.cache = new HashMap<>();
 		try {
-			this.translator = translatorFactory.newTranslator(locale, mode);
-			cache.put(mode, translator);
+			this.translator = translatorFactory.newTranslator(config.getLocale(), config.getTranslationMode());
+			cache.put(config.getTranslationMode(), translator);
 		} catch (TranslatorConfigurationException e) {
 			throw new IllegalArgumentException(e);
 		}
@@ -45,7 +45,6 @@ class FormatterContext extends FormatterCoreContext {
 		} catch (TranslationException e) {
 			throw new RuntimeException(e);
 		}
-		this.locale = locale;
 	}
 
 	BrailleTranslator getDefaultTranslator() {
@@ -59,7 +58,7 @@ class FormatterContext extends FormatterCoreContext {
 		BrailleTranslator ret = cache.get(mode);
 		if (ret==null) {
 			try {
-				ret = translatorFactory.newTranslator(locale, mode);
+				ret = translatorFactory.newTranslator(getConfiguration().getLocale(), mode);
 			} catch (TranslatorConfigurationException e) {
 				throw new IllegalArgumentException(e);
 			}

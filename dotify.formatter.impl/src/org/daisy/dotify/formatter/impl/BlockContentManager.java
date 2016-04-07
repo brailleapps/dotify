@@ -87,7 +87,10 @@ class BlockContentManager extends AbstractBlockContentManager {
 				{
 					TextSegment ts = (TextSegment)s;
 					layoutAfterLeader(
-							Translatable.text(ts.getText()).
+							Translatable.text(
+									fcontext.getConfiguration().isMarkingCapitalLetters()?
+									ts.getText():ts.getText().toLowerCase()
+									).
 							locale(ts.getTextProperties().getLocale()).
 							hyphenate(ts.getTextProperties().isHyphenating()).build(),
 							ts.getTextProperties().getTranslationMode());
@@ -113,7 +116,10 @@ class BlockContentManager extends AbstractBlockContentManager {
 					if (page==null) {
 						layoutAfterLeader(Translatable.text("??").locale(null).build(), null);
 					} else {
-						layoutAfterLeader(Translatable.text("" + rs.getNumeralStyle().format(page)).locale(null).build(), null);
+						String txt = "" + rs.getNumeralStyle().format(page);
+						layoutAfterLeader(Translatable.text(
+								fcontext.getConfiguration().isMarkingCapitalLetters()?txt:txt.toLowerCase()
+								).locale(null).build(), null);
 					}
 					break;
 				}
@@ -121,8 +127,9 @@ class BlockContentManager extends AbstractBlockContentManager {
 				{
 					isVolatile = true;
 					Evaluate e = (Evaluate)s;
+					String txt = e.getExpression().render(context);
 					layoutAfterLeader(
-							Translatable.text(e.getExpression().render(context)).
+							Translatable.text(fcontext.getConfiguration().isMarkingCapitalLetters()?txt:txt.toLowerCase()).
 							locale(e.getTextProperties().getLocale()).
 							hyphenate(e.getTextProperties().isHyphenating()).
 							build(), 
@@ -228,7 +235,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 	}
 	
 	private void layout(String c, String locale, String mode) {
-		layout(Translatable.text(c).locale(locale).build(), mode);
+		layout(Translatable.text(fcontext.getConfiguration().isMarkingCapitalLetters()?c:c.toLowerCase()).locale(locale).build(), mode);
 	}
 	
 	private void layout(Translatable spec, String mode) {
@@ -246,7 +253,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 			if (item!=null) { //currentListType!=BlockProperties.ListType.NONE) {
 				String listLabel;
 				try {
-					listLabel = fcontext.getTranslator(mode).translate(Translatable.text(item.getLabel()).build()).getTranslatedRemainder();
+					listLabel = fcontext.getTranslator(mode).translate(Translatable.text(fcontext.getConfiguration().isMarkingCapitalLetters()?item.getLabel():item.getLabel().toLowerCase()).build()).getTranslatedRemainder();
 				} catch (TranslationException e) {
 					throw new RuntimeException(e);
 				}

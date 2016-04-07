@@ -2,9 +2,7 @@ package org.daisy.dotify.engine.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -16,6 +14,8 @@ import javax.xml.stream.XMLStreamException;
 
 import org.daisy.dotify.api.engine.FormatterEngine;
 import org.daisy.dotify.api.engine.LayoutEngineException;
+import org.daisy.dotify.api.formatter.Formatter;
+import org.daisy.dotify.api.formatter.FormatterConfiguration;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterException;
@@ -39,8 +39,7 @@ class LayoutEngineImpl implements FormatterEngine {
 	private final static QName DC_IDENTIFIER = new QName(DC_NS, "identifier");
 	private final static QName DC_DATE = new QName(DC_NS, "date");
 	private final static QName DC_FORMAT = new QName(DC_NS, "format");
-	private final String locale;
-	private final String mode;
+	private final FormatterConfiguration config;
 	private final PagedMediaWriter writer;
 	private final Logger logger;
 	private boolean normalize;
@@ -48,14 +47,23 @@ class LayoutEngineImpl implements FormatterEngine {
 	
 	/**
 	 * Creates a new instance of LayoutEngineTask.
-	 * @param name a descriptive name for the task
-	 * @param translator the translator to use
+	 * @param locale
+	 * @param mode
 	 * @param writer the output writer
+	 * @param fm factory manager
 	 */
 	public LayoutEngineImpl(String locale, String mode, PagedMediaWriter writer, FactoryManager fm) {
-		this.locale = locale;
-		this.mode = mode;
-		//this.locale = locale;
+		this(FormatterConfiguration.with(locale, mode).build(), writer, fm);
+	}
+
+	/**
+	 * Creates a new instance of LayoutEngineTask.
+	 * @param config a descriptive name for the task
+	 * @param writer the output writer
+	 * @param fm factory manager
+	 */
+	public LayoutEngineImpl(FormatterConfiguration config, PagedMediaWriter writer, FactoryManager fm) {
+		this.config = config;
 		this.writer = writer;
 		this.logger = Logger.getLogger(LayoutEngineImpl.class.getCanonicalName());
 		this.normalize = true;
@@ -94,8 +102,10 @@ class LayoutEngineImpl implements FormatterEngine {
 			try {
 				logger.info("Parsing input...");
 
-				ObflParser obflParser = new ObflParser(locale, mode, fm);
-				obflParser.parse(fm.getXmlInputFactory().createXMLEventReader(input));
+				ObflParser obflParser = new ObflParser(fm);
+				Formatter formatter = fm.getFormatterFactory().newFormatter(config.getLocale(), config.getTranslationMode());
+				formatter.setConfiguration(config);
+				obflParser.parse(fm.getXmlInputFactory().createXMLEventReader(input), formatter);
 
 				try {
 					input.close();
@@ -114,12 +124,8 @@ class LayoutEngineImpl implements FormatterEngine {
 				}
 				writer.prepare(meta);
 				writer.open(output);
-				obflParser.writeResult(writer);
+				formatter.write(writer);
 
-			} catch (FileNotFoundException e) {
-				throw new LayoutEngineException("FileNotFoundException while running task. ", e);
-			} catch (IOException e) {
-				throw new LayoutEngineException("IOException while running task. ", e);
 			} catch (PagedMediaWriterException e) {
 				throw new LayoutEngineException("Could not open media writer.", e);
 			} catch (XMLStreamException e) {

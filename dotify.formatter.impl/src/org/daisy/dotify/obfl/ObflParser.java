@@ -40,6 +40,7 @@ import org.daisy.dotify.api.formatter.DynamicSequenceBuilder;
 import org.daisy.dotify.api.formatter.Field;
 import org.daisy.dotify.api.formatter.FieldList;
 import org.daisy.dotify.api.formatter.Formatter;
+import org.daisy.dotify.api.formatter.FormatterConfiguration;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.FormattingTypes;
 import org.daisy.dotify.api.formatter.ItemSequenceProperties;
@@ -98,9 +99,9 @@ public class ObflParser extends XMLParserBase {
 	private List<MetaDataItem> meta;
 
 	private Formatter formatter;
-	private final FilterLocale locale;
-	private final String mode;
-	private final boolean hyphGlobal;
+	private FilterLocale locale;
+	private String mode;
+	private boolean hyphGlobal;
 	private final Logger logger;
 	private final FactoryManager fm;
 	private MarkerProcessor mp;
@@ -108,17 +109,28 @@ public class ObflParser extends XMLParserBase {
 	Map<String, Transformer> xslts = new HashMap<>();
 	Map<String, List<RendererInfo>> renderers = new HashMap<>();
 
-	public ObflParser(String locale, String mode, FactoryManager fm) {
-		this.locale = FilterLocale.parse(locale);
-		this.mode = mode;
-		//TODO: add this to input parameters
-		this.hyphGlobal = true;
+	public ObflParser(FactoryManager fm) {
 		this.fm = fm;
 		this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 	}
-	
+	/**
+	 * 
+	 * @param input
+	 * @throws XMLStreamException
+	 * @throws OBFLParserException
+	 * @deprecated use parse(input, formatter)
+	 */
+	@Deprecated
 	public void parse(XMLEventReader input) throws XMLStreamException, OBFLParserException {
-		this.formatter = fm.getFormatterFactory().newFormatter(locale.toString(), mode);
+		parse(input, fm.getFormatterFactory().newFormatter(locale.toString(), mode));
+	}
+	
+	public void parse(XMLEventReader input, Formatter formatter) throws XMLStreamException, OBFLParserException {
+		this.formatter = formatter;
+		FormatterConfiguration config = formatter.getConfiguration();
+		this.locale = FilterLocale.parse(config.getLocale());
+		this.mode = config.getTranslationMode();
+		this.hyphGlobal = config.isHyphenating();
 		//this.masters = new HashMap<String, LayoutMaster>();
 		this.meta = new ArrayList<>();
 		formatter.open();
@@ -811,7 +823,12 @@ public class ObflParser extends XMLParserBase {
 	private TextAttribute processTextAttributes(XMLEvent style, Iterator<XMLEvent> events) throws XMLStreamException {
 		int len = 0;
 		String name = getAttr(style, "name");
-		DefaultTextAttribute.Builder ret = new DefaultTextAttribute.Builder(name);
+		DefaultTextAttribute.Builder ret;
+		if (formatter.getConfiguration().getIgnoredStyles().contains(name)) {
+			ret = new DefaultTextAttribute.Builder();
+		} else {
+			ret = new DefaultTextAttribute.Builder(name);
+		}
 		while (events.hasNext()) {
 			XMLEvent ev = events.next();
 			if (ev.isCharacters()) {
@@ -1467,6 +1484,13 @@ public class ObflParser extends XMLParserBase {
 		return translate;
 	}
 	
+	/**
+	 * 
+	 * @param writer
+	 * @throws IOException
+	 * @deprecated use parse(input, formatter) and then formatter.write(writer)
+	 */
+	@Deprecated
 	public void writeResult(PagedMediaWriter writer) throws IOException {
 		formatter.write(writer);
 	}

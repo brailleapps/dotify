@@ -160,4 +160,28 @@ class DefaultContext implements Context {
 		return true;
 	}
 
+	@Override
+	public Integer getPagesInVolume() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getPagesInDocument() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getSheetsInVolume() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getSheetsInDocument() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.ContentCollection;
 import org.daisy.dotify.api.formatter.Formatter;
+import org.daisy.dotify.api.formatter.FormatterConfiguration;
 import org.daisy.dotify.api.formatter.FormatterSequence;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
@@ -35,7 +36,6 @@ public class FormatterImpl implements Formatter {
 	private final Logger logger;
 	
 	private final StateObject state;
-	private final FormatterContext context;
 	private final Stack<BlockSequence> blocks;
 	
 	//CrossReferenceHandler
@@ -43,16 +43,13 @@ public class FormatterImpl implements Formatter {
 	private final VolumeSplitter splitter;
 	private boolean isDirty;
 	private CrossReferenceHandler crh;
+	private LazyFormatterContext context;
 
 	/**
 	 * Creates a new formatter
 	 */
 	public FormatterImpl(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, String locale, String mode) {
-		this(new FormatterContext(translatorFactory, tbf, locale, mode));
-	}
-	
-	public FormatterImpl(FormatterContext context) {
-		this.context = context;
+		this.context = new LazyFormatterContext(translatorFactory, tbf, FormatterConfiguration.with(locale, mode).build());
 		this.blocks = new Stack<>();
 		this.state = new StateObject();
 		this.tocs = new HashMap<>();
@@ -67,10 +64,23 @@ public class FormatterImpl implements Formatter {
 		this.splitter = new EvenSizeVolumeSplitter(crh.getVariables());
 	}
 	
+
+	@Override
+	public FormatterConfiguration getConfiguration() {
+		return context.getFormatterContext().getConfiguration();
+	}
+
+	@Override
+	public void setConfiguration(FormatterConfiguration config) {
+		//TODO: we require unopened at the moment due to limitations in the implementation
+		state.assertUnopened();
+		context.setConfiguration(config);
+	}
+	
 	@Override
 	public FormatterSequence newSequence(SequenceProperties p) {
 		state.assertOpen();
-		BlockSequence currentSequence = new BlockSequence(context, p.getInitialPageNumber(), context.getMasters().get(p.getMasterName()));
+		BlockSequence currentSequence = new BlockSequence(context.getFormatterContext(), p.getInitialPageNumber(), context.getFormatterContext().getMasters().get(p.getMasterName()));
 		blocks.push(currentSequence);
 		return currentSequence;
 	}
@@ -78,7 +88,7 @@ public class FormatterImpl implements Formatter {
 	@Override
 	public LayoutMasterBuilder newLayoutMaster(String name,
 			LayoutMasterProperties properties) {
-		return context.newLayoutMaster(name, properties);
+		return context.getFormatterContext().newLayoutMaster(name, properties);
 	}
 
 	@Override
@@ -98,21 +108,21 @@ public class FormatterImpl implements Formatter {
 
 	@Override
 	public VolumeTemplateBuilder newVolumeTemplate(VolumeTemplateProperties props) {
-		VolumeTemplate template = new VolumeTemplate(context, tocs, props.getCondition(), props.getSplitterMax());
+		VolumeTemplate template = new VolumeTemplate(context.getFormatterContext(), tocs, props.getCondition(), props.getSplitterMax());
 		volumeTemplates.push(template);
 		return template;
 	}
 
 	@Override
 	public TableOfContents newToc(String tocName) {
-		TableOfContentsImpl toc = new TableOfContentsImpl(context);
+		TableOfContentsImpl toc = new TableOfContentsImpl(context.getFormatterContext());
 		tocs.put(tocName, toc);
 		return toc;
 	}
 
 	@Override
 	public ContentCollection newCollection(String collectionId) {
-		return context.newContentCollection(collectionId);
+		return context.getFormatterContext().newContentCollection(collectionId);
 	}
 	
 	@Override
@@ -126,7 +136,7 @@ public class FormatterImpl implements Formatter {
 	}
 
 	private Iterable<Volume> getVolumes() {
-		PageStructBuilder contentPaginator =  new PageStructBuilder(context, blocks);
+		PageStructBuilder contentPaginator =  new PageStructBuilder(context.getFormatterContext(), blocks);
 
 		int j = 1;
 		boolean ok = false;
@@ -234,7 +244,7 @@ public class FormatterImpl implements Formatter {
 			for (VolumeTemplate t : volumeTemplates) {
 				if (t.appliesTo(c)) {
 					for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
-						BlockSequence s = seq.getBlockSequence(context, c, crh);
+						BlockSequence s = seq.getBlockSequence(context.getFormatterContext(), c, crh);
 						if (s!=null) {
 							ib.add(s);
 						}
@@ -242,7 +252,7 @@ public class FormatterImpl implements Formatter {
 					break;
 				}
 			}
-			ret = new PageStructBuilder(context, ib).paginate(crh, c);
+			ret = new PageStructBuilder(context.getFormatterContext(), ib).paginate(crh, c);
 			for (PageSequence ps : ret) {
 				for (PageImpl p : ps.getPages()) {
 					for (String id : p.getIdentifiers()) {

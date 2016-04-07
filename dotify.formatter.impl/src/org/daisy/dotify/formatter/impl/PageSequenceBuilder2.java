@@ -219,7 +219,7 @@ class PageSequenceBuilder2 {
 			ret = firstMarkerForRow(r, (MarkerIndicatorRegion)mr);
 			if (ret.length()>0) {
 				try {
-					ret = context.getDefaultTranslator().translate(Translatable.text(ret).build()).getTranslatedRemainder();
+					ret = context.getDefaultTranslator().translate(Translatable.text(context.getConfiguration().isMarkingCapitalLetters()?ret:ret.toLowerCase()).build()).getTranslatedRemainder();
 				} catch (TranslationException e) {
 					throw new PaginatorException("Failed to translate: " + ret, e);
 				}
