@@ -32,12 +32,13 @@ class PageStructBuilder {
 	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
 		int offset = getCurrentPageOffset();
 		PageSequence ps = new PageSequence(struct, seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:offset);
-		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps, crh, seq, this.pageReferences, context, refs, rcontext);
+		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, this.pageReferences, context, refs, rcontext);
 		struct.add(ps);
 		while (psb.hasNext()) {
 			try {
-				//ps.addPage(
-				psb.nextPage(ps); //);
+				PageImpl p = psb.nextPage();
+				p.setSequenceParent(ps);
+				ps.addPage(p);
 			} catch (RestartPaginationException e) {
 				return false;
 			}

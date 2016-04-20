@@ -33,7 +33,7 @@ import org.daisy.dotify.common.text.StringTools;
 class PageImpl implements Page {
 	private final static Pattern trailingWs = Pattern.compile("\\s*\\z");
 	private final static Pattern softHyphen = Pattern.compile("\u00ad");
-	private final WeakReference<PageSequence> parent;
+	private WeakReference<PageSequence> parent;
 	private final LayoutMaster master;
 	private final FormatterContext fcontext;
 	private final List<RowImpl> before;
@@ -46,7 +46,6 @@ class PageImpl implements Page {
 	private final int pageIndex;
 	private final int flowHeight;
 	private final PageTemplate template;
-	private final int pageId;
 	private int contentMarkersBegin;
 	private boolean isVolBreak;
 	private boolean isVolBreakAllowed;
@@ -54,7 +53,7 @@ class PageImpl implements Page {
 	private int volumeNumber;
 	
 	
-	public PageImpl(LayoutMaster master, FormatterContext fcontext, PageSequence parent, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
+	public PageImpl(LayoutMaster master, FormatterContext fcontext, int pageIndex, List<RowImpl> before, List<RowImpl> after) {
 		this.master = master;
 		this.fcontext = fcontext;
 		this.rows = new ArrayList<>();
@@ -67,7 +66,7 @@ class PageImpl implements Page {
 		this.identifiers = new ArrayList<>();
 		this.pageIndex = pageIndex;
 		contentMarkersBegin = 0;
-		this.parent = new WeakReference<>(parent);
+		this.parent = null;
 		this.template = master.getTemplate(pageIndex+1);
 		this.flowHeight = master.getPageHeight() - 
 				(int)Math.ceil(getHeight(template.getHeader(), master.getRowSpacing())) -
@@ -77,7 +76,6 @@ class PageImpl implements Page {
 		this.isVolBreakAllowed = true;
 		this.keepPreviousSheets = 0;
 		this.volumeNumber = 0;
-		this.pageId = parent.getGlobalStartIndex()+getPageOrdinal();
 	}
 	
 	static float getHeight(List<FieldList> list, float def) {
@@ -370,11 +368,15 @@ class PageImpl implements Page {
 	}
 	
 	int getPageId() {
-		return pageId;
+		return getSequenceParent().getGlobalStartIndex()+getPageOrdinal();
 	}
 
 	public PageSequence getSequenceParent() {
 		return parent.get();
+	}
+	
+	public void setSequenceParent(PageSequence seq) {
+		this.parent = new WeakReference<>(seq);
 	}
 	
 	PageStruct getStructParent() {

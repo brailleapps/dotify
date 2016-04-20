@@ -34,7 +34,6 @@ class PageSequenceBuilder2 {
 	private int keepNextSheets;
 	private ContentCollectionImpl collection;
 	private BlockContext blockContext;
-	//private final PageSequence ps;
 	private final LayoutMaster master;
 	private int pageCount = 0;
 	private int pageNumberOffset;
@@ -47,10 +46,9 @@ class PageSequenceBuilder2 {
 	private List<RowGroup> data = null;
 	private boolean force;
 
-	PageSequenceBuilder2(PageSequence ps, CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, CrossReferences refs, DefaultContext rcontext) {
-		//this.ps = ps;
-		this.master = ps.getLayoutMaster();
-		this.pageNumberOffset = ps.getPageNumberOffset();
+	PageSequenceBuilder2(LayoutMaster master, int pageNumberOffset, CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, CrossReferences refs, DefaultContext rcontext) {
+		this.master = master;
+		this.pageNumberOffset = pageNumberOffset;
 		this.pageReferences = pageReferences;
 		this.context = context;
 		this.seq = seq;
@@ -69,11 +67,9 @@ class PageSequenceBuilder2 {
 		this.dataGroups = buildRowGroups().iterator();
 	}
 
-	private PageImpl newPage(PageSequence ps) {
+	private PageImpl newPage() {
 		PageImpl buffer = current;
-		current = new PageImpl(master, context, ps, pageCount+pageNumberOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter());
-		//FIXME: remove use of page sequence, it is needed for markers
-		ps.addPage(current);
+		current = new PageImpl(master, context, pageCount+pageNumberOffset, staticAreaContent.getBefore(), staticAreaContent.getAfter());
 		pageCount ++;
 		if (keepNextSheets>0) {
 			currentPage().setAllowsVolumeBreak(false);
@@ -228,7 +224,7 @@ class PageSequenceBuilder2 {
 		return dataGroups.hasNext() || (data!=null && !data.isEmpty()) || current!=null;
 	}
 	
-	PageImpl nextPage(PageSequence ps) throws PaginatorException, RestartPaginationException {
+	PageImpl nextPage() throws PaginatorException, RestartPaginationException {
 		while (dataGroups.hasNext() || (data!=null && !data.isEmpty())) {
 			if ((data==null || data.isEmpty()) && dataGroups.hasNext()) {
 				//pick up next group
@@ -237,7 +233,7 @@ class PageSequenceBuilder2 {
 				if (rgs.getBlockPosition()!=null) {
 					if (pageCount==0) {
 						//no need to return here, since we know newPage returns null
-						newPage(ps);
+						newPage();
 					}
 					float size = 0;
 					for (RowGroup g : data) {
@@ -249,7 +245,7 @@ class PageSequenceBuilder2 {
 						newRow(new RowImpl(ri.getChars(), ri.getLeftMargin(), ri.getRightMargin()));
 					}
 				} else {
-					PageImpl ret = newPage(ps);
+					PageImpl ret = newPage();
 					if (ret!=null) {
 						return ret;
 					}
@@ -301,7 +297,7 @@ class PageSequenceBuilder2 {
 					throw new RestartPaginationException();
 				}
 				if (data.size()>0) {
-					return newPage(ps);
+					return newPage();
 				}
 			}
 		}
