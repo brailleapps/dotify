@@ -34,7 +34,15 @@ class PageStructBuilder {
 		PageSequence ps = new PageSequence(struct, seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:offset);
 		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps, crh, seq, this.pageReferences, context, refs, rcontext);
 		struct.add(ps);
-		return psb.paginate();
+		while (psb.hasNext()) {
+			try {
+				//ps.addPage(
+				psb.nextPage(ps); //);
+			} catch (RestartPaginationException e) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	private int getCurrentPageOffset() {
