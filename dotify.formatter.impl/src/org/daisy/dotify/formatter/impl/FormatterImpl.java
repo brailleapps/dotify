@@ -43,7 +43,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	//CrossReferenceHandler
 	private final Map<Integer, Volume> volumes;
 	private PageStruct ps;
-	private EvenSizeVolumeSplitterCalculator sdc;
+	private final VolumeSplitter splitter;
 	private boolean isDirty;
 	private boolean volumeForContentSheetChanged;
 	private CrossReferenceHandler crh;
@@ -69,6 +69,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		this.isDirty = false;
 		this.volumeForContentSheetChanged = false;
 		this.crh = new CrossReferenceHandler();
+		this.splitter = new EvenSizeVolumeSplitter(DEFAULT_SPLITTER_MAX);
 	}
 	
 	@Override
@@ -136,9 +137,8 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		boolean ok = false;
 		int totalOverheadCount = 0;
 		int prvVolCount = 0;
-		int volumeOffset = 0;
-		int volsMin = Integer.MAX_VALUE;
-		int reformatSplitterMax = DEFAULT_SPLITTER_MAX;
+
+		
 		ArrayList<Volume> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
 
@@ -149,31 +149,19 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
 			final int contents = PageStruct.countSheets(ps); 
-			this.sdc = new EvenSizeVolumeSplitterCalculator(contents, reformatSplitterMax);
+			splitter.resetSheetCount(contents);
 			// make a preliminary calculation based on contents only
 			
 			String breakpoints = ps.buildBreakpointString();
 			logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
 			BreakPointHandler volBreaks = new BreakPointHandler(breakpoints);
-			int splitterMax = getVolumeMaxSize(1,  sdc.getVolumeCount());
+			splitter.setSplitterMax(getVolumeMaxSize(1,  splitter.getVolumeCount()));
 
-			{
-				EvenSizeVolumeSplitterCalculator esc = new EvenSizeVolumeSplitterCalculator(contents + totalOverheadCount, splitterMax, volumeOffset);
-				// this fixes a problem where the volume overhead pushes the
-				// volume count up once the volume offset has been set
-				if (volumeOffset == 1 && esc.getVolumeCount() > volsMin + 1) {
-					volumeOffset = 0;
-					esc = new EvenSizeVolumeSplitterCalculator(contents + totalOverheadCount, splitterMax, volumeOffset);
-				}
-	
-				volsMin = Math.min(esc.getVolumeCount(), volsMin);
-				
-				volumeForContentSheetChanged = false;
-				sdc = esc;
-			}
-
-			if ( sdc.getVolumeCount()!=prvVolCount) {
-				prvVolCount =  sdc.getVolumeCount();
+			splitter.updateSheetCount(contents + totalOverheadCount);
+			volumeForContentSheetChanged = false;
+			
+			if (splitter.getVolumeCount()!=prvVolCount) {
+				prvVolCount =  splitter.getVolumeCount();
 			}
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
@@ -181,8 +169,8 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			ret = new ArrayList<>();
 			int pageIndex = 0;
 			
-			for (int i=1;i<= sdc.getVolumeCount();i++) {
-				if (splitterMax!=getVolumeMaxSize(i,  sdc.getVolumeCount())) {
+			for (int i=1;i<= splitter.getVolumeCount();i++) {
+				if (splitter.getSplitterMax()!=getVolumeMaxSize(i,  splitter.getVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
 				
@@ -194,7 +182,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				totalOverheadCount += volume.getOverhead();
 
 				{
-					int targetSheetsInVolume = (i==sdc.getVolumeCount()?splitterMax:sdc.sheetsInVolume(i));
+					int targetSheetsInVolume = (i==splitter.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i));
 					int contentSheets = targetSheetsInVolume-volume.getOverhead();
 					BreakPoint bp;
 					{
@@ -202,7 +190,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 						do {
 							offset++;
 							bp = volBreaks.copy().nextRow(contentSheets+offset, false);
-						} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitterMax);
+						} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitter.getSplitterMax());
 						bp = volBreaks.nextRow(contentSheets + offset, true);
 					}
 					contentSheets = bp.getHead().length();
@@ -244,16 +232,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				ok2 = false;
 				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
 				if (!isDirty()) {
-					if (volumeOffset < 1) {
-						//First check to see if the page increase can will be handled automatically without increasing volume offset 
-						//in the next iteration (by supplying up-to-date overhead values)
-						EvenSizeVolumeSplitterCalculator esv = new EvenSizeVolumeSplitterCalculator(contents+totalOverheadCount, splitterMax, volumeOffset);
-						if (esv.equals(sdc)) {
-							volumeOffset++;
-						}
-					} else {
-						logger.warning("Could not fit contents even when adding a new volume.");
-					}
+					splitter.adjustVolumeCount(contents+totalOverheadCount);
 				}
 			}
 			if (!isDirty() && pageIndex==PageStruct.countPages(ps) && ok2) {
@@ -264,7 +243,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			} else {
 				j++;
 				setDirty(false);
-				reformatSplitterMax = getVolumeMaxSize(1, sdc.getVolumeCount());
+				splitter.setReformatSplitterMax(getVolumeMaxSize(1, splitter.getVolumeCount()));
 				logger.info("Things didn't add up, running another iteration (" + j + ")");
 			}
 		}
@@ -273,7 +252,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 
 
 	private PageStruct updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
-		DefaultContext c = new DefaultContext(volumeNumber, sdc.getVolumeCount());
+		DefaultContext c = new DefaultContext(volumeNumber, splitter.getVolumeCount());
 		PageStruct ret = null;
 		try {
 			ArrayList<BlockSequence> ib = new ArrayList<>();
@@ -318,7 +297,10 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			if (t==null) {
 				System.out.println("VOLDATA NULL");
 			}
-			if (t.appliesTo(new DefaultContext(volumeNumber, volumeCount))) {
+			if (t.appliesTo(new DefaultContext.Builder()
+						.currentVolume(volumeNumber)
+						.volumeCount(volumeCount)
+						.build())) {
 				return t.getVolumeMaxSize();
 			}
 		}
@@ -369,7 +351,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 
 	@Override
 	public int getVolumeCount() {
-		return sdc.getVolumeCount();
+		return splitter.getVolumeCount();
 	}
 
 	@Override
