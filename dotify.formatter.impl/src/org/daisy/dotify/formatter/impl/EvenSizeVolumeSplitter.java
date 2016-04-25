@@ -5,18 +5,11 @@ import java.util.logging.Logger;
 class EvenSizeVolumeSplitter implements VolumeSplitter {
 	private final static Logger logger = Logger.getLogger(EvenSizeVolumeSplitter.class.getCanonicalName());
 	private EvenSizeVolumeSplitterCalculator sdc;
-	int reformatSplitterMax;
 	int splitterMax = 0;
 	int volumeOffset = 0;
 	int volsMin = Integer.MAX_VALUE;
 	
 	EvenSizeVolumeSplitter(int reformat) {
-		this.reformatSplitterMax = reformat;
-	}
-	
-	@Override
-	public void resetSheetCount(int sheets) {
-		this.sdc = new EvenSizeVolumeSplitterCalculator(sheets, reformatSplitterMax);
 	}
 	
 	@Override
@@ -30,13 +23,12 @@ class EvenSizeVolumeSplitter implements VolumeSplitter {
 	}
 
 	@Override
-	public void setReformatSplitterMax(int reformat) {
-		this.reformatSplitterMax = reformat;
-	}
-
-	@Override
 	public int getVolumeCount() {
-		return sdc.getVolumeCount();
+		if (sdc==null) {
+			return 1;
+		} else {
+			return sdc.getVolumeCount();
+		}
 	}
 	
 	@Override

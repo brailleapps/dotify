@@ -2,8 +2,6 @@ package org.daisy.dotify.formatter.impl;
 
 interface VolumeSplitter {
 
-	void resetSheetCount(int sheets);
-	
 	void updateSheetCount(int sheets);
 	
 	/**
@@ -20,7 +18,6 @@ interface VolumeSplitter {
 	public int sheetsInVolume(int volIndex);
 	
 	void adjustVolumeCount(int sheets);
-	void setReformatSplitterMax(int reformat);
 	void setSplitterMax(int splitterMax);
 	int getSplitterMax();
 }

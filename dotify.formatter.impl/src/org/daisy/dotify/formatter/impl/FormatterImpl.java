@@ -42,7 +42,6 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	
 	//CrossReferenceHandler
 	private final Map<Integer, Volume> volumes;
-	private PageStruct ps;
 	private final VolumeSplitter splitter;
 	private boolean isDirty;
 	private boolean volumeForContentSheetChanged;
@@ -136,33 +135,27 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		int j = 1;
 		boolean ok = false;
 		int totalOverheadCount = 0;
-		int prvVolCount = 0;
-
 		
 		ArrayList<Volume> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
-
+		PageStruct ps;
 		while (!ok) {
+			BreakPointHandler volBreaks;
 			try {
-				this.ps = contentPaginator.paginate(crh, this, new DefaultContext(null, null));
+				ps = contentPaginator.paginate(crh, this, new DefaultContext(null, null));
+				String breakpoints = ps.buildBreakpointString();
+				logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
+				volBreaks = new BreakPointHandler(breakpoints);
 			} catch (PaginatorException e) {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
-			final int contents = PageStruct.countSheets(ps); 
-			splitter.resetSheetCount(contents);
-			// make a preliminary calculation based on contents only
-			
-			String breakpoints = ps.buildBreakpointString();
-			logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
-			BreakPointHandler volBreaks = new BreakPointHandler(breakpoints);
-			splitter.setSplitterMax(getVolumeMaxSize(1,  splitter.getVolumeCount()));
 
-			splitter.updateSheetCount(contents + totalOverheadCount);
-			volumeForContentSheetChanged = false;
+			// make a preliminary calculation based on contents only
+			splitter.setSplitterMax(getVolumeMaxSize(1,  splitter.getVolumeCount()));
+			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
 			
-			if (splitter.getVolumeCount()!=prvVolCount) {
-				prvVolCount =  splitter.getVolumeCount();
-			}
+			volumeForContentSheetChanged = false;
+
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
 			totalOverheadCount = 0;
@@ -182,18 +175,9 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				totalOverheadCount += volume.getOverhead();
 
 				{
-					int targetSheetsInVolume = (i==splitter.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i));
-					int contentSheets = targetSheetsInVolume-volume.getOverhead();
-					BreakPoint bp;
-					{
-						int offset = -1;
-						do {
-							offset++;
-							bp = volBreaks.copy().nextRow(contentSheets+offset, false);
-						} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitter.getSplitterMax());
-						bp = volBreaks.nextRow(contentSheets + offset, true);
-					}
-					contentSheets = bp.getHead().length();
+					int contentSheets = getBreakPoint(volBreaks, 
+							(i==splitter.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
+							volume.getOverhead());
 					setTargetVolSize(volume, contentSheets + volume.getOverhead());
 				}
 				{
@@ -210,8 +194,8 @@ public class FormatterImpl implements Formatter, CrossReferences {
 						ok2 = false;
 						logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
 					}
-					for (PageSequence ps : body) {
-						for (PageImpl p : ps.getPages()) {
+					for (PageSequence seq : body) {
+						for (PageImpl p : seq.getPages()) {
 							for (String id : p.getIdentifiers()) {
 								crh.setVolumeNumber(id, i);
 							}
@@ -232,7 +216,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 				ok2 = false;
 				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
 				if (!isDirty()) {
-					splitter.adjustVolumeCount(contents+totalOverheadCount);
+					splitter.adjustVolumeCount(ps.getSheetCount()+totalOverheadCount);
 				}
 			}
 			if (!isDirty() && pageIndex==PageStruct.countPages(ps) && ok2) {
@@ -243,13 +227,25 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			} else {
 				j++;
 				setDirty(false);
-				splitter.setReformatSplitterMax(getVolumeMaxSize(1, splitter.getVolumeCount()));
 				logger.info("Things didn't add up, running another iteration (" + j + ")");
 			}
 		}
 		return ret;
 	}
 
+	private int getBreakPoint(BreakPointHandler volBreaks, int targetSheetsInVolume, int overhead) {
+		int contentSheets = targetSheetsInVolume-overhead;
+		BreakPoint bp;
+		{
+			int offset = -1;
+			do {
+				offset++;
+				bp = volBreaks.copy().nextRow(contentSheets+offset, false);
+			} while (bp.getHead().length()<contentSheets && targetSheetsInVolume+offset<splitter.getSplitterMax());
+			bp = volBreaks.nextRow(contentSheets + offset, true);
+		}
+		return bp.getHead().length();
+	}
 
 	private PageStruct updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
 		DefaultContext c = new DefaultContext(volumeNumber, splitter.getVolumeCount());
@@ -306,10 +302,6 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		}
 		//TODO: don't return a fixed value
 		return DEFAULT_SPLITTER_MAX;
-	}	
-	
-	public PageStruct getContents() {
-		return ps;
 	}
 	
 	private void setTargetVolSize(Volume d, int targetVolSize) {

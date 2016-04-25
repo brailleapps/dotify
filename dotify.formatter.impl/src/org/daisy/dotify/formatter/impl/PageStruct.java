@@ -14,11 +14,21 @@ class PageStruct implements Iterable<PageSequence> {
 	private final Stack<PageSequence> seqs;
 	private final Stack<PageImpl> pages;
 	private final Map<Integer, PageView> volumeViews;
+	private int sheetCount;
 	
 	PageStruct() {
 		seqs = new Stack<>();
 		pages = new Stack<>();
 		volumeViews = new HashMap<>();
+		sheetCount = 0;
+	}
+	
+	void updateSheetCount() {
+		sheetCount = countSheets(this);
+	}
+	
+	int getSheetCount() {
+		return sheetCount;
 	}
 
 	static int countPages(Iterable<PageSequence> seqs) {
