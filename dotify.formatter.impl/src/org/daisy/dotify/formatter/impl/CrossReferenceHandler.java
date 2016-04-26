@@ -5,13 +5,13 @@ class CrossReferenceHandler implements CrossReferences {
 	private final LookupHandler<String, Integer> pageRefs;
 	private final LookupHandler<String, Integer> volumeRefs;
 	private final LookupHandler<Integer, Iterable<AnchorData>> anchorRefs;
-	private final VolumeSplitter splitter;
+	private final VariablesHandler variables;
 	
-	CrossReferenceHandler(VolumeSplitter splitter) {
+	CrossReferenceHandler() {
 		this.pageRefs = new LookupHandler<>();
 		this.volumeRefs = new LookupHandler<>();
 		this.anchorRefs = new LookupHandler<>();
-		this.splitter = splitter;
+		this.variables = new VariablesHandler();
 	}
 	
 	public Integer getVolumeNumber(String refid) {
@@ -37,20 +37,20 @@ class CrossReferenceHandler implements CrossReferences {
 	void setAnchorData(int volume, Iterable<AnchorData> data) {
 		anchorRefs.put(volume, data);
 	}
+	
+	public VariablesHandler getVariables() {
+		return variables;
+	}
 
 	boolean isDirty() {
-		return pageRefs.isDirty() || volumeRefs.isDirty() || anchorRefs.isDirty();
+		return pageRefs.isDirty() || volumeRefs.isDirty() || anchorRefs.isDirty() || variables.isDirty();
 	}
 	
 	void setDirty(boolean value) {
 		pageRefs.setDirty(value);
 		volumeRefs.setDirty(value);
 		anchorRefs.setDirty(value);
+		variables.setDirty(value);
 	}
 
-	@Override
-	public int getVolumeCount() {
-		//FIXME: temporary
-		return splitter.getVolumeCount();
-	}
 }

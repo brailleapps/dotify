@@ -55,7 +55,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 
 		ret.addAll(collectionStartEvents);
 		boolean hasContents = false;
-		for (int i=0; i<crh.getVolumeCount(); i++) {
+		for (int i=0; i<crh.getVariables().getVolumeCount(); i++) {
 			Iterable<AnchorData> v = crh.getAnchorData(i+1);
 			if (v!=null) {
 				for (AnchorData ad : v) {

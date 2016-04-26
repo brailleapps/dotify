@@ -5,12 +5,6 @@ interface VolumeSplitter {
 	void updateSheetCount(int sheets);
 	
 	/**
-	 * Gets the number of volumes.
-	 * @return returns the number of volumes
-	 */
-	int getVolumeCount();
-	
-	/**
 	 * Gets the number of sheets in a volume
 	 * @param volIndex volume index, one-based
 	 * @return returns the number of sheets in the volume

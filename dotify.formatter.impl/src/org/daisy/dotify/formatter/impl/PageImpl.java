@@ -33,7 +33,7 @@ import org.daisy.dotify.common.text.StringTools;
 class PageImpl implements Page {
 	private final static Pattern trailingWs = Pattern.compile("\\s*\\z");
 	private final static Pattern softHyphen = Pattern.compile("\u00ad");
-	private WeakReference<PageSequence> parent;
+	private PageSequence parent;
 	private final LayoutMaster master;
 	private final FormatterContext fcontext;
 	private final List<RowImpl> before;
@@ -372,11 +372,11 @@ class PageImpl implements Page {
 	}
 
 	public PageSequence getSequenceParent() {
-		return parent.get();
+		return parent;
 	}
 	
 	public void setSequenceParent(PageSequence seq) {
-		this.parent = new WeakReference<>(seq);
+		this.parent = seq;
 	}
 	
 	PageStruct getStructParent() {

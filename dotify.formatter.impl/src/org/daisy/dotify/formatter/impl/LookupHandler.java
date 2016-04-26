@@ -17,12 +17,19 @@ public class LookupHandler<K, V> {
 	}
 
 	V get(K key) {
+		return get(key, null);
+	}
+
+	V get(K key, V def) {
 		requestedKeys.add(key);
 		V ret = keyValueMap.get(key);
 		if (ret==null) {
 			dirty = true;
+			//ret is null here, so if def is also null, either variable can be returned
+			return def;
+		} else {
+			return ret;
 		}
-		return ret;
 	}
 	
 	void put(K key, V value) {

@@ -8,8 +8,10 @@ class EvenSizeVolumeSplitter implements VolumeSplitter {
 	int splitterMax = 0;
 	int volumeOffset = 0;
 	int volsMin = Integer.MAX_VALUE;
-	
-	EvenSizeVolumeSplitter(int reformat) {
+	private final VariablesHandler vh;
+
+	EvenSizeVolumeSplitter(VariablesHandler vh) {
+		this.vh = vh;
 	}
 	
 	@Override
@@ -20,15 +22,6 @@ class EvenSizeVolumeSplitter implements VolumeSplitter {
 	@Override
 	public int getSplitterMax() {
 		return splitterMax;
-	}
-
-	@Override
-	public int getVolumeCount() {
-		if (sdc==null) {
-			return 1;
-		} else {
-			return sdc.getVolumeCount();
-		}
 	}
 	
 	@Override
@@ -44,6 +37,7 @@ class EvenSizeVolumeSplitter implements VolumeSplitter {
 		volsMin = Math.min(esc.getVolumeCount(), volsMin);
 		
 		sdc = esc;
+		vh.setVolumeCount(sdc.getVolumeCount());
 	}
 	
 	@Override

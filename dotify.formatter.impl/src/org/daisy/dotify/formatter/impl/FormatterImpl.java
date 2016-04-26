@@ -65,9 +65,8 @@ public class FormatterImpl implements Formatter {
 		//CrossReferenceHandler
 		this.volumes = new HashMap<>();
 		this.isDirty = false;
-		this.splitter = new EvenSizeVolumeSplitter(DEFAULT_SPLITTER_MAX);
-		//FIXME: adding splitter to crh is temporary
-		this.crh = new CrossReferenceHandler(splitter);
+		this.crh = new CrossReferenceHandler();
+		this.splitter = new EvenSizeVolumeSplitter(crh.getVariables());
 	}
 	
 	@Override
@@ -138,6 +137,7 @@ public class FormatterImpl implements Formatter {
 		ArrayList<Volume> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
 		PageStruct ps;
+		VariablesHandler vh = crh.getVariables();
 		while (!ok) {
 			BreakPointHandler volBreaks;
 			try {
@@ -150,7 +150,7 @@ public class FormatterImpl implements Formatter {
 			}
 
 			// make a preliminary calculation based on contents only
-			splitter.setSplitterMax(getVolumeMaxSize(1,  splitter.getVolumeCount()));
+			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
 			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
 
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
@@ -159,8 +159,8 @@ public class FormatterImpl implements Formatter {
 			ret = new ArrayList<>();
 			int pageIndex = 0;
 			
-			for (int i=1;i<= splitter.getVolumeCount();i++) {
-				if (splitter.getSplitterMax()!=getVolumeMaxSize(i,  splitter.getVolumeCount())) {
+			for (int i=1;i<= vh.getVolumeCount();i++) {
+				if (splitter.getSplitterMax()!=getVolumeMaxSize(i,  vh.getVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
 				
@@ -173,7 +173,7 @@ public class FormatterImpl implements Formatter {
 
 				{
 					int contentSheets = getBreakPoint(volBreaks, 
-							(i==splitter.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
+							(i==vh.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
 							volume.getOverhead());
 					setTargetVolSize(volume, contentSheets + volume.getOverhead());
 				}
@@ -245,7 +245,7 @@ public class FormatterImpl implements Formatter {
 	}
 
 	private PageStruct updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
-		DefaultContext c = new DefaultContext(volumeNumber, splitter.getVolumeCount());
+		DefaultContext c = new DefaultContext(volumeNumber, crh.getVariables().getVolumeCount());
 		PageStruct ret = null;
 		try {
 			ArrayList<BlockSequence> ib = new ArrayList<>();

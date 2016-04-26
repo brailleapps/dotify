@@ -22,9 +22,9 @@ interface CrossReferences {
 	 * @return returns the volume number, one-based
 	 */
 	public Integer getVolumeNumber(String refid);
-		
-	public int getVolumeCount();
 	
 	Iterable<AnchorData> getAnchorData(int volume);
+	
+	VariablesHandler getVariables();
 	
 }
