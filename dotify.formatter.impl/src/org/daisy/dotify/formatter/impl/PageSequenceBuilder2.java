@@ -42,7 +42,7 @@ class PageSequenceBuilder2 {
 	private List<RowGroup> data = null;
 	private boolean force;
 
-	PageSequenceBuilder2(LayoutMaster master, int pageNumberOffset, CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, CrossReferences refs, DefaultContext rcontext) {
+	PageSequenceBuilder2(LayoutMaster master, int pageNumberOffset, CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, DefaultContext rcontext) {
 		this.master = master;
 		this.pageNumberOffset = pageNumberOffset;
 		this.pageReferences = pageReferences;
@@ -56,7 +56,7 @@ class PageSequenceBuilder2 {
 		}
 		this.keepNextSheets = 0;
 		
-		this.blockContext = new BlockContext(seq.getLayoutMaster().getFlowWidth(), refs, rcontext, context);
+		this.blockContext = new BlockContext(seq.getLayoutMaster().getFlowWidth(), crh, rcontext, context);
 		this.staticAreaContent = new PageAreaContent(seq.getLayoutMaster().getPageAreaBuilder(), blockContext);
 		this.current = null;
 		this.dataGroups = new RowGroupBuilder(master, seq, blockContext).getResult().iterator();

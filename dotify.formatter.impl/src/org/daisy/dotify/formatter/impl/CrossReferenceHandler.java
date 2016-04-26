@@ -1,18 +1,20 @@
 package org.daisy.dotify.formatter.impl;
 
 
-class CrossReferenceHandler {
+class CrossReferenceHandler implements CrossReferences {
 	private final LookupHandler<String, Integer> pageRefs;
 	private final LookupHandler<String, Integer> volumeRefs;
 	private final LookupHandler<Integer, Iterable<AnchorData>> anchorRefs;
+	private final VolumeSplitter splitter;
 	
-	CrossReferenceHandler() {
+	CrossReferenceHandler(VolumeSplitter splitter) {
 		this.pageRefs = new LookupHandler<>();
 		this.volumeRefs = new LookupHandler<>();
 		this.anchorRefs = new LookupHandler<>();
+		this.splitter = splitter;
 	}
 	
-	Integer getVolumeNumber(String refid) {
+	public Integer getVolumeNumber(String refid) {
 		return volumeRefs.get(refid);
 	}
 	
@@ -20,7 +22,7 @@ class CrossReferenceHandler {
 		volumeRefs.put(refid, volume);
 	}
 	
-	Integer getPageNumber(String refid) {
+	public Integer getPageNumber(String refid) {
 		return pageRefs.get(refid);
 	}
 	
@@ -28,7 +30,7 @@ class CrossReferenceHandler {
 		pageRefs.put(refid, page);
 	}
 	
-	Iterable<AnchorData> getAnchorData(int volume) {
+	public Iterable<AnchorData> getAnchorData(int volume) {
 		return anchorRefs.get(volume);
 	}
 	
@@ -44,5 +46,11 @@ class CrossReferenceHandler {
 		pageRefs.setDirty(value);
 		volumeRefs.setDirty(value);
 		anchorRefs.setDirty(value);
+	}
+
+	@Override
+	public int getVolumeCount() {
+		//FIXME: temporary
+		return splitter.getVolumeCount();
 	}
 }

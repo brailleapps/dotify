@@ -28,7 +28,7 @@ import org.daisy.dotify.common.text.BreakPointHandler;
  * Breaks flow into rows, page related block properties are left to next step
  * @author Joel Håkansson
  */
-public class FormatterImpl implements Formatter, CrossReferences {
+public class FormatterImpl implements Formatter {
 	private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final static int DEFAULT_SPLITTER_MAX = 50;
 	
@@ -44,7 +44,6 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	private final Map<Integer, Volume> volumes;
 	private final VolumeSplitter splitter;
 	private boolean isDirty;
-	private boolean volumeForContentSheetChanged;
 	private CrossReferenceHandler crh;
 
 	/**
@@ -66,9 +65,9 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		//CrossReferenceHandler
 		this.volumes = new HashMap<>();
 		this.isDirty = false;
-		this.volumeForContentSheetChanged = false;
-		this.crh = new CrossReferenceHandler();
 		this.splitter = new EvenSizeVolumeSplitter(DEFAULT_SPLITTER_MAX);
+		//FIXME: adding splitter to crh is temporary
+		this.crh = new CrossReferenceHandler(splitter);
 	}
 	
 	@Override
@@ -142,7 +141,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 		while (!ok) {
 			BreakPointHandler volBreaks;
 			try {
-				ps = contentPaginator.paginate(crh, this, new DefaultContext(null, null));
+				ps = contentPaginator.paginate(crh, new DefaultContext(null, null));
 				String breakpoints = ps.buildBreakpointString();
 				logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
 				volBreaks = new BreakPointHandler(breakpoints);
@@ -153,8 +152,6 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			// make a preliminary calculation based on contents only
 			splitter.setSplitterMax(getVolumeMaxSize(1,  splitter.getVolumeCount()));
 			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
-			
-			volumeForContentSheetChanged = false;
 
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
@@ -255,7 +252,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 			for (VolumeTemplate t : volumeTemplates) {
 				if (t.appliesTo(c)) {
 					for (VolumeSequence seq : (pre?t.getPreVolumeContent():t.getPostVolumeContent())) {
-						BlockSequence s = seq.getBlockSequence(context, c, this);
+						BlockSequence s = seq.getBlockSequence(context, c, crh);
 						if (s!=null) {
 							ib.add(s);
 						}
@@ -263,7 +260,7 @@ public class FormatterImpl implements Formatter, CrossReferences {
 					break;
 				}
 			}
-			ret = new PageStructBuilder(context, ib).paginate(crh, this, c);
+			ret = new PageStructBuilder(context, ib).paginate(crh, c);
 			for (PageSequence ps : ret) {
 				for (PageImpl p : ps.getPages()) {
 					for (String id : p.getIdentifiers()) {
@@ -323,32 +320,12 @@ public class FormatterImpl implements Formatter, CrossReferences {
 	}
 	
 	private boolean isDirty() {
-		return isDirty || volumeForContentSheetChanged || crh.isDirty();
+		return isDirty || crh.isDirty();
 	}
 
 	private void setDirty(boolean isDirty) {
 		this.isDirty = isDirty;
 		crh.setDirty(isDirty);
-	}
-	
-	@Override
-	public Integer getVolumeNumber(String refid) {
-		return crh.getVolumeNumber(refid);
-	}
-
-	@Override
-	public Integer getPageNumber(String refid) {
-		return crh.getPageNumber(refid);
-	}
-
-	@Override
-	public int getVolumeCount() {
-		return splitter.getVolumeCount();
-	}
-
-	@Override
-	public Iterable<AnchorData> getAnchorData(int volume) {
-		return crh.getAnchorData(volume);
 	}
 
 }

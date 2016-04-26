@@ -16,12 +16,12 @@ class PageStructBuilder {
 		this.fs = fs;
 	}
 
-	PageStruct paginate(CrossReferenceHandler crh, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+	PageStruct paginate(CrossReferenceHandler crh, DefaultContext rcontext) throws PaginatorException {
 		restart:while (true) {
 			pageReferences = new HashMap<>();
 			struct = new PageStruct();
 			for (BlockSequence seq : fs) {
-				if (!newSequence(crh, seq, refs, rcontext)) {
+				if (!newSequence(crh, seq, rcontext)) {
 					continue restart;
 				}
 			}
@@ -30,10 +30,10 @@ class PageStructBuilder {
 		}
 	}
 
-	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, CrossReferences refs, DefaultContext rcontext) throws PaginatorException {
+	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, DefaultContext rcontext) throws PaginatorException {
 		int offset = getCurrentPageOffset();
 		PageSequence ps = new PageSequence(struct, seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:offset);
-		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, this.pageReferences, context, refs, rcontext);
+		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, this.pageReferences, context, rcontext);
 		struct.add(ps);
 		while (psb.hasNext()) {
 			try {
