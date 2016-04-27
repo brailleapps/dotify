@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Logger;
@@ -20,8 +21,8 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.common.io.StateObject;
-import org.daisy.dotify.common.text.BreakPoint;
-import org.daisy.dotify.common.text.BreakPointHandler;
+import org.daisy.dotify.common.layout.SplitPoint;
+import org.daisy.dotify.common.layout.SplitPointHandler;
 
 
 /**
@@ -29,7 +30,7 @@ import org.daisy.dotify.common.text.BreakPointHandler;
  * @author Joel Håkansson
  */
 public class FormatterImpl implements Formatter {
-	private final static char ZERO_WIDTH_SPACE = '\u200b';
+	//private final static char ZERO_WIDTH_SPACE = '\u200b';
 	private final static int DEFAULT_SPLITTER_MAX = 50;
 	
 	private final HashMap<String, TableOfContentsImpl> tocs;
@@ -138,13 +139,17 @@ public class FormatterImpl implements Formatter {
 		ArrayList<AnchorData> ad;
 		PageStruct ps;
 		VariablesHandler vh = crh.getVariables();
+		SplitPointHandler<Sheet> volSplitter = new SplitPointHandler<>();
 		while (!ok) {
-			BreakPointHandler volBreaks;
+			//BreakPointHandler volBreaks;
+			List<Sheet> units;
 			try {
 				ps = contentPaginator.paginate(crh, new DefaultContext(null, null));
-				String breakpoints = ps.buildBreakpointString();
-				logger.fine("Volume break string: " + breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
-				volBreaks = new BreakPointHandler(breakpoints);
+				//String breakpoints = ps.buildBreakpointString();
+				//logger.fine(breakpoints.replace(ZERO_WIDTH_SPACE, '-'));
+				//volBreaks = new BreakPointHandler(breakpoints);
+				units = ps.buildSplitPoints();
+				//logger.fine(PageStruct.toString(units));
 			} catch (PaginatorException e) {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
@@ -172,9 +177,17 @@ public class FormatterImpl implements Formatter {
 				totalOverheadCount += volume.getOverhead();
 
 				{
+					/*
 					int contentSheets = getBreakPoint(volBreaks, 
 							(i==vh.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
-							volume.getOverhead());
+							volume.getOverhead());*/
+					SplitPoint<Sheet> sp = getSplitPoint(volSplitter,
+							(i==vh.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
+							volume.getOverhead(), 
+							units);
+					
+					int contentSheets = sp.getHead().size();
+					units = sp.getTail();
 					setTargetVolSize(volume, contentSheets + volume.getOverhead());
 				}
 				{
@@ -209,9 +222,9 @@ public class FormatterImpl implements Formatter {
 					ret.add(volume);
 				}
 			}
-			if (volBreaks.hasNext()) {
+			if (!units.isEmpty()) {
 				ok2 = false;
-				logger.fine("There is more content... sheets: " + volBreaks.getRemaining() + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
+				logger.warning("There is more content... sheets: " + units + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
 				if (!isDirty()) {
 					splitter.adjustVolumeCount(ps.getSheetCount()+totalOverheadCount);
 				}
@@ -230,6 +243,7 @@ public class FormatterImpl implements Formatter {
 		return ret;
 	}
 
+	/*
 	private int getBreakPoint(BreakPointHandler volBreaks, int targetSheetsInVolume, int overhead) {
 		int contentSheets = targetSheetsInVolume-overhead;
 		BreakPoint bp;
@@ -242,6 +256,20 @@ public class FormatterImpl implements Formatter {
 			bp = volBreaks.nextRow(contentSheets + offset, true);
 		}
 		return bp.getHead().length();
+	}*/
+	
+	private SplitPoint<Sheet> getSplitPoint(SplitPointHandler<Sheet> volBreaks, int targetSheetsInVolume, int overhead, List<Sheet> data) {
+		int contentSheets = targetSheetsInVolume-overhead;
+		SplitPoint<Sheet> bp;
+		{
+			int offset = -1;
+			do {
+				offset++;
+				bp = volBreaks.split(contentSheets+offset, false, data);
+			} while (bp.getHead().size()<contentSheets && targetSheetsInVolume+offset<splitter.getSplitterMax());
+			bp = volBreaks.split(contentSheets + offset, true, data);
+		}
+		return bp;
 	}
 
 	private PageStruct updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
