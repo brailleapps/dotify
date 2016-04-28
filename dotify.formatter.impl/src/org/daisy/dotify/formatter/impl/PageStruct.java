@@ -191,58 +191,6 @@ class PageStruct implements Iterable<PageSequence> {
 		return volumeViews.get(volumeNumber);
 	}
 	
-	/**
-	 * Makes a new sub structure starting from the pageIndex with the specified
-	 * number of sheets
-	 * @param pageIndex the starting page index
-	 * @param contentSheets the number of sheets
-	 * @return
-	 */
-	Iterable<PageSequence> substruct(int pageIndex, int contentSheets) {
-		PageStruct body = new PageStruct();
-		PageSequence originalSeq = null;
-		int sheets = 0;
-		int pagesInSeq = 0;
-		PageImpl p;
-		int offs = 0;
-		int i;
-		process:for (PageSequence ps : seqs) {
-			while (pageIndex-offs < ps.getPageCount()) {
-				p = ps.getPage(pageIndex-offs);
-				if (pageIndex<countPages(this)) {
-
-					//new sheet needed for this page?
-					if (originalSeq != ps || !ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 0) {
-						i = 1;
-					} else {
-						i = 0;
-					}
-					if (sheets + i<=contentSheets) {
-						if (body.empty() || originalSeq != ps) {
-							originalSeq = ps;
-							body.add(new PageSequence(body, originalSeq.getLayoutMaster(), originalSeq.getPageNumberOffset())); //, originalSeq.getPageNumberOffset(), originalSeq.getFormatterFactory()));
-							pagesInSeq = 0;
-						}
-						((PageSequence)body.peek()).addPage(p);
-						pagesInSeq++;
-						if (!ps.getLayoutMaster().duplex() || pagesInSeq % 2 == 1) {
-							sheets++;
-						}
-						pageIndex++;
-					} else {
-						//we have what we need
-						break process;
-					}
-				} else {
-					//no more content
-					break process;
-				}
-			}
-			offs += ps.getPageCount();
-		}
-		return body;
-	}
-	
 	void setVolumeScope(int volumeNumber, int fromIndex, int toIndex) {
 		PageView pw = new PageView(pages, fromIndex, toIndex);
 		for (PageImpl p : pw.getPages()) {

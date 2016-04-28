@@ -189,21 +189,14 @@ public class FormatterImpl implements Formatter {
 					int contentSheets = sp.getHead().size();
 					units = sp.getTail();
 					setTargetVolSize(volume, contentSheets + volume.getOverhead());
-				}
-				{
-					int contentSheets = volume.getTargetSize() - volume.getOverhead();
 					logger.fine("Sheets  in volume " + i + ": " + (contentSheets+volume.getOverhead()) + 
 							", content:" + contentSheets +
 							", overhead:" + volume.getOverhead());
-					Iterable<PageSequence> body = ps.substruct(pageIndex, contentSheets);
+					
+					Iterable<PageSequence> body = sequencesFromSheets(sp.getHead());
 					int pageCount = PageStruct.countPages(body);
 					ps.setVolumeScope(i, pageIndex, pageIndex+pageCount);
 					pageIndex += pageCount;
-					int sheetsInVolume = PageStruct.countSheets(body) + volume.getOverhead();
-					if (sheetsInVolume>volume.getTargetSize()) {
-						ok2 = false;
-						logger.fine("Error in code. Too many sheets in volume " + i + ": " + sheetsInVolume);
-					}
 					for (PageSequence seq : body) {
 						for (PageImpl p : seq.getPages()) {
 							for (String id : p.getIdentifiers()) {
@@ -238,6 +231,21 @@ public class FormatterImpl implements Formatter {
 				j++;
 				setDirty(false);
 				logger.info("Things didn't add up, running another iteration (" + j + ")");
+			}
+		}
+		return ret;
+	}
+	
+	private static Iterable<PageSequence> sequencesFromSheets(List<Sheet> sheets) {
+		PageStruct ret = new PageStruct();
+		PageSequence currentSeq = null;
+		for (Sheet s : sheets) {
+			for (PageImpl p : s.getPages()) {
+				if (ret.empty() || currentSeq!=p.getSequenceParent()) {
+					currentSeq = p.getSequenceParent();
+					ret.add(new PageSequence(ret, currentSeq.getLayoutMaster(), currentSeq.getPageNumberOffset()));
+				}
+				((PageSequence)ret.peek()).addPage(p);
 			}
 		}
 		return ret;
