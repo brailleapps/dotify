@@ -217,7 +217,7 @@ public class FormatterImpl implements Formatter {
 			}
 			if (!units.isEmpty()) {
 				ok2 = false;
-				logger.warning("There is more content... sheets: " + units + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
+				logger.fine("There is more content... sheets: " + units + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
 				if (!isDirty()) {
 					splitter.adjustVolumeCount(ps.getSheetCount()+totalOverheadCount);
 				}
