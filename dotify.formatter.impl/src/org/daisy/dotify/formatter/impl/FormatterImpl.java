@@ -166,6 +166,8 @@ public class FormatterImpl implements Formatter {
 			} catch (PaginatorException e) {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
+			final int sheetCount = units.size();
+			final int totalPageCount = countPages(units);
 
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
@@ -203,7 +205,7 @@ public class FormatterImpl implements Formatter {
 							", overhead:" + volume.getOverhead());
 					
 					Iterable<PageSequence> body = sequencesFromSheets(sp.getHead());
-					int pageCount = PageStruct.countPages(body);
+					int pageCount = countPages(sp.getHead());
 					// TODO: In a volume-by-volume scenario, how can we make this work
 					ps.setVolumeScope(i, pageIndex, pageIndex+pageCount); 
 					pageIndex += pageCount;
@@ -226,15 +228,15 @@ public class FormatterImpl implements Formatter {
 				}
 			}
 			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
-			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
+			splitter.updateSheetCount(sheetCount + totalOverheadCount);
 			if (!units.isEmpty()) {
 				ok2 = false;
-				logger.fine("There is more content... sheets: " + units + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
+				logger.fine("There is more content... sheets: " + units + ", pages: " +(totalPageCount-pageIndex));
 				if (!isDirty() && j>1) {
-					splitter.adjustVolumeCount(ps.getSheetCount()+totalOverheadCount);
+					splitter.adjustVolumeCount(sheetCount+totalOverheadCount);
 				}
 			}
-			if (!isDirty() && pageIndex==PageStruct.countPages(ps) && ok2) {
+			if (!isDirty() && pageIndex==totalPageCount && ok2) {
 				//everything fits
 				ok = true;
 			} else if (j>9) {
@@ -244,6 +246,14 @@ public class FormatterImpl implements Formatter {
 				setDirty(false);
 				logger.info("Things didn't add up, running another iteration (" + j + ")");
 			}
+		}
+		return ret;
+	}
+	
+	private static int countPages(List<Sheet> sheets) {
+		int ret = 0;
+		for (Sheet s : sheets) {
+			ret += s.getPages().size();
 		}
 		return ret;
 	}
