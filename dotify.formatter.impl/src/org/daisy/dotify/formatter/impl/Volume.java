@@ -35,9 +35,24 @@ class Volume {
 		return body;
 	}
 
-	public void setBody(Iterable<PageSequence> body) {
+	public void setBody(List<Sheet> body) {
 		ret = null;
-		this.body = body;
+		this.body = sequencesFromSheets(body);
+	}
+	
+	private static Iterable<PageSequence> sequencesFromSheets(List<Sheet> sheets) {
+		PageStruct ret = new PageStruct();
+		PageSequence currentSeq = null;
+		for (Sheet s : sheets) {
+			for (PageImpl p : s.getPages()) {
+				if (ret.empty() || currentSeq!=p.getSequenceParent()) {
+					currentSeq = p.getSequenceParent();
+					ret.add(new PageSequence(ret, currentSeq.getLayoutMaster(), currentSeq.getPageNumberOffset()));
+				}
+				((PageSequence)ret.peek()).addPage(p);
+			}
+		}
+		return ret;
 	}
 
 	public void setPreVolData(Iterable<PageSequence> preVolData) {
