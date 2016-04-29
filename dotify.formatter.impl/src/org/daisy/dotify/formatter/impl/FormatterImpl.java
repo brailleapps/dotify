@@ -166,8 +166,8 @@ public class FormatterImpl implements Formatter {
 			} catch (PaginatorException e) {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
-			final int sheetCount = units.size();
-			final int totalPageCount = countPages(units);
+			int sheetCount = 0;
+			int totalPageCount = 0;
 
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
@@ -198,6 +198,7 @@ public class FormatterImpl implements Formatter {
 							units);
 					
 					int contentSheets = sp.getHead().size();
+					sheetCount += contentSheets;
 					units = sp.getTail();
 					setTargetVolSize(volume, contentSheets + volume.getOverhead());
 					logger.fine("Sheets  in volume " + i + ": " + (contentSheets+volume.getOverhead()) + 
@@ -209,6 +210,7 @@ public class FormatterImpl implements Formatter {
 					// TODO: In a volume-by-volume scenario, how can we make this work
 					ps.setVolumeScope(i, pageIndex, pageIndex+pageCount); 
 					pageIndex += pageCount;
+					totalPageCount += pageCount;
 					for (PageSequence seq : body) {
 						for (PageImpl p : seq.getPages()) {
 							for (String id : p.getIdentifiers()) {
@@ -226,6 +228,10 @@ public class FormatterImpl implements Formatter {
 
 					ret.add(volume);
 				}
+			}
+			if (!units.isEmpty()) {
+				sheetCount += units.size();
+				totalPageCount += countPages(units);
 			}
 			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
 			splitter.updateSheetCount(sheetCount + totalOverheadCount);
