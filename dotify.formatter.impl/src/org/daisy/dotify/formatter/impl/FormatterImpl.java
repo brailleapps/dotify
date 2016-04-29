@@ -140,6 +140,19 @@ public class FormatterImpl implements Formatter {
 		PageStruct ps;
 		VariablesHandler vh = crh.getVariables();
 		SplitPointHandler<Sheet> volSplitter = new SplitPointHandler<>();
+		//splitter.setSplitterMax(Integer.MAX_VALUE);
+		//FIXME: replace the following try/catch with the line above
+		//This code is here for compatibility with regression tests and can be removed once
+		//differences have been checked and accepted
+		try {
+			// make a preliminary calculation based on a contents only
+			ps = contentPaginator.paginate(crh, new DefaultContext(null, null));
+			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
+			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
+		} catch (PaginatorException e) {
+			throw new RuntimeException("Error while formatting.", e);
+		}
+		
 		while (!ok) {
 			//BreakPointHandler volBreaks;
 			List<Sheet> units;
@@ -154,10 +167,6 @@ public class FormatterImpl implements Formatter {
 				throw new RuntimeException("Error while reformatting.", e);
 			}
 
-			// make a preliminary calculation based on contents only
-			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
-			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
-
 			//System.out.println("volcount "+volumeCount() + " sheets " + sheets);
 			boolean ok2 = true;
 			totalOverheadCount = 0;
@@ -165,7 +174,7 @@ public class FormatterImpl implements Formatter {
 			int pageIndex = 0;
 			
 			for (int i=1;i<= vh.getVolumeCount();i++) {
-				if (splitter.getSplitterMax()!=getVolumeMaxSize(i,  vh.getVolumeCount())) {
+				if (j>1 && splitter.getSplitterMax()!=getVolumeMaxSize(i,  vh.getVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
 				
@@ -195,7 +204,8 @@ public class FormatterImpl implements Formatter {
 					
 					Iterable<PageSequence> body = sequencesFromSheets(sp.getHead());
 					int pageCount = PageStruct.countPages(body);
-					ps.setVolumeScope(i, pageIndex, pageIndex+pageCount);
+					// TODO: In a volume-by-volume scenario, how can we make this work
+					ps.setVolumeScope(i, pageIndex, pageIndex+pageCount); 
 					pageIndex += pageCount;
 					for (PageSequence seq : body) {
 						for (PageImpl p : seq.getPages()) {
@@ -215,10 +225,12 @@ public class FormatterImpl implements Formatter {
 					ret.add(volume);
 				}
 			}
+			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
+			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
 			if (!units.isEmpty()) {
 				ok2 = false;
 				logger.fine("There is more content... sheets: " + units + ", pages: " +(PageStruct.countPages(ps)-pageIndex));
-				if (!isDirty()) {
+				if (!isDirty() && j>1) {
 					splitter.adjustVolumeCount(ps.getSheetCount()+totalOverheadCount);
 				}
 			}
