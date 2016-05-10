@@ -21,10 +21,13 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.xpath.XPath;
@@ -107,6 +110,7 @@ public class ObflParser extends XMLParserBase {
 	private MarkerProcessor mp;
 
 	Map<String, Transformer> xslts = new HashMap<>();
+	Map<String, Node> fileRefs = new HashMap<>();
 	Map<String, List<RendererInfo>> renderers = new HashMap<>();
 
 	public ObflParser(FactoryManager fm) {
@@ -157,6 +161,8 @@ public class ObflParser extends XMLParserBase {
 				parseVolumeTemplate(event, input, tp);
 			} else if (equalsStart(event, ObflQName.COLLECTION)) {
 				parseCollection(event, input, tp);
+			} else if (equalsStart(event, ObflQName.FILE_REFERENCE)) {
+				parseFileReference(event, input, fileRefs);
 			} else if (equalsStart(event, ObflQName.XML_PROCESSOR)) {
 				parseProcessor(event, input, xslts);
 			} else if (equalsStart(event, ObflQName.RENDERER)) {
@@ -635,6 +641,29 @@ public class ObflParser extends XMLParserBase {
 		return new XMLDataRenderer(qtd);
 	}
 	
+	private void parseFileReference(XMLEvent event, XMLEventReader input, Map<String, Node> refs) {
+		String uri = getAttr(event, ObflQName.ATTR_URI);
+		DOMResult dr;
+		try {
+			Document d = fm.getDocumentBuilderFactory().newDocumentBuilder().newDocument();
+			dr = new DOMResult(d);
+	        XMLEventWriter ew = fm.getXmlOutputFactory().createXMLEventWriter(dr);
+			while (input.hasNext()) {
+				event=input.nextEvent();
+				if (equalsEnd(event, ObflQName.FILE_REFERENCE)) {
+					break;
+				} else if (event.getEventType()==XMLEvent.COMMENT) {
+					//ignore
+				} else {
+					ew.add(event);
+				}
+			}
+			refs.put(uri, dr.getNode());
+		} catch (ParserConfigurationException | XMLStreamException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private void parseProcessor(XMLEvent event, XMLEventReader input, Map<String, Transformer> xslts) {
 		String name = getAttr(event, ObflQName.ATTR_NAME);
 		DOMResult dr;
@@ -654,6 +683,18 @@ public class ObflParser extends XMLParserBase {
 			}
 			try {
 				TransformerFactory tf = fm.getTransformerFactory();
+				tf.setURIResolver(new URIResolver() {
+					@Override
+					public Source resolve(String href, String base) throws TransformerException {
+						if ("".equals(base)) {
+							Node d = fileRefs.get(href);
+							if (d!=null) {
+								return new DOMSource(d);
+							}
+						}
+						return null;
+					}
+				});
 				xslts.put(name, tf.newTransformer(new DOMSource(dr.getNode())));
 			} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
 				//FIXME: throw what?
