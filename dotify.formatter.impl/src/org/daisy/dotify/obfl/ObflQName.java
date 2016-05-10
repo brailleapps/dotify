@@ -64,6 +64,7 @@ interface ObflQName {
 	 final static QName RENDERER = new QName(OBFL_NS, "renderer");
 	 final static QName RENDERING_SCENARIO = new QName(OBFL_NS, "rendering-scenario");
 	 final static QName FILE_REFERENCE = new QName(OBFL_NS, "file-reference");
+	 final static QName PARAMETER = new QName(OBFL_NS, "parameter");
 	
 	 final static QName ATTR_XML_LANG = new QName("http://www.w3.org/XML/1998/namespace", "lang", "xml");
 	 final static QName ATTR_HYPHENATE = new QName("hyphenate");
@@ -85,6 +86,7 @@ interface ObflQName {
 	 final static QName ATTR_QUALIFIER = new QName("qualifier");
 	 final static QName ATTR_COST = new QName("cost");
 	 final static QName ATTR_URI = new QName("uri");
+	 final static QName ATTR_VALUE = new QName("value");
 	 
 	final static QName TABLE = new QName(OBFL_NS, "table");
 	final static QName THEAD = new QName(OBFL_NS, "thead");

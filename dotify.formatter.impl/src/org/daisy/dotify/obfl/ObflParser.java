@@ -109,7 +109,7 @@ public class ObflParser extends XMLParserBase {
 	private final FactoryManager fm;
 	private MarkerProcessor mp;
 
-	Map<String, Transformer> xslts = new HashMap<>();
+	Map<String, Node> xslts = new HashMap<>();
 	Map<String, Node> fileRefs = new HashMap<>();
 	Map<String, List<RendererInfo>> renderers = new HashMap<>();
 
@@ -220,7 +220,7 @@ public class ObflParser extends XMLParserBase {
 	}
 
 	static void report(XMLEvent event) {
-		if (event.isEndElement()) {
+		if (event.isEndElement() || event.getEventType()==XMLEvent.COMMENT) {
 			// ok
 		} else if (event.isStartElement()) {
 			String msg = "Unsupported context for element: " + event.asStartElement().getName() + buildLocationMsg(event.getLocation());
@@ -628,17 +628,43 @@ public class ObflParser extends XMLParserBase {
 					x.setNamespaceContext(td.getNamespaceContext());
 					try {
 						if ((Boolean)x.evaluate(td.getQualifier(), node, XPathConstants.BOOLEAN)) {
-							qtd.add(new XSLTRenderingScenario(this, td.getProcessor(), node, tp, fm.getExpressionFactory().newExpression(), td.getCost()));
+							qtd.add(new XSLTRenderingScenario(this, configureTransformer(td), node, tp, fm.getExpressionFactory().newExpression(), td.getCost()));
 						}
 					} catch (XPathExpressionException e) {
 						e.printStackTrace();
 					}
 				} else {
-					qtd.add(new XSLTRenderingScenario(this, td.getProcessor(), node, tp, fm.getExpressionFactory().newExpression(), td.getCost()));
+					qtd.add(new XSLTRenderingScenario(this, configureTransformer(td), node, tp, fm.getExpressionFactory().newExpression(), td.getCost()));
 				}
 			}
 		}
 		return new XMLDataRenderer(qtd);
+	}
+	
+	private Transformer configureTransformer(RendererInfo n) {
+		try {
+			TransformerFactory tf = fm.getTransformerFactory();
+			tf.setURIResolver(new URIResolver() {
+				@Override
+				public Source resolve(String href, String base) throws TransformerException {
+					if ("".equals(base)) {
+						Node d = fileRefs.get(href);
+						if (d!=null) {
+							return new DOMSource(d);
+						}
+					}
+					return null;
+				}
+			});
+			Transformer ret = tf.newTransformer(new DOMSource(n.getProcessor()));
+			for (String name : n.getParams().keySet()) {
+				ret.setParameter(name, n.getParams().get(name));
+			}
+			return ret;
+		} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+			//FIXME: throw what?
+			throw new RuntimeException(e);
+		}
 	}
 	
 	private void parseFileReference(XMLEvent event, XMLEventReader input, Map<String, Node> refs) {
@@ -664,7 +690,7 @@ public class ObflParser extends XMLParserBase {
 		}
 	}
 	
-	private void parseProcessor(XMLEvent event, XMLEventReader input, Map<String, Transformer> xslts) {
+	private void parseProcessor(XMLEvent event, XMLEventReader input, Map<String, Node> xslts) {
 		String name = getAttr(event, ObflQName.ATTR_NAME);
 		DOMResult dr;
 		try {
@@ -681,25 +707,7 @@ public class ObflParser extends XMLParserBase {
 					ew.add(event);
 				}
 			}
-			try {
-				TransformerFactory tf = fm.getTransformerFactory();
-				tf.setURIResolver(new URIResolver() {
-					@Override
-					public Source resolve(String href, String base) throws TransformerException {
-						if ("".equals(base)) {
-							Node d = fileRefs.get(href);
-							if (d!=null) {
-								return new DOMSource(d);
-							}
-						}
-						return null;
-					}
-				});
-				xslts.put(name, tf.newTransformer(new DOMSource(dr.getNode())));
-			} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
-				//FIXME: throw what?
-				throw new RuntimeException(e);
-			}
+			xslts.put(name, dr.getNode());
 		} catch (ParserConfigurationException | XMLStreamException e) {
 			//FIXME: throw what?
 			throw new RuntimeException(e);
@@ -712,13 +720,7 @@ public class ObflParser extends XMLParserBase {
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.RENDERING_SCENARIO)) {
-				NamespaceContext nc = event.asStartElement().getNamespaceContext();
-				//System.out.println(nc.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX));
-				String processor = getAttr(event, ObflQName.ATTR_PROCESSOR);
-				String qualifier = getAttr(event, ObflQName.ATTR_QUALIFIER);
-				String cost = getAttr(event, ObflQName.ATTR_COST);
-				scanEmptyElement(input, ObflQName.RENDERING_SCENARIO);
-				opts.add(new RendererInfo(xslts.get(processor), nc, qualifier, cost));
+				opts.add(parseRenderingScenario(event, input));
 			} else if (equalsEnd(event, ObflQName.RENDERER)) {
 				break;
 			} else {
@@ -728,6 +730,28 @@ public class ObflParser extends XMLParserBase {
 		renderers.put(name, opts);
 	}
 	
+	private RendererInfo parseRenderingScenario(XMLEvent event, XMLEventReader input) throws XMLStreamException {
+		NamespaceContext nc = event.asStartElement().getNamespaceContext();
+		//System.out.println(nc.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX));
+		String processor = getAttr(event, ObflQName.ATTR_PROCESSOR);
+		String qualifier = getAttr(event, ObflQName.ATTR_QUALIFIER);
+		String cost = getAttr(event, ObflQName.ATTR_COST);
+		RendererInfo.Builder builder = new RendererInfo.Builder(xslts.get(processor), nc, qualifier, cost);
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.PARAMETER)) {
+				String name = getAttr(event, ObflQName.ATTR_NAME);
+				String value = getAttr(event, ObflQName.ATTR_VALUE);
+				builder.addParameter(name, value);
+				scanEmptyElement(input, ObflQName.PARAMETER);
+			} else if (equalsEnd(event, ObflQName.RENDERING_SCENARIO)) {
+				break;
+			} else {
+				report(event);
+			}
+		}
+		return builder.build();
+	}
 
 	void parseBlock(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
 		tp = getTextProperties(event, tp);

@@ -37,4 +37,9 @@ public class XMLDataTest extends AbstractFormatterEngineTest {
 		testPEF("resource-files/xml-data6-input.obfl", "resource-files/xml-data6-expected.pef", false);
 	}
 
+	@Test
+	public void testXMLData_07() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/xml-data7-input.obfl", "resource-files/xml-data7-expected.pef", false);
+	}
+
 }
