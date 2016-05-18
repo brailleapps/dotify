@@ -616,7 +616,7 @@ public class ObflParser extends XMLParserBase {
 	 * @param tdl
 	 * @param node
 	 * @param tp
-	 * @return
+	 * @return returns the applicable scenarios
 	 * @throws ParserConfigurationException 
 	 */
 	private XMLDataRenderer filterRenderers(List<RendererInfo> tdl, Node node, TextProperties tp) throws ParserConfigurationException {

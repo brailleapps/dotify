@@ -64,7 +64,7 @@ public class VolumeProvider {
 	
 	/**
 	 * Gets the current page index.
-	 * @return
+	 * @return returns the page index
 	 */
 	int getPageIndex() {
 		return pageIndex;
