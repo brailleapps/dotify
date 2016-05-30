@@ -135,7 +135,7 @@ public class FormatterImpl implements Formatter {
 		}
 	}
 
-	private Iterable<VolumeImpl> getVolumes() {
+	private Iterable<? extends Volume> getVolumes() {
 		PageStructBuilder contentPaginator =  new PageStructBuilder(context.getFormatterContext(), blocks);
 
 		int j = 1;
@@ -238,14 +238,13 @@ public class FormatterImpl implements Formatter {
 		return ret;
 	}
 
-	private PageStruct updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
+	private List<Sheet> updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
 		DefaultContext c = new DefaultContext.Builder()
 						.currentVolume(volumeNumber)
 						.volumeCount(crh.getVariables().getVolumeCount())
 						.sheetsInVolume(crh.getVariables().getSheetsInVolume(volumeNumber))
 						.sheetsInDocument(crh.getVariables().getSheetsInDocument())
 						.build();
-		PageStruct ret = null;
 		try {
 			ArrayList<BlockSequence> ib = new ArrayList<>();
 			for (VolumeTemplate t : volumeTemplates) {
@@ -259,6 +258,7 @@ public class FormatterImpl implements Formatter {
 					break;
 				}
 			}
+			PageStruct ret = null;
 			ret = new PageStructBuilder(context.getFormatterContext(), ib).paginate(crh, c);
 			for (PageSequence ps : ret) {
 				for (PageImpl p : ps.getPages()) {
@@ -270,11 +270,10 @@ public class FormatterImpl implements Formatter {
 					}
 				}
 			}
+			return ret.buildSplitPoints();
 		} catch (PaginatorException e) {
-			ret = null;
+			return null;
 		}
-
-		return ret;
 	}
 	
 	/**

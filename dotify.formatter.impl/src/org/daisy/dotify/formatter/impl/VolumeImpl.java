@@ -2,61 +2,58 @@ package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.daisy.dotify.common.collection.CompoundIterable;
+import java.util.Stack;
 
 /**
  * Provides a container for a physical volume of braille
  * @author Joel Håkansson
  */
 class VolumeImpl implements Volume {
-	private CompoundIterable<PageSequence> ret;
-	private Iterable<PageSequence> body;
-	private Iterable<PageSequence> preVolData;
-	private Iterable<PageSequence> postVolData;
+	private List<Section> body;
+	private List<Section> preVolData;
+	private List<Section> postVolData;
 	private int preVolSize;
 	private int postVolSize;
 	private int targetVolSize;
 	
 	VolumeImpl() {
-		ret = null;
 		this.preVolSize = 0;
 		this.postVolSize = 0;
 		this.targetVolSize = 0;
 	}
 
 	public void setBody(List<Sheet> body) {
-		ret = null;
 		this.body = sequencesFromSheets(body);
 	}
 	
-	private static Iterable<PageSequence> sequencesFromSheets(List<Sheet> sheets) {
-		PageStruct ret = new PageStruct();
+	private static List<Section> sequencesFromSheets(List<Sheet> sheets) {
+		Stack<Section> ret = new Stack<Section>();
 		PageSequence currentSeq = null;
 		for (Sheet s : sheets) {
 			for (PageImpl p : s.getPages()) {
-				if (ret.empty() || currentSeq!=p.getSequenceParent()) {
+				if (ret.isEmpty() || currentSeq!=p.getSequenceParent()) {
 					currentSeq = p.getSequenceParent();
-					ret.add(new PageSequence(ret, currentSeq.getLayoutMaster(), currentSeq.getPageNumberOffset()));
+					ret.add(
+							new SectionImpl(currentSeq.getSectionProperties())
+							//new PageSequence(ret, currentSeq.getLayoutMaster(), currentSeq.getPageNumberOffset())
+							);
 				}
-				((PageSequence)ret.peek()).addPage(p);
+				((SectionImpl)ret.peek()).addPage(p);
 			}
 		}
 		return ret;
 	}
 
-	public void setPreVolData(Iterable<PageSequence> preVolData) {
-		ret = null;
+	public void setPreVolData(List<Sheet> preVolData) {
 		//use the highest value to avoid oscillation
-		preVolSize = Math.max(preVolSize, PageStruct.countSheets(preVolData));
-		this.preVolData = preVolData;
+		preVolSize = Math.max(preVolSize, preVolData.size());
+		this.preVolData = sequencesFromSheets(preVolData);
 	}
 
-	public void setPostVolData(Iterable<PageSequence> postVolData) {
-		ret = null;
+	public void setPostVolData(List<Sheet> postVolData) {
 		//use the highest value to avoid oscillation
-		postVolSize = Math.max(postVolSize, PageStruct.countSheets(postVolData));
-		this.postVolData = postVolData;
+		postVolSize = Math.max(postVolSize, postVolData.size());
+		this.postVolData = sequencesFromSheets(postVolData);
 	}
 	
 	public int getOverhead() {
@@ -73,14 +70,11 @@ class VolumeImpl implements Volume {
 
 	@Override
 	public Iterable<? extends Section> getSections() {
-		if (ret==null) {
-			List<Iterable<PageSequence>> contents = new ArrayList<>();
-			contents.add(preVolData);
-			contents.add(body);
-			contents.add(postVolData);
-			ret = new CompoundIterable<>(contents);
-		}
-		return ret;
+		List<Section> contents = new ArrayList<>();
+		contents.addAll(preVolData);
+		contents.addAll(body);
+		contents.addAll(postVolData);
+		return contents;
 	}
 
 }
