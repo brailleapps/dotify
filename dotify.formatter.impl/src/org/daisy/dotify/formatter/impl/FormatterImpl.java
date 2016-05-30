@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.daisy.dotify.api.formatter.ContentCollection;
@@ -39,7 +40,7 @@ public class FormatterImpl implements Formatter {
 	private final Stack<BlockSequence> blocks;
 	
 	//CrossReferenceHandler
-	private final Map<Integer, Volume> volumes;
+	private final Map<Integer, VolumeImpl> volumes;
 	private final VolumeSplitter splitter;
 	private boolean isDirty;
 	private CrossReferenceHandler crh;
@@ -127,22 +128,21 @@ public class FormatterImpl implements Formatter {
 	
 	@Override
 	public void write(PagedMediaWriter writer) {
-		WriterHandler wh = new WriterHandler();
-		wh.write(getVolumes(), writer);
-		try {
-			writer.close();
+		try (WriterHandler wh = new WriterHandler(writer)) {
+			wh.write(getVolumes());
 		} catch (IOException e) {
+			logger.log(Level.WARNING, "Failed to close resource.", e);
 		}
 	}
 
-	private Iterable<Volume> getVolumes() {
+	private Iterable<VolumeImpl> getVolumes() {
 		PageStructBuilder contentPaginator =  new PageStructBuilder(context.getFormatterContext(), blocks);
 
 		int j = 1;
 		boolean ok = false;
 		int totalOverheadCount = 0;
 		
-		ArrayList<Volume> ret = new ArrayList<>();
+		ArrayList<VolumeImpl> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
 		PageStruct ps;
 		VariablesHandler vh = crh.getVariables();
@@ -173,7 +173,7 @@ public class FormatterImpl implements Formatter {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
 				
-				Volume volume = getVolume(i);
+				VolumeImpl volume = getVolume(i);
 				ad = new ArrayList<>();
 
 				volume.setPreVolData(updateVolumeContents(i, ad, true));
@@ -300,19 +300,19 @@ public class FormatterImpl implements Formatter {
 		return DEFAULT_SPLITTER_MAX;
 	}
 	
-	private void setTargetVolSize(Volume d, int targetVolSize) {
+	private void setTargetVolSize(VolumeImpl d, int targetVolSize) {
 		if (d.getTargetSize()!=targetVolSize) {
 			setDirty(true);
 		}
 		d.setTargetVolSize(targetVolSize);
 	}
 	
-	private Volume getVolume(int volumeNumber) {
+	private VolumeImpl getVolume(int volumeNumber) {
 		if (volumeNumber<1) {
 			throw new IndexOutOfBoundsException("Volume must be greater than or equal to 1");
 		}
 		if (volumes.get(volumeNumber)==null) {
-			volumes.put(volumeNumber, new Volume(volumeNumber));
+			volumes.put(volumeNumber, new VolumeImpl());
 			setDirty(true);
 		}
 		return volumes.get(volumeNumber);

@@ -1,6 +1,5 @@
 package org.daisy.dotify.formatter.impl;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;

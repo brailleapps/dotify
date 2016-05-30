@@ -2,12 +2,14 @@ package org.daisy.dotify.formatter.impl;
 
 import java.lang.ref.WeakReference;
 
+import org.daisy.dotify.api.writer.SectionProperties;
+
 /**
  * Provides a sequence of pages.
  * 
  * @author Joel Håkansson
  */
-class PageSequence extends PageView {
+class PageSequence extends PageView implements Section {
 	private final WeakReference<PageStruct> parent;
 	private final LayoutMaster master;
 	private final int pageOffset;
@@ -43,6 +45,11 @@ class PageSequence extends PageView {
 	
 	public int getPageNumberOffset() {
 		return pageOffset;
+	}
+
+	@Override
+	public SectionProperties getSectionProperties() {
+		return master;
 	}
 
 }

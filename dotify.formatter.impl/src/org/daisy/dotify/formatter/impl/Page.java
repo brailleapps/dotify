@@ -15,7 +15,7 @@ interface Page {
 	 * Gets the rows on this page
 	 * @return returns the rows on this page
 	 */
-	public List<Row> getRows();
+	public List<? extends Row> getRows();
 
 
 }

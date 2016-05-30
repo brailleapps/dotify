@@ -9,12 +9,13 @@ import org.daisy.dotify.api.formatter.PageAreaBuilder;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.translator.TextBorderStyle;
+import org.daisy.dotify.api.writer.SectionProperties;
 
 /**
  * Specifies the layout of a paged media.
  * @author Joel Håkansson
  */
-class LayoutMaster implements LayoutMasterBuilder {
+class LayoutMaster implements LayoutMasterBuilder, SectionProperties {
 	private final LayoutMasterProperties props; 
 	private final ArrayList<PageTemplate> templates;
 	private final PageTemplate defaultPageTemplate;
