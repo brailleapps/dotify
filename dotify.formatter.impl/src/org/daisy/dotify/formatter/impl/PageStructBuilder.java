@@ -7,21 +7,26 @@ class PageStructBuilder {
 
 	private final FormatterContext context;
 	private final Iterable<BlockSequence> fs;
+	private final CrossReferenceHandler crh;
+	private final DefaultContext rcontext;
 	private PageStruct struct;
 	private Map<String, PageImpl> pageReferences;
+	
 
-	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs) {
+	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs, CrossReferenceHandler crh, DefaultContext rcontext) {
 		this.pageReferences = new HashMap<>();
 		this.context = context;
 		this.fs = fs;
+		this.crh = crh;
+		this.rcontext = rcontext;
 	}
 
-	PageStruct paginate(CrossReferenceHandler crh, DefaultContext rcontext) throws PaginatorException {
+	PageStruct paginate() throws PaginatorException {
 		restart:while (true) {
 			pageReferences = new HashMap<>();
 			struct = new PageStruct();
 			for (BlockSequence seq : fs) {
-				if (!newSequence(crh, seq, rcontext)) {
+				if (!newSequence(seq)) {
 					continue restart;
 				}
 			}
@@ -30,7 +35,7 @@ class PageStructBuilder {
 		}
 	}
 
-	private boolean newSequence(CrossReferenceHandler crh, BlockSequence seq, DefaultContext rcontext) throws PaginatorException {
+	private boolean newSequence(BlockSequence seq) throws PaginatorException {
 		int offset = getCurrentPageOffset();
 		PageSequence ps = new PageSequence(struct, seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:offset);
 		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, this.pageReferences, context, rcontext);

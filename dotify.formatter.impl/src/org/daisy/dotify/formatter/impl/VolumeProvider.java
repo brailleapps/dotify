@@ -23,7 +23,7 @@ public class VolumeProvider {
 	public VolumeProvider(PageStructBuilder contentPaginator, CrossReferenceHandler crh) {
 		this.crh = crh;
 		try {
-			ps = contentPaginator.paginate(crh, new DefaultContext(null, null));
+			ps = contentPaginator.paginate();
 			units = ps.buildSplitPoints();
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while reformatting.", e);

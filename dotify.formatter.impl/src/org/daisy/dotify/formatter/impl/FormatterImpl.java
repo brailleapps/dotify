@@ -136,7 +136,6 @@ public class FormatterImpl implements Formatter {
 	}
 
 	private Iterable<? extends Volume> getVolumes() {
-		PageStructBuilder contentPaginator =  new PageStructBuilder(context.getFormatterContext(), blocks);
 
 		int j = 1;
 		boolean ok = false;
@@ -152,7 +151,7 @@ public class FormatterImpl implements Formatter {
 		//differences have been checked and accepted
 		try {
 			// make a preliminary calculation based on a contents only
-			ps = contentPaginator.paginate(crh, new DefaultContext(null, null));
+			ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext(null, null)).paginate();
 			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
 			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
 		} catch (PaginatorException e) {
@@ -166,7 +165,7 @@ public class FormatterImpl implements Formatter {
 			totalOverheadCount = 0;
 			ret = new ArrayList<>();
 			
-			VolumeProvider volumeProvider = new VolumeProvider(contentPaginator, crh);
+			VolumeProvider volumeProvider = new VolumeProvider(new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext(null, null)), crh);
 
 			for (int i=1;i<= vh.getVolumeCount();i++) {
 				if (j>1 && splitter.getSplitterMax()!=getVolumeMaxSize(i,  vh.getVolumeCount())) {
@@ -259,7 +258,7 @@ public class FormatterImpl implements Formatter {
 				}
 			}
 			PageStruct ret = null;
-			ret = new PageStructBuilder(context.getFormatterContext(), ib).paginate(crh, c);
+			ret = new PageStructBuilder(context.getFormatterContext(), ib, crh, c).paginate();
 			for (PageSequence ps : ret) {
 				for (PageImpl p : ps.getPages()) {
 					for (String id : p.getIdentifiers()) {
