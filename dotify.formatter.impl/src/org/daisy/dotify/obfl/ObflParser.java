@@ -1340,6 +1340,8 @@ public class ObflParser extends XMLParserBase {
 			event=input.nextEvent();
 			if (equalsStart(event, ObflQName.SEQUENCE)) {
 				parseVolumeSequence(event, input, template, tp);
+			} else if (equalsStart(event, ObflQName.TOC_SEQUENCE)) { // TODO: update OBFL specification
+				parseTocSequence(event, input, template, tp);
 			} else if (equalsStart(event, ObflQName.DYNAMIC_SEQUENCE)) {
 				parseItemSequence(event, input, template, tp);
 			} else if (equalsEnd(event, ObflQName.POST_CONTENT)) {

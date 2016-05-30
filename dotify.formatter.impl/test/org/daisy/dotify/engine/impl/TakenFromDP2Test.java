@@ -327,4 +327,9 @@ public class TakenFromDP2Test extends AbstractFormatterEngineTest {
 		testPEF("resource-files/dp2/sheets-in-volume-input.obfl",
 		        "resource-files/dp2/sheets-in-volume-expected.pef", false);
 	}
+	@Test
+	public void testTocSequenceInPostContent() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/dp2/toc-sequence-in-post-content-input.obfl",
+		        "resource-files/dp2/toc-sequence-in-post-content-expected.pef", false);
+	}
 }
