@@ -14,15 +14,18 @@ class VolumeImpl implements Volume {
 	private List<Section> postVolData;
 	private int preVolSize;
 	private int postVolSize;
+	private int bodyVolSize;
 	private int targetVolSize;
 	
 	VolumeImpl() {
 		this.preVolSize = 0;
 		this.postVolSize = 0;
+		this.bodyVolSize = 0;
 		this.targetVolSize = 0;
 	}
 
 	public void setBody(List<Sheet> body) {
+		bodyVolSize = body.size();
 		this.body = sequencesFromSheets(body);
 	}
 	
@@ -58,6 +61,14 @@ class VolumeImpl implements Volume {
 	
 	public int getOverhead() {
 		return preVolSize + postVolSize;
+	}
+	
+	public int getBodySize() {
+		return bodyVolSize;
+	}
+	
+	public int getVolumeSize() {
+		return preVolSize + postVolSize + bodyVolSize;
 	}
 
 	public int getTargetSize() {

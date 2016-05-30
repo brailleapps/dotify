@@ -187,15 +187,15 @@ public class FormatterImpl implements Formatter {
 							splitter.getSplitterMax(), ad
 							);
 					
-					int contentSheets = contents.size();
-					sheetCount += contentSheets;
-					setTargetVolSize(volume, contentSheets + volume.getOverhead());
-					logger.fine("Sheets  in volume " + i + ": " + (contentSheets+volume.getOverhead()) + 
-							", content:" + contentSheets +
+					volume.setBody(contents);
+					sheetCount += volume.getBodySize();
+					updateTargetVolSize(volume);
+					logger.fine("Sheets  in volume " + i + ": " + (volume.getVolumeSize()) + 
+							", content:" + volume.getBodySize() +
 							", overhead:" + volume.getOverhead());
-					volume.setBody(contents);					
+					
 					volume.setPostVolData(updateVolumeContents(i, ad, false));
-					crh.getVariables().setSheetsInVolume(i, contentSheets + volume.getOverhead());
+					crh.getVariables().setSheetsInVolume(i, volume.getBodySize() + volume.getOverhead());
 					crh.setAnchorData(i, ad);
 
 					ret.add(volume);
@@ -299,11 +299,11 @@ public class FormatterImpl implements Formatter {
 		return DEFAULT_SPLITTER_MAX;
 	}
 	
-	private void setTargetVolSize(VolumeImpl d, int targetVolSize) {
-		if (d.getTargetSize()!=targetVolSize) {
+	private void updateTargetVolSize(VolumeImpl d) {
+		if (d.getTargetSize()!=d.getVolumeSize()) {
 			setDirty(true);
 		}
-		d.setTargetVolSize(targetVolSize);
+		d.setTargetVolSize(d.getVolumeSize());
 	}
 	
 	private VolumeImpl getVolume(int volumeNumber) {
