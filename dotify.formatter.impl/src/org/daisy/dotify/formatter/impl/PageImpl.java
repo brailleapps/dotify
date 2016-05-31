@@ -378,10 +378,6 @@ class PageImpl implements Page {
 		this.parent = seq;
 	}
 	
-	PageStruct getStructParent() {
-		return getSequenceParent().getParent();
-	}
-	
 	/**
 	 * Gets the flow height for this page, i.e. the number of rows available for text flow
 	 * @return returns the flow height
