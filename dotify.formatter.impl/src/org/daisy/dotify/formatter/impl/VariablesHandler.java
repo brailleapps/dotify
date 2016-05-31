@@ -11,6 +11,8 @@ class VariablesHandler {
 	private final static String VOLUMES_KEY = "volumes";
 	private final static String SHEETS_IN_VOLUME = "sheets-in-volume-";
 	private final static String SHEETS_IN_DOCUMENT = "sheets-in-document";
+	private final static String PAGES_IN_VOLUME = "pages-in-volume-";
+	private final static String PAGES_IN_DOCUMENT = "pages-in-document";
 	
 	VariablesHandler() {
 		this.variables = new LookupHandler<>();
@@ -27,6 +29,14 @@ class VariablesHandler {
 	void setSheetsInDocument(int value) {
 		variables.put(SHEETS_IN_DOCUMENT, value);
 	}
+	
+	void setPagesInVolume(int volume, int value) {
+		variables.put(PAGES_IN_VOLUME+volume, value);
+	}
+	
+	void setPagesInDocument(int value) {
+		variables.put(PAGES_IN_DOCUMENT, value);
+	}
 
 	/**
 	 * Gets the number of volumes.
@@ -42,6 +52,14 @@ class VariablesHandler {
 
 	int getSheetsInDocument() {
 		return variables.get(SHEETS_IN_DOCUMENT, 0);
+	}
+	
+	int getPagesInVolume(int volume) {
+		return variables.get(PAGES_IN_VOLUME+volume, 0);
+	}
+
+	int getPagesInDocument() {
+		return variables.get(PAGES_IN_DOCUMENT, 0);
 	}
 	
 	boolean isDirty() {

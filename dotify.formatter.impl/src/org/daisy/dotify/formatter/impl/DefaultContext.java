@@ -94,21 +94,17 @@ class DefaultContext implements Context {
 
 	@Override
 	public Integer getPagesInVolume() {
-		//TODO: support this
-		throw new UnsupportedOperationException("Not implemented");
-		//return null;
+		return (crh==null||currentVolume==null?null:crh.getVariables().getPagesInVolume(currentVolume));
 	}
 
 	@Override
 	public Integer getPagesInDocument() {
-		//TODO: support this
-		throw new UnsupportedOperationException("Not implemented");
-		//return null;
+		return (crh==null?null:crh.getVariables().getPagesInDocument());
 	}
 
 	@Override
 	public Integer getSheetsInVolume() {
-		return (crh==null?null:crh.getVariables().getSheetsInVolume(currentVolume));
+		return (crh==null||currentVolume==null?null:crh.getVariables().getSheetsInVolume(currentVolume));
 	}
 
 	@Override

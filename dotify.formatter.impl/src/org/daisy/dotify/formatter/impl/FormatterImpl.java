@@ -195,6 +195,7 @@ public class FormatterImpl implements Formatter {
 					
 					volume.setPostVolData(updateVolumeContents(i, ad, false));
 					crh.getVariables().setSheetsInVolume(i, volume.getBodySize() + volume.getOverhead());
+					//crh.getVariables().setPagesInVolume(i, value);
 					crh.setAnchorData(i, ad);
 
 					ret.add(volume);
@@ -206,6 +207,7 @@ public class FormatterImpl implements Formatter {
 				totalPageCount += countPages(volumeProvider.getRemaining());
 			}
 			crh.getVariables().setSheetsInDocument(sheetCount + totalOverheadCount);
+			//crh.getVariables().setPagesInDocument(value);
 			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
 			splitter.updateSheetCount(sheetCount + totalOverheadCount);
 			if (volumeProvider.hasNext()) {
