@@ -1,9 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 class PageStructBuilder {
 
@@ -12,11 +10,9 @@ class PageStructBuilder {
 	private final CrossReferenceHandler crh;
 	private final DefaultContext rcontext;
 	private PageStruct struct;
-	private Map<String, PageImpl> pageReferences;
 	
 
 	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs, CrossReferenceHandler crh, DefaultContext rcontext) {
-		this.pageReferences = new HashMap<>();
 		this.context = context;
 		this.fs = fs;
 		this.crh = crh;
@@ -25,7 +21,7 @@ class PageStructBuilder {
 
 	List<Sheet> paginate() throws PaginatorException {
 		restart:while (true) {
-			pageReferences = new HashMap<>();
+			crh.resetUniqueChecks();
 			struct = new PageStruct();
 			List<Sheet.Builder> ret = new ArrayList<>();
 			boolean volBreakAllowed = true;
@@ -69,11 +65,12 @@ class PageStructBuilder {
 	private PageSequence newSequence(BlockSequence seq) throws PaginatorException, RestartPaginationException {
 		int offset = getCurrentPageOffset();
 		PageSequence ps = new PageSequence(struct, seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:offset);
-		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, this.pageReferences, context, rcontext);
+		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, context, rcontext);
 		struct.add(ps);
 		while (psb.hasNext()) {
 			PageImpl p = psb.nextPage();
 			p.setSequenceParent(ps);
+			//This is for pre/post volume contents, where the volume number is known
 			if (rcontext.getCurrentVolume()!=null) {
 				for (String id : p.getIdentifiers()) {
 					crh.setVolumeNumber(id, rcontext.getCurrentVolume());

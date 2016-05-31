@@ -1,17 +1,21 @@
 package org.daisy.dotify.formatter.impl;
 
+import java.util.HashSet;
+import java.util.Set;
 
 class CrossReferenceHandler implements CrossReferences {
 	private final LookupHandler<String, Integer> pageRefs;
 	private final LookupHandler<String, Integer> volumeRefs;
 	private final LookupHandler<Integer, Iterable<AnchorData>> anchorRefs;
 	private final VariablesHandler variables;
+	private Set<String> pageIds;
 	
 	CrossReferenceHandler() {
 		this.pageRefs = new LookupHandler<>();
 		this.volumeRefs = new LookupHandler<>();
 		this.anchorRefs = new LookupHandler<>();
 		this.variables = new VariablesHandler();
+		this.pageIds = new HashSet<>();
 	}
 	
 	public Integer getVolumeNumber(String refid) {
@@ -28,6 +32,9 @@ class CrossReferenceHandler implements CrossReferences {
 	
 	void setPageNumber(String refid, int page) {
 		pageRefs.put(refid, page);
+		if (!pageIds.add(refid)) {
+			throw new IllegalArgumentException("Identifier not unique: " + refid);
+		}
 	}
 	
 	public Iterable<AnchorData> getAnchorData(int volume) {
@@ -51,6 +58,10 @@ class CrossReferenceHandler implements CrossReferences {
 		volumeRefs.setDirty(value);
 		anchorRefs.setDirty(value);
 		variables.setDirty(value);
+	}
+	
+	void resetUniqueChecks() {
+		pageIds = new HashSet<>();
 	}
 
 }

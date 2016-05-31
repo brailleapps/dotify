@@ -21,7 +21,6 @@ import org.daisy.dotify.common.layout.SplitPointHandler;
 import org.daisy.dotify.common.layout.Supplements;
 
 class PageSequenceBuilder2 {
-	private final Map<String, PageImpl> pageReferences;
 	private final FormatterContext context;
 	private final CrossReferenceHandler crh;
 	private final PageAreaContent staticAreaContent;
@@ -42,10 +41,9 @@ class PageSequenceBuilder2 {
 	private List<RowGroup> data = null;
 	private boolean force;
 
-	PageSequenceBuilder2(LayoutMaster master, int pageNumberOffset, CrossReferenceHandler crh, BlockSequence seq, Map<String, PageImpl> pageReferences, FormatterContext context, DefaultContext rcontext) {
+	PageSequenceBuilder2(LayoutMaster master, int pageNumberOffset, CrossReferenceHandler crh, BlockSequence seq, FormatterContext context, DefaultContext rcontext) {
 		this.master = master;
 		this.pageNumberOffset = pageNumberOffset;
-		this.pageReferences = pageReferences;
 		this.context = context;
 		this.crh = crh;
 
@@ -112,9 +110,6 @@ class PageSequenceBuilder2 {
 	private void insertIdentifier(String id) {
 		crh.setPageNumber(id, currentPage().getPageIndex() + 1);
 		currentPage().addIdentifier(id);
-		if (pageReferences.put(id, currentPage())!=null) {
-			throw new IllegalArgumentException("Identifier not unique: " + id);
-		}
 	}
 	
 	boolean hasNext() {
