@@ -74,6 +74,11 @@ class PageStructBuilder {
 		while (psb.hasNext()) {
 			PageImpl p = psb.nextPage();
 			p.setSequenceParent(ps);
+			if (rcontext.getCurrentVolume()!=null) {
+				for (String id : p.getIdentifiers()) {
+					crh.setVolumeNumber(id, rcontext.getCurrentVolume());
+				}
+			}
 			ps.addPage(p);
 		}
 		return ps;

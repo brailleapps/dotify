@@ -260,9 +260,6 @@ public class FormatterImpl implements Formatter {
 			List<Sheet> ret = new PageStructBuilder(context.getFormatterContext(), ib, crh, c).paginate();
 			for (Sheet ps : ret) {
 				for (PageImpl p : ps.getPages()) {
-					for (String id : p.getIdentifiers()) {
-						crh.setVolumeNumber(id, volumeNumber);
-					}
 					if (p.getAnchors().size()>0) {
 						ad.add(new AnchorData(p.getPageIndex(), p.getAnchors()));
 					}
