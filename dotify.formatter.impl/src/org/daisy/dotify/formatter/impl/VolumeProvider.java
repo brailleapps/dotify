@@ -15,16 +15,17 @@ public class VolumeProvider {
 	private List<Sheet> units;
 	private final SplitPointHandler<Sheet> volSplitter = new SplitPointHandler<>();
 	private final  CrossReferenceHandler crh;
-	PageStruct ps;
+	private final PageStructBuilder contentPaginator;
+	//PageStruct ps;
 	private int pageIndex = 0;
 	//private int totalPageCount = 0;
 	private int i=0;
 
 	public VolumeProvider(PageStructBuilder contentPaginator, CrossReferenceHandler crh) {
 		this.crh = crh;
+		this.contentPaginator = contentPaginator;
 		try {
-			ps = contentPaginator.paginate();
-			units = ps.buildSplitPoints();
+			units = contentPaginator.paginate();
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while reformatting.", e);
 		}
@@ -37,7 +38,7 @@ public class VolumeProvider {
 		List<Sheet> contents = sp.getHead();
 		int pageCount = FormatterImpl.countPages(contents);
 		// TODO: In a volume-by-volume scenario, how can we make this work
-		ps.setVolumeScope(i, pageIndex, pageIndex+pageCount); 
+		contentPaginator.setVolumeScope(i, pageIndex, pageIndex+pageCount); 
 		pageIndex += pageCount;
 		//totalPageCount += pageCount;
 		for (Sheet sheet : contents) {

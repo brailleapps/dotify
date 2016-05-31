@@ -143,7 +143,7 @@ public class FormatterImpl implements Formatter {
 		
 		ArrayList<VolumeImpl> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
-		PageStruct ps;
+
 		VariablesHandler vh = crh.getVariables();
 		//splitter.setSplitterMax(Integer.MAX_VALUE);
 		//FIXME: replace the following try/catch with the line above
@@ -151,9 +151,9 @@ public class FormatterImpl implements Formatter {
 		//differences have been checked and accepted
 		try {
 			// make a preliminary calculation based on a contents only
-			ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext(null, null)).paginate();
+			List<Sheet> ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext(null, null)).paginate();
 			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
-			splitter.updateSheetCount(ps.getSheetCount() + totalOverheadCount);
+			splitter.updateSheetCount(ps.size() + totalOverheadCount);
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while formatting.", e);
 		}
@@ -257,9 +257,8 @@ public class FormatterImpl implements Formatter {
 					break;
 				}
 			}
-			PageStruct ret = null;
-			ret = new PageStructBuilder(context.getFormatterContext(), ib, crh, c).paginate();
-			for (PageSequence ps : ret) {
+			List<Sheet> ret = new PageStructBuilder(context.getFormatterContext(), ib, crh, c).paginate();
+			for (Sheet ps : ret) {
 				for (PageImpl p : ps.getPages()) {
 					for (String id : p.getIdentifiers()) {
 						crh.setVolumeNumber(id, volumeNumber);
@@ -269,7 +268,7 @@ public class FormatterImpl implements Formatter {
 					}
 				}
 			}
-			return ret.buildSplitPoints();
+			return ret;
 		} catch (PaginatorException e) {
 			return null;
 		}

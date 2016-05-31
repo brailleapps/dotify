@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class PageStructBuilder {
@@ -21,7 +22,7 @@ class PageStructBuilder {
 		this.rcontext = rcontext;
 	}
 
-	PageStruct paginate() throws PaginatorException {
+	List<Sheet> paginate() throws PaginatorException {
 		restart:while (true) {
 			pageReferences = new HashMap<>();
 			struct = new PageStruct();
@@ -31,7 +32,7 @@ class PageStructBuilder {
 				}
 			}
 			struct.updateSheetCount();
-			return struct;
+			return struct.buildSplitPoints();
 		}
 	}
 
@@ -63,6 +64,10 @@ class PageStructBuilder {
 		} else {
 			return 0;
 		}
+	}
+	
+	void setVolumeScope(int volumeNumber, int fromIndex, int toIndex) {
+		struct.setVolumeScope(volumeNumber, fromIndex, toIndex);
 	}
 
 }
