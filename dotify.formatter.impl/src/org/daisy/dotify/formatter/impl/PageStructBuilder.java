@@ -27,30 +27,56 @@ class PageStructBuilder {
 		restart:while (true) {
 			pageReferences = new HashMap<>();
 			struct = new PageStruct();
-			for (BlockSequence seq : fs) {
-				if (!newSequence(seq)) {
+			List<Sheet.Builder> ret = new ArrayList<>();
+			boolean volBreakAllowed = true;
+			int size = 0;
+			for (BlockSequence bs : fs) {
+				try {
+					PageSequence seq = newSequence(bs);
+					LayoutMaster lm = seq.getLayoutMaster();
+					int pageIndex = 0;
+					Sheet.Builder s = null;
+					for (PageImpl p : seq.getPages()) {
+						if (!lm.duplex() || pageIndex % 2 == 0) {
+							volBreakAllowed = true;
+							s = new Sheet.Builder();
+							ret.add(s);
+						}
+						setPreviousSheet(ret, p);
+						volBreakAllowed &= p.allowsVolumeBreak();
+						if (!lm.duplex() || pageIndex % 2 == 1) {
+							if (volBreakAllowed) {
+								s.breakable(true);
+							}
+						}
+						s.add(p);
+						pageIndex++;
+					}
+					// if this sequence was not empty
+					if (size < ret.size()) {
+						size += ret.size();
+						// set breakable to true
+						ret.get(ret.size() - 1).breakable(true);
+					}
+				} catch (RestartPaginationException e) {
 					continue restart;
 				}
 			}
-			return buildSplitPoints();
+			return buildAll(ret);
 		}
 	}
 
-	private boolean newSequence(BlockSequence seq) throws PaginatorException {
+	private PageSequence newSequence(BlockSequence seq) throws PaginatorException, RestartPaginationException {
 		int offset = getCurrentPageOffset();
 		PageSequence ps = new PageSequence(struct, seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:offset);
 		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, this.pageReferences, context, rcontext);
 		struct.add(ps);
 		while (psb.hasNext()) {
-			try {
-				PageImpl p = psb.nextPage();
-				p.setSequenceParent(ps);
-				ps.addPage(p);
-			} catch (RestartPaginationException e) {
-				return false;
-			}
+			PageImpl p = psb.nextPage();
+			p.setSequenceParent(ps);
+			ps.addPage(p);
 		}
-		return true;
+		return ps;
 	}
 	
 	private int getCurrentPageOffset() {
@@ -69,41 +95,6 @@ class PageStructBuilder {
 	void setVolumeScope(int volumeNumber, int fromIndex, int toIndex) {
 		struct.setVolumeScope(volumeNumber, fromIndex, toIndex);
 	}
-	
-	List<Sheet> buildSplitPoints() {
-		List<Sheet.Builder> ret = new ArrayList<>();
-		boolean volBreakAllowed = true;
-		int size = 0;
-		for (PageSequence seq : struct) {
-			LayoutMaster lm = seq.getLayoutMaster();
-			int pageIndex = 0;
-			Sheet.Builder s = null;
-			for (PageImpl p : seq.getPages()) {
-				if (!lm.duplex() || pageIndex % 2 == 0) {
-					volBreakAllowed = true;
-					s = new Sheet.Builder();
-					ret.add(s);
-				}
-				setPreviousSheet(ret, p);
-				volBreakAllowed &= p.allowsVolumeBreak();
-				if (!lm.duplex() || pageIndex % 2 == 1) {
-					if (volBreakAllowed) {
-						s.breakable(true);
-					}
-				}
-				s.add(p);
-				pageIndex++;
-			}
-			// if this sequence was not empty
-			if (size < ret.size()) {
-				size += ret.size();
-				// set breakable to true
-				ret.get(ret.size() - 1).breakable(true);
-			}
-		}
-		return buildAll(ret);
-	}
-
 
 	private List<Sheet> buildAll(List<Sheet.Builder> builders) {
 		List<Sheet> ret = new ArrayList<>();
