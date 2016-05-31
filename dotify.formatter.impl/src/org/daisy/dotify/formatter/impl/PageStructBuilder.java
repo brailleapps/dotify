@@ -31,7 +31,6 @@ class PageStructBuilder {
 					continue restart;
 				}
 			}
-			struct.updateSheetCount();
 			return struct.buildSplitPoints();
 		}
 	}
