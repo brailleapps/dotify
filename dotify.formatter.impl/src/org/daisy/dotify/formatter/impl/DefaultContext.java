@@ -74,7 +74,7 @@ class DefaultContext implements Context {
 
 	@Override
 	public Integer getVolumeCount() {
-		return (crh==null?null:crh.getVariables().getVolumeCount());
+		return (crh==null?null:crh.getVolumeCount());
 	}
 
 	@Override
@@ -94,22 +94,22 @@ class DefaultContext implements Context {
 
 	@Override
 	public Integer getPagesInVolume() {
-		return (crh==null||currentVolume==null?null:crh.getVariables().getPagesInVolume(currentVolume));
+		return (crh==null||currentVolume==null?null:crh.getPagesInVolume(currentVolume));
 	}
 
 	@Override
 	public Integer getPagesInDocument() {
-		return (crh==null?null:crh.getVariables().getPagesInDocument());
+		return (crh==null?null:crh.getPagesInDocument());
 	}
 
 	@Override
 	public Integer getSheetsInVolume() {
-		return (crh==null||currentVolume==null?null:crh.getVariables().getSheetsInVolume(currentVolume));
+		return (crh==null||currentVolume==null?null:crh.getSheetsInVolume(currentVolume));
 	}
 
 	@Override
 	public Integer getSheetsInDocument() {
-		return (crh==null?null:crh.getVariables().getSheetsInDocument());
+		return (crh==null?null:crh.getSheetsInDocument());
 	}
 	
 	@Override

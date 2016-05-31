@@ -62,7 +62,7 @@ public class FormatterImpl implements Formatter {
 		this.volumes = new HashMap<>();
 		this.isDirty = false;
 		this.crh = new CrossReferenceHandler();
-		this.splitter = new EvenSizeVolumeSplitter(crh.getVariables());
+		this.splitter = new EvenSizeVolumeSplitter(crh);
 	}
 	
 
@@ -143,8 +143,6 @@ public class FormatterImpl implements Formatter {
 		
 		ArrayList<VolumeImpl> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
-
-		VariablesHandler vh = crh.getVariables();
 		//splitter.setSplitterMax(Integer.MAX_VALUE);
 		//FIXME: replace the following try/catch with the line above
 		//This code is here for compatibility with regression tests and can be removed once
@@ -152,7 +150,7 @@ public class FormatterImpl implements Formatter {
 		try {
 			// make a preliminary calculation based on a contents only
 			List<Sheet> ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext.Builder().build()).paginate();
-			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
+			splitter.setSplitterMax(getVolumeMaxSize(1,  crh.getVolumeCount()));
 			splitter.updateSheetCount(ps.size() + totalOverheadCount);
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while formatting.", e);
@@ -167,8 +165,8 @@ public class FormatterImpl implements Formatter {
 			
 			VolumeProvider volumeProvider = new VolumeProvider(new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext.Builder().build()), crh);
 
-			for (int i=1;i<= vh.getVolumeCount();i++) {
-				if (j>1 && splitter.getSplitterMax()!=getVolumeMaxSize(i,  vh.getVolumeCount())) {
+			for (int i=1;i<= crh.getVolumeCount();i++) {
+				if (j>1 && splitter.getSplitterMax()!=getVolumeMaxSize(i,  crh.getVolumeCount())) {
 					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
 				}
 				
@@ -181,7 +179,7 @@ public class FormatterImpl implements Formatter {
 
 				{
 					List<Sheet> contents = volumeProvider.nextVolume(
-							(i==vh.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
+							(i==crh.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
 							volume.getOverhead(),
 							splitter.getSplitterMax(), ad
 							);
@@ -194,8 +192,8 @@ public class FormatterImpl implements Formatter {
 							", overhead:" + volume.getOverhead());
 					
 					volume.setPostVolData(updateVolumeContents(i, ad, false));
-					crh.getVariables().setSheetsInVolume(i, volume.getBodySize() + volume.getOverhead());
-					//crh.getVariables().setPagesInVolume(i, value);
+					crh.setSheetsInVolume(i, volume.getBodySize() + volume.getOverhead());
+					//crh.setPagesInVolume(i, value);
 					crh.setAnchorData(i, ad);
 
 					ret.add(volume);
@@ -206,9 +204,9 @@ public class FormatterImpl implements Formatter {
 				sheetCount += volumeProvider.getRemaining().size();
 				totalPageCount += countPages(volumeProvider.getRemaining());
 			}
-			crh.getVariables().setSheetsInDocument(sheetCount + totalOverheadCount);
-			//crh.getVariables().setPagesInDocument(value);
-			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
+			crh.setSheetsInDocument(sheetCount + totalOverheadCount);
+			//crh.setPagesInDocument(value);
+			splitter.setSplitterMax(getVolumeMaxSize(1,  crh.getVolumeCount()));
 			splitter.updateSheetCount(sheetCount + totalOverheadCount);
 			if (volumeProvider.hasNext()) {
 				ok2 = false;

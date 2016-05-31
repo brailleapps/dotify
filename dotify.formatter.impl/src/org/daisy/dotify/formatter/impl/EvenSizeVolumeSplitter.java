@@ -8,9 +8,9 @@ class EvenSizeVolumeSplitter implements VolumeSplitter {
 	int splitterMax = 0;
 	int volumeOffset = 0;
 	int volsMin = Integer.MAX_VALUE;
-	private final VariablesHandler vh;
+	private final CrossReferenceHandler vh;
 
-	EvenSizeVolumeSplitter(VariablesHandler vh) {
+	EvenSizeVolumeSplitter(CrossReferenceHandler vh) {
 		this.vh = vh;
 	}
 	
