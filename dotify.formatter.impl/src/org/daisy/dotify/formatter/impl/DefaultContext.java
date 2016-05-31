@@ -3,33 +3,26 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.Context;
 
 class DefaultContext implements Context {
-	private final Integer currentVolume, volumeCount, currentPage, metaVolume, metaPage,
-		pagesInVolume, pagesInDocument, sheetsInVolume, sheetsInDocument;
+	private final Integer currentVolume, currentPage, metaVolume, metaPage;
+	private final CrossReferences crh;
 	
 	static class Builder {
 		private Integer	currentVolume=null, 
-						volumeCount=null,
 						currentPage=null,
 						metaVolume=null,
-						metaPage=null,
-						pagesInVolume=null,
-						pagesInDocument=null,
-						sheetsInVolume=null,
-						sheetsInDocument=null;
+						metaPage=null;
+		private CrossReferences crh = null;
+						
 		
 		Builder() {
 		}
 		
-		private Builder(Context base) {
+		private Builder(DefaultContext base) {
 			this.currentVolume = base.getCurrentVolume();
-			this.volumeCount = base.getVolumeCount();
 			this.currentPage = base.getCurrentPage();
 			this.metaVolume = base.getMetaVolume();
 			this.metaPage = base.getMetaPage();
-			this.pagesInVolume=base.getPagesInVolume();
-			this.pagesInDocument=base.getPagesInDocument();
-			this.sheetsInVolume=base.getSheetsInVolume();
-			this.sheetsInDocument=base.getSheetsInDocument();
+			this.crh = base.crh;
 		}
 		
 		Builder currentVolume(Integer value) {
@@ -42,8 +35,8 @@ class DefaultContext implements Context {
 			return this;
 		}
 		
-		Builder volumeCount(Integer value) {
-			this.volumeCount = value;
+		Builder referenceHandler(CrossReferences value) {
+			this.crh = value;
 			return this;
 		}
 		
@@ -56,59 +49,23 @@ class DefaultContext implements Context {
 			this.metaPage = value;
 			return this;
 		}
-		
-		Builder pagesInVolume(Integer value) {
-			this.pagesInVolume = value;
-			return this;
-		}
-		
-		Builder pagesInDocument(Integer value) {
-			this.pagesInDocument = value;
-			return this;
-		}
-		
-		Builder sheetsInVolume(Integer value) {
-			this.sheetsInVolume = value;
-			return this;
-		}
-		
-		Builder sheetsInDocument(Integer value) {
-			this.sheetsInDocument = value;
-			return this;
-		}
-		
+
 		DefaultContext build() {
 			return new DefaultContext(this);
 		}
 	}
 	
-	public static DefaultContext.Builder from(Context base) {
+	public static DefaultContext.Builder from(DefaultContext base) {
 		return new DefaultContext.Builder(base);
 	}
 	
 	private DefaultContext(Builder builder) {
 		this.currentVolume = builder.currentVolume;
-		this.volumeCount = builder.volumeCount;
 		this.currentPage = builder.currentPage;
 		this.metaVolume = builder.metaVolume;
 		this.metaPage = builder.metaPage;
-		this.pagesInVolume = builder.pagesInVolume;
-		this.pagesInDocument = builder.pagesInDocument;
-		this.sheetsInVolume = builder.sheetsInVolume;
-		this.sheetsInDocument = builder.sheetsInDocument;
+		this.crh = builder.crh;
 	}
-	
-	public DefaultContext(Integer currentVolume, Integer volumeCount) {
-		this.currentVolume = currentVolume;
-		this.volumeCount = volumeCount;
-		this.currentPage = null;
-		this.metaVolume = null;
-		this.metaPage = null;
-		this.pagesInVolume = null;
-		this.pagesInDocument = null;
-		this.sheetsInVolume = null;
-		this.sheetsInDocument = null;
-	} 
 
 	@Override
 	public Integer getCurrentVolume() {
@@ -117,7 +74,7 @@ class DefaultContext implements Context {
 
 	@Override
 	public Integer getVolumeCount() {
-		return volumeCount;
+		return (crh==null?null:crh.getVariables().getVolumeCount());
 	}
 
 	@Override
@@ -137,37 +94,37 @@ class DefaultContext implements Context {
 
 	@Override
 	public Integer getPagesInVolume() {
-		return pagesInVolume;
+		//TODO: support this
+		throw new UnsupportedOperationException("Not implemented");
+		//return null;
 	}
 
 	@Override
 	public Integer getPagesInDocument() {
-		return pagesInDocument;
+		//TODO: support this
+		throw new UnsupportedOperationException("Not implemented");
+		//return null;
 	}
 
 	@Override
 	public Integer getSheetsInVolume() {
-		return sheetsInVolume;
+		return (crh==null?null:crh.getVariables().getSheetsInVolume(currentVolume));
 	}
 
 	@Override
 	public Integer getSheetsInDocument() {
-		return sheetsInDocument;
+		return (crh==null?null:crh.getVariables().getSheetsInDocument());
 	}
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((crh == null) ? 0 : crh.hashCode());
 		result = prime * result + ((currentPage == null) ? 0 : currentPage.hashCode());
 		result = prime * result + ((currentVolume == null) ? 0 : currentVolume.hashCode());
 		result = prime * result + ((metaPage == null) ? 0 : metaPage.hashCode());
 		result = prime * result + ((metaVolume == null) ? 0 : metaVolume.hashCode());
-		result = prime * result + ((volumeCount == null) ? 0 : volumeCount.hashCode());
-		result = prime * result + ((pagesInVolume == null) ? 0 : pagesInVolume.hashCode());
-		result = prime * result + ((pagesInDocument == null) ? 0 : pagesInDocument.hashCode());
-		result = prime * result + ((sheetsInVolume == null) ? 0 : sheetsInVolume.hashCode());
-		result = prime * result + ((sheetsInDocument == null) ? 0 : sheetsInDocument.hashCode());
 		return result;
 	}
 
@@ -183,6 +140,13 @@ class DefaultContext implements Context {
 			return false;
 		}
 		DefaultContext other = (DefaultContext) obj;
+		if (crh == null) {
+			if (other.crh != null) {
+				return false;
+			}
+		} else if (!crh.equals(other.crh)) {
+			return false;
+		}
 		if (currentPage == null) {
 			if (other.currentPage != null) {
 				return false;
@@ -209,41 +173,6 @@ class DefaultContext implements Context {
 				return false;
 			}
 		} else if (!metaVolume.equals(other.metaVolume)) {
-			return false;
-		}
-		if (volumeCount == null) {
-			if (other.volumeCount != null) {
-				return false;
-			}
-		} else if (!volumeCount.equals(other.volumeCount)) {
-			return false;
-		}
-		if (pagesInVolume == null) {
-			if (other.pagesInVolume != null) {
-				return false;
-			}
-		} else if (!pagesInVolume.equals(other.pagesInVolume)) {
-			return false;
-		}
-		if (pagesInDocument == null) {
-			if (other.pagesInDocument != null) {
-				return false;
-			}
-		} else if (!pagesInDocument.equals(other.pagesInDocument)) {
-			return false;
-		}
-		if (sheetsInVolume == null) {
-			if (other.sheetsInVolume != null) {
-				return false;
-			}
-		} else if (!sheetsInVolume.equals(other.sheetsInVolume)) {
-			return false;
-		}
-		if (sheetsInDocument == null) {
-			if (other.sheetsInDocument != null) {
-				return false;
-			}
-		} else if (!sheetsInDocument.equals(other.sheetsInDocument)) {
 			return false;
 		}
 		return true;

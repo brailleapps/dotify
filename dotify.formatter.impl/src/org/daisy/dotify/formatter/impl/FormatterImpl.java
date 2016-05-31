@@ -151,7 +151,7 @@ public class FormatterImpl implements Formatter {
 		//differences have been checked and accepted
 		try {
 			// make a preliminary calculation based on a contents only
-			List<Sheet> ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext(null, null)).paginate();
+			List<Sheet> ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext.Builder().build()).paginate();
 			splitter.setSplitterMax(getVolumeMaxSize(1,  vh.getVolumeCount()));
 			splitter.updateSheetCount(ps.size() + totalOverheadCount);
 		} catch (PaginatorException e) {
@@ -165,7 +165,7 @@ public class FormatterImpl implements Formatter {
 			totalOverheadCount = 0;
 			ret = new ArrayList<>();
 			
-			VolumeProvider volumeProvider = new VolumeProvider(new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext(null, null)), crh);
+			VolumeProvider volumeProvider = new VolumeProvider(new PageStructBuilder(context.getFormatterContext(), blocks, crh, new DefaultContext.Builder().build()), crh);
 
 			for (int i=1;i<= vh.getVolumeCount();i++) {
 				if (j>1 && splitter.getSplitterMax()!=getVolumeMaxSize(i,  vh.getVolumeCount())) {
@@ -240,9 +240,7 @@ public class FormatterImpl implements Formatter {
 	private List<Sheet> updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
 		DefaultContext c = new DefaultContext.Builder()
 						.currentVolume(volumeNumber)
-						.volumeCount(crh.getVariables().getVolumeCount())
-						.sheetsInVolume(crh.getVariables().getSheetsInVolume(volumeNumber))
-						.sheetsInDocument(crh.getVariables().getSheetsInDocument())
+						.referenceHandler(crh)
 						.build();
 		try {
 			ArrayList<BlockSequence> ib = new ArrayList<>();
@@ -285,7 +283,7 @@ public class FormatterImpl implements Formatter {
 			}
 			if (t.appliesTo(new DefaultContext.Builder()
 						.currentVolume(volumeNumber)
-						.volumeCount(volumeCount)
+						.referenceHandler(crh)
 						.build())) {
 				return t.getVolumeMaxSize();
 			}

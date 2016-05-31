@@ -29,7 +29,7 @@ public class BlockContentManagerTest {
 		}
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
 		CrossReferences refs = mock(CrossReferences.class);
-		Context context = new DefaultContext(1, 1);
+		Context context = createContext();
 		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
 		//test
@@ -52,7 +52,7 @@ public class BlockContentManagerTest {
 
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
 		CrossReferences refs = mock(CrossReferences.class);
-		Context context = new DefaultContext(1, 1);
+		Context context = createContext();
 		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
 		//test
@@ -74,7 +74,7 @@ public class BlockContentManagerTest {
 
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
 		CrossReferences refs = mock(CrossReferences.class);
-		Context context = new DefaultContext(1, 1);
+		Context context = createContext();
 		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
 		//test
@@ -89,5 +89,11 @@ public class BlockContentManagerTest {
 		assertEquals("⠀⠀⠀⠄⠄⠄", r.getLeftMargin().getContent()+r.getChars());
 	}
 
+	
+	private static Context createContext() {
+		CrossReferenceHandler crh = new CrossReferenceHandler();
+		crh.getVariables().setVolumeCount(1);
+		return new DefaultContext.Builder().currentVolume(1).referenceHandler(crh).build();
+	}
 
 }
