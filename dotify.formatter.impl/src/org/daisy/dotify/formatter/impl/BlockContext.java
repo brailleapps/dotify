@@ -2,11 +2,11 @@ package org.daisy.dotify.formatter.impl;
 
 class BlockContext {
 	private final int flowWidth;
-	private final CrossReferences refs;
+	private final CrossReferenceHandler refs;
 	private final DefaultContext context;
 	private final FormatterContext fcontext;
 
-	public BlockContext(int flowWidth, CrossReferences refs, DefaultContext context, FormatterContext fcontext) {
+	public BlockContext(int flowWidth, CrossReferenceHandler refs, DefaultContext context, FormatterContext fcontext) {
 		this.flowWidth = flowWidth;
 		this.refs = refs;
 		this.context = context;
@@ -17,7 +17,7 @@ class BlockContext {
 		return flowWidth;
 	}
 
-	public CrossReferences getRefs() {
+	public CrossReferenceHandler getRefs() {
 		return refs;
 	}
 

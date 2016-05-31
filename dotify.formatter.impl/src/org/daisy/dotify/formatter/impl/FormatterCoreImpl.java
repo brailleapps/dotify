@@ -276,7 +276,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 
 	@Override
 	public List<Block> getBlocks(FormatterContext context, DefaultContext c,
-			CrossReferences crh) {
+			CrossReferenceHandler crh) {
 		return this;
 	}
 

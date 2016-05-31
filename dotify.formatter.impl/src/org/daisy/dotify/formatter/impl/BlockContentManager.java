@@ -30,7 +30,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 	private final static Pattern trailingWsBraillePattern = Pattern.compile("[\\s\u2800]+\\z");
 
 	private final Stack<RowImpl> rows;
-	private final CrossReferences refs;
+	private final CrossReferenceHandler refs;
 	private final int available;
 	private final Context context;
 
@@ -38,7 +38,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 	private ListItem item;
 	private int forceCount;
 	
-	BlockContentManager(int flowWidth, Stack<Segment> segments, RowDataProperties rdp, CrossReferences refs, Context context, FormatterContext fcontext) {
+	BlockContentManager(int flowWidth, Stack<Segment> segments, RowDataProperties rdp, CrossReferenceHandler refs, Context context, FormatterContext fcontext) {
 		super(flowWidth, rdp, fcontext);
 		this.refs = refs;
 		this.currentLeader = null;

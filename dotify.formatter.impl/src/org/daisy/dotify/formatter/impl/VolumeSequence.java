@@ -15,5 +15,5 @@ interface VolumeSequence {
 	 */
 	public SequenceProperties getSequenceProperties();
 	
-	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh);
+	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferenceHandler crh);
 }

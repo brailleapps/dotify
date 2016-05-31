@@ -4,14 +4,14 @@ import org.daisy.dotify.api.formatter.Context;
 
 class DefaultContext implements Context {
 	private final Integer currentVolume, currentPage, metaVolume, metaPage;
-	private final CrossReferences crh;
+	private final CrossReferenceHandler crh;
 	
 	static class Builder {
 		private Integer	currentVolume=null, 
 						currentPage=null,
 						metaVolume=null,
 						metaPage=null;
-		private CrossReferences crh = null;
+		private CrossReferenceHandler crh = null;
 						
 		
 		Builder() {
@@ -35,7 +35,7 @@ class DefaultContext implements Context {
 			return this;
 		}
 		
-		Builder referenceHandler(CrossReferences value) {
+		Builder referenceHandler(CrossReferenceHandler value) {
 			this.crh = value;
 			return this;
 		}

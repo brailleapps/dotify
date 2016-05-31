@@ -24,7 +24,7 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 	}
 
 	@Override
-	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferences crh) {
+	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferenceHandler crh) {
 		if (ret!=null) {
 			//we can return previous result, because static contents does not depend on context.
 			return ret;

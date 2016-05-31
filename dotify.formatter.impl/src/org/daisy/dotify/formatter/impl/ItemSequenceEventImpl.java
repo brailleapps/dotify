@@ -46,7 +46,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
 	}
 
 	@Override
-	public List<Block> getBlocks(FormatterContext context, DefaultContext vars, CrossReferences crh) {
+	public List<Block> getBlocks(FormatterContext context, DefaultContext vars, CrossReferenceHandler crh) {
 		ContentCollectionImpl c = context.getCollections().get(collectionID);
 		ArrayList<Block> ret = new ArrayList<>();
 		if (c==null) {

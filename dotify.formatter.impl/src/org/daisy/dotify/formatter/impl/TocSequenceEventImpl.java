@@ -99,7 +99,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 	}
 
 	@Override
-	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferences crh) {
+	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext vars, CrossReferenceHandler crh) {
 		try {
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 					context.getMasters().get(getSequenceProperties().getMasterName()), 

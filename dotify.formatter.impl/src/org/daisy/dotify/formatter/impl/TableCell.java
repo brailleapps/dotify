@@ -29,7 +29,7 @@ class TableCell extends FormatterCoreImpl {
 		return info;
 	}
 	
-	CellData render(FormatterContext context, DefaultContext c, CrossReferences crh, int flowWidth) {
+	CellData render(FormatterContext context, DefaultContext c, CrossReferenceHandler crh, int flowWidth) {
 		List<RowImpl> rowData = new ArrayList<>();
 		List<Block> blocks = getBlocks(context, c, crh);
 		int minWidth = flowWidth;

@@ -3,7 +3,7 @@ package org.daisy.dotify.formatter.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-class CrossReferenceHandler implements CrossReferences {
+class CrossReferenceHandler {
 	private final LookupHandler<String, Integer> pageRefs;
 	private final LookupHandler<String, Integer> volumeRefs;
 	private final LookupHandler<Integer, Iterable<AnchorData>> anchorRefs;
@@ -18,6 +18,11 @@ class CrossReferenceHandler implements CrossReferences {
 		this.pageIds = new HashSet<>();
 	}
 	
+	/**
+	 * Gets the volume for the specified identifier.
+	 * @param refid the identifier to get the volume for
+	 * @return returns the volume number, one-based
+	 */
 	public Integer getVolumeNumber(String refid) {
 		return volumeRefs.get(refid);
 	}
@@ -26,6 +31,11 @@ class CrossReferenceHandler implements CrossReferences {
 		volumeRefs.put(refid, volume);
 	}
 	
+	/**
+	 * Gets the page number for the specified identifier.
+	 * @param refid the identifier to get the page for
+	 * @return returns the page number, one-based
+	 */
 	public Integer getPageNumber(String refid) {
 		return pageRefs.get(refid);
 	}

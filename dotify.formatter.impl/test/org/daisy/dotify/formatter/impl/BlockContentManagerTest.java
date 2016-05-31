@@ -28,7 +28,7 @@ public class BlockContentManagerTest {
 			segments.push(new TextSegment("... ", new TextProperties.Builder("sv-SE").build()));
 		}
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
-		CrossReferences refs = mock(CrossReferences.class);
+		CrossReferenceHandler refs = mock(CrossReferenceHandler.class);
 		Context context = createContext();
 		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
@@ -51,7 +51,7 @@ public class BlockContentManagerTest {
 		segments.push(new TextSegment("...", new TextProperties.Builder("sv-SE").build()));
 
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
-		CrossReferences refs = mock(CrossReferences.class);
+		CrossReferenceHandler refs = mock(CrossReferenceHandler.class);
 		Context context = createContext();
 		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
@@ -73,7 +73,7 @@ public class BlockContentManagerTest {
 		segments.push(new TextSegment("...", new TextProperties.Builder("sv-SE").build()));
 
 		RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
-		CrossReferences refs = mock(CrossReferences.class);
+		CrossReferenceHandler refs = mock(CrossReferenceHandler.class);
 		Context context = createContext();
 		AbstractBlockContentManager m = new BlockContentManager(10, segments, rdp, refs, context, c);
 
