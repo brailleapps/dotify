@@ -274,7 +274,19 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (table!=null) {
 			throw new IllegalStateException("A table is open.");
 		}
-		getCurrentBlock().addSegment(new Evaluate(exp, t));
+		Evaluate e; {
+			if (styles.isEmpty()) {
+				e = new Evaluate(exp, t);
+			} else {
+				String[] style = new String[styles.size()];
+				int i = 0;
+				for (Style s : styles) {
+					style[i++] = s.name;
+				}
+				e = new Evaluate(exp, t, style);
+			}
+		}
+		getCurrentBlock().addSegment(e);
 	}
 	
 	private void addToBlockIndent(int value) {

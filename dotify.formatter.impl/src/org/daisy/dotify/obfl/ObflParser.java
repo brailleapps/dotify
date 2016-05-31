@@ -819,6 +819,8 @@ public class ObflParser extends XMLParserBase {
 				scanEmptyElement(input, ObflQName.BR);
 			} else if (equalsStart(event, ObflQName.ANCHOR)) {
 				fc.insertAnchor(parseAnchor(event));
+			} else if (equalsStart(event, ObflQName.EVALUATE)) {
+				parseEvaluate(fc, event, input, tp);
 			} else if (equalsEnd(event, ObflQName.STYLE)) {
 				if (!ignore) {
 					if (!hasEvents) {

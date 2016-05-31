@@ -134,6 +134,7 @@ class BlockContentManager extends AbstractBlockContentManager {
 							Translatable.text(fcontext.getConfiguration().isMarkingCapitalLetters()?txt:txt.toLowerCase()).
 							locale(e.getTextProperties().getLocale()).
 							hyphenate(e.getTextProperties().isHyphenating()).
+							attributes(e.getTextAttribute(txt.length())).
 							build(), 
 							null);
 					break;
