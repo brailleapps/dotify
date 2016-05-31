@@ -4,6 +4,7 @@ import org.daisy.dotify.api.formatter.Formatter;
 import org.daisy.dotify.api.formatter.FormatterConfigurationException;
 import org.daisy.dotify.api.formatter.FormatterFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
+import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 
 import aQute.bnd.annotation.component.Component;
@@ -18,10 +19,11 @@ import aQute.bnd.annotation.component.Reference;
 public class FormatterFactoryImpl implements FormatterFactory {
 	private BrailleTranslatorFactoryMakerService translatorFactory;
 	private TextBorderFactoryMakerService borderFactory;
+	private MarkerProcessorFactoryMakerService markerProcessorFactory;
 
 	@Override
 	public Formatter newFormatter(String locale, String mode) {
-		return new FormatterImpl(translatorFactory, borderFactory, locale, mode);
+		return new FormatterImpl(translatorFactory, borderFactory, markerProcessorFactory, locale, mode);
 	}
 
 	@Reference
@@ -42,6 +44,15 @@ public class FormatterFactoryImpl implements FormatterFactory {
 		this.borderFactory = null;
 	}
 	
+	@Reference
+	public void setMarkerProcessorFactory(MarkerProcessorFactoryMakerService markerProcessorFactory) {
+		this.markerProcessorFactory = markerProcessorFactory;
+	}
+	
+	public void unsetMarkerProcessorFactory() {
+		this.markerProcessorFactory = null;
+	}
+	
 	@Override
 	public <T> void setReference(Class<T> c, T reference)
 			throws FormatterConfigurationException {
@@ -57,6 +68,7 @@ public class FormatterFactoryImpl implements FormatterFactory {
 	public void setCreatedWithSPI() {
 		setTranslator(SPIHelper.getBrailleTranslatorFactoryMaker());
 		setTextBorderFactory(SPIHelper.getTextBorderFactoryMaker());
+		setMarkerProcessorFactory(SPIHelper.getMarkerProcessorFactoryMaker());
 	}
 
 }

@@ -2,7 +2,6 @@ package org.daisy.dotify.obfl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -75,10 +74,6 @@ import org.daisy.dotify.api.formatter.VolumeContentBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.Border;
-import org.daisy.dotify.api.translator.DefaultTextAttribute;
-import org.daisy.dotify.api.translator.MarkerProcessor;
-import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
-import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderStyle;
@@ -108,7 +103,6 @@ public class ObflParser extends XMLParserBase {
 	private boolean hyphGlobal;
 	private final Logger logger;
 	private final FactoryManager fm;
-	private MarkerProcessor mp;
 
 	Map<String, Node> xslts = new HashMap<>();
 	Map<String, Node> fileRefs = new HashMap<>();
@@ -806,122 +800,38 @@ public class ObflParser extends XMLParserBase {
 	}
 
 	private void parseStyle(XMLEvent event, XMLEventReader input, FormatterCore fc, TextProperties tp) throws XMLStreamException {
-		parseStyleEvent(fc, event, input, tp);
-	}
-
-	private void parseStyleEvent(FormatterCore fc, XMLEvent ev, XMLEventReader input, TextProperties tp) throws XMLStreamException {
-		//Buffer events and extract text
-		List<XMLEvent> events = new ArrayList<>();
-		List<String> chunks = new ArrayList<>();
-		events.add(ev);
-		int level = 1;
-		while (input.hasNext()) {
-			XMLEvent event = input.nextEvent();
-			events.add(event);
-			if (event.isCharacters()) {
-				chunks.add(event.asCharacters().getData());
-			} else if (equalsStart(event, ObflQName.STYLE)) {
-				level ++;
-			} else if (equalsEnd(event, ObflQName.STYLE)) {
-				level --;
-				if (level == 0) {
-					break;
-				}
-			}
+		String name = getAttr(event, "name");
+		boolean ignore = formatter.getConfiguration().getIgnoredStyles().contains(name);
+		if (!ignore) {
+			fc.startStyle(name);
 		}
-
-		//Build text attributes
-		Iterator<XMLEvent> evs = events.iterator();
-		TextAttribute t = processTextAttributes(evs.next(), evs);
-		
-		if (mp==null) {
-			try {
-				this.mp = fm.getMarkerProcessorFactory().newMarkerProcessor(locale.toString(), mode);
-			} catch (MarkerProcessorConfigurationException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}
-		//Add markers to text
-		String[] updated = mp.processAttributesRetain(t, chunks.toArray(new String[chunks.size()]));
-		
-		//Play back the events
-		parseStyleEventInner(fc, events.iterator(), Arrays.asList(updated).iterator(), tp);
-	}
-
-	/**
-	 * Builds a DOM over the style sub tree.
-	 * 
-	 * @param event
-	 * @param input
-	 * @param evr
-	 * @param tp
-	 * @throws XMLStreamException
-	 */
-	private void parseStyleEventInner(FormatterCore fc, Iterator<XMLEvent> input, Iterator<String> text, TextProperties tp) throws XMLStreamException {
-		//Play back the events
 		boolean hasEvents = false;
 		while (input.hasNext()) {
-			XMLEvent event = input.next();
+			event=input.nextEvent();
 			if (event.isCharacters()) {
-				fc.addChars(text.next(), tp);
+				fc.addChars(event.asCharacters().getData(), tp);
 			} else if (equalsStart(event, ObflQName.STYLE)) {
-				parseStyleEventInner(fc, input, text, tp);
+				parseStyle(event, input, fc, tp);
 			} else if (equalsStart(event, ObflQName.MARKER)) {
 				parseMarker(fc, event);
 			} else if (equalsStart(event, ObflQName.BR)) {
 				fc.newLine();
+				scanEmptyElement(input, ObflQName.BR);
 			} else if (equalsStart(event, ObflQName.ANCHOR)) {
 				fc.insertAnchor(parseAnchor(event));
 			} else if (equalsEnd(event, ObflQName.STYLE)) {
+				if (!ignore) {
+					if (!hasEvents) {
+						fc.addChars("", tp);
+					}
+					fc.endStyle();
+				}
 				break;
 			} else {
 				report(event);
 			}
 			hasEvents = true;
 		}
-		if (!hasEvents) {
-			while (text.hasNext()) {
-				fc.addChars(text.next(), tp);
-			}
-		}
-	}
-
-	private TextAttribute processTextAttributes(XMLEvent style, Iterator<XMLEvent> events) throws XMLStreamException {
-		int len = 0;
-		String name = getAttr(style, "name");
-		DefaultTextAttribute.Builder ret;
-		if (formatter.getConfiguration().getIgnoredStyles().contains(name)) {
-			ret = new DefaultTextAttribute.Builder();
-		} else {
-			ret = new DefaultTextAttribute.Builder(name);
-		}
-		while (events.hasNext()) {
-			XMLEvent ev = events.next();
-			if (ev.isCharacters()) {
-				String sr = ev.asCharacters().getData();
-				ret.add(new DefaultTextAttribute.Builder().build(sr.length()));
-				len += sr.length();
-			} else if (equalsStart(ev, ObflQName.STYLE)) {
-				TextAttribute t = processTextAttributes(ev, events);
-				ret.add(t);
-				len += t.getWidth();
-			} else if (equalsEnd(ev, ObflQName.STYLE)) {
-				break;
-			} else if (equalsStart(ev, ObflQName.MARKER, ObflQName.BR, ObflQName.ANCHOR)) {
-				// ignore
-			} else if (equalsEnd(ev, ObflQName.MARKER, ObflQName.BR, ObflQName.ANCHOR)) {
-				// ignore
-			} else {
-				name = "";
-				if (ev.isEndElement()) {
-					name = ev.asEndElement().getName().getLocalPart();
-				} else if (ev.isStartElement()) {
-					name = ev.asStartElement().getName().getLocalPart();
-				}
-				throw new UnsupportedOperationException("Unknown element: " + ev +" "+ name);
-			}
-		}
-		return ret.build(len);
 	}
 
 	private BlockProperties blockBuilder(Iterator<?> atts) {

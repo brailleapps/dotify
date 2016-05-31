@@ -20,6 +20,7 @@ import org.daisy.dotify.api.formatter.TableOfContents;
 import org.daisy.dotify.api.formatter.VolumeTemplateBuilder;
 import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
+import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.common.io.StateObject;
@@ -50,8 +51,8 @@ public class FormatterImpl implements Formatter {
 	/**
 	 * Creates a new formatter
 	 */
-	public FormatterImpl(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, String locale, String mode) {
-		this.context = new LazyFormatterContext(translatorFactory, tbf, FormatterConfiguration.with(locale, mode).build());
+	public FormatterImpl(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, MarkerProcessorFactoryMakerService mpf, String locale, String mode) {
+		this.context = new LazyFormatterContext(translatorFactory, tbf, mpf, FormatterConfiguration.with(locale, mode).build());
 		this.blocks = new Stack<>();
 		this.state = new StateObject();
 		this.tocs = new HashMap<>();

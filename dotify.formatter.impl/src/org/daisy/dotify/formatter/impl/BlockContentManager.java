@@ -93,7 +93,8 @@ class BlockContentManager extends AbstractBlockContentManager {
 									ts.getText():ts.getText().toLowerCase()
 									).
 							locale(ts.getTextProperties().getLocale()).
-							hyphenate(ts.getTextProperties().isHyphenating()).build(),
+							hyphenate(ts.getTextProperties().isHyphenating()).
+							attributes(ts.getTextAttribute()).build(),
 							ts.getTextProperties().getTranslationMode());
 					break;
 				}

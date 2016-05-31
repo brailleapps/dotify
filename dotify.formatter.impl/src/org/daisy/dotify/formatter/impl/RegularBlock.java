@@ -16,9 +16,11 @@ public class RegularBlock extends Block {
 	public void addSegment(TextSegment s) {
 		if (segments.size() > 0 && segments.peek().getSegmentType() == SegmentType.Text) {
 			TextSegment ts = ((TextSegment) segments.peek());
-			if (ts.getTextProperties().equals(s.getTextProperties())) {
+			if (ts.getTextProperties().equals(s.getTextProperties())
+			    && ts.getTextAttribute() == null && s.getTextAttribute() == null) {
 				// Logger.getLogger(this.getClass().getCanonicalName()).finer("Appending chars to existing text segment.");
-				ts.setText(ts.getText() + "" + s.getText());
+				segments.pop();
+				segments.push(new TextSegment(ts.getText() + "" + s.getText(), ts.getTextProperties()));
 				return;
 			}
 		}

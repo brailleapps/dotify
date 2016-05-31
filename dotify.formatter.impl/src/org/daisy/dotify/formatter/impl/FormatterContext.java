@@ -8,6 +8,7 @@ import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
 import org.daisy.dotify.api.translator.BrailleTranslator;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
+import org.daisy.dotify.api.translator.MarkerProcessorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
@@ -26,8 +27,8 @@ class FormatterContext extends FormatterCoreContext {
 	private final Map<String, ContentCollectionImpl> collections;
 	private final char spaceChar;
 
-	FormatterContext(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, FormatterConfiguration config) {
-		super(tbf, config);
+	FormatterContext(BrailleTranslatorFactoryMakerService translatorFactory, TextBorderFactoryMakerService tbf, MarkerProcessorFactoryMakerService mpf, FormatterConfiguration config) {
+		super(tbf, config, mpf);
 		this.translatorFactory = translatorFactory;
 		this.cache = new HashMap<>();
 		try {
