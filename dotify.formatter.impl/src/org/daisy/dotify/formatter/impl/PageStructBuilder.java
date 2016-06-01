@@ -25,14 +25,14 @@ class PageStructBuilder {
 			struct = new PageStruct();
 			List<Sheet.Builder> ret = new ArrayList<>();
 			boolean volBreakAllowed = true;
-			int size = 0;
 			for (BlockSequence bs : fs) {
 				try {
 					PageSequence seq = newSequence(bs);
 					LayoutMaster lm = seq.getLayoutMaster();
-					int pageIndex = 0;
 					Sheet.Builder s = null;
-					for (PageImpl p : seq.getPages()) {
+					List<PageImpl> pages = seq.getPages();
+					for (int pageIndex = 0; pageIndex<pages.size(); pageIndex++) {
+						PageImpl p = pages.get(pageIndex);
 						if (!lm.duplex() || pageIndex % 2 == 0) {
 							volBreakAllowed = true;
 							s = new Sheet.Builder();
@@ -46,13 +46,9 @@ class PageStructBuilder {
 							}
 						}
 						s.add(p);
-						pageIndex++;
-					}
-					// if this sequence was not empty
-					if (size < ret.size()) {
-						size += ret.size();
-						// set breakable to true
-						ret.get(ret.size() - 1).breakable(true);
+						if (pageIndex==pages.size()-1) {
+							ret.get(ret.size() - 1).breakable(true);
+						}
 					}
 				} catch (RestartPaginationException e) {
 					continue restart;
