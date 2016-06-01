@@ -8,18 +8,16 @@ class PageStructBuilder {
 	private final FormatterContext context;
 	private final Iterable<BlockSequence> fs;
 	private final CrossReferenceHandler crh;
-	private final DefaultContext rcontext;
 	private PageStruct struct;
 	
 
-	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs, CrossReferenceHandler crh, DefaultContext rcontext) {
+	public PageStructBuilder(FormatterContext context, Iterable<BlockSequence> fs, CrossReferenceHandler crh) {
 		this.context = context;
 		this.fs = fs;
 		this.crh = crh;
-		this.rcontext = rcontext;
 	}
 
-	List<Sheet> paginate() throws PaginatorException {
+	List<Sheet> paginate(DefaultContext rcontext) throws PaginatorException {
 		restart:while (true) {
 			crh.resetUniqueChecks();
 			struct = new PageStruct();
@@ -27,7 +25,7 @@ class PageStructBuilder {
 			boolean volBreakAllowed = true;
 			for (BlockSequence bs : fs) {
 				try {
-					PageSequence seq = newSequence(bs);
+					PageSequence seq = newSequence(bs, rcontext);
 					LayoutMaster lm = seq.getLayoutMaster();
 					Sheet.Builder s = null;
 					List<PageImpl> pages = seq.getPages();
@@ -58,7 +56,7 @@ class PageStructBuilder {
 		}
 	}
 
-	private PageSequence newSequence(BlockSequence seq) throws PaginatorException, RestartPaginationException {
+	private PageSequence newSequence(BlockSequence seq, DefaultContext rcontext) throws PaginatorException, RestartPaginationException {
 		int offset = getCurrentPageOffset();
 		PageSequence ps = new PageSequence(struct, seq.getLayoutMaster(), seq.getInitialPageNumber()!=null?seq.getInitialPageNumber() - 1:offset);
 		PageSequenceBuilder2 psb = new PageSequenceBuilder2(ps.getLayoutMaster(), ps.getPageNumberOffset(), crh, seq, context, rcontext);

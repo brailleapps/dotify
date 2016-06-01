@@ -21,11 +21,11 @@ public class VolumeProvider {
 	//private int totalPageCount = 0;
 	private int i=0;
 
-	public VolumeProvider(PageStructBuilder contentPaginator, CrossReferenceHandler crh) {
+	public VolumeProvider(PageStructBuilder contentPaginator, CrossReferenceHandler crh, DefaultContext rcontext) {
 		this.crh = crh;
 		this.contentPaginator = contentPaginator;
 		try {
-			units = contentPaginator.paginate();
+			units = contentPaginator.paginate(rcontext);
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while reformatting.", e);
 		}
