@@ -186,7 +186,6 @@ public class FormatterImpl implements Formatter {
 					
 					volume.setBody(contents);
 					sheetCount += volume.getBodySize();
-					updateTargetVolSize(volume);
 					logger.fine("Sheets  in volume " + i + ": " + (volume.getVolumeSize()) + 
 							", content:" + volume.getBodySize() +
 							", overhead:" + volume.getOverhead());
@@ -290,13 +289,6 @@ public class FormatterImpl implements Formatter {
 		}
 		//TODO: don't return a fixed value
 		return DEFAULT_SPLITTER_MAX;
-	}
-	
-	private void updateTargetVolSize(VolumeImpl d) {
-		if (d.getTargetSize()!=d.getVolumeSize()) {
-			setDirty(true);
-		}
-		d.setTargetVolSize(d.getVolumeSize());
 	}
 	
 	private VolumeImpl getVolume(int volumeNumber) {
