@@ -23,6 +23,7 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.common.io.StateObject;
+import org.daisy.dotify.formatter.impl.DefaultContext.Space;
 
 
 /**
@@ -149,7 +150,7 @@ public class FormatterImpl implements Formatter {
 		//differences have been checked and accepted
 		try {
 			// make a preliminary calculation based on a contents only
-			List<Sheet> ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh).paginate(new DefaultContext.Builder().build());
+			List<Sheet> ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh).paginate(new DefaultContext.Builder().space(Space.BODY).build());
 			splitter.setSplitterMax(getVolumeMaxSize(1,  crh.getVolumeCount()));
 			splitter.updateSheetCount(ps.size() + totalOverheadCount);
 		} catch (PaginatorException e) {
@@ -163,7 +164,7 @@ public class FormatterImpl implements Formatter {
 			totalOverheadCount = 0;
 			ret = new ArrayList<>();
 			
-			VolumeProvider volumeProvider = new VolumeProvider(new PageStructBuilder(context.getFormatterContext(), blocks, crh), crh, new DefaultContext.Builder().build());
+			VolumeProvider volumeProvider = new VolumeProvider(new PageStructBuilder(context.getFormatterContext(), blocks, crh), crh, new DefaultContext.Builder().space(Space.BODY).build());
 
 			for (int i=1;i<= crh.getVolumeCount();i++) {
 				if (j>1 && splitter.getSplitterMax()!=getVolumeMaxSize(i,  crh.getVolumeCount())) {
@@ -240,6 +241,7 @@ public class FormatterImpl implements Formatter {
 		DefaultContext c = new DefaultContext.Builder()
 						.currentVolume(volumeNumber)
 						.referenceHandler(crh)
+						.space(pre?Space.PRE_CONTENT:Space.POST_CONTENT)
 						.build();
 		try {
 			ArrayList<BlockSequence> ib = new ArrayList<>();

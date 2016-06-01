@@ -18,6 +18,7 @@ class PageStructBuilder {
 	}
 
 	List<Sheet> paginate(DefaultContext rcontext) throws PaginatorException {
+		try {
 		restart:while (true) {
 			crh.resetUniqueChecks();
 			struct = new PageStruct();
@@ -28,31 +29,40 @@ class PageStructBuilder {
 					PageSequence seq = newSequence(bs, rcontext);
 					LayoutMaster lm = seq.getLayoutMaster();
 					Sheet.Builder s = null;
+					SheetIdentity si = null;
 					List<PageImpl> pages = seq.getPages();
+					int sheetIndex = 0;
 					for (int pageIndex = 0; pageIndex<pages.size(); pageIndex++) {
 						PageImpl p = pages.get(pageIndex);
 						if (!lm.duplex() || pageIndex % 2 == 0) {
 							volBreakAllowed = true;
 							s = new Sheet.Builder();
+							si = new SheetIdentity(rcontext.getSpace(), rcontext.getCurrentVolume()==null?0:rcontext.getCurrentVolume(), ret.size());
+							sheetIndex++;
 							ret.add(s);
 						}
-						setPreviousSheet(ret, p);
+						if (pageIndex==pages.size()-1) {
+							//Don't get or store this value in crh as it is transient and not a property of the sheet context
+							s.breakable(true);
+						} else {
+							s.breakable(crh.getBreakable(si));
+						}
+
+						setPreviousSheet(si.getSheetIndex()-1, Math.min(p.keepPreviousSheets(), sheetIndex-1), rcontext);
 						volBreakAllowed &= p.allowsVolumeBreak();
 						if (!lm.duplex() || pageIndex % 2 == 1) {
-							if (volBreakAllowed) {
-								s.breakable(true);
-							}
+							crh.keepBreakable(si, volBreakAllowed);
 						}
 						s.add(p);
-						if (pageIndex==pages.size()-1) {
-							ret.get(ret.size() - 1).breakable(true);
-						}
 					}
 				} catch (RestartPaginationException e) {
 					continue restart;
 				}
 			}
 			return buildAll(ret);
+		}
+		} finally {
+			crh.commitBreakable();
 		}
 	}
 
@@ -92,6 +102,7 @@ class PageStructBuilder {
 		struct.setVolumeScope(volumeNumber, fromIndex, toIndex);
 	}
 
+	//TODO: Integrate this with paginate
 	private List<Sheet> buildAll(List<Sheet.Builder> builders) {
 		List<Sheet> ret = new ArrayList<>();
 		for (Sheet.Builder b : builders) {
@@ -100,10 +111,12 @@ class PageStructBuilder {
 		return ret;
 	}
 
-	private void setPreviousSheet(List<Sheet.Builder> sb, PageImpl p) {
+	private void setPreviousSheet(int start, int p, DefaultContext rcontext) {
 		int i = 0;
-		for (int x = sb.size() - 1; i < p.keepPreviousSheets() && x > 0; x--) {
-			sb.get(x - 1).breakable(false);
+		//TODO: simplify this?
+		for (int x = start; i < p && x > 0; x--) {
+			SheetIdentity si = new SheetIdentity(rcontext.getSpace(), rcontext.getCurrentVolume()==null?0:rcontext.getCurrentVolume(), x);
+			crh.keepBreakable(si, false);
 			i++;
 		}
 	}

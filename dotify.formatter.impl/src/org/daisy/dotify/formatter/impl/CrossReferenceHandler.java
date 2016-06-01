@@ -8,6 +8,7 @@ class CrossReferenceHandler {
 	private final LookupHandler<String, Integer> volumeRefs;
 	private final LookupHandler<Integer, Iterable<AnchorData>> anchorRefs;
 	private final LookupHandler<String, Integer> variables;
+	private final LookupHandler<SheetIdentity, Boolean> breakable;
 	private final static String VOLUMES_KEY = "volumes";
 	private final static String SHEETS_IN_VOLUME = "sheets-in-volume-";
 	private final static String SHEETS_IN_DOCUMENT = "sheets-in-document";
@@ -20,6 +21,7 @@ class CrossReferenceHandler {
 		this.volumeRefs = new LookupHandler<>();
 		this.anchorRefs = new LookupHandler<>();
 		this.variables = new LookupHandler<>();
+		this.breakable = new LookupHandler<>();
 		this.pageIds = new HashSet<>();
 	}
 	
@@ -79,6 +81,15 @@ class CrossReferenceHandler {
 	void setPagesInDocument(int value) {
 		variables.put(PAGES_IN_DOCUMENT, value);
 	}
+	
+	void keepBreakable(SheetIdentity ident, boolean value) {
+		breakable.keep(ident, value);
+	}
+	
+	void commitBreakable() {
+		breakable.commit();
+	}
+	
 
 	/**
 	 * Gets the number of volumes.
@@ -103,9 +114,13 @@ class CrossReferenceHandler {
 	int getPagesInDocument() {
 		return variables.get(PAGES_IN_DOCUMENT, 0);
 	}
+	
+	boolean getBreakable(SheetIdentity ident) {
+		return breakable.get(ident, true);
+	}
 
 	boolean isDirty() {
-		return pageRefs.isDirty() || volumeRefs.isDirty() || anchorRefs.isDirty() || variables.isDirty();
+		return pageRefs.isDirty() || volumeRefs.isDirty() || anchorRefs.isDirty() || variables.isDirty() || breakable.isDirty();
 	}
 	
 	void setDirty(boolean value) {
@@ -113,6 +128,7 @@ class CrossReferenceHandler {
 		volumeRefs.setDirty(value);
 		anchorRefs.setDirty(value);
 		variables.setDirty(value);
+		breakable.setDirty(value);
 	}
 	
 	void resetUniqueChecks() {

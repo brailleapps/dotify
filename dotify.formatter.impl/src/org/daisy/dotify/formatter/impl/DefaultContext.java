@@ -3,7 +3,13 @@ package org.daisy.dotify.formatter.impl;
 import org.daisy.dotify.api.formatter.Context;
 
 class DefaultContext implements Context {
+	enum Space {
+		PRE_CONTENT,
+		BODY,
+		POST_CONTENT
+	}
 	private final Integer currentVolume, currentPage, metaVolume, metaPage;
+	private final Space space;
 	private final CrossReferenceHandler crh;
 	
 	static class Builder {
@@ -11,6 +17,7 @@ class DefaultContext implements Context {
 						currentPage=null,
 						metaVolume=null,
 						metaPage=null;
+		private Space space = null;
 		private CrossReferenceHandler crh = null;
 						
 		
@@ -49,6 +56,10 @@ class DefaultContext implements Context {
 			this.metaPage = value;
 			return this;
 		}
+		Builder space(Space value) {
+			this.space = value;
+			return this;
+		}
 
 		DefaultContext build() {
 			return new DefaultContext(this);
@@ -64,6 +75,7 @@ class DefaultContext implements Context {
 		this.currentPage = builder.currentPage;
 		this.metaVolume = builder.metaVolume;
 		this.metaPage = builder.metaPage;
+		this.space = builder.space;
 		this.crh = builder.crh;
 	}
 
@@ -110,6 +122,10 @@ class DefaultContext implements Context {
 	@Override
 	public Integer getSheetsInDocument() {
 		return (crh==null?null:crh.getSheetsInDocument());
+	}
+	
+	public Space getSpace() {
+		return space;
 	}
 	
 	@Override
