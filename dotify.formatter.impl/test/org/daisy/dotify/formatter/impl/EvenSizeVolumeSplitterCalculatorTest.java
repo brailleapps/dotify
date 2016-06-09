@@ -22,6 +22,24 @@ public class EvenSizeVolumeSplitterCalculatorTest {
 	}
 	
 	@Test
+	public void breakpoints_variable() {
+		int i = 479;
+		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, new SplitterLimit() {
+			@Override
+			public int getSplitterLimit(int volume) {
+				return (volume % 2 == 1?50:48);
+			}
+		});
+		for (int j=1; j<i; j++) {
+			if (j==49 || j==96 || j==145 || j==192 || j==241 || j==288 || j==337|| j==384 || j==433) {
+				assertTrue("Assert that sheet is a break point: " + j, ssd.isBreakpoint(j));
+			} else {
+				assertTrue("Assert that sheet is not a break point: " + j, !ssd.isBreakpoint(j));
+			}
+		}
+	}
+	
+	@Test
 	public void breakpointsWithOffset() {
 		int i = 479;
 		EvenSizeVolumeSplitterCalculator ssd = new EvenSizeVolumeSplitterCalculator(i, 49, 1);
