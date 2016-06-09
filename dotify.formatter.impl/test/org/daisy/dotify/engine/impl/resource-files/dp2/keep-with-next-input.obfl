@@ -13,7 +13,7 @@
    <sequence master="body">
       <block>⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤
               </block>
-      <block keep="all" keep-with-next="1">⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤
+      <block keep="page" keep-with-next="1">⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤
               </block>
       <block>⠤⠤⠤⠤⠤
               </block>

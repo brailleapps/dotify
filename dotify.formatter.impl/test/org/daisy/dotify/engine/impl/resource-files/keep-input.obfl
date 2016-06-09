@@ -15,14 +15,14 @@
 			<block>⠤⠤⠤</block>
 			<block>⠤⠤⠤</block>
 			<block>⠤⠤⠤</block>
-			<block keep="all">⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ </block>
+			<block keep="page">⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ </block>
 		</block>
 	    <block break-before="page">
 			<block>⠤⠤⠤</block>
 			<block>⠤⠤⠤</block>
 			<block>⠤⠤⠤</block>
 			<block>⠤⠤⠤</block>
-			<block keep="all" keep-with-next="1">⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤</block>
+			<block keep="page" keep-with-next="1">⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤ ⠤⠤⠤</block>
 			<block>⠤⠤⠤</block>
 		</block>
 	</sequence>

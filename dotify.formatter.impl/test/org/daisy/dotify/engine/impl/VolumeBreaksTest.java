@@ -11,6 +11,11 @@ public class VolumeBreaksTest extends AbstractFormatterEngineTest {
 	public void testUnevenVolumeBreak() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
 		testPEF("resource-files/volume-breaks-uneven-input.obfl", "resource-files/volume-breaks-uneven-expected.pef", false);
 	}
+
+	@Test
+	public void testForcedVolumeBreak() throws LayoutEngineException, IOException, PagedMediaWriterConfigurationException {
+		testPEF("resource-files/volume-breaks1-input.obfl", "resource-files/volume-breaks1-expected.pef", false);
+	}
 	
 
 }

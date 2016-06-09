@@ -73,8 +73,19 @@ public class VolumeProvider {
 	
 	private SplitPoint<Sheet> getSplitPoint(int targetSheetsInVolume, int overhead, int splitterMax) {
 		int contentSheets = targetSheetsInVolume-overhead;
-		SplitPoint<Sheet> bp;
-		{
+		SplitPoint<Sheet> bp = null;
+		int i = 0;
+		for (Sheet s : units) {
+			if (s.shouldStartNewVolume() && i>0) {
+				bp = new SplitPoint<Sheet>(units.subList(0, i), null, units.subList(i, units.size()), null, false);
+				break;
+			}
+			if (i>=contentSheets) {
+				break;
+			}
+			i++;
+		}
+		if (bp==null) {
 			int offset = -1;
 			do {
 				offset++;

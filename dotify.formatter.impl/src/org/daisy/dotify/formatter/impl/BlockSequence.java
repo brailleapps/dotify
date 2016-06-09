@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.FormatterSequence;
+import org.daisy.dotify.api.formatter.SequenceProperties;
 
 /**
  * Provides an interface for a sequence of block contents.
@@ -10,11 +11,11 @@ import org.daisy.dotify.api.formatter.FormatterSequence;
 class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 	private static final long serialVersionUID = -6105005856680272131L;
 	private final LayoutMaster master;
-	private final Integer initialPagenum;
+	private final SequenceProperties props;
 	
-	public BlockSequence(FormatterContext fc, Integer initialPagenum, LayoutMaster master) {
+	public BlockSequence(FormatterContext fc, SequenceProperties props, LayoutMaster master) {
 		super(fc);
-		this.initialPagenum = initialPagenum;
+		this.props = props;
 		this.master = master;
 	}
 
@@ -49,7 +50,11 @@ class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 	 * @return returns the initial page number, or null if no initial page number has been specified
 	 */
 	public Integer getInitialPageNumber() {
-		return initialPagenum;
+		return props.getInitialPageNumber();
+	}
+	
+	public SequenceProperties getSequenceProperties() {
+		return props;
 	}
 	
 	/**
@@ -63,6 +68,7 @@ class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 	public int getKeepHeight(Block block, BlockContext bc) {
 		return getKeepHeight(this.indexOf(block), bc);
 	}
+	@SuppressWarnings("deprecation")
 	private int getKeepHeight(int gi, BlockContext bc) {
 		//FIXME: this assumes that row spacing is equal to 1
 		//FIXME: what about borders?
@@ -71,7 +77,7 @@ class BlockSequence extends FormatterCoreImpl implements FormatterSequence {
 			keepHeight += getBlock(gi).getRowDataProperties().getOuterSpaceAfter()+getBlock(gi).getRowDataProperties().getInnerSpaceAfter()
 						+getBlock(gi+1).getRowDataProperties().getOuterSpaceBefore()+getBlock(gi+1).getRowDataProperties().getInnerSpaceBefore()+getBlock(gi).getKeepWithNext();
 			switch (getBlock(gi+1).getKeepType()) {
-				case ALL:
+				case ALL: case PAGE:
 					keepHeight += getKeepHeight(gi+1, bc);
 					break;
 				case AUTO: break;

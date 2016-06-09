@@ -560,6 +560,10 @@ public class ObflParser extends XMLParserBase {
 		if (initialPageNumber!=null) {
 			builder.initialPageNumber(Integer.parseInt(initialPageNumber));
 		}
+		String breakBefore = getAttr(event, "break-before");
+		if (breakBefore!=null) {
+			builder.breakBefore(SequenceProperties.SequenceBreakBefore.valueOf(breakBefore.toUpperCase()));
+		}
 		FormatterCore seq = formatter.newSequence(builder.build());
 		while (input.hasNext()) {
 			event=input.nextEvent();
@@ -868,6 +872,9 @@ public class ObflParser extends XMLParserBase {
 			} else if ("break-before".equals(name)) {
 				builder.breakBefore(FormattingTypes.BreakBefore.valueOf(att.getValue().toUpperCase()));
 			} else if ("keep".equals(name)) {
+				if (att.getValue().equalsIgnoreCase("all")) {
+					logger.warning("@keep=all has been deprecated. Use @keep=page");
+				}
 				builder.keep(FormattingTypes.Keep.valueOf(att.getValue().toUpperCase()));
 			} else if ("orphans".equals(name)) {
 				builder.orphans(Integer.parseInt(att.getValue()));
@@ -879,6 +886,8 @@ public class ObflParser extends XMLParserBase {
 				builder.keepWithPreviousSheets(Integer.parseInt(att.getValue()));
 			} else if ("keep-with-next-sheets".equals(name)) {
 				builder.keepWithNextSheets(Integer.parseInt(att.getValue()));
+			} else if ("volume-keep-priority".equals(name)) {
+				builder.volumeKeepPriority(Integer.parseInt(att.getValue()));
 			} else if ("block-indent".equals(name)) {
 				builder.blockIndent(Integer.parseInt(att.getValue()));
 			} else if ("id".equals(name)) {

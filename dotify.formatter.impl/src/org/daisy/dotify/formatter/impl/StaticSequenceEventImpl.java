@@ -31,7 +31,7 @@ class StaticSequenceEventImpl extends FormatterCoreImpl implements VolumeSequenc
 		} else {
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
-					getSequenceProperties().getInitialPageNumber());
+					getSequenceProperties());
 			fsm.appendGroup(this);
 			ret = fsm.newSequence();
 			return ret;

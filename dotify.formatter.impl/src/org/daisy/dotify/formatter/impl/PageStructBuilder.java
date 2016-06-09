@@ -3,6 +3,8 @@ package org.daisy.dotify.formatter.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.dotify.api.formatter.SequenceProperties.SequenceBreakBefore;
+
 class PageStructBuilder {
 
 	private final FormatterContext context;
@@ -42,6 +44,9 @@ class PageStructBuilder {
 							s = new Sheet.Builder();
 							si = new SheetIdentity(rcontext.getSpace(), rcontext.getCurrentVolume()==null?0:rcontext.getCurrentVolume(), ret.size());
 							sheetIndex++;
+						}
+						if (sheetIndex==1 && bs.getSequenceProperties().getBreakBeforeType()==SequenceBreakBefore.VOLUME) {
+							s.startNewVolume(true);
 						}
 						if (pageIndex==pages.size()-1) {
 							//Don't get or store this value in crh as it is transient and not a property of the sheet context

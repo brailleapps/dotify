@@ -103,7 +103,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 		try {
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
-					getSequenceProperties().getInitialPageNumber());
+					getSequenceProperties());
 
 			fsm.appendGroup(getTocStart(vars));
 

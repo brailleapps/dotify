@@ -13,10 +13,10 @@
    <sequence master="body">
       <block>⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤ ⠤⠤⠤⠤⠤
               </block>
-      <block><block keep="all" keep-with-next="1">⠤⠤⠤</block>
-         <block keep="all" keep-with-next="1">⠤⠤⠤</block>
-         <block keep="all" keep-with-next="1">⠤⠤⠤</block>
-         <block keep="all">⠤⠤⠤</block>
+      <block><block keep="page" keep-with-next="1">⠤⠤⠤</block>
+         <block keep="page" keep-with-next="1">⠤⠤⠤</block>
+         <block keep="page" keep-with-next="1">⠤⠤⠤</block>
+         <block keep="page">⠤⠤⠤</block>
       </block>
    </sequence>
 </obfl>

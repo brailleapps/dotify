@@ -117,7 +117,7 @@
 			<block list-type="pl" margin-left="2" margin-top="1" margin-bottom="1">
 				<block first-line-indent="3" text-indent="3" block-indent="3">A)<leader position="5"/>Apples - It's always nice to have a green, round fruit around.</block>
 				<block first-line-indent="3" text-indent="3" block-indent="3">B) Oranges have a distinctive smell when peeled.</block>
-				<block first-line-indent="3" text-indent="3" block-indent="3" keep="all">C) Bananas - Dry, but full of energy.</block>
+				<block first-line-indent="3" text-indent="3" block-indent="3" keep="page">C) Bananas - Dry, but full of energy.</block>
 			</block>
 			<block break-before="page" margin-top="2" margin-bottom="1">New page</block>
 			<block>This heading is so important, that it has to start on a new page.</block>

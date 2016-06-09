@@ -81,7 +81,7 @@ public class FormatterImpl implements Formatter {
 	@Override
 	public FormatterSequence newSequence(SequenceProperties p) {
 		state.assertOpen();
-		BlockSequence currentSequence = new BlockSequence(context.getFormatterContext(), p.getInitialPageNumber(), context.getFormatterContext().getMasters().get(p.getMasterName()));
+		BlockSequence currentSequence = new BlockSequence(context.getFormatterContext(), p, context.getFormatterContext().getMasters().get(p.getMasterName()));
 		blocks.push(currentSequence);
 		return currentSequence;
 	}
@@ -277,7 +277,8 @@ public class FormatterImpl implements Formatter {
 		public int getSplitterLimit(int volumeNumber) {
 			for (VolumeTemplate t : volumeTemplates) {
 				if (t==null) {
-					System.out.println("VOLDATA NULL");
+					logger.warning("A volume template is null.");
+					continue;
 				}
 				if (t.appliesTo(new DefaultContext.Builder()
 							.currentVolume(volumeNumber)
@@ -286,6 +287,7 @@ public class FormatterImpl implements Formatter {
 					return t.getVolumeMaxSize();
 				}
 			}
+			logger.fine("Found no applicable volume template.");
 			return DEFAULT_SPLITTER_MAX;
 		}
 	}

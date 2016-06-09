@@ -34,7 +34,7 @@ class DynamicSequenceEventImpl implements VolumeSequence, DynamicSequenceBuilder
 	public BlockSequence getBlockSequence(FormatterContext context, DefaultContext c, CrossReferenceHandler crh) {
 		BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 				context.getMasters().get(getSequenceProperties().getMasterName()), 
-				getSequenceProperties().getInitialPageNumber());
+				getSequenceProperties());
 		boolean hasContent = false;
 		for (BlockGroup b : formatters) {
 			List<Block> g = b.getBlocks(context, c, crh);
