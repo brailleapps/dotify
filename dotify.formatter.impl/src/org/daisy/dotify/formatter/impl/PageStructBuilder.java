@@ -22,7 +22,7 @@ class PageStructBuilder {
 		restart:while (true) {
 			crh.resetUniqueChecks();
 			struct = new PageStruct();
-			List<Sheet.Builder> ret = new ArrayList<>();
+			List<Sheet> ret = new ArrayList<>();
 			boolean volBreakAllowed = true;
 			for (BlockSequence bs : fs) {
 				try {
@@ -36,10 +36,12 @@ class PageStructBuilder {
 						PageImpl p = pages.get(pageIndex);
 						if (!lm.duplex() || pageIndex % 2 == 0) {
 							volBreakAllowed = true;
+							if (s!=null) {
+								ret.add(s.build());
+							}
 							s = new Sheet.Builder();
 							si = new SheetIdentity(rcontext.getSpace(), rcontext.getCurrentVolume()==null?0:rcontext.getCurrentVolume(), ret.size());
 							sheetIndex++;
-							ret.add(s);
 						}
 						if (pageIndex==pages.size()-1) {
 							//Don't get or store this value in crh as it is transient and not a property of the sheet context
@@ -55,11 +57,14 @@ class PageStructBuilder {
 						}
 						s.add(p);
 					}
+					if (s!=null) {
+						ret.add(s.build());
+					}
 				} catch (RestartPaginationException e) {
 					continue restart;
 				}
 			}
-			return buildAll(ret);
+			return ret;
 		}
 		} finally {
 			crh.commitBreakable();
@@ -100,15 +105,6 @@ class PageStructBuilder {
 	
 	void setVolumeScope(int volumeNumber, int fromIndex, int toIndex) {
 		struct.setVolumeScope(volumeNumber, fromIndex, toIndex);
-	}
-
-	//TODO: Integrate this with paginate
-	private List<Sheet> buildAll(List<Sheet.Builder> builders) {
-		List<Sheet> ret = new ArrayList<>();
-		for (Sheet.Builder b : builders) {
-			ret.add(b.build());
-		}
-		return ret;
 	}
 
 	private void setPreviousSheet(int start, int p, DefaultContext rcontext) {
