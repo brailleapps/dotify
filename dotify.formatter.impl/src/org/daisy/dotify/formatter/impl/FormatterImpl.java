@@ -43,7 +43,6 @@ public class FormatterImpl implements Formatter {
 	
 	//CrossReferenceHandler
 	private final Map<Integer, VolumeImpl> volumes;
-	private final VolumeSplitter splitter;
 	private boolean isDirty;
 	private CrossReferenceHandler crh;
 	private LazyFormatterContext context;
@@ -64,7 +63,6 @@ public class FormatterImpl implements Formatter {
 		this.volumes = new HashMap<>();
 		this.isDirty = false;
 		this.crh = new CrossReferenceHandler();
-		this.splitter = new EvenSizeVolumeSplitter(crh);
 	}
 	
 
@@ -143,16 +141,16 @@ public class FormatterImpl implements Formatter {
 		boolean ok = false;
 		int totalOverheadCount = 0;
 		
+		SplitterLimit splitterLimit = new VolumeSplitterLimit();
+		VolumeSplitter splitter = new EvenSizeVolumeSplitter(crh, splitterLimit);
 		ArrayList<VolumeImpl> ret = new ArrayList<>();
 		ArrayList<AnchorData> ad;
-		//splitter.setSplitterMax(Integer.MAX_VALUE);
-		//FIXME: replace the following try/catch with the line above
+		//FIXME: delete the following try/catch
 		//This code is here for compatibility with regression tests and can be removed once
 		//differences have been checked and accepted
 		try {
 			// make a preliminary calculation based on a contents only
 			List<Sheet> ps = new PageStructBuilder(context.getFormatterContext(), blocks, crh).paginate(new DefaultContext.Builder().space(Space.BODY).build());
-			splitter.setSplitterMax(getVolumeMaxSize(1,  crh.getVolumeCount()));
 			splitter.updateSheetCount(ps.size() + totalOverheadCount);
 		} catch (PaginatorException e) {
 			throw new RuntimeException("Error while formatting.", e);
@@ -168,10 +166,6 @@ public class FormatterImpl implements Formatter {
 			VolumeProvider volumeProvider = new VolumeProvider(new PageStructBuilder(context.getFormatterContext(), blocks, crh), crh, new DefaultContext.Builder().space(Space.BODY).build());
 
 			for (int i=1;i<= crh.getVolumeCount();i++) {
-				if (j>1 && splitter.getSplitterMax()!=getVolumeMaxSize(i,  crh.getVolumeCount())) {
-					logger.warning("Implementation does not support different target volume size. All volumes must have the same target size.");
-				}
-				
 				VolumeImpl volume = getVolume(i);
 				ad = new ArrayList<>();
 
@@ -180,10 +174,11 @@ public class FormatterImpl implements Formatter {
 				totalOverheadCount += volume.getOverhead();
 
 				{
+					int split = splitterLimit.getSplitterLimit(i);
 					List<Sheet> contents = volumeProvider.nextVolume(
-							(i==crh.getVolumeCount()?splitter.getSplitterMax():splitter.sheetsInVolume(i)),
+							(i==crh.getVolumeCount()?split:splitter.sheetsInVolume(i)),
 							volume.getOverhead(),
-							splitter.getSplitterMax(), ad
+							split, ad
 							);
 					
 					volume.setBody(contents);
@@ -207,7 +202,6 @@ public class FormatterImpl implements Formatter {
 			}
 			crh.setSheetsInDocument(sheetCount + totalOverheadCount);
 			//crh.setPagesInDocument(value);
-			splitter.setSplitterMax(getVolumeMaxSize(1,  crh.getVolumeCount()));
 			splitter.updateSheetCount(sheetCount + totalOverheadCount);
 			if (volumeProvider.hasNext()) {
 				ok2 = false;
@@ -271,27 +265,29 @@ public class FormatterImpl implements Formatter {
 		}
 	}
 	
-	/**
-	 * Gets the volume max size based on the supplied information.
-	 * 
-	 * @param volumeNumber the volume number, one based
-	 * @param volumeCount the number of volumes
-	 * @return returns the maximum number of sheets in the volume
-	 */
-	private int getVolumeMaxSize(int volumeNumber, int volumeCount) {
-		for (VolumeTemplate t : volumeTemplates) {
-			if (t==null) {
-				System.out.println("VOLDATA NULL");
+	
+	private class VolumeSplitterLimit implements SplitterLimit {
+		/**
+		 * Gets the volume max size based on the supplied information.
+		 * 
+		 * @param volumeNumber the volume number, one based
+		 * @param volumeCount the number of volumes
+		 * @return returns the maximum number of sheets in the volume
+		 */
+		public int getSplitterLimit(int volumeNumber) {
+			for (VolumeTemplate t : volumeTemplates) {
+				if (t==null) {
+					System.out.println("VOLDATA NULL");
+				}
+				if (t.appliesTo(new DefaultContext.Builder()
+							.currentVolume(volumeNumber)
+							.referenceHandler(crh)
+							.build())) {
+					return t.getVolumeMaxSize();
+				}
 			}
-			if (t.appliesTo(new DefaultContext.Builder()
-						.currentVolume(volumeNumber)
-						.referenceHandler(crh)
-						.build())) {
-				return t.getVolumeMaxSize();
-			}
+			return DEFAULT_SPLITTER_MAX;
 		}
-		//TODO: don't return a fixed value
-		return DEFAULT_SPLITTER_MAX;
 	}
 	
 	private VolumeImpl getVolume(int volumeNumber) {

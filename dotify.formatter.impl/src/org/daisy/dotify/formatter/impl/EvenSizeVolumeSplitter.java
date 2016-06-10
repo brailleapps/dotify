@@ -5,23 +5,14 @@ import java.util.logging.Logger;
 class EvenSizeVolumeSplitter implements VolumeSplitter {
 	private final static Logger logger = Logger.getLogger(EvenSizeVolumeSplitter.class.getCanonicalName());
 	private EvenSizeVolumeSplitterCalculator sdc;
-	int splitterMax = 0;
+	private final SplitterLimit splitterMax;
 	int volumeOffset = 0;
 	int volsMin = Integer.MAX_VALUE;
 	private final CrossReferenceHandler vh;
 
-	EvenSizeVolumeSplitter(CrossReferenceHandler vh) {
+	EvenSizeVolumeSplitter(CrossReferenceHandler vh, SplitterLimit splitterMax) {
 		this.vh = vh;
-	}
-	
-	@Override
-	public void setSplitterMax(int splitterMax) {
 		this.splitterMax = splitterMax;
-	}
-	
-	@Override
-	public int getSplitterMax() {
-		return splitterMax;
 	}
 	
 	@Override
