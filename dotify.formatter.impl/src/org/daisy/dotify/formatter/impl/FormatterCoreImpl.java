@@ -41,7 +41,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	 */
 	private static final long serialVersionUID = -7775469339792146048L;
 	private final static Logger logger = Logger.getLogger(FormatterCoreImpl.class.getCanonicalName());
-	protected final Stack<BlockProperties> propsContext;
+	protected final Stack<AncestorContext> propsContext;
 	private Margin leftMargin;
 	private Margin rightMargin;
 	
@@ -94,8 +94,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		leftMargin.push(new MarginComponent(lb, p.getMargin().getLeftSpacing(), p.getPadding().getLeftSpacing()));
 		rightMargin.push(new MarginComponent(rb, p.getMargin().getRightSpacing(), p.getPadding().getRightSpacing()));
 		if (propsContext.size()>0) {
-			addToBlockIndent(propsContext.peek().getBlockIndent());
-			if (propsContext.peek().getUnderlineStyle()!=null) {
+			addToBlockIndent(propsContext.peek().getBlockProperties().getBlockIndent());
+			if (propsContext.peek().getBlockProperties().getUnderlineStyle()!=null) {
 				throw new UnsupportedOperationException("No block allowed within a block with underline properties.");
 			}
 		}
@@ -115,9 +115,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 					underlineStyle(p.getUnderlineStyle());
 		Block c = newBlock(blockId, rdp.build());
 		if (propsContext.size()>0) {
-			if (propsContext.peek().getListType()!=FormattingTypes.ListStyle.NONE) {
+			if (propsContext.peek().getBlockProperties().getListType()!=FormattingTypes.ListStyle.NONE) {
 				String listLabel;
-				switch (propsContext.peek().getListType()) {
+				switch (propsContext.peek().getBlockProperties().getListType()) {
 				case OL:
 					listLabel = propsContext.peek().nextListNumber()+""; break;
 				case UL:
@@ -126,7 +126,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 				case PL: default:
 					listLabel = "";
 				}
-				listItem = new ListItem(listLabel, propsContext.peek().getListType());
+				listItem = new ListItem(listLabel, propsContext.peek().getBlockProperties().getListType());
 			}
 		}
 		c.setBreakBeforeType(p.getBreakBeforeType());
@@ -137,7 +137,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		}
 		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		c.setVerticalPosition(p.getVerticalPosition());
-		propsContext.push(p);
+		propsContext.push(new AncestorContext(p));
 		Block bi = getCurrentBlock();
 		RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
 		if (p.getTextBorderStyle()!=null) {
@@ -160,7 +160,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			addChars("", new TextProperties.Builder(null).build());
 		}
 		{
-		BlockProperties p = propsContext.pop();
+		BlockProperties p = propsContext.pop().getBlockProperties();
 		Block bi = getCurrentBlock();
 		RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
 		if (p.getTextBorderStyle()!=null) {
@@ -177,7 +177,7 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		leftMargin.pop();
 		rightMargin.pop();
 		if (propsContext.size()>0) {
-			BlockProperties p = propsContext.peek();
+			BlockProperties p = propsContext.peek().getBlockProperties();
 			Keep keep = p.getKeepType();
 			int next = p.getKeepWithNext();
 			subtractFromBlockIndent(p.getBlockIndent());
