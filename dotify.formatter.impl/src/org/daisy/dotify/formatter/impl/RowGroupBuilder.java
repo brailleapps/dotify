@@ -49,18 +49,18 @@ class RowGroupBuilder {
 			try {
 				AbstractBlockContentManager bcm = rec.processBlock(g, bc);
 
-				if (rec.data.isDataGroupsEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !rec.data.isDataEmpty()) || g.getVerticalPosition()!=null) {
-					rec.data.newRowGroupSequence(g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent()));
-					rec.data.keepWithNext = -1;
+				if (rec.isDataGroupsEmpty() || (g.getBreakBeforeType()==BreakBefore.PAGE && !rec.isDataEmpty()) || g.getVerticalPosition()!=null) {
+					rec.newRowGroupSequence(g.getVerticalPosition(), new RowImpl("", bcm.getLeftMarginParent(), bcm.getRightMarginParent()));
+					rec.setKeepWithNext(-1);
 				}
 				List<RowImpl> rl1 = bcm.getCollapsiblePreContentRows();
 				if (!rl1.isEmpty()) {
-					rec.data.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl1).
+					rec.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl1).
 											collapsible(true).skippable(false).breakable(false).build());
 				}
 				List<RowImpl> rl2 = bcm.getInnerPreContentRows();
 				if (!rl2.isEmpty()) {
-					rec.data.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl2).
+					rec.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl2).
 											collapsible(false).skippable(false).breakable(false).build());
 				}
 				
@@ -69,7 +69,7 @@ class RowGroupBuilder {
 							|| g.getKeepWithNextSheets()>0 || g.getKeepWithPreviousSheets()>0 ) {
 						RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing(), new ArrayList<RowImpl>());
 						setProperties(rgb, bcm, g);
-						rec.data.addRowGroup(rgb.build());
+						rec.addRowGroup(rgb.build());
 					}
 				}
 	
@@ -83,37 +83,36 @@ class RowGroupBuilder {
 					r.setAdjustedForMargin(true);
 					if (i==bcm.getRowCount()) {
 						//we're at the last line, this should be kept with the next block's first line
-						rec.data.keepWithNext = g.getKeepWithNext();
+						rec.setKeepWithNext(g.getKeepWithNext());
 					}
 					RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing()).add(r).
 							collapsible(false).skippable(false).breakable(
 									r.allowsBreakAfter()&&
 									owc.allowsBreakAfter(i-1)&&
-									rec.data.keepWithNext<=0 &&
+									rec.getKeepWithNext()<=0 &&
 									(Keep.AUTO==g.getKeepType() || i==bcm.getRowCount()) &&
 									(i<bcm.getRowCount() || rl3.isEmpty())
 									);
 					if (i==1) { //First item
 						setProperties(rgb, bcm, g);
 					}
-					rec.data.addRowGroup(rgb.build());
-					rec.data.keepWithNext--;
+					rec.addRowGroup(rgb.build());
+					rec.setKeepWithNext(rec.getKeepWithNext()-1);
 				}
 				if (!rl3.isEmpty()) {
-					rec.data.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl3).
-						collapsible(false).skippable(false).breakable(rec.data.keepWithNext<0).build());
+					rec.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl3).
+						collapsible(false).skippable(false).breakable(rec.getKeepWithNext()<0).build());
 				}
 				List<RowImpl> rl4 = bcm.getSkippablePostContentRows();
 				if (!rl4.isEmpty()) {
-					rec.data.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl4).
-						collapsible(true).skippable(true).breakable(rec.data.keepWithNext<0).build());
+					rec.addRowGroup(new RowGroup.Builder(master.getRowSpacing(), rl4).
+						collapsible(true).skippable(true).breakable(rec.getKeepWithNext()<0).build());
 				}
 			} catch (Exception e) {
 				rec.invalidateScenario(e);
 			}
 		}
-		rec.finishBlockProcessing();
-		return rec.data.getRowGroupSequences();
+		return rec.processResult();
 	}
 
 }
