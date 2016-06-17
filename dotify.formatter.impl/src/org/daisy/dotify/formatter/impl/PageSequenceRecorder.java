@@ -149,6 +149,10 @@ class PageSequenceRecorder {
 		return data.isDataEmpty();
 	}
 	
+	RowGroupSequence currentSequence() {
+		return data.dataGroups.peek();
+	}
+	
 	void addRowGroup(RowGroup rg) {
 		data.addRowGroup(rg); 
 	}

@@ -32,6 +32,14 @@ class RowGroupSequence {
 	public List<RowGroup> getGroup() {
 		return group;
 	}
+	
+	RowGroup currentGroup() {
+		if (group.isEmpty()) {
+			return null;
+		} else {
+			return group.get(group.size()-1);
+		}
+	}
 
 	public BlockPosition getBlockPosition() {
 		return pos;

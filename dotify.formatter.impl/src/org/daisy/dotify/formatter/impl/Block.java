@@ -25,6 +25,8 @@ abstract class Block implements Cloneable {
 	private int keepWithNext;
 	private int keepWithPreviousSheets;
 	private int keepWithNextSheets;
+	private Integer avoidVolumeBreakInsidePriority;
+	private Integer avoidVolumeBreakAfterPriority;
 	private String id;
 	protected final Stack<Segment> segments;
 	protected RowDataProperties rdp;
@@ -42,6 +44,8 @@ abstract class Block implements Cloneable {
 		this.keepWithNext = 0;
 		this.keepWithPreviousSheets = 0;
 		this.keepWithNextSheets = 0;
+		this.avoidVolumeBreakInsidePriority = null;
+		this.avoidVolumeBreakAfterPriority = null;
 		this.id = "";
 		this.blockId = blockId;
 		this.segments = new Stack<>();
@@ -75,6 +79,14 @@ abstract class Block implements Cloneable {
 		return keepWithNextSheets;
 	}
 	
+	public Integer getVolumeKeepInsidePriority() {
+		return avoidVolumeBreakInsidePriority;
+	}
+	
+	public Integer getVolumeKeepAfterPriority() {
+		return avoidVolumeBreakAfterPriority;
+	}
+	
 	public String getIdentifier() {
 		return id;
 	}
@@ -101,6 +113,14 @@ abstract class Block implements Cloneable {
 	
 	public void setKeepWithNextSheets(int keepWithNextSheets) {
 		this.keepWithNextSheets = keepWithNextSheets;
+	}
+	
+	public void setVolumeKeepInsidePriority(Integer priority) {
+		this.avoidVolumeBreakInsidePriority = priority;
+	}
+	
+	public void setVolumeKeepAfterPriority(Integer priority) {
+		this.avoidVolumeBreakAfterPriority = priority;
 	}
 	
 	public void setIdentifier(String id) {
@@ -152,6 +172,15 @@ abstract class Block implements Cloneable {
 	RenderingScenario getRenderingScenario() {
 		return rs;
 	}
+	
+	Integer getAvoidVolumeBreakAfterPriority() {
+		return avoidVolumeBreakAfterPriority;
+	}
+	
+	Integer getAvoidVolumeBreakInsidePriority() {
+		return avoidVolumeBreakInsidePriority;
+	}
+	
 
 	@Override
 	public Object clone() {

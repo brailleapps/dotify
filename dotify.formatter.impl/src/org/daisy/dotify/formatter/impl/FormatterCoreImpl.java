@@ -54,6 +54,8 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 	private Table table;
 	protected final FormatterCoreContext fc;
 	private MarkerProcessor mp;
+	//The code where this variable is used is not very nice, but it will do to get the feature running
+	private Boolean endStart = null;
 	// TODO: fix recursive keep problem
 	// TODO: Implement floating elements
 	public FormatterCoreImpl(FormatterCoreContext fc) {
@@ -84,6 +86,10 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (table!=null) {
 			throw new IllegalStateException("A table is open.");
 		}
+		if (endStart!=null && endStart == true) {
+			getCurrentBlock().setVolumeKeepAfterPriority(getCurrentVolumeKeepPriority());
+		}
+		endStart = null;
 		String lb = "";
 		String rb = "";
 		if (p.getTextBorderStyle()!=null) {
@@ -137,7 +143,11 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		}
 		c.setKeepWithNextSheets(p.getKeepWithNextSheets());
 		c.setVerticalPosition(p.getVerticalPosition());
-		propsContext.push(new AncestorContext(p));
+		AncestorContext ac = new AncestorContext(p, inheritVolumeKeepPriority(p.getVolumeKeepPriority()));
+		// We don't get the volume keep priority from block properties, because it could have been inherited from an ancestor
+		c.setVolumeKeepInsidePriority(ac.getVolumeKeepPriority());
+		c.setVolumeKeepAfterPriority(ac.getVolumeKeepPriority());
+		propsContext.push(ac);
 		Block bi = getCurrentBlock();
 		RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
 		if (p.getTextBorderStyle()!=null) {
@@ -150,6 +160,18 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		bi.setRowDataProperties(builder.build());
 		//firstRow = true;
 	}
+	
+	private Integer inheritVolumeKeepPriority(Integer value) {
+		return (value==null?getCurrentVolumeKeepPriority():value);
+	}
+	
+	private Integer getCurrentVolumeKeepPriority() {
+		return propsContext.isEmpty()?null:propsContext.peek().getVolumeKeepPriority();
+	}
+	
+	private Integer getParentVolumeKeepPriority() {
+		return propsContext.size()<2?null:propsContext.get(propsContext.size()-2).getVolumeKeepPriority();
+	}
 
 	@Override
 	public void endBlock() {
@@ -159,8 +181,14 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 		if (listItem!=null) {
 			addChars("", new TextProperties.Builder(null).build());
 		}
+		if (endStart == null) {
+			endStart = true;
+		} else {
+			endStart = false;
+		}
 		{
-		BlockProperties p = propsContext.pop().getBlockProperties();
+		AncestorContext ac = propsContext.pop();
+		BlockProperties p = ac.getBlockProperties();
 		Block bi = getCurrentBlock();
 		RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
 		if (p.getTextBorderStyle()!=null) {
@@ -173,11 +201,14 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter()+p.getMargin().getBottomSpacing());
 		bi.setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
 		bi.setRowDataProperties(builder.build());
+		//set the volume keep after for the closing block to the parent priority 
+		bi.setVolumeKeepAfterPriority(getCurrentVolumeKeepPriority());
 		}
 		leftMargin.pop();
 		rightMargin.pop();
 		if (propsContext.size()>0) {
-			BlockProperties p = propsContext.peek().getBlockProperties();
+			AncestorContext ac = propsContext.peek(); 
+			BlockProperties p = ac.getBlockProperties();
 			Keep keep = p.getKeepType();
 			int next = p.getKeepWithNext();
 			subtractFromBlockIndent(p.getBlockIndent());
@@ -198,6 +229,9 @@ class FormatterCoreImpl extends Stack<Block> implements FormatterCore, BlockGrou
 			Block c = newBlock(null, rdp.build());
 			c.setKeepType(keep);
 			c.setKeepWithNext(next);
+			// We don't get the volume keep priority from the BlockProperties, as it could have been inherited from an ancestor
+			c.setVolumeKeepInsidePriority(getCurrentVolumeKeepPriority());
+			c.setVolumeKeepAfterPriority(getParentVolumeKeepPriority());
 		}
 		//firstRow = true;
 	}

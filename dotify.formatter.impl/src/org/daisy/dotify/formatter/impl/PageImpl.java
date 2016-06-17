@@ -49,6 +49,7 @@ class PageImpl implements Page {
 	private boolean isVolBreak;
 	private boolean isVolBreakAllowed;
 	private int keepPreviousSheets;
+	private Integer volumeBreakAfterPriority;
 	private int volumeNumber;
 	
 	
@@ -74,6 +75,7 @@ class PageImpl implements Page {
 		this.isVolBreak = false;
 		this.isVolBreakAllowed = true;
 		this.keepPreviousSheets = 0;
+		this.volumeBreakAfterPriority = null;
 		this.volumeNumber = 0;
 	}
 	
@@ -707,6 +709,14 @@ class PageImpl implements Page {
 
 	void setVolumeNumber(int volumeNumber) {
 		this.volumeNumber = volumeNumber;
+	}
+	
+	Integer getAvoidVolumeBreakAfter() {
+		return volumeBreakAfterPriority;
+	}
+	
+	void setAvoidVolumeBreakAfter(Integer value) {
+		this.volumeBreakAfterPriority = value;
 	}
 
 }

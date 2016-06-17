@@ -162,7 +162,8 @@ class PageSequenceBuilder2 {
 				}
 				force = res.getHead().size()==0;
 				data = res.getTail();
-				for (RowGroup rg : res.getHead()) {
+				List<RowGroup> head = res.getHead();
+				for (RowGroup rg : head) {
 					addProperties(rg);
 					for (RowImpl r : rg.getRows()) { 
 						if (r.shouldAdjustForMargin()) {
@@ -178,6 +179,12 @@ class PageSequenceBuilder2 {
 						currentPage().newRow(r);
 					}
 				}
+				Integer lastPriority = getLastPriority(head);
+				if (!res.getDiscarded().isEmpty()) {
+					//override if not empty
+					lastPriority = getLastPriority(res.getDiscarded());
+				}
+				currentPage().setAvoidVolumeBreakAfter(lastPriority);
 				for (RowGroup rg : res.getDiscarded()) {
 					addProperties(rg);
 				}
@@ -197,6 +204,14 @@ class PageSequenceBuilder2 {
 		PageImpl ret = current;
 		current = null;
 		return ret;
+	}
+	
+	private static Integer getLastPriority(List<RowGroup> list) {
+		if (!list.isEmpty()) {
+			return list.get(list.size()-1).getAvoidVolumeBreakAfterPriority();
+		} else {
+			return null;
+		}
 	}
 	
 	private boolean firstUnitHasSupplements(SplitPointData<RowGroup> spd) {

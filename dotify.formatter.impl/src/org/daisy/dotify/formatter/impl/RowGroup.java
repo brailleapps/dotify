@@ -18,6 +18,7 @@ class RowGroup implements SplitPointUnit {
 	private final List<String> ids;
 	private final String identifier;
 	private final int keepWithNextSheets, keepWithPreviousSheets;
+	private Integer avoidVolumeBreakAfterPriority = null;
 	
 	static class Builder {
 		private final List<RowImpl> rows;
@@ -135,6 +136,7 @@ class RowGroup implements SplitPointUnit {
 		this.identifier = template.identifier;
 		this.keepWithNextSheets = template.keepWithNextSheets;
 		this.keepWithPreviousSheets = template.keepWithPreviousSheets;
+		this.avoidVolumeBreakAfterPriority = template.avoidVolumeBreakAfterPriority;
 	}
 	
 	private static float getRowSpacing(float rowDefault, RowImpl r) {
@@ -247,6 +249,14 @@ class RowGroup implements SplitPointUnit {
 
 	public int getKeepWithPreviousSheets() {
 		return keepWithPreviousSheets;
+	}
+	
+	public Integer getAvoidVolumeBreakAfterPriority() {
+		return avoidVolumeBreakAfterPriority;
+	}
+	
+	void setAvoidVolumeBreakAfterPriority(Integer value) {
+		this.avoidVolumeBreakAfterPriority = value;
 	}
 	
 }

@@ -45,14 +45,21 @@ class PageStructBuilder {
 							si = new SheetIdentity(rcontext.getSpace(), rcontext.getCurrentVolume()==null?0:rcontext.getCurrentVolume(), ret.size());
 							sheetIndex++;
 						}
+						s.avoidVolumeBreakAfterPriority(p.getAvoidVolumeBreakAfter());
 						if (sheetIndex==1 && bs.getSequenceProperties().getBreakBeforeType()==SequenceBreakBefore.VOLUME) {
 							s.startNewVolume(true);
 						}
 						if (pageIndex==pages.size()-1) {
+							s.avoidVolumeBreakAfterPriority(null);
 							//Don't get or store this value in crh as it is transient and not a property of the sheet context
 							s.breakable(true);
 						} else {
-							s.breakable(crh.getBreakable(si));
+							boolean br = crh.getBreakable(si);
+							//TODO: the following is a low effort way of giving existing uses of non-breakable units a high priority, but it probably shouldn't be done this way
+							if (!br) {
+								s.avoidVolumeBreakAfterPriority(1);
+							}
+							s.breakable(br);
 						}
 
 						setPreviousSheet(si.getSheetIndex()-1, Math.min(p.keepPreviousSheets(), sheetIndex-1), rcontext);
@@ -63,6 +70,7 @@ class PageStructBuilder {
 						s.add(p);
 					}
 					if (s!=null) {
+						//Last page in the sequence doesn't need volume keep priority
 						ret.add(s.build());
 					}
 				} catch (RestartPaginationException e) {

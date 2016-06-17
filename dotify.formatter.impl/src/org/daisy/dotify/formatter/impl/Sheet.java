@@ -10,11 +10,13 @@ class Sheet implements SplitPointUnit {
 	private final List<PageImpl> pages;
 	private final boolean breakable, skippable, collapsible;
 	private final boolean startNewVolume;
+	private final Integer avoidVolumeBreakAfterPriority;
 	
 	static class Builder {
 		private final List<PageImpl> pages;
 		private boolean breakable = false;
 		private boolean startNewVolume = false;
+		private Integer avoidVolumeBreakAfterPriority = null;
 		
 		Builder() {
 			pages = new ArrayList<>();
@@ -39,6 +41,11 @@ class Sheet implements SplitPointUnit {
 			return this;
 		}
 
+		Builder avoidVolumeBreakAfterPriority(Integer value) {
+			this.avoidVolumeBreakAfterPriority = value;
+			return this;
+		}
+
 		Sheet build() {
 			return new Sheet(this);
 		}
@@ -49,7 +56,8 @@ class Sheet implements SplitPointUnit {
 			throw new IllegalArgumentException("A sheet can not contain more than two pages.");
 		}
 		this.pages = Collections.unmodifiableList(new ArrayList<>(builder.pages));
-		this.breakable = builder.breakable;
+		this.breakable = builder.breakable && builder.avoidVolumeBreakAfterPriority==null;
+		this.avoidVolumeBreakAfterPriority = builder.avoidVolumeBreakAfterPriority;
 		this.skippable = pages.isEmpty();
 		this.collapsible = pages.isEmpty();
 		this.startNewVolume = builder.startNewVolume;
@@ -86,6 +94,10 @@ class Sheet implements SplitPointUnit {
 	@Override
 	public float getLastUnitSize() {
 		return 1;
+	}
+	
+	Integer getAvoidVolumeBreakAfterPriority() {
+		return avoidVolumeBreakAfterPriority;
 	}
 
 	@Override
