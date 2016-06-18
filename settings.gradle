@@ -1,3 +1,2 @@
 include 'dotify.text.impl', 'dotify.translator.impl'
 include 'dotify.formatter.impl'
-include 'dotify.task.impl'
