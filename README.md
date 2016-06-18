@@ -2,8 +2,7 @@
 
 **Future releases of Dotify CLI will be found at https://github.com/brailleapps/dotify-cli**
 
-Note: Dotify will be split up into smaller repos (at https://github.com/brailleapps) very soon. This repo will only be retained for archival purposes.
-For more information, see https://github.com/joeha480/dotify/issues/175
+Note: Dotify has been split up into smaller repos (at https://github.com/brailleapps). This repo is only retained for archival purposes. For more information, see https://github.com/brailleapps/dotify/issues/175
 
 
 # Dotify
