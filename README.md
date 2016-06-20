@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/joeha480/dotify.svg)](https://travis-ci.org/joeha480/dotify)
-
 **Future releases of Dotify CLI will be found at https://github.com/brailleapps/dotify-cli**
 
 Note: Dotify has been split up into smaller repos (at https://github.com/brailleapps). This repo is only retained for archival purposes. For more information, see https://github.com/brailleapps/dotify/issues/175
